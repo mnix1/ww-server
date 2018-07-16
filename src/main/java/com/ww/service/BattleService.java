@@ -1,0 +1,16 @@
+package com.ww.service;
+
+import com.ww.repository.rival.battle.BattleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class BattleService {
+
+    @Autowired
+    private BattleRepository battleRepository;
+
+    @Autowired
+    private SessionService sessionService;
+
+}
