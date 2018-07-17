@@ -1,5 +1,11 @@
 package com.ww.model.constant;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.ww.helper.RandomHelper.randomElement;
+
 public enum Category {
     RANDOM,
     MATH,
@@ -7,4 +13,9 @@ public enum Category {
     HISTORY,
     GEOGRAPHY,
     MEMORY;
+
+    public static Category random() {
+        List<Category> possible = Arrays.asList(values()).stream().filter(category -> category != RANDOM).collect(Collectors.toList());
+        return randomElement(possible);
+    }
 }

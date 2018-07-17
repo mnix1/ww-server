@@ -8,7 +8,6 @@ import com.ww.repository.rival.task.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.SecureRandom;
 import java.util.HashSet;
 import java.util.List;
 
@@ -24,6 +23,9 @@ public class TaskService {
     private AnswerRepository answerRepository;
 
     Question findQuestion(Category category) {
+        if (category == Category.RANDOM) {
+            category = Category.random();
+        }
         List<Question> questions = questionRepository.findAllByCategory(category);
         return randomElement(questions);
     }
