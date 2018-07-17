@@ -1,6 +1,5 @@
 package com.ww.service;
 
-import com.ww.helper.RandomHelper;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.task.MusicTaskType;
@@ -14,7 +13,11 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.net.ssl.HttpsURLConnection;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.*;
@@ -36,6 +39,10 @@ public class MusicTaskService {
     private static String VERSE = "_V_";
     private static String LINE = "_L_";
 
+    public Boolean addTrack(String author, String name, String url) {
+        return addTrack(author, name, url, Language.ALL);
+    }
+
     public Boolean addTrack(String author, String name, String url, Language lang) {
         MusicTrack track = new MusicTrack();
         track.setAuthor(author);
@@ -44,13 +51,19 @@ public class MusicTaskService {
         MusicTrackSource source = MusicTrackSource.fromUrl(url);
         track.setSource(source);
         track.setLang(lang);
-        String content = null;
-        if (source == MusicTrackSource.TEKSTOWO) {
-            content = trackContentTekstowo(url);
-        }
+        String content = downloadContent(url);
         if (content == null) {
             return false;
         }
+        if (source == MusicTrackSource.TEKSTOWO) {
+            content = transformContentTekstowo(content);
+        }
+        if (source == MusicTrackSource.ISING) {
+            content = transformContentIsing(content);
+        }
+//        if (source == MusicTrackSource.GROOVE) {
+//            content = transformContentGroove(content);
+//        }
         track.setContent(content);
         musicTrackRepository.save(track);
         return true;
@@ -62,6 +75,7 @@ public class MusicTaskService {
         List<List<String>> verses = trackVerseLineContent(track.getContent());
         Map<String, Integer> allLinesRepeatMap = new HashMap<>();
         List<String> allLines = trackAllLineContent(verses);
+        System.out.println("Track: " + track + " lines: " + allLines.size());
         allLines.forEach(line -> {
             if (allLinesRepeatMap.containsKey(line)) {
                 Integer repeat = allLinesRepeatMap.get(line);
@@ -88,7 +102,8 @@ public class MusicTaskService {
         while (wrongAnswerIndexes.size() < 3) {
             int wrongAnswerIndex = randomElementIndex(allLines);
             String wrongAnswer = allLines.get(wrongAnswerIndex);
-            if (wrongAnswerIndex != correctAnswerIndex && wrongAnswerIndex != questionLineIndex && allLinesRepeatMap.get(wrongAnswer) == 1 && !wrongAnswerIndexes.contains(wrongAnswerIndex)) {
+            if (wrongAnswerIndex != correctAnswerIndex && wrongAnswerIndex != questionLineIndex
+                    && allLinesRepeatMap.get(wrongAnswer) == 1 && !wrongAnswerIndexes.contains(wrongAnswerIndex)) {
                 wrongAnswerIndexes.add(wrongAnswerIndex);
             }
         }
@@ -102,14 +117,14 @@ public class MusicTaskService {
         Question question = new Question();
         question.setCategory(Category.MUSIC);
         if (Language.addPolish(lang)) {
-            String content = "W utworze \"" + track.getName() + "\" zespołu " + track.getAuthor();
+            String content = "W tekście utworu \"" + track.getName() + "\" zespołu " + track.getAuthor();
             if (type == MusicTaskType.NEXT_LINE) {
-                content += " po zwrotce: \"";
+                content += " po wierszu: \"";
             }
             if (type == MusicTaskType.PREVIOUS_LINE) {
-                content += " przed zwrotką: \"";
+                content += " przed wierszem: \"";
             }
-            content += questionLine + "\" występuje zwrotka:";
+            content += questionLine + "\" występuje wiersz:";
             question.setContentPolish(content);
         }
         if (Language.addEnglish(lang)) {
@@ -131,25 +146,67 @@ public class MusicTaskService {
         return answers;
     }
 
-    private String trackContentTekstowo(String url) {
+    private String downloadContent(String url) {
         try {
-            String content = IOUtils.toString(new URL(url), Charset.defaultCharset());
-            content = content.substring(content.indexOf("<div class=\"song-text\">"));
-            return content.substring(126, content.indexOf("<p>&nbsp;</p>") - 24)
-                    .replaceAll("\\\\", "")
-                    .replaceAll("<br />\\r\\n[ ]*<br />\\r\\n", VERSE)
-                    .replaceAll("<br />\\r\\n", LINE)
-                    .replaceAll("[\",./*]", "");
+            if (url.contains("https")) {
+                HttpsURLConnection conn = (HttpsURLConnection) new URL(url).openConnection();
+                InputStream is = conn.getInputStream();
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader br = new BufferedReader(isr);
+                StringBuilder content = new StringBuilder();
+                String inputLine;
+                while ((inputLine = br.readLine()) != null) {
+                    content.append(inputLine);
+                }
+                return content.toString();
+            } else {
+                return IOUtils.toString(new URL(url), Charset.defaultCharset());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
+    private String transformContentTekstowo(String content) {
+        content = content.substring(content.indexOf("<div class=\"song-text\">"));
+        return content.substring(126, content.indexOf("<p>&nbsp;</p>") - 24)
+                .replaceAll("\\\\", "")
+                .replaceAll("[\";,./*]", "")
+                .replaceAll(" \\?", "")
+                .replaceAll("<br >\r\n[ ]*<br >\r\n", VERSE)
+                .replaceAll("<br >\n<br >\n", VERSE)
+                .replaceAll("<br >\r\n", LINE)
+                .replaceAll("<br >\n", LINE);
+    }
+
+    private String transformContentIsing(String content) {
+        content = content.substring(content.indexOf("class=\"lyrics-original\""));
+        return content.substring(71, content.indexOf("</p>"))
+                .replaceAll("\\\\", "")
+                .replaceAll("&quot;", "")
+                .replaceAll(" \\?", "")
+                .replaceAll("[\";,./*]", "")
+                .replaceAll("<br >\r\n[ ]*<br >\r\n", VERSE)
+                .replaceAll("<br >\r\n", LINE)
+                .replaceAll("<br >\n", LINE)
+                .replaceAll("<br >", LINE);
+    }
+
+    //    private String transformContentGroove(String content) {
+//        content = content.substring(content.indexOf("mid-content-text"));
+//        return content.substring(18, content.indexOf("</div>") - 4)
+//                .replaceAll("\\\\", "")
+//                .replaceAll("[\";,./*]", "")
+//                .replaceAll("<br >\r\n[ ]*<br >\r\n", VERSE)
+//                .replaceAll("<br >\r\n", LINE);
+//    }
+
     private List<List<String>> trackVerseLineContent(String content) {
         List<String> verses = Arrays.asList(content.split(VERSE));
+        int offset = verses.size() > 3 ? 3 : (verses.size() > 1 ? 1 : 0);
         List<List<String>> verseLines = verses.stream()
-                .limit(verses.size() - 1)
+                .limit(verses.size() - offset)
                 .map(verse -> Arrays.asList(verse.split(LINE)).stream().map(String::trim).filter(s -> !s.isEmpty()).collect(Collectors.toList()))
                 .collect(Collectors.toList());
         return verseLines;

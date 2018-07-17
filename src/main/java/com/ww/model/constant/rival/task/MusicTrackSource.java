@@ -1,7 +1,9 @@
 package com.ww.model.constant.rival.task;
 
 public enum MusicTrackSource {
-    TEKSTOWO("www.tekstowo.pl");
+    TEKSTOWO("www.tekstowo.pl"),
+    ISING("ising.pl");
+//    GROOVE("www.groove.pl");
 
     String url;
 

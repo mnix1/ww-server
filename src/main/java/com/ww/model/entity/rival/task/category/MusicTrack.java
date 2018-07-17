@@ -5,6 +5,7 @@ import com.ww.model.constant.rival.task.MusicTrackSource;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
+@ToString
 public class MusicTrack {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

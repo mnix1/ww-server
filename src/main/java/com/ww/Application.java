@@ -23,6 +23,7 @@ public class Application {
     public CommandLineRunner initDatabase() {
         return (args) -> {
             init.initTasks();
+            init.initMusicTrack();
         };
     }
 }
