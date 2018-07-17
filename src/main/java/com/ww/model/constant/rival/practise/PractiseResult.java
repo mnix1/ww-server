@@ -1,4 +1,4 @@
-package com.ww.model.constant;
+package com.ww.model.constant.rival.practise;
 
 public enum PractiseResult {
     OPEN,

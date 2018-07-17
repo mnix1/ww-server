@@ -1,7 +1,7 @@
 package com.ww.service;
 
 import com.ww.model.constant.Category;
-import com.ww.model.constant.PractiseResult;
+import com.ww.model.constant.rival.practise.PractiseResult;
 import com.ww.model.dto.task.PractiseDTO;
 import com.ww.model.entity.rival.practise.Practise;
 import com.ww.model.entity.rival.practise.PractiseQuestion;

@@ -1,6 +1,6 @@
 package com.ww.model.entity.rival.practise;
 
-import com.ww.model.constant.PractiseResult;
+import com.ww.model.constant.rival.practise.PractiseResult;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

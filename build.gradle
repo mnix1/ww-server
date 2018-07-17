@@ -33,6 +33,9 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-websocket")
 	compile group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure', version: '2.0.1.RELEASE'
 
+	compile group: 'commons-io', name: 'commons-io', version: '2.6'
+
+
 
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('com.h2database:h2')
