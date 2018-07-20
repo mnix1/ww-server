@@ -22,8 +22,7 @@ public class Application {
     @Bean
     public CommandLineRunner initDatabase() {
         return (args) -> {
-            init.initTasks();
-            init.initMusicTrack();
+            init.init();
         };
     }
 }

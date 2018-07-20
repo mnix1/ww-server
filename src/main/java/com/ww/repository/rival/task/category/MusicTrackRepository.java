@@ -1,7 +1,7 @@
 package com.ww.repository.rival.task.category;
 
 import com.ww.model.constant.Language;
-import com.ww.model.entity.rival.task.category.MusicTrack;
+import com.ww.model.entity.rival.task.MusicTrack;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
