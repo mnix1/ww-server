@@ -13,8 +13,8 @@ public class PractiseDTO {
     private Long id;
     private QuestionDTO question;
 
-    public PractiseDTO(Practise practise, Question question) {
+    public PractiseDTO(Practise practise, QuestionDTO question) {
         this.id = practise.getId();
-        this.question = new QuestionDTO(question);
+        this.question = question;
     }
 }

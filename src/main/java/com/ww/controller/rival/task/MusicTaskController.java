@@ -32,17 +32,17 @@ public class MusicTaskController {
         return model;
     }
 
-    @RequestMapping(value = "/generate", method = RequestMethod.GET)
-    public Map generate(@RequestParam(required = false) Language lang, @RequestParam(required = false) MusicTaskType type) {
-        if (lang == null) {
-            lang = Language.ALL;
-        }
-        if (type == null) {
-            type = MusicTaskType.random();
-        }
-        Map<String, Object> model = new HashMap<>();
-        model.put("question", musicTaskService.generate(lang, type));
-        return model;
-    }
+//    @RequestMapping(value = "/generate", method = RequestMethod.GET)
+//    public Map generate(@RequestParam(required = false) Language lang, @RequestParam(required = false) MusicTaskType type) {
+//        if (lang == null) {
+//            lang = Language.ALL;
+//        }
+//        if (type == null) {
+//            type = MusicTaskType.random();
+//        }
+//        Map<String, Object> model = new HashMap<>();
+//        model.put("question", musicTaskService.generate(lang, type));
+//        return model;
+//    }
 
 }

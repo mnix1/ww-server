@@ -40,7 +40,7 @@ public class MusicTaskService {
     private static String VERSE = "_V_";
     private static String LINE = "_L_";
 
-    public QuestionDTO generate(Language lang, MusicTaskType type) {
+    public Question generate(Language lang, MusicTaskType type) {
         List<MusicTrack> tracks = musicTrackRepository.findAllByLang(lang);
         MusicTrack track = randomElement(tracks);
         List<List<String>> verses = trackVerseLineContent(track.getContent());
@@ -80,8 +80,8 @@ public class MusicTaskService {
         }
         Question question = prepareQuestion(type, track, questionLine, lang);
         List<Answer> answers = prepareAnswers(allLines.get(correctAnswerIndex), wrongAnswerIndexes.stream().map(i -> allLines.get(i)).collect(Collectors.toList()));
-        taskService.addTask(question, answers);
-        return new QuestionDTO(question);
+        question.setAnswers(new HashSet<>(answers));
+        return question;
     }
 
     private Question prepareQuestion(MusicTaskType type, MusicTrack track, String questionLine, Language lang) {

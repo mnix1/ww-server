@@ -22,7 +22,7 @@ public class PractiseController {
     @RequestMapping(value = "/start", method = RequestMethod.GET)
     public Map start(@RequestParam Category category) {
         Map<String, Object> model = new HashMap<>();
-        model.put("practise", practiseService.start(category));
+        model.put("practise", practiseService.start(Category.mapToNotRandom(category)));
         return model;
     }
 

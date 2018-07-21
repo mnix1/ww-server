@@ -1,9 +1,12 @@
 package com.ww.service.rival.task;
 
 import com.ww.model.constant.Category;
+import com.ww.model.constant.rival.task.TaskRenderer;
 import com.ww.model.entity.rival.task.Answer;
+import com.ww.model.entity.rival.task.ProfileQuestion;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.repository.rival.task.AnswerRepository;
+import com.ww.repository.rival.task.ProfileQuestionRepository;
 import com.ww.repository.rival.task.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,12 +25,31 @@ public class TaskService {
     @Autowired
     private AnswerRepository answerRepository;
 
-    public Question findQuestion(Category category) {
-        if (category == Category.RANDOM) {
-            category = Category.random();
-        }
+    @Autowired
+    private ProfileQuestionRepository profileQuestionRepository;
+
+    @Autowired
+    private TaskGenerateService taskGenerateService;
+
+    public Question prepareNotUsedQuestion(Category category, Long profileId) {
         List<Question> questions = questionRepository.findAllByCategory(category);
-        return randomElement(questions);
+        Question question = randomElement(questions);
+        if (question == null || isProfileUsedQuestion(profileId, question.getId())) {
+            Question generatedQuestion = taskGenerateService.generate(category);
+            if (generatedQuestion != null) {
+                save(generatedQuestion);
+                question = generatedQuestion;
+            }
+        }
+        return question;
+    }
+
+    public boolean isProfileUsedQuestion(Long profileId, Long questionId) {
+        return profileQuestionRepository.findByProfileIdAndQuestionId(profileId, questionId) != null;
+    }
+
+    public void saveProfileUsedQuestion(Long profileId, Long questionId) {
+        profileQuestionRepository.save(new ProfileQuestion(profileId, questionId));
     }
 
     Boolean isCorrectAnswer(Long answerId) {
@@ -35,11 +57,10 @@ public class TaskService {
         return answerRepository.findById(answerId).orElseGet(() -> Answer.FALSE_EMPTY_ANSWER).getCorrect();
     }
 
-    public void addTask(Question question, List<Answer> answers) {
+    public void save(Question question) {
         questionRepository.save(question);
-        answers.forEach(answer -> answer.setQuestion(question));
-        answerRepository.saveAll(answers);
-        question.setAnswers(new HashSet<>(answers));
+        question.getAnswers().forEach(answer -> answer.setQuestion(question));
+        answerRepository.saveAll(question.getAnswers());
     }
 
 }

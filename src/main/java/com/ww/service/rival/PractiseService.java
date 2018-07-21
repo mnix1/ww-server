@@ -3,20 +3,19 @@ package com.ww.service.rival;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.practise.PractiseResult;
 import com.ww.model.dto.task.PractiseDTO;
+import com.ww.model.dto.task.QuestionDTO;
 import com.ww.model.entity.rival.practise.Practise;
-import com.ww.model.entity.rival.practise.PractiseQuestion;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Question;
-import com.ww.repository.rival.practise.PractiseQuestionRepository;
+import com.ww.repository.rival.task.ProfileQuestionRepository;
 import com.ww.repository.rival.practise.PractiseRepository;
 import com.ww.service.SessionService;
+import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.rival.task.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,31 +25,27 @@ public class PractiseService {
     private PractiseRepository practiseRepository;
 
     @Autowired
-    private PractiseQuestionRepository practiseQuestionRepository;
+    private TaskService taskService;
 
     @Autowired
-    private TaskService taskService;
+    private TaskRendererService taskRendererService;
 
     @Autowired
     private SessionService sessionService;
 
     public PractiseDTO start(Category category) {
-        Question question = taskService.findQuestion(category);
-        Practise practise = create(Arrays.asList(question));
-        return new PractiseDTO(practise, question);
+        Question question = taskService.prepareNotUsedQuestion(category, sessionService.getProfileId());
+        taskService.saveProfileUsedQuestion(sessionService.getProfileId(), question.getId());
+        QuestionDTO questionDTO = taskRendererService.prepareQuestionDTO(question);
+        Practise practise = create(question);
+        return new PractiseDTO(practise, questionDTO);
     }
 
-    private Practise create(List<Question> questions) {
+    private Practise create(Question question) {
         Practise practise = new Practise();
         practise.setProfileId(sessionService.getProfileId());
+        practise.setQuestion(question);
         practiseRepository.save(practise);
-        List<PractiseQuestion> practiseQuestions = questions.stream().map(question -> {
-            PractiseQuestion practiseQuestion = new PractiseQuestion();
-            practiseQuestion.setPractise(practise);
-            practiseQuestion.setQuestion(question);
-            return practiseQuestion;
-        }).collect(Collectors.toList());
-        practiseQuestionRepository.saveAll(practiseQuestions);
         return practise;
     }
 
@@ -65,7 +60,7 @@ public class PractiseService {
             if (!isPractiseForActualSessionProfile || !practise.isOpen()) {
                 return null;
             }
-            Question question = practise.getQuestions().stream().findFirst().orElseThrow(() -> new Exception("No questions for practise")).getQuestion();
+            Question question = practise.getQuestion();
             Boolean answerForQuestion = question.getAnswers().stream().map(answer -> answer.getId()).collect(Collectors.toList()).contains(answerId);
             if (!answerForQuestion) {
                 updatePractiseResult(practise, false, closeDate);

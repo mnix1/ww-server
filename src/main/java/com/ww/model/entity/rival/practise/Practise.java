@@ -1,13 +1,13 @@
 package com.ww.model.entity.rival.practise;
 
 import com.ww.model.constant.rival.practise.PractiseResult;
+import com.ww.model.entity.rival.task.Question;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
 
 @Setter
 @Getter
@@ -21,8 +21,9 @@ public class Practise {
     private PractiseResult result = PractiseResult.OPEN;
     private Date openDate = new Date();
     private Date closeDate;
-    @OneToMany(mappedBy = "practise", fetch = FetchType.LAZY)
-    private Set<PractiseQuestion> questions;
+    @ManyToOne
+    @JoinColumn(name = "question_id", nullable = false, updatable = false)
+    private Question question;
 
     public boolean isOpen() {
         return result == PractiseResult.OPEN;

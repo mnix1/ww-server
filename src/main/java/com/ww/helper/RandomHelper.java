@@ -12,6 +12,9 @@ public class RandomHelper {
     }
 
     public static <T> T randomElement(List<T> list, int offsetBegin, int offsetEnd) {
+        if (list.isEmpty()) {
+            return null;
+        }
         return list.get(randomElementIndex(list, offsetBegin, offsetEnd));
     }
 

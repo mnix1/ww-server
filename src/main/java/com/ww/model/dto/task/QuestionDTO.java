@@ -3,11 +3,13 @@ package com.ww.model.dto.task;
 import com.ww.model.constant.rival.task.TaskRenderer;
 import com.ww.model.entity.rival.task.Question;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
+@Setter
 public class QuestionDTO {
 
     private TaskRenderer taskRenderer;

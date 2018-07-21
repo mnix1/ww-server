@@ -2,13 +2,8 @@ package com.ww.service.rival.task.geography;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jackson.JsonLoader;
-import com.ww.model.constant.Category;
-import com.ww.model.constant.rival.task.GeographyTaskType;
-import com.ww.model.dto.task.QuestionDTO;
 import com.ww.model.entity.rival.task.GeographyCountry;
-import com.ww.model.entity.rival.task.Question;
 import com.ww.repository.rival.task.category.GeographyCountryRepository;
-import com.ww.service.rival.task.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -52,14 +47,14 @@ public class GeographyCountryService {
     }
 
     private void downloadFlag(GeographyCountry geographyCountry) {
-        if (!fileExists(geographyCountry.getFlagResourceUrl())) {
-            downloadSvg(geographyCountry.getFlagUrl(), geographyCountry.getFlagResourceUrl("/"));
+        if (!fileExists(geographyCountry.getFlagResourcePath())) {
+            downloadSvg(geographyCountry.getFlagUrl(), geographyCountry.getFlagResourcePath("/"));
         }
     }
 
     private void downloadMap(GeographyCountry geographyCountry) {
-        if (!fileExists(geographyCountry.getMapResourceUrl())) {
-            downloadSvg(geographyCountry.getMapSvgLocationMapUrl(), geographyCountry.getMapResourceUrl("/"));
+        if (!fileExists(geographyCountry.getMapResourcePath())) {
+            downloadSvg(geographyCountry.getMapSvgLocationMapUrl(), geographyCountry.getMapResourcePath("/"));
         }
     }
 

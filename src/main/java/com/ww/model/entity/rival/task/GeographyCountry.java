@@ -74,19 +74,19 @@ public class GeographyCountry {
         return alpha2Code + ".svg";
     }
 
-    public String getFlagResourceUrl(String prefix) {
-        return prefix + getFlagResourceUrl();
+    public String getFlagResourcePath(String prefix) {
+        return prefix + getFlagResourcePath();
     }
 
-    public String getFlagResourceUrl() {
+    public String getFlagResourcePath() {
         return "image/flag/" + getSvgFileName();
     }
 
-    public String getMapResourceUrl(String prefix) {
-        return prefix + getMapResourceUrl();
+    public String getMapResourcePath(String prefix) {
+        return prefix + getMapResourcePath();
     }
 
-    public String getMapResourceUrl() {
+    public String getMapResourcePath() {
         return "image/map/" + getSvgFileName();
     }
 
