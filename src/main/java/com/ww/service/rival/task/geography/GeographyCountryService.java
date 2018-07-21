@@ -12,6 +12,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ww.helper.FileHelper.getResource;
+import static com.ww.helper.FileHelper.saveToFile;
 import static com.ww.helper.NetworkHelper.downloadContent;
 
 @Service
@@ -22,7 +24,7 @@ public class GeographyCountryService {
 
     public void loadAndDownloadResources() {
         try {
-            File file = ResourceUtils.getFile("classpath:rival/geographyCountry.json");
+            File file = ResourceUtils.getFile("classpath:task/geographyCountry.json");
             JsonNode json = JsonLoader.fromFile(file);
             List<GeographyCountry> geographyCountries = new ArrayList<>();
             json.forEach(jsonNode -> {
@@ -37,23 +39,14 @@ public class GeographyCountryService {
         }
     }
 
-    private boolean fileExists(String path) {
-        try {
-            ResourceUtils.getFile("classpath:" + path);
-            return true;
-        } catch (FileNotFoundException e) {
-        }
-        return false;
-    }
-
     private void downloadFlag(GeographyCountry geographyCountry) {
-        if (!fileExists(geographyCountry.getFlagResourcePath())) {
+        if (getResource(geographyCountry.getFlagResourcePath()) == null) {
             downloadSvg(geographyCountry.getFlagUrl(), geographyCountry.getFlagResourcePath("/"));
         }
     }
 
     private void downloadMap(GeographyCountry geographyCountry) {
-        if (!fileExists(geographyCountry.getMapResourcePath())) {
+        if (getResource(geographyCountry.getMapResourcePath()) == null) {
             downloadSvg(geographyCountry.getMapSvgLocationMapUrl(), geographyCountry.getMapResourcePath("/"));
         }
     }
@@ -65,13 +58,9 @@ public class GeographyCountryService {
             return;
         }
         try {
-            String rootPath = System.getProperty("user.dir");
-            File file = new File(rootPath + path);
-            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(file));
-            osw.write(content);
-            osw.close();
+            saveToFile(content, path);
             Thread.sleep(200);
-        } catch (IOException | InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }

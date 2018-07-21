@@ -79,7 +79,7 @@ public class GeographyCountry {
     }
 
     public String getFlagResourcePath() {
-        return "image/flag/" + getSvgFileName();
+        return "task/image/flag/" + getSvgFileName();
     }
 
     public String getMapResourcePath(String prefix) {
@@ -87,7 +87,7 @@ public class GeographyCountry {
     }
 
     public String getMapResourcePath() {
-        return "image/map/" + getSvgFileName();
+        return "task/image/map/" + getSvgFileName();
     }
 
 }

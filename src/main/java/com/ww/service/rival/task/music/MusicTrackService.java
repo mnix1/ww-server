@@ -4,10 +4,14 @@ import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.task.MusicTrackSource;
 import com.ww.model.entity.rival.task.MusicTrack;
 import com.ww.repository.rival.task.category.MusicTrackRepository;
-import com.ww.service.rival.task.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+
+import static com.ww.helper.FileHelper.getResource;
+import static com.ww.helper.FileHelper.readFile;
+import static com.ww.helper.FileHelper.saveToFile;
 import static com.ww.helper.NetworkHelper.downloadContent;
 
 @Service
@@ -31,22 +35,44 @@ public class MusicTrackService {
         MusicTrackSource source = MusicTrackSource.fromUrl(url);
         track.setSource(source);
         track.setLang(lang);
-        String content = downloadContent(url);
-        if (content == null) {
-            return false;
+        String content = loadOrDownloadContent(track);
+        track.setContent(content);
+        musicTrackRepository.save(track);
+        return true;
+    }
+
+    private String loadOrDownloadContent(MusicTrack track) {
+        String content;
+        File file = getResource(track.getContentResourcePath());
+        if (file == null || !file.exists()) {
+            content = downloadTransformSaveContent(track);
+        } else {
+            content = readFile(track.getContentResourcePath());
         }
-        if (source == MusicTrackSource.TEKSTOWO) {
+        return content;
+    }
+
+    private String downloadTransformSaveContent(MusicTrack track) {
+        String content = downloadContent(track.getUrl());
+        if (content == null) {
+            return null;
+        }
+        if (track.getSource() == MusicTrackSource.TEKSTOWO) {
             content = transformContentTekstowo(content);
         }
-        if (source == MusicTrackSource.ISING) {
+        if (track.getSource() == MusicTrackSource.ISING) {
             content = transformContentIsing(content);
         }
 //        if (source == MusicTrackSource.GROOVE) {
 //            content = transformContentGroove(content);
 //        }
-        track.setContent(content);
-        musicTrackRepository.save(track);
-        return true;
+        saveToFile(content, track.getContentResourcePath());
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return content;
     }
 
     private String transformContentTekstowo(String content) {

@@ -12,6 +12,7 @@ import java.nio.charset.Charset;
 
 public class NetworkHelper {
     public static String downloadContent(String url) {
+        System.out.println("NetworkHelper downloadContent, url: " + url);
         try {
             if (url.contains("https")) {
                 HttpsURLConnection conn = (HttpsURLConnection) new URL(url).openConnection();

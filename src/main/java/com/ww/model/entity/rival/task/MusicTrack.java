@@ -9,6 +9,8 @@ import lombok.ToString;
 
 import javax.persistence.*;
 
+import static com.ww.helper.StringHelper.replaceAllNonAlphaumeric;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -25,4 +27,8 @@ public class MusicTrack {
     @Column(length = 4000)
     private String content;
     private Language lang;
+
+    public String getContentResourcePath() {
+        return "task/music-track-content/" + replaceAllNonAlphaumeric(author) + "_" + replaceAllNonAlphaumeric(name) + ".txt";
+    }
 }
