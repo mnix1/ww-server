@@ -38,9 +38,13 @@ public class GeographyTaskCountryCapitalTypeService {
     private Question prepareQuestion(GeographyTaskType type, GeographyCountry country) {
         Question question = new Question();
         question.setCategory(Category.GEOGRAPHY);
+        if (type == GeographyTaskType.COUNTRY_NAME_FROM_ALPHA_2) {
+            question.setContentPolish("Wskaż państwo, którego kod ISO 3166-1 alfa 2 to " + country.getAlpha2Code());
+            question.setContentEnglish("Indicate the country whose ISO 3166-1 alpha 2 code is " + country.getAlpha2Code());
+        }
         if (type == GeographyTaskType.COUNTRY_NAME_FROM_CAPITAL_NAME) {
             question.setContentPolish("Wskaż państwo, którego stolica to " + country.getCapitalPolish());
-            question.setContentEnglish("Indicate the state whose capital is " + country.getCapitalEnglish());
+            question.setContentEnglish("Indicate the country whose capital is " + country.getCapitalEnglish());
         }
         if (type == GeographyTaskType.COUNTRY_NAME_FROM_MAP) {
             question.setTaskRenderer(TaskRenderer.TEXT_IMAGE);
@@ -51,6 +55,10 @@ public class GeographyTaskCountryCapitalTypeService {
             question.setTaskRenderer(TaskRenderer.TEXT_IMAGE);
             question.setContentPolish(taskRendererService.prepareQuestionContentTextImage("Jest to flaga państwa", country.getFlagResourcePath()));
             question.setContentEnglish(taskRendererService.prepareQuestionContentTextImage("Which country's flag is it?", country.getFlagResourcePath()));
+        }
+        if (type == GeographyTaskType.CAPITAL_NAME_FROM_ALPHA_3) {
+            question.setContentPolish("Stolicą państwa, którego kod ISO 3166-1 alfa 3 to " + country.getAlpha3Code() + " jest");
+            question.setContentEnglish("Indicate the country whose ISO 3166-1 alpha 3 code is " + country.getAlpha3Code());
         }
         if (type == GeographyTaskType.CAPITAL_NAME_FROM_COUNTRY_NAME) {
             question.setContentPolish("Stolicą państwa " + country.getNamePolish() + " jest");
@@ -92,13 +100,15 @@ public class GeographyTaskCountryCapitalTypeService {
     }
 
     private void fillAnswerContent(GeographyTaskType type, Answer answer, GeographyCountry country) {
-        if (type == GeographyTaskType.COUNTRY_NAME_FROM_CAPITAL_NAME
+        if (type == GeographyTaskType.COUNTRY_NAME_FROM_ALPHA_2
+                || type == GeographyTaskType.COUNTRY_NAME_FROM_CAPITAL_NAME
                 || type == GeographyTaskType.COUNTRY_NAME_FROM_MAP
                 || type == GeographyTaskType.COUNTRY_NAME_FROM_FLAG) {
             answer.setContentPolish(country.getNamePolish());
             answer.setContentEnglish(country.getNameEnglish());
         }
-        if (type == GeographyTaskType.CAPITAL_NAME_FROM_COUNTRY_NAME
+        if (type == GeographyTaskType.CAPITAL_NAME_FROM_ALPHA_3
+                || type == GeographyTaskType.CAPITAL_NAME_FROM_COUNTRY_NAME
                 || type == GeographyTaskType.CAPITAL_NAME_FROM_MAP
                 || type == GeographyTaskType.CAPITAL_NAME_FROM_FLAG) {
             answer.setContentPolish(country.getCapitalPolish());
