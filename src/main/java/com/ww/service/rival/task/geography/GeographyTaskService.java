@@ -43,8 +43,8 @@ public class GeographyTaskService {
         Question question = new Question();
         question.setCategory(Category.GEOGRAPHY);
         if (type == GeographyTaskType.COUNTRY_NAME_FROM_CAPITAL_NAME) {
-            question.setContentPolish("Wskaż państwo, którego stolica to: " + country.getCapitalPolish());
-            question.setContentEnglish("Indicate the state whose capital is: " + country.getCapitalEnglish());
+            question.setContentPolish("Wskaż państwo, którego stolica to " + country.getCapitalPolish());
+            question.setContentEnglish("Indicate the state whose capital is " + country.getCapitalEnglish());
         }
         if (type == GeographyTaskType.COUNTRY_NAME_FROM_MAP) {
             question.setTaskRenderer(TaskRenderer.TEXT_IMAGE);
@@ -62,13 +62,13 @@ public class GeographyTaskService {
         }
         if (type == GeographyTaskType.CAPITAL_NAME_FROM_MAP) {
             question.setTaskRenderer(TaskRenderer.TEXT_IMAGE);
-            question.setContentPolish(taskRendererService.prepareQuestionContentTextImage("Stolica państwa widocznego na mapie to:", country.getMapResourcePath()));
-            question.setContentEnglish(taskRendererService.prepareQuestionContentTextImage("The state capital that can be seen on the map is:", country.getMapResourcePath()));
+            question.setContentPolish(taskRendererService.prepareQuestionContentTextImage("Stolica państwa widocznego na mapie to", country.getMapResourcePath()));
+            question.setContentEnglish(taskRendererService.prepareQuestionContentTextImage("The state capital that can be seen on the map is", country.getMapResourcePath()));
         }
         if (type == GeographyTaskType.CAPITAL_NAME_FROM_FLAG) {
             question.setTaskRenderer(TaskRenderer.TEXT_IMAGE);
-            question.setContentPolish(taskRendererService.prepareQuestionContentTextImage("Stolica państwa, którego flaga widoczna jest obok to:", country.getFlagResourcePath()));
-            question.setContentEnglish(taskRendererService.prepareQuestionContentTextImage("The capital of the country whose flag is visible next to it is:", country.getFlagResourcePath()));
+            question.setContentPolish(taskRendererService.prepareQuestionContentTextImage("Stolica państwa, którego flaga widoczna jest obok to", country.getFlagResourcePath()));
+            question.setContentEnglish(taskRendererService.prepareQuestionContentTextImage("The capital of the country whose flag is visible next to it is", country.getFlagResourcePath()));
         }
         return question;
     }

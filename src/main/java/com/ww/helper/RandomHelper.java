@@ -8,7 +8,7 @@ public class RandomHelper {
     public static SecureRandom random = new SecureRandom();
 
     public static int randomInteger(int from, int to) {
-        return random.nextInt(to + 1) + from;
+        return random.nextInt(to - from + 1) + from;
     }
 
     public static <T> T randomElement(List<T> list) {

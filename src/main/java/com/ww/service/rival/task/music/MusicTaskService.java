@@ -95,7 +95,7 @@ public class MusicTaskService {
             if (type == MusicTaskType.PREVIOUS_LINE) {
                 content += " przed wierszem: \"";
             }
-            content += questionLine + "\" występuje wiersz:";
+            content += questionLine + "\" występuje wiersz";
             question.setContentPolish(content);
         }
         if (Language.addEnglish(lang)) {
