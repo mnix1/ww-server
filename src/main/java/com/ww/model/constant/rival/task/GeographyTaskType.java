@@ -22,11 +22,11 @@ public enum GeographyTaskType {
         return randomElement(Arrays.asList(values()));
     }
 
-    public static boolean usesPopulation(GeographyTaskType type) {
+    public static boolean aboutPopulation(GeographyTaskType type) {
         return type == MAX_POPULATION || type == MIN_POPULATION;
     }
 
-    public static boolean usesArea(GeographyTaskType type) {
+    public static boolean aboutArea(GeographyTaskType type) {
         return type == MAX_AREA || type == MIN_AREA;
     }
 }

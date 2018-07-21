@@ -78,9 +78,9 @@ public class GeographyTaskMinMaxTypeService {
         List<Double> values = new ArrayList<>();
         while (countries.size() < count) {
             GeographyCountry randomCountry = randomElement(allCountries);
-            Double value = GeographyTaskType.usesPopulation(type)
+            Double value = GeographyTaskType.aboutPopulation(type)
                     ? randomCountry.getPopulation()
-                    : GeographyTaskType.usesArea(type)
+                    : GeographyTaskType.aboutArea(type)
                     ? randomCountry.getArea() :
                     0;
             if (isValueDistanceEnough(value, values)) {

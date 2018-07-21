@@ -1,7 +1,10 @@
 package com.ww.helper;
 
 import java.security.SecureRandom;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class RandomHelper {
 
@@ -9,6 +12,18 @@ public class RandomHelper {
 
     public static int randomInteger(int from, int to) {
         return random.nextInt(to - from + 1) + from;
+    }
+
+    public static <T> List<T> randomElements(List<T> list, int count) {
+        if (count > list.size()) {
+            count = list.size();
+        }
+        Set<Integer> set = new HashSet<>(count);
+        while (set.size() < count) {
+            while (!set.add(random.nextInt(list.size()))) {
+            }
+        }
+        return set.stream().map(index -> list.get(index)).collect(Collectors.toList());
     }
 
     public static <T> T randomElement(List<T> list) {

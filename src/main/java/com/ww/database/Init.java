@@ -4,6 +4,7 @@ import com.ww.repository.rival.task.AnswerRepository;
 import com.ww.repository.rival.task.QuestionRepository;
 import com.ww.repository.social.ProfileRepository;
 import com.ww.service.rival.task.geography.GeographyCountryService;
+import com.ww.service.rival.task.memory.MemoryTaskHelperService;
 import com.ww.service.rival.task.music.MusicTrackService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class Init {
     GeographyCountryService geographyCountryService;
 
     @Autowired
+    MemoryTaskHelperService memoryTaskHelperService;
+
+    @Autowired
     ProfileRepository profileRepository;
 
     @Autowired
@@ -37,6 +41,8 @@ public class Init {
     public void init() {
         initMusicTracks();
         initGeographyCountries();
+        memoryTaskHelperService.initShapes();
+        memoryTaskHelperService.initColors();
     }
 
     public void initMusicTracks() {
