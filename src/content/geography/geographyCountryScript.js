@@ -70,16 +70,43 @@ const countriesByRest = [{"name":"Afghanistan","topLevelDomain":[".af"],"alpha2C
 
 const countriesAll = [];
 countriesByRest.forEach(e => {
+    if (e.name === 'Macedonia (the former Yugoslav Republic of)') {
+        e.name = 'Macedonia';
+    }
+    if (e.name === 'Moldova (Republic of)') {
+        e.name = 'Moldova';
+    }
+    if (e.name === 'United Kingdom of Great Britain and Northern Ireland') {
+        e.name = 'United Kingdom';
+    }
+    if (e.name === 'United States of America') {
+        e.name = 'United States';
+    }
+    if (e.name === 'Venezuela (Bolivarian Republic of)') {
+        e.name = 'Venezuela';
+    }
+    if (e.name === 'Korea (Republic of)') {
+        e.name = 'South Korea';
+    }
+    if (e.name === 'Republic of Kosovo') {
+        e.name = 'Kosovo';
+    }
+    if (e.name === 'Iran (Islamic Republic of)') {
+        e.name = 'Iran';
+    }
     const p2 = countriesByScript2.find(i => i.alpha2Code === e.alpha2Code);
     if(!p2) {
+        console.log('brak p2', e);
         return undefined;
     }
     const p1 = countriesByScript1.find(i => i.namePolish === p2.namePolish);
     if(!p1) {
+        console.log('brak p1', e);
         return undefined;
     }
     const p3 = countriesByScript3.find(i => i.nameEnglish === e.name);
     if(!p3) {
+        console.log('brak p3', e);
         return undefined;
     }
     const o = {};
