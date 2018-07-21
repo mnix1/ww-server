@@ -1,6 +1,7 @@
 package com.ww.model.entity.rival.task;
 
 import com.ww.model.constant.Category;
+import com.ww.model.constant.rival.task.TaskRenderer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +18,7 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Category category;
+    private TaskRenderer taskRenderer = TaskRenderer.TEXT;
     private String contentPolish;
     private String contentEnglish;
     @OneToMany(mappedBy = "question", fetch = FetchType.EAGER)

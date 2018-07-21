@@ -52,14 +52,14 @@ public class GeographyCountryService {
     }
 
     private void downloadFlag(GeographyCountry geographyCountry) {
-        if (!fileExists("image/flag/" + geographyCountry.getSvgFileName())) {
-            downloadSvg(geographyCountry.getFlagUrl(), "/image/flag/" + geographyCountry.getSvgFileName());
+        if (!fileExists(geographyCountry.getFlagResourceUrl())) {
+            downloadSvg(geographyCountry.getFlagUrl(), geographyCountry.getFlagResourceUrl("/"));
         }
     }
 
     private void downloadMap(GeographyCountry geographyCountry) {
-        if (!fileExists("image/map/" + geographyCountry.getSvgFileName())) {
-            downloadSvg(geographyCountry.getMapSvgLocationMapUrl(), "/image/map/" + geographyCountry.getSvgFileName());
+        if (!fileExists(geographyCountry.getMapResourceUrl())) {
+            downloadSvg(geographyCountry.getMapSvgLocationMapUrl(), geographyCountry.getMapResourceUrl("/"));
         }
     }
 

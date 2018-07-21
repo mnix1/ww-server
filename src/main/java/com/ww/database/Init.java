@@ -53,7 +53,7 @@ public class Init {
 //        initMusicTracks();
 //        initMusicTasks(10);
         initGeographyCountries();
-        initGeographyTasks(10);
+        initGeographyTasks(40);
     }
 
     public void initTasks() {
