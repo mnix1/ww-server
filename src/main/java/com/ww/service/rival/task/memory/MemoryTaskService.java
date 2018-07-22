@@ -45,19 +45,25 @@ public class MemoryTaskService {
     TaskColorRepository taskColorRepository;
 
     public Question generate(MemoryTaskType type) {
-        int count = randomInteger(3, 5);
-        List<MemoryObject> objects = prepareObjects(count);
-        MemoryObject correctObject = randomElement(objects);
-        List<MemoryObject> wrongObjects = new ArrayList<>(count - 1);
-        objects.forEach(memoryObject -> {
+        int answersCount = 4;
+        int animationObjectsCount = randomInteger(2, 2);
+        List<MemoryObject> allObjects = prepareObjects(answersCount);
+        MemoryObject correctObject = randomElement(allObjects);
+        List<MemoryObject> wrongObjects = new ArrayList<>(answersCount - 1);
+        allObjects.forEach(memoryObject -> {
             if (memoryObject != correctObject) {
                 wrongObjects.add(memoryObject);
             }
         });
         Question question = prepareQuestion(type, correctObject);
         question.setTaskRenderer(TaskRenderer.TEXT_ANIMATION);
-        question.setAnimationContent(prepareAnimation(objects));
-        List<Answer> answers = prepareAnswers(type, correctObject, wrongObjects);
+        List<MemoryObject> animationObjects = new ArrayList<>(animationObjectsCount);
+        animationObjects.add(correctObject);
+        if (animationObjects.size() < animationObjectsCount) {
+            animationObjects.addAll(wrongObjects.subList(0, animationObjectsCount - 1));
+        }
+        question.setAnimationContent(prepareAnimation(animationObjects));
+        List<Answer> answers = prepareAnswers(type, correctObject, wrongObjects, answersCount);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
@@ -114,10 +120,10 @@ public class MemoryTaskService {
         return question;
     }
 
-    private List<Answer> prepareAnswers(MemoryTaskType type, MemoryObject correctObject, List<MemoryObject> wrongObjects) {
+    private List<Answer> prepareAnswers(MemoryTaskType type, MemoryObject correctObject, List<MemoryObject> wrongObjects, int answersCount) {
         Answer correctAnswer = new Answer(true);
         fillAnswerContent(type, correctAnswer, correctObject);
-        List<Answer> wrongAnswers = wrongObjects.stream().map(wrongObject -> {
+        List<Answer> wrongAnswers = wrongObjects.stream().limit(answersCount - 1).map(wrongObject -> {
             Answer wrongAnswer = new Answer(false);
             fillAnswerContent(type, wrongAnswer, wrongObject);
             return wrongAnswer;

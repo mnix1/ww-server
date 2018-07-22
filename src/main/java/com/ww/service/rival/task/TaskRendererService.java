@@ -1,12 +1,9 @@
 package com.ww.service.rival.task;
 
-import com.sun.org.apache.xerces.internal.xs.ShortList;
 import com.ww.model.constant.rival.task.TaskRenderer;
 import com.ww.model.dto.task.QuestionDTO;
 import com.ww.model.entity.rival.task.Question;
-import com.ww.repository.rival.task.category.MemoryShapeRepository;
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
