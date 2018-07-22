@@ -28,4 +28,8 @@ public class MemoryShape {
         this.namePolish = namePolish;
         this.nameEnglish = nameEnglish;
     }
+
+    public String getPath(){
+        return "task/image/shape/" + key + ".svg";
+    }
 }

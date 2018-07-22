@@ -17,16 +17,16 @@ public class MemoryTaskHelperService {
     TaskColorRepository taskColorRepository;
 
     public void initShapes() {
-        memoryShapeRepository.save(new MemoryShape("CIRCLE","koło","circle"));
-        memoryShapeRepository.save(new MemoryShape("ELLIPSE","elipsa","ellipse"));
-        memoryShapeRepository.save(new MemoryShape("TRIANGLE","trójkąt","triangle"));
-        memoryShapeRepository.save(new MemoryShape("SQUARE","kwadrat","square"));
-        memoryShapeRepository.save(new MemoryShape("RECTANGLE","prostokąt","rectangle"));
-        memoryShapeRepository.save(new MemoryShape("PARALLELOGRAM","równoległobok","parallelogram"));
-        memoryShapeRepository.save(new MemoryShape("TRAPEZE","trapez","trapeze"));
-        memoryShapeRepository.save(new MemoryShape("PENTAGON","pięciokąt","pentagon"));
-        memoryShapeRepository.save(new MemoryShape("HEXAGON","sześciokąt","hexagon"));
-        memoryShapeRepository.save(new MemoryShape("STAR","gwiazda","star"));
+        memoryShapeRepository.save(new MemoryShape("circle","koło","circle"));
+        memoryShapeRepository.save(new MemoryShape("ellipse","elipsa","ellipse"));
+        memoryShapeRepository.save(new MemoryShape("triangle","trójkąt","triangle"));
+        memoryShapeRepository.save(new MemoryShape("square","kwadrat","square"));
+        memoryShapeRepository.save(new MemoryShape("rectangle","prostokąt","rectangle"));
+        memoryShapeRepository.save(new MemoryShape("parallelogram","równoległobok","parallelogram"));
+        memoryShapeRepository.save(new MemoryShape("trapeze","trapez","trapeze"));
+        memoryShapeRepository.save(new MemoryShape("pentagon","pięciokąt","pentagon"));
+        memoryShapeRepository.save(new MemoryShape("hexagon","sześciokąt","hexagon"));
+        memoryShapeRepository.save(new MemoryShape("star","gwiazda","star"));
     }
     
     public void initColors() {

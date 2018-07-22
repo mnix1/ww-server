@@ -34,6 +34,7 @@ public class MemoryTaskService {
 
     @Autowired
     TaskService taskService;
+
     @Autowired
     TaskRendererService taskRendererService;
 
@@ -63,14 +64,12 @@ public class MemoryTaskService {
 
     private String prepareAnimation(List<MemoryObject> objects) {
         ObjectMapper mapper = new ObjectMapper();
-        ObjectNode animationNode = mapper.createObjectNode();
-        animationNode.put("duration", 5000);
-        ArrayNode objectsNode = animationNode.putArray("objects");
+        ArrayNode objectsNode = mapper.createArrayNode();
         objects.forEach(object -> {
             object.writeToObjectNode(objectsNode.addObject());
         });
         try {
-            return mapper.writeValueAsString(animationNode);
+            return mapper.writeValueAsString(objectsNode);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -157,10 +156,9 @@ public class MemoryTaskService {
         List<TaskColor> allColors = taskColorRepository.findAll();
         List<TaskColor> fontColors = randomElements(allColors, count);
         List<TaskColor> backgroundColors = randomElements(allColors, count);
-        List<TaskColor> borderColors = randomElements(allColors, count);
         List<MemoryObject> figures = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
-            MemoryObject figure = new MemoryObject(keys.get(i), shapes.get(i), fontColors.get(i), backgroundColors.get(i), borderColors.get(i));
+            MemoryObject figure = new MemoryObject(keys.get(i), shapes.get(i), fontColors.get(i), backgroundColors.get(i));
             figures.add(figure);
         }
         return figures;

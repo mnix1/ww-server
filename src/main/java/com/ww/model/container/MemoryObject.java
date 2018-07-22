@@ -15,13 +15,11 @@ public class MemoryObject {
     private MemoryShape shape;
     private TaskColor fontColor;
     private TaskColor backgroundColor;
-    private TaskColor borderColor;
 
     public void writeToObjectNode(ObjectNode objectNode){
         objectNode.put("key", key)
-                .put("shape", shape.getKey())
+                .put("shape", shape.getPath())
                 .put("fontColor", fontColor.getHex())
-                .put("backgroundColor", backgroundColor.getHex())
-                .put("borderColor", borderColor.getHex());
+                .put("backgroundColor", backgroundColor.getHex());
     }
 }
