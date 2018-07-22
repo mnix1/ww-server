@@ -3,28 +3,17 @@ package com.ww.service.rival.task.music;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.task.MusicTaskType;
-import com.ww.model.constant.rival.task.MusicTrackSource;
-import com.ww.model.dto.task.QuestionDTO;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.MusicTrack;
 import com.ww.repository.rival.task.category.MusicTrackRepository;
 import com.ww.service.rival.task.TaskService;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.net.ssl.HttpsURLConnection;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.ww.helper.NetworkHelper.downloadContent;
 import static com.ww.helper.RandomHelper.randomElement;
 import static com.ww.helper.RandomHelper.randomElementIndex;
 
@@ -96,7 +85,7 @@ public class MusicTaskService {
                 content += " przed wierszem: \"";
             }
             content += questionLine + "\" występuje wiersz";
-            question.setContentPolish(content);
+            question.setTextContentPolish(content);
         }
         if (Language.addEnglish(lang)) {
             // TODO add english
@@ -107,11 +96,11 @@ public class MusicTaskService {
     private List<Answer> prepareAnswers(String correctAnswerLine, List<String> wrongAnswerLines) {
         List<Answer> answers = new ArrayList<>();
         Answer correctAnswer = new Answer(true);
-        correctAnswer.setContent(correctAnswerLine);
+        correctAnswer.setTextContent(correctAnswerLine);
         answers.add(correctAnswer);
         answers.addAll(wrongAnswerLines.stream().map(s -> {
             Answer wrongAnswer = new Answer(false);
-            wrongAnswer.setContent(s);
+            wrongAnswer.setTextContent(s);
             return wrongAnswer;
         }).collect(Collectors.toList()));
         return answers;

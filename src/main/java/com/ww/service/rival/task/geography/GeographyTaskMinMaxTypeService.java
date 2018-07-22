@@ -34,20 +34,20 @@ public class GeographyTaskMinMaxTypeService {
         Question question = new Question();
         question.setCategory(Category.GEOGRAPHY);
         if (type == GeographyTaskType.MAX_POPULATION) {
-            question.setContentPolish("Które z państw posiada największą populację?");
-            question.setContentEnglish("Which country has the largest population?");
+            question.setTextContentPolish("Które z państw posiada największą populację?");
+            question.setTextContentEnglish("Which country has the largest population?");
         }
         if (type == GeographyTaskType.MIN_POPULATION) {
-            question.setContentPolish("Które z państw posiada najmniejszą populację?");
-            question.setContentEnglish("Which country has the smallest population?");
+            question.setTextContentPolish("Które z państw posiada najmniejszą populację?");
+            question.setTextContentEnglish("Which country has the smallest population?");
         }
         if (type == GeographyTaskType.MAX_AREA) {
-            question.setContentPolish("Które z państw posiada największą powierzchnię?");
-            question.setContentEnglish("Which country has the largest area?");
+            question.setTextContentPolish("Które z państw posiada największą powierzchnię?");
+            question.setTextContentEnglish("Which country has the largest area?");
         }
         if (type == GeographyTaskType.MIN_AREA) {
-            question.setContentPolish("Które z państw posiada najmniejszą powierzchnię?");
-            question.setContentEnglish("Which country has the smallest area?");
+            question.setTextContentPolish("Które z państw posiada najmniejszą powierzchnię?");
+            question.setTextContentEnglish("Which country has the smallest area?");
         }
         return question;
     }
@@ -66,8 +66,8 @@ public class GeographyTaskMinMaxTypeService {
         GeographyCountry finalCorrect = correct;
         return countries.stream().map(country -> {
             Answer answer = new Answer(country == finalCorrect);
-            answer.setContentPolish(country.getNamePolish());
-            answer.setContentEnglish(country.getNameEnglish());
+            answer.setTextContentPolish(country.getNamePolish());
+            answer.setTextContentEnglish(country.getNameEnglish());
             return answer;
         }).collect(Collectors.toList());
     }

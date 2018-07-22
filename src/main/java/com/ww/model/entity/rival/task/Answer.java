@@ -14,8 +14,8 @@ public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String contentPolish;
-    private String contentEnglish;
+    private String textContentPolish;
+    private String textContentEnglish;
     private Boolean correct;
     @ManyToOne
     @JoinColumn(name = "question_id", nullable = false, updatable = false)
@@ -27,8 +27,8 @@ public class Answer {
         this.correct = correct;
     }
 
-    public void setContent(String content) {
-        this.setContentPolish(content);
-        this.setContentEnglish(content);
+    public void setTextContent(String content) {
+        this.setTextContentPolish(content);
+        this.setTextContentEnglish(content);
     }
 }

@@ -39,40 +39,44 @@ public class GeographyTaskCountryCapitalTypeService {
         Question question = new Question();
         question.setCategory(Category.GEOGRAPHY);
         if (type == GeographyTaskType.COUNTRY_NAME_FROM_ALPHA_2) {
-            question.setContentPolish("Wskaż państwo, którego kod ISO 3166-1 alfa 2 to " + country.getAlpha2Code());
-            question.setContentEnglish("Indicate the country whose ISO 3166-1 alpha 2 code is " + country.getAlpha2Code());
+            question.setTextContentPolish("Wskaż państwo, którego kod ISO 3166-1 alfa 2 to " + country.getAlpha2Code());
+            question.setTextContentEnglish("Indicate the country whose ISO 3166-1 alpha 2 code is " + country.getAlpha2Code());
         }
         if (type == GeographyTaskType.COUNTRY_NAME_FROM_CAPITAL_NAME) {
-            question.setContentPolish("Wskaż państwo, którego stolica to " + country.getCapitalPolish());
-            question.setContentEnglish("Indicate the country whose capital is " + country.getCapitalEnglish());
+            question.setTextContentPolish("Wskaż państwo, którego stolica to " + country.getCapitalPolish());
+            question.setTextContentEnglish("Indicate the country whose capital is " + country.getCapitalEnglish());
         }
         if (type == GeographyTaskType.COUNTRY_NAME_FROM_MAP) {
             question.setTaskRenderer(TaskRenderer.TEXT_IMAGE);
-            question.setContentPolish(taskRendererService.prepareQuestionContentTextImage("Które państwo widoczne jest na mapie?", country.getMapResourcePath()));
-            question.setContentEnglish(taskRendererService.prepareQuestionContentTextImage("Which country is visible on the map?", country.getMapResourcePath()));
+            question.setImageContent(country.getMapResourcePath());
+            question.setTextContentPolish("Które państwo widoczne jest na mapie?");
+            question.setTextContentEnglish("Which country is visible on the map?");
         }
         if (type == GeographyTaskType.COUNTRY_NAME_FROM_FLAG) {
             question.setTaskRenderer(TaskRenderer.TEXT_IMAGE);
-            question.setContentPolish(taskRendererService.prepareQuestionContentTextImage("Jest to flaga państwa", country.getFlagResourcePath()));
-            question.setContentEnglish(taskRendererService.prepareQuestionContentTextImage("Which country's flag is it?", country.getFlagResourcePath()));
+            question.setImageContent(country.getFlagResourcePath());
+            question.setTextContentPolish("Jest to flaga państwa");
+            question.setTextContentEnglish("Which country's flag is it?");
         }
         if (type == GeographyTaskType.CAPITAL_NAME_FROM_ALPHA_3) {
-            question.setContentPolish("Stolicą państwa, którego kod ISO 3166-1 alfa 3 to " + country.getAlpha3Code() + " jest");
-            question.setContentEnglish("Indicate the country whose ISO 3166-1 alpha 3 code is " + country.getAlpha3Code());
+            question.setTextContentPolish("Stolicą państwa, którego kod ISO 3166-1 alfa 3 to " + country.getAlpha3Code() + " jest");
+            question.setTextContentEnglish("Indicate the country whose ISO 3166-1 alpha 3 code is " + country.getAlpha3Code());
         }
         if (type == GeographyTaskType.CAPITAL_NAME_FROM_COUNTRY_NAME) {
-            question.setContentPolish("Stolicą państwa " + country.getNamePolish() + " jest");
-            question.setContentEnglish("The capital of " + country.getNameEnglish() + " is");
+            question.setTextContentPolish("Stolicą państwa " + country.getNamePolish() + " jest");
+            question.setTextContentEnglish("The capital of " + country.getNameEnglish() + " is");
         }
         if (type == GeographyTaskType.CAPITAL_NAME_FROM_MAP) {
             question.setTaskRenderer(TaskRenderer.TEXT_IMAGE);
-            question.setContentPolish(taskRendererService.prepareQuestionContentTextImage("Stolica państwa widocznego na mapie to", country.getMapResourcePath()));
-            question.setContentEnglish(taskRendererService.prepareQuestionContentTextImage("The state capital that can be seen on the map is", country.getMapResourcePath()));
+            question.setImageContent(country.getMapResourcePath());
+            question.setTextContentPolish("Stolica państwa widocznego na mapie to");
+            question.setTextContentEnglish("The state capital that can be seen on the map is");
         }
         if (type == GeographyTaskType.CAPITAL_NAME_FROM_FLAG) {
             question.setTaskRenderer(TaskRenderer.TEXT_IMAGE);
-            question.setContentPolish(taskRendererService.prepareQuestionContentTextImage("Stolica państwa, którego flaga widoczna jest obok to", country.getFlagResourcePath()));
-            question.setContentEnglish(taskRendererService.prepareQuestionContentTextImage("The capital of the country whose flag is visible next to it is", country.getFlagResourcePath()));
+            question.setImageContent(country.getFlagResourcePath());
+            question.setTextContentPolish("Stolica państwa, którego flaga widoczna jest obok to");
+            question.setTextContentEnglish("The capital of the country whose flag is visible next to it is");
         }
         return question;
     }
@@ -83,14 +87,14 @@ public class GeographyTaskCountryCapitalTypeService {
 
         List<Answer> wrongAnswers = new ArrayList<>();
         List<String> answerContents = new ArrayList<>();
-        answerContents.add(correctAnswer.getContentEnglish());
+        answerContents.add(correctAnswer.getTextContentEnglish());
         while (wrongAnswers.size() < 3) {
             GeographyCountry wrongCountry = randomElement(allCountries);
             Answer wrongAnswer = new Answer(false);
             fillAnswerContent(type, wrongAnswer, wrongCountry);
-            if (!answerContents.contains(wrongAnswer.getContentEnglish())) {
+            if (!answerContents.contains(wrongAnswer.getTextContentEnglish())) {
                 wrongAnswers.add(wrongAnswer);
-                answerContents.add(wrongAnswer.getContentEnglish());
+                answerContents.add(wrongAnswer.getTextContentEnglish());
             }
         }
         List<Answer> answers = new ArrayList<>();
@@ -104,15 +108,15 @@ public class GeographyTaskCountryCapitalTypeService {
                 || type == GeographyTaskType.COUNTRY_NAME_FROM_CAPITAL_NAME
                 || type == GeographyTaskType.COUNTRY_NAME_FROM_MAP
                 || type == GeographyTaskType.COUNTRY_NAME_FROM_FLAG) {
-            answer.setContentPolish(country.getNamePolish());
-            answer.setContentEnglish(country.getNameEnglish());
+            answer.setTextContentPolish(country.getNamePolish());
+            answer.setTextContentEnglish(country.getNameEnglish());
         }
         if (type == GeographyTaskType.CAPITAL_NAME_FROM_ALPHA_3
                 || type == GeographyTaskType.CAPITAL_NAME_FROM_COUNTRY_NAME
                 || type == GeographyTaskType.CAPITAL_NAME_FROM_MAP
                 || type == GeographyTaskType.CAPITAL_NAME_FROM_FLAG) {
-            answer.setContentPolish(country.getCapitalPolish());
-            answer.setContentEnglish(country.getCapitalEnglish());
+            answer.setTextContentPolish(country.getCapitalPolish());
+            answer.setTextContentEnglish(country.getCapitalEnglish());
         }
     }
 

@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -61,16 +60,16 @@ public class MathTaskService {
         Question question = new Question();
         question.setCategory(Category.MATH);
         if (type == MathTaskType.ADDITION) {
-            question.setContentPolish("Suma następujących liczb " + numbersToString(numbers, "i") + " wynosi");
-            question.setContentEnglish("The result of adding numbers " + numbersToString(numbers, "and") + " is");
+            question.setTextContentPolish("Suma następujących liczb " + numbersToString(numbers, "i") + " wynosi");
+            question.setTextContentEnglish("The result of adding numbers " + numbersToString(numbers, "and") + " is");
         }
         if (type == MathTaskType.MULTIPLICATION) {
-            question.setContentPolish("Wynikiem mnożenia liczb " + numbersToString(numbers, "i") + " jest");
-            question.setContentEnglish("The result of multiplying numbers " + numbersToString(numbers, "and") + " is");
+            question.setTextContentPolish("Wynikiem mnożenia liczb " + numbersToString(numbers, "i") + " jest");
+            question.setTextContentEnglish("The result of multiplying numbers " + numbersToString(numbers, "and") + " is");
         }
         if (type == MathTaskType.MODULO) {
-            question.setContentPolish("Resztą z dzielenia liczby " + numbers[0] + " przez " + numbers[1] + " jest");
-            question.setContentEnglish("The remainder of the dividing the number " + numbers[0] + " by " + numbers[1] + " is");
+            question.setTextContentPolish("Resztą z dzielenia liczby " + numbers[0] + " przez " + numbers[1] + " jest");
+            question.setTextContentEnglish("The remainder of the dividing the number " + numbers[0] + " by " + numbers[1] + " is");
         }
         return question;
     }
@@ -110,7 +109,7 @@ public class MathTaskService {
             correctResult = numbers[0] % numbers[1];
         }
         Answer correctAnswer = new Answer(true);
-        correctAnswer.setContent("" + correctResult);
+        correctAnswer.setTextContent("" + correctResult);
 
         List<Answer> wrongAnswers = new ArrayList<>();
         List<Integer> wrongResults = new ArrayList<>();
@@ -122,7 +121,7 @@ public class MathTaskService {
             if (correctResult != wrongResult && !wrongResults.contains(wrongResult)) {
                 wrongResults.add(wrongResult);
                 Answer wrongAnswer = new Answer(false);
-                wrongAnswer.setContent("" + wrongResult);
+                wrongAnswer.setTextContent("" + wrongResult);
                 wrongAnswers.add(wrongAnswer);
             }
         }

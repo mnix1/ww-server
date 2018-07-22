@@ -55,36 +55,36 @@ public class MemoryTaskService {
         Question question = new Question();
         question.setCategory(Category.MEMORY);
         if (type == MemoryTaskType.BACKGROUND_COLOR_FROM_FIGURE_KEY) {
-            question.setContentPolish("Jaki kolor miał objekt " + correctObject.getKey() + "?");
-            question.setContentEnglish("What was the color of the object " + correctObject.getKey() + "?");
+            question.setTextContentPolish("Jaki kolor miał objekt " + correctObject.getKey() + "?");
+            question.setTextContentEnglish("What was the color of the object " + correctObject.getKey() + "?");
         }
         if (type == MemoryTaskType.BORDER_COLOR_FROM_FIGURE_KEY) {
-            question.setContentPolish("Jaki kolor obramowania miał objekt " + correctObject.getKey() + "?");
-            question.setContentEnglish("What was the border color of the object " + correctObject.getKey() + "?");
+            question.setTextContentPolish("Jaki kolor obramowania miał objekt " + correctObject.getKey() + "?");
+            question.setTextContentEnglish("What was the border color of the object " + correctObject.getKey() + "?");
         }
         if (type == MemoryTaskType.FONT_COLOR_FROM_FIGURE_KEY) {
-            question.setContentPolish("Jaki kolor czcionki miał objekt " + correctObject.getKey() + "?");
-            question.setContentEnglish("What was the font color of the object " + correctObject.getKey() + "?");
+            question.setTextContentPolish("Jaki kolor czcionki miał objekt " + correctObject.getKey() + "?");
+            question.setTextContentEnglish("What was the font color of the object " + correctObject.getKey() + "?");
         }
         if (type == MemoryTaskType.SHAPE_FROM_FIGURE_KEY) {
-            question.setContentPolish("Jaki kształt miał objekt " + correctObject.getKey() + "?");
-            question.setContentEnglish("What was the font color of the object " + correctObject.getKey() + "?");
+            question.setTextContentPolish("Jaki kształt miał objekt " + correctObject.getKey() + "?");
+            question.setTextContentEnglish("What was the font color of the object " + correctObject.getKey() + "?");
         }
         if (type == MemoryTaskType.FIGURE_KEY_FROM_BACKGROUND_COLOR) {
-            question.setContentPolish("Który z obiektów miał " + correctObject.getBackgroundColor().getNamePolish() + " kolor?");
-            question.setContentEnglish("Which of the objects was " + correctObject.getBackgroundColor().getNameEnglish() + "?");
+            question.setTextContentPolish("Który z obiektów miał " + correctObject.getBackgroundColor().getNamePolish() + " kolor?");
+            question.setTextContentEnglish("Which of the objects was " + correctObject.getBackgroundColor().getNameEnglish() + "?");
         }
         if (type == MemoryTaskType.FIGURE_KEY_FROM_BORDER_COLOR) {
-            question.setContentPolish("Obramowanie którego z objektów miało " + correctObject.getBorderColor().getNamePolish() + " kolor?");
-            question.setContentEnglish("The border of which of the objects was " + correctObject.getBorderColor().getNameEnglish() + "?");
+            question.setTextContentPolish("Obramowanie którego z objektów miało " + correctObject.getBorderColor().getNamePolish() + " kolor?");
+            question.setTextContentEnglish("The border of which of the objects was " + correctObject.getBorderColor().getNameEnglish() + "?");
         }
         if (type == MemoryTaskType.FIGURE_KEY_FROM_FONT_COLOR) {
-            question.setContentPolish("Czcionka którego z obiektów miała " + correctObject.getFontColor().getNamePolish() + " kolor?");
-            question.setContentEnglish("The font of the name of which of the objects was " + correctObject.getFontColor().getNameEnglish() + "?");
+            question.setTextContentPolish("Czcionka którego z obiektów miała " + correctObject.getFontColor().getNamePolish() + " kolor?");
+            question.setTextContentEnglish("The font of the name of which of the objects was " + correctObject.getFontColor().getNameEnglish() + "?");
         }
         if (type == MemoryTaskType.FIGURE_KEY_FROM_SHAPE) {
-            question.setContentPolish("Kształt którego z obiektów to była " + correctObject.getShape().getNamePolish() + "?");
-            question.setContentEnglish("The shape of which of the objects was " + correctObject.getShape().getNameEnglish() + "?");
+            question.setTextContentPolish("Kształt którego z obiektów to była " + correctObject.getShape().getNamePolish() + "?");
+            question.setTextContentEnglish("The shape of which of the objects was " + correctObject.getShape().getNameEnglish() + "?");
         }
         return question;
     }
@@ -105,23 +105,23 @@ public class MemoryTaskService {
 
     private void fillAnswerContent(MemoryTaskType type, Answer answer, MemoryObject object) {
         if (type == MemoryTaskType.BACKGROUND_COLOR_FROM_FIGURE_KEY) {
-            answer.setContentPolish(object.getBackgroundColor().getNamePolish());
-            answer.setContentEnglish(object.getBackgroundColor().getNameEnglish());
+            answer.setTextContentPolish(object.getBackgroundColor().getNamePolish());
+            answer.setTextContentEnglish(object.getBackgroundColor().getNameEnglish());
         }
         if (type == MemoryTaskType.BORDER_COLOR_FROM_FIGURE_KEY) {
-            answer.setContentPolish(object.getBorderColor().getNamePolish());
-            answer.setContentEnglish(object.getBorderColor().getNameEnglish());
+            answer.setTextContentPolish(object.getBorderColor().getNamePolish());
+            answer.setTextContentEnglish(object.getBorderColor().getNameEnglish());
         }
         if (type == MemoryTaskType.FONT_COLOR_FROM_FIGURE_KEY) {
-            answer.setContentPolish(object.getFontColor().getNamePolish());
-            answer.setContentEnglish(object.getFontColor().getNameEnglish());
+            answer.setTextContentPolish(object.getFontColor().getNamePolish());
+            answer.setTextContentEnglish(object.getFontColor().getNameEnglish());
         }
         if (type == MemoryTaskType.SHAPE_FROM_FIGURE_KEY) {
-            answer.setContentPolish(object.getShape().getNamePolish());
-            answer.setContentEnglish(object.getShape().getNameEnglish());
+            answer.setTextContentPolish(object.getShape().getNamePolish());
+            answer.setTextContentEnglish(object.getShape().getNameEnglish());
         }
         if(MemoryTaskType.answerFigureKey(type)){
-            answer.setContent(object.getKey());
+            answer.setTextContent(object.getKey());
         }
     }
 

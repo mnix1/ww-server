@@ -19,13 +19,15 @@ public class Question {
     private Long id;
     private Category category;
     private TaskRenderer taskRenderer = TaskRenderer.TEXT;
-    private String contentPolish;
-    private String contentEnglish;
+    private String imageContent;
+    private String animationContent;
+    private String textContentPolish;
+    private String textContentEnglish;
     @OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
     private Set<Answer> answers;
 
-    public void setContent(String content) {
-        this.setContentPolish(content);
-        this.setContentEnglish(content);
+    public void setTextContent(String content) {
+        this.setTextContentPolish(content);
+        this.setTextContentEnglish(content);
     }
 }

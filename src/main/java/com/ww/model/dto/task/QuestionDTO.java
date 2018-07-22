@@ -13,14 +13,18 @@ import java.util.stream.Collectors;
 public class QuestionDTO {
 
     private TaskRenderer taskRenderer;
-    private String contentPolish;
-    private String contentEnglish;
+    private String imageContent;
+    private String animationContent;
+    private String textContentPolish;
+    private String textContentEnglish;
     private List<AnswerDTO> answers;
 
     public QuestionDTO(Question question) {
         this.taskRenderer = question.getTaskRenderer();
-        this.contentPolish = question.getContentPolish();
-        this.contentEnglish = question.getContentEnglish();
+        this.imageContent = question.getImageContent();
+        this.animationContent = question.getAnimationContent();
+        this.textContentPolish = question.getTextContentPolish();
+        this.textContentEnglish = question.getTextContentEnglish();
         this.answers = question.getAnswers().stream().map(AnswerDTO::new).collect(Collectors.toList());
     }
 }
