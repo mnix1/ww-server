@@ -19,18 +19,26 @@ public class TaskRendererService {
     public QuestionDTO prepareQuestionDTO(Question question) {
         QuestionDTO questionDTO = new QuestionDTO(question);
         if (question.getTaskRenderer() == TaskRenderer.TEXT_IMAGE) {
-            String imagePath = questionDTO.getImageContent();
-            try {
-                File file = ResourceUtils.getFile("classpath:" + imagePath);
-                String image = IOUtils.toString(new FileInputStream(file), Charset.defaultCharset());
-                String encodedImage = Base64.getEncoder().encodeToString(image.getBytes());
-                questionDTO.setImageContent(encodedImage);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return questionDTO;
+            swapImagePathToImageData(questionDTO);
+        }
+        if (question.getTaskRenderer() == TaskRenderer.TEXT_ANIMATION) {
+            questionDTO.setAnimationContent(encodeData(questionDTO.getAnimationContent()));
         }
         return questionDTO;
     }
 
+    private void swapImagePathToImageData(QuestionDTO questionDTO) {
+        String imagePath = questionDTO.getImageContent();
+        try {
+            File file = ResourceUtils.getFile("classpath:" + imagePath);
+            String image = IOUtils.toString(new FileInputStream(file), Charset.defaultCharset());
+            questionDTO.setImageContent(encodeData(image));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String encodeData(String s) {
+        return Base64.getEncoder().encodeToString(s.getBytes());
+    }
 }

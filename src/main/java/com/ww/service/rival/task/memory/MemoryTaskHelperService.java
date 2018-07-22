@@ -18,6 +18,7 @@ public class MemoryTaskHelperService {
 
     public void initShapes() {
         memoryShapeRepository.save(new MemoryShape("CIRCLE","koło","circle"));
+        memoryShapeRepository.save(new MemoryShape("ELLIPSE","elipsa","ellipse"));
         memoryShapeRepository.save(new MemoryShape("TRIANGLE","trójkąt","triangle"));
         memoryShapeRepository.save(new MemoryShape("SQUARE","kwadrat","square"));
         memoryShapeRepository.save(new MemoryShape("RECTANGLE","prostokąt","rectangle"));
@@ -32,9 +33,9 @@ public class MemoryTaskHelperService {
         taskColorRepository.save(new TaskColor("#FFFFFF","biały","white"));
         taskColorRepository.save(new TaskColor("#808080","szary","gray"));
         taskColorRepository.save(new TaskColor("#000000","czarny","black"));
-        taskColorRepository.save(new TaskColor("#FF0000","czerwony","red"));
-        taskColorRepository.save(new TaskColor("#008000","zielony","green"));
-        taskColorRepository.save(new TaskColor("#0000FF","niebieski","blue"));
+        taskColorRepository.save(new TaskColor("#990000","czerwony","red"));
+        taskColorRepository.save(new TaskColor("#009900","zielony","green"));
+        taskColorRepository.save(new TaskColor("#000099","niebieski","blue"));
         taskColorRepository.save(new TaskColor("#FFFF00","żółty","yellow"));
         taskColorRepository.save(new TaskColor("#FFA500","pomarańczowy","orange"));
         taskColorRepository.save(new TaskColor("#964B00","brązowy","brown"));

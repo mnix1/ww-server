@@ -19,9 +19,13 @@ public class Question {
     private Long id;
     private Category category;
     private TaskRenderer taskRenderer = TaskRenderer.TEXT;
+    @Column(length = 4000)
     private String imageContent;
+    @Column(length = 4000)
     private String animationContent;
+    @Column(length = 4000)
     private String textContentPolish;
+    @Column(length = 4000)
     private String textContentEnglish;
     @OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
     private Set<Answer> answers;
