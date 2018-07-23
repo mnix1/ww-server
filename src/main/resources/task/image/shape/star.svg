@@ -1,6 +1,64 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="187.79mm" height="216.84mm" version="1.1" viewBox="0 0 187.78989 216.84108" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <g transform="translate(13.008 -1.8592)">
-    <path d="m174.78 164.49-66.79-7.2628-27.105 61.473-27.105-61.473-66.79 7.2628 39.685-54.21-39.685-54.21 66.79 7.2628 27.105-61.473l27.105 61.473 66.79-7.2628-39.685 54.21z" fill-rule="evenodd" style="paint-order:normal"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="26.458332mm"
+   height="26.458334mm"
+   version="1.1"
+   viewBox="0 0 26.458318 26.458466"
+   id="svg248"
+   sodipodi:docname="star.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+  <metadata
+     id="metadata254">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs252" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     id="namedview250"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="3.2579175"
+     inkscape:cx="-62.300786"
+     inkscape:cy="90.508461"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg248" />
+  <g
+     transform="matrix(0.1408939,0,0,0.12201816,1.832509,-0.22692937)"
+     id="g246">
+    <path
+       d="M 174.78,164.49 107.99,157.2272 80.885,218.7002 53.78,157.2272 -13.01,164.49 26.675,110.28 -13.01,56.07 53.78,63.3328 80.885,1.8598 107.99,63.3328 174.78,56.07 135.095,110.28 Z"
+       style="fill-rule:evenodd;paint-order:normal"
+       id="path244"
+       inkscape:connector-curvature="0" />
   </g>
 </svg>

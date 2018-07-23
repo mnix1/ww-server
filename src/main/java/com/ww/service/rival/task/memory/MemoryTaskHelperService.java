@@ -31,7 +31,7 @@ public class MemoryTaskHelperService {
     
     public void initColors() {
         taskColorRepository.save(new TaskColor("#FFFFFF","biały","white"));
-        taskColorRepository.save(new TaskColor("#808080","szary","gray"));
+        taskColorRepository.save(new TaskColor("#666666","szary","gray"));
         taskColorRepository.save(new TaskColor("#000000","czarny","black"));
         taskColorRepository.save(new TaskColor("#990000","czerwony","red"));
         taskColorRepository.save(new TaskColor("#009900","zielony","green"));
