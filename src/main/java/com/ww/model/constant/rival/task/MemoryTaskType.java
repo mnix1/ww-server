@@ -6,19 +6,23 @@ import static com.ww.helper.RandomHelper.randomElement;
 
 public enum MemoryTaskType {
     BACKGROUND_COLOR_FROM_FIGURE_KEY,
-//    BORDER_COLOR_FROM_FIGURE_KEY,
     FONT_COLOR_FROM_FIGURE_KEY,
     SHAPE_FROM_FIGURE_KEY,
+    SHAPE_FROM_BACKGROUND_COLOR,
+    SHAPE_FROM_FONT_COLOR,
     FIGURE_KEY_FROM_BACKGROUND_COLOR,
-//    FIGURE_KEY_FROM_BORDER_COLOR,
     FIGURE_KEY_FROM_FONT_COLOR,
     FIGURE_KEY_FROM_SHAPE;
 
     public static boolean answerFigureKey(MemoryTaskType type) {
         return type == FIGURE_KEY_FROM_BACKGROUND_COLOR
-//                || type == FIGURE_KEY_FROM_BORDER_COLOR
                 || type == FIGURE_KEY_FROM_FONT_COLOR
                 || type == FIGURE_KEY_FROM_SHAPE;
+    }
+    public static boolean answerShape(MemoryTaskType type) {
+        return type == SHAPE_FROM_FIGURE_KEY
+                || type == SHAPE_FROM_BACKGROUND_COLOR
+                || type == SHAPE_FROM_FONT_COLOR;
     }
 
     public static MemoryTaskType random() {
