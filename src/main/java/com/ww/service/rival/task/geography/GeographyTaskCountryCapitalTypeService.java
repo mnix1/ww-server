@@ -39,8 +39,8 @@ public class GeographyTaskCountryCapitalTypeService {
         Question question = new Question();
         question.setCategory(Category.GEOGRAPHY);
         if (type == GeographyTaskType.COUNTRY_NAME_FROM_ALPHA_2) {
-            question.setTextContentPolish("Wskaż państwo, którego kod ISO 3166-1 alfa 2 to " + country.getAlpha2Code());
-            question.setTextContentEnglish("Indicate the country whose ISO 3166-1 alpha 2 code is " + country.getAlpha2Code());
+            question.setTextContentPolish("Wskaż państwo, którego kod to " + country.getAlpha2Code());
+            question.setTextContentEnglish("Indicate the country whose code is " + country.getAlpha2Code());
         }
         if (type == GeographyTaskType.COUNTRY_NAME_FROM_CAPITAL_NAME) {
             question.setTextContentPolish("Wskaż państwo, którego stolica to " + country.getCapitalPolish());
@@ -59,8 +59,8 @@ public class GeographyTaskCountryCapitalTypeService {
             question.setTextContentEnglish("Which country's flag is it?");
         }
         if (type == GeographyTaskType.CAPITAL_NAME_FROM_ALPHA_3) {
-            question.setTextContentPolish("Stolicą państwa, którego kod ISO 3166-1 alfa 3 to " + country.getAlpha3Code() + " jest");
-            question.setTextContentEnglish("Indicate the country whose ISO 3166-1 alpha 3 code is " + country.getAlpha3Code());
+            question.setTextContentPolish("Stolicą państwa, którego kod to " + country.getAlpha3Code() + " jest");
+            question.setTextContentEnglish("Indicate the country whose code is " + country.getAlpha3Code());
         }
         if (type == GeographyTaskType.CAPITAL_NAME_FROM_COUNTRY_NAME) {
             question.setTextContentPolish("Stolicą państwa " + country.getNamePolish() + " jest");

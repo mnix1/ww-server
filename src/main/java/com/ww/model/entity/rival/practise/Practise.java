@@ -28,4 +28,8 @@ public class Practise {
     public boolean isOpen() {
         return result == PractiseResult.OPEN;
     }
+
+    public Long openedInterval(){
+        return closeDate.getTime() - openDate.getTime();
+    }
 }

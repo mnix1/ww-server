@@ -28,11 +28,6 @@ public class PractiseController {
 
     @RequestMapping(value = "/end", method = RequestMethod.GET)
     public Map end(@RequestParam Long practiseId, @RequestParam Long answerId) {
-        Map<String, Object> model = new HashMap<>();
-        Long correctAnswerId = practiseService.end(practiseId, answerId);
-        if (correctAnswerId != null) {
-            model.put("correctAnswerId", correctAnswerId);
-        }
-        return model;
+        return practiseService.end(practiseId, answerId);
     }
 }

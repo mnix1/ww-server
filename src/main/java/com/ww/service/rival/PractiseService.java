@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,7 +51,7 @@ public class PractiseService {
         return practise;
     }
 
-    public Long end(Long practiseId, Long answerId) {
+    public Map end(Long practiseId, Long answerId) {
         if (practiseId == null || answerId == null) {
             return null;
         }
@@ -69,7 +71,10 @@ public class PractiseService {
             Answer correctAnswer = question.getAnswers().stream().filter(answer -> answer.getCorrect()).findFirst().orElseThrow(() -> new Exception("No correct answers"));
             boolean result = correctAnswer.getId().equals(answerId);
             updatePractiseResult(practise, result, closeDate);
-            return correctAnswer.getId();
+            Map<String,Object> model = new HashMap<>();
+            model.put("correctAnswerId", correctAnswer.getId());
+            model.put("answerInterval", practise.openedInterval());
+            return model;
         } catch (Exception e) {
             //log
         }
