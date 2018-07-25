@@ -1,5 +1,7 @@
 package com.ww.database;
 
+import com.ww.helper.TagHelper;
+import com.ww.model.entity.social.Profile;
 import com.ww.repository.rival.task.AnswerRepository;
 import com.ww.repository.rival.task.QuestionRepository;
 import com.ww.repository.social.ProfileRepository;
@@ -11,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -39,10 +43,20 @@ public class Init {
     private Random random = new SecureRandom();
 
     public void init() {
+        initProfiles();
         initMusicTracks();
         initGeographyCountries();
         memoryTaskHelperService.initShapes();
         memoryTaskHelperService.initColors();
+    }
+
+    public void initProfiles() {
+        List<Profile> profiles = new ArrayList<>();
+        profiles.add(new Profile(TagHelper.randomTag(), "Kozioł23", 3L));
+        profiles.add(new Profile(TagHelper.randomTag(), "bocian", 10L));
+        profiles.add(new Profile(TagHelper.randomTag(), "mnix", 4L));
+        profiles.add(new Profile(TagHelper.randomTag(), "Rumo", 12L));
+        profileRepository.saveAll(profiles);
     }
 
     public void initMusicTracks() {

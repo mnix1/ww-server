@@ -1,13 +1,11 @@
 package com.ww.model.entity.rival.task;
 
+import com.ww.model.entity.social.Profile;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Setter
 @Getter
@@ -17,11 +15,15 @@ public class ProfileQuestion {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long profileId;
-    private Long questionId;
+    @ManyToOne
+    @JoinColumn(name = "profile_id", nullable = false, updatable = false)
+    private Profile profile;
+    @ManyToOne
+    @JoinColumn(name = "question_id", nullable = false, updatable = false)
+    private Question question;
 
-    public ProfileQuestion(Long profileId, Long questionId) {
-        this.profileId = profileId;
-        this.questionId = questionId;
+    public ProfileQuestion(Profile profile, Question question) {
+        this.profile = profile;
+        this.question = question;
     }
 }

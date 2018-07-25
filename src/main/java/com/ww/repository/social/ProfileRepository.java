@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface ProfileRepository extends CrudRepository<Profile, Long> {
 
     Profile findByAuthId(String authId);
+    Profile findByTag(String tag);
 }

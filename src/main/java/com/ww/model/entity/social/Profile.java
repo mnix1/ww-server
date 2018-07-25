@@ -1,6 +1,7 @@
 package com.ww.model.entity.social;
 
 import com.ww.helper.TagHelper;
+import com.ww.model.entity.rival.task.ProfileQuestion;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,18 +20,34 @@ public class Profile {
     private String authId;
     private String tag;
     private String name;
-    private Integer level;
-    private Integer experience;
-    private Integer gold;
-    private Integer diamond;
+    private Long level;
+    private Long experience;
+    private Long wisdomPoint;
+    private Long diamond;
+
+    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
+    private Set<ProfileFriend> friends;
+
+    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
+    private Set<ProfileQuestion> questions;
 
     public Profile(String authId) {
         this.tag = TagHelper.randomTag();
         this.authId = authId;
-        this.level = 0;
-        this.experience = 0;
-        this.gold = 0;
-        this.diamond = 0;
+        this.level = 0L;
+        this.experience = 0L;
+        this.wisdomPoint = 0L;
+        this.diamond = 0L;
+    }
+
+    public Profile(Long id) {
+        this.id = id;
+    }
+
+    public Profile(String tag, String name, Long level) {
+        this.tag = tag;
+        this.name = name;
+        this.level = level;
     }
 
     @Override

@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProfileQuestionRepository extends CrudRepository<ProfileQuestion, Long> {
 
-    public ProfileQuestion findByProfileIdAndQuestionId(Long profileId, Long questionId);
+    public ProfileQuestion findByProfile_IdAndQuestion_Id(Long profileId, Long questionId);
 
 }

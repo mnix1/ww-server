@@ -1,7 +1,7 @@
 package com.ww.controller;
 
 import com.ww.model.entity.social.Profile;
-import com.ww.service.ProfileService;
+import com.ww.service.social.ProfileService;
 import com.ww.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,14 +21,14 @@ public class ProfileController {
     @Autowired
     SessionService sessionService;
 
-    @RequestMapping(value="/profile", method = RequestMethod.GET)
-    public Map profileId(Principal user){
-        Map<String, Long> model = new HashMap<>();
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    public Map profileId(Principal user) {
+        Map<String, Object> model = new HashMap<>();
         String authId = profileService.getAuthId(user);
         if (authId != null) {
             Profile profile = profileService.createOrRetrieveProfile(authId);
             sessionService.setProfileId(profile.getId());
-            model.put("profileId", profile.getId());
+            model.put("tag", profile.getTag());
         }
         return model;
     }

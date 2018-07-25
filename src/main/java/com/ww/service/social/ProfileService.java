@@ -1,7 +1,8 @@
-package com.ww.service;
+package com.ww.service.social;
 
 import com.ww.model.entity.social.Profile;
 import com.ww.repository.social.ProfileRepository;
+import com.ww.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.User;
@@ -20,12 +21,24 @@ public class ProfileService {
     @Autowired
     private SessionService sessionService;
 
+    public Profile getProfileOnlyWithId() {
+        return getProfileOnlyWithId(sessionService.getProfileId());
+    }
+
+    public Profile getProfileOnlyWithId(Long profileId) {
+        return new Profile(profileId);
+    }
+
     public Profile getProfile() {
-        return profileRepository.findById(sessionService.getProfileId()).get();
+        return getProfile(sessionService.getProfileId());
     }
 
     public Profile getProfile(Long profileId) {
         return profileRepository.findById(profileId).get();
+    }
+
+    public Profile getProfile(String tag) {
+        return profileRepository.findByTag(tag);
     }
 
     public String getAuthId(Principal user) {

@@ -4,6 +4,7 @@ import com.ww.model.constant.Category;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.ProfileQuestion;
 import com.ww.model.entity.rival.task.Question;
+import com.ww.model.entity.social.Profile;
 import com.ww.repository.rival.task.AnswerRepository;
 import com.ww.repository.rival.task.ProfileQuestionRepository;
 import com.ww.repository.rival.task.QuestionRepository;
@@ -47,11 +48,11 @@ public class TaskService {
     }
 
     public boolean isProfileUsedQuestion(Long profileId, Long questionId) {
-        return profileQuestionRepository.findByProfileIdAndQuestionId(profileId, questionId) != null;
+        return profileQuestionRepository.findByProfile_IdAndQuestion_Id(profileId, questionId) != null;
     }
 
-    public void saveProfileUsedQuestion(Long profileId, Long questionId) {
-        profileQuestionRepository.save(new ProfileQuestion(profileId, questionId));
+    public void saveProfileUsedQuestion(Profile profile, Question question) {
+        profileQuestionRepository.save(new ProfileQuestion(profile, question));
     }
 
     Boolean isCorrectAnswer(Long answerId) {
