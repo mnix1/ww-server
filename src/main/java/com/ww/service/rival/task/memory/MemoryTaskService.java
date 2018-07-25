@@ -89,10 +89,6 @@ public class MemoryTaskService {
             question.setTextContentPolish("Jaki kolor miał objekt " + correctObject.getKey() + "?");
             question.setTextContentEnglish("What was the color of the object " + correctObject.getKey() + "?");
         }
-        if (type == MemoryTaskType.FONT_COLOR_FROM_FIGURE_KEY) {
-            question.setTextContentPolish("Jaki kolor czcionki miał objekt " + correctObject.getKey() + "?");
-            question.setTextContentEnglish("What was the font color of the object " + correctObject.getKey() + "?");
-        }
         if (type == MemoryTaskType.SHAPE_FROM_FIGURE_KEY) {
             question.setTextContentPolish("Jaki kształt miał objekt " + correctObject.getKey() + "?");
             question.setTextContentEnglish("What was the font color of the object " + correctObject.getKey() + "?");
@@ -100,10 +96,6 @@ public class MemoryTaskService {
         if (type == MemoryTaskType.FIGURE_KEY_FROM_BACKGROUND_COLOR || type == MemoryTaskType.SHAPE_FROM_BACKGROUND_COLOR ) {
             question.setTextContentPolish("Który z obiektów miał " + correctObject.getBackgroundColor().getNamePolish() + " kolor?");
             question.setTextContentEnglish("Which of the objects was " + correctObject.getBackgroundColor().getNameEnglish() + "?");
-        }
-        if (type == MemoryTaskType.FIGURE_KEY_FROM_FONT_COLOR || type == MemoryTaskType.SHAPE_FROM_FONT_COLOR) {
-            question.setTextContentPolish("Czcionka którego z obiektów miała " + correctObject.getFontColor().getNamePolish() + " kolor?");
-            question.setTextContentEnglish("The font of the name of which of the objects was " + correctObject.getFontColor().getNameEnglish() + "?");
         }
         if (type == MemoryTaskType.FIGURE_KEY_FROM_SHAPE) {
             question.setTextContentPolish("Który z wcześniej pokazanych obiektów to " + correctObject.getShape().getNamePolish() + "?");
@@ -131,10 +123,6 @@ public class MemoryTaskService {
             answer.setTextContentPolish(object.getBackgroundColor().getNamePolish());
             answer.setTextContentEnglish(object.getBackgroundColor().getNameEnglish());
         }
-        if (type == MemoryTaskType.FONT_COLOR_FROM_FIGURE_KEY) {
-            answer.setTextContentPolish(object.getFontColor().getNamePolish());
-            answer.setTextContentEnglish(object.getFontColor().getNameEnglish());
-        }
         if (MemoryTaskType.answerShape(type)) {
             answer.setTextContentPolish(object.getShape().getNamePolish());
             answer.setTextContentEnglish(object.getShape().getNameEnglish());
@@ -148,11 +136,10 @@ public class MemoryTaskService {
         List<String> keys = prepareKeys(count);
         List<MemoryShape> shapes = randomElements(memoryShapeRepository.findAll(), count);
         List<TaskColor> allColors = taskColorRepository.findAll();
-        List<TaskColor> fontColors = randomElements(allColors, count);
         List<TaskColor> backgroundColors = randomElements(allColors, count);
         List<MemoryObject> figures = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
-            MemoryObject figure = new MemoryObject(keys.get(i), shapes.get(i), fontColors.get(i), backgroundColors.get(i));
+            MemoryObject figure = new MemoryObject(keys.get(i), shapes.get(i), backgroundColors.get(i));
             figures.add(figure);
         }
         return figures;

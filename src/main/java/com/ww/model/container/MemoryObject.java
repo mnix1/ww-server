@@ -13,13 +13,11 @@ import lombok.Setter;
 public class MemoryObject {
     private String key;
     private MemoryShape shape;
-    private TaskColor fontColor;
     private TaskColor backgroundColor;
 
     public void writeToObjectNode(ObjectNode objectNode){
         objectNode.put("key", key)
                 .put("shape", shape.getPath())
-                .put("fontColor", fontColor.getHex())
                 .put("backgroundColor", backgroundColor.getHex());
     }
 }
