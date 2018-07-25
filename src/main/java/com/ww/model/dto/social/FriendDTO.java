@@ -1,7 +1,6 @@
-package com.ww.model.dto.friend;
+package com.ww.model.dto.social;
 
 import com.ww.model.constant.social.FriendStatus;
-import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.social.Profile;
 import com.ww.model.entity.social.ProfileFriend;
 import lombok.Getter;

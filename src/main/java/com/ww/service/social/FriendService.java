@@ -1,7 +1,7 @@
 package com.ww.service.social;
 
 import com.ww.model.constant.social.FriendStatus;
-import com.ww.model.dto.friend.FriendDTO;
+import com.ww.model.dto.social.FriendDTO;
 import com.ww.model.entity.social.Profile;
 import com.ww.model.entity.social.ProfileFriend;
 import com.ww.repository.social.ProfileFriendRepository;
@@ -30,11 +30,11 @@ public class FriendService {
     @Autowired
     private SessionService sessionService;
 
-    public Map<String, Object> request(String tag) {
+    public Map<String, Object> add(String tag) {
         Map<String, Object> model = new HashMap<>();
         Profile friendProfile = profileService.getProfile(tag);
         if (friendProfile == null) {
-            model.put("code", -2); // no profile with this tag !!!IT SHOULD NOT HAPPEN!!! HACKERS?
+            model.put("code", -2); // no profile with this tag
             logger.error("Not existing profile tag requested: sessionProfileId: {} tag: {}", sessionService.getProfileId(), tag);
             return model;
         }
@@ -43,11 +43,27 @@ public class FriendService {
             logger.error("Requested to add yourself: sessionProfileId: {} tag: {}", sessionService.getProfileId(), tag);
             return model;
         }
-        if (friendAlreadyExists(sessionService.getProfileId(), tag)) {
-            model.put("code", -1); // already friend or already requested
+        ProfileFriend profileFriend = profileFriendRepository.findByProfile_IdAndFriendProfile_Tag(sessionService.getProfileId(), tag);
+        if (profileFriend != null) {
+            if (profileFriend.getStatus() == FriendStatus.ACCEPTED) {
+                model.put("code", -1); // already friends
+                return model;
+            }
+            if (profileFriend.getStatus() == FriendStatus.REQUESTED) {
+                profileFriend.setStatus(FriendStatus.ACCEPTED);
+                profileFriendRepository.save(profileFriend);
+                profileFriend = new ProfileFriend(FriendStatus.ACCEPTED, friendProfile, profileService.getProfileOnlyWithId());
+                profileFriendRepository.save(profileFriend);
+                model.put("code", 1); // accept
+                return model;
+            }
+        }
+        profileFriend = profileFriendRepository.findByProfile_IdAndFriendProfile_Id(friendProfile.getId(), sessionService.getProfileId());
+        if (profileFriend != null) {
+            model.put("code", -1); // request already sent
             return model;
         }
-        ProfileFriend profileFriend = new ProfileFriend(FriendStatus.REQUESTED, profileService.getProfileOnlyWithId(), friendProfile);
+        profileFriend = new ProfileFriend(FriendStatus.REQUESTED, friendProfile, profileService.getProfileOnlyWithId());
         profileFriendRepository.save(profileFriend);
         model.put("code", 1);
         return model;
@@ -56,12 +72,27 @@ public class FriendService {
     public Map<String, Object> list() {
         Map<String, Object> model = new HashMap<>();
         Set<ProfileFriend> profileFriends = profileService.getProfile().getFriends();
-        List<FriendDTO> friends = profileFriends.stream().map(profileFriend -> new FriendDTO(profileFriend)).collect(Collectors.toList());
+        List<FriendDTO> friends = profileFriends.stream()
+//                .filter(profileFriend -> profileFriend.getStatus() == FriendStatus.ACCEPTED)
+                .map(profileFriend -> new FriendDTO(profileFriend))
+                .collect(Collectors.toList());
         model.put("friends", friends);
         return model;
     }
 
-    private Boolean friendAlreadyExists(Long profileId, String friendProfileTag) {
-        return profileFriendRepository.findByProfile_IdAndFriendProfile_Tag(profileId, friendProfileTag) != null;
+    public Map<String, Object> delete(String tag) {
+        Map<String, Object> model = new HashMap<>();
+        ProfileFriend profileFriend = profileFriendRepository.findByProfile_IdAndFriendProfile_Tag(sessionService.getProfileId(), tag);
+        if (profileFriend != null) {
+            Long friendProfileId = profileFriend.getFriendProfile().getId();
+            profileFriendRepository.delete(profileFriend);
+            profileFriend = profileFriendRepository.findByProfile_IdAndFriendProfile_Id(friendProfileId, sessionService.getProfileId());
+            if (profileFriend != null) {
+                profileFriendRepository.delete(profileFriend);
+            }
+        }
+        model.put("code", 1);
+        return model;
     }
+
 }

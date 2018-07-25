@@ -1,5 +1,6 @@
 package com.ww.controller;
 
+import com.ww.model.dto.social.ProfileDTO;
 import com.ww.model.entity.social.Profile;
 import com.ww.service.social.ProfileService;
 import com.ww.service.SessionService;
@@ -28,7 +29,7 @@ public class ProfileController {
         if (authId != null) {
             Profile profile = profileService.createOrRetrieveProfile(authId);
             sessionService.setProfileId(profile.getId());
-            model.put("tag", profile.getTag());
+            model.put("profile", new ProfileDTO(profile));
         }
         return model;
     }

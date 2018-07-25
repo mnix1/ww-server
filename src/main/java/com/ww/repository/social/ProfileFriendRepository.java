@@ -10,6 +10,5 @@ import java.util.List;
 public interface ProfileFriendRepository extends CrudRepository<ProfileFriend, Long> {
 
     ProfileFriend findByProfile_IdAndFriendProfile_Tag(Long profileId, String friendProfileTag);
-
-    List<ProfileFriend> findAllByProfile_Id(Long profileId);
+    ProfileFriend findByProfile_IdAndFriendProfile_Id(Long profileId, Long friendProfileId);
 }

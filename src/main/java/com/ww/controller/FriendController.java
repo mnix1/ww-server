@@ -4,11 +4,8 @@ import com.ww.service.social.FriendService;
 import com.ww.service.social.ProfileService;
 import com.ww.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -24,9 +21,15 @@ public class FriendController {
     @Autowired
     FriendService friendService;
 
-    @RequestMapping(value = "/request", method = RequestMethod.GET)
-    public Map request(String tag) {
-        return friendService.request(tag);
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public Map add(@RequestBody Map<String, Object> payload) {
+        return friendService.add((String) payload.get("tag"));
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+
+    public Map delete(@RequestBody Map<String, Object> payload) {
+        return friendService.delete((String) payload.get("tag"));
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
