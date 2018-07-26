@@ -19,15 +19,17 @@ public class PractiseController {
     @Autowired
     PractiseService practiseService;
 
-    @RequestMapping(value = "/start", method = RequestMethod.GET)
-    public Map start(@RequestParam Category category) {
+    @RequestMapping(value = "/start", method = RequestMethod.POST)
+    public Map start(@RequestBody Map<String, Object> payload) {
         Map<String, Object> model = new HashMap<>();
-        model.put("practise", practiseService.start(Category.mapToNotRandom(category)));
+        model.put("practise", practiseService.start(Category.mapToNotRandom(Category.valueOf((String) payload.get("category")))));
         return model;
     }
 
-    @RequestMapping(value = "/end", method = RequestMethod.GET)
-    public Map end(@RequestParam Long practiseId, @RequestParam Long answerId) {
-        return practiseService.end(practiseId, answerId);
+    @RequestMapping(value = "/end", method = RequestMethod.POST)
+    public Map end(@RequestBody Map<String, Object> payload) {
+        Integer practiseId = (Integer) payload.get("practiseId");
+        Integer answerId = (Integer) payload.get("answerId");
+        return practiseService.end(practiseId.longValue(), answerId.longValue());
     }
 }

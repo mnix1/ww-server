@@ -1,13 +1,14 @@
 package com.ww.model.entity.rival.battle;
 
+import com.ww.model.constant.rival.battle.BattleResult;
+import com.ww.model.entity.social.Profile;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Date;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -17,10 +18,22 @@ public class Battle {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long profileId;
+    @ManyToOne
+    @JoinColumn(name = "creator_profile_id", nullable = false, updatable = false)
+    private Profile creatorProfile;
+    private BattleResult result = BattleResult.OPEN;
+    private Date openDate = new Date();
+    private Date closeDate;
 
-    @Override
-    public boolean equals(Object obj) {
-        return id.equals(((Battle) obj).id);
-    }
+    @OneToMany(mappedBy = "battle", fetch = FetchType.LAZY)
+    private Set<BattleProfile> profiles;
+
+    @OneToMany(mappedBy = "battle", fetch = FetchType.LAZY)
+    private Set<BattleQuestion> questions;
+
+    @OneToMany(mappedBy = "battle", fetch = FetchType.LAZY)
+    private Set<BattleAnswer> answers;
+
+
+
 }

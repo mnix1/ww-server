@@ -30,20 +30,24 @@ public class FriendService {
     @Autowired
     private SessionService sessionService;
 
-    public Map<String, Object> add(String tag) {
+    public Map<String,Object> add(String tag){
+        return add(sessionService.getProfileId(), tag);
+    }
+
+    public Map<String, Object> add( Long profileId, String tag) {
         Map<String, Object> model = new HashMap<>();
         Profile friendProfile = profileService.getProfile(tag);
         if (friendProfile == null) {
             model.put("code", -2); // no profile with this tag
-            logger.error("Not existing profile tag requested: sessionProfileId: {} tag: {}", sessionService.getProfileId(), tag);
+            logger.error("Not existing profile tag requested: sessionProfileId: {} tag: {}", profileId, tag);
             return model;
         }
-        if (friendProfile.getId().equals(sessionService.getProfileId())) {
+        if (friendProfile.getId().equals(profileId)) {
             model.put("code", -3); // added yourself
-            logger.error("Requested to add yourself: sessionProfileId: {} tag: {}", sessionService.getProfileId(), tag);
+            logger.error("Requested to add yourself: sessionProfileId: {} tag: {}", profileId, tag);
             return model;
         }
-        ProfileFriend profileFriend = profileFriendRepository.findByProfile_IdAndFriendProfile_Tag(sessionService.getProfileId(), tag);
+        ProfileFriend profileFriend = profileFriendRepository.findByProfile_IdAndFriendProfile_Tag(profileId, tag);
         if (profileFriend != null) {
             if (profileFriend.getStatus() == FriendStatus.ACCEPTED) {
                 model.put("code", -1); // already friends
@@ -52,18 +56,18 @@ public class FriendService {
             if (profileFriend.getStatus() == FriendStatus.REQUESTED) {
                 profileFriend.setStatus(FriendStatus.ACCEPTED);
                 profileFriendRepository.save(profileFriend);
-                profileFriend = new ProfileFriend(FriendStatus.ACCEPTED, friendProfile, profileService.getProfileOnlyWithId());
+                profileFriend = new ProfileFriend(FriendStatus.ACCEPTED, friendProfile, profileService.getProfileOnlyWithId(profileId));
                 profileFriendRepository.save(profileFriend);
                 model.put("code", 1); // accept
                 return model;
             }
         }
-        profileFriend = profileFriendRepository.findByProfile_IdAndFriendProfile_Id(friendProfile.getId(), sessionService.getProfileId());
+        profileFriend = profileFriendRepository.findByProfile_IdAndFriendProfile_Id(friendProfile.getId(), profileId);
         if (profileFriend != null) {
             model.put("code", -1); // request already sent
             return model;
         }
-        profileFriend = new ProfileFriend(FriendStatus.REQUESTED, friendProfile, profileService.getProfileOnlyWithId());
+        profileFriend = new ProfileFriend(FriendStatus.REQUESTED, friendProfile, profileService.getProfileOnlyWithId(profileId));
         profileFriendRepository.save(profileFriend);
         model.put("code", 1);
         return model;

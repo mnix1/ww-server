@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 @Setter
 public class QuestionDTO {
 
+    private Long id;
     private TaskRenderer taskRenderer;
     private String imageContent;
     private String animationContent;
@@ -20,6 +21,7 @@ public class QuestionDTO {
     private List<AnswerDTO> answers;
 
     public QuestionDTO(Question question) {
+        this.id = question.getId();
         this.taskRenderer = question.getTaskRenderer();
         this.imageContent = question.getImageContent();
         this.animationContent = question.getAnimationContent();

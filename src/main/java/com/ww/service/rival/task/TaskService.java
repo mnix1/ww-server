@@ -11,7 +11,9 @@ import com.ww.repository.rival.task.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.ww.helper.RandomHelper.randomElement;
 import static com.ww.helper.RandomHelper.randomInteger;
@@ -31,6 +33,15 @@ public class TaskService {
     @Autowired
     private TaskGenerateService taskGenerateService;
 
+    public List<Question> generateQuestions(List<Category> categories) {
+        List<Question> questions = categories.stream()
+                .map(category -> taskGenerateService.generate(category))
+                .collect(Collectors.toList());
+        save(questions);
+        return questions;
+    }
+
+
     public Question prepareNotUsedQuestion(Category category, Long profileId) {
         Question question = null;
         if (randomInteger(1, 4) == 4) {
@@ -38,11 +49,8 @@ public class TaskService {
             question = randomElement(questions);
         }
         if (question == null || isProfileUsedQuestion(profileId, question.getId())) {
-            Question generatedQuestion = taskGenerateService.generate(category);
-            if (generatedQuestion != null) {
-                save(generatedQuestion);
-                question = generatedQuestion;
-            }
+            question = taskGenerateService.generate(category);
+            save(question);
         }
         return question;
     }
@@ -55,6 +63,16 @@ public class TaskService {
         profileQuestionRepository.save(new ProfileQuestion(profile, question));
     }
 
+    public void saveProfilesUsedQuestions(List<Profile> profiles, List<Question> questions) {
+        List<ProfileQuestion> profileQuestions = new ArrayList<>();
+        profiles.forEach(profile -> {
+            questions.forEach(question -> {
+                profileQuestions.add(new ProfileQuestion(profile, question));
+            });
+        });
+        profileQuestionRepository.saveAll(profileQuestions);
+    }
+
     Boolean isCorrectAnswer(Long answerId) {
         // if not found return false
         return answerRepository.findById(answerId).orElseGet(() -> Answer.FALSE_EMPTY_ANSWER).getCorrect();
@@ -64,6 +82,14 @@ public class TaskService {
         questionRepository.save(question);
         question.getAnswers().forEach(answer -> answer.setQuestion(question));
         answerRepository.saveAll(question.getAnswers());
+    }
+
+    public void save(List<Question> questions) {
+        questionRepository.saveAll(questions);
+        questions.forEach(question -> {
+            question.getAnswers().forEach(answer -> answer.setQuestion(question));
+            answerRepository.saveAll(question.getAnswers());
+        });
     }
 
 }

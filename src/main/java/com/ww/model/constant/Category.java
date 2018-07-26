@@ -22,7 +22,9 @@ public enum Category {
     }
 
     public static Category random() {
-        List<Category> possible = Arrays.asList(values()).stream().filter(category -> category != RANDOM).collect(Collectors.toList());
+        List<Category> possible = Arrays.asList(values()).stream()
+                .filter(category -> category != RANDOM)
+                .collect(Collectors.toList());
         return randomElement(possible);
     }
 }
