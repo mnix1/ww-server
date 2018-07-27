@@ -36,4 +36,9 @@ public class FriendController {
     public Map list() {
         return friendService.list();
     }
+
+    @RequestMapping(value = "/suggest", method = RequestMethod.GET)
+    public Map suggest() {
+        return friendService.suggest();
+    }
 }

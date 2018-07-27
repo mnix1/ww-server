@@ -2,9 +2,11 @@ package com.ww.service.social;
 
 import com.ww.model.constant.social.FriendStatus;
 import com.ww.model.dto.social.FriendDTO;
+import com.ww.model.dto.social.ProfileDTO;
 import com.ww.model.entity.social.Profile;
 import com.ww.model.entity.social.ProfileFriend;
 import com.ww.repository.social.ProfileFriendRepository;
+import com.ww.repository.social.ProfileRepository;
 import com.ww.service.SessionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,16 +27,19 @@ public class FriendService {
     private ProfileFriendRepository profileFriendRepository;
 
     @Autowired
+    private ProfileRepository profileRepository;
+
+    @Autowired
     private ProfileService profileService;
 
     @Autowired
     private SessionService sessionService;
 
-    public Map<String,Object> add(String tag){
+    public Map<String, Object> add(String tag) {
         return add(sessionService.getProfileId(), tag);
     }
 
-    public Map<String, Object> add( Long profileId, String tag) {
+    public Map<String, Object> add(Long profileId, String tag) {
         Map<String, Object> model = new HashMap<>();
         Profile friendProfile = profileService.getProfile(tag);
         if (friendProfile == null) {
@@ -96,6 +101,23 @@ public class FriendService {
             }
         }
         model.put("code", 1);
+        return model;
+    }
+
+
+    public Map<String, Object> suggest() {
+        Map<String, Object> model = new HashMap<>();
+        List<Long> friendProfileIds = profileService.getProfile().getFriends().stream()
+                .map(e -> e.getFriendProfile().getId()).collect(Collectors.toList());
+        List<FriendDTO> possibleNewFriends =
+                (friendProfileIds.isEmpty()
+                        ? profileRepository.findAll()
+                        : profileRepository.findAllByIdNotIn(friendProfileIds))
+                        .stream()
+                        .limit(5)
+                        .map(profile -> new FriendDTO(profile, FriendStatus.SUGGESTED))
+                        .collect(Collectors.toList());
+        model.put("suggestedFriends", possibleNewFriends);
         return model;
     }
 

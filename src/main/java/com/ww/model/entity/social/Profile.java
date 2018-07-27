@@ -1,6 +1,7 @@
 package com.ww.model.entity.social;
 
 import com.ww.helper.TagHelper;
+import com.ww.model.constant.social.Avatar;
 import com.ww.model.entity.rival.task.ProfileQuestion;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ public class Profile {
     private String authId;
     private String tag;
     private String name;
+    private Avatar avatar;
     private Long level;
     private Long experience;
     private Long wisdomPoint;
@@ -33,11 +35,13 @@ public class Profile {
 
     public Profile(String authId) {
         this.tag = TagHelper.randomTag();
+        this.name = authId;
         this.authId = authId;
         this.level = 0L;
         this.experience = 0L;
         this.wisdomPoint = 0L;
         this.diamond = 0L;
+        this.avatar = Avatar.random();
     }
 
     public Profile(Long id) {
@@ -48,6 +52,7 @@ public class Profile {
         this.tag = tag;
         this.name = name;
         this.level = level;
+        this.avatar = Avatar.random();
     }
 
     @Override
