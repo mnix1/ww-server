@@ -22,10 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -77,6 +74,11 @@ public class BattleService {
         taskService.saveProfilesUsedQuestions(profiles, questions);
         Battle battle = create(profile, profiles, questions);
         return new BattleDTO(battle, questions.stream().map(question -> taskRendererService.prepareQuestionDTO(question)).collect(Collectors.toList()));
+    }
+
+    public BattleDTO endFriend(Long battleId, Map<String, String> questionIdAnswerIdMap) {
+        Date closeDate = new Date();
+        return null;
     }
 
     private Battle create(Profile creator, List<Profile> profiles, List<Question> questions) {
