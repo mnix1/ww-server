@@ -1,9 +1,8 @@
 package com.ww.controller.rival;
 
+import com.ww.model.dto.task.BattleDTO;
 import com.ww.service.SessionService;
 import com.ww.service.rival.BattleService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,14 +24,12 @@ public class BattleController {
     BattleService battleService;
 
     @RequestMapping(value = "/startFriend", method = RequestMethod.POST)
-    public Map startFriend(@RequestBody Map<String, Object> payload) {
+    public BattleDTO startFriend(@RequestBody Map<String, Object> payload) {
         if (!payload.containsKey("tags")) {
             throw new IllegalArgumentException();
         }
         List<String> tags = (List<String>) payload.get("tags");
-        Map<String, Object> model = new HashMap<>();
-        model.put("battle", battleService.startFriend(tags));
-        return model;
+        return battleService.startFriend(tags);
     }
 
     @RequestMapping(value = "/endFriend", method = RequestMethod.POST)
@@ -42,8 +39,6 @@ public class BattleController {
         }
         Long battleId = ((Integer) payload.get("battleId")).longValue();
         Map<String, Integer> questionIdAnswerIdMap = (Map<String, Integer>) payload.get("questionIdAnswerIdMap");
-        Map<String, Object> model = new HashMap<>();
-        model.put("battle", battleService.endFriend(battleId, questionIdAnswerIdMap));
-        return model;
+        return battleService.endFriend(battleId, questionIdAnswerIdMap);
     }
 }
