@@ -1,6 +1,7 @@
 package com.ww.controller.rival;
 
-import com.ww.model.dto.task.BattleDTO;
+import com.ww.model.dto.task.BattleInfoDTO;
+import com.ww.model.dto.task.BattleTaskDTO;
 import com.ww.service.SessionService;
 import com.ww.service.rival.BattleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +24,7 @@ public class BattleController {
     BattleService battleService;
 
     @RequestMapping(value = "/startFriend", method = RequestMethod.POST)
-    public BattleDTO startFriend(@RequestBody Map<String, Object> payload) {
+    public BattleTaskDTO startFriend(@RequestBody Map<String, Object> payload) {
         if (!payload.containsKey("tags")) {
             throw new IllegalArgumentException();
         }
@@ -40,5 +40,10 @@ public class BattleController {
         Long battleId = ((Integer) payload.get("battleId")).longValue();
         Map<String, Integer> questionIdAnswerIdMap = (Map<String, Integer>) payload.get("questionIdAnswerIdMap");
         return battleService.endFriend(battleId, questionIdAnswerIdMap);
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public List<BattleInfoDTO> list() {
+        return battleService.list();
     }
 }

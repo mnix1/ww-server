@@ -22,7 +22,7 @@ public class Battle {
     @JoinColumn(name = "creator_profile_id", nullable = false, updatable = false)
     private Profile creatorProfile;
     private BattleStatus status = BattleStatus.IN_PROGRESS;
-    private Date openDate = new Date();
+    private Date inProgressDate = new Date();
     private Date closeDate;
 
     @OneToMany(mappedBy = "battle", fetch = FetchType.LAZY)

@@ -5,8 +5,8 @@ import com.ww.model.constant.rival.battle.BattleAnswerResult;
 import com.ww.model.constant.rival.battle.BattleProfileStatus;
 import com.ww.model.constant.rival.battle.BattleStatus;
 import com.ww.model.constant.social.FriendStatus;
-import com.ww.model.dto.task.BattleDTO;
-import com.ww.model.dto.task.PractiseDTO;
+import com.ww.model.dto.task.BattleInfoDTO;
+import com.ww.model.dto.task.BattleTaskDTO;
 import com.ww.model.entity.rival.battle.Battle;
 import com.ww.model.entity.rival.battle.BattleAnswer;
 import com.ww.model.entity.rival.battle.BattleProfile;
@@ -59,7 +59,7 @@ public class BattleService {
     @Autowired
     private ProfileService profileService;
 
-    public BattleDTO startFriend(List<String> tags) {
+    public BattleTaskDTO startFriend(List<String> tags) {
         Set<String> tagSet = new HashSet<>(tags);
         Profile profile = profileService.getProfile();
         List<Profile> friends = profile.getFriends().stream()
@@ -78,7 +78,7 @@ public class BattleService {
         List<Question> questions = taskService.generateQuestions(categories);
         taskService.saveProfilesUsedQuestions(profiles, questions);
         Battle battle = create(profile, profiles, questions);
-        return new BattleDTO(battle, questions.stream().map(question -> taskRendererService.prepareQuestionDTO(question)).collect(Collectors.toList()));
+        return new BattleTaskDTO(battle, questions.stream().map(question -> taskRendererService.prepareQuestionDTO(question)).collect(Collectors.toList()));
     }
 
     public Map endFriend(Long battleId, Map<String, Integer> questionIdAnswerIdMap) throws IllegalArgumentException {
@@ -143,5 +143,9 @@ public class BattleService {
         return battle;
     }
 
+    public List<BattleInfoDTO> list() {
+        List<BattleProfile> battleProfiles = battleProfileRepository.findAllByProfile_IdAndStatus(sessionService.getProfileId(), BattleProfileStatus.OPEN);
+        return battleProfiles.stream().map(battleProfile -> new BattleInfoDTO(battleProfile.getBattle())).collect(Collectors.toList());
+    }
 
 }

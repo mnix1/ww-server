@@ -9,18 +9,18 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Getter
-public class BattleDTO {
+public class BattleTaskDTO {
 
     private Long id;
     private List<QuestionDTO> questions;
 //    private Map<Long,Long> questionIdCorrectAnswerIdMap;
 
-    public BattleDTO(Battle battle, List<QuestionDTO> questions) {
+    public BattleTaskDTO(Battle battle, List<QuestionDTO> questions) {
         this.id = battle.getId();
         this.questions = questions;
     }
 
-//    public BattleDTO(Battle battle, List<QuestionDTO> questions, Map<Long,Long> questionIdCorrectAnswerIdMap) {
+//    public BattleTaskDTO(Battle battle, List<QuestionDTO> questions, Map<Long,Long> questionIdCorrectAnswerIdMap) {
 //        this.id = battle.getId();
 //        this.questions = questions;
 //        this.questionIdCorrectAnswerIdMap = questionIdCorrectAnswerIdMap;
