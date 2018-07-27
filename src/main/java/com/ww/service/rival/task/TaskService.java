@@ -1,5 +1,6 @@
 package com.ww.service.rival.task;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.ww.model.constant.Category;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.ProfileQuestion;
@@ -73,9 +74,8 @@ public class TaskService {
         profileQuestionRepository.saveAll(profileQuestions);
     }
 
-    Boolean isCorrectAnswer(Long answerId) {
-        // if not found return false
-        return answerRepository.findById(answerId).orElseGet(() -> Answer.FALSE_EMPTY_ANSWER).getCorrect();
+    public Answer findCorrectAnswer(Question question){
+        return question.getAnswers().stream().filter(answer -> answer.getCorrect()).findFirst().orElseThrow(() -> new IllegalArgumentException("No correct answers"));
     }
 
     public void save(Question question) {

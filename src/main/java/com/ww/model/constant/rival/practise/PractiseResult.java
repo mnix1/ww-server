@@ -1,7 +1,7 @@
 package com.ww.model.constant.rival.practise;
 
 public enum PractiseResult {
-    OPEN,
+    IN_PROGRESS,
     ERROR,
     CORRECT,
     WRONG;

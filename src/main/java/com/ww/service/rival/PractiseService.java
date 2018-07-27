@@ -8,7 +8,6 @@ import com.ww.model.entity.rival.practise.Practise;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.social.Profile;
-import com.ww.repository.rival.task.ProfileQuestionRepository;
 import com.ww.repository.rival.practise.PractiseRepository;
 import com.ww.service.SessionService;
 import com.ww.service.rival.task.TaskRendererService;
@@ -73,12 +72,12 @@ public class PractiseService {
                 updatePractiseResult(practise, false, closeDate);
                 return null;
             }
-            Answer correctAnswer = question.getAnswers().stream().filter(answer -> answer.getCorrect()).findFirst().orElseThrow(() -> new Exception("No correct answers"));
+            Answer correctAnswer = taskService.findCorrectAnswer(question);
             boolean result = correctAnswer.getId().equals(answerId);
             updatePractiseResult(practise, result, closeDate);
             Map<String,Object> model = new HashMap<>();
             model.put("correctAnswerId", correctAnswer.getId());
-            model.put("answerInterval", practise.openedInterval());
+            model.put("answerInterval", practise.inProgressInterval());
             return model;
         } catch (Exception e) {
             //log

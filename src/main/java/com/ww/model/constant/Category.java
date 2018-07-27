@@ -15,7 +15,7 @@ public enum Category {
     MEMORY;
 
     public static Category mapToNotRandom(Category category) {
-        if (category == Category.RANDOM) {
+        if (category == Category.RANDOM || category == null) {
             return Category.random();
         }
         return category;
@@ -26,5 +26,13 @@ public enum Category {
                 .filter(category -> category != RANDOM)
                 .collect(Collectors.toList());
         return randomElement(possible);
+    }
+
+    public static Category fromString(String name){
+        try {
+            return Category.valueOf(name);
+        } catch (IllegalArgumentException e){
+            return random();
+        }
     }
 }

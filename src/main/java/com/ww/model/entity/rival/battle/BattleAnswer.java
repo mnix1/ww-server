@@ -28,4 +28,10 @@ public class BattleAnswer {
     @JoinColumn(name = "question_id", nullable = false, updatable = false)
     private Question question;
 
+    public BattleAnswer(BattleAnswerResult result, Battle battle, Profile profile, Question question) {
+        this.result = result;
+        this.battle = battle;
+        this.profile = profile;
+        this.question = question;
+    }
 }

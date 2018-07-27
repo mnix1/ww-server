@@ -1,6 +1,6 @@
 package com.ww.model.entity.rival.battle;
 
-import com.ww.model.constant.rival.battle.BattleResult;
+import com.ww.model.constant.rival.battle.BattleStatus;
 import com.ww.model.entity.social.Profile;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +21,7 @@ public class Battle {
     @ManyToOne
     @JoinColumn(name = "creator_profile_id", nullable = false, updatable = false)
     private Profile creatorProfile;
-    private BattleResult result = BattleResult.OPEN;
+    private BattleStatus status = BattleStatus.IN_PROGRESS;
     private Date openDate = new Date();
     private Date closeDate;
 

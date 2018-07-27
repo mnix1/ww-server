@@ -18,18 +18,18 @@ public class Practise {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long profileId;
-    private PractiseResult result = PractiseResult.OPEN;
-    private Date openDate = new Date();
+    private PractiseResult result = PractiseResult.IN_PROGRESS;
+    private Date inProgressDate = new Date();
     private Date closeDate;
     @ManyToOne
     @JoinColumn(name = "question_id", nullable = false, updatable = false)
     private Question question;
 
     public boolean isOpen() {
-        return result == PractiseResult.OPEN;
+        return result == PractiseResult.IN_PROGRESS;
     }
 
-    public Long openedInterval(){
-        return closeDate.getTime() - openDate.getTime();
+    public Long inProgressInterval(){
+        return closeDate.getTime() - inProgressDate.getTime();
     }
 }
