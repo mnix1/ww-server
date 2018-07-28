@@ -7,6 +7,7 @@ import com.ww.model.constant.rival.battle.BattleStatus;
 import com.ww.model.constant.social.FriendStatus;
 import com.ww.model.dto.task.BattleInfoDTO;
 import com.ww.model.dto.task.BattleTaskDTO;
+import com.ww.model.dto.task.QuestionDTO;
 import com.ww.model.entity.rival.battle.Battle;
 import com.ww.model.entity.rival.battle.BattleAnswer;
 import com.ww.model.entity.rival.battle.BattleProfile;
@@ -81,9 +82,36 @@ public class BattleService {
         return new BattleTaskDTO(battle, questions.stream().map(question -> taskRendererService.prepareQuestionDTO(question)).collect(Collectors.toList()));
     }
 
-    public Map endFriend(Long battleId, Map<String, Integer> questionIdAnswerIdMap) throws IllegalArgumentException {
+    public BattleTaskDTO startResponse(Long battleId) {
         Profile profile = profileService.getProfile();
+        Battle battle = battleRepository.findById(battleId).orElseThrow(() -> {
+            logger.error("Not existing battle: {}", battleId);
+            return new IllegalArgumentException();
+        });
+        if (battle.getStatus() == BattleStatus.CLOSED) {
+            logger.error("Battle already closed: {}", battleId);
+            throw new IllegalArgumentException();
+        }
+        BattleProfile battleProfile = battle.getProfiles().stream().
+                filter(e -> e.getStatus() == BattleProfileStatus.OPEN && e.getProfile().getId().equals(profile.getId()))
+                .findFirst()
+                .orElseThrow(() -> {
+                    logger.error("Battle not for this profile or not open: {}, {}", battleId, profile.getId());
+                    return new IllegalArgumentException();
+                });
+        battleProfile.setStatus(BattleProfileStatus.IN_PROGRESS);
+        List<QuestionDTO> questions = battle.getQuestions().stream()
+                .map(battleQuestion -> taskRendererService.prepareQuestionDTO(battleQuestion.getQuestion()))
+                .collect(Collectors.toList());
+        Date inProgressDate = new Date();
+        battleProfile.setInProgressDate(inProgressDate);
+        battleProfileRepository.save(battleProfile);
+        return new BattleTaskDTO(battle, questions);
+    }
+
+    public Map end(Long battleId, Map<String, Integer> questionIdAnswerIdMap) throws IllegalArgumentException {
         Date closeDate = new Date();
+        Profile profile = profileService.getProfile();
         Battle battle = battleRepository.findById(battleId).orElseThrow(() -> {
             logger.error("Not existing battle: {}", battleId);
             return new IllegalArgumentException();
@@ -96,7 +124,7 @@ public class BattleService {
                 filter(e -> e.getStatus() == BattleProfileStatus.IN_PROGRESS && e.getProfile().getId().equals(profile.getId()))
                 .findFirst()
                 .orElseThrow(() -> {
-                    logger.error("Battle not for this profile or already answered: {}, {}", battleId, profile.getId());
+                    logger.error("Battle not for this profile or already closed: {}, {}", battleId, profile.getId());
                     return new IllegalArgumentException();
                 });
         if (battleProfile.getStatus() == BattleProfileStatus.CLOSED) {

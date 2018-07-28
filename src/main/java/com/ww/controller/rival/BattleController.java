@@ -32,14 +32,24 @@ public class BattleController {
         return battleService.startFriend(tags);
     }
 
-    @RequestMapping(value = "/endFriend", method = RequestMethod.POST)
-    public Map endFriend(@RequestBody Map<String, Object> payload) {
+    @RequestMapping(value = "/startResponse", method = RequestMethod.POST)
+    public BattleTaskDTO startResponse(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("battleId")) {
+            throw new IllegalArgumentException();
+        }
+        Long battleId = ((Integer) payload.get("battleId")).longValue();
+        return battleService.startResponse(battleId);
+    }
+
+
+    @RequestMapping(value = "/end", method = RequestMethod.POST)
+    public Map end(@RequestBody Map<String, Object> payload) {
         if (!payload.containsKey("battleId") || !payload.containsKey("questionIdAnswerIdMap")) {
             throw new IllegalArgumentException();
         }
         Long battleId = ((Integer) payload.get("battleId")).longValue();
         Map<String, Integer> questionIdAnswerIdMap = (Map<String, Integer>) payload.get("questionIdAnswerIdMap");
-        return battleService.endFriend(battleId, questionIdAnswerIdMap);
+        return battleService.end(battleId, questionIdAnswerIdMap);
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
