@@ -107,16 +107,14 @@ public class FriendService {
 
     public Map<String, Object> suggest() {
         Map<String, Object> model = new HashMap<>();
-        List<Long> friendProfileIds = profileService.getProfile().getFriends().stream()
+        List<Long> notSuggestIds = profileService.getProfile().getFriends().stream()
                 .map(e -> e.getFriendProfile().getId()).collect(Collectors.toList());
-        List<FriendDTO> possibleNewFriends =
-                (friendProfileIds.isEmpty()
-                        ? profileRepository.findAll()
-                        : profileRepository.findAllByIdNotIn(friendProfileIds))
-                        .stream()
-                        .limit(5)
-                        .map(profile -> new FriendDTO(profile, FriendStatus.SUGGESTED))
-                        .collect(Collectors.toList());
+        notSuggestIds.add(sessionService.getProfileId());
+        List<FriendDTO> possibleNewFriends = profileRepository.findAllByIdNotIn(notSuggestIds)
+                .stream()
+                .limit(5)
+                .map(profile -> new FriendDTO(profile, FriendStatus.SUGGESTED))
+                .collect(Collectors.toList());
         model.put("suggestedFriends", possibleNewFriends);
         return model;
     }

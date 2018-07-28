@@ -5,9 +5,7 @@ import com.ww.model.constant.rival.battle.BattleAnswerResult;
 import com.ww.model.constant.rival.battle.BattleProfileStatus;
 import com.ww.model.constant.rival.battle.BattleStatus;
 import com.ww.model.constant.social.FriendStatus;
-import com.ww.model.dto.task.BattleInfoDTO;
-import com.ww.model.dto.task.BattleTaskDTO;
-import com.ww.model.dto.task.QuestionDTO;
+import com.ww.model.dto.task.*;
 import com.ww.model.entity.rival.battle.Battle;
 import com.ww.model.entity.rival.battle.BattleAnswer;
 import com.ww.model.entity.rival.battle.BattleProfile;
@@ -174,6 +172,43 @@ public class BattleService {
     public List<BattleInfoDTO> list() {
         List<BattleProfile> battleProfiles = battleProfileRepository.findAllByProfile_IdAndStatus(sessionService.getProfileId(), BattleProfileStatus.OPEN);
         return battleProfiles.stream().map(battleProfile -> new BattleInfoDTO(battleProfile.getBattle())).collect(Collectors.toList());
+    }
+
+    public BattleSummaryDTO summary(Long battleId) {
+        Battle battle = battleRepository.findById(battleId).orElseThrow(() -> {
+            logger.error("Not existing battle: {}", battleId);
+            return new IllegalArgumentException();
+        });
+        List<BattlePositionDTO> positions = new ArrayList<>();
+        Set<BattleAnswer> battleAnswers = battle.getAnswers();
+        Set<BattleProfile> battleProfiles = battle.getProfiles();
+        for (BattleProfile battleProfile : battleProfiles) {
+            BattlePositionDTO position = new BattlePositionDTO(battleProfile);
+            battleAnswers.stream().filter(battleAnswer -> battleAnswer.getProfile().getId().equals(battleProfile.getProfile().getId()))
+                    .forEach(battleAnswer -> {
+                        if (battleAnswer.getResult() == BattleAnswerResult.CORRECT) {
+                            position.increaseScore();
+                        }
+                    });
+            positions.add(position);
+        }
+        positions.sort((o1, o2) -> {
+            if (o1.getStatus() != BattleProfileStatus.CLOSED) {
+                if (o2.getStatus() != BattleProfileStatus.CLOSED) {
+                    return 0;
+                }
+                return 1;
+            }
+            if (o2.getStatus() != BattleProfileStatus.CLOSED) {
+                return -1;
+            }
+            if (o1.getScore().equals(o2.getScore())) {
+                return o1.getAnswerInterval().compareTo(o2.getAnswerInterval());
+            }
+            return o1.getScore().compareTo(o2.getScore());
+        });
+
+        return new BattleSummaryDTO(battleId, positions);
     }
 
 }

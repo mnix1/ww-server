@@ -1,6 +1,7 @@
 package com.ww.controller.rival;
 
 import com.ww.model.dto.task.BattleInfoDTO;
+import com.ww.model.dto.task.BattleSummaryDTO;
 import com.ww.model.dto.task.BattleTaskDTO;
 import com.ww.service.SessionService;
 import com.ww.service.rival.BattleService;
@@ -55,5 +56,14 @@ public class BattleController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public List<BattleInfoDTO> list() {
         return battleService.list();
+    }
+
+    @RequestMapping(value = "/summary", method = RequestMethod.POST)
+    public BattleSummaryDTO summary(@RequestBody Map<String, Object> payload){
+        if (!payload.containsKey("battleId")) {
+            throw new IllegalArgumentException();
+        }
+        Long battleId = ((Integer) payload.get("battleId")).longValue();
+        return battleService.summary(battleId);
     }
 }
