@@ -28,7 +28,7 @@ public class PractiseController {
         }
         Map<String, Object> model = new HashMap<>();
         Category category = Category.fromString((String) payload.get("category"));
-        model.put("practise", practiseService.start(category));
+        model.put("practise", practiseService.start(Category.mapToNotRandom(category)));
         return model;
     }
 

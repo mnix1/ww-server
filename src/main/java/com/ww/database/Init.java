@@ -54,8 +54,6 @@ public class Init {
         List<Profile> profiles = new ArrayList<>();
         profiles.add(new Profile(TagHelper.randomTag(), "Kozioł23", 3L));
         profiles.add(new Profile(TagHelper.randomTag(), "bocian", 10L));
-        profiles.add(new Profile(TagHelper.randomTag(), "mnix", 4L));
-        profiles.add(new Profile(TagHelper.randomTag(), "Rumo", 12L));
         profileRepository.saveAll(profiles);
     }
 

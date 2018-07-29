@@ -6,11 +6,17 @@ import java.util.List;
 import static com.ww.helper.RandomHelper.randomElement;
 
 public enum Avatar {
-    ROBO,
+    CAT,
+    COW,
+    DUCK,
+    GORILLA,
     KITEK,
-    SOWA,
-    RUMCIA,
+    OSMIORNICA,
+    OWL,
     PANDA,
+    PENGUIN,
+    ROBO,
+    RUMCIA,
     SZERYF,
     ZAROWA;
 
