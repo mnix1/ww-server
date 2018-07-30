@@ -17,6 +17,7 @@ public enum Avatar {
     PENGUIN,
     ROBO,
     RUMCIA,
+    SHEEP,
     SZERYF,
     ZAROWA;
 
