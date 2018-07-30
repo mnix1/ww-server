@@ -1,5 +1,7 @@
 package com.ww.model.dto.social;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.model.constant.social.Avatar;
 import com.ww.model.constant.social.FriendStatus;
 import com.ww.model.entity.social.Profile;
@@ -27,5 +29,16 @@ public class FriendDTO {
         this.status = status;
         this.avatar = profile.getAvatar();
         this.isOnline = isOnline;
+    }
+
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

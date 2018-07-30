@@ -1,11 +1,13 @@
 package com.ww.controller;
 
+import com.ww.model.dto.social.FriendDTO;
 import com.ww.service.social.FriendService;
 import com.ww.service.social.ProfileService;
 import com.ww.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -33,7 +35,7 @@ public class FriendController {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public Map list() {
+    public List<FriendDTO> list() {
         return friendService.list();
     }
 
