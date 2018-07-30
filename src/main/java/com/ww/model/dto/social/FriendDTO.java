@@ -13,17 +13,19 @@ public class FriendDTO {
     private String name;
     private Long level;
     private Avatar avatar;
+    private Boolean isOnline;
     private FriendStatus status;
 
-    public FriendDTO(ProfileFriend profileFriend) {
-        this(profileFriend.getFriendProfile(), profileFriend.getStatus());
+    public FriendDTO(ProfileFriend profileFriend, Boolean isOnline) {
+        this(profileFriend.getFriendProfile(), profileFriend.getStatus(), isOnline);
     }
 
-    public FriendDTO(Profile profile, FriendStatus status) {
+    public FriendDTO(Profile profile, FriendStatus status, Boolean isOnline) {
         this.tag = profile.getTag();
         this.name = profile.getName();
         this.level = profile.getLevel();
         this.status = status;
         this.avatar = profile.getAvatar();
+        this.isOnline = isOnline;
     }
 }

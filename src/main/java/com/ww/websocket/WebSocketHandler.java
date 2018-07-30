@@ -38,9 +38,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
         profileConnectionService.newConnection(session);
     }
 
-    private ProfileConnection findProfileConnection(WebSocketSession session) {
-        return profileConnectionService.findBySessionId(session.getId());
-    }
+//    private ProfileConnection findProfileConnection(WebSocketSession session) {
+//        return profileConnectionService.findBySessionId(session.getId());
+//    }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage jsonTextMessage) throws Exception {

@@ -95,8 +95,13 @@ public class FriendService {
         Map<String, Object> model = new HashMap<>();
         Set<ProfileFriend> profileFriends = profileService.getProfile().getFriends();
         List<FriendDTO> friends = profileFriends.stream()
-//                .filter(profileFriend -> profileFriend.getStatus() == FriendStatus.ACCEPTED)
-                .map(profileFriend -> new FriendDTO(profileFriend))
+                .map(profileFriend -> {
+                    Boolean isOnline = null;
+                    if (profileFriend.getStatus() == FriendStatus.ACCEPTED) {
+                        isOnline = profileConnectionService.findByProfileId(profileFriend.getFriendProfile().getId()).isPresent();
+                    }
+                    return new FriendDTO(profileFriend, isOnline);
+                })
                 .collect(Collectors.toList());
         model.put("friends", friends);
         return model;
@@ -127,7 +132,7 @@ public class FriendService {
         List<FriendDTO> possibleNewFriends = profileRepository.findAllByIdNotIn(notSuggestIds)
                 .stream()
                 .limit(5)
-                .map(profile -> new FriendDTO(profile, FriendStatus.SUGGESTED))
+                .map(profile -> new FriendDTO(profile, FriendStatus.SUGGESTED, null))
                 .collect(Collectors.toList());
         model.put("suggestedFriends", possibleNewFriends);
         return model;
