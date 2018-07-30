@@ -1,12 +1,19 @@
 package com.ww.websocket;
 
+import com.ww.service.social.FriendService;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+
+import java.io.IOException;
 
 @Getter
 @Setter
 public class ProfileConnection {
+    private static final Logger logger = LoggerFactory.getLogger(FriendService.class);
 
     private Long profileId;
 
@@ -21,6 +28,16 @@ public class ProfileConnection {
 
     String getSessionId() {
         return webSocketSession.getId();
+    }
+
+    public boolean sendMessage(String msg) {
+        try {
+            webSocketSession.sendMessage(new TextMessage(msg));
+            return true;
+        } catch (IOException e) {
+            logger.error("Error on websocket sending {} to {}", msg, profileId);
+            return false;
+        }
     }
 
     @Override

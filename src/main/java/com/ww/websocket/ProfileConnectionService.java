@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
@@ -34,11 +35,15 @@ public class ProfileConnectionService {
         profileConnections.removeIf(profileCommunication -> profileCommunication.getSessionId().equals(session.getId()));
     }
 
-    public ProfileConnection findBySessionId(String sessionId) {
-        return profileConnections.stream().filter(profileCommunication -> profileCommunication.getSessionId().equals(sessionId)).findFirst().get();
+    public Optional<ProfileConnection> findBySessionId(String sessionId) {
+        return profileConnections.stream().filter(profileCommunication -> profileCommunication.getSessionId().equals(sessionId)).findAny();
     }
 
-    public ProfileConnection findByProfileId(Long profileId) {
-        return profileConnections.stream().filter(profileCommunication -> profileCommunication.getProfileId().equals(profileId)).findFirst().get();
+    public Optional<ProfileConnection> findByProfileId(Long profileId) {
+        return profileConnections.stream().filter(profileCommunication -> profileCommunication.getProfileId().equals(profileId)).findAny();
+    }
+
+    public boolean sendMessage(Long profileId, String msg) {
+        return findByProfileId(profileId).map(profileConnection1 -> profileConnection1.sendMessage(msg)).orElse(false);
     }
 }

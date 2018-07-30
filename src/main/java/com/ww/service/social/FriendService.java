@@ -8,11 +8,15 @@ import com.ww.model.entity.social.ProfileFriend;
 import com.ww.repository.social.ProfileFriendRepository;
 import com.ww.repository.social.ProfileRepository;
 import com.ww.service.SessionService;
+import com.ww.websocket.Message;
+import com.ww.websocket.ProfileConnectionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.socket.TextMessage;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +38,9 @@ public class FriendService {
 
     @Autowired
     private SessionService sessionService;
+
+    @Autowired
+    private ProfileConnectionService profileConnectionService;
 
     public Map<String, Object> add(String tag) {
         return add(sessionService.getProfileId(), tag);
@@ -63,6 +70,7 @@ public class FriendService {
                 profileFriendRepository.save(profileFriend);
                 profileFriend = new ProfileFriend(FriendStatus.ACCEPTED, friendProfile, profileService.getProfileOnlyWithId(profileId));
                 profileFriendRepository.save(profileFriend);
+                sendWebSocketFriendReload(friendProfile.getId());
                 model.put("code", 1); // accept
                 return model;
             }
@@ -74,8 +82,13 @@ public class FriendService {
         }
         profileFriend = new ProfileFriend(FriendStatus.REQUESTED, friendProfile, profileService.getProfileOnlyWithId(profileId));
         profileFriendRepository.save(profileFriend);
+        sendWebSocketFriendReload(friendProfile.getId());
         model.put("code", 1);
         return model;
+    }
+
+    public void sendWebSocketFriendReload(Long profileId) {
+        profileConnectionService.sendMessage(profileId, Message.FRIEND_RELOAD.toString());
     }
 
     public Map<String, Object> list() {
@@ -98,6 +111,7 @@ public class FriendService {
             profileFriend = profileFriendRepository.findByProfile_IdAndFriendProfile_Id(friendProfileId, sessionService.getProfileId());
             if (profileFriend != null) {
                 profileFriendRepository.delete(profileFriend);
+                sendWebSocketFriendReload(friendProfileId);
             }
         }
         model.put("code", 1);
