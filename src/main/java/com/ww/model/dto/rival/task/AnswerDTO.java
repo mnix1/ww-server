@@ -1,4 +1,4 @@
-package com.ww.model.dto.task;
+package com.ww.model.dto.rival.task;
 
 import com.ww.model.entity.rival.task.Answer;
 import lombok.Getter;

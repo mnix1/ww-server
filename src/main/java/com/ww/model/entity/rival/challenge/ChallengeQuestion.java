@@ -1,4 +1,4 @@
-package com.ww.model.entity.rival.battle;
+package com.ww.model.entity.rival.challenge;
 
 import com.ww.model.entity.rival.task.Question;
 import lombok.Getter;
@@ -11,19 +11,19 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class BattleQuestion {
+public class ChallengeQuestion {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "battle_id", nullable = false, updatable = false)
-    private Battle battle;
+    @JoinColumn(name = "challenge_id", nullable = false, updatable = false)
+    private Challenge challenge;
     @ManyToOne
     @JoinColumn(name = "question_id", nullable = false, updatable = false)
     private Question question;
 
-    public BattleQuestion(Battle battle, Question question) {
-        this.battle = battle;
+    public ChallengeQuestion(Challenge challenge, Question question) {
+        this.challenge = challenge;
         this.question = question;
     }
 }

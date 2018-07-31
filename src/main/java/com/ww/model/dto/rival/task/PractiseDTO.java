@@ -1,11 +1,7 @@
-package com.ww.model.dto.task;
+package com.ww.model.dto.rival.task;
 
 import com.ww.model.entity.rival.practise.Practise;
-import com.ww.model.entity.rival.task.Question;
 import lombok.Getter;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 public class PractiseDTO {

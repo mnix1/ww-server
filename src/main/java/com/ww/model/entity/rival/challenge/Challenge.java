@@ -1,6 +1,6 @@
-package com.ww.model.entity.rival.battle;
+package com.ww.model.entity.rival.challenge;
 
-import com.ww.model.constant.rival.battle.BattleStatus;
+import com.ww.model.constant.rival.challenge.ChallengeStatus;
 import com.ww.model.entity.social.Profile;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,25 +14,25 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Battle {
+public class Challenge {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "creator_profile_id", nullable = false, updatable = false)
     private Profile creatorProfile;
-    private BattleStatus status = BattleStatus.IN_PROGRESS;
+    private ChallengeStatus status = ChallengeStatus.IN_PROGRESS;
     private Date inProgressDate = new Date();
     private Date closeDate;
 
-    @OneToMany(mappedBy = "battle", fetch = FetchType.LAZY)
-    private Set<BattleProfile> profiles;
+    @OneToMany(mappedBy = "challenge", fetch = FetchType.LAZY)
+    private Set<ChallengeProfile> profiles;
 
-    @OneToMany(mappedBy = "battle", fetch = FetchType.LAZY)
-    private Set<BattleQuestion> questions;
+    @OneToMany(mappedBy = "challenge", fetch = FetchType.LAZY)
+    private Set<ChallengeQuestion> questions;
 
-    @OneToMany(mappedBy = "battle", fetch = FetchType.LAZY)
-    private Set<BattleAnswer> answers;
+    @OneToMany(mappedBy = "challenge", fetch = FetchType.LAZY)
+    private Set<ChallengeAnswer> answers;
 
 
 

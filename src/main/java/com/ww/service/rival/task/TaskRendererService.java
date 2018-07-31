@@ -1,7 +1,7 @@
 package com.ww.service.rival.task;
 
 import com.ww.model.constant.rival.task.TaskRenderer;
-import com.ww.model.dto.task.QuestionDTO;
+import com.ww.model.dto.rival.task.QuestionDTO;
 import com.ww.model.entity.rival.task.Question;
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;

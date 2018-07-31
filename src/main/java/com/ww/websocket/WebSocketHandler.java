@@ -46,18 +46,5 @@ public class WebSocketHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage jsonTextMessage) throws Exception {
         String message = jsonTextMessage.getPayload();
         logger.debug("Message received: " + jsonTextMessage.getPayload() + ", from sessionId: " + session.getId());
-//        if (message.contains("CONTROL")) {
-//            battleService.move(session.getId(), message.substring(7));
-//        } else if (message.equals("BATTLE_START")) {
-//            BattleWrapper battleWrapper = battleService.createBattle(findProfileConnection(session));
-//            if (battleWrapper.isPreparingStatus()) {
-//                battleService.prepareBattle(battleWrapper);
-//                logger.debug("Preparing Battle");
-//            }
-//        } else if (message.equals("BATTLE_CANCEL")) {
-//            battleService.cancelBattle(findProfileConnection(session));
-//        } else if (message.equals("READY_FOR_START")) {
-//            battleService.readyForStart(session.getId());
-//        }
     }
 }

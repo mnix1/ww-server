@@ -1,11 +1,8 @@
 package com.ww.controller.rival;
 
 import com.ww.model.constant.Category;
-import com.ww.service.rival.BattleService;
 import com.ww.service.rival.PractiseService;
 import com.ww.service.SessionService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

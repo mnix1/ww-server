@@ -2,17 +2,14 @@ package com.ww.controller;
 
 import com.ww.model.entity.social.Profile;
 import com.ww.service.SessionService;
-import com.ww.service.rival.BattleService;
 import com.ww.service.social.FriendService;
 import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController

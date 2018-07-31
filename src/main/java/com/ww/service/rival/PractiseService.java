@@ -2,8 +2,8 @@ package com.ww.service.rival;
 
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.practise.PractiseResult;
-import com.ww.model.dto.task.PractiseDTO;
-import com.ww.model.dto.task.QuestionDTO;
+import com.ww.model.dto.rival.task.PractiseDTO;
+import com.ww.model.dto.rival.task.QuestionDTO;
 import com.ww.model.entity.rival.practise.Practise;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Question;

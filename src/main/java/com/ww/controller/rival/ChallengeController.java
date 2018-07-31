@@ -1,10 +1,10 @@
 package com.ww.controller.rival;
 
-import com.ww.model.dto.task.BattleInfoDTO;
-import com.ww.model.dto.task.BattleSummaryDTO;
-import com.ww.model.dto.task.BattleTaskDTO;
+import com.ww.model.dto.rival.challenge.ChallengeInfoDTO;
+import com.ww.model.dto.rival.challenge.ChallengeSummaryDTO;
+import com.ww.model.dto.rival.challenge.ChallengeTaskDTO;
 import com.ww.service.SessionService;
-import com.ww.service.rival.BattleService;
+import com.ww.service.rival.ChallengeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,55 +15,55 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/battle")
-public class BattleController {
+@RequestMapping(value = "/challenge")
+public class ChallengeController {
 
     @Autowired
     SessionService sessionService;
 
     @Autowired
-    BattleService battleService;
+    ChallengeService challengeService;
 
     @RequestMapping(value = "/startFriend", method = RequestMethod.POST)
-    public BattleTaskDTO startFriend(@RequestBody Map<String, Object> payload) {
+    public ChallengeTaskDTO startFriend(@RequestBody Map<String, Object> payload) {
         if (!payload.containsKey("tags")) {
             throw new IllegalArgumentException();
         }
         List<String> tags = (List<String>) payload.get("tags");
-        return battleService.startFriend(tags);
+        return challengeService.startFriend(tags);
     }
 
     @RequestMapping(value = "/startResponse", method = RequestMethod.POST)
-    public BattleTaskDTO startResponse(@RequestBody Map<String, Object> payload) {
-        if (!payload.containsKey("battleId")) {
+    public ChallengeTaskDTO startResponse(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("challengeId")) {
             throw new IllegalArgumentException();
         }
-        Long battleId = ((Integer) payload.get("battleId")).longValue();
-        return battleService.startResponse(battleId);
+        Long challengeId = ((Integer) payload.get("challengeId")).longValue();
+        return challengeService.startResponse(challengeId);
     }
 
 
     @RequestMapping(value = "/end", method = RequestMethod.POST)
     public Map end(@RequestBody Map<String, Object> payload) {
-        if (!payload.containsKey("battleId") || !payload.containsKey("questionIdAnswerIdMap")) {
+        if (!payload.containsKey("challengeId") || !payload.containsKey("questionIdAnswerIdMap")) {
             throw new IllegalArgumentException();
         }
-        Long battleId = ((Integer) payload.get("battleId")).longValue();
+        Long challengeId = ((Integer) payload.get("challengeId")).longValue();
         Map<String, Integer> questionIdAnswerIdMap = (Map<String, Integer>) payload.get("questionIdAnswerIdMap");
-        return battleService.end(battleId, questionIdAnswerIdMap);
+        return challengeService.end(challengeId, questionIdAnswerIdMap);
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public List<BattleInfoDTO> list() {
-        return battleService.list();
+    public List<ChallengeInfoDTO> list() {
+        return challengeService.list();
     }
 
     @RequestMapping(value = "/summary", method = RequestMethod.POST)
-    public BattleSummaryDTO summary(@RequestBody Map<String, Object> payload){
-        if (!payload.containsKey("battleId")) {
+    public ChallengeSummaryDTO summary(@RequestBody Map<String, Object> payload){
+        if (!payload.containsKey("challengeId")) {
             throw new IllegalArgumentException();
         }
-        Long battleId = ((Integer) payload.get("battleId")).longValue();
-        return battleService.summary(battleId);
+        Long challengeId = ((Integer) payload.get("challengeId")).longValue();
+        return challengeService.summary(challengeId);
     }
 }
