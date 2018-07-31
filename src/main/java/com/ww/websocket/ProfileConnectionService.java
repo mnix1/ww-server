@@ -1,7 +1,6 @@
 package com.ww.websocket;
 
 import com.ww.model.constant.social.FriendStatus;
-import com.ww.model.dto.social.FriendDTO;
 import com.ww.model.entity.social.Profile;
 import com.ww.repository.social.ProfileFriendRepository;
 import com.ww.service.social.ProfileService;
@@ -21,6 +20,7 @@ public class ProfileConnectionService {
 
     @Autowired
     ProfileService profileService;
+
     @Autowired
     ProfileFriendRepository profileFriendRepository;
 
@@ -60,8 +60,8 @@ public class ProfileConnectionService {
 
     public void sendFriendConnectionChanged(Profile profile, Message message) {
         profileFriendRepository.findByProfile_IdAndStatus(profile.getId(), FriendStatus.ACCEPTED).stream()
-                .forEach(profileFriend -> {
-                    sendMessage(profileFriend.getFriendProfile().getId(), new MessageDTO(message, profile.getTag()).toString());
-                });
+                .forEach(profileFriend ->
+                        sendMessage(profileFriend.getFriendProfile().getId(), new MessageDTO(message, profile.getTag()).toString())
+                );
     }
 }

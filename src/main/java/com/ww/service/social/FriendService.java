@@ -88,7 +88,7 @@ public class FriendService {
     }
 
     public void sendWebSocketFriendAdd(ProfileFriend profileFriend) {
-        FriendDTO friendDTO = new FriendDTO(profileFriend.getFriendProfile(), profileFriend.getStatus(), true);
+        FriendDTO friendDTO = new FriendDTO(profileFriend.getFriendProfile(), profileFriend.getStatus(), profileFriend.getStatus() == FriendStatus.ACCEPTED);
         profileConnectionService.sendMessage(profileFriend.getProfile().getId(), new MessageDTO(Message.FRIEND_ADD, friendDTO.toString()).toString());
     }
 
@@ -118,7 +118,7 @@ public class FriendService {
             profileFriend = profileFriendRepository.findByProfile_IdAndFriendProfile_Id(friendProfileId, sessionService.getProfileId());
             if (profileFriend != null) {
                 profileFriendRepository.delete(profileFriend);
-                sendWebSocketFriendDelete(friendProfileId, tag);
+                sendWebSocketFriendDelete(friendProfileId, profileFriend.getFriendProfile().getTag());
             }
         }
         model.put("code", 1);
