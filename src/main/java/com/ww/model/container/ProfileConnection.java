@@ -34,7 +34,7 @@ public class ProfileConnection {
         try {
             webSocketSession.sendMessage(new TextMessage(msg));
             return true;
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error("Error on websocket sending {} to {}", msg, profileId);
             return false;
         }

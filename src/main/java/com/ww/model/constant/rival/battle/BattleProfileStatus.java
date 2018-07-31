@@ -4,6 +4,6 @@ public enum BattleProfileStatus {
     OPEN,//waiting for accept
     ACCEPTED,
     REJECTED,
-    PLAYING,
+    IN_PROGRESS,
     CLOSED;
 }

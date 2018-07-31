@@ -1,11 +1,10 @@
 package com.ww.service.social;
 
 import com.ww.model.constant.social.FriendStatus;
+import com.ww.model.container.ProfileConnection;
 import com.ww.model.entity.social.Profile;
 import com.ww.repository.social.ProfileFriendRepository;
 import com.ww.service.SessionService;
-import com.ww.service.social.ProfileService;
-import com.ww.model.container.ProfileConnection;
 import com.ww.websocket.message.Message;
 import com.ww.websocket.message.MessageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,13 +45,13 @@ public class ProfileConnectionService {
                     }
                 });
         profileConnections.add(new ProfileConnection(profile.getId(), session));
-        sendFriendConnectionChanged(profile, Message.FRIEND_ONLINE);
+        sendFriendConnectionChanged(profile, Message.FRIEND_SIGN_IN);
     }
 
     public void deleteConnection(WebSocketSession session) {
         findBySessionId(session.getId()).ifPresent(profileConnection -> {
             profileConnections.remove(profileConnection);
-            sendFriendConnectionChanged(profileService.getProfile(profileConnection.getProfileId()), Message.FRIEND_OFFLINE);
+            sendFriendConnectionChanged(profileService.getProfile(profileConnection.getProfileId()), Message.FRIEND_SIGN_OUT);
         });
     }
 
@@ -69,7 +68,7 @@ public class ProfileConnectionService {
     }
 
     public boolean sendMessage(Long profileId, String msg) {
-        return findByProfileId(profileId).map(profileConnection1 -> profileConnection1.sendMessage(msg)).orElse(false);
+        return findByProfileId(profileId).map(profileConnection -> profileConnection.sendMessage(msg)).orElse(false);
     }
 
     public void sendFriendConnectionChanged(Profile profile, Message message) {

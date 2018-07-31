@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/challenge")
+@RequestMapping(value = "/battle")
 public class BattleController {
 
     @Autowired
@@ -24,9 +24,30 @@ public class BattleController {
     public Map start(@RequestBody Map<String, Object> payload) {
         String tag = null;
         if (payload.containsKey("tag")) {
-            tag = (String)payload.get("tag");
+            tag = (String) payload.get("tag");
         }
         return battleService.start(tag);
+    }
+
+    @RequestMapping(value = "/cancel", method = RequestMethod.POST)
+    public Map cancel() {
+        return battleService.cancel();
+    }
+
+    @RequestMapping(value = "/accept", method = RequestMethod.POST)
+    public Map accept(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("tag")) {
+            throw new IllegalArgumentException();
+        }
+        return battleService.start((String) payload.get("tag"));
+    }
+
+    @RequestMapping(value = "/reject", method = RequestMethod.POST)
+    public Map reject(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("tag")) {
+            throw new IllegalArgumentException();
+        }
+        return battleService.start((String) payload.get("tag"));
     }
 
 
