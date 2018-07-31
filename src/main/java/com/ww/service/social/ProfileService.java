@@ -10,6 +10,8 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -39,6 +41,13 @@ public class ProfileService {
 
     public Profile getProfile(String tag) {
         return profileRepository.findByTag(tag);
+    }
+
+    public List<Profile> getProfiles(List<Long> profileIds) {
+        if (profileIds.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return profileRepository.findAllByIdIn(profileIds);
     }
 
     public String getAuthId(Principal user) {

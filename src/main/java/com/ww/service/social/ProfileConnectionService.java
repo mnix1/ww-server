@@ -1,9 +1,11 @@
-package com.ww.websocket;
+package com.ww.service.social;
 
 import com.ww.model.constant.social.FriendStatus;
 import com.ww.model.entity.social.Profile;
 import com.ww.repository.social.ProfileFriendRepository;
+import com.ww.service.SessionService;
 import com.ww.service.social.ProfileService;
+import com.ww.model.container.ProfileConnection;
 import com.ww.websocket.message.Message;
 import com.ww.websocket.message.MessageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -22,7 +25,14 @@ public class ProfileConnectionService {
     ProfileService profileService;
 
     @Autowired
+    SessionService sessionService;
+
+    @Autowired
     ProfileFriendRepository profileFriendRepository;
+
+    public List<ProfileConnection> getProfileConnections() {
+        return profileConnections;
+    }
 
     public void newConnection(WebSocketSession session) {
         Profile profile = profileService.createOrRetrieveProfile(profileService.getAuthId(session.getPrincipal()));
@@ -52,6 +62,10 @@ public class ProfileConnectionService {
 
     public Optional<ProfileConnection> findByProfileId(Long profileId) {
         return profileConnections.stream().filter(profileCommunication -> profileCommunication.getProfileId().equals(profileId)).findAny();
+    }
+
+    public ProfileConnection findByProfileId() {
+        return findByProfileId(sessionService.getProfileId()).get();
     }
 
     public boolean sendMessage(Long profileId, String msg) {

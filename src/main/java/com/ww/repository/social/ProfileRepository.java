@@ -14,5 +14,6 @@ public interface ProfileRepository extends CrudRepository<Profile, Long> {
     Profile findByTag(String tag);
 
     List<Profile> findAllByIdNotIn(List<Long> ids);
+    List<Profile> findAllByIdIn(List<Long> ids);
     List<Profile> findAll();
 }

@@ -1,5 +1,6 @@
 package com.ww.websocket;
 
+import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

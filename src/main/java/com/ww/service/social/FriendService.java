@@ -2,14 +2,12 @@ package com.ww.service.social;
 
 import com.ww.model.constant.social.FriendStatus;
 import com.ww.model.dto.social.FriendDTO;
-import com.ww.model.dto.social.ProfileDTO;
 import com.ww.model.entity.social.Profile;
 import com.ww.model.entity.social.ProfileFriend;
 import com.ww.repository.social.ProfileFriendRepository;
 import com.ww.repository.social.ProfileRepository;
 import com.ww.service.SessionService;
 import com.ww.websocket.message.Message;
-import com.ww.websocket.ProfileConnectionService;
 import com.ww.websocket.message.MessageDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +61,7 @@ public class FriendService {
         if (profileFriend != null) {
             if (profileFriend.getStatus() == FriendStatus.ACCEPTED) {
                 model.put("code", -1); // already friends
+                logger.error("Requested to add already friend: sessionProfileId: {} tag: {}", profileId, tag);
                 return model;
             }
             if (profileFriend.getStatus() == FriendStatus.REQUESTED) {
@@ -88,7 +87,7 @@ public class FriendService {
     }
 
     public void sendWebSocketFriendAdd(ProfileFriend profileFriend) {
-        FriendDTO friendDTO = new FriendDTO(profileFriend.getFriendProfile(), profileFriend.getStatus(), profileFriend.getStatus() == FriendStatus.ACCEPTED);
+        FriendDTO friendDTO = new FriendDTO(profileFriend.getFriendProfile(), profileFriend.getStatus(), profileFriend.getStatus() == FriendStatus.ACCEPTED ? true : null);
         profileConnectionService.sendMessage(profileFriend.getProfile().getId(), new MessageDTO(Message.FRIEND_ADD, friendDTO.toString()).toString());
     }
 

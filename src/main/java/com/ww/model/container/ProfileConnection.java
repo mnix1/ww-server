@@ -1,4 +1,4 @@
-package com.ww.websocket;
+package com.ww.model.container;
 
 import com.ww.service.social.FriendService;
 import lombok.Getter;
@@ -26,7 +26,7 @@ public class ProfileConnection {
         this.webSocketSession = webSocketSession;
     }
 
-    String getSessionId() {
+    public String getSessionId() {
         return webSocketSession.getId();
     }
 
