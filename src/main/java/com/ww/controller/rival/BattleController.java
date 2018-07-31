@@ -35,19 +35,13 @@ public class BattleController {
     }
 
     @RequestMapping(value = "/accept", method = RequestMethod.POST)
-    public Map accept(@RequestBody Map<String, Object> payload) {
-        if (!payload.containsKey("tag")) {
-            throw new IllegalArgumentException();
-        }
-        return battleService.start((String) payload.get("tag"));
+    public Map accept() {
+        return battleService.accept();
     }
 
     @RequestMapping(value = "/reject", method = RequestMethod.POST)
-    public Map reject(@RequestBody Map<String, Object> payload) {
-        if (!payload.containsKey("tag")) {
-            throw new IllegalArgumentException();
-        }
-        return battleService.start((String) payload.get("tag"));
+    public Map reject() {
+        return battleService.reject();
     }
 
 

@@ -44,7 +44,8 @@ public class BattleService {
 
     public Map start(String tag) {
         Map<String, Object> model = new HashMap<>();
-        cleanBattles();
+        cleanBattlesCreator();
+        cleanBattlesOpponent();
         BattleContainer battleContainer = prepareBattleContainer(tag);
         if (battleContainer == null) {
             model.put("code", -1);
@@ -55,15 +56,34 @@ public class BattleService {
         return model;
     }
 
-    private void cleanBattles(){
+    private void cleanBattlesCreator() {
         battles.removeIf(battleContainer -> battleContainer.getCreatorProfile().getId().equals(sessionService.getProfileId()));
+    }
+
+    private void cleanBattlesOpponent() {
+        battles.removeIf(battleContainer -> battleContainer.getOpponentProfile().getId().equals(sessionService.getProfileId()));
     }
 
     public Map cancel() {
         Map<String, Object> model = new HashMap<>();
         battles.stream().filter(battleContainer -> battleContainer.getCreatorProfile().getId().equals(sessionService.getProfileId()))
                 .forEach(this::sendCancelInvite);
-        this.cleanBattles();
+        this.cleanBattlesCreator();
+        return model;
+    }
+
+    public Map accept() {
+        Map<String, Object> model = new HashMap<>();
+//        battles.stream().filter(battleContainer -> battleContainer.getOpponentProfile().getId().equals(sessionService.getProfileId()))
+//                .forEach(this::sendAcceptInvite);
+        return model;
+    }
+
+    public Map reject() {
+        Map<String, Object> model = new HashMap<>();
+        battles.stream().filter(battleContainer -> battleContainer.getOpponentProfile().getId().equals(sessionService.getProfileId()))
+                .forEach(this::sendRejectInvite);
+        this.cleanBattlesOpponent();
         return model;
     }
 
@@ -102,6 +122,14 @@ public class BattleService {
 
     private void sendCancelInvite(BattleContainer battleContainer) {
         battleContainer.getOpponentProfileConnection().sendMessage(new MessageDTO(Message.BATTLE_CANCEL_INVITE, "").toString());
+    }
+
+    private void sendRejectInvite(BattleContainer battleContainer) {
+        battleContainer.getCreatorProfileConnection().sendMessage(new MessageDTO(Message.BATTLE_REJECT_INVITE, "").toString());
+    }
+
+    private void sendAcceptInvite(BattleContainer battleContainer) {
+        battleContainer.getCreatorProfileConnection().sendMessage(new MessageDTO(Message.BATTLE_ACCEPT_INVITE, "").toString());
     }
 
 }
