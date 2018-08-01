@@ -144,13 +144,17 @@ public class BattleService {
         battleInitContainer.getCreatorProfileConnection().sendMessage(new MessageDTO(Message.BATTLE_ACCEPT_INVITE, "").toString());
     }
 
-    public void readyForStart(String sessionId) {
+    public synchronized void readyForStart(String sessionId) {
         BattleManager battleManager = battleManagers.get(sessionId);
         battleManager.maybeStart(sessionId);
     }
 
-    public void answer(String sessionId, String content) {
+    public synchronized void answer(String sessionId, String content) {
         BattleManager battleManager = battleManagers.get(sessionId);
+        if (battleManager.isLock()) {
+            return;
+        }
+        battleManager.setLock(true);
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             Map<String, Object> map = objectMapper.readValue(content, HashMap.class);

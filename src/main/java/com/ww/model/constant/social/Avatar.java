@@ -9,6 +9,7 @@ public enum Avatar {
     ALPAKA,
     ANT,
     BEE,
+    BEAR,
     CAT,
     CAT_TEACHER,
     COW,

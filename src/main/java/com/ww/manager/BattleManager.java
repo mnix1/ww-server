@@ -32,11 +32,20 @@ public class BattleManager {
     private Question question;
     private String winnerTag;
     private BattleService battleService;
+    private boolean locked = false;
 
     public BattleManager(BattleInitContainer bic, BattleService battleService) {
         this.profileMap.put(bic.getCreatorProfileConnection().getSessionId(), new BattleProfileContainer(bic.getCreatorProfile(), bic.getCreatorProfileConnection()));
         this.profileMap.put(bic.getOpponentProfileConnection().getSessionId(), new BattleProfileContainer(bic.getOpponentProfile(), bic.getOpponentProfileConnection()));
         this.battleService = battleService;
+    }
+
+    public boolean isLock() {
+        return locked;
+    }
+
+    public void setLock(boolean locked) {
+        this.locked = locked;
     }
 
     public void maybeStart(String sessionId) {
@@ -64,7 +73,7 @@ public class BattleManager {
         return battleService.prepareQuestionDTO(question);
     }
 
-    private void start() {
+    private synchronized void start() {
         QuestionDTO questionDTO = prepareQuestion();
         profileMap.values().stream().forEach(battleProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
@@ -77,7 +86,7 @@ public class BattleManager {
         });
     }
 
-    public void answer(String sessionId, Map<String, Object> content) {
+    public synchronized void answer(String sessionId, Map<String, Object> content) {
         Answer correctAnswer = question.getAnswers().stream().filter(Answer::getCorrect).findFirst().get();
         Boolean isAnswerCorrect = false;
         Long markedAnswerId = null;
@@ -130,6 +139,7 @@ public class BattleManager {
                     profileMap.values().stream().forEach(battleProfileContainer -> {
                         send(model, Message.BATTLE_NEXT_QUESTION, battleProfileContainer.getProfileConnection());
                     });
+                    setLock(false);
                 });
     }
 
