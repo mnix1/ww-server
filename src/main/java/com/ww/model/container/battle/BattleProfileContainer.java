@@ -9,11 +9,20 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@AllArgsConstructor
 @Getter
 @Setter
 public class BattleProfileContainer {
     private Profile profile;
     private ProfileConnection profileConnection;
-    private BattleProfileStatus status;
+    private BattleProfileStatus status = BattleProfileStatus.OPEN;
+    private Integer score = 0;
+
+    public BattleProfileContainer(Profile profile, ProfileConnection profileConnection) {
+        this.profile = profile;
+        this.profileConnection = profileConnection;
+    }
+
+    public Integer increaseScore(){
+        return ++score;
+    }
 }

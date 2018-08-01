@@ -1,5 +1,6 @@
 package com.ww.websocket;
 
+import com.ww.service.rival.BattleService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
 import org.slf4j.Logger;
@@ -21,6 +22,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     @Autowired
     ProfileConnectionService profileConnectionService;
+
+    @Autowired
+    BattleService battleService;
 
     @Override
     public void handleTransportError(WebSocketSession session, Throwable throwable) throws Exception {
@@ -47,5 +51,10 @@ public class WebSocketHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage jsonTextMessage) throws Exception {
         String message = jsonTextMessage.getPayload();
         logger.debug("Message received: " + jsonTextMessage.getPayload() + ", from sessionId: " + session.getId());
+        if (message.equals("BATTLE_READY_FOR_START")) {
+            battleService.readyForStart(session.getId());
+        } else if (message.contains("BATTLE_ANSWER")) {
+            battleService.answer(session.getId(), message.substring("BATTLE_ANSWER".length()));
+        }
     }
 }

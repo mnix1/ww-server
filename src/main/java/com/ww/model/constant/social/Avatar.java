@@ -6,10 +6,16 @@ import java.util.List;
 import static com.ww.helper.RandomHelper.randomElement;
 
 public enum Avatar {
+    ALPAKA,
+    ANT,
+    BEE,
     CAT,
     COW,
     DUCK,
+    EAGLE,
+    GIRAFFE,
     GORILLA,
+    HORSE,
     KITEK,
     OSMIORNICA,
     OWL,
@@ -17,9 +23,12 @@ public enum Avatar {
     PENGUIN,
     ROBO,
     RUMCIA,
+    SNAKE,
     SHEEP,
+    SKUNK,
     SZERYF,
-    ZAROWA;
+    ZAROWA,
+    ZUBR;
 
     public static Avatar random() {
         List<Avatar> possible = Arrays.asList(values());

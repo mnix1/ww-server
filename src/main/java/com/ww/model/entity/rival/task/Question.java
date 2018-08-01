@@ -34,4 +34,11 @@ public class Question {
         this.setTextContentPolish(content);
         this.setTextContentEnglish(content);
     }
+
+    public void initAnswerIds() {
+        long id = 0;
+        for (Answer answer : answers) {
+            answer.setId(id++);
+        }
+    }
 }
