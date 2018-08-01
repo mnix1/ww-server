@@ -85,20 +85,22 @@ public class BattleManager {
             markedAnswerId = ((Integer) content.get("answerId")).longValue();
             isAnswerCorrect = correctAnswer.getId().equals(markedAnswerId);
         }
+        String winnerName = null;
+        BattleProfileContainer container;
         if (isAnswerCorrect) {
-            Integer score = profileMap.get(sessionId).increaseScore();
-            if (MAX_SCORE.equals(score)) {
-                winnerTag = profileMap.get(sessionId).getProfile().getTag();
-            }
+            container = profileMap.get(sessionId);
         } else {
             String opponentSessionId = getOpponentSessionId(sessionId);
-            Integer score = profileMap.get(opponentSessionId).increaseScore();
-            if (MAX_SCORE.equals(score)) {
-                winnerTag = profileMap.get(opponentSessionId).getProfile().getTag();
-            }
+            container = profileMap.get(opponentSessionId);
+        }
+        Integer score = container.increaseScore();
+        if (MAX_SCORE.equals(score)) {
+            winnerTag = container.getProfile().getTag();
+            winnerName = container.getProfile().getName();
         }
         Integer nextQuestionInterval = 5000;
         Long finalMarkedAnswerId = markedAnswerId;
+        String finalWinnerName = winnerName;
         profileMap.values().stream().forEach(battleProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
             String mySessionId = battleProfileContainer.getProfileConnection().getSessionId();
@@ -108,7 +110,7 @@ public class BattleManager {
             model.put("meAnswered", sessionId.equals(mySessionId));
             model.put("score", profileMap.get(mySessionId).getScore());
             model.put("opponentScore", profileMap.get(opponentSessionId).getScore());
-            model.put("winner", winnerTag);
+            model.put("winner", finalWinnerName);
             model.put("nextQuestionInterval", nextQuestionInterval);
             send(model, Message.BATTLE_ANSWER, battleProfileContainer.getProfileConnection());
         });

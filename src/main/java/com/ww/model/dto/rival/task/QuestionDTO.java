@@ -1,5 +1,6 @@
 package com.ww.model.dto.rival.task;
 
+import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.task.TaskRenderer;
 import com.ww.model.entity.rival.task.Question;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 public class QuestionDTO {
 
     private Long id;
+    private Category category;
     private TaskRenderer taskRenderer;
     private String imageContent;
     private String animationContent;
@@ -22,6 +24,7 @@ public class QuestionDTO {
 
     public QuestionDTO(Question question) {
         this.id = question.getId();
+        this.category = question.getCategory();
         this.taskRenderer = question.getTaskRenderer();
         this.imageContent = question.getImageContent();
         this.animationContent = question.getAnimationContent();
