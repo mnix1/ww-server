@@ -100,26 +100,11 @@ public class BattleService {
     }
 
     private BattleInitContainer prepareBattleContainer(String tag) {
-        ProfileConnection opponentProfileConnection = null;
-        Profile opponentProfile = null;
-        if (tag == null) {
-            //TODO autobinding profiles
-//            List<ProfileConnection> profileConnections = profileConnectionService.getProfileConnections();
-//            if (profileConnections.isEmpty()) {
-//                //TODO add bot because no users
-//                logger.error("No connected profiles: {}", sessionService.getProfileId());
-//                return null;
-//            }
-//            //TODO add logic to find closest skill opponent
-//            opponentProfileConnection = profileConnections.get(0);
-//            opponentProfile = profileService.getProfile(opponentProfileConnection.getProfileId());
-        } else {
-            opponentProfile = profileService.getProfile(tag);
-            opponentProfileConnection = profileConnectionService.findByProfileId(opponentProfile.getId()).orElseGet(null);
-            if (opponentProfileConnection == null) {
-                logger.error("Not connected profile with tag: {}, sessionProfileId: {}", tag, sessionService.getProfileId());
-                return null;
-            }
+        Profile opponentProfile = profileService.getProfile(tag);
+        ProfileConnection opponentProfileConnection =  profileConnectionService.findByProfileId(opponentProfile.getId()).orElseGet(null);
+        if (opponentProfileConnection == null) {
+            logger.error("Not connected profile with tag: {}, sessionProfileId: {}", tag, sessionService.getProfileId());
+            return null;
         }
         Profile creatorProfile = profileService.getProfile();
         ProfileConnection creatorProfileConnection = profileConnectionService.findByProfileId();

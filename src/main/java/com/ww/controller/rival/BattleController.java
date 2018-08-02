@@ -22,11 +22,10 @@ public class BattleController {
 
     @RequestMapping(value = "/start", method = RequestMethod.POST)
     public Map start(@RequestBody Map<String, Object> payload) {
-        String tag = null;
-        if (payload.containsKey("tag")) {
-            tag = (String) payload.get("tag");
+        if (!payload.containsKey("tag")) {
+            throw new IllegalArgumentException();
         }
-        return battleService.start(tag);
+        return battleService.start((String) payload.get("tag"));
     }
 
     @RequestMapping(value = "/cancel", method = RequestMethod.POST)

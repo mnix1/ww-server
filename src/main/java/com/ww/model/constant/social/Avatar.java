@@ -8,6 +8,7 @@ import static com.ww.helper.RandomHelper.randomElement;
 public enum Avatar {
     ALPACA,
     ANT,
+    AUROCHS,
     BEE,
     BEAR,
     BULL,
@@ -26,9 +27,9 @@ public enum Avatar {
     GORILLA,
     HORSE,
     KANGAROO,
-    KITEK,
+//    KITEK,
     LION,
-    OSMIORNICA,
+    OCTOPUS,
     OSTRICH,
     OWL,
     PANDA,
@@ -37,18 +38,17 @@ public enum Avatar {
     POLAR_BEAR,
     RABBIT,
     ROBO,
-    RUMCIA,
+//    RUMCIA,
     SHARK,
     SHEEP,
     SKUNK,
     SNAKE,
-    SZERYF,
+//    SZERYF,
     TIGER,
     TURKEY,
     TURTLE,
-    WOLF,
-    ZAROWA,
-    ZUBR;
+    WOLF;
+//    ZAROWA;
 
     public static Avatar random() {
         List<Avatar> possible = Arrays.asList(values());
