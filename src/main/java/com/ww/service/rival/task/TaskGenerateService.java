@@ -6,20 +6,13 @@ import com.ww.model.constant.rival.task.GeographyTaskType;
 import com.ww.model.constant.rival.task.MathTaskType;
 import com.ww.model.constant.rival.task.MemoryTaskType;
 import com.ww.model.constant.rival.task.MusicTaskType;
-import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Question;
-import com.ww.repository.rival.task.AnswerRepository;
-import com.ww.repository.rival.task.ProfileQuestionRepository;
-import com.ww.repository.rival.task.QuestionRepository;
 import com.ww.service.rival.task.geography.GeographyTaskService;
 import com.ww.service.rival.task.math.MathTaskService;
 import com.ww.service.rival.task.memory.MemoryTaskService;
 import com.ww.service.rival.task.music.MusicTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
-import java.util.List;
 
 import static com.ww.helper.RandomHelper.randomElement;
 

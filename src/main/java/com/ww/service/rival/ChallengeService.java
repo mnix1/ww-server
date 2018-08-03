@@ -77,7 +77,6 @@ public class ChallengeService {
         profiles.add(opponentProfile);
         List<Category> categories = IntStream.rangeClosed(1, QUESTION_COUNT).mapToObj(e -> Category.random()).collect(Collectors.toList());
         List<Question> questions = taskService.generateQuestions(categories);
-        taskService.saveProfilesUsedQuestions(profiles, questions);
         Challenge challenge = create(profile, profiles, questions);
         return new ChallengeTaskDTO(challenge, questions.stream().map(question -> taskRendererService.prepareQuestionDTO(question)).collect(Collectors.toList()));
     }
@@ -103,7 +102,6 @@ public class ChallengeService {
         profiles.addAll(friends);
         List<Category> categories = IntStream.rangeClosed(1, QUESTION_COUNT).mapToObj(e -> Category.random()).collect(Collectors.toList());
         List<Question> questions = taskService.generateQuestions(categories);
-        taskService.saveProfilesUsedQuestions(profiles, questions);
         Challenge challenge = create(profile, profiles, questions);
         return new ChallengeTaskDTO(challenge, questions.stream().map(question -> taskRendererService.prepareQuestionDTO(question)).collect(Collectors.toList()));
     }

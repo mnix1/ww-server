@@ -1,13 +1,10 @@
 package com.ww.service.rival.task;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.ww.model.constant.Category;
 import com.ww.model.entity.rival.task.Answer;
-import com.ww.model.entity.rival.task.ProfileQuestion;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.social.Profile;
 import com.ww.repository.rival.task.AnswerRepository;
-import com.ww.repository.rival.task.ProfileQuestionRepository;
 import com.ww.repository.rival.task.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,9 +26,6 @@ public class TaskService {
     private AnswerRepository answerRepository;
 
     @Autowired
-    private ProfileQuestionRepository profileQuestionRepository;
-
-    @Autowired
     private TaskGenerateService taskGenerateService;
 
     public List<Question> generateQuestions(List<Category> categories) {
@@ -43,38 +37,13 @@ public class TaskService {
     }
 
 
-    public Question prepareNotUsedQuestion(Category category, Long profileId) {
-        Question question = null;
-        if (randomInteger(1, 4) == 4) {
-            List<Question> questions = questionRepository.findAllByCategory(category);
-            question = randomElement(questions);
-        }
-        if (question == null || isProfileUsedQuestion(profileId, question.getId())) {
-            question = taskGenerateService.generate(category);
-            save(question);
-        }
+    public Question generateQuestion(Category category) {
+        Question question = taskGenerateService.generate(category);
+        save(question);
         return question;
     }
 
-    public boolean isProfileUsedQuestion(Long profileId, Long questionId) {
-        return profileQuestionRepository.findByProfile_IdAndQuestion_Id(profileId, questionId) != null;
-    }
-
-    public void saveProfileUsedQuestion(Profile profile, Question question) {
-        profileQuestionRepository.save(new ProfileQuestion(profile, question));
-    }
-
-    public void saveProfilesUsedQuestions(List<Profile> profiles, List<Question> questions) {
-        List<ProfileQuestion> profileQuestions = new ArrayList<>();
-        profiles.forEach(profile -> {
-            questions.forEach(question -> {
-                profileQuestions.add(new ProfileQuestion(profile, question));
-            });
-        });
-        profileQuestionRepository.saveAll(profileQuestions);
-    }
-
-    public Answer findCorrectAnswer(Question question){
+    public Answer findCorrectAnswer(Question question) {
         return question.getAnswers().stream().filter(answer -> answer.getCorrect()).findFirst().orElseThrow(() -> new IllegalArgumentException("No correct answers"));
     }
 

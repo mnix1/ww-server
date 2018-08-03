@@ -2,7 +2,6 @@ package com.ww.model.entity.social;
 
 import com.ww.helper.TagHelper;
 import com.ww.model.constant.social.Avatar;
-import com.ww.model.entity.rival.task.ProfileQuestion;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,9 +28,6 @@ public class Profile {
 
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
     private Set<ProfileFriend> friends;
-
-    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
-    private Set<ProfileQuestion> questions;
 
     public Profile(String authId) {
         this.tag = TagHelper.randomTag();

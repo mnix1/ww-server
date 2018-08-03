@@ -35,13 +35,9 @@ public class PractiseService {
 
     @Autowired
     private SessionService sessionService;
-    @Autowired
-    private ProfileService profileService;
 
     public PractiseDTO start(Category category) {
-        Profile profile = profileService.getProfileOnlyWithId();
-        Question question = taskService.prepareNotUsedQuestion(category, profile.getId());
-        taskService.saveProfileUsedQuestion(profile, question);
+        Question question = taskService.generateQuestion(category);
         QuestionDTO questionDTO = taskRendererService.prepareQuestionDTO(question);
         Practise practise = create(question);
         return new PractiseDTO(practise, questionDTO);
