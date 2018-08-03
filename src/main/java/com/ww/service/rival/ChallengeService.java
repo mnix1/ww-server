@@ -63,6 +63,25 @@ public class ChallengeService {
     @Autowired
     private ProfileService profileService;
 
+    public final static int QUESTION_COUNT = 5;
+
+    public ChallengeTaskDTO startFast() {
+        Profile profile = profileService.getProfile();
+        Profile opponentProfile = profileService.getActiveProfile();
+        if(opponentProfile == null){
+            logger.error("Cant find active profile: {}", sessionService.getProfileId());
+            throw new IllegalArgumentException();
+        }
+        List<Profile> profiles = new ArrayList<>();
+        profiles.add(profile);
+        profiles.add(opponentProfile);
+        List<Category> categories = IntStream.rangeClosed(1, QUESTION_COUNT).mapToObj(e -> Category.random()).collect(Collectors.toList());
+        List<Question> questions = taskService.generateQuestions(categories);
+        taskService.saveProfilesUsedQuestions(profiles, questions);
+        Challenge challenge = create(profile, profiles, questions);
+        return new ChallengeTaskDTO(challenge, questions.stream().map(question -> taskRendererService.prepareQuestionDTO(question)).collect(Collectors.toList()));
+    }
+
     public ChallengeTaskDTO startFriend(List<String> tags) {
         if (tags.isEmpty()) {
             logger.error("Empty tags: {}", sessionService.getProfileId());
@@ -82,7 +101,7 @@ public class ChallengeService {
         List<Profile> profiles = new ArrayList<>();
         profiles.add(profile);
         profiles.addAll(friends);
-        List<Category> categories = IntStream.rangeClosed(1, 3).mapToObj(e -> Category.random()).collect(Collectors.toList());
+        List<Category> categories = IntStream.rangeClosed(1, QUESTION_COUNT).mapToObj(e -> Category.random()).collect(Collectors.toList());
         List<Question> questions = taskService.generateQuestions(categories);
         taskService.saveProfilesUsedQuestions(profiles, questions);
         Challenge challenge = create(profile, profiles, questions);

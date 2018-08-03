@@ -34,6 +34,11 @@ public class ChallengeController {
         return challengeService.startFriend(tags);
     }
 
+    @RequestMapping(value = "/startFast", method = RequestMethod.POST)
+    public ChallengeTaskDTO startFast(@RequestBody Map<String, Object> payload) {
+        return challengeService.startFast();
+    }
+
     @RequestMapping(value = "/startResponse", method = RequestMethod.POST)
     public ChallengeTaskDTO startResponse(@RequestBody Map<String, Object> payload) {
         if (!payload.containsKey("challengeId")) {

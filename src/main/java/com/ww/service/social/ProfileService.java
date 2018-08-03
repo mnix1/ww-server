@@ -23,6 +23,11 @@ public class ProfileService {
     @Autowired
     private SessionService sessionService;
 
+    public Profile getActiveProfile() {
+        //TODO add active check
+        return profileRepository.findFirstByIdNot(sessionService.getProfileId());
+    }
+
     public Profile getProfileOnlyWithId() {
         return getProfileOnlyWithId(sessionService.getProfileId());
     }
