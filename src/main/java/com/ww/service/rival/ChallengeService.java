@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -63,6 +64,10 @@ public class ChallengeService {
     private ProfileService profileService;
 
     public ChallengeTaskDTO startFriend(List<String> tags) {
+        if (tags.isEmpty()) {
+            logger.error("Empty tags: {}", sessionService.getProfileId());
+            return null;
+        }
         Set<String> tagSet = new HashSet<>(tags);
         Profile profile = profileService.getProfile();
         List<Profile> friends = profile.getFriends().stream()
@@ -95,24 +100,29 @@ public class ChallengeService {
             throw new IllegalArgumentException();
         }
         ChallengeProfile challengeProfile = challenge.getProfiles().stream().
-                filter(e -> e.getStatus() == ChallengeProfileStatus.OPEN && e.getProfile().getId().equals(profile.getId()))
+                filter(e -> e.getProfile().getId().equals(profile.getId()))
                 .findFirst()
                 .orElseThrow(() -> {
-                    logger.error("Challenge not for this profile or not open: {}, {}", challengeId, profile.getId());
+                    logger.error("Challenge not for this profile: {}, {}", challengeId, profile.getId());
                     return new IllegalArgumentException();
                 });
-        challengeProfile.setStatus(ChallengeProfileStatus.IN_PROGRESS);
+        if (challengeProfile.getStatus() == ChallengeProfileStatus.CLOSED) {
+            logger.error("Already response for this challenge: {}, {}", challengeId, profile.getId());
+            throw new IllegalArgumentException();
+        }
         List<QuestionDTO> questions = challenge.getQuestions().stream()
                 .map(challengeQuestion -> taskRendererService.prepareQuestionDTO(challengeQuestion.getQuestion()))
                 .collect(Collectors.toList());
-        Date inProgressDate = new Date();
-        challengeProfile.setInProgressDate(inProgressDate);
-        challengeProfileRepository.save(challengeProfile);
+        if (challengeProfile.getStatus() == ChallengeProfileStatus.OPEN) {
+            challengeProfile.setStatus(ChallengeProfileStatus.IN_PROGRESS);
+            challengeProfile.setInProgressDate(Instant.now());
+            challengeProfileRepository.save(challengeProfile);
+        }
         return new ChallengeTaskDTO(challenge, questions);
     }
 
     public Map end(Long challengeId, Map<String, Integer> questionIdAnswerIdMap) throws IllegalArgumentException {
-        Date closeDate = new Date();
+        Instant closeDate = Instant.now();
         Profile profile = profileService.getProfile();
         Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(() -> {
             logger.error("Not existing challenge: {}", challengeId);
@@ -126,13 +136,9 @@ public class ChallengeService {
                 filter(e -> e.getStatus() == ChallengeProfileStatus.IN_PROGRESS && e.getProfile().getId().equals(profile.getId()))
                 .findFirst()
                 .orElseThrow(() -> {
-                    logger.error("Challenge not for this profile or already closed: {}, {}", challengeId, profile.getId());
+                    logger.error("Challenge not for this profile or response already closed or not opened: {}, {}", challengeId, profile.getId());
                     return new IllegalArgumentException();
                 });
-        if (challengeProfile.getStatus() == ChallengeProfileStatus.CLOSED) {
-            logger.error("ChallengeProfile already closed: {}, {}, {}", challengeId, profile.getId(), challengeProfile.getId());
-            throw new IllegalArgumentException();
-        }
         challengeProfile.setCloseDate(closeDate);
         challengeProfile.setStatus(ChallengeProfileStatus.CLOSED);
         Map<Long, Long> questionIdCorrectAnswerIdMap = new HashMap<>();
@@ -149,13 +155,23 @@ public class ChallengeService {
             ChallengeAnswer challengeAnswer = new ChallengeAnswer(answerId.equals(correctAnswer.getId()) ? ChallengeAnswerResult.CORRECT : ChallengeAnswerResult.WRONG, challenge, profile, question);
             challengeAnswers.add(challengeAnswer);
         });
-        challengeRepository.save(challenge);
         challengeProfileRepository.save(challengeProfile);
         challengeAnswerRepository.saveAll(challengeAnswers);
         Map<String, Object> model = new HashMap<>();
         model.put("questionIdCorrectAnswerIdMap", questionIdCorrectAnswerIdMap);
         model.put("answerInterval", challengeProfile.inProgressInterval());
+        maybeCloseChallenge(challenge, closeDate);
         return model;
+    }
+
+    private void maybeCloseChallenge(Challenge challenge, Instant closeDate) {
+        if (challenge.getProfiles().stream().filter(challengeProfile -> challengeProfile.getStatus() != ChallengeProfileStatus.CLOSED).findFirst().isPresent()) {
+            return;
+        }
+        challenge.setStatus(ChallengeStatus.CLOSED);
+        challenge.setCloseDate(closeDate);
+        // TODO ADD AUTO CLOSE WHEN TIMEOUT
+        challengeRepository.save(challenge);
     }
 
     private Challenge create(Profile creator, List<Profile> profiles, List<Question> questions) {
@@ -173,9 +189,19 @@ public class ChallengeService {
         return challenge;
     }
 
-    public List<ChallengeInfoDTO> list() {
-        List<ChallengeProfile> challengeProfiles = challengeProfileRepository.findAllByProfile_IdAndStatus(sessionService.getProfileId(), ChallengeProfileStatus.OPEN);
-        return challengeProfiles.stream().map(challengeProfile -> new ChallengeInfoDTO(challengeProfile.getChallenge())).collect(Collectors.toList());
+    public List<ChallengeInfoDTO> list(ChallengeStatus status) {
+        if (status == ChallengeStatus.CLOSED) {
+            List<ChallengeProfile> challengeProfiles = challengeProfileRepository.findAllByProfile_IdAndStatusAndChallenge_Status(sessionService.getProfileId(), ChallengeProfileStatus.CLOSED, ChallengeStatus.CLOSED);
+            return challengeProfiles.stream()
+                    .map(challengeProfile -> new ChallengeInfoDTO(challengeProfile.getChallenge()))
+                    .distinct()
+                    .collect(Collectors.toList());
+        }
+        List<ChallengeProfile> challengeProfiles = challengeProfileRepository.findAllByProfile_IdAndChallenge_Status(sessionService.getProfileId(), ChallengeStatus.IN_PROGRESS);
+        return challengeProfiles.stream()
+                .map(challengeProfile -> new ChallengeInfoDTO(challengeProfile.getChallenge(), challengeProfile.getStatus() != ChallengeProfileStatus.CLOSED))
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     public ChallengeSummaryDTO summary(Long challengeId) {

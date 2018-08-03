@@ -1,5 +1,6 @@
 package com.ww.controller.rival;
 
+import com.ww.model.constant.rival.challenge.ChallengeStatus;
 import com.ww.model.dto.rival.challenge.ChallengeInfoDTO;
 import com.ww.model.dto.rival.challenge.ChallengeSummaryDTO;
 import com.ww.model.dto.rival.challenge.ChallengeTaskDTO;
@@ -53,13 +54,20 @@ public class ChallengeController {
         return challengeService.end(challengeId, questionIdAnswerIdMap);
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public List<ChallengeInfoDTO> list() {
-        return challengeService.list();
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
+    public List<ChallengeInfoDTO> list(@RequestBody Map<String, Object> payload) {
+        ChallengeStatus status = null;
+        if (payload.containsKey("status")) {
+            try {
+                status = ChallengeStatus.valueOf((String) payload.get("status"));
+            } catch (IllegalArgumentException e) {
+            }
+        }
+        return challengeService.list(status);
     }
 
     @RequestMapping(value = "/summary", method = RequestMethod.POST)
-    public ChallengeSummaryDTO summary(@RequestBody Map<String, Object> payload){
+    public ChallengeSummaryDTO summary(@RequestBody Map<String, Object> payload) {
         if (!payload.containsKey("challengeId")) {
             throw new IllegalArgumentException();
         }

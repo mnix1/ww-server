@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.Instant;
 
 @Setter
 @Getter
@@ -18,8 +18,8 @@ public class ChallengeProfile {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private ChallengeProfileStatus status = ChallengeProfileStatus.OPEN;
-    private Date inProgressDate;
-    private Date closeDate;
+    private Instant inProgressDate;
+    private Instant closeDate;
     @ManyToOne
     @JoinColumn(name = "challenge_id", nullable = false, updatable = false)
     private Challenge challenge;
@@ -32,11 +32,11 @@ public class ChallengeProfile {
         this.profile = profile;
         this.status = status;
         if (status == ChallengeProfileStatus.IN_PROGRESS) {
-            this.inProgressDate = new Date();
+            this.inProgressDate = Instant.now();
         }
     }
 
     public Long inProgressInterval() {
-        return closeDate.getTime() - inProgressDate.getTime();
+        return closeDate.toEpochMilli() - inProgressDate.toEpochMilli();
     }
 }

@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.Instant;
 import java.util.Set;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 @Setter
 @Getter
@@ -22,8 +24,9 @@ public class Challenge {
     @JoinColumn(name = "creator_profile_id", nullable = false, updatable = false)
     private Profile creatorProfile;
     private ChallengeStatus status = ChallengeStatus.IN_PROGRESS;
-    private Date inProgressDate = new Date();
-    private Date closeDate;
+    private Instant inProgressDate = Instant.now();
+    private Instant closeDate;
+    private Instant timeoutDate = Instant.now().plus(3, DAYS);//automatic close
 
     @OneToMany(mappedBy = "challenge", fetch = FetchType.LAZY)
     private Set<ChallengeProfile> profiles;

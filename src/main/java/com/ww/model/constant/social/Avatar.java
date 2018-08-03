@@ -37,7 +37,7 @@ public enum Avatar {
     PENGUIN,
     POLAR_BEAR,
     RABBIT,
-    ROBO,
+//    ROBO,
 //    RUMCIA,
     SHARK,
     SHEEP,
