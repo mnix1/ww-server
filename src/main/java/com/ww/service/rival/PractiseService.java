@@ -3,16 +3,14 @@ package com.ww.service.rival;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.practise.PractiseResult;
 import com.ww.model.dto.rival.task.PractiseDTO;
-import com.ww.model.dto.rival.task.QuestionDTO;
+import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.rival.practise.Practise;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Question;
-import com.ww.model.entity.social.Profile;
 import com.ww.repository.rival.practise.PractiseRepository;
 import com.ww.service.SessionService;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.rival.task.TaskService;
-import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,9 +36,9 @@ public class PractiseService {
 
     public PractiseDTO start(Category category) {
         Question question = taskService.generateQuestion(category);
-        QuestionDTO questionDTO = taskRendererService.prepareQuestionDTO(question);
+        TaskDTO taskDTO = taskRendererService.prepareTaskDTO(question);
         Practise practise = create(question);
-        return new PractiseDTO(practise, questionDTO);
+        return new PractiseDTO(practise, taskDTO);
     }
 
     private Practise create(Question question) {

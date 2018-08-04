@@ -9,7 +9,6 @@ import com.ww.model.dto.rival.challenge.ChallengeInfoDTO;
 import com.ww.model.dto.rival.challenge.ChallengePositionDTO;
 import com.ww.model.dto.rival.challenge.ChallengeSummaryDTO;
 import com.ww.model.dto.rival.challenge.ChallengeTaskDTO;
-import com.ww.model.dto.rival.task.*;
 import com.ww.model.entity.rival.challenge.Challenge;
 import com.ww.model.entity.rival.challenge.ChallengeAnswer;
 import com.ww.model.entity.rival.challenge.ChallengeProfile;
@@ -63,22 +62,24 @@ public class ChallengeService {
     @Autowired
     private ProfileService profileService;
 
-    public final static int QUESTION_COUNT = 5;
+    public final static int TASK_COUNT = 5;
 
     public ChallengeTaskDTO startFast() {
         Profile profile = profileService.getProfile();
         Profile opponentProfile = profileService.getActiveProfile();
-        if(opponentProfile == null){
+        if (opponentProfile == null) {
             logger.error("Cant find active profile: {}", sessionService.getProfileId());
             throw new IllegalArgumentException();
         }
         List<Profile> profiles = new ArrayList<>();
         profiles.add(profile);
         profiles.add(opponentProfile);
-        List<Category> categories = IntStream.rangeClosed(1, QUESTION_COUNT).mapToObj(e -> Category.random()).collect(Collectors.toList());
+        List<Category> categories = IntStream.rangeClosed(1, TASK_COUNT).mapToObj(e -> Category.random()).collect(Collectors.toList());
         List<Question> questions = taskService.generateQuestions(categories);
-        Challenge challenge = create(profile, profiles, questions);
-        return new ChallengeTaskDTO(challenge, questions.stream().map(question -> taskRendererService.prepareQuestionDTO(question)).collect(Collectors.toList()));
+        Integer taskIndex = 0;
+        Question question = questions.get(taskIndex);
+        Challenge challenge = create(profile, profiles, questions, question);
+        return new ChallengeTaskDTO(challenge, taskRendererService.prepareTaskDTO(question), taskIndex, 0L, TASK_COUNT);
     }
 
     public ChallengeTaskDTO startFriend(List<String> tags) {
@@ -100,22 +101,17 @@ public class ChallengeService {
         List<Profile> profiles = new ArrayList<>();
         profiles.add(profile);
         profiles.addAll(friends);
-        List<Category> categories = IntStream.rangeClosed(1, QUESTION_COUNT).mapToObj(e -> Category.random()).collect(Collectors.toList());
+        List<Category> categories = IntStream.rangeClosed(1, TASK_COUNT).mapToObj(e -> Category.random()).collect(Collectors.toList());
         List<Question> questions = taskService.generateQuestions(categories);
-        Challenge challenge = create(profile, profiles, questions);
-        return new ChallengeTaskDTO(challenge, questions.stream().map(question -> taskRendererService.prepareQuestionDTO(question)).collect(Collectors.toList()));
+        Integer taskIndex = 0;
+        Question question = questions.get(taskIndex);
+        Challenge challenge = create(profile, profiles, questions, question);
+        return new ChallengeTaskDTO(challenge, taskRendererService.prepareTaskDTO(question), taskIndex, 0L, TASK_COUNT);
     }
 
     public ChallengeTaskDTO startResponse(Long challengeId) {
         Profile profile = profileService.getProfile();
-        Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(() -> {
-            logger.error("Not existing challenge: {}", challengeId);
-            return new IllegalArgumentException();
-        });
-        if (challenge.getStatus() == ChallengeStatus.CLOSED) {
-            logger.error("Challenge already closed: {}", challengeId);
-            throw new IllegalArgumentException();
-        }
+        Challenge challenge = getChallenge(challengeId);
         ChallengeProfile challengeProfile = challenge.getProfiles().stream().
                 filter(e -> e.getProfile().getId().equals(profile.getId()))
                 .findFirst()
@@ -127,20 +123,55 @@ public class ChallengeService {
             logger.error("Already response for this challenge: {}, {}", challengeId, profile.getId());
             throw new IllegalArgumentException();
         }
-        List<QuestionDTO> questions = challenge.getQuestions().stream()
-                .map(challengeQuestion -> taskRendererService.prepareQuestionDTO(challengeQuestion.getQuestion()))
-                .collect(Collectors.toList());
+        List<Question> questions = getQuestions(challenge);
+        List<ChallengeAnswer> challengeAnswers = getChallengeAnswers(challenge);
+        Integer taskIndex = findTaskIndex(challengeAnswers);
+        Question question = questions.get(taskIndex);
+        long score = 0L;
         if (challengeProfile.getStatus() == ChallengeProfileStatus.OPEN) {
             challengeProfile.setStatus(ChallengeProfileStatus.IN_PROGRESS);
             challengeProfile.setInProgressDate(Instant.now());
             challengeProfileRepository.save(challengeProfile);
+            challengeAnswerRepository.save(new ChallengeAnswer(challenge, profile, question, taskIndex));
+        } else {
+            score = getScore(challengeAnswers);
+            if(challengeAnswers.stream().noneMatch(challengeAnswer ->challengeAnswer.getResult() == ChallengeAnswerResult.IN_PROGRESS)){
+                challengeAnswerRepository.save(new ChallengeAnswer(challenge, profile, question, taskIndex));
+            }
         }
-        return new ChallengeTaskDTO(challenge, questions);
+        return new ChallengeTaskDTO(challenge, taskRendererService.prepareTaskDTO(question), taskIndex, score, TASK_COUNT);
     }
 
-    public Map end(Long challengeId, Map<String, Integer> questionIdAnswerIdMap) throws IllegalArgumentException {
-        Instant closeDate = Instant.now();
-        Profile profile = profileService.getProfile();
+    private List<Question> getQuestions(Challenge challenge) {
+        return challenge.getQuestions().stream()
+                .map(ChallengeQuestion::getQuestion)
+                .sorted(Comparator.comparing(Question::getId))
+                .collect(Collectors.toList());
+    }
+
+    private ChallengeProfile getChallengeProfile(Challenge challenge) {
+        return challenge.getProfiles().stream().
+                filter(e -> e.getStatus() == ChallengeProfileStatus.IN_PROGRESS && e.getProfile().getId().equals(sessionService.getProfileId()))
+                .findFirst()
+                .orElseThrow(() -> {
+                    logger.error("Challenge not for this profile or response already closed or not opened: {}, {}", challenge.getId(), sessionService.getProfileId());
+                    return new IllegalArgumentException();
+                });
+    }
+
+    private Integer findTaskIndex(List<ChallengeAnswer> challengeAnswers) {
+        Integer taskIndex = 0;
+        for (ChallengeAnswer challengeAnswer : challengeAnswers) {
+            if (challengeAnswer.getResult() == ChallengeAnswerResult.IN_PROGRESS) {
+                taskIndex = challengeAnswer.getTaskIndex();
+                break;
+            }
+            taskIndex = Math.max(challengeAnswer.getTaskIndex() + 1, taskIndex);
+        }
+        return taskIndex;
+    }
+
+    private Challenge getChallenge(Long challengeId) {
         Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(() -> {
             logger.error("Not existing challenge: {}", challengeId);
             return new IllegalArgumentException();
@@ -149,40 +180,66 @@ public class ChallengeService {
             logger.error("Challenge already closed: {}", challengeId);
             throw new IllegalArgumentException();
         }
-        ChallengeProfile challengeProfile = challenge.getProfiles().stream().
-                filter(e -> e.getStatus() == ChallengeProfileStatus.IN_PROGRESS && e.getProfile().getId().equals(profile.getId()))
+        return challenge;
+    }
+
+    private List<ChallengeAnswer> getChallengeAnswers(Challenge challenge) {
+        return challenge.getAnswers().stream()
+                .filter(e -> e.getProfile().getId().equals(sessionService.getProfileId()))
+                .collect(Collectors.toList());
+    }
+
+    private long getScore(List<ChallengeAnswer> challengeAnswers) {
+        return challengeAnswers.stream().filter(e -> e.getResult() == ChallengeAnswerResult.CORRECT).count();
+    }
+
+    public ChallengeTaskDTO nextTask(Long challengeId) {
+        Challenge challenge = getChallenge(challengeId);
+        ChallengeProfile challengeProfile = getChallengeProfile(challenge);
+        List<ChallengeAnswer> challengeAnswers = getChallengeAnswers(challenge);
+        Integer taskIndex = findTaskIndex(challengeAnswers);
+        Question question = getQuestions(challenge).get(taskIndex);
+        challengeAnswerRepository.save(new ChallengeAnswer(challenge, challengeProfile.getProfile(), question, taskIndex));
+        return new ChallengeTaskDTO(challenge, taskRendererService.prepareTaskDTO(question), taskIndex, getScore(challengeAnswers), TASK_COUNT);
+    }
+
+    public Map endTask(Long challengeId, Long answerId) {
+        Instant closeDate = Instant.now();
+        Profile profile = profileService.getProfile();
+        Challenge challenge = getChallenge(challengeId);
+        ChallengeProfile challengeProfile = getChallengeProfile(challenge);
+        ChallengeAnswer challengeAnswer = challenge.getAnswers().stream()
+                .filter(e -> e.getProfile().getId().equals(sessionService.getProfileId()) && e.getResult() == ChallengeAnswerResult.IN_PROGRESS)
                 .findFirst()
                 .orElseThrow(() -> {
-                    logger.error("Challenge not for this profile or response already closed or not opened: {}, {}", challengeId, profile.getId());
+                    logger.error("Challenge answer not in progress: {}, {}", challengeId, profile.getId());
                     return new IllegalArgumentException();
                 });
-        challengeProfile.setCloseDate(closeDate);
-        challengeProfile.setStatus(ChallengeProfileStatus.CLOSED);
-        Map<Long, Long> questionIdCorrectAnswerIdMap = new HashMap<>();
-        List<ChallengeAnswer> challengeAnswers = new ArrayList<>();
-        List<Question> questions = challenge.getQuestions().stream().map(challengeQuestion -> challengeQuestion.getQuestion()).collect(Collectors.toList());
-        questions.forEach(question -> {
-            if (!questionIdAnswerIdMap.containsKey(question.getId().toString())) {
-                logger.error("questionIdAnswerIdMap doesn't contains answer for: {}, {}}", question.getId(), profile.getId());
-                throw new IllegalArgumentException();
-            }
-            Long answerId = questionIdAnswerIdMap.get(question.getId().toString()).longValue();
-            Answer correctAnswer = taskService.findCorrectAnswer(question);
-            questionIdCorrectAnswerIdMap.put(question.getId(), correctAnswer.getId());
-            ChallengeAnswer challengeAnswer = new ChallengeAnswer(answerId.equals(correctAnswer.getId()) ? ChallengeAnswerResult.CORRECT : ChallengeAnswerResult.WRONG, challenge, profile, question);
-            challengeAnswers.add(challengeAnswer);
-        });
-        challengeProfileRepository.save(challengeProfile);
-        challengeAnswerRepository.saveAll(challengeAnswers);
+        Question question = challengeAnswer.getQuestion();
+        Answer correctAnswer = taskService.findCorrectAnswer(question);
+        boolean result = correctAnswer.getId().equals(answerId);
+        challengeAnswer.setCloseDate(closeDate);
+        challengeAnswer.setResult(result ? ChallengeAnswerResult.CORRECT : ChallengeAnswerResult.WRONG);
+        challengeAnswerRepository.save(challengeAnswer);
+        List<ChallengeAnswer> challengeAnswers = getChallengeAnswers(challenge);
+        long score = getScore(challengeAnswers);
+        Boolean isAllTasksAnswered = challengeAnswers.size() == TASK_COUNT;
+        if (isAllTasksAnswered) {
+            challengeProfile.setCloseDate(closeDate);
+            challengeProfile.setStatus(ChallengeProfileStatus.CLOSED);
+            challengeProfileRepository.save(challengeProfile);
+        }
         Map<String, Object> model = new HashMap<>();
-        model.put("questionIdCorrectAnswerIdMap", questionIdCorrectAnswerIdMap);
-        model.put("answerInterval", challengeProfile.inProgressInterval());
+        model.put("correctAnswerId", correctAnswer.getId());
+        model.put("answerInterval", challengeAnswer.inProgressInterval());
+        model.put("isAllTasksAnswered", isAllTasksAnswered);
+        model.put("score", score);
         maybeCloseChallenge(challenge, closeDate);
         return model;
     }
 
     private void maybeCloseChallenge(Challenge challenge, Instant closeDate) {
-        if (challenge.getProfiles().stream().filter(challengeProfile -> challengeProfile.getStatus() != ChallengeProfileStatus.CLOSED).findFirst().isPresent()) {
+        if (challenge.getProfiles().stream().anyMatch(challengeProfile -> challengeProfile.getStatus() != ChallengeProfileStatus.CLOSED)) {
             return;
         }
         challenge.setStatus(ChallengeStatus.CLOSED);
@@ -191,7 +248,7 @@ public class ChallengeService {
         challengeRepository.save(challenge);
     }
 
-    private Challenge create(Profile creator, List<Profile> profiles, List<Question> questions) {
+    private Challenge create(Profile creator, List<Profile> profiles, List<Question> questions, Question question) {
         Challenge challenge = new Challenge();
         challenge.setCreatorProfile(creator);
         challenge.setProfiles(profiles.stream()
@@ -199,10 +256,11 @@ public class ChallengeService {
                         ? ChallengeProfileStatus.IN_PROGRESS
                         : ChallengeProfileStatus.OPEN))
                 .collect(Collectors.toSet()));
-        challenge.setQuestions(questions.stream().map(question -> new ChallengeQuestion(challenge, question)).collect(Collectors.toSet()));
+        challenge.setQuestions(questions.stream().map(q -> new ChallengeQuestion(challenge, q)).collect(Collectors.toSet()));
         challengeRepository.save(challenge);
         challengeProfileRepository.saveAll(challenge.getProfiles());
         challengeQuestionRepository.saveAll(challenge.getQuestions());
+        challengeAnswerRepository.save(new ChallengeAnswer(challenge, creator, question, 0));
         return challenge;
     }
 
@@ -222,6 +280,7 @@ public class ChallengeService {
     }
 
     public ChallengeSummaryDTO summary(Long challengeId) {
+        // TODO CHANGE TIME
         Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(() -> {
             logger.error("Not existing challenge: {}", challengeId);
             return new IllegalArgumentException();

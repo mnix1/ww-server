@@ -6,7 +6,7 @@ import com.ww.model.constant.rival.battle.BattleProfileStatus;
 import com.ww.model.container.ProfileConnection;
 import com.ww.model.container.battle.BattleInitContainer;
 import com.ww.model.container.battle.BattleProfileContainer;
-import com.ww.model.dto.rival.task.QuestionDTO;
+import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.dto.social.ProfileDTO;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Question;
@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -66,7 +65,7 @@ public class BattleManager {
         return profileMap.keySet().stream().filter(s -> !s.equals(sessionId)).findFirst().get();
     }
 
-    private QuestionDTO prepareQuestion() {
+    private TaskDTO prepareQuestion() {
         Question question = battleService.prepareQuestion();
         question.setId((long) questionId);
         this.question = question;
@@ -74,12 +73,12 @@ public class BattleManager {
     }
 
     private synchronized void start() {
-        QuestionDTO questionDTO = prepareQuestion();
+        TaskDTO taskDTO = prepareQuestion();
         profileMap.values().stream().forEach(battleProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
             String opponentSessionId = getOpponentSessionId(battleProfileContainer.getProfileConnection().getSessionId());
             model.put("opponent", prepareProfile(opponentSessionId));
-            model.put("question", questionDTO);
+            model.put("question", taskDTO);
             model.put("score", profileMap.get(battleProfileContainer.getProfileConnection().getSessionId()).getScore());
             model.put("opponentScore", profileMap.get(opponentSessionId).getScore());
             send(model, Message.BATTLE_START, battleProfileContainer.getProfileConnection());
@@ -127,14 +126,14 @@ public class BattleManager {
             return;
         }
         questionId++;
-        QuestionDTO questionDTO = prepareQuestion();
+        TaskDTO taskDTO = prepareQuestion();
         Flowable.intervalRange(0L, 1L, nextQuestionInterval, nextQuestionInterval, TimeUnit.MILLISECONDS)
                 .subscribe(aLong -> {
                     Map<String, Object> model = new HashMap<>();
                     model.put("correctAnswerId", null);
                     model.put("markedAnswerId", null);
                     model.put("meAnswered", null);
-                    model.put("question", questionDTO);
+                    model.put("question", taskDTO);
                     model.put("nextQuestionInterval", null);
                     profileMap.values().stream().forEach(battleProfileContainer -> {
                         send(model, Message.BATTLE_NEXT_QUESTION, battleProfileContainer.getProfileConnection());

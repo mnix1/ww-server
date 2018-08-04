@@ -6,14 +6,13 @@ import com.ww.model.constant.Category;
 import com.ww.model.constant.social.FriendStatus;
 import com.ww.model.container.ProfileConnection;
 import com.ww.model.container.battle.BattleInitContainer;
-import com.ww.model.dto.rival.task.QuestionDTO;
+import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.dto.social.FriendDTO;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.social.Profile;
 import com.ww.service.SessionService;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
-import com.ww.service.rival.task.TaskService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
 import com.ww.websocket.message.Message;
@@ -155,8 +154,8 @@ public class BattleService {
         return question;
     }
 
-    public QuestionDTO prepareQuestionDTO(Question question) {
-        return taskRendererService.prepareQuestionDTO(question);
+    public TaskDTO prepareQuestionDTO(Question question) {
+        return taskRendererService.prepareTaskDTO(question);
     }
 
 

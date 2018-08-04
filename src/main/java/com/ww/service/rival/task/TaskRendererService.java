@@ -1,7 +1,7 @@
 package com.ww.service.rival.task;
 
 import com.ww.model.constant.rival.task.TaskRenderer;
-import com.ww.model.dto.rival.task.QuestionDTO;
+import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.rival.task.Question;
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
@@ -16,21 +16,21 @@ import java.util.Base64;
 @Service
 public class TaskRendererService {
 
-    public QuestionDTO prepareQuestionDTO(Question question) {
-        QuestionDTO questionDTO = new QuestionDTO(question);
+    public TaskDTO prepareTaskDTO(Question question) {
+        TaskDTO taskDTO = new TaskDTO(question);
         if (question.getTaskRenderer() == TaskRenderer.TEXT_IMAGE) {
-            swapImagePathToImageData(questionDTO);
+            swapImagePathToImageData(taskDTO);
         }
         if (question.getTaskRenderer() == TaskRenderer.TEXT_ANIMATION) {
-            swapShapeKeyToShapeData(questionDTO);
-            questionDTO.setAnimationContent(encodeData(questionDTO.getAnimationContent()));
+            swapShapeKeyToShapeData(taskDTO);
+            taskDTO.setAnimationContent(encodeData(taskDTO.getAnimationContent()));
         }
-        return questionDTO;
+        return taskDTO;
     }
 
-    private void swapImagePathToImageData(QuestionDTO questionDTO) {
-        String imagePath = questionDTO.getImageContent();
-        questionDTO.setImageContent(encodeData(loadImage(imagePath)));
+    private void swapImagePathToImageData(TaskDTO taskDTO) {
+        String imagePath = taskDTO.getImageContent();
+        taskDTO.setImageContent(encodeData(loadImage(imagePath)));
     }
 
     private String loadImage(String path) {
@@ -43,8 +43,8 @@ public class TaskRendererService {
         return null;
     }
 
-    private void swapShapeKeyToShapeData(QuestionDTO questionDTO) {
-        String content = questionDTO.getAnimationContent();
+    private void swapShapeKeyToShapeData(TaskDTO taskDTO) {
+        String content = taskDTO.getAnimationContent();
         String[] shapes = content.split("shape\":\"");
         for (String shape : shapes) {
             if (shape.indexOf("[") == 0) {
@@ -53,7 +53,7 @@ public class TaskRendererService {
             String shapePath = shape.substring(0, shape.indexOf("\""));
             content = content.replace(shapePath, encodeData(loadImage(shapePath)));
         }
-        questionDTO.setAnimationContent(content);
+        taskDTO.setAnimationContent(content);
     }
 
     private String encodeData(String s) {

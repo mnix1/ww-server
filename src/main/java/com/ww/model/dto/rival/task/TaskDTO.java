@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class QuestionDTO {
+public class TaskDTO {
 
     private Long id;
     private Category category;
@@ -22,7 +22,7 @@ public class QuestionDTO {
     private String textContentEnglish;
     private List<AnswerDTO> answers;
 
-    public QuestionDTO(Question question) {
+    public TaskDTO(Question question) {
         this.id = question.getId();
         this.category = question.getCategory();
         this.taskRenderer = question.getTaskRenderer();

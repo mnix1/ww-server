@@ -7,9 +7,9 @@ import lombok.Getter;
 public class PractiseDTO {
 
     private Long id;
-    private QuestionDTO question;
+    private TaskDTO question;
 
-    public PractiseDTO(Practise practise, QuestionDTO question) {
+    public PractiseDTO(Practise practise, TaskDTO question) {
         this.id = practise.getId();
         this.question = question;
     }

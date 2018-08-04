@@ -48,15 +48,23 @@ public class ChallengeController {
         return challengeService.startResponse(challengeId);
     }
 
-
-    @RequestMapping(value = "/end", method = RequestMethod.POST)
-    public Map end(@RequestBody Map<String, Object> payload) {
-        if (!payload.containsKey("challengeId") || !payload.containsKey("questionIdAnswerIdMap")) {
+    @RequestMapping(value = "/nextTask", method = RequestMethod.POST)
+    public ChallengeTaskDTO nextTask(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("challengeId")) {
             throw new IllegalArgumentException();
         }
         Long challengeId = ((Integer) payload.get("challengeId")).longValue();
-        Map<String, Integer> questionIdAnswerIdMap = (Map<String, Integer>) payload.get("questionIdAnswerIdMap");
-        return challengeService.end(challengeId, questionIdAnswerIdMap);
+        return challengeService.nextTask(challengeId);
+    }
+
+    @RequestMapping(value = "/endTask", method = RequestMethod.POST)
+    public Map endTask(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("challengeId") || !payload.containsKey("answerId")) {
+            throw new IllegalArgumentException();
+        }
+        Long challengeId = ((Integer) payload.get("challengeId")).longValue();
+        Long answerId = ((Integer) payload.get("answerId")).longValue();
+        return challengeService.endTask(challengeId, answerId);
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.POST)
