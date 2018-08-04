@@ -106,7 +106,7 @@ public class BattleManager {
             winnerTag = container.getProfile().getTag();
             winnerName = container.getProfile().getName();
         }
-        Integer nextQuestionInterval = 5000;
+        Integer nextQuestionInterval = 10000;
         Long finalMarkedAnswerId = markedAnswerId;
         String finalWinnerName = winnerName;
         profileMap.values().stream().forEach(battleProfileContainer -> {

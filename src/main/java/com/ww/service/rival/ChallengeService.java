@@ -324,9 +324,8 @@ public class ChallengeService {
             if (o1.getScore().equals(o2.getScore())) {
                 return o1.getAnswerInterval().compareTo(o2.getAnswerInterval());
             }
-            return o1.getScore().compareTo(o2.getScore());
+            return o2.getScore().compareTo(o1.getScore());
         });
-
         return new ChallengeSummaryDTO(challengeId, positions);
     }
 
