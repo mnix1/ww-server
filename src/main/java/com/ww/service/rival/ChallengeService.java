@@ -135,7 +135,7 @@ public class ChallengeService {
             challengeAnswerRepository.save(new ChallengeAnswer(challenge, profile, question, taskIndex));
         } else {
             score = getScore(challengeAnswers);
-            if(challengeAnswers.stream().noneMatch(challengeAnswer ->challengeAnswer.getResult() == ChallengeAnswerResult.IN_PROGRESS)){
+            if (challengeAnswers.stream().noneMatch(challengeAnswer -> challengeAnswer.getResult() == ChallengeAnswerResult.IN_PROGRESS)) {
                 challengeAnswerRepository.save(new ChallengeAnswer(challenge, profile, question, taskIndex));
             }
         }
@@ -189,6 +189,14 @@ public class ChallengeService {
                 .collect(Collectors.toList());
     }
 
+    private Long calculateChallengeInteval(List<ChallengeAnswer> challengeAnswers) {
+        long challengeInterval = 0;
+        for (ChallengeAnswer challengeAnswer : challengeAnswers) {
+            challengeInterval += challengeAnswer.inProgressInterval();
+        }
+        return challengeInterval;
+    }
+
     private long getScore(List<ChallengeAnswer> challengeAnswers) {
         return challengeAnswers.stream().filter(e -> e.getResult() == ChallengeAnswerResult.CORRECT).count();
     }
@@ -223,14 +231,17 @@ public class ChallengeService {
         challengeAnswerRepository.save(challengeAnswer);
         List<ChallengeAnswer> challengeAnswers = getChallengeAnswers(challenge);
         long score = getScore(challengeAnswers);
+        Long challengeInterval = null;
         Boolean isAllTasksAnswered = challengeAnswers.size() == TASK_COUNT;
         if (isAllTasksAnswered) {
             challengeProfile.setCloseDate(closeDate);
             challengeProfile.setStatus(ChallengeProfileStatus.CLOSED);
             challengeProfileRepository.save(challengeProfile);
+            challengeInterval = calculateChallengeInteval(challengeAnswers);
         }
         Map<String, Object> model = new HashMap<>();
         model.put("correctAnswerId", correctAnswer.getId());
+        model.put("challengeInterval", challengeInterval);
         model.put("answerInterval", challengeAnswer.inProgressInterval());
         model.put("isAllTasksAnswered", isAllTasksAnswered);
         model.put("score", score);
