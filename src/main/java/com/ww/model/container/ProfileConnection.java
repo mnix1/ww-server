@@ -30,6 +30,13 @@ public class ProfileConnection {
         return webSocketSession.getId();
     }
 
+    public void close(){
+        try {
+            webSocketSession.close();
+        } catch (IOException e) {
+        }
+    }
+
     public boolean sendMessage(String msg) {
         try {
             logger.debug("Send message {} to {}", msg, profileId);

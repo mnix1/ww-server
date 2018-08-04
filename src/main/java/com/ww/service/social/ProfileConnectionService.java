@@ -14,11 +14,13 @@ import org.springframework.web.socket.WebSocketSession;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
 public class ProfileConnectionService {
-    private final CopyOnWriteArrayList<ProfileConnection> profileConnections = new CopyOnWriteArrayList<ProfileConnection>();
+    private final ConcurrentHashMap<Long, ProfileConnection> profileIdToProfileConnectionMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, ProfileConnection> sessionIdToProfileConnectionMap = new ConcurrentHashMap<>();
 
     @Autowired
     ProfileService profileService;
@@ -29,42 +31,54 @@ public class ProfileConnectionService {
     @Autowired
     ProfileFriendRepository profileFriendRepository;
 
-    public List<ProfileConnection> getProfileConnections() {
-        return profileConnections;
-    }
-
     public void newConnection(WebSocketSession session) {
         Profile profile = profileService.createOrRetrieveProfile(profileService.getAuthId(session.getPrincipal()));
-        profileConnections.stream()
-                .filter(profileCommunication -> profileCommunication.getProfileId().equals(profile.getId()))
-                .findFirst()
-                .ifPresent(profileCommunication -> {
-                    try {
-                        profileCommunication.getWebSocketSession().close();
-                    } catch (IOException e) {
-                    }
-                });
-        profileConnections.add(new ProfileConnection(profile.getId(), session));
+        if (profileIdToProfileConnectionMap.containsKey(profile.getId())) {
+            ProfileConnection profileConnection = profileIdToProfileConnectionMap.get(profile.getId());
+            String oldSessionId = profileConnection.getSessionId();
+            if (sessionIdToProfileConnectionMap.containsKey(oldSessionId)) {
+                sessionIdToProfileConnectionMap.remove(oldSessionId);
+            }
+            profileConnection.close();
+            profileIdToProfileConnectionMap.remove(profile.getId());
+        }
+        ProfileConnection profileConnection = new ProfileConnection(profile.getId(), session);
+        profileIdToProfileConnectionMap.put(profile.getId(), profileConnection);
+        sessionIdToProfileConnectionMap.put(session.getId(), profileConnection);
         sendFriendConnectionChanged(profile, Message.FRIEND_SIGN_IN);
     }
 
     public void deleteConnection(WebSocketSession session) {
         findBySessionId(session.getId()).ifPresent(profileConnection -> {
-            profileConnections.remove(profileConnection);
+            sessionIdToProfileConnectionMap.remove(session.getId());
+            profileIdToProfileConnectionMap.remove(profileConnection.getProfileId());
             sendFriendConnectionChanged(profileService.getProfile(profileConnection.getProfileId()), Message.FRIEND_SIGN_OUT);
         });
     }
 
     public Optional<ProfileConnection> findBySessionId(String sessionId) {
-        return profileConnections.stream().filter(profileCommunication -> profileCommunication.getSessionId().equals(sessionId)).findAny();
+        ProfileConnection profileConnection = null;
+        if (sessionIdToProfileConnectionMap.containsKey(sessionId)) {
+            profileConnection = sessionIdToProfileConnectionMap.get(sessionId);
+        }
+        return Optional.ofNullable(profileConnection);
     }
 
     public Optional<ProfileConnection> findByProfileId(Long profileId) {
-        return profileConnections.stream().filter(profileCommunication -> profileCommunication.getProfileId().equals(profileId)).findAny();
+        ProfileConnection profileConnection = null;
+        if (profileIdToProfileConnectionMap.containsKey(profileId)) {
+            profileConnection = profileIdToProfileConnectionMap.get(profileId);
+        }
+        return Optional.ofNullable(profileConnection);
     }
 
-    public ProfileConnection findByProfileId() {
-        return findByProfileId(sessionService.getProfileId()).get();
+    public Optional<Long> getProfileId(String sessionId) {
+        Long profileId = null;
+        if (sessionIdToProfileConnectionMap.containsKey(sessionId)) {
+            ProfileConnection profileConnection = sessionIdToProfileConnectionMap.get(sessionId);
+            profileId = profileConnection.getProfileId();
+        }
+        return Optional.ofNullable(profileId);
     }
 
     public boolean sendMessage(Long profileId, String msg) {

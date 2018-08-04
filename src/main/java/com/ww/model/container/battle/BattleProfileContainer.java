@@ -13,13 +13,17 @@ import lombok.Setter;
 @Setter
 public class BattleProfileContainer {
     private Profile profile;
-    private ProfileConnection profileConnection;
+    private Long opponentId;
     private BattleProfileStatus status = BattleProfileStatus.OPEN;
     private Integer score = 0;
 
-    public BattleProfileContainer(Profile profile, ProfileConnection profileConnection) {
+    public BattleProfileContainer(Profile profile, Long opponentId) {
         this.profile = profile;
-        this.profileConnection = profileConnection;
+        this.opponentId = opponentId;
+    }
+
+    public Long getProfileId(){
+        return profile.getId();
     }
 
     public Integer increaseScore(){

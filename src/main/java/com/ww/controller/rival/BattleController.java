@@ -2,6 +2,8 @@ package com.ww.controller.rival;
 
 import com.ww.service.SessionService;
 import com.ww.service.rival.BattleService;
+import com.ww.service.rival.battle.BattleFastService;
+import com.ww.service.rival.battle.BattleFriendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,15 +20,18 @@ public class BattleController {
     SessionService sessionService;
 
     @Autowired
-    BattleService battleService;
+    BattleFastService battleFastService;
+
+    @Autowired
+    BattleFriendService battleFriendService;
 
     @RequestMapping(value = "/startFast", method = RequestMethod.POST)
     public Map startFast() {
-        return battleService.startFast();
+        return battleFastService.startFast();
     }
     @RequestMapping(value = "/cancelFast", method = RequestMethod.POST)
     public Map cancelFast() {
-        return battleService.cancelFast();
+        return battleFastService.cancelFast();
     }
 
     @RequestMapping(value = "/startFriend", method = RequestMethod.POST)
@@ -34,22 +39,22 @@ public class BattleController {
         if (!payload.containsKey("tag")) {
             throw new IllegalArgumentException();
         }
-        return battleService.startFriend((String) payload.get("tag"));
+        return battleFriendService.startFriend((String) payload.get("tag"));
     }
 
     @RequestMapping(value = "/cancelFriend", method = RequestMethod.POST)
     public Map cancel() {
-        return battleService.cancelFriend();
+        return battleFriendService.cancelFriend();
     }
 
     @RequestMapping(value = "/acceptFriend", method = RequestMethod.POST)
     public Map accept() {
-        return battleService.acceptFriend();
+        return battleFriendService.acceptFriend();
     }
 
     @RequestMapping(value = "/rejectFriend", method = RequestMethod.POST)
     public Map reject() {
-        return battleService.rejectFriend();
+        return battleFriendService.rejectFriend();
     }
 
 
