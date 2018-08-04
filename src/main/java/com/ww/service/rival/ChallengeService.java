@@ -150,8 +150,8 @@ public class ChallengeService {
     }
 
     private ChallengeProfile getChallengeProfile(Challenge challenge) {
-        return challenge.getProfiles().stream().
-                filter(e -> e.getStatus() == ChallengeProfileStatus.IN_PROGRESS && e.getProfile().getId().equals(sessionService.getProfileId()))
+        return challenge.getProfiles().stream()
+                .filter(e -> e.getStatus() == ChallengeProfileStatus.IN_PROGRESS && e.getProfile().getId().equals(sessionService.getProfileId()))
                 .findFirst()
                 .orElseThrow(() -> {
                     logger.error("Challenge not for this profile or response already closed or not opened: {}, {}", challenge.getId(), sessionService.getProfileId());

@@ -88,11 +88,11 @@ public class BattleService {
     @Scheduled(fixedRate = 5000)
     private void maybeInitFastBattle() {
         if (waitingForBattleProfiles.isEmpty()) {
-            logger.debug("No waiting for battle profiles");
+//            logger.debug("No waiting for battle profiles");
             return;
         }
         if (waitingForBattleProfiles.size() == 1) {
-            logger.debug("Only one waiting for battle profile");
+//            logger.debug("Only one waiting for battle profile");
             return;
         }
         Profile profile = waitingForBattleProfiles.get(0);
@@ -109,7 +109,7 @@ public class BattleService {
             maybeInitFastBattle();
             return;
         }
-        logger.debug("Matched profiles {} and {}, now creating battle manager", profile.getId(), opponent.getId());
+//        logger.debug("Matched profiles {} and {}, now creating battle manager", profile.getId(), opponent.getId());
         waitingForBattleProfiles.remove(profile);
         waitingForBattleProfiles.remove(opponent);
         BattleInitContainer battle = new BattleInitContainer(profile, profileConnection.get(), opponent, opponentConnection.get());
@@ -117,8 +117,6 @@ public class BattleService {
         battleManagers.put(battle.getCreatorProfileConnection().getSessionId(), battleManager);
         battleManagers.put(battle.getOpponentProfileConnection().getSessionId(), battleManager);
         battleManager.startFast();
-//        battleManager.maybeStart(profileConnection.get().getSessionId());
-//        battleManager.maybeStart(opponentConnection.get().getSessionId());
         return;
     }
 

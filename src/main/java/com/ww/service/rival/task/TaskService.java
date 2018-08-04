@@ -55,10 +55,12 @@ public class TaskService {
 
     public void save(List<Question> questions) {
         questionRepository.saveAll(questions);
+        List<Answer> answers = new ArrayList<>();
         questions.forEach(question -> {
             question.getAnswers().forEach(answer -> answer.setQuestion(question));
-            answerRepository.saveAll(question.getAnswers());
+            answers.addAll(question.getAnswers());
         });
+        answerRepository.saveAll(answers);
     }
 
 }
