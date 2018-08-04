@@ -1,11 +1,11 @@
-package com.ww.model.constant.social;
+package com.ww.model.constant;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static com.ww.helper.RandomHelper.randomElement;
 
-public enum Avatar {
+public enum Hero {
     ALPACA,
     ANT,
     AUROCHS,
@@ -57,8 +57,8 @@ public enum Avatar {
     WOLF;
 //    ZAROWA;
 
-    public static Avatar random() {
-        List<Avatar> possible = Arrays.asList(values());
+    public static Hero random() {
+        List<Hero> possible = Arrays.asList(values());
         return randomElement(possible);
     }
 }
