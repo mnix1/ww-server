@@ -4,8 +4,10 @@ import com.ww.model.constant.rival.challenge.ChallengeProfileStatus;
 import com.ww.model.dto.social.ProfileDTO;
 import com.ww.model.entity.rival.challenge.ChallengeProfile;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class ChallengePositionDTO {
 
     private Long position;
@@ -17,9 +19,6 @@ public class ChallengePositionDTO {
     public ChallengePositionDTO(ChallengeProfile challengeProfile) {
         this.profile = new ProfileDTO(challengeProfile.getProfile());
         this.status = challengeProfile.getStatus();
-        if (this.status == ChallengeProfileStatus.CLOSED) {
-            this.answerInterval = challengeProfile.inProgressInterval();
-        }
     }
 
     public void increaseScore() {

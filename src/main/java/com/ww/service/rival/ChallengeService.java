@@ -291,7 +291,6 @@ public class ChallengeService {
     }
 
     public ChallengeSummaryDTO summary(Long challengeId) {
-        // TODO CHANGE TIME
         Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(() -> {
             logger.error("Not existing challenge: {}", challengeId);
             return new IllegalArgumentException();
@@ -301,12 +300,15 @@ public class ChallengeService {
         Set<ChallengeProfile> challengeProfiles = challenge.getProfiles();
         for (ChallengeProfile challengeProfile : challengeProfiles) {
             ChallengePositionDTO position = new ChallengePositionDTO(challengeProfile);
-            challengeAnswers.stream().filter(challengeAnswer -> challengeAnswer.getProfile().getId().equals(challengeProfile.getProfile().getId()))
-                    .forEach(challengeAnswer -> {
-                        if (challengeAnswer.getResult() == ChallengeAnswerResult.CORRECT) {
-                            position.increaseScore();
-                        }
-                    });
+            List<ChallengeAnswer> profileChallengeAnswers = challengeAnswers.stream().filter(challengeAnswer -> challengeAnswer.getProfile().getId().equals(challengeProfile.getProfile().getId())).collect(Collectors.toList());
+            if (challengeProfile.getStatus() == ChallengeProfileStatus.CLOSED) {
+                position.setAnswerInterval(calculateChallengeInteval(profileChallengeAnswers));
+            }
+            profileChallengeAnswers.forEach(challengeAnswer -> {
+                if (challengeAnswer.getResult() == ChallengeAnswerResult.CORRECT) {
+                    position.increaseScore();
+                }
+            });
             positions.add(position);
         }
         positions.sort((o1, o2) -> {
