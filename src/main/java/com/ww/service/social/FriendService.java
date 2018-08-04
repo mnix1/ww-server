@@ -70,7 +70,7 @@ public class FriendService {
                 profileFriend = new ProfileFriend(FriendStatus.ACCEPTED, friendProfile, profile);
                 profileFriendRepository.save(profileFriend);
                 sendWebSocketFriendAdd(profileFriend);
-                model.put("code", 1); // accept
+                model.put("code", 1); // acceptFriend
                 return model;
             }
         }

@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 public class BattleManager {
     private static final Logger logger = LoggerFactory.getLogger(BattleManager.class);
     private static final Integer MAX_SCORE = 5;
+    private static final Integer NEXT_TASK_INTERVAL = 7000;
 
     private final Map<String, BattleProfileContainer> profileMap = new HashMap<>();
     private int questionId = 1;
@@ -72,6 +73,13 @@ public class BattleManager {
         return battleService.prepareQuestionDTO(question);
     }
 
+    public void startFast(){
+        profileMap.values().stream().forEach(battleProfileContainer -> {
+            Map<String, Object> model = new HashMap<>();
+            send(model, Message.BATTLE_START_FAST, battleProfileContainer.getProfileConnection());
+        });
+    }
+
     private synchronized void start() {
         TaskDTO taskDTO = prepareQuestion();
         profileMap.values().stream().forEach(battleProfileContainer -> {
@@ -106,7 +114,6 @@ public class BattleManager {
             winnerTag = container.getProfile().getTag();
             winnerName = container.getProfile().getName();
         }
-        Integer nextQuestionInterval = 10000;
         Long finalMarkedAnswerId = markedAnswerId;
         String finalWinnerName = winnerName;
         profileMap.values().stream().forEach(battleProfileContainer -> {
@@ -119,7 +126,7 @@ public class BattleManager {
             model.put("score", profileMap.get(mySessionId).getScore());
             model.put("opponentScore", profileMap.get(opponentSessionId).getScore());
             model.put("winner", finalWinnerName);
-            model.put("nextQuestionInterval", nextQuestionInterval);
+            model.put("nextTaskInterval", NEXT_TASK_INTERVAL);
             send(model, Message.BATTLE_ANSWER, battleProfileContainer.getProfileConnection());
         });
         if (winnerTag != null) {
@@ -127,14 +134,14 @@ public class BattleManager {
         }
         questionId++;
         TaskDTO taskDTO = prepareQuestion();
-        Flowable.intervalRange(0L, 1L, nextQuestionInterval, nextQuestionInterval, TimeUnit.MILLISECONDS)
+        Flowable.intervalRange(0L, 1L, NEXT_TASK_INTERVAL, NEXT_TASK_INTERVAL, TimeUnit.MILLISECONDS)
                 .subscribe(aLong -> {
                     Map<String, Object> model = new HashMap<>();
                     model.put("correctAnswerId", null);
                     model.put("markedAnswerId", null);
                     model.put("meAnswered", null);
                     model.put("question", taskDTO);
-                    model.put("nextQuestionInterval", null);
+                    model.put("nextTaskInterval", null);
                     profileMap.values().stream().forEach(battleProfileContainer -> {
                         send(model, Message.BATTLE_NEXT_QUESTION, battleProfileContainer.getProfileConnection());
                     });

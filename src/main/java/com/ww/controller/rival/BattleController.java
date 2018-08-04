@@ -20,27 +20,36 @@ public class BattleController {
     @Autowired
     BattleService battleService;
 
-    @RequestMapping(value = "/start", method = RequestMethod.POST)
-    public Map start(@RequestBody Map<String, Object> payload) {
+    @RequestMapping(value = "/startFast", method = RequestMethod.POST)
+    public Map startFast() {
+        return battleService.startFast();
+    }
+    @RequestMapping(value = "/cancelFast", method = RequestMethod.POST)
+    public Map cancelFast() {
+        return battleService.cancelFast();
+    }
+
+    @RequestMapping(value = "/startFriend", method = RequestMethod.POST)
+    public Map startFriend(@RequestBody Map<String, Object> payload) {
         if (!payload.containsKey("tag")) {
             throw new IllegalArgumentException();
         }
-        return battleService.start((String) payload.get("tag"));
+        return battleService.startFriend((String) payload.get("tag"));
     }
 
-    @RequestMapping(value = "/cancel", method = RequestMethod.POST)
+    @RequestMapping(value = "/cancelFriend", method = RequestMethod.POST)
     public Map cancel() {
-        return battleService.cancel();
+        return battleService.cancelFriend();
     }
 
-    @RequestMapping(value = "/accept", method = RequestMethod.POST)
+    @RequestMapping(value = "/acceptFriend", method = RequestMethod.POST)
     public Map accept() {
-        return battleService.accept();
+        return battleService.acceptFriend();
     }
 
-    @RequestMapping(value = "/reject", method = RequestMethod.POST)
+    @RequestMapping(value = "/rejectFriend", method = RequestMethod.POST)
     public Map reject() {
-        return battleService.reject();
+        return battleService.rejectFriend();
     }
 
 

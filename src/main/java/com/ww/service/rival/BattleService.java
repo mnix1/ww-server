@@ -20,11 +20,15 @@ import com.ww.websocket.message.MessageDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -34,6 +38,7 @@ public class BattleService {
 
     private final CopyOnWriteArrayList<BattleInitContainer> battleInitContainers = new CopyOnWriteArrayList<BattleInitContainer>();
     private ConcurrentHashMap<String, BattleManager> battleManagers = new ConcurrentHashMap<>();
+    private CopyOnWriteArrayList<Profile> waitingForBattleProfiles = new CopyOnWriteArrayList<>();
 
     @Autowired
     private SessionService sessionService;
@@ -50,7 +55,7 @@ public class BattleService {
     @Autowired
     private TaskRendererService taskRendererService;
 
-    public Map start(String tag) {
+    public Map startFriend(String tag) {
         Map<String, Object> model = new HashMap<>();
         cleanBattlesCreator();
         cleanBattlesOpponent();
@@ -64,6 +69,69 @@ public class BattleService {
         return model;
     }
 
+    public Map startFast() {
+        Map<String, Object> model = new HashMap<>();
+        Profile profile = profileService.getProfile();
+        if (!waitingForBattleProfiles.contains(profile)) {
+            waitingForBattleProfiles.add(profile);
+        }
+        model.put("code", 1);
+        return model;
+    }
+
+    public Map cancelFast() {
+        Map<String, Object> model = new HashMap<>();
+        waitingForBattleProfiles.removeIf(profile -> profile.getId().equals(sessionService.getProfileId()));
+        return model;
+    }
+
+    @Scheduled(fixedRate = 5000)
+    private void maybeInitFastBattle() {
+        if (waitingForBattleProfiles.isEmpty()) {
+            logger.debug("No waiting for battle profiles");
+            return;
+        }
+        if (waitingForBattleProfiles.size() == 1) {
+            logger.debug("Only one waiting for battle profile");
+            return;
+        }
+        Profile profile = waitingForBattleProfiles.get(0);
+        Optional<ProfileConnection> profileConnection = profileConnectionService.findByProfileId(profile.getId());
+        if (!profileConnection.isPresent()) {
+            waitingForBattleProfiles.removeIf(e -> e.getId().equals(profile.getId()));
+            maybeInitFastBattle();
+            return;
+        }
+        Profile opponent = findOpponentForFastBattle(profile);
+        Optional<ProfileConnection> opponentConnection = profileConnectionService.findByProfileId(opponent.getId());
+        if (!opponentConnection.isPresent()) {
+            waitingForBattleProfiles.removeIf(e -> e.getId().equals(opponent.getId()));
+            maybeInitFastBattle();
+            return;
+        }
+        logger.debug("Matched profiles {} and {}, now creating battle manager", profile.getId(), opponent.getId());
+        waitingForBattleProfiles.remove(profile);
+        waitingForBattleProfiles.remove(opponent);
+        BattleInitContainer battle = new BattleInitContainer(profile, profileConnection.get(), opponent, opponentConnection.get());
+        BattleManager battleManager = new BattleManager(battle, this);
+        battleManagers.put(battle.getCreatorProfileConnection().getSessionId(), battleManager);
+        battleManagers.put(battle.getOpponentProfileConnection().getSessionId(), battleManager);
+        battleManager.startFast();
+//        battleManager.maybeStart(profileConnection.get().getSessionId());
+//        battleManager.maybeStart(opponentConnection.get().getSessionId());
+        return;
+    }
+
+    private Profile findOpponentForFastBattle(Profile profile) {
+        // TODO add more logic
+        for (Profile p : waitingForBattleProfiles) {
+            if (!p.getId().equals(profile.getId())) {
+                return p;
+            }
+        }
+        return null;
+    }
+
     private void cleanBattlesCreator() {
         battleInitContainers.removeIf(battleInitContainer -> battleInitContainer.getCreatorProfile().getId().equals(sessionService.getProfileId()));
     }
@@ -72,7 +140,7 @@ public class BattleService {
         battleInitContainers.removeIf(battleInitContainer -> battleInitContainer.getOpponentProfile().getId().equals(sessionService.getProfileId()));
     }
 
-    public Map cancel() {
+    public Map cancelFriend() {
         Map<String, Object> model = new HashMap<>();
         battleInitContainers.stream().filter(battleInitContainer -> battleInitContainer.getCreatorProfile().getId().equals(sessionService.getProfileId()))
                 .forEach(this::sendCancelInvite);
@@ -80,7 +148,7 @@ public class BattleService {
         return model;
     }
 
-    public Map accept() {
+    public Map acceptFriend() {
         Map<String, Object> model = new HashMap<>();
         BattleInitContainer battle = battleInitContainers.stream().filter(battleInitContainer -> battleInitContainer.getOpponentProfile().getId().equals(sessionService.getProfileId())).findFirst().get();
         BattleManager battleManager = new BattleManager(battle, this);
@@ -90,7 +158,7 @@ public class BattleService {
         return model;
     }
 
-    public Map reject() {
+    public Map rejectFriend() {
         Map<String, Object> model = new HashMap<>();
         battleInitContainers.stream().filter(battleInitContainer -> battleInitContainer.getOpponentProfile().getId().equals(sessionService.getProfileId()))
                 .forEach(this::sendRejectInvite);
@@ -100,7 +168,7 @@ public class BattleService {
 
     private BattleInitContainer prepareBattleContainer(String tag) {
         Profile opponentProfile = profileService.getProfile(tag);
-        ProfileConnection opponentProfileConnection =  profileConnectionService.findByProfileId(opponentProfile.getId()).orElseGet(null);
+        ProfileConnection opponentProfileConnection = profileConnectionService.findByProfileId(opponentProfile.getId()).orElseGet(null);
         if (opponentProfileConnection == null) {
             logger.error("Not connected profile with tag: {}, sessionProfileId: {}", tag, sessionService.getProfileId());
             return null;
