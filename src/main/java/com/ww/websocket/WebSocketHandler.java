@@ -1,5 +1,6 @@
 package com.ww.websocket;
 
+import com.ww.model.container.ProfileConnection;
 import com.ww.service.rival.BattleService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
@@ -40,7 +41,8 @@ public class WebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         logger.debug("Connected: sessionId: " + session.getId());
-        profileConnectionService.newConnection(session);
+        ProfileConnection profileConnection =profileConnectionService.newConnection(session);
+        battleService.sendActualBattleModelToNewProfileConnection(profileConnection);
     }
 
 //    private ProfileConnection findProfileConnection(WebSocketSession session) {

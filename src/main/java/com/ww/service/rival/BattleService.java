@@ -3,11 +3,13 @@ package com.ww.service.rival;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.manager.BattleManager;
 import com.ww.model.constant.Category;
+import com.ww.model.container.ProfileConnection;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.social.ProfileConnectionService;
+import com.ww.websocket.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,14 @@ public class BattleService {
         return profileIdToBattleManagerMap;
     }
 
+    public synchronized void sendActualBattleModelToNewProfileConnection(ProfileConnection profileConnection) {
+        if (!profileIdToBattleManagerMap.containsKey(profileConnection.getProfileId())) {
+            return;
+        }
+        BattleManager battleManager = profileIdToBattleManagerMap.get(profileConnection.getProfileId());
+        battleManager.send(battleManager.actualModel(profileConnection.getProfileId()), Message.BATTLE_ACTUAL_MODEL, profileConnection.getProfileId());
+    }
+
     public synchronized void readyForStart(String sessionId) {
         profileConnectionService.getProfileId(sessionId).ifPresent(profileId -> {
             BattleManager battleManager = profileIdToBattleManagerMap.get(profileId);
@@ -54,7 +64,6 @@ public class BattleService {
         if (battleManager.isLock()) {
             return;
         }
-        battleManager.setLock(true);
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             Map<String, Object> map = objectMapper.readValue(content, HashMap.class);
@@ -70,7 +79,7 @@ public class BattleService {
         return question;
     }
 
-    public TaskDTO prepareQuestionDTO(Question question) {
+    public TaskDTO prepareTaskDTO(Question question) {
         return taskRendererService.prepareTaskDTO(question);
     }
 

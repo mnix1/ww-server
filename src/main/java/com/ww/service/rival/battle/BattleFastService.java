@@ -84,7 +84,7 @@ public class BattleFastService {
         BattleManager battleManager = new BattleManager(battle, battleService, profileConnectionService);
         battleService.getProfileIdToBattleManagerMap().put(battle.getCreatorProfile().getId(), battleManager);
         battleService.getProfileIdToBattleManagerMap().put(battle.getOpponentProfile().getId(), battleManager);
-        battleManager.startFast();
+        battleManager.sendReadyFast();
         return;
     }
 

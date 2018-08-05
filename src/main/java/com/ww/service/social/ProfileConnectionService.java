@@ -31,7 +31,7 @@ public class ProfileConnectionService {
     @Autowired
     ProfileFriendRepository profileFriendRepository;
 
-    public void newConnection(WebSocketSession session) {
+    public ProfileConnection newConnection(WebSocketSession session) {
         Profile profile = profileService.createOrRetrieveProfile(profileService.getAuthId(session.getPrincipal()));
         if (profileIdToProfileConnectionMap.containsKey(profile.getId())) {
             ProfileConnection profileConnection = profileIdToProfileConnectionMap.get(profile.getId());
@@ -46,6 +46,7 @@ public class ProfileConnectionService {
         profileIdToProfileConnectionMap.put(profile.getId(), profileConnection);
         sessionIdToProfileConnectionMap.put(session.getId(), profileConnection);
         sendFriendConnectionChanged(profile, Message.FRIEND_SIGN_IN);
+        return profileConnection;
     }
 
     public void deleteConnection(WebSocketSession session) {
