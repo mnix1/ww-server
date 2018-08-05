@@ -17,6 +17,8 @@ import javax.persistence.Id;
 @Entity
 @ToString
 public class GeographyCountry {
+    public static String MAP_DIRECTORY = "map/";
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -87,7 +89,7 @@ public class GeographyCountry {
     }
 
     public String getMapResourcePath() {
-        return "task/image/map/" + getSvgFileName();
+        return "task/image/" + MAP_DIRECTORY + getSvgFileName();
     }
 
 }

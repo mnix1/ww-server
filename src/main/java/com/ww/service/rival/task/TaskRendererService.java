@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Base64;
 
+import static com.ww.model.entity.rival.task.GeographyCountry.MAP_DIRECTORY;
+
 @Service
 public class TaskRendererService {
 
@@ -36,7 +38,11 @@ public class TaskRendererService {
     private String loadImage(String path) {
         try {
             File file = ResourceUtils.getFile("classpath:" + path);
-            return IOUtils.toString(new FileInputStream(file), Charset.defaultCharset());
+            String image = IOUtils.toString(new FileInputStream(file), Charset.defaultCharset());
+            if(path.contains(MAP_DIRECTORY)){
+                return image.replace("<svg","<svg fill=\"#dadada\"");
+            }
+            return image;
         } catch (IOException e) {
             e.printStackTrace();
         }
