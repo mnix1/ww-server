@@ -5,5 +5,6 @@ public enum BattleStatus {
     ANSWERING,
     ANSWERED,
     PREPARING_NEXT_TASK,
-    CLOSED;
+    CLOSED,
+    DISPOSED,
 }

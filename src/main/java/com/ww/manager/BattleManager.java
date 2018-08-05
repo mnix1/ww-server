@@ -10,6 +10,7 @@ import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.dto.social.ProfileDTO;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Question;
+import com.ww.model.entity.social.Profile;
 import com.ww.service.rival.BattleService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.websocket.message.Message;
@@ -20,7 +21,9 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -37,17 +40,16 @@ public class BattleManager {
     private TaskDTO taskDTO;
     private String winnerTag;
     private String winnerName;
-    private BattleService battleService;
-    private ProfileConnectionService profileConnectionService;
-
-
     private Instant nextTaskDate;
     private Answer correctAnswer;
-    private Boolean isAnswerCorrect;
     private Long markedAnswerId;
     private Long answeredProfileId;
 
     private BattleStatus status = BattleStatus.OPEN;
+
+    private BattleService battleService;
+    private ProfileConnectionService profileConnectionService;
+
 
     public BattleManager(BattleFriendContainer bic, BattleService battleService, ProfileConnectionService profileConnectionService) {
         Long creatorId = bic.getCreatorProfile().getId();
@@ -60,6 +62,18 @@ public class BattleManager {
 
     public boolean isLock() {
         return status != BattleStatus.ANSWERING;
+    }
+
+    public boolean isClosed() {
+        return status == BattleStatus.CLOSED;
+    }
+
+    public String getWinnerTag() {
+        return winnerTag;
+    }
+
+    public List<BattleProfileContainer> getBattleProfileContainers() {
+        return new ArrayList<>(profileIdBattleProfileContainerMap.values());
     }
 
     public void maybeStart(Long profileId) {
@@ -135,7 +149,7 @@ public class BattleManager {
     public synchronized void answer(Long profileId, Map<String, Object> content) {
         status = BattleStatus.ANSWERED;
         correctAnswer = question.getAnswers().stream().filter(Answer::getCorrect).findFirst().get();
-        isAnswerCorrect = false;
+        Boolean isAnswerCorrect = false;
         answeredProfileId = profileId;
         markedAnswerId = null;
         if (content.containsKey("answerId")) {
@@ -159,6 +173,7 @@ public class BattleManager {
         });
         if (winnerTag != null) {
             status = BattleStatus.CLOSED;
+            battleService.disposeManager(this);
             return;
         }
         status = BattleStatus.PREPARING_NEXT_TASK;

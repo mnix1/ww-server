@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.manager.BattleManager;
 import com.ww.model.constant.Category;
 import com.ww.model.container.ProfileConnection;
+import com.ww.model.container.battle.BattleProfileContainer;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.service.rival.task.TaskGenerateService;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -53,6 +55,20 @@ public class BattleService {
             BattleManager battleManager = profileIdToBattleManagerMap.get(profileId);
             battleManager.maybeStart(profileId);
         });
+    }
+
+    public synchronized void disposeManager(BattleManager battleManager) {
+        if (!battleManager.isClosed()) {
+            return;
+        }
+        String winnerTag = battleManager.getWinnerTag();
+        List<BattleProfileContainer> battleProfileContainers = battleManager.getBattleProfileContainers();
+        battleProfileContainers.forEach(battleProfileContainer -> {
+            if (profileIdToBattleManagerMap.containsKey(battleProfileContainer.getProfileId())) {
+                profileIdToBattleManagerMap.remove(battleProfileContainer.getProfileId());
+            }
+        });
+        // TODO STORE RESULT
     }
 
     public synchronized void answer(String sessionId, String content) {
