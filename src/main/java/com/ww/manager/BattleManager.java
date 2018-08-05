@@ -122,7 +122,7 @@ public class BattleManager {
     private synchronized void start() {
         prepareNewTask();
         status = BattleStatus.ANSWERING;
-        profileIdBattleProfileContainerMap.values().stream().forEach(battleProfileContainer -> {
+        profileIdBattleProfileContainerMap.values().parallelStream().forEach(battleProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
             fillModelAnswering(model, battleProfileContainer);
             send(model, Message.BATTLE_START, battleProfileContainer.getProfileId());
@@ -166,7 +166,7 @@ public class BattleManager {
             winnerName = container.getProfile().getName();
         }
         nextTaskDate = Instant.now().plus(NEXT_TASK_INTERVAL, ChronoUnit.MILLIS);
-        profileIdBattleProfileContainerMap.values().stream().forEach(battleProfileContainer -> {
+        profileIdBattleProfileContainerMap.values().parallelStream().forEach(battleProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
             fillModelAnswered(model, battleProfileContainer);
             send(model, Message.BATTLE_ANSWER, battleProfileContainer.getProfileId());
@@ -188,7 +188,7 @@ public class BattleManager {
                     model.put("meAnswered", null);
                     model.put("question", taskDTO);
                     model.put("nextTaskInterval", null);
-                    profileIdBattleProfileContainerMap.values().stream().forEach(battleProfileContainer -> {
+                    profileIdBattleProfileContainerMap.values().parallelStream().forEach(battleProfileContainer -> {
                         send(model, Message.BATTLE_NEXT_QUESTION, battleProfileContainer.getProfileId());
                     });
                 });
