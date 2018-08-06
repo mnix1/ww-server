@@ -84,11 +84,11 @@ public class Init {
         taskTypes.add(new TaskType(Category.MATH, MathTaskType.MULTIPLICATION.name(), TaskRenderer.TEXT, 1));
         taskTypes.add(new TaskType(Category.MATH, MathTaskType.MODULO.name(), TaskRenderer.TEXT, 1));
 
-        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.COUNTRY_NAME_FROM_ALPHA_2.name(), TaskRenderer.TEXT, 1));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.COUNTRY_NAME_FROM_ALPHA_2.name(), TaskRenderer.TEXT, 0));
         taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.COUNTRY_NAME_FROM_CAPITAL_NAME.name(), TaskRenderer.TEXT, 2));
         taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.COUNTRY_NAME_FROM_MAP.name(), TaskRenderer.TEXT_IMAGE, 3));
         taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.COUNTRY_NAME_FROM_FLAG.name(), TaskRenderer.TEXT_IMAGE, 1));
-        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.CAPITAL_NAME_FROM_ALPHA_3.name(), TaskRenderer.TEXT, 0));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.CAPITAL_NAME_FROM_ALPHA_3.name(), TaskRenderer.TEXT, 3));
         taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.CAPITAL_NAME_FROM_COUNTRY_NAME.name(), TaskRenderer.TEXT, 2));
         taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.CAPITAL_NAME_FROM_MAP.name(), TaskRenderer.TEXT_IMAGE, 5));
         taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.CAPITAL_NAME_FROM_FLAG.name(), TaskRenderer.TEXT_IMAGE, 4));

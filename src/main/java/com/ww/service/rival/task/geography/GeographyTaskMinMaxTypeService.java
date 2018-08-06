@@ -1,6 +1,8 @@
 package com.ww.service.rival.task.geography;
 
+import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.constant.rival.task.type.GeographyTaskType;
+import com.ww.model.container.NumbersDifficulty;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.GeographyCountry;
 import com.ww.model.entity.rival.task.Question;
@@ -22,16 +24,18 @@ public class GeographyTaskMinMaxTypeService {
     @Autowired
     GeographyCountryRepository geographyCountryRepository;
 
-    public Question generate(TaskType type, GeographyTaskType typeValue) {
-        List<GeographyCountry> countries = prepareCountries(typeValue, 4);
-        Question question = prepareQuestion(type, typeValue);
+    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, GeographyTaskType typeValue) {
+        int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
+        int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        List<GeographyCountry> countries = prepareCountries(typeValue, answersCount);
+        Question question = prepareQuestion(type, difficultyLevel, typeValue);
         List<Answer> answers = prepareAnswers(typeValue, countries);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
 
-    private Question prepareQuestion(TaskType type, GeographyTaskType typeValue) {
-        Question question = new Question(type);
+    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, GeographyTaskType typeValue) {
+        Question question = new Question(type, difficultyLevel);
         if (typeValue == GeographyTaskType.MAX_POPULATION) {
             question.setTextContentPolish("Które z państw posiada największą populację?");
             question.setTextContentEnglish("Which country has the largest population?");

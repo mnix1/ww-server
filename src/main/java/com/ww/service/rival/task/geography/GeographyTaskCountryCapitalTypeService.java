@@ -1,5 +1,6 @@
 package com.ww.service.rival.task.geography;
 
+import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.constant.rival.task.type.GeographyTaskType;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.GeographyCountry;
@@ -24,19 +25,21 @@ public class GeographyTaskCountryCapitalTypeService {
     @Autowired
     GeographyCountryRepository geographyCountryRepository;
 
-    public Question generate(TaskType type, GeographyTaskType taskValue) {
+    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, GeographyTaskType taskValue) {
+        int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
+        int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
         List<GeographyCountry> allCountries = geographyCountryRepository.findAll();
         GeographyCountry correctCountry = randomElement(allCountries);
 
-        Question question = prepareQuestion(type, taskValue, correctCountry);
+        Question question = prepareQuestion(type, difficultyLevel, taskValue, correctCountry);
 //        question.setDifficultyLevel();
-        List<Answer> answers = prepareAnswers(taskValue, correctCountry, allCountries);
+        List<Answer> answers = prepareAnswers(taskValue, correctCountry, allCountries, answersCount);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
 
-    private Question prepareQuestion(TaskType type, GeographyTaskType taskValue, GeographyCountry country) {
-        Question question = new Question(type);
+    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, GeographyTaskType taskValue, GeographyCountry country) {
+        Question question = new Question(type, difficultyLevel);
         if (taskValue == GeographyTaskType.COUNTRY_NAME_FROM_ALPHA_2) {
             question.setTextContentPolish("Wskaż państwo, którego kod to " + country.getAlpha2Code());
             question.setTextContentEnglish("Indicate the country whose code is " + country.getAlpha2Code());
@@ -76,14 +79,14 @@ public class GeographyTaskCountryCapitalTypeService {
         return question;
     }
 
-    private List<Answer> prepareAnswers(GeographyTaskType typeValue, GeographyCountry correctCountry, List<GeographyCountry> allCountries) {
+    private List<Answer> prepareAnswers(GeographyTaskType typeValue, GeographyCountry correctCountry, List<GeographyCountry> allCountries, int answersCount) {
         Answer correctAnswer = new Answer(true);
         fillAnswerContent(typeValue, correctAnswer, correctCountry);
 
         List<Answer> wrongAnswers = new ArrayList<>();
         List<String> answerContents = new ArrayList<>();
         answerContents.add(correctAnswer.getTextContentEnglish());
-        while (wrongAnswers.size() < 3) {
+        while (wrongAnswers.size() < answersCount - 1) {
             GeographyCountry wrongCountry = randomElement(allCountries);
             Answer wrongAnswer = new Answer(false);
             fillAnswerContent(typeValue, wrongAnswer, wrongCountry);

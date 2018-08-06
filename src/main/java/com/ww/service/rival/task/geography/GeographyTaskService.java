@@ -21,10 +21,10 @@ public class GeographyTaskService {
                 || typeValue == GeographyTaskType.MIN_AREA
                 || typeValue == GeographyTaskType.MAX_POPULATION
                 || typeValue == GeographyTaskType.MIN_POPULATION) {
-            return geographyTaskMinMaxTypeService.generate(type, typeValue);
+            return geographyTaskMinMaxTypeService.generate(type, difficultyLevel, typeValue);
         }
 
-        return geographyTaskCountryCapitalTypeService.generate(type, typeValue);
+        return geographyTaskCountryCapitalTypeService.generate(type, difficultyLevel, typeValue);
     }
 
 }
