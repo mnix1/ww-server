@@ -1,4 +1,4 @@
-package com.ww.model.constant;
+package com.ww.model.constant.hero;
 
 import java.util.Arrays;
 import java.util.List;

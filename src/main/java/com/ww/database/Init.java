@@ -1,7 +1,7 @@
 package com.ww.database;
 
 import com.ww.helper.TagHelper;
-import com.ww.model.constant.HeroType;
+import com.ww.model.constant.hero.HeroType;
 import com.ww.model.entity.hero.Hero;
 import com.ww.model.entity.social.Profile;
 import com.ww.repository.hero.HeroRepository;
@@ -84,7 +84,7 @@ public class Init {
         heroes.add(new Hero("Ząbek","Shark", HeroType.SHARK));
         heroes.add(new Hero("Kicek","Rabbit", HeroType.RABBIT));
         heroes.add(new Hero("Misiaczek","Polar Bear", HeroType.POLAR_BEAR));
-        heroes.add(new Hero("Zgapiacz","Parrot", HeroType.PARROT));
+        heroes.add(new Hero("Zgapka","Parrot", HeroType.PARROT));
         heroes.add(new Hero("Pandziu","Panda", HeroType.PANDA_EAT));
         heroes.add(new Hero("Strusior","Ostrich", HeroType.OSTRICH));
         heroes.add(new Hero("Bujnogrzywy","Lion", HeroType.LION));
@@ -94,7 +94,7 @@ public class Init {
         heroes.add(new Hero("Lizuś","Fox", HeroType.FOX_MAN));
         heroes.add(new Hero("Lisiczka","Foxie", HeroType.FOX));
         heroes.add(new Hero("Trąbuś","Elephant", HeroType.ELEPHANT));
-        heroes.add(new Hero("Orłowczak","Eagle", HeroType.EAGLE));
+        heroes.add(new Hero("Orzełko","Eagle", HeroType.EAGLE));
         heroes.add(new Hero("Grubełło","Fat Dragon", HeroType.DRAGON_FAT));
         heroes.add(new Hero("Smokełło","Blue Dragon", HeroType.DRAGON_BLUE));
         heroes.add(new Hero("Pierdołło","Green Dragon", HeroType.DRAGON));

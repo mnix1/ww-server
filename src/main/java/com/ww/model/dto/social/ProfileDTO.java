@@ -1,6 +1,6 @@
 package com.ww.model.dto.social;
 
-import com.ww.model.constant.HeroType;
+import com.ww.model.constant.hero.HeroType;
 import com.ww.model.entity.social.Profile;
 import lombok.Getter;
 

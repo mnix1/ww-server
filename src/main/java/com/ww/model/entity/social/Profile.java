@@ -1,7 +1,7 @@
 package com.ww.model.entity.social;
 
 import com.ww.helper.TagHelper;
-import com.ww.model.constant.HeroType;
+import com.ww.model.constant.hero.HeroType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

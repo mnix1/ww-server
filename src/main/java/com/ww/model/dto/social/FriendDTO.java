@@ -2,7 +2,7 @@ package com.ww.model.dto.social;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ww.model.constant.HeroType;
+import com.ww.model.constant.hero.HeroType;
 import com.ww.model.constant.social.FriendStatus;
 import com.ww.model.entity.social.Profile;
 import com.ww.model.entity.social.ProfileFriend;
