@@ -48,7 +48,7 @@ public enum HeroType {
 //    RUMCIA,
     SHARK,
     SHEEP,
-    SKUNK,
+    RACCOON,
     SNAKE,
 //    SZERYF,
     TIGER,

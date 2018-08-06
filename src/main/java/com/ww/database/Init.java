@@ -122,7 +122,7 @@ public class Init {
         heroes.add(new Hero("Skorupny","Turtle", HeroType.TURTLE));
         heroes.add(new Hero("Tygrysor","Tiger", HeroType.TIGER));
         heroes.add(new Hero("Jadziuś","Snake", HeroType.SNAKE));
-        heroes.add(new Hero("Smrodziak","Skunk", HeroType.SKUNK));
+        heroes.add(new Hero("Szopuś","Raccoon", HeroType.RACCOON));
         heroes.add(new Hero("Wełnuś","Sheep", HeroType.SHEEP));
         heroes.add(new Hero("Ząbek","Shark", HeroType.SHARK));
         heroes.add(new Hero("Kicek","Rabbit", HeroType.RABBIT));
