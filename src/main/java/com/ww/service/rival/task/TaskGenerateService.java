@@ -2,11 +2,10 @@ package com.ww.service.rival.task;
 
 import com.ww.model.constant.Category;
 import com.ww.model.constant.Language;
-import com.ww.model.constant.rival.task.GeographyTaskType;
-import com.ww.model.constant.rival.task.MathTaskType;
-import com.ww.model.constant.rival.task.MemoryTaskType;
-import com.ww.model.constant.rival.task.MusicTaskType;
+import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.entity.rival.task.Question;
+import com.ww.model.entity.rival.task.TaskType;
+import com.ww.repository.rival.task.TaskTypeRepository;
 import com.ww.service.rival.task.geography.GeographyTaskService;
 import com.ww.service.rival.task.math.MathTaskService;
 import com.ww.service.rival.task.memory.MemoryTaskService;
@@ -30,18 +29,22 @@ public class TaskGenerateService {
     @Autowired
     MemoryTaskService memoryTaskService;
 
-    public Question generate(Category category) {
+    @Autowired
+    TaskTypeRepository taskTypeRepository;
+
+    public Question generate(Category category, TaskDifficultyLevel difficultyLevel) {
+        TaskType taskType = randomElement(taskTypeRepository.findAllByCategory(category));
         if (category == Category.MUSIC) {
-            return musicTaskService.generate(Language.ALL, MusicTaskType.random());
+            return musicTaskService.generate(taskType, difficultyLevel, Language.ALL);
         }
         if (category == Category.GEOGRAPHY) {
-            return geographyTaskService.generate(GeographyTaskType.random());
+            return geographyTaskService.generate(taskType, difficultyLevel);
         }
         if (category == Category.MATH) {
-            return mathTaskService.generate(MathTaskType.random());
+            return mathTaskService.generate(taskType, difficultyLevel);
         }
         if (category == Category.MEMORY) {
-            return memoryTaskService.generate(MemoryTaskType.random());
+            return memoryTaskService.generate(taskType, difficultyLevel);
         }
         return null;
     }

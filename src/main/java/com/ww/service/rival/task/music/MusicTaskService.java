@@ -2,10 +2,12 @@ package com.ww.service.rival.task.music;
 
 import com.ww.model.constant.Category;
 import com.ww.model.constant.Language;
-import com.ww.model.constant.rival.task.MusicTaskType;
+import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.task.type.MusicTaskTypeValue;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.MusicTrack;
+import com.ww.model.entity.rival.task.TaskType;
 import com.ww.repository.rival.task.category.MusicTrackRepository;
 import com.ww.service.rival.task.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +31,16 @@ public class MusicTaskService {
     private static String VERSE = "_V_";
     private static String LINE = "_L_";
 
-    public Question generate(Language lang, MusicTaskType type) {
+    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, Language lang) {
+        MusicTaskTypeValue typeValue = MusicTaskTypeValue.valueOf(type.getValue());
+        int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
+        int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
         List<MusicTrack> tracks = musicTrackRepository.findAllByLang(lang);
         MusicTrack track = randomElement(tracks);
         List<List<String>> verses = trackVerseLineContent(track.getContent());
         Map<String, Integer> allLinesRepeatMap = new HashMap<>();
         List<String> allLines = trackAllLineContent(verses);
-        System.out.println("Track: " + track + " lines: " + allLines.size());
+//        System.out.println("Track: " + track + " lines: " + allLines.size());
         allLines.forEach(line -> {
             if (allLinesRepeatMap.containsKey(line)) {
                 Integer repeat = allLinesRepeatMap.get(line);
@@ -52,14 +57,14 @@ public class MusicTaskService {
             questionLine = allLines.get(questionLineIndex);
         }
         int correctAnswerIndex = 0;
-        List<Integer> wrongAnswerIndexes = new ArrayList<>(3);
-        if (type == MusicTaskType.NEXT_LINE) {
+        List<Integer> wrongAnswerIndexes = new ArrayList<>(answersCount - 1);
+        if (typeValue == MusicTaskTypeValue.NEXT_LINE) {
             correctAnswerIndex = questionLineIndex + 1;
         }
-        if (type == MusicTaskType.PREVIOUS_LINE) {
+        if (typeValue == MusicTaskTypeValue.PREVIOUS_LINE) {
             correctAnswerIndex = questionLineIndex - 1;
         }
-        while (wrongAnswerIndexes.size() < 3) {
+        while (wrongAnswerIndexes.size() < answersCount - 1) {
             int wrongAnswerIndex = randomElementIndex(allLines);
             String wrongAnswer = allLines.get(wrongAnswerIndex);
             if (wrongAnswerIndex != correctAnswerIndex && wrongAnswerIndex != questionLineIndex
@@ -67,21 +72,20 @@ public class MusicTaskService {
                 wrongAnswerIndexes.add(wrongAnswerIndex);
             }
         }
-        Question question = prepareQuestion(type, track, questionLine, lang);
+        Question question = prepareQuestion(type, typeValue, track, questionLine, lang);
         List<Answer> answers = prepareAnswers(allLines.get(correctAnswerIndex), wrongAnswerIndexes.stream().map(i -> allLines.get(i)).collect(Collectors.toList()));
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
 
-    private Question prepareQuestion(MusicTaskType type, MusicTrack track, String questionLine, Language lang) {
-        Question question = new Question();
-        question.setCategory(Category.MUSIC);
+    private Question prepareQuestion(TaskType type, MusicTaskTypeValue typeValue, MusicTrack track, String questionLine, Language lang) {
+        Question question = new Question(type);
         if (Language.addPolish(lang)) {
             String content = "W tekście utworu \"" + track.getName() + "\" zespołu " + track.getAuthor();
-            if (type == MusicTaskType.NEXT_LINE) {
+            if (typeValue == MusicTaskTypeValue.NEXT_LINE) {
                 content += " po wierszu: \"";
             }
-            if (type == MusicTaskType.PREVIOUS_LINE) {
+            if (typeValue == MusicTaskTypeValue.PREVIOUS_LINE) {
                 content += " przed wierszem: \"";
             }
             content += questionLine + "\" występuje wiersz";

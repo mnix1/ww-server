@@ -1,7 +1,5 @@
 package com.ww.model.entity.rival.task;
 
-import com.ww.model.constant.Category;
-import com.ww.model.constant.rival.task.TaskRenderer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,8 +15,6 @@ public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Category category;
-    private TaskRenderer taskRenderer = TaskRenderer.TEXT;
     @Column(length = 4000)
     private String imageContent;
     @Column(length = 4000)
@@ -27,8 +23,15 @@ public class Question {
     private String textContentPolish;
     @Column(length = 4000)
     private String textContentEnglish;
+    @ManyToOne
+    @JoinColumn(name = "type_id", nullable = false, updatable = false)
+    private TaskType type;
     @OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
     private Set<Answer> answers;
+
+    public Question(TaskType type) {
+        this.type = type;
+    }
 
     public void setTextContent(String content) {
         this.setTextContentPolish(content);

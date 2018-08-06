@@ -3,6 +3,7 @@ package com.ww.service.rival.battle;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.manager.BattleManager;
 import com.ww.model.constant.Category;
+import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.container.ProfileConnection;
 import com.ww.model.container.battle.BattleProfileContainer;
 import com.ww.model.dto.rival.task.TaskDTO;
@@ -90,7 +91,7 @@ public class BattleService {
     }
 
     public Question prepareQuestion() {
-        Question question = taskGenerateService.generate(Category.random());
+        Question question = taskGenerateService.generate(Category.random(), TaskDifficultyLevel.random());
         question.initAnswerIds();
         return question;
     }

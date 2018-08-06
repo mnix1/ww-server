@@ -1,11 +1,13 @@
 package com.ww.service.rival.task;
 
 import com.ww.model.constant.Category;
+import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.social.Profile;
 import com.ww.repository.rival.task.AnswerRepository;
 import com.ww.repository.rival.task.QuestionRepository;
+import javafx.concurrent.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,16 +31,23 @@ public class TaskService {
     private TaskGenerateService taskGenerateService;
 
     public List<Question> generateQuestions(List<Category> categories) {
+        return generateQuestions(categories, TaskDifficultyLevel.random());
+    }
+
+    public List<Question> generateQuestions(List<Category> categories, TaskDifficultyLevel difficultyLevel) {
         List<Question> questions = categories.stream()
-                .map(category -> taskGenerateService.generate(category))
+                .map(category -> taskGenerateService.generate(category, difficultyLevel))
                 .collect(Collectors.toList());
         save(questions);
         return questions;
     }
 
-
     public Question generateQuestion(Category category) {
-        Question question = taskGenerateService.generate(category);
+        return generateQuestion(category, TaskDifficultyLevel.random());
+    }
+
+    public Question generateQuestion(Category category, TaskDifficultyLevel difficultyLevel) {
+        Question question = taskGenerateService.generate(category, difficultyLevel);
         save(question);
         return question;
     }

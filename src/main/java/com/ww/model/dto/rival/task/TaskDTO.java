@@ -24,8 +24,8 @@ public class TaskDTO {
 
     public TaskDTO(Question question) {
         this.id = question.getId();
-        this.category = question.getCategory();
-        this.taskRenderer = question.getTaskRenderer();
+        this.category = question.getType().getCategory();
+        this.taskRenderer = question.getType().getRenderer();
         this.imageContent = question.getImageContent();
         this.animationContent = question.getAnimationContent();
         this.textContentPolish = question.getTextContentPolish();

@@ -1,11 +1,10 @@
 package com.ww.service.rival.task.geography;
 
-import com.ww.model.constant.Category;
-import com.ww.model.constant.rival.task.GeographyTaskType;
-import com.ww.model.constant.rival.task.TaskRenderer;
+import com.ww.model.constant.rival.task.type.GeographyTaskType;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.GeographyCountry;
 import com.ww.model.entity.rival.task.Question;
+import com.ww.model.entity.rival.task.TaskType;
 import com.ww.repository.rival.task.category.GeographyCountryRepository;
 import com.ww.service.rival.task.TaskRendererService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,55 +24,50 @@ public class GeographyTaskCountryCapitalTypeService {
     @Autowired
     GeographyCountryRepository geographyCountryRepository;
 
-    public Question generate(GeographyTaskType type) {
+    public Question generate(TaskType type, GeographyTaskType taskValue) {
         List<GeographyCountry> allCountries = geographyCountryRepository.findAll();
         GeographyCountry correctCountry = randomElement(allCountries);
 
-        Question question = prepareQuestion(type, correctCountry);
-        List<Answer> answers = prepareAnswers(type, correctCountry, allCountries);
+        Question question = prepareQuestion(type, taskValue, correctCountry);
+        List<Answer> answers = prepareAnswers(taskValue, correctCountry, allCountries);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
 
-    private Question prepareQuestion(GeographyTaskType type, GeographyCountry country) {
-        Question question = new Question();
-        question.setCategory(Category.GEOGRAPHY);
-        if (type == GeographyTaskType.COUNTRY_NAME_FROM_ALPHA_2) {
+    private Question prepareQuestion(TaskType type, GeographyTaskType taskValue, GeographyCountry country) {
+        Question question = new Question(type);
+        if (taskValue == GeographyTaskType.COUNTRY_NAME_FROM_ALPHA_2) {
             question.setTextContentPolish("Wskaż państwo, którego kod to " + country.getAlpha2Code());
             question.setTextContentEnglish("Indicate the country whose code is " + country.getAlpha2Code());
         }
-        if (type == GeographyTaskType.COUNTRY_NAME_FROM_CAPITAL_NAME) {
+        if (taskValue == GeographyTaskType.COUNTRY_NAME_FROM_CAPITAL_NAME) {
             question.setTextContentPolish("Wskaż państwo, którego stolica to " + country.getCapitalPolish());
             question.setTextContentEnglish("Indicate the country whose capital is " + country.getCapitalEnglish());
         }
-        if (type == GeographyTaskType.COUNTRY_NAME_FROM_MAP) {
-            question.setTaskRenderer(TaskRenderer.TEXT_IMAGE);
+        if (taskValue == GeographyTaskType.COUNTRY_NAME_FROM_MAP) {
             question.setImageContent(country.getMapResourcePath());
             question.setTextContentPolish("Które państwo widoczne jest na mapie?");
             question.setTextContentEnglish("Which country is visible on the map?");
         }
-        if (type == GeographyTaskType.COUNTRY_NAME_FROM_FLAG) {
-            question.setTaskRenderer(TaskRenderer.TEXT_IMAGE);
+        if (taskValue == GeographyTaskType.COUNTRY_NAME_FROM_FLAG) {
             question.setImageContent(country.getFlagResourcePath());
             question.setTextContentPolish("Jest to flaga państwa");
             question.setTextContentEnglish("Which country's flag is it?");
         }
-        if (type == GeographyTaskType.CAPITAL_NAME_FROM_ALPHA_3) {
+        if (taskValue == GeographyTaskType.CAPITAL_NAME_FROM_ALPHA_3) {
             question.setTextContentPolish("Stolicą państwa, którego kod to " + country.getAlpha3Code() + " jest");
             question.setTextContentEnglish("Indicate the country whose code is " + country.getAlpha3Code());
         }
-        if (type == GeographyTaskType.CAPITAL_NAME_FROM_COUNTRY_NAME) {
+        if (taskValue == GeographyTaskType.CAPITAL_NAME_FROM_COUNTRY_NAME) {
             question.setTextContentPolish("Stolicą państwa " + country.getNamePolish() + " jest");
             question.setTextContentEnglish("The capital of " + country.getNameEnglish() + " is");
         }
-        if (type == GeographyTaskType.CAPITAL_NAME_FROM_MAP) {
-            question.setTaskRenderer(TaskRenderer.TEXT_IMAGE);
+        if (taskValue == GeographyTaskType.CAPITAL_NAME_FROM_MAP) {
             question.setImageContent(country.getMapResourcePath());
             question.setTextContentPolish("Stolica państwa widocznego na mapie to");
             question.setTextContentEnglish("The state capital that can be seen on the map is");
         }
-        if (type == GeographyTaskType.CAPITAL_NAME_FROM_FLAG) {
-            question.setTaskRenderer(TaskRenderer.TEXT_IMAGE);
+        if (taskValue == GeographyTaskType.CAPITAL_NAME_FROM_FLAG) {
             question.setImageContent(country.getFlagResourcePath());
             question.setTextContentPolish("Stolica państwa, którego flaga widoczna jest obok to");
             question.setTextContentEnglish("The capital of the country whose flag is visible next to it is");
@@ -81,9 +75,9 @@ public class GeographyTaskCountryCapitalTypeService {
         return question;
     }
 
-    private List<Answer> prepareAnswers(GeographyTaskType type, GeographyCountry correctCountry, List<GeographyCountry> allCountries) {
+    private List<Answer> prepareAnswers(GeographyTaskType typeValue, GeographyCountry correctCountry, List<GeographyCountry> allCountries) {
         Answer correctAnswer = new Answer(true);
-        fillAnswerContent(type, correctAnswer, correctCountry);
+        fillAnswerContent(typeValue, correctAnswer, correctCountry);
 
         List<Answer> wrongAnswers = new ArrayList<>();
         List<String> answerContents = new ArrayList<>();
@@ -91,7 +85,7 @@ public class GeographyTaskCountryCapitalTypeService {
         while (wrongAnswers.size() < 3) {
             GeographyCountry wrongCountry = randomElement(allCountries);
             Answer wrongAnswer = new Answer(false);
-            fillAnswerContent(type, wrongAnswer, wrongCountry);
+            fillAnswerContent(typeValue, wrongAnswer, wrongCountry);
             if (!answerContents.contains(wrongAnswer.getTextContentEnglish())) {
                 wrongAnswers.add(wrongAnswer);
                 answerContents.add(wrongAnswer.getTextContentEnglish());
@@ -103,18 +97,18 @@ public class GeographyTaskCountryCapitalTypeService {
         return answers;
     }
 
-    private void fillAnswerContent(GeographyTaskType type, Answer answer, GeographyCountry country) {
-        if (type == GeographyTaskType.COUNTRY_NAME_FROM_ALPHA_2
-                || type == GeographyTaskType.COUNTRY_NAME_FROM_CAPITAL_NAME
-                || type == GeographyTaskType.COUNTRY_NAME_FROM_MAP
-                || type == GeographyTaskType.COUNTRY_NAME_FROM_FLAG) {
+    private void fillAnswerContent(GeographyTaskType typeValue, Answer answer, GeographyCountry country) {
+        if (typeValue == GeographyTaskType.COUNTRY_NAME_FROM_ALPHA_2
+                || typeValue == GeographyTaskType.COUNTRY_NAME_FROM_CAPITAL_NAME
+                || typeValue == GeographyTaskType.COUNTRY_NAME_FROM_MAP
+                || typeValue == GeographyTaskType.COUNTRY_NAME_FROM_FLAG) {
             answer.setTextContentPolish(country.getNamePolish());
             answer.setTextContentEnglish(country.getNameEnglish());
         }
-        if (type == GeographyTaskType.CAPITAL_NAME_FROM_ALPHA_3
-                || type == GeographyTaskType.CAPITAL_NAME_FROM_COUNTRY_NAME
-                || type == GeographyTaskType.CAPITAL_NAME_FROM_MAP
-                || type == GeographyTaskType.CAPITAL_NAME_FROM_FLAG) {
+        if (typeValue == GeographyTaskType.CAPITAL_NAME_FROM_ALPHA_3
+                || typeValue == GeographyTaskType.CAPITAL_NAME_FROM_COUNTRY_NAME
+                || typeValue == GeographyTaskType.CAPITAL_NAME_FROM_MAP
+                || typeValue == GeographyTaskType.CAPITAL_NAME_FROM_FLAG) {
             answer.setTextContentPolish(country.getCapitalPolish());
             answer.setTextContentEnglish(country.getCapitalEnglish());
         }

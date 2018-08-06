@@ -3,15 +3,12 @@ package com.ww.service.rival.task.memory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.ww.model.constant.Category;
-import com.ww.model.constant.rival.task.MemoryTaskType;
+import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.task.type.MemoryTaskType;
 import com.ww.model.constant.rival.task.TaskRenderer;
 import com.ww.model.container.MemoryObject;
-import com.ww.model.entity.rival.task.Answer;
-import com.ww.model.entity.rival.task.MemoryShape;
-import com.ww.model.entity.rival.task.Question;
-import com.ww.model.entity.rival.task.TaskColor;
+import com.ww.model.entity.rival.task.*;
 import com.ww.repository.rival.task.category.MemoryShapeRepository;
 import com.ww.repository.rival.task.category.TaskColorRepository;
 import com.ww.service.rival.task.TaskRendererService;
@@ -44,7 +41,8 @@ public class MemoryTaskService {
     @Autowired
     TaskColorRepository taskColorRepository;
 
-    public Question generate(MemoryTaskType type) {
+    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel) {
+        MemoryTaskType typeValue = MemoryTaskType.valueOf(type.getValue());
         int answersCount = 4;
         int animationObjectsCount = randomInteger(2, 2);
         List<MemoryObject> allObjects = prepareObjects(answersCount);
@@ -55,15 +53,14 @@ public class MemoryTaskService {
                 wrongObjects.add(memoryObject);
             }
         });
-        Question question = prepareQuestion(type, correctObject);
-        question.setTaskRenderer(TaskRenderer.TEXT_ANIMATION);
+        Question question = prepareQuestion(type, typeValue, correctObject);
         List<MemoryObject> animationObjects = new ArrayList<>(animationObjectsCount);
         animationObjects.add(correctObject);
         if (animationObjects.size() < animationObjectsCount) {
             animationObjects.addAll(wrongObjects.subList(0, animationObjectsCount - 1));
         }
         question.setAnimationContent(prepareAnimation(animationObjects));
-        List<Answer> answers = prepareAnswers(type, correctObject, wrongObjects, answersCount);
+        List<Answer> answers = prepareAnswers(typeValue, correctObject, wrongObjects, answersCount);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
@@ -82,34 +79,33 @@ public class MemoryTaskService {
         return null;
     }
 
-    private Question prepareQuestion(MemoryTaskType type, MemoryObject correctObject) {
-        Question question = new Question();
-        question.setCategory(Category.MEMORY);
-        if (type == MemoryTaskType.BACKGROUND_COLOR_FROM_FIGURE_KEY) {
+    private Question prepareQuestion(TaskType type, MemoryTaskType typeValue, MemoryObject correctObject) {
+        Question question = new Question(type);
+        if (typeValue == MemoryTaskType.BACKGROUND_COLOR_FROM_FIGURE_KEY) {
             question.setTextContentPolish("Jaki kolor miał objekt " + correctObject.getKey() + "?");
             question.setTextContentEnglish("What was the color of the object " + correctObject.getKey() + "?");
         }
-        if (type == MemoryTaskType.SHAPE_FROM_FIGURE_KEY) {
+        if (typeValue == MemoryTaskType.SHAPE_FROM_FIGURE_KEY) {
             question.setTextContentPolish("Jaki kształt miał objekt " + correctObject.getKey() + "?");
             question.setTextContentEnglish("What was the font color of the object " + correctObject.getKey() + "?");
         }
-        if (type == MemoryTaskType.FIGURE_KEY_FROM_BACKGROUND_COLOR || type == MemoryTaskType.SHAPE_FROM_BACKGROUND_COLOR ) {
+        if (typeValue == MemoryTaskType.FIGURE_KEY_FROM_BACKGROUND_COLOR || typeValue == MemoryTaskType.SHAPE_FROM_BACKGROUND_COLOR ) {
             question.setTextContentPolish("Który z obiektów miał " + correctObject.getBackgroundColor().getNamePolish() + " kolor?");
             question.setTextContentEnglish("Which of the objects was " + correctObject.getBackgroundColor().getNameEnglish() + "?");
         }
-        if (type == MemoryTaskType.FIGURE_KEY_FROM_SHAPE) {
+        if (typeValue == MemoryTaskType.FIGURE_KEY_FROM_SHAPE) {
             question.setTextContentPolish("Który z wcześniej pokazanych obiektów to " + correctObject.getShape().getNamePolish() + "?");
             question.setTextContentEnglish("The shape of which of the objects was " + correctObject.getShape().getNameEnglish() + "?");
         }
         return question;
     }
 
-    private List<Answer> prepareAnswers(MemoryTaskType type, MemoryObject correctObject, List<MemoryObject> wrongObjects, int answersCount) {
+    private List<Answer> prepareAnswers(MemoryTaskType typeValue, MemoryObject correctObject, List<MemoryObject> wrongObjects, int answersCount) {
         Answer correctAnswer = new Answer(true);
-        fillAnswerContent(type, correctAnswer, correctObject);
+        fillAnswerContent(typeValue, correctAnswer, correctObject);
         List<Answer> wrongAnswers = wrongObjects.stream().limit(answersCount - 1).map(wrongObject -> {
             Answer wrongAnswer = new Answer(false);
-            fillAnswerContent(type, wrongAnswer, wrongObject);
+            fillAnswerContent(typeValue, wrongAnswer, wrongObject);
             return wrongAnswer;
         }).collect(Collectors.toList());
         List<Answer> answers = new ArrayList<>();
@@ -118,16 +114,16 @@ public class MemoryTaskService {
         return answers;
     }
 
-    private void fillAnswerContent(MemoryTaskType type, Answer answer, MemoryObject object) {
-        if (type == MemoryTaskType.BACKGROUND_COLOR_FROM_FIGURE_KEY) {
+    private void fillAnswerContent(MemoryTaskType typeValue, Answer answer, MemoryObject object) {
+        if (typeValue == MemoryTaskType.BACKGROUND_COLOR_FROM_FIGURE_KEY) {
             answer.setTextContentPolish(object.getBackgroundColor().getNamePolish());
             answer.setTextContentEnglish(object.getBackgroundColor().getNameEnglish());
         }
-        if (MemoryTaskType.answerShape(type)) {
+        if (MemoryTaskType.answerShape(typeValue)) {
             answer.setTextContentPolish(object.getShape().getNamePolish());
             answer.setTextContentEnglish(object.getShape().getNameEnglish());
         }
-        if (MemoryTaskType.answerFigureKey(type)) {
+        if (MemoryTaskType.answerFigureKey(typeValue)) {
             answer.setTextContent(object.getKey());
         }
     }

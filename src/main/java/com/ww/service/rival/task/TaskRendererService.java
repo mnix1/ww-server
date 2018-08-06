@@ -20,10 +20,10 @@ public class TaskRendererService {
 
     public TaskDTO prepareTaskDTO(Question question) {
         TaskDTO taskDTO = new TaskDTO(question);
-        if (question.getTaskRenderer() == TaskRenderer.TEXT_IMAGE) {
+        if (question.getType().getRenderer() == TaskRenderer.TEXT_IMAGE) {
             swapImagePathToImageData(taskDTO);
         }
-        if (question.getTaskRenderer() == TaskRenderer.TEXT_ANIMATION) {
+        if (question.getType().getRenderer() == TaskRenderer.TEXT_ANIMATION) {
             swapShapeKeyToShapeData(taskDTO);
             taskDTO.setAnimationContent(encodeData(taskDTO.getAnimationContent()));
         }

@@ -1,10 +1,10 @@
 package com.ww.service.rival.task.geography;
 
-import com.ww.model.constant.Category;
-import com.ww.model.constant.rival.task.GeographyTaskType;
+import com.ww.model.constant.rival.task.type.GeographyTaskType;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.GeographyCountry;
 import com.ww.model.entity.rival.task.Question;
+import com.ww.model.entity.rival.task.TaskType;
 import com.ww.repository.rival.task.category.GeographyCountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,44 +22,43 @@ public class GeographyTaskMinMaxTypeService {
     @Autowired
     GeographyCountryRepository geographyCountryRepository;
 
-    public Question generate(GeographyTaskType type) {
-        List<GeographyCountry> countries = prepareCountries(type, 4);
-        Question question = prepareQuestion(type);
-        List<Answer> answers = prepareAnswers(type, countries);
+    public Question generate(TaskType type, GeographyTaskType typeValue) {
+        List<GeographyCountry> countries = prepareCountries(typeValue, 4);
+        Question question = prepareQuestion(type, typeValue);
+        List<Answer> answers = prepareAnswers(typeValue, countries);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
 
-    private Question prepareQuestion(GeographyTaskType type) {
-        Question question = new Question();
-        question.setCategory(Category.GEOGRAPHY);
-        if (type == GeographyTaskType.MAX_POPULATION) {
+    private Question prepareQuestion(TaskType type, GeographyTaskType typeValue) {
+        Question question = new Question(type);
+        if (typeValue == GeographyTaskType.MAX_POPULATION) {
             question.setTextContentPolish("Które z państw posiada największą populację?");
             question.setTextContentEnglish("Which country has the largest population?");
         }
-        if (type == GeographyTaskType.MIN_POPULATION) {
+        if (typeValue == GeographyTaskType.MIN_POPULATION) {
             question.setTextContentPolish("Które z państw posiada najmniejszą populację?");
             question.setTextContentEnglish("Which country has the smallest population?");
         }
-        if (type == GeographyTaskType.MAX_AREA) {
+        if (typeValue == GeographyTaskType.MAX_AREA) {
             question.setTextContentPolish("Które z państw posiada największą powierzchnię?");
             question.setTextContentEnglish("Which country has the largest area?");
         }
-        if (type == GeographyTaskType.MIN_AREA) {
+        if (typeValue == GeographyTaskType.MIN_AREA) {
             question.setTextContentPolish("Które z państw posiada najmniejszą powierzchnię?");
             question.setTextContentEnglish("Which country has the smallest area?");
         }
         return question;
     }
 
-    private List<Answer> prepareAnswers(GeographyTaskType type, List<GeographyCountry> countries) {
+    private List<Answer> prepareAnswers(GeographyTaskType typeValue, List<GeographyCountry> countries) {
         GeographyCountry correct = countries.get(0);
         for (int i = 1; i < countries.size(); i++) {
             GeographyCountry country = countries.get(i);
-            if ((type == GeographyTaskType.MAX_POPULATION && correct.getPopulation() < country.getPopulation())
-                    || (type == GeographyTaskType.MIN_POPULATION && correct.getPopulation() > country.getPopulation())
-                    || (type == GeographyTaskType.MAX_AREA && correct.getArea() < country.getArea())
-                    || (type == GeographyTaskType.MIN_AREA && correct.getArea() > country.getArea())) {
+            if ((typeValue == GeographyTaskType.MAX_POPULATION && correct.getPopulation() < country.getPopulation())
+                    || (typeValue == GeographyTaskType.MIN_POPULATION && correct.getPopulation() > country.getPopulation())
+                    || (typeValue == GeographyTaskType.MAX_AREA && correct.getArea() < country.getArea())
+                    || (typeValue == GeographyTaskType.MIN_AREA && correct.getArea() > country.getArea())) {
                 correct = country;
             }
         }
@@ -72,15 +71,15 @@ public class GeographyTaskMinMaxTypeService {
         }).collect(Collectors.toList());
     }
 
-    private List<GeographyCountry> prepareCountries(GeographyTaskType type, int count) {
+    private List<GeographyCountry> prepareCountries(GeographyTaskType typeValue, int count) {
         List<GeographyCountry> allCountries = geographyCountryRepository.findAll();
         List<GeographyCountry> countries = new ArrayList<>();
         List<Double> values = new ArrayList<>();
         while (countries.size() < count) {
             GeographyCountry randomCountry = randomElement(allCountries);
-            Double value = GeographyTaskType.aboutPopulation(type)
+            Double value = GeographyTaskType.aboutPopulation(typeValue)
                     ? randomCountry.getPopulation()
-                    : GeographyTaskType.aboutArea(type)
+                    : GeographyTaskType.aboutArea(typeValue)
                     ? randomCountry.getArea() :
                     0;
             if (isValueDistanceEnough(value, values)) {

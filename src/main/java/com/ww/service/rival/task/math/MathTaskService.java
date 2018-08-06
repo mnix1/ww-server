@@ -1,9 +1,11 @@
 package com.ww.service.rival.task.math;
 
 import com.ww.model.constant.Category;
-import com.ww.model.constant.rival.task.MathTaskType;
+import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.task.type.MathTaskType;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Question;
+import com.ww.model.entity.rival.task.TaskType;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.rival.task.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,27 +25,28 @@ public class MathTaskService {
     @Autowired
     TaskRendererService taskRendererService;
 
-    public Question generate(MathTaskType type) {
-        int[] numbers = prepareNumbers(type);
-        Question question = prepareQuestion(type, numbers);
-        List<Answer> answers = prepareAnswers(type, numbers);
+    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel) {
+        MathTaskType typeValue = MathTaskType.valueOf(type.getValue());
+        int[] numbers = prepareNumbers(typeValue);
+        Question question = prepareQuestion(type, typeValue, numbers);
+        List<Answer> answers = prepareAnswers(typeValue, numbers);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
 
-    private int[] prepareNumbers(MathTaskType type) {
+    private int[] prepareNumbers(MathTaskType typeValue) {
         int[] numbers = null;
-        if (type == MathTaskType.ADDITION) {
+        if (typeValue == MathTaskType.ADDITION) {
             int count = randomInteger(2, 5);
             int bound = count > 4 ? 19 : (count > 2 ? 99 : 999);
             numbers = prepareNumbers(count, -bound, bound);
         }
-        if (type == MathTaskType.MULTIPLICATION) {
+        if (typeValue == MathTaskType.MULTIPLICATION) {
             int count = randomInteger(2, 3);
             int bound = count > 2 ? 7 : 99;
             numbers = prepareNumbers(count, -bound, bound);
         }
-        if (type == MathTaskType.MODULO) {
+        if (typeValue == MathTaskType.MODULO) {
             numbers = new int[2];
             numbers[0] = randomInteger(4, 99);
             numbers[1] = randomInteger(1, numbers[0] - 1);
@@ -56,18 +59,17 @@ public class MathTaskService {
         return numbers;
     }
 
-    private Question prepareQuestion(MathTaskType type, int[] numbers) {
-        Question question = new Question();
-        question.setCategory(Category.MATH);
-        if (type == MathTaskType.ADDITION) {
+    private Question prepareQuestion(TaskType type, MathTaskType typeValue, int[] numbers) {
+        Question question = new Question(type);
+        if (typeValue == MathTaskType.ADDITION) {
             question.setTextContentPolish("Suma następujących liczb " + numbersToString(numbers, "i") + " wynosi");
             question.setTextContentEnglish("The result of adding numbers " + numbersToString(numbers, "and") + " is");
         }
-        if (type == MathTaskType.MULTIPLICATION) {
+        if (typeValue == MathTaskType.MULTIPLICATION) {
             question.setTextContentPolish("Wynikiem mnożenia liczb " + numbersToString(numbers, "i") + " jest");
             question.setTextContentEnglish("The result of multiplying numbers " + numbersToString(numbers, "and") + " is");
         }
-        if (type == MathTaskType.MODULO) {
+        if (typeValue == MathTaskType.MODULO) {
             question.setTextContentPolish("Resztą z dzielenia liczby " + numbers[0] + " przez " + numbers[1] + " jest");
             question.setTextContentEnglish("The remainder of the dividing the number " + numbers[0] + " by " + numbers[1] + " is");
         }
@@ -93,19 +95,19 @@ public class MathTaskService {
         return numbers;
     }
 
-    private List<Answer> prepareAnswers(MathTaskType type, int[] numbers) {
+    private List<Answer> prepareAnswers(MathTaskType typeValue, int[] numbers) {
         int correctResult = numbers[0];
-        if (type == MathTaskType.ADDITION || type == MathTaskType.MULTIPLICATION) {
+        if (typeValue == MathTaskType.ADDITION || typeValue == MathTaskType.MULTIPLICATION) {
             for (int i = 1; i < numbers.length; i++) {
-                if (type == MathTaskType.ADDITION) {
+                if (typeValue == MathTaskType.ADDITION) {
                     correctResult += numbers[i];
                 }
-                if (type == MathTaskType.MULTIPLICATION) {
+                if (typeValue == MathTaskType.MULTIPLICATION) {
                     correctResult *= numbers[i];
                 }
             }
         }
-        if (type == MathTaskType.MODULO) {
+        if (typeValue == MathTaskType.MODULO) {
             correctResult = numbers[0] % numbers[1];
         }
         Answer correctAnswer = new Answer(true);
@@ -115,7 +117,7 @@ public class MathTaskService {
         List<Integer> wrongResults = new ArrayList<>();
         while (wrongAnswers.size() < 3) {
             int wrongResult = correctResult + randomInteger(-20, 20);
-            if (type == MathTaskType.MODULO && wrongResult < 0) {
+            if (typeValue == MathTaskType.MODULO && wrongResult < 0) {
                 wrongResult = correctResult + randomInteger(0, 20);
             }
             if (correctResult != wrongResult && !wrongResults.contains(wrongResult)) {

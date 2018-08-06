@@ -1,12 +1,20 @@
 package com.ww.database;
 
 import com.ww.helper.TagHelper;
+import com.ww.model.constant.Category;
 import com.ww.model.constant.hero.HeroType;
+import com.ww.model.constant.rival.task.TaskRenderer;
+import com.ww.model.constant.rival.task.type.GeographyTaskType;
+import com.ww.model.constant.rival.task.type.MathTaskType;
+import com.ww.model.constant.rival.task.type.MemoryTaskType;
+import com.ww.model.constant.rival.task.type.MusicTaskTypeValue;
 import com.ww.model.entity.hero.Hero;
+import com.ww.model.entity.rival.task.TaskType;
 import com.ww.model.entity.social.Profile;
 import com.ww.repository.hero.HeroRepository;
 import com.ww.repository.rival.task.AnswerRepository;
 import com.ww.repository.rival.task.QuestionRepository;
+import com.ww.repository.rival.task.TaskTypeRepository;
 import com.ww.repository.social.ProfileRepository;
 import com.ww.service.rival.task.geography.GeographyCountryService;
 import com.ww.service.rival.task.memory.MemoryTaskHelperService;
@@ -24,6 +32,9 @@ import java.util.Random;
 @NoArgsConstructor
 @Service
 public class Init {
+
+    @Autowired
+    TaskTypeRepository taskTypeRepository;
 
     @Autowired
     MusicTrackService musicTrackService;
@@ -49,12 +60,44 @@ public class Init {
     private Random random = new SecureRandom();
 
     public void init() {
+        initTaskTypes();
         initHeroes();
         initProfiles();
         initMusicTracks();
         initGeographyCountries();
         memoryTaskHelperService.initShapes();
         memoryTaskHelperService.initColors();
+    }
+
+    public void initTaskTypes(){
+        List<TaskType> taskTypes = new ArrayList<>();
+        taskTypes.add(new TaskType(Category.MUSIC, MusicTaskTypeValue.NEXT_LINE.name(), TaskRenderer.TEXT, 1));
+        taskTypes.add(new TaskType(Category.MUSIC, MusicTaskTypeValue.PREVIOUS_LINE.name(), TaskRenderer.TEXT, 4));
+
+        taskTypes.add(new TaskType(Category.MEMORY, MemoryTaskType.BACKGROUND_COLOR_FROM_FIGURE_KEY.name(), TaskRenderer.TEXT_ANIMATION, 4));
+        taskTypes.add(new TaskType(Category.MEMORY, MemoryTaskType.SHAPE_FROM_FIGURE_KEY.name(), TaskRenderer.TEXT_ANIMATION, 3));
+        taskTypes.add(new TaskType(Category.MEMORY, MemoryTaskType.SHAPE_FROM_BACKGROUND_COLOR.name(), TaskRenderer.TEXT_ANIMATION, 1));
+        taskTypes.add(new TaskType(Category.MEMORY, MemoryTaskType.FIGURE_KEY_FROM_BACKGROUND_COLOR.name(), TaskRenderer.TEXT_ANIMATION, 4));
+        taskTypes.add(new TaskType(Category.MEMORY, MemoryTaskType.FIGURE_KEY_FROM_SHAPE.name(), TaskRenderer.TEXT_ANIMATION, 3));
+
+        taskTypes.add(new TaskType(Category.MATH, MathTaskType.ADDITION.name(), TaskRenderer.TEXT, 0));
+        taskTypes.add(new TaskType(Category.MATH, MathTaskType.MULTIPLICATION.name(), TaskRenderer.TEXT, 1));
+        taskTypes.add(new TaskType(Category.MATH, MathTaskType.MODULO.name(), TaskRenderer.TEXT, 1));
+
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.COUNTRY_NAME_FROM_ALPHA_2.name(), TaskRenderer.TEXT, 1));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.COUNTRY_NAME_FROM_CAPITAL_NAME.name(), TaskRenderer.TEXT, 2));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.COUNTRY_NAME_FROM_MAP.name(), TaskRenderer.TEXT_IMAGE, 3));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.COUNTRY_NAME_FROM_FLAG.name(), TaskRenderer.TEXT_IMAGE, 1));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.CAPITAL_NAME_FROM_ALPHA_3.name(), TaskRenderer.TEXT, 0));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.CAPITAL_NAME_FROM_COUNTRY_NAME.name(), TaskRenderer.TEXT, 2));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.CAPITAL_NAME_FROM_MAP.name(), TaskRenderer.TEXT_IMAGE, 5));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.CAPITAL_NAME_FROM_FLAG.name(), TaskRenderer.TEXT_IMAGE, 4));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.MAX_POPULATION.name(), TaskRenderer.TEXT, 2));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.MIN_POPULATION.name(), TaskRenderer.TEXT, 2));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.MAX_AREA.name(), TaskRenderer.TEXT, 2));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.MIN_AREA.name(), TaskRenderer.TEXT, 2));
+
+        taskTypeRepository.saveAll(taskTypes);
     }
 
     public void initProfiles() {

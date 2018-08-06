@@ -1,7 +1,6 @@
 package com.ww.controller.rival.task;
 
 import com.ww.model.constant.Language;
-import com.ww.model.constant.rival.task.MusicTaskType;
 import com.ww.service.rival.task.music.MusicTaskService;
 import com.ww.service.rival.task.music.MusicTrackService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +32,12 @@ public class MusicTaskController {
     }
 
 //    @RequestMapping(value = "/generate", method = RequestMethod.GET)
-//    public Map generate(@RequestParam(required = false) Language lang, @RequestParam(required = false) MusicTaskType type) {
+//    public Map generate(@RequestParam(required = false) Language lang, @RequestParam(required = false) MusicTaskTypeValue type) {
 //        if (lang == null) {
 //            lang = Language.ALL;
 //        }
 //        if (type == null) {
-//            type = MusicTaskType.random();
+//            type = MusicTaskTypeValue.random();
 //        }
 //        Map<String, Object> model = new HashMap<>();
 //        model.put("question", musicTaskService.generate(lang, type));

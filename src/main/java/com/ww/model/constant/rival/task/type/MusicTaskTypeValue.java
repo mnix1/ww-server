@@ -1,15 +1,15 @@
-package com.ww.model.constant.rival.task;
+package com.ww.model.constant.rival.task.type;
 
 import java.util.Arrays;
 
 import static com.ww.helper.RandomHelper.randomElement;
 
-public enum MusicTaskType {
+public enum MusicTaskTypeValue {
     NEXT_LINE,
     PREVIOUS_LINE;
 //    MIDDLE_LINE;// TODO add
 
-    public static MusicTaskType random() {
+    public static MusicTaskTypeValue random() {
         return randomElement(Arrays.asList(values()));
     }
 }
