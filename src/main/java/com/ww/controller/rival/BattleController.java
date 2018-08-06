@@ -1,7 +1,6 @@
 package com.ww.controller.rival;
 
 import com.ww.service.SessionService;
-import com.ww.service.rival.BattleService;
 import com.ww.service.rival.battle.BattleFastService;
 import com.ww.service.rival.battle.BattleFriendService;
 import org.springframework.beans.factory.annotation.Autowired;

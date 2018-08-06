@@ -5,7 +5,6 @@ import com.ww.model.container.ProfileConnection;
 import com.ww.model.container.battle.BattleFriendContainer;
 import com.ww.model.entity.social.Profile;
 import com.ww.service.SessionService;
-import com.ww.service.rival.BattleService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
 import org.slf4j.Logger;

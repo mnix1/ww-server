@@ -1,7 +1,7 @@
 package com.ww.websocket;
 
 import com.ww.model.container.ProfileConnection;
-import com.ww.service.rival.BattleService;
+import com.ww.service.rival.battle.BattleService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
 import org.slf4j.Logger;

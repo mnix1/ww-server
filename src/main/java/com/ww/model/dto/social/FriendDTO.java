@@ -2,7 +2,7 @@ package com.ww.model.dto.social;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ww.model.constant.Hero;
+import com.ww.model.constant.HeroType;
 import com.ww.model.constant.social.FriendStatus;
 import com.ww.model.entity.social.Profile;
 import com.ww.model.entity.social.ProfileFriend;
@@ -14,7 +14,7 @@ public class FriendDTO {
     private String tag;
     private String name;
     private Long level;
-    private Hero hero;
+    private HeroType heroType;
     private Boolean isOnline;
     private FriendStatus status;
 
@@ -27,7 +27,7 @@ public class FriendDTO {
         this.name = profile.getName();
         this.level = profile.getLevel();
         this.status = status;
-        this.hero = profile.getHero();
+        this.heroType = profile.getHeroType();
         this.isOnline = isOnline;
     }
 

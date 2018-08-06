@@ -1,4 +1,4 @@
-package com.ww.service.rival;
+package com.ww.service.rival.battle;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.manager.BattleManager;

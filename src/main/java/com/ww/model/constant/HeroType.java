@@ -5,8 +5,8 @@ import java.util.List;
 
 import static com.ww.helper.RandomHelper.randomElement;
 
-public enum Hero {
-    ALPACA,
+public enum HeroType {
+//    ALPACA,
     ANT,
     AUROCHS,
     BEE,
@@ -17,31 +17,31 @@ public enum Hero {
     CAT_BLUE,
     CAT_PRESENTER,
     CAT_TEACHER,
-    COW,
+//    COW,
     CROCODILE,
     DOG,
     DOG_FAT,
     DRAGON,
     DRAGON_BLUE,
     DRAGON_FAT,
-    DUCK,
+//    DUCK,
     EAGLE,
     ELEPHANT,
     FOX,
     FOX_MAN,
-    GIRAFFE,
+//    GIRAFFE,
     GORILLA,
     HORSE,
     KANGAROO,
 //    KITEK,
     LION,
-    OCTOPUS,
+//    OCTOPUS,
     OSTRICH,
-    OWL,
-    PANDA,
+//    OWL,
+//    PANDA,
     PANDA_EAT,
     PARROT,
-    PENGUIN,
+//    PENGUIN,
     POLAR_BEAR,
     RABBIT,
 //    ROBO,
@@ -57,8 +57,8 @@ public enum Hero {
     WOLF;
 //    ZAROWA;
 
-    public static Hero random() {
-        List<Hero> possible = Arrays.asList(values());
+    public static HeroType random() {
+        List<HeroType> possible = Arrays.asList(values());
         return randomElement(possible);
     }
 }
