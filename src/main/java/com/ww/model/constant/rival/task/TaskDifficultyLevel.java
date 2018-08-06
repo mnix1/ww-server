@@ -13,6 +13,7 @@ public enum TaskDifficultyLevel {
     NORMAL(5),
     HARD(7),
     VERY_HARD(9),
+    EXTREMELY_HARD(11),
     NONE(-1);
 
     private int level;

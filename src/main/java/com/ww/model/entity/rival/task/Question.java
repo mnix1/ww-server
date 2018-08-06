@@ -1,5 +1,6 @@
 package com.ww.model.entity.rival.task;
 
+import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,6 +24,7 @@ public class Question {
     private String textContentPolish;
     @Column(length = 4000)
     private String textContentEnglish;
+    private TaskDifficultyLevel difficultyLevel;
     @ManyToOne
     @JoinColumn(name = "type_id", nullable = false, updatable = false)
     private TaskType type;
@@ -31,6 +33,11 @@ public class Question {
 
     public Question(TaskType type) {
         this.type = type;
+    }
+
+    public Question(TaskType type, TaskDifficultyLevel difficultyLevel) {
+        this.type = type;
+        this.difficultyLevel = difficultyLevel;
     }
 
     public void setTextContent(String content) {

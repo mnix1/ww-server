@@ -1,8 +1,8 @@
 package com.ww.service.rival.task.math;
 
-import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.constant.rival.task.type.MathTaskType;
+import com.ww.model.container.NumbersDifficulty;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.TaskType;
@@ -27,28 +27,31 @@ public class MathTaskService {
 
     public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel) {
         MathTaskType typeValue = MathTaskType.valueOf(type.getValue());
-        int[] numbers = prepareNumbers(typeValue);
-        Question question = prepareQuestion(type, typeValue, numbers);
-        List<Answer> answers = prepareAnswers(typeValue, numbers);
+        int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
+        NumbersDifficulty numbersDifficulty = prepareNumbersDifficultyRelated(typeValue, remainedDifficulty);
+        remainedDifficulty -= numbersDifficulty.getDifficulty();
+        Question question = prepareQuestion(type, difficultyLevel, typeValue, numbersDifficulty.getNumbers());
+        int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        List<Answer> answers = prepareAnswers(typeValue, numbersDifficulty.getNumbers(), answersCount);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
 
-    private int[] prepareNumbers(MathTaskType typeValue) {
+    private NumbersDifficulty prepareNumbersDifficultyRelated(MathTaskType typeValue, int difficulty) {
         int[] numbers = null;
         if (typeValue == MathTaskType.ADDITION) {
-            int count = randomInteger(2, 5);
+            int count = randomInteger(2, 5) + difficulty / 2;
             int bound = count > 4 ? 19 : (count > 2 ? 99 : 999);
             numbers = prepareNumbers(count, -bound, bound);
         }
         if (typeValue == MathTaskType.MULTIPLICATION) {
-            int count = randomInteger(2, 3);
+            int count = randomInteger(2, 3) + difficulty / 2;
             int bound = count > 2 ? 7 : 99;
             numbers = prepareNumbers(count, -bound, bound);
         }
         if (typeValue == MathTaskType.MODULO) {
             numbers = new int[2];
-            numbers[0] = randomInteger(4, 99);
+            numbers[0] = randomInteger(4, Math.max(99 * difficulty, 4));
             numbers[1] = randomInteger(1, numbers[0] - 1);
         }
         for (int i = 0; i < numbers.length; i++) {
@@ -56,11 +59,11 @@ public class MathTaskService {
                 numbers[i] = randomInteger(1, 10);
             }
         }
-        return numbers;
+        return new NumbersDifficulty(numbers, difficulty - difficulty / 2);
     }
 
-    private Question prepareQuestion(TaskType type, MathTaskType typeValue, int[] numbers) {
-        Question question = new Question(type);
+    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, MathTaskType typeValue, int[] numbers) {
+        Question question = new Question(type, difficultyLevel);
         if (typeValue == MathTaskType.ADDITION) {
             question.setTextContentPolish("Suma następujących liczb " + numbersToString(numbers, "i") + " wynosi");
             question.setTextContentEnglish("The result of adding numbers " + numbersToString(numbers, "and") + " is");
@@ -95,7 +98,7 @@ public class MathTaskService {
         return numbers;
     }
 
-    private List<Answer> prepareAnswers(MathTaskType typeValue, int[] numbers) {
+    private List<Answer> prepareAnswers(MathTaskType typeValue, int[] numbers, int answersCount) {
         int correctResult = numbers[0];
         if (typeValue == MathTaskType.ADDITION || typeValue == MathTaskType.MULTIPLICATION) {
             for (int i = 1; i < numbers.length; i++) {
@@ -115,7 +118,7 @@ public class MathTaskService {
 
         List<Answer> wrongAnswers = new ArrayList<>();
         List<Integer> wrongResults = new ArrayList<>();
-        while (wrongAnswers.size() < 3) {
+        while (wrongAnswers.size() < answersCount - 1) {
             int wrongResult = correctResult + randomInteger(-20, 20);
             if (typeValue == MathTaskType.MODULO && wrongResult < 0) {
                 wrongResult = correctResult + randomInteger(0, 20);

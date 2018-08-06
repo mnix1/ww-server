@@ -29,6 +29,7 @@ public class GeographyTaskCountryCapitalTypeService {
         GeographyCountry correctCountry = randomElement(allCountries);
 
         Question question = prepareQuestion(type, taskValue, correctCountry);
+//        question.setDifficultyLevel();
         List<Answer> answers = prepareAnswers(taskValue, correctCountry, allCountries);
         question.setAnswers(new HashSet<>(answers));
         return question;
