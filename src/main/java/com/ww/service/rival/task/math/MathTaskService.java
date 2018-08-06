@@ -51,7 +51,7 @@ public class MathTaskService {
         }
         if (typeValue == MathTaskType.MODULO) {
             numbers = new int[2];
-            numbers[0] = randomInteger(4, Math.max(99 * difficulty, 4));
+            numbers[0] = randomInteger(4, Math.max(99 * difficulty, 80));
             numbers[1] = randomInteger(1, numbers[0] - 1);
         }
         for (int i = 0; i < numbers.length; i++) {

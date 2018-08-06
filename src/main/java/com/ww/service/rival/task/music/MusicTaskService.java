@@ -72,14 +72,14 @@ public class MusicTaskService {
                 wrongAnswerIndexes.add(wrongAnswerIndex);
             }
         }
-        Question question = prepareQuestion(type, typeValue, track, questionLine, lang);
+        Question question = prepareQuestion(type, difficultyLevel, typeValue, track, questionLine, lang);
         List<Answer> answers = prepareAnswers(allLines.get(correctAnswerIndex), wrongAnswerIndexes.stream().map(i -> allLines.get(i)).collect(Collectors.toList()));
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
 
-    private Question prepareQuestion(TaskType type, MusicTaskTypeValue typeValue, MusicTrack track, String questionLine, Language lang) {
-        Question question = new Question(type);
+    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, MusicTaskTypeValue typeValue, MusicTrack track, String questionLine, Language lang) {
+        Question question = new Question(type, difficultyLevel);
         if (Language.addPolish(lang)) {
             String content = "W tekście utworu \"" + track.getName() + "\" zespołu " + track.getAuthor();
             if (typeValue == MusicTaskTypeValue.NEXT_LINE) {
