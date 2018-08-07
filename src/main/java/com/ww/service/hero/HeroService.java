@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.ww.helper.RandomHelper.randomElement;
+
 @Service
 public class HeroService {
 
@@ -36,11 +38,20 @@ public class HeroService {
         List<ProfileHero> profileHeroes = profileHeroRepository.findAllByProfile_Id(sessionService.getProfileId());
         Map<Long, ProfileHero> profileHeroMap = profileHeroes.stream().collect(Collectors.toMap(o -> o.getHero().getId(), o -> o));
         return allHeroes.stream().map(hero -> {
-            ProfileHero profileHero = null;
             if (profileHeroMap.containsKey(hero.getId())) {
-                profileHero = profileHeroMap.get(hero.getId());
+                return new HeroDTO(profileHeroMap.get(hero.getId()));
             }
-            return new HeroDTO(hero, profileHero);
+            return new HeroDTO(hero);
         }).collect(Collectors.toList());
+    }
+
+    public Hero random() {
+        return randomElement(heroRepository.findAll());
+    }
+
+    public ProfileHero addHero(Profile profile, Hero hero) {
+        ProfileHero profileHero = new ProfileHero(profile, hero);
+        profileHeroRepository.save(profileHero);
+        return profileHero;
     }
 }

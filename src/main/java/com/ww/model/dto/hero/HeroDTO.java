@@ -32,15 +32,8 @@ public class HeroDTO {
     private Double charisma;
     private Double intuition;
 
-    public HeroDTO(Hero hero, ProfileHero profileHero) {
-        this.namePolish = hero.getNamePolish();
-        this.nameEnglish = hero.getNameEnglish();
-        this.type = hero.getType();
-        this.hobbies = hero.getHobbies();
-        if (profileHero == null) {
-            this.isOwned = false;
-            return;
-        }
+    public HeroDTO(ProfileHero profileHero) {
+        this(profileHero.getHero());
         this.isOwned = true;
         this.memory = profileHero.getWisdomAttributeMemory();
         this.logic = profileHero.getWisdomAttributeLogic();
@@ -54,5 +47,13 @@ public class HeroDTO {
         this.leadership = profileHero.getMentalAttributeLeadership();
         this.charisma = profileHero.getMentalAttributeCharisma();
         this.intuition = profileHero.getMentalAttributeIntuition();
+    }
+
+    public HeroDTO(Hero hero) {
+        this.namePolish = hero.getNamePolish();
+        this.nameEnglish = hero.getNameEnglish();
+        this.type = hero.getType();
+        this.hobbies = hero.getHobbies();
+        this.isOwned = false;
     }
 }

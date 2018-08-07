@@ -9,15 +9,18 @@ import com.ww.model.constant.rival.task.type.GeographyTaskType;
 import com.ww.model.constant.rival.task.type.MathTaskType;
 import com.ww.model.constant.rival.task.type.MemoryTaskType;
 import com.ww.model.constant.rival.task.type.MusicTaskTypeValue;
+import com.ww.model.constant.shop.ChestType;
 import com.ww.model.entity.hero.Hero;
 import com.ww.model.entity.rival.task.TaskType;
 import com.ww.model.entity.rival.task.TaskWisdomAttribute;
+import com.ww.model.entity.shop.Chest;
 import com.ww.model.entity.social.Profile;
 import com.ww.repository.hero.HeroRepository;
 import com.ww.repository.rival.task.AnswerRepository;
 import com.ww.repository.rival.task.QuestionRepository;
 import com.ww.repository.rival.task.TaskTypeRepository;
 import com.ww.repository.rival.task.TaskWisdomAttributeRepository;
+import com.ww.repository.shop.ChestRepository;
 import com.ww.repository.social.ProfileRepository;
 import com.ww.service.rival.task.geography.GeographyCountryService;
 import com.ww.service.rival.task.memory.MemoryTaskHelperService;
@@ -60,9 +63,13 @@ public class Init {
     @Autowired
     HeroRepository heroRepository;
 
+    @Autowired
+    ChestRepository chestRepository;
+
     private Random random = new SecureRandom();
 
     public void init() {
+        initChests();
         initTaskTypes();
         initHeroes();
         initProfiles();
@@ -227,6 +234,12 @@ public class Init {
         musicTrackService.addTrack("Lady Pank", "Warszawa", "https://ising.pl/lady-pank-stacja-warszawa-tekst");
     }
 
+    public void initChests() {
+        List<Chest> chests = new ArrayList<>();
+        chests.add(new Chest(ChestType.HERO));
+        chestRepository.saveAll(chests);
+    }
+
     public void initHeroes() {
         List<Hero> heroes = new ArrayList<>();
         heroes.add(new Hero("Wilku", "Wolf", HeroType.WOLF, new HashSet<>(Arrays.asList(Category.GEOGRAPHY, Category.MEMORY))));
@@ -248,7 +261,7 @@ public class Init {
         heroes.add(new Hero("Lizuś", "Fox", HeroType.FOX_MAN, new HashSet<>(Arrays.asList(Category.random()))));
         heroes.add(new Hero("Lisiczka", "Foxie", HeroType.FOX, new HashSet<>(Arrays.asList(Category.random()))));
         heroes.add(new Hero("Trąbuś", "Elephant", HeroType.ELEPHANT, new HashSet<>(Arrays.asList(Category.MATH, Category.MEMORY))));
-        heroes.add(new Hero("Orzełko", "Eagle", HeroType.EAGLE, new HashSet<>(Arrays.asList(Category.random()))));
+        heroes.add(new Hero("Łorzeł", "Eagle", HeroType.EAGLE, new HashSet<>(Arrays.asList(Category.random()))));
         heroes.add(new Hero("Grubełło", "Fat Dragon", HeroType.DRAGON_FAT, new HashSet<>(Arrays.asList(Category.GEOGRAPHY, Category.MATH))));
         heroes.add(new Hero("Supełło", "Blue Dragon", HeroType.DRAGON_BLUE, new HashSet<>(Arrays.asList(Category.random(), Category.random()))));
         heroes.add(new Hero("Pikełło", "Green Dragon", HeroType.DRAGON, new HashSet<>(Arrays.asList(Category.random(), Category.random(), Category.random(), Category.random()))));

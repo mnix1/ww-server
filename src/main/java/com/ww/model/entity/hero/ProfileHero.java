@@ -40,6 +40,11 @@ public class ProfileHero {
     @JoinColumn(name = "hero_id", nullable = false, updatable = false)
     private Hero hero;
 
+    public ProfileHero(Profile profile, Hero hero) {
+        this.profile = profile;
+        this.hero = hero;
+    }
+
     @Override
     public boolean equals(Object obj) {
         return id.equals(((ProfileHero) obj).id);

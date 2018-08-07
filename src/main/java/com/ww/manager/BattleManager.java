@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 public class BattleManager {
     private static final Logger logger = LoggerFactory.getLogger(BattleManager.class);
-    private static final Integer MAX_SCORE = 5;
+    private static final Integer MAX_SCORE = 1;
     private static final Integer NEXT_TASK_INTERVAL = 7000;
 
     private final Map<Long, BattleProfileContainer> profileIdBattleProfileContainerMap = new HashMap<>();

@@ -3,11 +3,13 @@ package com.ww.model.entity.social;
 import com.ww.helper.TagHelper;
 import com.ww.model.constant.hero.HeroType;
 import com.ww.model.entity.hero.ProfileHero;
+import com.ww.model.entity.shop.ProfileChest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Setter
@@ -28,10 +30,13 @@ public class Profile {
     private Long diamond;
 
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
-    private Set<ProfileFriend> friends;
+    private Set<ProfileFriend> friends = new HashSet<>();
 
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
-    private Set<ProfileHero> heroes;
+    private Set<ProfileHero> heroes = new HashSet<>();
+
+    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
+    private Set<ProfileChest> chests = new HashSet<>();
 
     public Profile(String authId) {
         this.tag = TagHelper.randomTag();
