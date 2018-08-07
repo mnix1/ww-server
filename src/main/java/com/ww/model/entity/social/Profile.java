@@ -2,6 +2,7 @@ package com.ww.model.entity.social;
 
 import com.ww.helper.TagHelper;
 import com.ww.model.constant.hero.HeroType;
+import com.ww.model.entity.hero.ProfileHero;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,6 +29,9 @@ public class Profile {
 
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
     private Set<ProfileFriend> friends;
+
+    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
+    private Set<ProfileHero> heroes;
 
     public Profile(String authId) {
         this.tag = TagHelper.randomTag();

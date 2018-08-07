@@ -1,15 +1,15 @@
 package com.ww.model.entity.hero;
 
 
+import com.ww.helper.HeroHobbyConverter;
+import com.ww.model.constant.Category;
 import com.ww.model.constant.hero.HeroType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -22,12 +22,22 @@ public class Hero {
     private String namePolish;
     private String nameEnglish;
     private HeroType type;
-    private Long level;
+
+    @Column
+    @Convert(converter = HeroHobbyConverter.class)
+    private Set<Category> hobbies;
 
     public Hero(String namePolish, String nameEnglish, HeroType type) {
         this.namePolish = namePolish;
         this.nameEnglish = nameEnglish;
         this.type = type;
+    }
+
+    public Hero(String namePolish, String nameEnglish, HeroType type, Set<Category> hobbies) {
+        this.namePolish = namePolish;
+        this.nameEnglish = nameEnglish;
+        this.type = type;
+        this.hobbies = hobbies;
     }
 
     @Override
