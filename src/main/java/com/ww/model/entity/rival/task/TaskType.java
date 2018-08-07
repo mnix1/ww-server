@@ -21,11 +21,20 @@ public class TaskType {
     private String value;
     private TaskRenderer renderer;
     private Integer difficulty;
+    @OneToMany(mappedBy = "type", fetch = FetchType.LAZY)
+    private Set<TaskWisdomAttribute> wisdomAttributes;
 
     public TaskType(Category category, String value, TaskRenderer renderer, Integer difficulty) {
         this.category = category;
         this.value = value;
         this.renderer = renderer;
         this.difficulty = difficulty;
+    }
+    public TaskType(Category category, String value, TaskRenderer renderer, Integer difficulty, Set<TaskWisdomAttribute> wisdomAttributes) {
+        this.category = category;
+        this.value = value;
+        this.renderer = renderer;
+        this.difficulty = difficulty;
+        this.wisdomAttributes = wisdomAttributes;
     }
 }

@@ -3,6 +3,7 @@ package com.ww.database;
 import com.ww.helper.TagHelper;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.hero.HeroType;
+import com.ww.model.constant.hero.WisdomAttribute;
 import com.ww.model.constant.rival.task.TaskRenderer;
 import com.ww.model.constant.rival.task.type.GeographyTaskType;
 import com.ww.model.constant.rival.task.type.MathTaskType;
@@ -10,11 +11,13 @@ import com.ww.model.constant.rival.task.type.MemoryTaskType;
 import com.ww.model.constant.rival.task.type.MusicTaskTypeValue;
 import com.ww.model.entity.hero.Hero;
 import com.ww.model.entity.rival.task.TaskType;
+import com.ww.model.entity.rival.task.TaskWisdomAttribute;
 import com.ww.model.entity.social.Profile;
 import com.ww.repository.hero.HeroRepository;
 import com.ww.repository.rival.task.AnswerRepository;
 import com.ww.repository.rival.task.QuestionRepository;
 import com.ww.repository.rival.task.TaskTypeRepository;
+import com.ww.repository.rival.task.TaskWisdomAttributeRepository;
 import com.ww.repository.social.ProfileRepository;
 import com.ww.service.rival.task.geography.GeographyCountryService;
 import com.ww.service.rival.task.memory.MemoryTaskHelperService;
@@ -24,9 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 
 @NoArgsConstructor
@@ -35,6 +36,8 @@ public class Init {
 
     @Autowired
     TaskTypeRepository taskTypeRepository;
+    @Autowired
+    TaskWisdomAttributeRepository taskWisdomAttributeRepository;
 
     @Autowired
     MusicTrackService musicTrackService;
@@ -69,35 +72,143 @@ public class Init {
         memoryTaskHelperService.initColors();
     }
 
-    public void initTaskTypes(){
+    public void initTaskTypes() {
         List<TaskType> taskTypes = new ArrayList<>();
-        taskTypes.add(new TaskType(Category.MUSIC, MusicTaskTypeValue.NEXT_LINE.name(), TaskRenderer.TEXT, 1));
-        taskTypes.add(new TaskType(Category.MUSIC, MusicTaskTypeValue.PREVIOUS_LINE.name(), TaskRenderer.TEXT, 4));
+        taskTypes.add(new TaskType(Category.MUSIC, MusicTaskTypeValue.NEXT_LINE.name(), TaskRenderer.TEXT, 1, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.3),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.3),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.15),
+                new TaskWisdomAttribute(WisdomAttribute.PATTERN_RECOGNITION, 0.15),
+                new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.1)
+        ))));
+        taskTypes.add(new TaskType(Category.MUSIC, MusicTaskTypeValue.PREVIOUS_LINE.name(), TaskRenderer.TEXT, 4, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.1),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.2),
+                new TaskWisdomAttribute(WisdomAttribute.PATTERN_RECOGNITION, 0.4),
+                new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.2)
+        ))));
 
-        taskTypes.add(new TaskType(Category.MEMORY, MemoryTaskType.BACKGROUND_COLOR_FROM_FIGURE_KEY.name(), TaskRenderer.TEXT_ANIMATION, 4));
-        taskTypes.add(new TaskType(Category.MEMORY, MemoryTaskType.SHAPE_FROM_FIGURE_KEY.name(), TaskRenderer.TEXT_ANIMATION, 3));
-        taskTypes.add(new TaskType(Category.MEMORY, MemoryTaskType.SHAPE_FROM_BACKGROUND_COLOR.name(), TaskRenderer.TEXT_ANIMATION, 1));
-        taskTypes.add(new TaskType(Category.MEMORY, MemoryTaskType.FIGURE_KEY_FROM_BACKGROUND_COLOR.name(), TaskRenderer.TEXT_ANIMATION, 4));
-        taskTypes.add(new TaskType(Category.MEMORY, MemoryTaskType.FIGURE_KEY_FROM_SHAPE.name(), TaskRenderer.TEXT_ANIMATION, 3));
+        taskTypes.add(new TaskType(Category.MEMORY, MemoryTaskType.BACKGROUND_COLOR_FROM_FIGURE_KEY.name(), TaskRenderer.TEXT_ANIMATION, 4, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.6),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.15),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.25)
+        ))));
+        taskTypes.add(new TaskType(Category.MEMORY, MemoryTaskType.SHAPE_FROM_FIGURE_KEY.name(), TaskRenderer.TEXT_ANIMATION, 3, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.7),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.1),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.1)
+        ))));
+        taskTypes.add(new TaskType(Category.MEMORY, MemoryTaskType.SHAPE_FROM_BACKGROUND_COLOR.name(), TaskRenderer.TEXT_ANIMATION, 1, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.65),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.1),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.15)
+        ))));
+        taskTypes.add(new TaskType(Category.MEMORY, MemoryTaskType.FIGURE_KEY_FROM_BACKGROUND_COLOR.name(), TaskRenderer.TEXT_ANIMATION, 4, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.8),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.1)
+        ))));
+        taskTypes.add(new TaskType(Category.MEMORY, MemoryTaskType.FIGURE_KEY_FROM_SHAPE.name(), TaskRenderer.TEXT_ANIMATION, 3, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.65),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.15),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.1)
+        ))));
 
-        taskTypes.add(new TaskType(Category.MATH, MathTaskType.ADDITION.name(), TaskRenderer.TEXT, 0));
-        taskTypes.add(new TaskType(Category.MATH, MathTaskType.MULTIPLICATION.name(), TaskRenderer.TEXT, 1));
-        taskTypes.add(new TaskType(Category.MATH, MathTaskType.MODULO.name(), TaskRenderer.TEXT, 1));
+        taskTypes.add(new TaskType(Category.MATH, MathTaskType.ADDITION.name(), TaskRenderer.TEXT, 0, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.9),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.1)
+        ))));
+        taskTypes.add(new TaskType(Category.MATH, MathTaskType.MULTIPLICATION.name(), TaskRenderer.TEXT, 1, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.8),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.05),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.05),
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.1)
+        ))));
+        taskTypes.add(new TaskType(Category.MATH, MathTaskType.MODULO.name(), TaskRenderer.TEXT, 1, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.8),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.05),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.15)
+        ))));
 
-        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.COUNTRY_NAME_FROM_ALPHA_2.name(), TaskRenderer.TEXT, 0));
-        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.COUNTRY_NAME_FROM_CAPITAL_NAME.name(), TaskRenderer.TEXT, 2));
-        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.COUNTRY_NAME_FROM_MAP.name(), TaskRenderer.TEXT_IMAGE, 3));
-        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.COUNTRY_NAME_FROM_FLAG.name(), TaskRenderer.TEXT_IMAGE, 1));
-        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.CAPITAL_NAME_FROM_ALPHA_3.name(), TaskRenderer.TEXT, 3));
-        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.CAPITAL_NAME_FROM_COUNTRY_NAME.name(), TaskRenderer.TEXT, 2));
-        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.CAPITAL_NAME_FROM_MAP.name(), TaskRenderer.TEXT_IMAGE, 5));
-        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.CAPITAL_NAME_FROM_FLAG.name(), TaskRenderer.TEXT_IMAGE, 4));
-        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.MAX_POPULATION.name(), TaskRenderer.TEXT, 2));
-        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.MIN_POPULATION.name(), TaskRenderer.TEXT, 2));
-        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.MAX_AREA.name(), TaskRenderer.TEXT, 2));
-        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.MIN_AREA.name(), TaskRenderer.TEXT, 2));
-
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.COUNTRY_NAME_FROM_ALPHA_2.name(), TaskRenderer.TEXT, 0, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.35),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.4),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.2),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.05)
+        ))));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.COUNTRY_NAME_FROM_CAPITAL_NAME.name(), TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.6),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.2)
+        ))));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.COUNTRY_NAME_FROM_MAP.name(), TaskRenderer.TEXT_IMAGE, 3, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.3),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.3),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.3),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1)
+        ))));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.COUNTRY_NAME_FROM_FLAG.name(), TaskRenderer.TEXT_IMAGE, 1, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.6),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.1),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1)
+        ))));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.CAPITAL_NAME_FROM_ALPHA_3.name(), TaskRenderer.TEXT, 3, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.5),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.3)
+        ))));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.CAPITAL_NAME_FROM_COUNTRY_NAME.name(), TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.55),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.15),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1)
+        ))));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.CAPITAL_NAME_FROM_MAP.name(), TaskRenderer.TEXT_IMAGE, 5, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.3),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.2),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.3)
+        ))));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.CAPITAL_NAME_FROM_FLAG.name(), TaskRenderer.TEXT_IMAGE, 4, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.5),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.2),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1)
+        ))));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.MAX_POPULATION.name(), TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.3),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.3),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.4)
+        ))));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.MIN_POPULATION.name(), TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.25),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.35),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.4)
+        ))));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.MAX_AREA.name(), TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.2),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.35),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.45)
+        ))));
+        taskTypes.add(new TaskType(Category.GEOGRAPHY, GeographyTaskType.MIN_AREA.name(), TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.2),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.6)
+        ))));
+        List<TaskWisdomAttribute> wisdomAttributes = new ArrayList<>();
+        for (TaskType taskType : taskTypes) {
+            taskType.getWisdomAttributes().forEach(wisdomAttribute -> {
+                wisdomAttribute.setType(taskType);
+                wisdomAttributes.add(wisdomAttribute);
+            });
+        }
         taskTypeRepository.saveAll(taskTypes);
+        taskWisdomAttributeRepository.saveAll(wisdomAttributes);
     }
 
     public void initProfiles() {
@@ -118,42 +229,42 @@ public class Init {
 
     public void initHeroes() {
         List<Hero> heroes = new ArrayList<>();
-        heroes.add(new Hero("Wilku","Wolf", HeroType.WOLF));
-        heroes.add(new Hero("Skorupny","Turtle", HeroType.TURTLE));
-        heroes.add(new Hero("Tygrysor","Tiger", HeroType.TIGER));
-        heroes.add(new Hero("Jadziuś","Snake", HeroType.SNAKE));
-        heroes.add(new Hero("Szopuś","Raccoon", HeroType.RACCOON));
-        heroes.add(new Hero("Wełnuś","Sheep", HeroType.SHEEP));
-        heroes.add(new Hero("Ząbek","Shark", HeroType.SHARK));
-        heroes.add(new Hero("Kicek","Rabbit", HeroType.RABBIT));
-        heroes.add(new Hero("Misiaczek","Polar Bear", HeroType.POLAR_BEAR));
-        heroes.add(new Hero("Zgapka","Parrot", HeroType.PARROT));
-        heroes.add(new Hero("Pandziu","Panda", HeroType.PANDA_EAT));
-        heroes.add(new Hero("Strusior","Ostrich", HeroType.OSTRICH));
-        heroes.add(new Hero("Bujnogrzywy","Lion", HeroType.LION));
-        heroes.add(new Hero("Skoczka","Kangaroo", HeroType.KANGAROO));
-        heroes.add(new Hero("Rumaczek","Horse", HeroType.HORSE));
-        heroes.add(new Hero("Gorylak","Gorilla", HeroType.GORILLA));
-        heroes.add(new Hero("Lizuś","Fox", HeroType.FOX_MAN));
-        heroes.add(new Hero("Lisiczka","Foxie", HeroType.FOX));
-        heroes.add(new Hero("Trąbuś","Elephant", HeroType.ELEPHANT));
-        heroes.add(new Hero("Orzełko","Eagle", HeroType.EAGLE));
-        heroes.add(new Hero("Grubełło","Fat Dragon", HeroType.DRAGON_FAT));
-        heroes.add(new Hero("Smokełło","Blue Dragon", HeroType.DRAGON_BLUE));
-        heroes.add(new Hero("Pierdołło","Green Dragon", HeroType.DRAGON));
-        heroes.add(new Hero("Pulchny","Fat Dog", HeroType.DOG_FAT));
-        heroes.add(new Hero("Bystruś","Idea Dog", HeroType.DOG));
-        heroes.add(new Hero("Krokodylak","Crocodile", HeroType.CROCODILE));
-        heroes.add(new Hero("Kicia","Cat Teacher", HeroType.CAT_TEACHER));
-        heroes.add(new Hero("Kituś","Apple Cat", HeroType.CAT_PRESENTER));
-        heroes.add(new Hero("Mruczka","Kitty", HeroType.CAT_BLUE));
-        heroes.add(new Hero("Wielobłąd","Camel", HeroType.CAMEL));
-        heroes.add(new Hero("Pudziuś","Bulldog", HeroType.BULLDOG));
-        heroes.add(new Hero("Byku","Bull", HeroType.BULL));
-        heroes.add(new Hero("Dźwiedzior","Bear", HeroType.BEAR));
-        heroes.add(new Hero("Żądłolot","Bee", HeroType.BEE));
-        heroes.add(new Hero("Żubrowar","Aurochs", HeroType.AUROCHS));
-        heroes.add(new Hero("Mrówkacz","Ant", HeroType.ANT));
+        heroes.add(new Hero("Wilku", "Wolf", HeroType.WOLF));
+        heroes.add(new Hero("Skorupny", "Turtle", HeroType.TURTLE));
+        heroes.add(new Hero("Tygrysor", "Tiger", HeroType.TIGER));
+        heroes.add(new Hero("Jadziuś", "Snake", HeroType.SNAKE));
+        heroes.add(new Hero("Szopuś", "Raccoon", HeroType.RACCOON));
+        heroes.add(new Hero("Wełnuś", "Sheep", HeroType.SHEEP));
+        heroes.add(new Hero("Ząbek", "Shark", HeroType.SHARK));
+        heroes.add(new Hero("Kicek", "Rabbit", HeroType.RABBIT));
+        heroes.add(new Hero("Misiaczek", "Polar Bear", HeroType.POLAR_BEAR));
+        heroes.add(new Hero("Zgapka", "Parrot", HeroType.PARROT));
+        heroes.add(new Hero("Pandziu", "Panda", HeroType.PANDA_EAT));
+        heroes.add(new Hero("Strusior", "Ostrich", HeroType.OSTRICH));
+        heroes.add(new Hero("Bujnogrzywy", "Lion", HeroType.LION));
+        heroes.add(new Hero("Skoczka", "Kangaroo", HeroType.KANGAROO));
+        heroes.add(new Hero("Rumaczek", "Horse", HeroType.HORSE));
+        heroes.add(new Hero("Gorylak", "Gorilla", HeroType.GORILLA));
+        heroes.add(new Hero("Lizuś", "Fox", HeroType.FOX_MAN));
+        heroes.add(new Hero("Lisiczka", "Foxie", HeroType.FOX));
+        heroes.add(new Hero("Trąbuś", "Elephant", HeroType.ELEPHANT));
+        heroes.add(new Hero("Orzełko", "Eagle", HeroType.EAGLE));
+        heroes.add(new Hero("Grubełło", "Fat Dragon", HeroType.DRAGON_FAT));
+        heroes.add(new Hero("Smokełło", "Blue Dragon", HeroType.DRAGON_BLUE));
+        heroes.add(new Hero("Pierdołło", "Green Dragon", HeroType.DRAGON));
+        heroes.add(new Hero("Pulchny", "Fat Dog", HeroType.DOG_FAT));
+        heroes.add(new Hero("Bystruś", "Idea Dog", HeroType.DOG));
+        heroes.add(new Hero("Krokodylak", "Crocodile", HeroType.CROCODILE));
+        heroes.add(new Hero("Kicia", "Cat Teacher", HeroType.CAT_TEACHER));
+        heroes.add(new Hero("Kituś", "Apple Cat", HeroType.CAT_PRESENTER));
+        heroes.add(new Hero("Mruczka", "Kitty", HeroType.CAT_BLUE));
+        heroes.add(new Hero("Wielobłąd", "Camel", HeroType.CAMEL));
+        heroes.add(new Hero("Pudziuś", "Bulldog", HeroType.BULLDOG));
+        heroes.add(new Hero("Byku", "Bull", HeroType.BULL));
+        heroes.add(new Hero("Dźwiedzior", "Bear", HeroType.BEAR));
+        heroes.add(new Hero("Żądłolot", "Bee", HeroType.BEE));
+        heroes.add(new Hero("Żubrowar", "Aurochs", HeroType.AUROCHS));
+        heroes.add(new Hero("Mrówkacz", "Ant", HeroType.ANT));
         heroRepository.saveAll(heroes);
     }
 
