@@ -1,8 +1,6 @@
 package com.ww.model.entity.hero;
 
 
-import com.ww.helper.HeroHobbyConverter;
-import com.ww.model.constant.Category;
 import com.ww.model.constant.hero.MentalAttribute;
 import com.ww.model.constant.hero.WisdomAttribute;
 import com.ww.model.entity.social.Profile;
@@ -11,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Setter
 @Getter
