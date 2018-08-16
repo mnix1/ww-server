@@ -112,15 +112,15 @@ public class BattleContainer {
         model.put("correctAnswerId", findCorrectAnswerId(currentTaskIndex));
         model.put("markedAnswerId", markedAnswerId);
         model.put("meAnswered", answeredProfileId.equals(battleProfileContainer.getProfileId()));
-        model.put("score", profileIdBattleProfileContainerMap.get(battleProfileContainer.getProfileId()).getScore());
-        model.put("opponentScore", profileIdBattleProfileContainerMap.get(battleProfileContainer.getOpponentId()).getScore());
+        model.put("newScore", profileIdBattleProfileContainerMap.get(battleProfileContainer.getProfileId()).getScore());
+        model.put("newOpponentScore", profileIdBattleProfileContainerMap.get(battleProfileContainer.getOpponentId()).getScore());
         model.put("nextTaskInterval", Math.max(nextTaskDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
     }
 
     public void fillModelAnsweringTimeout(Map<String, Object> model) {
         model.put("status", status);
         model.put("correctAnswerId", findCorrectAnswerId(currentTaskIndex));
-        model.put("nextTaskInterval", Math.max(nextTaskDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
+//        model.put("nextTaskInterval", Math.max(nextTaskDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
     }
 
     public void fillModelClosed(Map<String, Object> model) {
@@ -141,6 +141,7 @@ public class BattleContainer {
         if (status == BattleStatus.ANSWERING) {
             fillModelAnswering(model);
         } else if (status == BattleStatus.ANSWERED) {
+            model.put("task", taskDTOs.get(currentTaskIndex));
             fillModelAnswered(model, battleProfileContainer);
         } else if (status == BattleStatus.PREPARING_NEXT_TASK) {
             fillModelPreparingNextTask(model);

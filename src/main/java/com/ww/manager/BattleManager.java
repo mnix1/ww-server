@@ -28,10 +28,10 @@ import java.util.concurrent.TimeUnit;
 public class BattleManager {
     private static final Logger logger = LoggerFactory.getLogger(BattleManager.class);
     public static final Integer TASK_COUNT = 10;
-    public static final Integer BASE_ANSWER_INTERVAL = 60000;
-    //    private static final Integer INTRO_INTERVAL = 20000;
-    private static final Integer INTRO_INTERVAL = 1000;
-    private static final Integer NEXT_TASK_INTERVAL = 3000;
+    public static final Integer ANSWERING_INTERVAL = 600000;
+        private static final Integer INTRO_INTERVAL = 20000;
+//    private static final Integer INTRO_INTERVAL = 1000;
+    private static final Integer NEXT_TASK_INTERVAL = 10000;
 
     private BattleContainer battleContainer;
 
@@ -127,7 +127,7 @@ public class BattleManager {
     private synchronized void stateAnswering() {
         Flowable.intervalRange(0L, 1L, NEXT_TASK_INTERVAL, NEXT_TASK_INTERVAL, TimeUnit.MILLISECONDS)
                 .subscribe(aLong -> {
-                    battleContainer.setEndAnsweringDate(Instant.now().plus(BASE_ANSWER_INTERVAL, ChronoUnit.MILLIS));
+                    battleContainer.setEndAnsweringDate(Instant.now().plus(ANSWERING_INTERVAL, ChronoUnit.MILLIS));
                     battleContainer.setStatus(BattleStatus.ANSWERING);
                     Map<String, Object> model = new HashMap<>();
                     battleContainer.fillModelAnswering(model);
@@ -139,7 +139,7 @@ public class BattleManager {
     }
 
     private synchronized void stateAnsweringTimeout() {
-        answeringTimeoutDisposable = Flowable.intervalRange(0L, 1L, BASE_ANSWER_INTERVAL, BASE_ANSWER_INTERVAL, TimeUnit.MILLISECONDS)
+        answeringTimeoutDisposable = Flowable.intervalRange(0L, 1L, ANSWERING_INTERVAL, ANSWERING_INTERVAL, TimeUnit.MILLISECONDS)
                 .subscribe(aLong -> {
                     if (battleContainer.getStatus() != BattleStatus.ANSWERING) {
                         return;
@@ -158,14 +158,6 @@ public class BattleManager {
         Map<String, Object> model = new HashMap<>();
         BattleProfileContainer battleProfileContainer = battleContainer.getProfileIdBattleProfileContainerMap().get(profileId);
         battleContainer.fillModel(model, battleProfileContainer);
-//        fillModelAnswering(model, battleProfileContainer);
-//        if (status == BattleStatus.PREPARING_NEXT_TASK) {
-//            model.remove("question");
-//            model.put("question", previousTaskDTO);
-//        }
-//        if (status != BattleStatus.ANSWERING) {
-//            fillModelAnswered(model, battleProfileContainer);
-//        }
         return model;
     }
 
@@ -195,19 +187,6 @@ public class BattleManager {
         battleContainer.increaseCurrentTaskIndex();
         prepareTask((long) battleContainer.getCurrentTaskIndex() + 1);
         stateAnswering();
-//        Flowable.intervalRange(0L, 1L, NEXT_TASK_INTERVAL, NEXT_TASK_INTERVAL, TimeUnit.MILLISECONDS)
-//                .subscribe(aLong -> {
-//                    status = BattleStatus.ANSWERING;
-//                    Map<String, Object> model = new HashMap<>();
-//                    model.put("correctAnswerId", null);
-//                    model.put("markedAnswerId", null);
-//                    model.put("meAnswered", null);
-//                    model.put("question", taskDTO);
-//                    model.put("nextTaskInterval", null);
-//                    profileIdBattleProfileContainerMap.values().parallelStream().forEach(battleProfileContainer -> {
-//                        send(model, Message.BATTLE_NEXT_QUESTION, battleProfileContainer.getProfileId());
-//                    });
-//                });
     }
 
     public void send(Map<String, Object> model, Message message, Long profileId) {
