@@ -2,19 +2,18 @@ package com.ww.manager;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ww.model.constant.rival.battle.BattleProfileStatus;
 import com.ww.model.constant.rival.battle.BattleStatus;
+import com.ww.model.container.battle.BattleContainer;
 import com.ww.model.container.battle.BattleFriendContainer;
 import com.ww.model.container.battle.BattleProfileContainer;
 import com.ww.model.dto.rival.task.TaskDTO;
-import com.ww.model.dto.social.ProfileDTO;
-import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.service.rival.battle.BattleService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.websocket.message.Message;
 import com.ww.websocket.message.MessageDTO;
 import io.reactivex.Flowable;
+import io.reactivex.disposables.Disposable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,172 +24,190 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 public class BattleManager {
     private static final Logger logger = LoggerFactory.getLogger(BattleManager.class);
-    private static final Integer MAX_SCORE = 1;
-    private static final Integer NEXT_TASK_INTERVAL = 7000;
+    public static final Integer TASK_COUNT = 10;
+    public static final Integer BASE_ANSWER_INTERVAL = 60000;
+    //    private static final Integer INTRO_INTERVAL = 20000;
+    private static final Integer INTRO_INTERVAL = 1000;
+    private static final Integer NEXT_TASK_INTERVAL = 3000;
 
-    private final Map<Long, BattleProfileContainer> profileIdBattleProfileContainerMap = new HashMap<>();
-    private int questionId = 1;
-    private TaskDTO previousTaskDTO;
-    private Question question;
-    private TaskDTO taskDTO;
-    private String winnerTag;
-    private String winnerName;
-    private Instant nextTaskDate;
-    private Answer correctAnswer;
-    private Long markedAnswerId;
-    private Long answeredProfileId;
-
-    private BattleStatus status = BattleStatus.OPEN;
+    private BattleContainer battleContainer;
 
     private BattleService battleService;
     private ProfileConnectionService profileConnectionService;
 
+    private Disposable answeringTimeoutDisposable;
 
     public BattleManager(BattleFriendContainer bic, BattleService battleService, ProfileConnectionService profileConnectionService) {
         Long creatorId = bic.getCreatorProfile().getId();
         Long opponentId = bic.getOpponentProfile().getId();
-        this.profileIdBattleProfileContainerMap.put(creatorId, new BattleProfileContainer(bic.getCreatorProfile(), opponentId));
-        this.profileIdBattleProfileContainerMap.put(opponentId, new BattleProfileContainer(bic.getOpponentProfile(), creatorId));
+        this.battleContainer = new BattleContainer();
+        this.battleContainer.addProfile(creatorId, new BattleProfileContainer(bic.getCreatorProfile(), opponentId));
+        this.battleContainer.addProfile(opponentId, new BattleProfileContainer(bic.getOpponentProfile(), creatorId));
         this.battleService = battleService;
         this.profileConnectionService = profileConnectionService;
     }
 
     public boolean isLock() {
-        return status != BattleStatus.ANSWERING;
+        return battleContainer.getStatus() != BattleStatus.ANSWERING;
     }
 
     public boolean isClosed() {
-        return status == BattleStatus.CLOSED;
+        return battleContainer.getStatus() == BattleStatus.CLOSED;
     }
 
     public String getWinnerTag() {
-        return winnerTag;
+        return battleContainer.getWinnerTag();
     }
 
     public List<BattleProfileContainer> getBattleProfileContainers() {
-        return new ArrayList<>(profileIdBattleProfileContainerMap.values());
+        return new ArrayList<>(this.battleContainer.getProfileIdBattleProfileContainerMap().values());
+    }
+
+    public void surrender(Long profileId) {
+        if (isClosed()) {
+            return;
+        }
+        battleContainer.setStatus(BattleStatus.CLOSED);
+        Long winnerId = battleContainer.getProfileIdBattleProfileContainerMap().get(profileId).getOpponentId();
+        battleContainer.setWinner(winnerId);
+        battleContainer.forEachProfile(battleProfileContainer -> {
+            Map<String, Object> model = new HashMap<>();
+            battleContainer.fillModelClosed(model);
+            send(model, Message.BATTLE_CONTENT, battleProfileContainer.getProfileId());
+        });
+        battleService.disposeManager(this);
+    }
+
+    private void prepareTask(Long id) {
+        Question question = battleService.prepareQuestion();
+        question.setId(id);
+        TaskDTO taskDTO = battleService.prepareTaskDTO(question);
+        battleContainer.addTask(question, taskDTO);
     }
 
     public void maybeStart(Long profileId) {
-        profileIdBattleProfileContainerMap.get(profileId).setStatus(BattleProfileStatus.READY);
-        int readySize = profileIdBattleProfileContainerMap.values().stream()
-                .filter(battleProfileContainer -> battleProfileContainer.getStatus() == BattleProfileStatus.READY)
-                .collect(Collectors.toList()).size();
-        if (readySize == profileIdBattleProfileContainerMap.size()) {
-            start();
+        battleContainer.profileReady(profileId);
+        if (battleContainer.isReady()) {
+            stateIntro();
         }
     }
 
-    private ProfileDTO prepareProfile(Long profileId) {
-        return new ProfileDTO(profileIdBattleProfileContainerMap.get(profileId).getProfile());
-    }
-
-    private void prepareNewTask() {
-        this.previousTaskDTO = this.taskDTO;
-        Question question = battleService.prepareQuestion();
-        question.setId((long) questionId);
-        this.question = question;
-        this.taskDTO = battleService.prepareTaskDTO(question);
-    }
-
-    public void sendReadyFast() {
-        profileIdBattleProfileContainerMap.values().stream().forEach(battleProfileContainer -> {
+    private synchronized void stateIntro() {
+        battleContainer.setStatus(BattleStatus.INTRO);
+        prepareTask((long) battleContainer.getCurrentTaskIndex() + 1);
+        battleContainer.forEachProfile(battleProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            send(model, Message.BATTLE_READY_FAST, battleProfileContainer.getProfileId());
+            battleContainer.fillModelIntro(model, battleProfileContainer);
+            send(model, Message.BATTLE_CONTENT, battleProfileContainer.getProfileId());
         });
+        statePreparingNextTaskAfterIntro();
+    }
+
+    private synchronized void statePreparingNextTaskAfterIntro() {
+        statePreparingNextTask(INTRO_INTERVAL);
+    }
+
+    private synchronized void statePreparingNextTask(Integer interval) {
+        Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS)
+                .subscribe(aLong -> {
+                    battleContainer.setNextTaskDate(Instant.now().plus(NEXT_TASK_INTERVAL, ChronoUnit.MILLIS));
+                    battleContainer.setStatus(BattleStatus.PREPARING_NEXT_TASK);
+                    Map<String, Object> model = new HashMap<>();
+                    battleContainer.fillModelPreparingNextTask(model);
+                    battleContainer.forEachProfile(battleProfileContainer -> {
+                        send(model, Message.BATTLE_CONTENT, battleProfileContainer.getProfileId());
+                    });
+                    stateAnswering();
+                });
+    }
+
+    private synchronized void stateAnswering() {
+        Flowable.intervalRange(0L, 1L, NEXT_TASK_INTERVAL, NEXT_TASK_INTERVAL, TimeUnit.MILLISECONDS)
+                .subscribe(aLong -> {
+                    battleContainer.setEndAnsweringDate(Instant.now().plus(BASE_ANSWER_INTERVAL, ChronoUnit.MILLIS));
+                    battleContainer.setStatus(BattleStatus.ANSWERING);
+                    Map<String, Object> model = new HashMap<>();
+                    battleContainer.fillModelAnswering(model);
+                    battleContainer.forEachProfile(battleProfileContainer -> {
+                        send(model, Message.BATTLE_CONTENT, battleProfileContainer.getProfileId());
+                    });
+                    stateAnsweringTimeout();
+                });
+    }
+
+    private synchronized void stateAnsweringTimeout() {
+        answeringTimeoutDisposable = Flowable.intervalRange(0L, 1L, BASE_ANSWER_INTERVAL, BASE_ANSWER_INTERVAL, TimeUnit.MILLISECONDS)
+                .subscribe(aLong -> {
+                    if (battleContainer.getStatus() != BattleStatus.ANSWERING) {
+                        return;
+                    }
+                    battleContainer.setStatus(BattleStatus.ANSWERING_TIMEOUT);
+                    Map<String, Object> model = new HashMap<>();
+                    battleContainer.fillModelAnsweringTimeout(model);
+                    battleContainer.forEachProfile(battleProfileContainer -> {
+                        send(model, Message.BATTLE_CONTENT, battleProfileContainer.getProfileId());
+                    });
+                    stateAnswering();
+                });
     }
 
     public synchronized Map<String, Object> actualModel(Long profileId) {
         Map<String, Object> model = new HashMap<>();
-        BattleProfileContainer battleProfileContainer = profileIdBattleProfileContainerMap.get(profileId);
-        fillModelAnswering(model, battleProfileContainer);
-        if (status == BattleStatus.PREPARING_NEXT_TASK) {
-            model.remove("question");
-            model.put("question", previousTaskDTO);
-        }
-        if (status != BattleStatus.ANSWERING) {
-            fillModelAnswered(model, battleProfileContainer);
-        }
+        BattleProfileContainer battleProfileContainer = battleContainer.getProfileIdBattleProfileContainerMap().get(profileId);
+        battleContainer.fillModel(model, battleProfileContainer);
+//        fillModelAnswering(model, battleProfileContainer);
+//        if (status == BattleStatus.PREPARING_NEXT_TASK) {
+//            model.remove("question");
+//            model.put("question", previousTaskDTO);
+//        }
+//        if (status != BattleStatus.ANSWERING) {
+//            fillModelAnswered(model, battleProfileContainer);
+//        }
         return model;
     }
 
-    private synchronized void start() {
-        prepareNewTask();
-        status = BattleStatus.ANSWERING;
-        profileIdBattleProfileContainerMap.values().parallelStream().forEach(battleProfileContainer -> {
-            Map<String, Object> model = new HashMap<>();
-            fillModelAnswering(model, battleProfileContainer);
-            send(model, Message.BATTLE_START, battleProfileContainer.getProfileId());
-        });
-    }
-
-    private void fillModelAnswering(Map<String, Object> model, BattleProfileContainer battleProfileContainer) {
-        model.put("opponent", prepareProfile(battleProfileContainer.getOpponentId()));
-        model.put("question", taskDTO);
-        model.put("score", profileIdBattleProfileContainerMap.get(battleProfileContainer.getProfileId()).getScore());
-        model.put("opponentScore", profileIdBattleProfileContainerMap.get(battleProfileContainer.getOpponentId()).getScore());
-    }
-
-    private void fillModelAnswered(Map<String, Object> model, BattleProfileContainer battleProfileContainer) {
-        model.put("correctAnswerId", correctAnswer.getId());
-        model.put("markedAnswerId", markedAnswerId);
-        model.put("meAnswered", answeredProfileId.equals(battleProfileContainer.getProfileId()));
-        model.put("score", profileIdBattleProfileContainerMap.get(battleProfileContainer.getProfileId()).getScore());
-        model.put("opponentScore", profileIdBattleProfileContainerMap.get(battleProfileContainer.getOpponentId()).getScore());
-        model.put("winner", winnerName);
-        model.put("nextTaskInterval", Math.max(nextTaskDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
-    }
-
-    public synchronized void answer(Long profileId, Map<String, Object> content) {
-        status = BattleStatus.ANSWERED;
-        correctAnswer = question.getAnswers().stream().filter(Answer::getCorrect).findFirst().get();
-        Boolean isAnswerCorrect = false;
-        answeredProfileId = profileId;
-        markedAnswerId = null;
-        if (content.containsKey("answerId")) {
-            markedAnswerId = ((Integer) content.get("answerId")).longValue();
-            isAnswerCorrect = correctAnswer.getId().equals(markedAnswerId);
-        }
-        BattleProfileContainer container = profileIdBattleProfileContainerMap.get(answeredProfileId);
-        if (!isAnswerCorrect) {
-            container = profileIdBattleProfileContainerMap.get(container.getOpponentId());
-        }
-        Integer score = container.increaseScore();
-        if (MAX_SCORE.equals(score)) {
-            winnerTag = container.getProfile().getTag();
-            winnerName = container.getProfile().getName();
-        }
-        nextTaskDate = Instant.now().plus(NEXT_TASK_INTERVAL, ChronoUnit.MILLIS);
-        profileIdBattleProfileContainerMap.values().parallelStream().forEach(battleProfileContainer -> {
-            Map<String, Object> model = new HashMap<>();
-            fillModelAnswered(model, battleProfileContainer);
-            send(model, Message.BATTLE_ANSWER, battleProfileContainer.getProfileId());
-        });
-        if (winnerTag != null) {
-            status = BattleStatus.CLOSED;
-            battleService.disposeManager(this);
+    public synchronized void stateAnswered(Long profileId, Map<String, Object> content) {
+        if (battleContainer.getStatus() != BattleStatus.ANSWERING) {
             return;
         }
-        status = BattleStatus.PREPARING_NEXT_TASK;
-        questionId++;
-        prepareNewTask();
-        Flowable.intervalRange(0L, 1L, NEXT_TASK_INTERVAL, NEXT_TASK_INTERVAL, TimeUnit.MILLISECONDS)
-                .subscribe(aLong -> {
-                    status = BattleStatus.ANSWERING;
-                    Map<String, Object> model = new HashMap<>();
-                    model.put("correctAnswerId", null);
-                    model.put("markedAnswerId", null);
-                    model.put("meAnswered", null);
-                    model.put("question", taskDTO);
-                    model.put("nextTaskInterval", null);
-                    profileIdBattleProfileContainerMap.values().parallelStream().forEach(battleProfileContainer -> {
-                        send(model, Message.BATTLE_NEXT_QUESTION, battleProfileContainer.getProfileId());
-                    });
-                });
+        battleContainer.setStatus(BattleStatus.ANSWERED);
+        answeringTimeoutDisposable.dispose();
+        battleContainer.setAnsweredProfileId(profileId);
+        Boolean isAnswerCorrect = false;
+        Long markedAnswerId = null;
+        if (content.containsKey("answerId")) {
+            markedAnswerId = ((Integer) content.get("answerId")).longValue();
+            battleContainer.setMarkedAnswerId(markedAnswerId);
+            isAnswerCorrect = battleContainer.findCurrentCorrectAnswerId().equals(markedAnswerId);
+        }
+        BattleProfileContainer container = battleContainer.getProfileIdBattleProfileContainerMap().get(profileId);
+        container.setScore(isAnswerCorrect ? container.getScore() + battleContainer.getCurrentTaskPoints() : container.getScore() - battleContainer.getCurrentTaskPoints());
+        battleContainer.setNextTaskDate(Instant.now().plus(NEXT_TASK_INTERVAL, ChronoUnit.MILLIS));
+        battleContainer.forEachProfile(battleProfileContainer -> {
+            Map<String, Object> model = new HashMap<>();
+            battleContainer.fillModelAnswered(model, battleProfileContainer);
+            send(model, Message.BATTLE_CONTENT, battleProfileContainer.getProfileId());
+        });
+        battleContainer.setStatus(BattleStatus.PREPARING_NEXT_TASK);
+        battleContainer.increaseCurrentTaskIndex();
+        prepareTask((long) battleContainer.getCurrentTaskIndex() + 1);
+        stateAnswering();
+//        Flowable.intervalRange(0L, 1L, NEXT_TASK_INTERVAL, NEXT_TASK_INTERVAL, TimeUnit.MILLISECONDS)
+//                .subscribe(aLong -> {
+//                    status = BattleStatus.ANSWERING;
+//                    Map<String, Object> model = new HashMap<>();
+//                    model.put("correctAnswerId", null);
+//                    model.put("markedAnswerId", null);
+//                    model.put("meAnswered", null);
+//                    model.put("question", taskDTO);
+//                    model.put("nextTaskInterval", null);
+//                    profileIdBattleProfileContainerMap.values().parallelStream().forEach(battleProfileContainer -> {
+//                        send(model, Message.BATTLE_NEXT_QUESTION, battleProfileContainer.getProfileId());
+//                    });
+//                });
     }
 
     public void send(Map<String, Object> model, Message message, Long profileId) {
@@ -200,5 +217,13 @@ public class BattleManager {
         } catch (JsonProcessingException e) {
             logger.error("Error when sending message");
         }
+    }
+
+
+    public void sendReadyFast() {
+        battleContainer.getProfileIdBattleProfileContainerMap().values().stream().forEach(battleProfileContainer -> {
+            Map<String, Object> model = new HashMap<>();
+            send(model, Message.BATTLE_READY_FAST, battleProfileContainer.getProfileId());
+        });
     }
 }

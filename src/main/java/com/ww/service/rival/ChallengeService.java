@@ -220,7 +220,7 @@ public class ChallengeService {
                 .filter(e -> e.getProfile().getId().equals(sessionService.getProfileId()) && e.getResult() == ChallengeAnswerResult.IN_PROGRESS)
                 .findFirst()
                 .orElseThrow(() -> {
-                    logger.error("Challenge answer not in progress: {}, {}", challengeId, profile.getId());
+                    logger.error("Challenge stateAnswered not in progress: {}, {}", challengeId, profile.getId());
                     return new IllegalArgumentException();
                 });
         Question question = challengeAnswer.getQuestion();

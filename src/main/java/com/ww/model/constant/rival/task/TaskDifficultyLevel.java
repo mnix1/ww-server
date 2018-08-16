@@ -8,18 +8,20 @@ import static com.ww.helper.RandomHelper.randomElement;
 
 @Getter
 public enum TaskDifficultyLevel {
-    VERY_EASY(1),
-    EASY(3),
-    NORMAL(5),
-    HARD(7),
-    VERY_HARD(9),
-    EXTREMELY_HARD(11),
-    NONE(-1);
+    VERY_EASY(1, 1),
+    EASY(3, 2),
+    NORMAL(5, 3),
+    HARD(7, 4),
+    VERY_HARD(9, 5),
+    EXTREMELY_HARD(11, 6),
+    NONE(-1, 0);
 
     private int level;
+    private int points;
 
-    private TaskDifficultyLevel(int level) {
+    private TaskDifficultyLevel(int level, int points) {
         this.level = level;
+        this.points = points;
     }
 
     public static TaskDifficultyLevel random() {

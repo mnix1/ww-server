@@ -261,7 +261,7 @@ public class Init {
         heroes.add(new Hero("Lizuś", "Fox", HeroType.FOX_MAN, new HashSet<>(Arrays.asList(Category.random()))));
         heroes.add(new Hero("Lisiczka", "Foxie", HeroType.FOX, new HashSet<>(Arrays.asList(Category.random()))));
         heroes.add(new Hero("Trąbuś", "Elephant", HeroType.ELEPHANT, new HashSet<>(Arrays.asList(Category.MATH, Category.MEMORY))));
-        heroes.add(new Hero("Łorzeł", "Eagle", HeroType.EAGLE, new HashSet<>(Arrays.asList(Category.random()))));
+        heroes.add(new Hero("Orłuś", "Eagle", HeroType.EAGLE, new HashSet<>(Arrays.asList(Category.random()))));
         heroes.add(new Hero("Grubełło", "Fat Dragon", HeroType.DRAGON_FAT, new HashSet<>(Arrays.asList(Category.GEOGRAPHY, Category.MATH))));
         heroes.add(new Hero("Supełło", "Blue Dragon", HeroType.DRAGON_BLUE, new HashSet<>(Arrays.asList(Category.random(), Category.random()))));
         heroes.add(new Hero("Pikełło", "Green Dragon", HeroType.DRAGON, new HashSet<>(Arrays.asList(Category.random(), Category.random(), Category.random(), Category.random()))));

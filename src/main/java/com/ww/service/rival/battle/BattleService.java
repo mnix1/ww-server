@@ -52,7 +52,7 @@ public class BattleService {
             return;
         }
         BattleManager battleManager = profileIdToBattleManagerMap.get(profileConnection.getProfileId());
-        battleManager.send(battleManager.actualModel(profileConnection.getProfileId()), Message.BATTLE_ACTUAL_MODEL, profileConnection.getProfileId());
+        battleManager.send(battleManager.actualModel(profileConnection.getProfileId()), Message.BATTLE_CONTENT, profileConnection.getProfileId());
     }
 
     public synchronized void readyForStart(String sessionId) {
@@ -89,10 +89,23 @@ public class BattleService {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             Map<String, Object> map = objectMapper.readValue(content, HashMap.class);
-            battleManager.answer(profileId.get(), map);
+            battleManager.stateAnswered(profileId.get(), map);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public synchronized void surrender(String sessionId) {
+        Optional<Long> optionalProfileId = profileConnectionService.getProfileId(sessionId);
+        if (!optionalProfileId.isPresent()) {
+            return;
+        }
+        Long profileId = optionalProfileId.get();
+        if(!profileIdToBattleManagerMap.containsKey(profileId)){
+            return;
+        }
+        BattleManager battleManager = profileIdToBattleManagerMap.get(profileId);
+        battleManager.surrender(profileId);
     }
 
     public Question prepareQuestion() {

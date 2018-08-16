@@ -26,7 +26,4 @@ public class BattleProfileContainer {
         return profile.getId();
     }
 
-    public Integer increaseScore(){
-        return ++score;
-    }
 }

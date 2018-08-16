@@ -4,6 +4,7 @@ import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.constant.rival.task.TaskRenderer;
 import com.ww.model.entity.rival.task.Question;
+import javafx.concurrent.Task;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +24,7 @@ public class TaskDTO {
     private String textContentPolish;
     private String textContentEnglish;
     private List<AnswerDTO> answers;
+    private Integer points;
 
     public TaskDTO(Question question) {
         this.id = question.getId();
@@ -34,5 +36,17 @@ public class TaskDTO {
         this.textContentPolish = question.getTextContentPolish();
         this.textContentEnglish = question.getTextContentEnglish();
         this.answers = question.getAnswers().stream().map(AnswerDTO::new).collect(Collectors.toList());
+        this.points = this.taskDifficultyLevel.getPoints();
+    }
+
+    public TaskDTO(TaskDTO taskDTO) {
+        this.id = taskDTO.getId();
+        this.category = taskDTO.getCategory();
+        this.taskDifficultyLevel = taskDTO.getTaskDifficultyLevel();
+        this.points = this.taskDifficultyLevel.getPoints();
+    }
+
+    public TaskDTO toTaskMeta(){
+        return new TaskDTO(this);
     }
 }
