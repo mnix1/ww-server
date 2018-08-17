@@ -57,6 +57,8 @@ public class WebSocketHandler extends TextWebSocketHandler {
             battleService.readyForStart(session.getId());
         } else if (message.contains("BATTLE_ANSWER")) {
             battleService.answer(session.getId(), message.substring("BATTLE_ANSWER".length()));
+        } else if (message.contains("BATTLE_CHOOSE_TASK_PROPS")) {
+            battleService.chooseTaskProps(session.getId(), message.substring("BATTLE_CHOOSE_TASK_PROPS".length()));
         } else if (message.contains("BATTLE_SURRENDER")) {
             battleService.surrender(session.getId());
         }

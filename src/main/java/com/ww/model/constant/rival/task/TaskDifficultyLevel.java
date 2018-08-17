@@ -1,5 +1,6 @@
 package com.ww.model.constant.rival.task;
 
+import com.ww.model.constant.Category;
 import lombok.Getter;
 
 import java.util.Arrays;
@@ -8,13 +9,13 @@ import static com.ww.helper.RandomHelper.randomElement;
 
 @Getter
 public enum TaskDifficultyLevel {
-    VERY_EASY(1, 1),
-    EASY(3, 2),
-    NORMAL(5, 3),
-    HARD(7, 4),
-    VERY_HARD(9, 5),
-    EXTREMELY_HARD(11, 6),
-    NONE(-1, 0);
+    EXTREMELY_EASY(1, 1),
+    VERY_EASY(3, 2),
+    EASY(5, 3),
+    NORMAL(7, 4),
+    HARD(9, 5),
+    VERY_HARD(11, 6),
+    EXTREMELY_HARD(13, 7);
 
     private int level;
     private int points;
@@ -25,11 +26,7 @@ public enum TaskDifficultyLevel {
     }
 
     public static TaskDifficultyLevel random() {
-        TaskDifficultyLevel e = randomElement(Arrays.asList(values()));
-        if (e == NONE) {
-            return random();
-        }
-        return e;
+        return randomElement(Arrays.asList(values()));
     }
 
     public static int answersCount(int remainedDifficulty) {
@@ -51,13 +48,30 @@ public enum TaskDifficultyLevel {
         if (remainedDifficulty < 10) {
             return 7;
         }
-        return 6;
+        return 8;
     }
 
     public static int answersCount(TaskDifficultyLevel difficultyLevel, int remainedDifficulty) {
-        if (difficultyLevel == TaskDifficultyLevel.NONE) {
-            return 4;
-        }
         return answersCount(remainedDifficulty);
+    }
+
+    public static TaskDifficultyLevel fromLevel(Integer level) {
+        if (level == null) {
+            return random();
+        }
+        for (TaskDifficultyLevel difficultyLevel : values()) {
+            if (difficultyLevel.getLevel() == level) {
+                return difficultyLevel;
+            }
+        }
+        return random();
+    }
+
+    public static TaskDifficultyLevel fromString(String name){
+        try {
+            return TaskDifficultyLevel.valueOf(name);
+        } catch (IllegalArgumentException e){
+            return random();
+        }
     }
 }

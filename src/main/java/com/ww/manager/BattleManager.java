@@ -2,7 +2,9 @@ package com.ww.manager;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.battle.BattleStatus;
+import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.container.battle.BattleContainer;
 import com.ww.model.container.battle.BattleFriendContainer;
 import com.ww.model.container.battle.BattleProfileContainer;
@@ -28,10 +30,15 @@ import java.util.concurrent.TimeUnit;
 public class BattleManager {
     private static final Logger logger = LoggerFactory.getLogger(BattleManager.class);
     public static final Integer TASK_COUNT = 10;
+
     public static final Integer ANSWERING_INTERVAL = 600000;
+//    public static final Integer ANSWERING_INTERVAL = 2000;
         private static final Integer INTRO_INTERVAL = 20000;
 //    private static final Integer INTRO_INTERVAL = 1000;
-    private static final Integer NEXT_TASK_INTERVAL = 10000;
+    private static final Integer NEXT_TASK_INTERVAL = 5000;
+    private static final Integer SHOWING_ANSWER_INTERVAL = 12000;
+    private static final Integer RANDOM_CHOOSE_TASK_PROPS_INTERVAL = 8000;
+    private static final Integer CHOOSING_TASK_PROPS_INTERVAL = 600000;
 
     private BattleContainer battleContainer;
 
@@ -39,6 +46,7 @@ public class BattleManager {
     private ProfileConnectionService profileConnectionService;
 
     private Disposable answeringTimeoutDisposable;
+    private Disposable choosingTaskPropsTimeoutDisposable;
 
     public BattleManager(BattleFriendContainer bic, BattleService battleService, ProfileConnectionService profileConnectionService) {
         Long creatorId = bic.getCreatorProfile().getId();
@@ -50,8 +58,12 @@ public class BattleManager {
         this.profileConnectionService = profileConnectionService;
     }
 
-    public boolean isLock() {
-        return battleContainer.getStatus() != BattleStatus.ANSWERING;
+    public boolean canAnswer() {
+        return battleContainer.getStatus() == BattleStatus.ANSWERING;
+    }
+
+    public boolean canChooseTaskProps() {
+        return battleContainer.getStatus() == BattleStatus.CHOOSING_TASK_PROPS;
     }
 
     public boolean isClosed() {
@@ -82,7 +94,11 @@ public class BattleManager {
     }
 
     private void prepareTask(Long id) {
-        Question question = battleService.prepareQuestion();
+        prepareTask(id, Category.random(), TaskDifficultyLevel.random());
+    }
+
+    private void prepareTask(Long id, Category category, TaskDifficultyLevel difficultyLevel) {
+        Question question = battleService.prepareQuestion(category, difficultyLevel);
         question.setId(id);
         TaskDTO taskDTO = battleService.prepareTaskDTO(question);
         battleContainer.addTask(question, taskDTO);
@@ -129,9 +145,9 @@ public class BattleManager {
                 .subscribe(aLong -> {
                     battleContainer.setEndAnsweringDate(Instant.now().plus(ANSWERING_INTERVAL, ChronoUnit.MILLIS));
                     battleContainer.setStatus(BattleStatus.ANSWERING);
-                    Map<String, Object> model = new HashMap<>();
-                    battleContainer.fillModelAnswering(model);
                     battleContainer.forEachProfile(battleProfileContainer -> {
+                        Map<String, Object> model = new HashMap<>();
+                        battleContainer.fillModelAnswering(model, battleProfileContainer);
                         send(model, Message.BATTLE_CONTENT, battleProfileContainer.getProfileId());
                     });
                     stateAnsweringTimeout();
@@ -150,23 +166,16 @@ public class BattleManager {
                     battleContainer.forEachProfile(battleProfileContainer -> {
                         send(model, Message.BATTLE_CONTENT, battleProfileContainer.getProfileId());
                     });
-                    stateAnswering();
+                    stateChoosingTaskProps();
                 });
     }
 
-    public synchronized Map<String, Object> actualModel(Long profileId) {
-        Map<String, Object> model = new HashMap<>();
-        BattleProfileContainer battleProfileContainer = battleContainer.getProfileIdBattleProfileContainerMap().get(profileId);
-        battleContainer.fillModel(model, battleProfileContainer);
-        return model;
-    }
-
     public synchronized void stateAnswered(Long profileId, Map<String, Object> content) {
-        if (battleContainer.getStatus() != BattleStatus.ANSWERING) {
-            return;
-        }
         battleContainer.setStatus(BattleStatus.ANSWERED);
-        answeringTimeoutDisposable.dispose();
+        if (answeringTimeoutDisposable != null && !answeringTimeoutDisposable.isDisposed()) {
+            answeringTimeoutDisposable.dispose();
+            answeringTimeoutDisposable = null;
+        }
         battleContainer.setAnsweredProfileId(profileId);
         Boolean isAnswerCorrect = false;
         Long markedAnswerId = null;
@@ -177,16 +186,95 @@ public class BattleManager {
         }
         BattleProfileContainer container = battleContainer.getProfileIdBattleProfileContainerMap().get(profileId);
         container.setScore(isAnswerCorrect ? container.getScore() + battleContainer.getCurrentTaskPoints() : container.getScore() - battleContainer.getCurrentTaskPoints());
-        battleContainer.setNextTaskDate(Instant.now().plus(NEXT_TASK_INTERVAL, ChronoUnit.MILLIS));
+//        battleContainer.setNextTaskDate(Instant.now().plus(NEXT_TASK_INTERVAL, ChronoUnit.MILLIS));
         battleContainer.forEachProfile(battleProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
             battleContainer.fillModelAnswered(model, battleProfileContainer);
             send(model, Message.BATTLE_CONTENT, battleProfileContainer.getProfileId());
         });
-        battleContainer.setStatus(BattleStatus.PREPARING_NEXT_TASK);
-        battleContainer.increaseCurrentTaskIndex();
-        prepareTask((long) battleContainer.getCurrentTaskIndex() + 1);
-        stateAnswering();
+//        battleContainer.setStatus(BattleStatus.PREPARING_NEXT_TASK);
+//        battleContainer.increaseCurrentTaskIndex();
+//        prepareTask((long) battleContainer.getCurrentTaskIndex() + 1);
+//        stateAnswering();
+        stateChoosingTaskProps();
+    }
+
+    public synchronized void stateChoosingTaskProps() {
+        Flowable.intervalRange(0L, 1L, SHOWING_ANSWER_INTERVAL, SHOWING_ANSWER_INTERVAL, TimeUnit.MILLISECONDS)
+                .subscribe(aLong -> {
+                    battleContainer.setStatus(BattleStatus.CHOOSING_TASK_PROPS);
+                    battleContainer.increaseCurrentTaskIndex();
+                    boolean randomChooseTaskProps = battleContainer.randomChooseTaskProps();
+                    if (randomChooseTaskProps) {
+                        prepareTask((long) battleContainer.getCurrentTaskIndex() + 1);
+                    }
+                    battleContainer.setEndChoosingTaskPropsDate(Instant.now().plus(CHOOSING_TASK_PROPS_INTERVAL, ChronoUnit.MILLIS));
+                    battleContainer.forEachProfile(battleProfileContainer -> {
+                        Map<String, Object> model = new HashMap<>();
+                        battleContainer.fillModelChoosingTaskProps(model, battleProfileContainer);
+                        send(model, Message.BATTLE_CONTENT, battleProfileContainer.getProfileId());
+                    });
+                    if (randomChooseTaskProps) {
+                        statePreparingNextTask(RANDOM_CHOOSE_TASK_PROPS_INTERVAL);
+                    } else {
+                        stateChoosingTaskPropsTimeout();
+                    }
+                });
+    }
+
+    public synchronized void stateChoosingTaskPropsTimeout() {
+        choosingTaskPropsTimeoutDisposable = Flowable.intervalRange(0L, 1L, CHOOSING_TASK_PROPS_INTERVAL, CHOOSING_TASK_PROPS_INTERVAL, TimeUnit.MILLISECONDS)
+                .subscribe(aLong -> {
+                    if (battleContainer.getStatus() != BattleStatus.CHOOSING_TASK_PROPS) {
+                        return;
+                    }
+                    battleContainer.setStatus(BattleStatus.CHOOSING_TASK_PROPS_TIMEOUT);
+                    prepareTask((long) battleContainer.getCurrentTaskIndex() + 1);
+                    Map<String, Object> model = new HashMap<>();
+                    battleContainer.fillModelChoosingTaskPropsTimeout(model);
+                    battleContainer.forEachProfile(battleProfileContainer -> {
+                        send(model, Message.BATTLE_CONTENT, battleProfileContainer.getProfileId());
+                    });
+                    statePreparingNextTask(RANDOM_CHOOSE_TASK_PROPS_INTERVAL);
+                });
+    }
+
+    public synchronized void stateChosenTaskProps(Long profileId, Map<String, Object> content) {
+        if (!battleContainer.getBattleProfileContainer(profileId).getProfile().getTag().equals(battleContainer.findChoosingTaskPropsTag())) {
+            logger.error("Not choosing profile tried to choose task props, profileId: {}", profileId);
+            return;
+        }
+        battleContainer.setStatus(BattleStatus.CHOSEN_TASK_PROPS);
+        if (choosingTaskPropsTimeoutDisposable != null && !choosingTaskPropsTimeoutDisposable.isDisposed()) {
+            choosingTaskPropsTimeoutDisposable.dispose();
+            choosingTaskPropsTimeoutDisposable = null;
+        }
+        Category category = Category.random();
+        TaskDifficultyLevel difficultyLevel = TaskDifficultyLevel.random();
+        try {
+            if (content.containsKey("category")) {
+                category = Category.fromString((String) content.get("category"));
+            }
+            if (content.containsKey("difficultyLevel")) {
+                difficultyLevel = TaskDifficultyLevel.fromString((String) content.get("difficultyLevel"));
+            }
+        } catch (Exception e) {
+            logger.error("Wrong content on stateChosenTaskProps for profileId: {}", profileId);
+        }
+        prepareTask((long) battleContainer.getCurrentTaskIndex() + 1, category, difficultyLevel);
+//        Map<String, Object> model = new HashMap<>();
+//        battleContainer.fillModelChosenTaskProps(model);
+//        battleContainer.forEachProfile(battleProfileContainer -> {
+//            send(model, Message.BATTLE_CONTENT, battleProfileContainer.getProfileId());
+//        });
+        statePreparingNextTask(0);
+    }
+
+    public synchronized Map<String, Object> actualModel(Long profileId) {
+        Map<String, Object> model = new HashMap<>();
+        BattleProfileContainer battleProfileContainer = battleContainer.getProfileIdBattleProfileContainerMap().get(profileId);
+        battleContainer.fillModel(model, battleProfileContainer);
+        return model;
     }
 
     public void send(Map<String, Object> model, Message message, Long profileId) {
@@ -197,7 +285,6 @@ public class BattleManager {
             logger.error("Error when sending message");
         }
     }
-
 
     public void sendReadyFast() {
         battleContainer.getProfileIdBattleProfileContainerMap().values().stream().forEach(battleProfileContainer -> {

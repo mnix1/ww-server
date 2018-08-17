@@ -83,7 +83,7 @@ public class BattleService {
             return;
         }
         BattleManager battleManager = profileIdToBattleManagerMap.get(profileId.get());
-        if (battleManager.isLock()) {
+        if (!battleManager.canAnswer()) {
             return;
         }
         ObjectMapper objectMapper = new ObjectMapper();
@@ -95,21 +95,39 @@ public class BattleService {
         }
     }
 
+    public synchronized void chooseTaskProps(String sessionId, String content) {
+        Optional<Long> profileId = profileConnectionService.getProfileId(sessionId);
+        if (!profileId.isPresent()) {
+            return;
+        }
+        BattleManager battleManager = profileIdToBattleManagerMap.get(profileId.get());
+        if (!battleManager.canChooseTaskProps()) {
+            return;
+        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            Map<String, Object> map = objectMapper.readValue(content, HashMap.class);
+            battleManager.stateChosenTaskProps(profileId.get(), map);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public synchronized void surrender(String sessionId) {
         Optional<Long> optionalProfileId = profileConnectionService.getProfileId(sessionId);
         if (!optionalProfileId.isPresent()) {
             return;
         }
         Long profileId = optionalProfileId.get();
-        if(!profileIdToBattleManagerMap.containsKey(profileId)){
+        if (!profileIdToBattleManagerMap.containsKey(profileId)) {
             return;
         }
         BattleManager battleManager = profileIdToBattleManagerMap.get(profileId);
         battleManager.surrender(profileId);
     }
 
-    public Question prepareQuestion() {
-        Question question = taskGenerateService.generate(Category.random(), TaskDifficultyLevel.random());
+    public Question prepareQuestion(Category category, TaskDifficultyLevel difficultyLevel) {
+        Question question = taskGenerateService.generate(category, difficultyLevel);
         question.initAnswerIds();
         return question;
     }

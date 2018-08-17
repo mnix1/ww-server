@@ -59,7 +59,7 @@
 //        this.profileConnectionService = profileConnectionService;
 //    }
 //
-//    public boolean isLock() {
+//    public boolean canAnswer() {
 //        return status != BattleStatus.ANSWERING;
 //    }
 //
@@ -86,7 +86,7 @@
 //    }
 //
 //    private ProfileDTO prepareProfile(Long profileId) {
-//        return new ProfileDTO(profileIdBattleProfileContainerMap.get(profileId).getProfile());
+//        return new ProfileDTO(profileIdBattleProfileContainerMap.get(profileId).getBattleProfileContainer());
 //    }
 //
 //    private void prepareNewTask() {
@@ -161,8 +161,8 @@
 //        }
 //        Integer score = container.increaseScore();
 //        if (MAX_SCORE.equals(score)) {
-//            winnerTag = container.getProfile().getTag();
-//            winnerName = container.getProfile().getName();
+//            winnerTag = container.getBattleProfileContainer().getTag();
+//            winnerName = container.getBattleProfileContainer().getName();
 //        }
 //        nextTaskDate = Instant.now().plus(NEXT_TASK_INTERVAL, ChronoUnit.MILLIS);
 //        profileIdBattleProfileContainerMap.values().parallelStream().forEach(battleProfileContainer -> {

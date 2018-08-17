@@ -33,6 +33,9 @@ public class TaskGenerateService {
     TaskTypeRepository taskTypeRepository;
 
     public Question generate(Category category, TaskDifficultyLevel difficultyLevel) {
+        if (category == Category.RANDOM) {
+            category = Category.random();
+        }
         TaskType taskType = randomElement(taskTypeRepository.findAllByCategory(category));
         if (category == Category.MUSIC) {
             return musicTaskService.generate(taskType, difficultyLevel, Language.ALL);

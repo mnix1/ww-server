@@ -30,6 +30,7 @@ public class BattleContainer {
     private List<TaskDTO> taskDTOs = new ArrayList<>(taskCount);
 
     private Instant nextTaskDate;
+    private Instant endChoosingTaskPropsDate;
     private Instant endAnsweringDate;
 
     private Long answeredProfileId;
@@ -43,6 +44,10 @@ public class BattleContainer {
         this.profileIdBattleProfileContainerMap.put(id, battleProfileContainer);
     }
 
+    public BattleProfileContainer getBattleProfileContainer(Long id) {
+        return this.profileIdBattleProfileContainerMap.get(id);
+    }
+
     public void setWinner(Long winnerId) {
         Profile profile = profileIdBattleProfileContainerMap.get(winnerId).getProfile();
         winnerTag = profile.getTag();
@@ -54,6 +59,23 @@ public class BattleContainer {
 
     public Long findCurrentCorrectAnswerId() {
         return findCorrectAnswerId(currentTaskIndex);
+    }
+
+    public String findChoosingTaskPropsTag() {
+        List<BattleProfileContainer> battleProfileContainers = new ArrayList<>(profileIdBattleProfileContainerMap.values());
+        Integer p1Score = battleProfileContainers.get(0).getScore();
+        Integer p2Score = battleProfileContainers.get(1).getScore();
+        if (p1Score.equals(p2Score)) {
+            return null;
+        }
+        if (p1Score.compareTo(p2Score) < 0) {
+            return battleProfileContainers.get(0).getProfile().getTag();
+        }
+        return battleProfileContainers.get(1).getProfile().getTag();
+    }
+
+    public boolean randomChooseTaskProps() {
+        return findChoosingTaskPropsTag() == null;
     }
 
     public int getCurrentTaskPoints() {
@@ -83,13 +105,17 @@ public class BattleContainer {
         taskDTOs.add(taskDTO);
     }
 
-    public void fillModelIntro(Map<String, Object> model, BattleProfileContainer battleProfileContainer) {
+    private void fillModelBasic(Map<String, Object> model, BattleProfileContainer battleProfileContainer) {
         model.put("status", status);
         model.put("taskCount", taskCount);
         model.put("opponent", prepareProfile(battleProfileContainer.getOpponentId()));
-        model.put("task", taskDTOs.get(currentTaskIndex).toTaskMeta());
         model.put("score", profileIdBattleProfileContainerMap.get(battleProfileContainer.getProfileId()).getScore());
         model.put("opponentScore", profileIdBattleProfileContainerMap.get(battleProfileContainer.getOpponentId()).getScore());
+    }
+
+    public void fillModelIntro(Map<String, Object> model, BattleProfileContainer battleProfileContainer) {
+        fillModelBasic(model, battleProfileContainer);
+        model.put("task", taskDTOs.get(currentTaskIndex).toTaskMeta());
     }
 
     public void fillModelPreparingNextTask(Map<String, Object> model) {
@@ -98,7 +124,7 @@ public class BattleContainer {
         model.put("nextTaskInterval", Math.max(nextTaskDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
     }
 
-    public void fillModelAnswering(Map<String, Object> model) {
+    public void fillModelAnswering(Map<String, Object> model, BattleProfileContainer battleProfileContainer) {
         model.put("status", status);
         model.put("task", taskDTOs.get(currentTaskIndex));
         model.put("correctAnswerId", null);
@@ -114,13 +140,38 @@ public class BattleContainer {
         model.put("meAnswered", answeredProfileId.equals(battleProfileContainer.getProfileId()));
         model.put("newScore", profileIdBattleProfileContainerMap.get(battleProfileContainer.getProfileId()).getScore());
         model.put("newOpponentScore", profileIdBattleProfileContainerMap.get(battleProfileContainer.getOpponentId()).getScore());
-        model.put("nextTaskInterval", Math.max(nextTaskDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
     }
 
     public void fillModelAnsweringTimeout(Map<String, Object> model) {
         model.put("status", status);
         model.put("correctAnswerId", findCorrectAnswerId(currentTaskIndex));
+        model.put("markedAnswerId", null);
+        model.put("meAnswered",null);
 //        model.put("nextTaskInterval", Math.max(nextTaskDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
+    }
+
+    public void fillModelChoosingTaskPropsTimeout(Map<String, Object> model) {
+        model.put("status", status);
+        model.put("task", taskDTOs.get(currentTaskIndex).toTaskMeta());
+    }
+
+    public void fillModelChoosingTaskProps(Map<String, Object> model, BattleProfileContainer battleProfileContainer) {
+        model.put("status", status);
+        model.put("score", profileIdBattleProfileContainerMap.get(battleProfileContainer.getProfileId()).getScore());
+        model.put("opponentScore", profileIdBattleProfileContainerMap.get(battleProfileContainer.getOpponentId()).getScore());
+        model.put("choosingTaskPropsInterval", Math.max(endChoosingTaskPropsDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
+        model.put("choosingTaskPropsTag", findChoosingTaskPropsTag());
+        model.put("taskId", currentTaskIndex + 1);
+        if (randomChooseTaskProps()) {
+            model.put("task", taskDTOs.get(currentTaskIndex).toTaskMeta());
+        } else {
+            model.put("task", null);
+        }
+    }
+
+    public void fillModelChosenTaskProps(Map<String, Object> model) {
+        model.put("status", status);
+        model.put("task", taskDTOs.get(currentTaskIndex).toTaskMeta());
     }
 
     public void fillModelClosed(Map<String, Object> model) {
@@ -134,22 +185,27 @@ public class BattleContainer {
 
 
     public void fillModel(Map<String, Object> model, BattleProfileContainer battleProfileContainer) {
-        fillModelIntro(model, battleProfileContainer);
-        if (status != BattleStatus.INTRO) {
-            model.remove("task");
-        }
+        fillModelBasic(model, battleProfileContainer);
         if (status == BattleStatus.ANSWERING) {
-            fillModelAnswering(model);
+            fillModelAnswering(model, battleProfileContainer);
         } else if (status == BattleStatus.ANSWERED) {
             model.put("task", taskDTOs.get(currentTaskIndex));
             fillModelAnswered(model, battleProfileContainer);
         } else if (status == BattleStatus.PREPARING_NEXT_TASK) {
             fillModelPreparingNextTask(model);
         } else if (status == BattleStatus.ANSWERING_TIMEOUT) {
-            fillModelAnswering(model);
+            fillModelAnswering(model, battleProfileContainer);
             fillModelAnsweringTimeout(model);
         } else if (status == BattleStatus.CLOSED) {
             fillModelClosed(model);
+        } else if (status == BattleStatus.CHOOSING_TASK_PROPS) {
+            fillModelChoosingTaskProps(model, battleProfileContainer);
+        } else if (status == BattleStatus.CHOOSING_TASK_PROPS_TIMEOUT) {
+            fillModelChoosingTaskPropsTimeout(model);
+        } else if (status == BattleStatus.CHOSEN_TASK_PROPS) {
+            fillModelChosenTaskProps(model);
+        } else if (status == BattleStatus.INTRO) {
+            fillModelIntro(model, battleProfileContainer);
         }
     }
 }
