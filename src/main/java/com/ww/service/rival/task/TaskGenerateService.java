@@ -6,6 +6,7 @@ import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.TaskType;
 import com.ww.repository.rival.task.TaskTypeRepository;
+import com.ww.service.rival.task.chemistry.ChemistryTaskService;
 import com.ww.service.rival.task.geography.GeographyTaskService;
 import com.ww.service.rival.task.math.MathTaskService;
 import com.ww.service.rival.task.memory.MemoryTaskService;
@@ -30,6 +31,9 @@ public class TaskGenerateService {
     MemoryTaskService memoryTaskService;
 
     @Autowired
+    ChemistryTaskService chemistryTaskService;
+
+    @Autowired
     TaskTypeRepository taskTypeRepository;
 
     public Question generate(Category category, TaskDifficultyLevel difficultyLevel) {
@@ -48,6 +52,9 @@ public class TaskGenerateService {
         }
         if (category == Category.MEMORY) {
             return memoryTaskService.generate(taskType, difficultyLevel);
+        }
+        if (category == Category.CHEMISTRY) {
+            return chemistryTaskService.generate(taskType, difficultyLevel);
         }
         return null;
     }

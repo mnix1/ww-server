@@ -10,6 +10,7 @@ public enum Category {
     RANDOM,
     MATH,
     MUSIC,
+    CHEMISTRY,
 //    HISTORY,
     GEOGRAPHY,
     MEMORY;

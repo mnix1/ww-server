@@ -25,53 +25,53 @@ public class GeographyTaskCountryCapitalTypeService {
     @Autowired
     GeographyCountryRepository geographyCountryRepository;
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, GeographyTaskType taskValue) {
+    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, GeographyTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
         int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
         List<GeographyCountry> allCountries = geographyCountryRepository.findAll();
         GeographyCountry correctCountry = randomElement(allCountries);
 
-        Question question = prepareQuestion(type, difficultyLevel, taskValue, correctCountry);
+        Question question = prepareQuestion(type, difficultyLevel, typeValue, correctCountry);
 //        question.setDifficultyLevel();
-        List<Answer> answers = prepareAnswers(taskValue, correctCountry, allCountries, answersCount);
+        List<Answer> answers = prepareAnswers(typeValue, correctCountry, allCountries, answersCount);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
 
-    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, GeographyTaskType taskValue, GeographyCountry country) {
+    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, GeographyTaskType typeValue, GeographyCountry country) {
         Question question = new Question(type, difficultyLevel);
-        if (taskValue == GeographyTaskType.COUNTRY_NAME_FROM_ALPHA_2) {
+        if (typeValue == GeographyTaskType.COUNTRY_NAME_FROM_ALPHA_2) {
             question.setTextContentPolish("Wskaż państwo, którego kod to " + country.getAlpha2Code());
             question.setTextContentEnglish("Indicate the country whose code is " + country.getAlpha2Code());
         }
-        if (taskValue == GeographyTaskType.COUNTRY_NAME_FROM_CAPITAL_NAME) {
+        if (typeValue == GeographyTaskType.COUNTRY_NAME_FROM_CAPITAL_NAME) {
             question.setTextContentPolish("Wskaż państwo, którego stolica to " + country.getCapitalPolish());
             question.setTextContentEnglish("Indicate the country whose capital is " + country.getCapitalEnglish());
         }
-        if (taskValue == GeographyTaskType.COUNTRY_NAME_FROM_MAP) {
+        if (typeValue == GeographyTaskType.COUNTRY_NAME_FROM_MAP) {
             question.setImageContent(country.getMapResourcePath());
             question.setTextContentPolish("Które państwo widoczne jest na mapie?");
             question.setTextContentEnglish("Which country is visible on the map?");
         }
-        if (taskValue == GeographyTaskType.COUNTRY_NAME_FROM_FLAG) {
+        if (typeValue == GeographyTaskType.COUNTRY_NAME_FROM_FLAG) {
             question.setImageContent(country.getFlagResourcePath());
             question.setTextContentPolish("Jest to flaga państwa");
             question.setTextContentEnglish("Which country's flag is it?");
         }
-        if (taskValue == GeographyTaskType.CAPITAL_NAME_FROM_ALPHA_3) {
+        if (typeValue == GeographyTaskType.CAPITAL_NAME_FROM_ALPHA_3) {
             question.setTextContentPolish("Stolicą państwa, którego kod to " + country.getAlpha3Code() + " jest");
             question.setTextContentEnglish("Indicate the country whose code is " + country.getAlpha3Code());
         }
-        if (taskValue == GeographyTaskType.CAPITAL_NAME_FROM_COUNTRY_NAME) {
+        if (typeValue == GeographyTaskType.CAPITAL_NAME_FROM_COUNTRY_NAME) {
             question.setTextContentPolish("Stolicą państwa " + country.getNamePolish() + " jest");
             question.setTextContentEnglish("The capital of " + country.getNameEnglish() + " is");
         }
-        if (taskValue == GeographyTaskType.CAPITAL_NAME_FROM_MAP) {
+        if (typeValue == GeographyTaskType.CAPITAL_NAME_FROM_MAP) {
             question.setImageContent(country.getMapResourcePath());
             question.setTextContentPolish("Stolica państwa widocznego na mapie to");
             question.setTextContentEnglish("The state capital that can be seen on the map is");
         }
-        if (taskValue == GeographyTaskType.CAPITAL_NAME_FROM_FLAG) {
+        if (typeValue == GeographyTaskType.CAPITAL_NAME_FROM_FLAG) {
             question.setImageContent(country.getFlagResourcePath());
             question.setTextContentPolish("Stolica państwa, którego flaga widoczna jest obok to");
             question.setTextContentEnglish("The capital of the country whose flag is visible next to it is");

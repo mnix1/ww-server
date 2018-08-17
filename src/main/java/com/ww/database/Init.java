@@ -5,10 +5,7 @@ import com.ww.model.constant.Category;
 import com.ww.model.constant.hero.HeroType;
 import com.ww.model.constant.hero.WisdomAttribute;
 import com.ww.model.constant.rival.task.TaskRenderer;
-import com.ww.model.constant.rival.task.type.GeographyTaskType;
-import com.ww.model.constant.rival.task.type.MathTaskType;
-import com.ww.model.constant.rival.task.type.MemoryTaskType;
-import com.ww.model.constant.rival.task.type.MusicTaskTypeValue;
+import com.ww.model.constant.rival.task.type.*;
 import com.ww.model.constant.shop.ChestType;
 import com.ww.model.entity.hero.Hero;
 import com.ww.model.entity.rival.task.TaskType;
@@ -22,6 +19,7 @@ import com.ww.repository.rival.task.TaskTypeRepository;
 import com.ww.repository.rival.task.TaskWisdomAttributeRepository;
 import com.ww.repository.shop.ChestRepository;
 import com.ww.repository.social.ProfileRepository;
+import com.ww.service.rival.task.chemistry.ChemistryElementService;
 import com.ww.service.rival.task.geography.GeographyCountryService;
 import com.ww.service.rival.task.memory.MemoryTaskHelperService;
 import com.ww.service.rival.task.music.MusicTrackService;
@@ -47,6 +45,9 @@ public class Init {
 
     @Autowired
     GeographyCountryService geographyCountryService;
+
+    @Autowired
+    ChemistryElementService chemistryElementService;
 
     @Autowired
     MemoryTaskHelperService memoryTaskHelperService;
@@ -75,6 +76,7 @@ public class Init {
         initProfiles();
         initMusicTracks();
         initGeographyCountries();
+        initChemistryElements();
         memoryTaskHelperService.initShapes();
         memoryTaskHelperService.initColors();
     }
@@ -207,6 +209,18 @@ public class Init {
                 new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.6)
         ))));
+
+        taskTypes.add(new TaskType(Category.CHEMISTRY, ChemistryTaskType.NAME_FROM_SYMBOL.name(), TaskRenderer.TEXT, 0, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.3),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.3),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.4)
+        ))));
+        taskTypes.add(new TaskType(Category.CHEMISTRY, ChemistryTaskType.SYMBOL_FROM_NAME.name(), TaskRenderer.TEXT, 0, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.1),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.1),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.8)
+        ))));
+
         List<TaskWisdomAttribute> wisdomAttributes = new ArrayList<>();
         for (TaskType taskType : taskTypes) {
             taskType.getWisdomAttributes().forEach(wisdomAttribute -> {
@@ -283,6 +297,10 @@ public class Init {
 
     public void initGeographyCountries() {
         geographyCountryService.loadAndDownloadResources();
+    }
+
+    public void initChemistryElements() {
+        chemistryElementService.loadResource();
     }
 
 
