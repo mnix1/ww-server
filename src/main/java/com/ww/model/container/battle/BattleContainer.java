@@ -37,6 +37,7 @@ public class BattleContainer {
     private Long markedAnswerId;
 
     private String winnerTag;
+    private Boolean resigned;
 
     private BattleStatus status = BattleStatus.OPEN;
 
@@ -72,6 +73,19 @@ public class BattleContainer {
             return battleProfileContainers.get(0).getProfile().getTag();
         }
         return battleProfileContainers.get(1).getProfile().getTag();
+    }
+
+    public String findWinnerTag() {
+        List<BattleProfileContainer> battleProfileContainers = new ArrayList<>(profileIdBattleProfileContainerMap.values());
+        Integer p1Score = battleProfileContainers.get(0).getScore();
+        Integer p2Score = battleProfileContainers.get(1).getScore();
+        if (p1Score.equals(p2Score)) {
+            return null;
+        }
+        if (p1Score.compareTo(p2Score) < 0) {
+            return battleProfileContainers.get(1).getProfile().getTag();
+        }
+        return battleProfileContainers.get(0).getProfile().getTag();
     }
 
     public boolean randomChooseTaskProps() {
@@ -177,6 +191,7 @@ public class BattleContainer {
     public void fillModelClosed(Map<String, Object> model) {
         model.put("status", status);
         model.put("winnerTag", winnerTag);
+        model.put("resigned", resigned);
     }
 
     public void forEachProfile(Consumer<? super BattleProfileContainer> action) {

@@ -29,16 +29,16 @@ import java.util.concurrent.TimeUnit;
 
 public class BattleManager {
     private static final Logger logger = LoggerFactory.getLogger(BattleManager.class);
-    public static final Integer TASK_COUNT = 10;
+    public static final Integer TASK_COUNT = 1;
 
     public static final Integer ANSWERING_INTERVAL = 600000;
-//    public static final Integer ANSWERING_INTERVAL = 2000;
-        private static final Integer INTRO_INTERVAL = 20000;
-//    private static final Integer INTRO_INTERVAL = 1000;
+    //    public static final Integer ANSWERING_INTERVAL = 2000;
+//    private static final Integer INTRO_INTERVAL = 20000;
+        private static final Integer INTRO_INTERVAL = 1000;
     private static final Integer NEXT_TASK_INTERVAL = 5000;
     private static final Integer SHOWING_ANSWER_INTERVAL = 12000;
     private static final Integer RANDOM_CHOOSE_TASK_PROPS_INTERVAL = 8000;
-    private static final Integer CHOOSING_TASK_PROPS_INTERVAL = 600000;
+    private static final Integer CHOOSING_TASK_PROPS_INTERVAL = 10000;
 
     private BattleContainer battleContainer;
 
@@ -76,21 +76,6 @@ public class BattleManager {
 
     public List<BattleProfileContainer> getBattleProfileContainers() {
         return new ArrayList<>(this.battleContainer.getProfileIdBattleProfileContainerMap().values());
-    }
-
-    public void surrender(Long profileId) {
-        if (isClosed()) {
-            return;
-        }
-        battleContainer.setStatus(BattleStatus.CLOSED);
-        Long winnerId = battleContainer.getProfileIdBattleProfileContainerMap().get(profileId).getOpponentId();
-        battleContainer.setWinner(winnerId);
-        battleContainer.forEachProfile(battleProfileContainer -> {
-            Map<String, Object> model = new HashMap<>();
-            battleContainer.fillModelClosed(model);
-            send(model, Message.BATTLE_CONTENT, battleProfileContainer.getProfileId());
-        });
-        battleService.disposeManager(this);
     }
 
     private void prepareTask(Long id) {
@@ -178,26 +163,57 @@ public class BattleManager {
         }
         battleContainer.setAnsweredProfileId(profileId);
         Boolean isAnswerCorrect = false;
-        Long markedAnswerId = null;
         if (content.containsKey("answerId")) {
-            markedAnswerId = ((Integer) content.get("answerId")).longValue();
+            Long markedAnswerId = ((Integer) content.get("answerId")).longValue();
             battleContainer.setMarkedAnswerId(markedAnswerId);
             isAnswerCorrect = battleContainer.findCurrentCorrectAnswerId().equals(markedAnswerId);
         }
         BattleProfileContainer container = battleContainer.getProfileIdBattleProfileContainerMap().get(profileId);
         container.setScore(isAnswerCorrect ? container.getScore() + battleContainer.getCurrentTaskPoints() : container.getScore() - battleContainer.getCurrentTaskPoints());
-//        battleContainer.setNextTaskDate(Instant.now().plus(NEXT_TASK_INTERVAL, ChronoUnit.MILLIS));
         battleContainer.forEachProfile(battleProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
             battleContainer.fillModelAnswered(model, battleProfileContainer);
             send(model, Message.BATTLE_CONTENT, battleProfileContainer.getProfileId());
         });
-//        battleContainer.setStatus(BattleStatus.PREPARING_NEXT_TASK);
-//        battleContainer.increaseCurrentTaskIndex();
-//        prepareTask((long) battleContainer.getCurrentTaskIndex() + 1);
-//        stateAnswering();
-        stateChoosingTaskProps();
+        if (battleContainer.getCurrentTaskIndex() == TASK_COUNT - 1) {
+            stateClose();
+        } else {
+            stateChoosingTaskProps();
+        }
     }
+
+    public synchronized void stateClose() {
+        Flowable.intervalRange(0L, 1L, SHOWING_ANSWER_INTERVAL, SHOWING_ANSWER_INTERVAL, TimeUnit.MILLISECONDS)
+                .subscribe(aLong -> {
+                    battleContainer.setStatus(BattleStatus.CLOSED);
+                    String winnerTag = battleContainer.findWinnerTag();
+                    battleContainer.setWinnerTag(winnerTag);
+                    battleContainer.setResigned(false);
+                    battleContainer.forEachProfile(battleProfileContainer -> {
+                        Map<String, Object> model = new HashMap<>();
+                        battleContainer.fillModelClosed(model);
+                        send(model, Message.BATTLE_CONTENT, battleProfileContainer.getProfileId());
+                    });
+                    battleService.disposeManager(this);
+                });
+    }
+
+    public void surrender(Long profileId) {
+        if (isClosed()) {
+            return;
+        }
+        battleContainer.setStatus(BattleStatus.CLOSED);
+        Long winnerId = battleContainer.getProfileIdBattleProfileContainerMap().get(profileId).getOpponentId();
+        battleContainer.setWinner(winnerId);
+        battleContainer.setResigned(true);
+        battleContainer.forEachProfile(battleProfileContainer -> {
+            Map<String, Object> model = new HashMap<>();
+            battleContainer.fillModelClosed(model);
+            send(model, Message.BATTLE_CONTENT, battleProfileContainer.getProfileId());
+        });
+        battleService.disposeManager(this);
+    }
+
 
     public synchronized void stateChoosingTaskProps() {
         Flowable.intervalRange(0L, 1L, SHOWING_ANSWER_INTERVAL, SHOWING_ANSWER_INTERVAL, TimeUnit.MILLISECONDS)
