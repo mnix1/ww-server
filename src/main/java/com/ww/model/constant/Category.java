@@ -15,13 +15,6 @@ public enum Category {
     GEOGRAPHY,
     MEMORY;
 
-    public static Category mapToNotRandom(Category category) {
-        if (category == Category.RANDOM || category == null) {
-            return Category.random();
-        }
-        return category;
-    }
-
     public static Category random() {
         List<Category> possible = Arrays.asList(values()).stream()
                 .filter(category -> category != RANDOM)

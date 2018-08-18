@@ -36,7 +36,7 @@ public class MathTaskService {
         return question;
     }
 
-    private int difficultyScalling(int remainedDifficulty) {
+    private int difficultyCalibration(int remainedDifficulty) {
         if (remainedDifficulty < 0) {
             return 0;
         }
@@ -61,18 +61,18 @@ public class MathTaskService {
     private int[] prepareNumbers(MathTaskType typeValue, int difficulty) {
         int[] numbers = null;
         if (typeValue == MathTaskType.ADDITION) {
-            int count = difficultyScalling(difficulty) + 2;
-            int bound = 9 + difficultyScalling(difficulty) * 5;
+            int count = difficultyCalibration(difficulty) + 2;
+            int bound = 9 + difficultyCalibration(difficulty) * 5;
             numbers = prepareNumbers(count, -bound, bound);
         }
         if (typeValue == MathTaskType.MULTIPLICATION) {
-            int count = difficultyScalling(difficulty) / 2 + 2;
-            int bound = 9 + difficultyScalling(difficulty) * 2;
+            int count = difficultyCalibration(difficulty) / 2 + 2;
+            int bound = 9 + difficultyCalibration(difficulty) * 2;
             numbers = prepareNumbers(count, -bound, bound);
         }
         if (typeValue == MathTaskType.MODULO) {
             numbers = new int[2];
-            int max = Math.max(5, difficultyScalling(difficulty) * 49);
+            int max = Math.max(5, difficultyCalibration(difficulty) * 49);
             numbers[0] = randomInteger(4, max);
             numbers[1] = randomInteger(1, numbers[0] - 1);
         }
