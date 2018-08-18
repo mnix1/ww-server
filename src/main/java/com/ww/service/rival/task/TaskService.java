@@ -42,10 +42,6 @@ public class TaskService {
         return questions;
     }
 
-    public Question generateQuestion(Category category) {
-        return generateQuestion(category, TaskDifficultyLevel.random());
-    }
-
     public Question generateQuestion(Category category, TaskDifficultyLevel difficultyLevel) {
         Question question = taskGenerateService.generate(category, difficultyLevel);
         save(question);

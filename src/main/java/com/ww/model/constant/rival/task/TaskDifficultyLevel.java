@@ -1,6 +1,5 @@
 package com.ww.model.constant.rival.task;
 
-import com.ww.model.constant.Category;
 import lombok.Getter;
 
 import java.util.Arrays;
@@ -9,13 +8,13 @@ import static com.ww.helper.RandomHelper.randomElement;
 
 @Getter
 public enum TaskDifficultyLevel {
-    EXTREMELY_EASY(1, 1),
-    VERY_EASY(3, 2),
-    EASY(5, 3),
-    NORMAL(7, 4),
-    HARD(9, 5),
-    VERY_HARD(11, 6),
-    EXTREMELY_HARD(13, 7);
+    EXTREMELY_EASY(0, 1),
+    VERY_EASY(16, 2),
+    EASY(33, 3),
+    NORMAL(50, 4),
+    HARD(66, 5),
+    VERY_HARD(83, 6),
+    EXTREMELY_HARD(100, 7);
 
     private int level;
     private int points;
@@ -33,19 +32,19 @@ public enum TaskDifficultyLevel {
         if (remainedDifficulty < 0) {
             return 2;
         }
-        if (remainedDifficulty < 2) {
+        if (remainedDifficulty < 13) {
             return 3;
         }
-        if (remainedDifficulty < 4) {
+        if (remainedDifficulty < 25) {
             return 4;
         }
-        if (remainedDifficulty < 6) {
+        if (remainedDifficulty < 38) {
             return 5;
         }
-        if (remainedDifficulty < 8) {
+        if (remainedDifficulty < 50) {
             return 6;
         }
-        if (remainedDifficulty < 10) {
+        if (remainedDifficulty < 63) {
             return 7;
         }
         return 8;

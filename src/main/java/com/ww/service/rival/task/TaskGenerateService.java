@@ -14,6 +14,9 @@ import com.ww.service.rival.task.music.MusicTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static com.ww.helper.RandomHelper.randomElement;
 
 @Service
@@ -40,7 +43,7 @@ public class TaskGenerateService {
         if (category == Category.RANDOM) {
             category = Category.random();
         }
-        TaskType taskType = randomElement(taskTypeRepository.findAllByCategory(category));
+        TaskType taskType = findProperTaskType(category, difficultyLevel);
         if (category == Category.MUSIC) {
             return musicTaskService.generate(taskType, difficultyLevel, Language.ALL);
         }
@@ -57,6 +60,17 @@ public class TaskGenerateService {
             return chemistryTaskService.generate(taskType, difficultyLevel);
         }
         return null;
+    }
+
+    private TaskType findProperTaskType(Category category, TaskDifficultyLevel difficultyLevel) {
+        List<TaskType> possibleTaskTypes = taskTypeRepository.findAllByCategory(category)
+                .stream()
+                .filter(taskType -> difficultyLevel.getLevel() - taskType.getDifficulty() > -25)
+                .collect(Collectors.toList());
+        if (possibleTaskTypes.isEmpty()) {
+            throw new IllegalStateException("Not existing task type!!!");
+        }
+        return randomElement(possibleTaskTypes);
     }
 
 }

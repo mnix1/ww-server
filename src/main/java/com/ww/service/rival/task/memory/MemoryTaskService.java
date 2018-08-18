@@ -45,7 +45,7 @@ public class MemoryTaskService {
     public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel) {
         MemoryTaskType typeValue = MemoryTaskType.valueOf(type.getValue());
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int animationObjectsCount = Math.min(Math.max(randomInteger(1, 2) + remainedDifficulty / 2, 2), 5);
+        int animationObjectsCount = Math.min(Math.max(TaskDifficultyLevel.answersCount(remainedDifficulty) / 2, 2), 5);
         remainedDifficulty -= remainedDifficulty / 2;
         int answersCount = Math.max(TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty), animationObjectsCount);
         List<MemoryObject> allObjects = prepareObjects(answersCount);

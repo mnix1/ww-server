@@ -2,7 +2,6 @@ package com.ww.service.rival.task.math;
 
 import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.constant.rival.task.type.MathTaskType;
-import com.ww.model.container.NumbersDifficulty;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.TaskType;
@@ -22,36 +21,59 @@ public class MathTaskService {
 
     @Autowired
     TaskService taskService;
+
     @Autowired
     TaskRendererService taskRendererService;
 
     public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel) {
         MathTaskType typeValue = MathTaskType.valueOf(type.getValue());
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        NumbersDifficulty numbersDifficulty = prepareNumbersDifficultyRelated(typeValue, remainedDifficulty);
-        remainedDifficulty -= numbersDifficulty.getDifficulty();
-        Question question = prepareQuestion(type, difficultyLevel, typeValue, numbersDifficulty.getNumbers());
+        int[] numbers = prepareNumbers(typeValue, remainedDifficulty);
+        Question question = prepareQuestion(type, difficultyLevel, typeValue, numbers);
         int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
-        List<Answer> answers = prepareAnswers(typeValue, numbersDifficulty.getNumbers(), answersCount);
+        List<Answer> answers = prepareAnswers(typeValue, numbers, answersCount);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
 
-    private NumbersDifficulty prepareNumbersDifficultyRelated(MathTaskType typeValue, int difficulty) {
+    private int difficultyScalling(int remainedDifficulty) {
+        if (remainedDifficulty < 0) {
+            return 0;
+        }
+        if (remainedDifficulty < 13) {
+            return 1;
+        }
+        if (remainedDifficulty < 25) {
+            return 2;
+        }
+        if (remainedDifficulty < 38) {
+            return 3;
+        }
+        if (remainedDifficulty < 50) {
+            return 4;
+        }
+        if (remainedDifficulty < 63) {
+            return 5;
+        }
+        return 6;
+    }
+
+    private int[] prepareNumbers(MathTaskType typeValue, int difficulty) {
         int[] numbers = null;
         if (typeValue == MathTaskType.ADDITION) {
-            int count = randomInteger(2, 5) + difficulty / 2;
-            int bound = count > 4 ? 19 : (count > 2 ? 99 : 999);
+            int count = difficultyScalling(difficulty) + 2;
+            int bound = 9 + difficultyScalling(difficulty) * 5;
             numbers = prepareNumbers(count, -bound, bound);
         }
         if (typeValue == MathTaskType.MULTIPLICATION) {
-            int count = randomInteger(2, 3) + difficulty / 2;
-            int bound = count > 2 ? 7 : 99;
+            int count = difficultyScalling(difficulty) / 2 + 2;
+            int bound = 9 + difficultyScalling(difficulty) * 2;
             numbers = prepareNumbers(count, -bound, bound);
         }
         if (typeValue == MathTaskType.MODULO) {
             numbers = new int[2];
-            numbers[0] = randomInteger(4, Math.max(99 * difficulty, 80));
+            int max = Math.max(5, difficultyScalling(difficulty) * 49);
+            numbers[0] = randomInteger(4, max);
             numbers[1] = randomInteger(1, numbers[0] - 1);
         }
         for (int i = 0; i < numbers.length; i++) {
@@ -59,7 +81,7 @@ public class MathTaskService {
                 numbers[i] = randomInteger(1, 10);
             }
         }
-        return new NumbersDifficulty(numbers, difficulty - difficulty / 2);
+        return numbers;
     }
 
     private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, MathTaskType typeValue, int[] numbers) {
