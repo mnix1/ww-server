@@ -1,13 +1,12 @@
-package com.ww.service.rival.task.geography;
+package com.ww.service.rival.task.country;
 
 import com.ww.model.constant.rival.task.TaskDifficultyLevel;
-import com.ww.model.constant.rival.task.type.GeographyTaskType;
-import com.ww.model.container.NumbersDifficulty;
+import com.ww.model.constant.rival.task.type.CountryTaskType;
 import com.ww.model.entity.rival.task.Answer;
-import com.ww.model.entity.rival.task.GeographyCountry;
+import com.ww.model.entity.rival.task.Country;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.TaskType;
-import com.ww.repository.rival.task.category.GeographyCountryRepository;
+import com.ww.repository.rival.task.category.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,54 +18,54 @@ import java.util.stream.Collectors;
 import static com.ww.helper.RandomHelper.randomElement;
 
 @Service
-public class GeographyTaskMinMaxTypeService {
+public class CountryTaskMinMaxTypeService {
 
     @Autowired
-    GeographyCountryRepository geographyCountryRepository;
+    CountryRepository countryRepository;
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, GeographyTaskType typeValue) {
+    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, CountryTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
         int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
-        List<GeographyCountry> countries = prepareCountries(typeValue, answersCount);
+        List<Country> countries = prepareCountries(typeValue, answersCount);
         Question question = prepareQuestion(type, difficultyLevel, typeValue);
         List<Answer> answers = prepareAnswers(typeValue, countries);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
 
-    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, GeographyTaskType typeValue) {
+    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, CountryTaskType typeValue) {
         Question question = new Question(type, difficultyLevel);
-        if (typeValue == GeographyTaskType.MAX_POPULATION) {
+        if (typeValue == CountryTaskType.MAX_POPULATION) {
             question.setTextContentPolish("Które z państw posiada największą populację?");
             question.setTextContentEnglish("Which country has the largest population?");
         }
-        if (typeValue == GeographyTaskType.MIN_POPULATION) {
+        if (typeValue == CountryTaskType.MIN_POPULATION) {
             question.setTextContentPolish("Które z państw posiada najmniejszą populację?");
             question.setTextContentEnglish("Which country has the smallest population?");
         }
-        if (typeValue == GeographyTaskType.MAX_AREA) {
+        if (typeValue == CountryTaskType.MAX_AREA) {
             question.setTextContentPolish("Które z państw posiada największą powierzchnię?");
             question.setTextContentEnglish("Which country has the largest area?");
         }
-        if (typeValue == GeographyTaskType.MIN_AREA) {
+        if (typeValue == CountryTaskType.MIN_AREA) {
             question.setTextContentPolish("Które z państw posiada najmniejszą powierzchnię?");
             question.setTextContentEnglish("Which country has the smallest area?");
         }
         return question;
     }
 
-    private List<Answer> prepareAnswers(GeographyTaskType typeValue, List<GeographyCountry> countries) {
-        GeographyCountry correct = countries.get(0);
+    private List<Answer> prepareAnswers(CountryTaskType typeValue, List<Country> countries) {
+        Country correct = countries.get(0);
         for (int i = 1; i < countries.size(); i++) {
-            GeographyCountry country = countries.get(i);
-            if ((typeValue == GeographyTaskType.MAX_POPULATION && correct.getPopulation() < country.getPopulation())
-                    || (typeValue == GeographyTaskType.MIN_POPULATION && correct.getPopulation() > country.getPopulation())
-                    || (typeValue == GeographyTaskType.MAX_AREA && correct.getArea() < country.getArea())
-                    || (typeValue == GeographyTaskType.MIN_AREA && correct.getArea() > country.getArea())) {
+            Country country = countries.get(i);
+            if ((typeValue == CountryTaskType.MAX_POPULATION && correct.getPopulation() < country.getPopulation())
+                    || (typeValue == CountryTaskType.MIN_POPULATION && correct.getPopulation() > country.getPopulation())
+                    || (typeValue == CountryTaskType.MAX_AREA && correct.getArea() < country.getArea())
+                    || (typeValue == CountryTaskType.MIN_AREA && correct.getArea() > country.getArea())) {
                 correct = country;
             }
         }
-        GeographyCountry finalCorrect = correct;
+        Country finalCorrect = correct;
         return countries.stream().map(country -> {
             Answer answer = new Answer(country == finalCorrect);
             answer.setTextContentPolish(country.getNamePolish());
@@ -75,15 +74,15 @@ public class GeographyTaskMinMaxTypeService {
         }).collect(Collectors.toList());
     }
 
-    private List<GeographyCountry> prepareCountries(GeographyTaskType typeValue, int count) {
-        List<GeographyCountry> allCountries = geographyCountryRepository.findAll();
-        List<GeographyCountry> countries = new ArrayList<>();
+    private List<Country> prepareCountries(CountryTaskType typeValue, int count) {
+        List<Country> allCountries = countryRepository.findAll();
+        List<Country> countries = new ArrayList<>();
         List<Double> values = new ArrayList<>();
         while (countries.size() < count) {
-            GeographyCountry randomCountry = randomElement(allCountries);
-            Double value = GeographyTaskType.aboutPopulation(typeValue)
+            Country randomCountry = randomElement(allCountries);
+            Double value = CountryTaskType.aboutPopulation(typeValue)
                     ? randomCountry.getPopulation()
-                    : GeographyTaskType.aboutArea(typeValue)
+                    : CountryTaskType.aboutArea(typeValue)
                     ? randomCountry.getArea() :
                     0;
             if (isValueDistanceEnough(value, values)) {

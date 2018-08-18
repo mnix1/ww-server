@@ -16,7 +16,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Entity
 @ToString
-public class ChemistryElement {
+public class Element {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -36,7 +36,7 @@ public class ChemistryElement {
     private String phase;
     private String category;
 
-    public ChemistryElement(JsonNode jsonNode) {
+    public Element(JsonNode jsonNode) {
         this.symbol = jsonNode.get("symbol").asText();
         this.namePolish = jsonNode.get("namePolish").asText();
         this.nameEnglish = jsonNode.get("name").asText().toLowerCase();

@@ -6,11 +6,12 @@ import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.TaskType;
 import com.ww.repository.rival.task.TaskTypeRepository;
-import com.ww.service.rival.task.chemistry.ChemistryTaskService;
-import com.ww.service.rival.task.geography.GeographyTaskService;
-import com.ww.service.rival.task.math.MathTaskService;
+import com.ww.service.rival.task.element.ElementTaskService;
+import com.ww.service.rival.task.number.NumberTaskService;
+import com.ww.service.rival.task.country.CountryTaskService;
+import com.ww.service.rival.task.equation.EquationTaskService;
 import com.ww.service.rival.task.memory.MemoryTaskService;
-import com.ww.service.rival.task.music.MusicTaskService;
+import com.ww.service.rival.task.lyrics.LyricsTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,19 +23,22 @@ import static com.ww.helper.RandomHelper.randomElement;
 @Service
 public class TaskGenerateService {
     @Autowired
-    MusicTaskService musicTaskService;
+    LyricsTaskService lyricsTaskService;
 
     @Autowired
-    GeographyTaskService geographyTaskService;
+    CountryTaskService countryTaskService;
 
     @Autowired
-    MathTaskService mathTaskService;
+    EquationTaskService equationTaskService;
+
+    @Autowired
+    NumberTaskService numberTaskService;
 
     @Autowired
     MemoryTaskService memoryTaskService;
 
     @Autowired
-    ChemistryTaskService chemistryTaskService;
+    ElementTaskService elementTaskService;
 
     @Autowired
     TaskTypeRepository taskTypeRepository;
@@ -44,20 +48,23 @@ public class TaskGenerateService {
             category = Category.random();
         }
         TaskType taskType = findProperTaskType(category, difficultyLevel);
-        if (category == Category.MUSIC) {
-            return musicTaskService.generate(taskType, difficultyLevel, Language.ALL);
+        if (category == Category.LYRICS) {
+            return lyricsTaskService.generate(taskType, difficultyLevel, Language.ALL);
         }
-        if (category == Category.GEOGRAPHY) {
-            return geographyTaskService.generate(taskType, difficultyLevel);
+        if (category == Category.COUNTRY) {
+            return countryTaskService.generate(taskType, difficultyLevel);
         }
-        if (category == Category.MATH) {
-            return mathTaskService.generate(taskType, difficultyLevel);
+        if (category == Category.EQUATION) {
+            return equationTaskService.generate(taskType, difficultyLevel);
+        }
+        if (category == Category.NUMBER) {
+            return numberTaskService.generate(taskType, difficultyLevel);
         }
         if (category == Category.MEMORY) {
             return memoryTaskService.generate(taskType, difficultyLevel);
         }
-        if (category == Category.CHEMISTRY) {
-            return chemistryTaskService.generate(taskType, difficultyLevel);
+        if (category == Category.ELEMENT) {
+            return elementTaskService.generate(taskType, difficultyLevel);
         }
         return null;
     }

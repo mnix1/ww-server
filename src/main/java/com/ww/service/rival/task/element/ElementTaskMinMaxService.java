@@ -1,12 +1,12 @@
-package com.ww.service.rival.task.chemistry;
+package com.ww.service.rival.task.element;
 
 import com.ww.model.constant.rival.task.TaskDifficultyLevel;
-import com.ww.model.constant.rival.task.type.ChemistryTaskType;
+import com.ww.model.constant.rival.task.type.ElementTaskType;
 import com.ww.model.entity.rival.task.Answer;
-import com.ww.model.entity.rival.task.ChemistryElement;
+import com.ww.model.entity.rival.task.Element;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.TaskType;
-import com.ww.repository.rival.task.category.ChemistryElementRepository;
+import com.ww.repository.rival.task.category.ElementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,44 +18,44 @@ import java.util.stream.Collectors;
 import static com.ww.helper.RandomHelper.randomElement;
 
 @Service
-public class ChemistryTaskMinMaxService {
+public class ElementTaskMinMaxService {
 
     @Autowired
-    ChemistryElementRepository chemistryElementRepository;
+    ElementRepository elementRepository;
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, ChemistryTaskType typeValue) {
+    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, ElementTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
         int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
-        List<ChemistryElement> elements = prepareElements(typeValue, answersCount);
+        List<Element> elements = prepareElements(typeValue, answersCount);
         Question question = prepareQuestion(type, difficultyLevel, typeValue);
         List<Answer> answers = prepareAnswers(typeValue, elements);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
 
-    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, ChemistryTaskType typeValue) {
+    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, ElementTaskType typeValue) {
         Question question = new Question(type, difficultyLevel);
-        if (typeValue == ChemistryTaskType.MAX_ATOMIC_MASS) {
+        if (typeValue == ElementTaskType.MAX_ATOMIC_MASS) {
             question.setTextContentPolish("Który z pierwiastków posiada największą masę atomową?");
             question.setTextContentEnglish("Which of the elements has the highest atomic mass?");
         }
-        if (typeValue == ChemistryTaskType.MIN_ATOMIC_MASS) {
+        if (typeValue == ElementTaskType.MIN_ATOMIC_MASS) {
             question.setTextContentPolish("Który z pierwiastków posiada najmniejszą masę atomową?");
             question.setTextContentEnglish("Which of the elements has the lowest atomic mass?");
         }
         return question;
     }
 
-    private List<Answer> prepareAnswers(ChemistryTaskType typeValue, List<ChemistryElement> elements) {
-        ChemistryElement correct = elements.get(0);
+    private List<Answer> prepareAnswers(ElementTaskType typeValue, List<Element> elements) {
+        Element correct = elements.get(0);
         for (int i = 1; i < elements.size(); i++) {
-            ChemistryElement element = elements.get(i);
-            if ((typeValue == ChemistryTaskType.MAX_ATOMIC_MASS && correct.getAtomicMass() < element.getAtomicMass())
-                    || (typeValue == ChemistryTaskType.MIN_ATOMIC_MASS && correct.getAtomicMass() > element.getAtomicMass())) {
+            Element element = elements.get(i);
+            if ((typeValue == ElementTaskType.MAX_ATOMIC_MASS && correct.getAtomicMass() < element.getAtomicMass())
+                    || (typeValue == ElementTaskType.MIN_ATOMIC_MASS && correct.getAtomicMass() > element.getAtomicMass())) {
                 correct = element;
             }
         }
-        ChemistryElement finalCorrect = correct;
+        Element finalCorrect = correct;
         return elements.stream().map(element -> {
             Answer answer = new Answer(element == finalCorrect);
             answer.setTextContentPolish(element.getNamePolish());
@@ -64,13 +64,13 @@ public class ChemistryTaskMinMaxService {
         }).collect(Collectors.toList());
     }
 
-    private List<ChemistryElement> prepareElements(ChemistryTaskType typeValue, int count) {
-        List<ChemistryElement> allElements = chemistryElementRepository.findAll();
-        List<ChemistryElement> elements = new ArrayList<>();
+    private List<Element> prepareElements(ElementTaskType typeValue, int count) {
+        List<Element> allElements = elementRepository.findAll();
+        List<Element> elements = new ArrayList<>();
         List<Double> values = new ArrayList<>();
         while (elements.size() < count) {
-            ChemistryElement randomElement = randomElement(allElements);
-            Double value = ChemistryTaskType.aboutAtomicMass(typeValue)
+            Element randomElement = randomElement(allElements);
+            Double value = ElementTaskType.aboutAtomicMass(typeValue)
                     ? randomElement.getAtomicMass()
                     : 0;
             if (isValueDistanceEnough(value, values)) {

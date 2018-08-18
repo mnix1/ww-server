@@ -16,7 +16,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Entity
 @ToString
-public class GeographyCountry {
+public class Country {
     public static String MAP_DIRECTORY = "map/";
 
     @Id
@@ -45,7 +45,7 @@ public class GeographyCountry {
     private String currencyNameEnglish;
     private String currencySymbol;
 
-    public GeographyCountry(JsonNode jsonNode) {
+    public Country(JsonNode jsonNode) {
         this.alpha2Code = jsonNode.get("alpha2Code").asText();
         this.alpha3Code = jsonNode.get("alpha3Code").asText();
         this.namePolish = jsonNode.get("namePolish").asText();

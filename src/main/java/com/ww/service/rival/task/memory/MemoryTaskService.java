@@ -3,12 +3,9 @@ package com.ww.service.rival.task.memory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.constant.rival.task.type.MemoryTaskType;
-import com.ww.model.constant.rival.task.TaskRenderer;
 import com.ww.model.container.MemoryObject;
-import com.ww.model.container.NumbersDifficulty;
 import com.ww.model.entity.rival.task.*;
 import com.ww.repository.rival.task.category.MemoryShapeRepository;
 import com.ww.repository.rival.task.category.TaskColorRepository;
@@ -23,9 +20,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.ww.helper.RandomHelper.randomElement;
-import static com.ww.helper.RandomHelper.randomElements;
-import static com.ww.helper.RandomHelper.randomInteger;
+import static com.ww.helper.RandomHelper.*;
 
 @Service
 public class MemoryTaskService {

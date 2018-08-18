@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import static com.ww.helper.RandomHelper.randomElement;
 
-public enum GeographyTaskType {
+public enum CountryTaskType {
     COUNTRY_NAME_FROM_ALPHA_2,
     COUNTRY_NAME_FROM_CAPITAL_NAME,
     COUNTRY_NAME_FROM_MAP,
@@ -18,15 +18,15 @@ public enum GeographyTaskType {
     MAX_AREA,
     MIN_AREA;
 
-    public static GeographyTaskType random() {
+    public static CountryTaskType random() {
         return randomElement(Arrays.asList(values()));
     }
 
-    public static boolean aboutPopulation(GeographyTaskType type) {
+    public static boolean aboutPopulation(CountryTaskType type) {
         return type == MAX_POPULATION || type == MIN_POPULATION;
     }
 
-    public static boolean aboutArea(GeographyTaskType type) {
+    public static boolean aboutArea(CountryTaskType type) {
         return type == MAX_AREA || type == MIN_AREA;
     }
 }

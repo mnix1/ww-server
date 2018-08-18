@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import static com.ww.helper.RandomHelper.randomElement;
 
-public enum ChemistryTaskType {
+public enum ElementTaskType {
     MAX_ATOMIC_MASS,
     MIN_ATOMIC_MASS,
     NAME_FROM_SYMBOL,
@@ -15,11 +15,11 @@ public enum ChemistryTaskType {
     NAME_FROM_NUMBER,
     SYMBOL_FROM_NUMBER;
 
-    public static ChemistryTaskType random() {
+    public static ElementTaskType random() {
         return randomElement(Arrays.asList(values()));
     }
 
-    public static boolean aboutAtomicMass(ChemistryTaskType type) {
+    public static boolean aboutAtomicMass(ElementTaskType type) {
         return type == MAX_ATOMIC_MASS || type == MIN_ATOMIC_MASS;
     }
 }

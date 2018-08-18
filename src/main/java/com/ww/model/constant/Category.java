@@ -8,11 +8,12 @@ import static com.ww.helper.RandomHelper.randomElement;
 
 public enum Category {
     RANDOM,
-    MATH,
-    MUSIC,
-    CHEMISTRY,
+    EQUATION,
+    NUMBER,
+    LYRICS,
+    ELEMENT,
 //    HISTORY,
-    GEOGRAPHY,
+    COUNTRY,
     MEMORY;
 
     public static Category random() {

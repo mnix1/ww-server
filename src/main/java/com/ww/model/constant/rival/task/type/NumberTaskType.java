@@ -4,12 +4,11 @@ import java.util.Arrays;
 
 import static com.ww.helper.RandomHelper.randomElement;
 
-public enum MusicTaskTypeValue {
-    NEXT_LINE,
-    PREVIOUS_LINE;
-//    MIDDLE_LINE;// TODO add
+public enum NumberTaskType {
+    MAX,
+    MIN;
 
-    public static MusicTaskTypeValue random() {
+    public static NumberTaskType random() {
         return randomElement(Arrays.asList(values()));
     }
 }

@@ -1,9 +1,9 @@
-package com.ww.service.rival.task.geography;
+package com.ww.service.rival.task.country;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jackson.JsonLoader;
-import com.ww.model.entity.rival.task.GeographyCountry;
-import com.ww.repository.rival.task.category.GeographyCountryRepository;
+import com.ww.model.entity.rival.task.Country;
+import com.ww.repository.rival.task.category.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -17,37 +17,37 @@ import static com.ww.helper.FileHelper.saveToFile;
 import static com.ww.helper.NetworkHelper.downloadContent;
 
 @Service
-public class GeographyCountryService {
+public class CountryService {
 
     @Autowired
-    GeographyCountryRepository geographyCountryRepository;
+    CountryRepository countryRepository;
 
     public void loadAndDownloadResources() {
         try {
             File file = ResourceUtils.getFile("classpath:task/geographyCountry.json");
             JsonNode json = JsonLoader.fromFile(file);
-            List<GeographyCountry> geographyCountries = new ArrayList<>();
+            List<Country> geographyCountries = new ArrayList<>();
             json.forEach(jsonNode -> {
-                GeographyCountry geographyCountry = new GeographyCountry(jsonNode);
-                downloadFlag(geographyCountry);
-                downloadMap(geographyCountry);
-                geographyCountries.add(geographyCountry);
+                Country country = new Country(jsonNode);
+                downloadFlag(country);
+                downloadMap(country);
+                geographyCountries.add(country);
             });
-            geographyCountryRepository.saveAll(geographyCountries);
+            countryRepository.saveAll(geographyCountries);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void downloadFlag(GeographyCountry geographyCountry) {
-        if (getResource(geographyCountry.getFlagResourcePath()) == null) {
-            downloadSvg(geographyCountry.getFlagUrl(), geographyCountry.getFlagResourcePath("/"));
+    private void downloadFlag(Country country) {
+        if (getResource(country.getFlagResourcePath()) == null) {
+            downloadSvg(country.getFlagUrl(), country.getFlagResourcePath("/"));
         }
     }
 
-    private void downloadMap(GeographyCountry geographyCountry) {
-        if (getResource(geographyCountry.getMapResourcePath()) == null) {
-            downloadSvg(geographyCountry.getMapSvgLocationMapUrl(), geographyCountry.getMapResourcePath("/"));
+    private void downloadMap(Country country) {
+        if (getResource(country.getMapResourcePath()) == null) {
+            downloadSvg(country.getMapSvgLocationMapUrl(), country.getMapResourcePath("/"));
         }
     }
 

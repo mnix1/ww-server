@@ -1,9 +1,9 @@
-package com.ww.service.rival.task.music;
+package com.ww.service.rival.task.lyrics;
 
 import com.ww.model.constant.Language;
-import com.ww.model.constant.rival.task.MusicTrackSource;
-import com.ww.model.entity.rival.task.MusicTrack;
-import com.ww.repository.rival.task.category.MusicTrackRepository;
+import com.ww.model.constant.rival.task.TrackSource;
+import com.ww.model.entity.rival.task.Track;
+import com.ww.repository.rival.task.category.TrackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +15,10 @@ import static com.ww.helper.FileHelper.saveToFile;
 import static com.ww.helper.NetworkHelper.downloadContent;
 
 @Service
-public class MusicTrackService {
+public class TrackService {
 
     @Autowired
-    MusicTrackRepository musicTrackRepository;
+    TrackRepository trackRepository;
 
     private static String VERSE = "_V_";
     private static String LINE = "_L_";
@@ -28,20 +28,20 @@ public class MusicTrackService {
     }
 
     public Boolean addTrack(String author, String name, String url, Language lang) {
-        MusicTrack track = new MusicTrack();
+        Track track = new Track();
         track.setAuthor(author);
         track.setName(name);
         track.setUrl(url);
-        MusicTrackSource source = MusicTrackSource.fromUrl(url);
+        TrackSource source = TrackSource.fromUrl(url);
         track.setSource(source);
         track.setLang(lang);
         String content = loadOrDownloadContent(track);
         track.setContent(content);
-        musicTrackRepository.save(track);
+        trackRepository.save(track);
         return true;
     }
 
-    private String loadOrDownloadContent(MusicTrack track) {
+    private String loadOrDownloadContent(Track track) {
         String content;
         File file = getResource(track.getContentResourcePath());
         if (file == null || !file.exists()) {
@@ -52,18 +52,18 @@ public class MusicTrackService {
         return content;
     }
 
-    private String downloadTransformSaveContent(MusicTrack track) {
+    private String downloadTransformSaveContent(Track track) {
         String content = downloadContent(track.getUrl());
         if (content == null) {
             return null;
         }
-        if (track.getSource() == MusicTrackSource.TEKSTOWO) {
+        if (track.getSource() == TrackSource.TEKSTOWO) {
             content = transformContentTekstowo(content);
         }
-        if (track.getSource() == MusicTrackSource.ISING) {
+        if (track.getSource() == TrackSource.ISING) {
             content = transformContentIsing(content);
         }
-//        if (source == MusicTrackSource.GROOVE) {
+//        if (source == TrackSource.GROOVE) {
 //            content = transformContentGroove(content);
 //        }
         saveToFile(content, track.getContentResourcePath());

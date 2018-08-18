@@ -1,7 +1,7 @@
-package com.ww.service.rival.task.math;
+package com.ww.service.rival.task.equation;
 
 import com.ww.model.constant.rival.task.TaskDifficultyLevel;
-import com.ww.model.constant.rival.task.type.MathTaskType;
+import com.ww.model.constant.rival.task.type.EquationTaskType;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.TaskType;
@@ -17,7 +17,7 @@ import java.util.List;
 import static com.ww.helper.RandomHelper.randomInteger;
 
 @Service
-public class MathTaskService {
+public class EquationTaskService {
 
     @Autowired
     TaskService taskService;
@@ -26,7 +26,7 @@ public class MathTaskService {
     TaskRendererService taskRendererService;
 
     public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel) {
-        MathTaskType typeValue = MathTaskType.valueOf(type.getValue());
+        EquationTaskType typeValue = EquationTaskType.valueOf(type.getValue());
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
         int[] numbers = prepareNumbers(typeValue, remainedDifficulty);
         Question question = prepareQuestion(type, difficultyLevel, typeValue, numbers);
@@ -58,19 +58,19 @@ public class MathTaskService {
         return 6;
     }
 
-    private int[] prepareNumbers(MathTaskType typeValue, int difficulty) {
+    private int[] prepareNumbers(EquationTaskType typeValue, int difficulty) {
         int[] numbers = null;
-        if (typeValue == MathTaskType.ADDITION) {
+        if (typeValue == EquationTaskType.ADDITION) {
             int count = difficultyCalibration(difficulty) + 2;
             int bound = 9 + difficultyCalibration(difficulty) * 5;
             numbers = prepareNumbers(count, -bound, bound);
         }
-        if (typeValue == MathTaskType.MULTIPLICATION) {
+        if (typeValue == EquationTaskType.MULTIPLICATION) {
             int count = difficultyCalibration(difficulty) / 2 + 2;
             int bound = 9 + difficultyCalibration(difficulty) * 2;
             numbers = prepareNumbers(count, -bound, bound);
         }
-        if (typeValue == MathTaskType.MODULO) {
+        if (typeValue == EquationTaskType.MODULO) {
             numbers = new int[2];
             int max = Math.max(5, difficultyCalibration(difficulty) * 49);
             numbers[0] = randomInteger(4, max);
@@ -84,17 +84,17 @@ public class MathTaskService {
         return numbers;
     }
 
-    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, MathTaskType typeValue, int[] numbers) {
+    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, EquationTaskType typeValue, int[] numbers) {
         Question question = new Question(type, difficultyLevel);
-        if (typeValue == MathTaskType.ADDITION) {
+        if (typeValue == EquationTaskType.ADDITION) {
             question.setTextContentPolish("Suma następujących liczb " + numbersToString(numbers, "i") + " wynosi");
             question.setTextContentEnglish("The result of adding numbers " + numbersToString(numbers, "and") + " is");
         }
-        if (typeValue == MathTaskType.MULTIPLICATION) {
+        if (typeValue == EquationTaskType.MULTIPLICATION) {
             question.setTextContentPolish("Wynikiem mnożenia liczb " + numbersToString(numbers, "i") + " jest");
             question.setTextContentEnglish("The result of multiplying numbers " + numbersToString(numbers, "and") + " is");
         }
-        if (typeValue == MathTaskType.MODULO) {
+        if (typeValue == EquationTaskType.MODULO) {
             question.setTextContentPolish("Resztą z dzielenia liczby " + numbers[0] + " przez " + numbers[1] + " jest");
             question.setTextContentEnglish("The remainder of the dividing the number " + numbers[0] + " by " + numbers[1] + " is");
         }
@@ -120,19 +120,19 @@ public class MathTaskService {
         return numbers;
     }
 
-    private List<Answer> prepareAnswers(MathTaskType typeValue, int[] numbers, int answersCount) {
+    private List<Answer> prepareAnswers(EquationTaskType typeValue, int[] numbers, int answersCount) {
         int correctResult = numbers[0];
-        if (typeValue == MathTaskType.ADDITION || typeValue == MathTaskType.MULTIPLICATION) {
+        if (typeValue == EquationTaskType.ADDITION || typeValue == EquationTaskType.MULTIPLICATION) {
             for (int i = 1; i < numbers.length; i++) {
-                if (typeValue == MathTaskType.ADDITION) {
+                if (typeValue == EquationTaskType.ADDITION) {
                     correctResult += numbers[i];
                 }
-                if (typeValue == MathTaskType.MULTIPLICATION) {
+                if (typeValue == EquationTaskType.MULTIPLICATION) {
                     correctResult *= numbers[i];
                 }
             }
         }
-        if (typeValue == MathTaskType.MODULO) {
+        if (typeValue == EquationTaskType.MODULO) {
             correctResult = numbers[0] % numbers[1];
         }
         Answer correctAnswer = new Answer(true);
@@ -142,7 +142,7 @@ public class MathTaskService {
         List<Integer> wrongResults = new ArrayList<>();
         while (wrongAnswers.size() < answersCount - 1) {
             int wrongResult = correctResult + randomInteger(-20, 20);
-            if (typeValue == MathTaskType.MODULO && wrongResult < 0) {
+            if (typeValue == EquationTaskType.MODULO && wrongResult < 0) {
                 wrongResult = correctResult + randomInteger(0, 20);
             }
             if (correctResult != wrongResult && !wrongResults.contains(wrongResult)) {

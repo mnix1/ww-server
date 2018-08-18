@@ -1,13 +1,13 @@
-package com.ww.service.rival.task.music;
+package com.ww.service.rival.task.lyrics;
 
 import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.task.TaskDifficultyLevel;
-import com.ww.model.constant.rival.task.type.MusicTaskTypeValue;
+import com.ww.model.constant.rival.task.type.LyricsTaskTypeValue;
 import com.ww.model.entity.rival.task.Answer;
-import com.ww.model.entity.rival.task.MusicTrack;
+import com.ww.model.entity.rival.task.Track;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.TaskType;
-import com.ww.repository.rival.task.category.MusicTrackRepository;
+import com.ww.repository.rival.task.category.TrackRepository;
 import com.ww.service.rival.task.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,23 +19,23 @@ import static com.ww.helper.RandomHelper.randomElement;
 import static com.ww.helper.RandomHelper.randomElementIndex;
 
 @Service
-public class MusicTaskService {
+public class LyricsTaskService {
 
     @Autowired
     TaskService taskService;
 
     @Autowired
-    MusicTrackRepository musicTrackRepository;
+    TrackRepository trackRepository;
 
     private static String VERSE = "_V_";
     private static String LINE = "_L_";
 
     public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, Language lang) {
-        MusicTaskTypeValue typeValue = MusicTaskTypeValue.valueOf(type.getValue());
+        LyricsTaskTypeValue typeValue = LyricsTaskTypeValue.valueOf(type.getValue());
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
         int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
-        List<MusicTrack> tracks = musicTrackRepository.findAllByLang(lang);
-        MusicTrack track = randomElement(tracks);
+        List<Track> tracks = trackRepository.findAllByLang(lang);
+        Track track = randomElement(tracks);
         List<List<String>> verses = trackVerseLineContent(track.getContent());
         Map<String, Integer> allLinesRepeatMap = new HashMap<>();
         List<String> allLines = trackAllLineContent(verses);
@@ -57,10 +57,10 @@ public class MusicTaskService {
         }
         int correctAnswerIndex = 0;
         List<Integer> wrongAnswerIndexes = new ArrayList<>(answersCount - 1);
-        if (typeValue == MusicTaskTypeValue.NEXT_LINE) {
+        if (typeValue == LyricsTaskTypeValue.NEXT_LINE) {
             correctAnswerIndex = questionLineIndex + 1;
         }
-        if (typeValue == MusicTaskTypeValue.PREVIOUS_LINE) {
+        if (typeValue == LyricsTaskTypeValue.PREVIOUS_LINE) {
             correctAnswerIndex = questionLineIndex - 1;
         }
         while (wrongAnswerIndexes.size() < answersCount - 1) {
@@ -77,14 +77,14 @@ public class MusicTaskService {
         return question;
     }
 
-    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, MusicTaskTypeValue typeValue, MusicTrack track, String questionLine, Language lang) {
+    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, LyricsTaskTypeValue typeValue, Track track, String questionLine, Language lang) {
         Question question = new Question(type, difficultyLevel);
         if (Language.addPolish(lang)) {
             String content = "W tekście utworu \"" + track.getName() + "\" zespołu " + track.getAuthor();
-            if (typeValue == MusicTaskTypeValue.NEXT_LINE) {
+            if (typeValue == LyricsTaskTypeValue.NEXT_LINE) {
                 content += " po wierszu: \"";
             }
-            if (typeValue == MusicTaskTypeValue.PREVIOUS_LINE) {
+            if (typeValue == LyricsTaskTypeValue.PREVIOUS_LINE) {
                 content += " przed wierszem: \"";
             }
             content += questionLine + "\" występuje wiersz";

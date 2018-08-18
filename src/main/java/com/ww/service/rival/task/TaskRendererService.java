@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Base64;
 
-import static com.ww.model.entity.rival.task.GeographyCountry.MAP_DIRECTORY;
+import static com.ww.model.entity.rival.task.Country.MAP_DIRECTORY;
 
 @Service
 public class TaskRendererService {

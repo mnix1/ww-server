@@ -4,12 +4,12 @@ import java.util.Arrays;
 
 import static com.ww.helper.RandomHelper.randomElement;
 
-public enum MathTaskType {
-    ADDITION,
-    MULTIPLICATION,
-    MODULO;
+public enum LyricsTaskTypeValue {
+    NEXT_LINE,
+    PREVIOUS_LINE;
+//    MIDDLE_LINE;// TODO add
 
-    public static MathTaskType random() {
+    public static LyricsTaskTypeValue random() {
         return randomElement(Arrays.asList(values()));
     }
 }
