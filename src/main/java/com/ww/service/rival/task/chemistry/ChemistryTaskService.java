@@ -2,17 +2,10 @@ package com.ww.service.rival.task.chemistry;
 
 import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.constant.rival.task.type.ChemistryTaskType;
-import com.ww.model.entity.rival.task.Answer;
-import com.ww.model.entity.rival.task.ChemistryElement;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.TaskType;
-import com.ww.repository.rival.task.category.ChemistryElementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 
 import static com.ww.helper.RandomHelper.randomElement;
 
@@ -20,65 +13,17 @@ import static com.ww.helper.RandomHelper.randomElement;
 public class ChemistryTaskService {
 
     @Autowired
-    ChemistryElementRepository chemistryElementRepository;
+    ChemistryTaskOneCorrectService chemistryTaskOneCorrectService;
+
+    @Autowired
+    ChemistryTaskMinMaxService chemistryTaskMinMaxService;
 
     public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel) {
         ChemistryTaskType typeValue = ChemistryTaskType.valueOf(type.getValue());
-        int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
-        List<ChemistryElement> allElements = chemistryElementRepository.findAll();
-        ChemistryElement correctElement = randomElement(allElements);
-
-        Question question = prepareQuestion(type, difficultyLevel, typeValue, correctElement);
-        List<Answer> answers = prepareAnswers(typeValue, correctElement, allElements, answersCount);
-        question.setAnswers(new HashSet<>(answers));
-        return question;
+        if (typeValue == ChemistryTaskType.MIN_ATOMIC_MASS
+                || typeValue == ChemistryTaskType.MAX_ATOMIC_MASS) {
+            return chemistryTaskMinMaxService.generate(type, difficultyLevel, typeValue);
+        }
+        return chemistryTaskOneCorrectService.generate(type, difficultyLevel, typeValue);
     }
-
-    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, ChemistryTaskType typeValue, ChemistryElement correctElement) {
-        Question question = new Question(type, difficultyLevel);
-        if (typeValue == ChemistryTaskType.NAME_FROM_SYMBOL) {
-            question.setTextContentPolish("Który z pierwiastków oznacza się jako " + correctElement.getSymbol());
-            question.setTextContentEnglish("Which of the elements is marked as " + correctElement.getSymbol());
-        }
-        if (typeValue == ChemistryTaskType.SYMBOL_FROM_NAME) {
-            question.setTextContentPolish("Symbolem pierwiastka " + correctElement.getNamePolish() + " jest");
-            question.setTextContentEnglish("The symbol of the " + correctElement.getNameEnglish() + " is");
-        }
-        return question;
-    }
-
-    private List<Answer> prepareAnswers(ChemistryTaskType typeValue, ChemistryElement correctElement, List<ChemistryElement> allElements, int answersCount) {
-        Answer correctAnswer = new Answer(true);
-        fillAnswerContent(typeValue, correctAnswer, correctElement);
-
-        List<Answer> wrongAnswers = new ArrayList<>();
-        List<String> answerContents = new ArrayList<>();
-        answerContents.add(correctAnswer.getTextContentEnglish());
-        while (wrongAnswers.size() < answersCount - 1) {
-            ChemistryElement wrongCountry = randomElement(allElements);
-            Answer wrongAnswer = new Answer(false);
-            fillAnswerContent(typeValue, wrongAnswer, wrongCountry);
-            if (!answerContents.contains(wrongAnswer.getTextContentEnglish())) {
-                wrongAnswers.add(wrongAnswer);
-                answerContents.add(wrongAnswer.getTextContentEnglish());
-            }
-        }
-        List<Answer> answers = new ArrayList<>();
-        answers.add(correctAnswer);
-        answers.addAll(wrongAnswers);
-        return answers;
-    }
-
-    private void fillAnswerContent(ChemistryTaskType typeValue, Answer answer, ChemistryElement element) {
-        if (typeValue == ChemistryTaskType.NAME_FROM_SYMBOL) {
-            answer.setTextContentPolish(element.getNamePolish());
-            answer.setTextContentEnglish(element.getNameEnglish());
-        }
-        if (typeValue == ChemistryTaskType.SYMBOL_FROM_NAME) {
-            answer.setTextContentPolish(element.getSymbol());
-            answer.setTextContentEnglish(element.getSymbol());
-        }
-    }
-
 }

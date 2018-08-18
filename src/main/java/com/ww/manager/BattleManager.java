@@ -29,12 +29,12 @@ import java.util.concurrent.TimeUnit;
 
 public class BattleManager {
     private static final Logger logger = LoggerFactory.getLogger(BattleManager.class);
-    public static final Integer TASK_COUNT = 1;
+    public static final Integer TASK_COUNT = 10;
 
-    public static final Integer ANSWERING_INTERVAL = 600000;
+    public static final Integer ANSWERING_INTERVAL = 60000;
     //    public static final Integer ANSWERING_INTERVAL = 2000;
-//    private static final Integer INTRO_INTERVAL = 20000;
-        private static final Integer INTRO_INTERVAL = 1000;
+    private static final Integer INTRO_INTERVAL = 20000;
+//        private static final Integer INTRO_INTERVAL = 1000;
     private static final Integer NEXT_TASK_INTERVAL = 5000;
     private static final Integer SHOWING_ANSWER_INTERVAL = 12000;
     private static final Integer RANDOM_CHOOSE_TASK_PROPS_INTERVAL = 8000;
@@ -191,7 +191,7 @@ public class BattleManager {
                     battleContainer.setResigned(false);
                     battleContainer.forEachProfile(battleProfileContainer -> {
                         Map<String, Object> model = new HashMap<>();
-                        battleContainer.fillModelClosed(model);
+                        battleContainer.fillModelClosed(model, battleProfileContainer);
                         send(model, Message.BATTLE_CONTENT, battleProfileContainer.getProfileId());
                     });
                     battleService.disposeManager(this);
@@ -208,7 +208,7 @@ public class BattleManager {
         battleContainer.setResigned(true);
         battleContainer.forEachProfile(battleProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            battleContainer.fillModelClosed(model);
+            battleContainer.fillModelClosed(model, battleProfileContainer);
             send(model, Message.BATTLE_CONTENT, battleProfileContainer.getProfileId());
         });
         battleService.disposeManager(this);

@@ -188,10 +188,12 @@ public class BattleContainer {
         model.put("task", taskDTOs.get(currentTaskIndex).toTaskMeta());
     }
 
-    public void fillModelClosed(Map<String, Object> model) {
+    public void fillModelClosed(Map<String, Object> model, BattleProfileContainer battleProfileContainer) {
         model.put("status", status);
         model.put("winnerTag", winnerTag);
         model.put("resigned", resigned);
+        model.put("score", profileIdBattleProfileContainerMap.get(battleProfileContainer.getProfileId()).getScore());
+        model.put("opponentScore", profileIdBattleProfileContainerMap.get(battleProfileContainer.getOpponentId()).getScore());
     }
 
     public void forEachProfile(Consumer<? super BattleProfileContainer> action) {
@@ -212,7 +214,7 @@ public class BattleContainer {
             fillModelAnswering(model, battleProfileContainer);
             fillModelAnsweringTimeout(model);
         } else if (status == BattleStatus.CLOSED) {
-            fillModelClosed(model);
+            fillModelClosed(model, battleProfileContainer);
         } else if (status == BattleStatus.CHOOSING_TASK_PROPS) {
             fillModelChoosingTaskProps(model, battleProfileContainer);
         } else if (status == BattleStatus.CHOOSING_TASK_PROPS_TIMEOUT) {
