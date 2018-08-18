@@ -1,5 +1,6 @@
 package com.ww.service.rival.task.number;
 
+import com.ww.helper.PrimeHelper;
 import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.constant.rival.task.type.ElementTaskType;
 import com.ww.model.constant.rival.task.type.EquationTaskType;
@@ -12,10 +13,7 @@ import com.ww.repository.rival.task.category.ElementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import static com.ww.helper.AnswerHelper.difficultyCalibration;
 import static com.ww.helper.AnswerHelper.numbersToString;
@@ -24,20 +22,17 @@ import static com.ww.helper.RandomHelper.*;
 @Service
 public class NumberOneCorrectTaskService {
 
-    @Autowired
-    ElementRepository elementRepository;
-
     public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, NumberTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
         int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
-        int[] numbers = prepareNumbers(typeValue, remainedDifficulty);
+        int[] numbers = prepareNumbers(typeValue, remainedDifficulty, answersCount);
         Question question = prepareQuestion(type, difficultyLevel, typeValue, numbers);
         List<Answer> answers = prepareAnswers(typeValue, numbers, answersCount);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
 
-    private int[] prepareNumbers(NumberTaskType typeValue, int difficulty) {
+    private int[] prepareNumbers(NumberTaskType typeValue, int difficulty, int answersCount) {
         int[] numbers = null;
         if (typeValue == NumberTaskType.GCD) {
             int gcd = randomInteger(2, difficultyCalibration(difficulty) / 2 + 9);
@@ -53,6 +48,20 @@ public class NumberOneCorrectTaskService {
             int bound = 9 + difficultyCalibration(difficulty) * 2;
             numbers = randomDistinctIntegers(count, 1, bound);
         }
+        if (typeValue == NumberTaskType.PRIME) {
+            numbers = new int[answersCount];
+            numbers[0] = PrimeHelper.getPrimeFrom(difficultyCalibration(difficulty) * (11 + randomInteger(1, 9)) + randomInteger(1, difficultyCalibration(difficulty) * 100 + 99));
+            Set<Integer> numbersSet = new HashSet<>();
+            numbersSet.add(numbers[0]);
+            int index = 1;
+            while (index < answersCount) {
+                int number = numbers[0] + randomInteger(-numbers[0] + 1, 30);
+                if (!PrimeHelper.isPrime(number) && !numbersSet.contains(number)) {
+                    numbersSet.add(number);
+                    numbers[index++] = number;
+                }
+            }
+        }
         return numbers;
     }
 
@@ -67,6 +76,10 @@ public class NumberOneCorrectTaskService {
             question.setTextContentPolish("Najmniejsza wspólna wielokrotność liczb " + numbersToString(numbers, "i") + " to");
             question.setTextContentEnglish("The least common multiple of numbers " + numbersToString(numbers, "and") + " is");
         }
+        if (typeValue == NumberTaskType.PRIME) {
+            question.setTextContentPolish("Która liczba jest liczbą pierwszą?");
+            question.setTextContentEnglish("Which number is the prime number?");
+        }
         return question;
     }
 
@@ -78,13 +91,22 @@ public class NumberOneCorrectTaskService {
         if (typeValue == NumberTaskType.LCM) {
             correctResult = lcm(numbers);
         }
+        if (typeValue == NumberTaskType.PRIME) {
+            correctResult = numbers[0];
+        }
         Answer correctAnswer = new Answer(true);
         correctAnswer.setTextContent("" + correctResult);
 
         List<Answer> wrongAnswers = new ArrayList<>();
         List<Integer> wrongResults = new ArrayList<>();
         while (wrongAnswers.size() < answersCount - 1) {
-            int wrongResult = correctResult + randomInteger(-correctResult + 1, 20);
+            int wrongResult;
+            if (typeValue == NumberTaskType.PRIME) {
+                wrongResult = numbers[wrongAnswers.size() + 1];
+            } else {
+                wrongResult = correctResult + randomInteger(-correctResult + 1, 20);
+            }
+
             if (correctResult != wrongResult && !wrongResults.contains(wrongResult)) {
                 wrongResults.add(wrongResult);
                 Answer wrongAnswer = new Answer(false);

@@ -2,8 +2,6 @@ package com.ww.helper;
 
 import java.util.List;
 
-import static com.ww.helper.RandomHelper.randomInteger;
-
 public class AnswerHelper {
     public static boolean isValueDistanceEnough(Double value, List<Double> values) {
         return values.stream().noneMatch(e -> Math.abs(value - e) / value < 0.05);

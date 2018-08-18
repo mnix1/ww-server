@@ -26,12 +26,6 @@ import static com.ww.helper.RandomHelper.*;
 @Service
 public class NumberMatchAnswerTaskService {
 
-    @Autowired
-    TaskService taskService;
-
-    @Autowired
-    TaskRendererService taskRendererService;
-
     public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, NumberTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
         int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);

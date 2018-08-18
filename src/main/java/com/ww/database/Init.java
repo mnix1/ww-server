@@ -143,6 +143,10 @@ public class Init {
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.74),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.26)
         ))));
+        taskTypes.add(new TaskType(Category.NUMBER, NumberTaskType.PRIME.name(), TaskRenderer.TEXT, 10, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.94),
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.06)
+        ))));
 
         taskTypes.add(new TaskType(Category.EQUATION, EquationTaskType.ADDITION.name(), TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.9),
