@@ -23,7 +23,7 @@ public class PrimeHelper {
                 return i;
             }
         }
-        return 3;
+        return 119;
     }
 
     public static boolean isPrime(int n) {

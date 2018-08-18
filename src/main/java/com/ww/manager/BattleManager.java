@@ -149,7 +149,11 @@ public class BattleManager {
                     battleContainer.forEachProfile(battleProfileContainer -> {
                         send(model, Message.BATTLE_CONTENT, battleProfileContainer.getProfileId());
                     });
-                    stateChoosingTaskProps();
+                    if (battleContainer.getCurrentTaskIndex() == TASK_COUNT - 1) {
+                        stateClose();
+                    } else {
+                        stateChoosingTaskProps();
+                    }
                 });
     }
 

@@ -73,7 +73,10 @@ public class BattleService {
                 profileIdToBattleManagerMap.remove(battleProfileContainer.getProfileId());
             }
         });
-        shopService.addChest(winnerTag);
+        if (winnerTag != null) {
+            shopService.addChest(winnerTag);
+        }
+
         // TODO STORE RESULT
     }
 

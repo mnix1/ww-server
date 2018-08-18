@@ -42,6 +42,10 @@ public class BattleFriendService {
         Map<String, Object> model = new HashMap<>();
         cleanBattlesCreator();
         cleanBattlesOpponent();
+        if (battleFriendContainers.stream().anyMatch(e -> e.getOpponentProfile().getTag().equals(tag) || e.getCreatorProfile().getTag().equals(tag))) {
+            model.put("code", -1);
+            return model;
+        }
         BattleFriendContainer battleFriendContainer = prepareBattleContainer(tag);
         if (battleFriendContainer == null) {
             model.put("code", -1);
@@ -100,25 +104,25 @@ public class BattleFriendService {
     }
 
     private void sendInvite(BattleFriendContainer battleFriendContainer) {
-        profileConnectionService.findByProfileId( battleFriendContainer.getOpponentProfile().getId()).ifPresent(profileConnection -> {
+        profileConnectionService.findByProfileId(battleFriendContainer.getOpponentProfile().getId()).ifPresent(profileConnection -> {
             profileConnection.sendMessage(new MessageDTO(Message.BATTLE_INVITE, new FriendDTO(battleFriendContainer.getCreatorProfile(), FriendStatus.ACCEPTED, true).toString()).toString());
         });
     }
 
     private void sendCancelInvite(BattleFriendContainer battleFriendContainer) {
-        profileConnectionService.findByProfileId( battleFriendContainer.getOpponentProfile().getId()).ifPresent(profileConnection -> {
+        profileConnectionService.findByProfileId(battleFriendContainer.getOpponentProfile().getId()).ifPresent(profileConnection -> {
             profileConnection.sendMessage(new MessageDTO(Message.BATTLE_CANCEL_INVITE, "").toString());
         });
     }
 
     private void sendRejectInvite(BattleFriendContainer battleFriendContainer) {
-        profileConnectionService.findByProfileId( battleFriendContainer.getCreatorProfile().getId()).ifPresent(profileConnection -> {
+        profileConnectionService.findByProfileId(battleFriendContainer.getCreatorProfile().getId()).ifPresent(profileConnection -> {
             profileConnection.sendMessage(new MessageDTO(Message.BATTLE_REJECT_INVITE, "").toString());
         });
     }
 
     private void sendAcceptInvite(BattleFriendContainer battleFriendContainer) {
-        profileConnectionService.findByProfileId( battleFriendContainer.getCreatorProfile().getId()).ifPresent(profileConnection -> {
+        profileConnectionService.findByProfileId(battleFriendContainer.getCreatorProfile().getId()).ifPresent(profileConnection -> {
             profileConnection.sendMessage(new MessageDTO(Message.BATTLE_ACCEPT_INVITE, "").toString());
         });
     }
