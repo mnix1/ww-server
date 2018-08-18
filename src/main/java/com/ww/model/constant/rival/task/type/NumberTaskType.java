@@ -5,6 +5,8 @@ import java.util.Arrays;
 import static com.ww.helper.RandomHelper.randomElement;
 
 public enum NumberTaskType {
+    GCD,
+    LCM,
     MAX,
     MIN;
 

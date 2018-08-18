@@ -15,10 +15,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.ww.helper.AnswerHelper.isValueDistanceEnough;
 import static com.ww.helper.RandomHelper.randomElement;
 
 @Service
-public class CountryTaskMinMaxTypeService {
+public class CountryMatchAnswerTaskService {
 
     @Autowired
     CountryRepository countryRepository;
@@ -91,10 +92,6 @@ public class CountryTaskMinMaxTypeService {
             }
         }
         return countries;
-    }
-
-    private boolean isValueDistanceEnough(Double value, List<Double> values) {
-        return values.stream().noneMatch(e -> Math.abs(value - e) / value < 0.05);
     }
 
 }

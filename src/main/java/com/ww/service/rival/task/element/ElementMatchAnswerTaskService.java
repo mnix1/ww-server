@@ -15,10 +15,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.ww.helper.AnswerHelper.isValueDistanceEnough;
 import static com.ww.helper.RandomHelper.randomElement;
 
 @Service
-public class ElementTaskMinMaxService {
+public class ElementMatchAnswerTaskService {
 
     @Autowired
     ElementRepository elementRepository;
@@ -80,10 +81,5 @@ public class ElementTaskMinMaxService {
         }
         return elements;
     }
-
-    private boolean isValueDistanceEnough(Double value, List<Double> values) {
-        return values.stream().noneMatch(e -> Math.abs(value - e) / value < 0.05);
-    }
-
 
 }

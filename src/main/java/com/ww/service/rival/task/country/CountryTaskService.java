@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 public class CountryTaskService {
 
     @Autowired
-    CountryTaskOneCorrectTypeService countryTaskOneCorrectTypeService;
+    CountryOneCorrectTaskService countryOneCorrectTaskService;
     @Autowired
-    CountryTaskMinMaxTypeService countryTaskMinMaxTypeService;
+    CountryMatchAnswerTaskService countryMatchAnswerTaskService;
 
     public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel) {
         CountryTaskType typeValue = CountryTaskType.valueOf(type.getValue());
@@ -21,10 +21,10 @@ public class CountryTaskService {
                 || typeValue == CountryTaskType.MIN_AREA
                 || typeValue == CountryTaskType.MAX_POPULATION
                 || typeValue == CountryTaskType.MIN_POPULATION) {
-            return countryTaskMinMaxTypeService.generate(type, difficultyLevel, typeValue);
+            return countryMatchAnswerTaskService.generate(type, difficultyLevel, typeValue);
         }
 
-        return countryTaskOneCorrectTypeService.generate(type, difficultyLevel, typeValue);
+        return countryOneCorrectTaskService.generate(type, difficultyLevel, typeValue);
     }
 
 }

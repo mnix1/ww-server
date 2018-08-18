@@ -14,6 +14,32 @@ public class RandomHelper {
         return random.nextInt(to - from + 1) + from;
     }
 
+    public static double randomDouble(int from, int to) {
+        return random.nextDouble() * (to - from) + from;
+    }
+
+    public static int[] randomIntegers(int count, int from, int to) {
+        int[] numbers = new int[count];
+        for (int i = 0; i < count; i++) {
+            numbers[i] = randomInteger(from, to);
+        }
+        return numbers;
+    }
+
+    public static int[] randomDistinctIntegers(int count, int from, int to) {
+        Set<Integer> numbers = new HashSet<>();
+        while (numbers.size() < count) {
+            int number = randomInteger(from, to);
+            numbers.add(number);
+        }
+        int[] array = new int[count];
+        Integer[] a = numbers.toArray(new Integer[count]);
+        for (int i = 0; i < count; i++) {
+            array[i] = a[i];
+        }
+        return array;
+    }
+
     public static <T> List<T> randomElements(List<T> list, int count) {
         if (count > list.size()) {
             count = list.size();

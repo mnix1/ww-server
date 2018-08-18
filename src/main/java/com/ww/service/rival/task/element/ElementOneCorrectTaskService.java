@@ -17,7 +17,7 @@ import java.util.List;
 import static com.ww.helper.RandomHelper.randomElement;
 
 @Service
-public class ElementTaskOneCorrectService {
+public class ElementOneCorrectTaskService {
 
     @Autowired
     ElementRepository elementRepository;

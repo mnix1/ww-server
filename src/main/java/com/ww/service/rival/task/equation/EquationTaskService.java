@@ -14,7 +14,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import static com.ww.helper.AnswerHelper.difficultyCalibration;
+import static com.ww.helper.AnswerHelper.numbersToString;
 import static com.ww.helper.RandomHelper.randomInteger;
+import static com.ww.helper.RandomHelper.randomIntegers;
 
 @Service
 public class EquationTaskService {
@@ -28,34 +31,12 @@ public class EquationTaskService {
     public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel) {
         EquationTaskType typeValue = EquationTaskType.valueOf(type.getValue());
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
+        int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
         int[] numbers = prepareNumbers(typeValue, remainedDifficulty);
         Question question = prepareQuestion(type, difficultyLevel, typeValue, numbers);
-        int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
         List<Answer> answers = prepareAnswers(typeValue, numbers, answersCount);
         question.setAnswers(new HashSet<>(answers));
         return question;
-    }
-
-    private int difficultyCalibration(int remainedDifficulty) {
-        if (remainedDifficulty < 0) {
-            return 0;
-        }
-        if (remainedDifficulty < 13) {
-            return 1;
-        }
-        if (remainedDifficulty < 25) {
-            return 2;
-        }
-        if (remainedDifficulty < 38) {
-            return 3;
-        }
-        if (remainedDifficulty < 50) {
-            return 4;
-        }
-        if (remainedDifficulty < 63) {
-            return 5;
-        }
-        return 6;
     }
 
     private int[] prepareNumbers(EquationTaskType typeValue, int difficulty) {
@@ -63,12 +44,12 @@ public class EquationTaskService {
         if (typeValue == EquationTaskType.ADDITION) {
             int count = difficultyCalibration(difficulty) + 2;
             int bound = 9 + difficultyCalibration(difficulty) * 5;
-            numbers = prepareNumbers(count, -bound, bound);
+            numbers = randomIntegers(count, -bound, bound);
         }
         if (typeValue == EquationTaskType.MULTIPLICATION) {
             int count = difficultyCalibration(difficulty) / 2 + 2;
             int bound = 9 + difficultyCalibration(difficulty) * 2;
-            numbers = prepareNumbers(count, -bound, bound);
+            numbers = randomIntegers(count, -bound, bound);
         }
         if (typeValue == EquationTaskType.MODULO) {
             numbers = new int[2];
@@ -99,25 +80,6 @@ public class EquationTaskService {
             question.setTextContentEnglish("The remainder of the dividing the number " + numbers[0] + " by " + numbers[1] + " is");
         }
         return question;
-    }
-
-    private String numbersToString(int[] numbers, String andWorld) {
-        if (numbers.length == 2) {
-            return numbers[0] + " " + andWorld + " " + numbers[1];
-        }
-        StringBuilder r = new StringBuilder("" + numbers[0]);
-        for (int i = 1; i < numbers.length; i++) {
-            r.append(", ").append(numbers[i]);
-        }
-        return r.toString();
-    }
-
-    private int[] prepareNumbers(int count, int from, int to) {
-        int[] numbers = new int[count];
-        for (int i = 0; i < count; i++) {
-            numbers[i] = randomInteger(from, to);
-        }
-        return numbers;
     }
 
     private List<Answer> prepareAnswers(EquationTaskType typeValue, int[] numbers, int answersCount) {

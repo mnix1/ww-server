@@ -13,17 +13,17 @@ import static com.ww.helper.RandomHelper.randomElement;
 public class ElementTaskService {
 
     @Autowired
-    ElementTaskOneCorrectService elementTaskOneCorrectService;
+    ElementOneCorrectTaskService elementOneCorrectTaskService;
 
     @Autowired
-    ElementTaskMinMaxService elementTaskMinMaxService;
+    ElementMatchAnswerTaskService elementMatchAnswerTaskService;
 
     public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel) {
         ElementTaskType typeValue = ElementTaskType.valueOf(type.getValue());
         if (typeValue == ElementTaskType.MIN_ATOMIC_MASS
                 || typeValue == ElementTaskType.MAX_ATOMIC_MASS) {
-            return elementTaskMinMaxService.generate(type, difficultyLevel, typeValue);
+            return elementMatchAnswerTaskService.generate(type, difficultyLevel, typeValue);
         }
-        return elementTaskOneCorrectService.generate(type, difficultyLevel, typeValue);
+        return elementOneCorrectTaskService.generate(type, difficultyLevel, typeValue);
     }
 }

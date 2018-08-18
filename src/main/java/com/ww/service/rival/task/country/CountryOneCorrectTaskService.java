@@ -18,7 +18,7 @@ import java.util.List;
 import static com.ww.helper.RandomHelper.randomElement;
 
 @Service
-public class CountryTaskOneCorrectTypeService {
+public class CountryOneCorrectTaskService {
 
     @Autowired
     TaskRendererService taskRendererService;

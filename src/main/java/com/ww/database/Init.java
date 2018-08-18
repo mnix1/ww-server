@@ -128,12 +128,20 @@ public class Init {
         ))));
 
         taskTypes.add(new TaskType(Category.NUMBER, NumberTaskType.MAX.name(), TaskRenderer.TEXT_ANSWERS_HTML, 0, new HashSet<>(Arrays.asList(
-                new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.5),
-                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.5)
+                new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.55),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.45)
         ))));
         taskTypes.add(new TaskType(Category.NUMBER, NumberTaskType.MIN.name(), TaskRenderer.TEXT_ANSWERS_HTML, 0, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.5),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.5)
+        ))));
+        taskTypes.add(new TaskType(Category.NUMBER, NumberTaskType.GCD.name(), TaskRenderer.TEXT, 6, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.7),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.3)
+        ))));
+        taskTypes.add(new TaskType(Category.NUMBER, NumberTaskType.LCM.name(), TaskRenderer.TEXT, 5, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.74),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.26)
         ))));
 
         taskTypes.add(new TaskType(Category.EQUATION, EquationTaskType.ADDITION.name(), TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
