@@ -28,4 +28,6 @@ public class Color {
         this.namePolish = namePolish;
         this.nameEnglish = nameEnglish;
     }
+
+
 }

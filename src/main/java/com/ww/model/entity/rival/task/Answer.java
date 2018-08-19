@@ -14,6 +14,10 @@ public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(length = 4000)
+    private String imageContent;
+    @Column(length = 4000)
+    private String htmlContent;
     private String textContentPolish;
     private String textContentEnglish;
     private Boolean correct;

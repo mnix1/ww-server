@@ -3,7 +3,7 @@ package com.ww.service.rival.task;
 import com.ww.model.constant.rival.task.TaskRenderer;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.rival.task.Question;
-import com.ww.service.rival.task.riddle.RiddleService;
+import com.ww.service.rival.task.riddle.RiddleClipartService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,17 +21,17 @@ import static com.ww.model.entity.rival.task.Country.MAP_DIRECTORY;
 public class TaskRendererService {
 
     @Autowired
-    RiddleService riddleService;
+    RiddleClipartService riddleClipartService;
 
     public TaskDTO prepareTaskDTO(Question question) {
         TaskDTO taskDTO = new TaskDTO(question);
-        if (question.getType().getRenderer() == TaskRenderer.TEXT_IMAGE_SVG) {
+        if (question.getType().getQuestionRenderer() == TaskRenderer.TEXT_IMAGE_SVG) {
             swapImagePathToImageData(taskDTO);
         }
-        if (question.getType().getRenderer() == TaskRenderer.TEXT_IMAGE_PNG) {
-            taskDTO.setImageContent(riddleService.generate(taskDTO.getImageContent()));
+        if (question.getType().getQuestionRenderer() == TaskRenderer.TEXT_IMAGE_PNG) {
+            taskDTO.setImageContent(riddleClipartService.generate(taskDTO.getImageContent()));
         }
-        if (question.getType().getRenderer() == TaskRenderer.TEXT_ANIMATION) {
+        if (question.getType().getQuestionRenderer() == TaskRenderer.TEXT_ANIMATION) {
             swapShapeKeyToShapeData(taskDTO);
             taskDTO.setAnimationContent(encodeData(taskDTO.getAnimationContent()));
         }

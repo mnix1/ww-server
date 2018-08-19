@@ -19,6 +19,8 @@ public class Question {
     @Column(length = 4000)
     private String imageContent;
     @Column(length = 4000)
+    private String htmlContent;
+    @Column(length = 4000)
     private String animationContent;
     @Column(length = 4000)
     private String textContentPolish;

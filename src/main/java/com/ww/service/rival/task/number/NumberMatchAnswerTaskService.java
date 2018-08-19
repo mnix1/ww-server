@@ -143,7 +143,7 @@ public class NumberMatchAnswerTaskService {
         NumberObject correctNumber = numbers.get(correctIndex);
         return numbers.stream().map(numberObject -> {
             Answer answer = new Answer(correctNumber == numberObject);
-            answer.setTextContent(numberObject.getHtml());
+            answer.setHtmlContent(numberObject.getHtml());
             return answer;
         }).collect(Collectors.toList());
     }

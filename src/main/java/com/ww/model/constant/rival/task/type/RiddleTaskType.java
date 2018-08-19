@@ -5,7 +5,8 @@ import java.util.Arrays;
 import static com.ww.helper.RandomHelper.randomElement;
 
 public enum RiddleTaskType {
-    MISSING;
+    COLOR_MIXING,
+    MISSING_CLIPART;
 
     public static RiddleTaskType random() {
         return randomElement(Arrays.asList(values()));

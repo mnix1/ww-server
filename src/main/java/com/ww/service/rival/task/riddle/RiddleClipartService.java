@@ -16,7 +16,7 @@ import static com.ww.helper.FileHelper.*;
 import static com.ww.helper.ImageHelper.toBase64;
 
 @Service
-public class RiddleService {
+public class RiddleClipartService {
 
     public String generate(String stringPaths) {
         List<BufferedImage> images = prepareImages(stringPaths.split(","));

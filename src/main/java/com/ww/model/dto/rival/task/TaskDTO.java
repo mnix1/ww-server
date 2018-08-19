@@ -4,7 +4,6 @@ import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.constant.rival.task.TaskRenderer;
 import com.ww.model.entity.rival.task.Question;
-import javafx.concurrent.Task;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,8 +17,10 @@ public class TaskDTO {
     private Long id;
     private Category category;
     private TaskDifficultyLevel taskDifficultyLevel;
-    private TaskRenderer taskRenderer;
+    private TaskRenderer questionRenderer;
+    private TaskRenderer answerRenderer;
     private String imageContent;
+    private String htmlContent;
     private String animationContent;
     private String textContentPolish;
     private String textContentEnglish;
@@ -30,8 +31,10 @@ public class TaskDTO {
         this.id = question.getId();
         this.category = question.getType().getCategory();
         this.taskDifficultyLevel = question.getDifficultyLevel();
-        this.taskRenderer = question.getType().getRenderer();
+        this.questionRenderer = question.getType().getQuestionRenderer();
+        this.answerRenderer = question.getType().getAnswerRenderer();
         this.imageContent = question.getImageContent();
+        this.htmlContent = question.getHtmlContent();
         this.animationContent = question.getAnimationContent();
         this.textContentPolish = question.getTextContentPolish();
         this.textContentEnglish = question.getTextContentEnglish();
