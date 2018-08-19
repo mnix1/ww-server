@@ -22,12 +22,6 @@ import static com.ww.helper.RandomHelper.randomIntegers;
 @Service
 public class EquationTaskService {
 
-    @Autowired
-    TaskService taskService;
-
-    @Autowired
-    TaskRendererService taskRendererService;
-
     public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel) {
         EquationTaskType typeValue = EquationTaskType.valueOf(type.getValue());
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();

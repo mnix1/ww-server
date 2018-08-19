@@ -8,7 +8,7 @@ import com.ww.model.constant.rival.task.type.MemoryTaskType;
 import com.ww.model.container.MemoryObject;
 import com.ww.model.entity.rival.task.*;
 import com.ww.repository.rival.task.category.MemoryShapeRepository;
-import com.ww.repository.rival.task.category.TaskColorRepository;
+import com.ww.repository.rival.task.category.ColorRepository;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.rival.task.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class MemoryTaskService {
     MemoryShapeRepository memoryShapeRepository;
 
     @Autowired
-    TaskColorRepository taskColorRepository;
+    ColorRepository colorRepository;
 
     public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel) {
         MemoryTaskType typeValue = MemoryTaskType.valueOf(type.getValue());
@@ -129,8 +129,8 @@ public class MemoryTaskService {
     private List<MemoryObject> prepareObjects(int count) {
         List<String> keys = prepareKeys(count);
         List<MemoryShape> shapes = randomElements(memoryShapeRepository.findAll(), count);
-        List<TaskColor> allColors = taskColorRepository.findAll();
-        List<TaskColor> backgroundColors = randomElements(allColors, count);
+        List<Color> allColors = colorRepository.findAll();
+        List<Color> backgroundColors = randomElements(allColors, count);
         List<MemoryObject> figures = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
             MemoryObject figure = new MemoryObject(keys.get(i), shapes.get(i), backgroundColors.get(i));

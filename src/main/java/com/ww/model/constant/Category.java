@@ -12,6 +12,7 @@ public enum Category {
     NUMBER,
     LYRICS,
     ELEMENT,
+    RIDDLE,
 //    HISTORY,
     COUNTRY,
     MEMORY;

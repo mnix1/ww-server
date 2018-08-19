@@ -8,6 +8,10 @@ import java.nio.charset.Charset;
 
 public class FileHelper {
 
+    public static String IMAGE_RESOURCE_DIRECTORY = "task/image/";
+    public static String SVG_EXTENSION = ".svg";
+    public static String PNG_EXTENSION = ".png";
+
     //must exist
     public static File getResource(String path) {
         try {

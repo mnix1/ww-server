@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import static com.ww.helper.FileHelper.IMAGE_RESOURCE_DIRECTORY;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -81,7 +83,7 @@ public class Country {
     }
 
     public String getFlagResourcePath() {
-        return "task/image/flag/" + getSvgFileName();
+        return IMAGE_RESOURCE_DIRECTORY+ "flag/" + getSvgFileName();
     }
 
     public String getMapResourcePath(String prefix) {
@@ -89,7 +91,7 @@ public class Country {
     }
 
     public String getMapResourcePath() {
-        return "task/image/" + MAP_DIRECTORY + getSvgFileName();
+        return IMAGE_RESOURCE_DIRECTORY + MAP_DIRECTORY + getSvgFileName();
     }
 
 }

@@ -21,8 +21,6 @@ import static com.ww.helper.RandomHelper.randomElement;
 public class CountryOneCorrectTaskService {
 
     @Autowired
-    TaskRendererService taskRendererService;
-    @Autowired
     CountryRepository countryRepository;
 
     public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, CountryTaskType typeValue) {
@@ -30,9 +28,7 @@ public class CountryOneCorrectTaskService {
         int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
         List<Country> allCountries = countryRepository.findAll();
         Country correctCountry = randomElement(allCountries);
-
         Question question = prepareQuestion(type, difficultyLevel, typeValue, correctCountry);
-//        question.setDifficultyLevel();
         List<Answer> answers = prepareAnswers(typeValue, correctCountry, allCountries, answersCount);
         question.setAnswers(new HashSet<>(answers));
         return question;

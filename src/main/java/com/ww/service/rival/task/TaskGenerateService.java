@@ -12,6 +12,7 @@ import com.ww.service.rival.task.country.CountryTaskService;
 import com.ww.service.rival.task.equation.EquationTaskService;
 import com.ww.service.rival.task.memory.MemoryTaskService;
 import com.ww.service.rival.task.lyrics.LyricsTaskService;
+import com.ww.service.rival.task.riddle.RiddleTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,9 @@ public class TaskGenerateService {
     ElementTaskService elementTaskService;
 
     @Autowired
+    RiddleTaskService riddleTaskService;
+
+    @Autowired
     TaskTypeRepository taskTypeRepository;
 
     public Question generate(Category category, TaskDifficultyLevel difficultyLevel) {
@@ -65,6 +69,9 @@ public class TaskGenerateService {
         }
         if (category == Category.ELEMENT) {
             return elementTaskService.generate(taskType, difficultyLevel);
+        }
+        if (category == Category.RIDDLE) {
+            return riddleTaskService.generate(taskType, difficultyLevel);
         }
         return null;
     }

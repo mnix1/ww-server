@@ -1,8 +1,8 @@
 package com.ww.service.rival.task.memory;
 
-import com.ww.model.entity.rival.task.TaskColor;
+import com.ww.model.entity.rival.task.Color;
 import com.ww.model.entity.rival.task.MemoryShape;
-import com.ww.repository.rival.task.category.TaskColorRepository;
+import com.ww.repository.rival.task.category.ColorRepository;
 import com.ww.repository.rival.task.category.MemoryShapeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ public class MemoryTaskHelperService {
     MemoryShapeRepository memoryShapeRepository;
 
     @Autowired
-    TaskColorRepository taskColorRepository;
+    ColorRepository colorRepository;
 
     public void initShapes() {
         memoryShapeRepository.save(new MemoryShape("circle","koło","circle"));
@@ -30,17 +30,17 @@ public class MemoryTaskHelperService {
     }
     
     public void initColors() {
-        taskColorRepository.save(new TaskColor("#FFFFFF","biały","white"));
-        taskColorRepository.save(new TaskColor("#888888","szary","gray"));
-//        taskColorRepository.save(new TaskColor("#000000","czarny","black"));
-        taskColorRepository.save(new TaskColor("#990000","czerwony","red"));
-        taskColorRepository.save(new TaskColor("#009900","zielony","green"));
-        taskColorRepository.save(new TaskColor("#000099","niebieski","blue"));
-        taskColorRepository.save(new TaskColor("#FFFF00","żółty","yellow"));
-        taskColorRepository.save(new TaskColor("#FFA500","pomarańczowy","orange"));
-        taskColorRepository.save(new TaskColor("#964B00","brązowy","brown"));
-        taskColorRepository.save(new TaskColor("#B803FF","fioletowy","purple"));
-        taskColorRepository.save(new TaskColor("#FFCCDD","różowy","pink"));
+        colorRepository.save(new Color("#FFFFFF","biały","white"));
+        colorRepository.save(new Color("#888888","szary","gray"));
+//        taskColorRepository.save(new Color("#000000","czarny","black"));
+        colorRepository.save(new Color("#990000","czerwony","red"));
+        colorRepository.save(new Color("#009900","zielony","green"));
+        colorRepository.save(new Color("#000099","niebieski","blue"));
+        colorRepository.save(new Color("#FFFF00","żółty","yellow"));
+        colorRepository.save(new Color("#FFA500","pomarańczowy","orange"));
+        colorRepository.save(new Color("#964B00","brązowy","brown"));
+        colorRepository.save(new Color("#B803FF","fioletowy","purple"));
+        colorRepository.save(new Color("#FFCCDD","różowy","pink"));
     }
 
 }

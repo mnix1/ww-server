@@ -8,6 +8,7 @@ import com.ww.model.constant.rival.task.TaskRenderer;
 import com.ww.model.constant.rival.task.type.*;
 import com.ww.model.constant.shop.ChestType;
 import com.ww.model.entity.hero.Hero;
+import com.ww.model.entity.rival.task.Clipart;
 import com.ww.model.entity.rival.task.TaskType;
 import com.ww.model.entity.rival.task.TaskWisdomAttribute;
 import com.ww.model.entity.shop.Chest;
@@ -17,18 +18,21 @@ import com.ww.repository.rival.task.AnswerRepository;
 import com.ww.repository.rival.task.QuestionRepository;
 import com.ww.repository.rival.task.TaskTypeRepository;
 import com.ww.repository.rival.task.TaskWisdomAttributeRepository;
+import com.ww.repository.rival.task.category.ClipartRepository;
 import com.ww.repository.shop.ChestRepository;
 import com.ww.repository.social.ProfileRepository;
-import com.ww.service.rival.task.element.ElementService;
 import com.ww.service.rival.task.country.CountryService;
-import com.ww.service.rival.task.memory.MemoryTaskHelperService;
+import com.ww.service.rival.task.element.ElementService;
 import com.ww.service.rival.task.lyrics.TrackService;
+import com.ww.service.rival.task.memory.MemoryTaskHelperService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.util.*;
+
+import static com.ww.helper.ImageHelper.convertSvgToPng;
 
 
 @NoArgsConstructor
@@ -66,6 +70,8 @@ public class Init {
 
     @Autowired
     ChestRepository chestRepository;
+    @Autowired
+    ClipartRepository clipartRepository;
 
     private Random random = new SecureRandom();
 
@@ -75,6 +81,7 @@ public class Init {
         initHeroes();
         initProfiles();
         initMusicTracks();
+        initCliparts();
         initGeographyCountries();
         initChemistryElements();
         memoryTaskHelperService.initShapes();
@@ -175,13 +182,13 @@ public class Init {
                 new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.2)
         ))));
-        taskTypes.add(new TaskType(Category.COUNTRY, CountryTaskType.COUNTRY_NAME_FROM_MAP.name(), TaskRenderer.TEXT_IMAGE, 3, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.COUNTRY, CountryTaskType.COUNTRY_NAME_FROM_MAP.name(), TaskRenderer.TEXT_IMAGE_SVG, 3, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.3),
                 new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.3),
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.3),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1)
         ))));
-        taskTypes.add(new TaskType(Category.COUNTRY, CountryTaskType.COUNTRY_NAME_FROM_FLAG.name(), TaskRenderer.TEXT_IMAGE, 2, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.COUNTRY, CountryTaskType.COUNTRY_NAME_FROM_FLAG.name(), TaskRenderer.TEXT_IMAGE_SVG, 2, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.6),
                 new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.1),
@@ -198,13 +205,13 @@ public class Init {
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.15),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1)
         ))));
-        taskTypes.add(new TaskType(Category.COUNTRY, CountryTaskType.CAPITAL_NAME_FROM_MAP.name(), TaskRenderer.TEXT_IMAGE, 5, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.COUNTRY, CountryTaskType.CAPITAL_NAME_FROM_MAP.name(), TaskRenderer.TEXT_IMAGE_SVG, 5, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.3),
                 new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.2),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.3)
         ))));
-        taskTypes.add(new TaskType(Category.COUNTRY, CountryTaskType.CAPITAL_NAME_FROM_FLAG.name(), TaskRenderer.TEXT_IMAGE, 4, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.COUNTRY, CountryTaskType.CAPITAL_NAME_FROM_FLAG.name(), TaskRenderer.TEXT_IMAGE_SVG, 4, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.5),
                 new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.2),
@@ -277,6 +284,13 @@ public class Init {
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.25)
         ))));
 
+        taskTypes.add(new TaskType(Category.RIDDLE, RiddleTaskType.MISSING.name(), TaskRenderer.TEXT_IMAGE_PNG, 2, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.09),
+                new TaskWisdomAttribute(WisdomAttribute.PATTERN_RECOGNITION, 0.41),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.4),
+                new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.1)
+        ))));
+
         List<TaskWisdomAttribute> wisdomAttributes = new ArrayList<>();
         for (TaskType taskType : taskTypes) {
             taskType.getWisdomAttributes().forEach(wisdomAttribute -> {
@@ -302,6 +316,34 @@ public class Init {
         trackService.addTrack("Marek Grechuta", "Dni których nie znamy", "https://ising.pl/marek-grechuta-dni-ktorych-nie-znamy-tekst");
         trackService.addTrack("Myslovitz", "Długość dźwięku samotności", "https://ising.pl/myslovitz-dlugosc-dzwieku-samotnosci-tekst");
         trackService.addTrack("Lady Pank", "Warszawa", "https://ising.pl/lady-pank-stacja-warszawa-tekst");
+    }
+
+    public void initCliparts() {
+        List<Clipart> cliparts = new ArrayList<>();
+        cliparts.add(new Clipart("pepper.svg", "Papryka", "Pepper"));
+        cliparts.add(new Clipart("notebook.svg", "Notes", "Notebook"));
+        cliparts.add(new Clipart("pickles.svg", "Ogórki konserwowe", "Pickles"));
+        cliparts.add(new Clipart("scales.svg", "Waga", "Scales"));
+        cliparts.add(new Clipart("cdDvd.svg", "Płyta CD/DVD", "CD/DVD"));
+        cliparts.add(new Clipart("microscope.svg", "Mikroskop", "Microscope"));
+        cliparts.add(new Clipart("basketball.svg", "Piłka do kosza", "Basketball ball"));
+        cliparts.add(new Clipart("football.svg", "Piłka do nogi", "Football ball"));
+        cliparts.add(new Clipart("fish.svg", "Ryba", "Fish"));
+        cliparts.add(new Clipart("calculator.svg", "Kalkulator", "Calculator"));
+        cliparts.add(new Clipart("hardDrive.svg", "Dysk twardy", "Hard drive"));
+        cliparts.add(new Clipart("piano.svg", "Fortepian", "Piano"));
+        cliparts.add(new Clipart("rubicCube.svg", "Kostka Rubika", "Rubic's cube"));
+        cliparts.add(new Clipart("seat.svg", "Fotel", "Seat"));
+        cliparts.add(new Clipart("car.svg", "Samochód", "Car"));
+        cliparts.add(new Clipart("plumbersWrench.svg", "Klucz francuski", "Plumbers Wrench"));
+        cliparts.add(new Clipart("thumbUp.svg", "Kciuk w górę", "Thumb up"));
+        cliparts.add(new Clipart("thumbDown.svg", "Kciuk w dół", "Thumb down"));
+        cliparts.add(new Clipart("gameController.svg", "Kontroler do gier", "Game controller"));
+        cliparts.add(new Clipart("emoticon.svg", "Emotikona", "Emoticon"));
+        cliparts.add(new Clipart("tree.svg", "Drzewo", "Tree"));
+        cliparts.add(new Clipart("snowman.svg", "Bałwan", "Snowman"));
+        cliparts.forEach(clipart -> convertSvgToPng(clipart.getResourcePath()));
+        clipartRepository.saveAll(cliparts);
     }
 
     public void initChests() {
