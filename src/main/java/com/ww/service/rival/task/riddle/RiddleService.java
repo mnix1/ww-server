@@ -25,14 +25,24 @@ public class RiddleService {
     }
 
     private BufferedImage joinImages(List<BufferedImage> images) {
-        int joinedHeight = 360;
-        int joinedWidth = 720;
+        int joinedHeight = 364;
+        int joinedWidth = 728;
         BufferedImage joined = new BufferedImage(joinedWidth, joinedHeight,
                 BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = joined.createGraphics();
         int targetHeight = 180;
         int targetWidth = 180;
-        List<Position> positions = preparePositions(images.size(), joinedHeight, joinedWidth, targetHeight, targetWidth);
+        boolean oneRow = false;
+        if (images.size() < 3) {
+            targetHeight *= 2;
+            targetWidth *= 2;
+            oneRow = true;
+        } else if (images.size() < 4) {
+            targetHeight *= 2;
+            targetWidth *= 1.33;
+            oneRow = true;
+        }
+        List<Position> positions = preparePositions(images.size(), joinedHeight, joinedWidth, targetHeight, targetWidth, oneRow);
         for (int i = 0; i < images.size(); i++) {
             Position position = positions.get(i);
             BufferedImage image = images.get(i);
@@ -45,13 +55,13 @@ public class RiddleService {
         return joined;
     }
 
-    private List<Position> preparePositions(int count, int height, int width, int offsetHeight, int offsetWidth) {
+    private List<Position> preparePositions(int count, int height, int width, int offsetHeight, int offsetWidth, boolean oneRow) {
         List<Position> positions = new ArrayList<>(count);
         int marginHeight = (height / 2 - offsetHeight);
-        int halfCount = (int) Math.ceil(count / 2d);
+        int halfCount = (int) Math.ceil(count / (oneRow ? 1d : 2d));
         for (int i = 0; i < count; i++) {
             int x = (i % halfCount) * (offsetWidth + (width - offsetWidth * halfCount) / halfCount);
-            int y = i < halfCount ? marginHeight : height / 2 + marginHeight;
+            int y = oneRow ? 0 : (i < halfCount ? marginHeight : height / 2 + marginHeight);
             positions.add(new Position(y, x));
         }
         return positions;
@@ -60,8 +70,7 @@ public class RiddleService {
     private List<BufferedImage> prepareImages(String[] paths) {
         List<BufferedImage> images = new ArrayList<>();
         for (String path : paths) {
-            String pngPath = path.replace(SVG_EXTENSION, PNG_EXTENSION);
-            File file = getResource(pngPath);
+            File file = getResource(path);
             try {
                 BufferedImage bi = ImageIO.read(file);
                 images.add(bi);

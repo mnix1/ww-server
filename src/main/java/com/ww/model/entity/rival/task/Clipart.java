@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import static com.ww.helper.FileHelper.IMAGE_RESOURCE_DIRECTORY;
+import static com.ww.helper.FileHelper.PNG_EXTENSION;
+import static com.ww.helper.FileHelper.SVG_EXTENSION;
 
 @Setter
 @Getter
@@ -34,5 +36,9 @@ public class Clipart {
 
     public String getResourcePath() {
         return IMAGE_RESOURCE_DIRECTORY + CLIPART_DIRECTORY + path;
+    }
+
+    public String getPngResourcePath() {
+        return IMAGE_RESOURCE_DIRECTORY + CLIPART_DIRECTORY + "png/" + path.replace(SVG_EXTENSION, PNG_EXTENSION);
     }
 }

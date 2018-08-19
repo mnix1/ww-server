@@ -342,7 +342,7 @@ public class Init {
         cliparts.add(new Clipart("emoticon.svg", "Emotikona", "Emoticon"));
         cliparts.add(new Clipart("tree.svg", "Drzewo", "Tree"));
         cliparts.add(new Clipart("snowman.svg", "Bałwan", "Snowman"));
-        cliparts.forEach(clipart -> convertSvgToPng(clipart.getResourcePath()));
+        cliparts.forEach(clipart -> convertSvgToPng(clipart.getResourcePath(), clipart.getPngResourcePath()));
         clipartRepository.saveAll(cliparts);
     }
 

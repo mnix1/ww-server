@@ -51,7 +51,7 @@ public class RiddleTaskService {
     private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, RiddleTaskType typeValue, List<Clipart> wrongCliparts) {
         Question question = new Question(type, difficultyLevel);
         if (typeValue == RiddleTaskType.MISSING) {
-            question.setImageContent(StringUtils.join(wrongCliparts.stream().map(Clipart::getResourcePath).collect(Collectors.toList()), ","));
+            question.setImageContent(StringUtils.join(wrongCliparts.stream().map(Clipart::getPngResourcePath).collect(Collectors.toList()), ","));
             question.setTextContentPolish("Czego brakuje na obrazku?");
             question.setTextContentEnglish("What is missing in the picture?");
         }
