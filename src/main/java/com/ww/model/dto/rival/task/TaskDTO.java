@@ -7,6 +7,7 @@ import com.ww.model.entity.rival.task.Question;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,7 @@ public class TaskDTO {
     private TaskRenderer answerRenderer;
     private String imageContent;
     private String htmlContent;
+    private Instant dateContent;
     private String animationContent;
     private String textContentPolish;
     private String textContentEnglish;
@@ -35,6 +37,7 @@ public class TaskDTO {
         this.answerRenderer = question.getType().getAnswerRenderer();
         this.imageContent = question.getImageContent();
         this.htmlContent = question.getHtmlContent();
+        this.dateContent = question.getDateContent();
         this.animationContent = question.getAnimationContent();
         this.textContentPolish = question.getTextContentPolish();
         this.textContentEnglish = question.getTextContentEnglish();

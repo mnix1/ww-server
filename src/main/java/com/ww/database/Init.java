@@ -296,6 +296,17 @@ public class Init {
                 new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.8)
         ))));
 
+        taskTypes.add(new TaskType(Category.TIME, TimeTaskType.CLOCK_ADD.name(), TaskRenderer.TEXT_DATE, TaskRenderer.DATE, 1, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.45),
+                new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.3),
+                new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.25)
+        ))));
+        taskTypes.add(new TaskType(Category.TIME, TimeTaskType.CLOCK_SUBTRACT.name(), TaskRenderer.TEXT_DATE, TaskRenderer.DATE, 3, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.25),
+                new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.4),
+                new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.35)
+        ))));
+
         List<TaskWisdomAttribute> wisdomAttributes = new ArrayList<>();
         for (TaskType taskType : taskTypes) {
             taskType.getWisdomAttributes().forEach(wisdomAttribute -> {

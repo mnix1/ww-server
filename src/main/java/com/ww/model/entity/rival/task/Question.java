@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.Set;
 
 @Setter
@@ -20,6 +21,7 @@ public class Question {
     private String imageContent;
     @Column(length = 4000)
     private String htmlContent;
+    private Instant dateContent;
     @Column(length = 4000)
     private String animationContent;
     @Column(length = 4000)

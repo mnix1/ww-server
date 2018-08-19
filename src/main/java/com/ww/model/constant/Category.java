@@ -15,6 +15,7 @@ public enum Category {
     RIDDLE,
 //    HISTORY,
     COUNTRY,
+    TIME,
     MEMORY;
 
     public static Category random() {

@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.Instant;
+import java.util.Date;
 
 @Setter
 @Getter
@@ -18,6 +20,7 @@ public class Answer {
     private String imageContent;
     @Column(length = 4000)
     private String htmlContent;
+    private Instant dateContent;
     private String textContentPolish;
     private String textContentEnglish;
     private Boolean correct;
