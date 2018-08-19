@@ -11,6 +11,9 @@ public class RandomHelper {
     public static SecureRandom random = new SecureRandom();
 
     public static int randomInteger(int from, int to) {
+        if (to - from <= 0) {
+            return 0;
+        }
         return random.nextInt(to - from + 1) + from;
     }
 

@@ -9,14 +9,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.ww.helper.AnswerHelper.difficultyCalibration;
 import static com.ww.helper.AnswerHelper.isValueDistanceEnough;
 import static com.ww.helper.ColorHelper.colorToHex;
+import static com.ww.helper.ColorHelper.randomColor;
 import static com.ww.helper.RandomHelper.randomInteger;
 
 @Service
@@ -26,46 +25,53 @@ public class RiddleColorTaskService {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
         int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
         int colorsToMixCount = difficultyCalibration(remainedDifficulty) / 3 + 2;
-        List<Color> colorsToMix = prepareColorsToMix(colorsToMixCount, 255 / colorsToMixCount);
-        Color correctColor = prepareMixColor(colorsToMix);
-        List<Color> answerColors = prepareWrongColors(answersCount - 1, 255, correctColor);
+        Color correctColor = prepareCorrectColor();
+        List<Color> colorsToMix = prepareMixColors(colorsToMixCount, correctColor);
+        List<Color> answerColors = prepareWrongColors(answersCount - 1, correctColor);
         Question question = prepareQuestion(type, difficultyLevel, typeValue, colorsToMix);
         List<Answer> answers = prepareAnswers(typeValue, correctColor, answerColors);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
 
-    private Color prepareMixColor(List<Color> colorsToMix) {
-        int r = 0;
-        int g = 0;
-        int b = 0;
-        for (Color color : colorsToMix) {
-            r += color.getRed();
-            g += color.getGreen();
-            b += color.getBlue();
+    private Color prepareCorrectColor() {
+        return randomColor(90, 255);
+    }
+
+    private List<Color> prepareMixColors(int count, Color correctColor) {
+        List<Color> colors = new ArrayList<>(count);
+        int totalR = correctColor.getRed();
+        int totalG = correctColor.getGreen();
+        int totalB = correctColor.getBlue();
+        for (int i = 0; i < count - 1; i++) {
+            int r = randomInteger(0, totalR);
+            int g = randomInteger(0, totalG);
+            int b = randomInteger(0, totalB);
+            colors.add(new Color(r, g, b));
+            totalR -= r;
+            totalG -= g;
+            totalB -= b;
         }
-        return new Color(r, g, b);
+        colors.add(new Color(totalR, totalG, totalB));
+        Collections.shuffle(colors);
+        return colors;
     }
 
-    private List<Color> prepareColorsToMix(int count, int maxComponent) {
-        return prepareWrongColors(count, maxComponent, null);
-    }
-
-    private List<Color> prepareWrongColors(int count, int maxComponent, Color correctColor) {
+    private List<Color> prepareWrongColors(int count, Color correctColor) {
         List<Double> values = new ArrayList<>(count);
-        if (correctColor != null) {
-            double value = correctColor.getRed() + correctColor.getGreen() + correctColor.getBlue() / 3d;
-            values.add(value);
-        }
+        double correctValue = correctColor.getRed() + correctColor.getGreen() + correctColor.getBlue() / 3d;
+        values.add(correctValue);
         List<Color> wrongColors = new ArrayList<>(count);
-        for (int i = 0; i < count; i++) {
-            int r = randomInteger(0, maxComponent);
-            int g = randomInteger(0, maxComponent);
-            int b = randomInteger(0, maxComponent);
-            double value = r + g + b / 3d;
+        while (wrongColors.size() < count) {
+            int v1 = randomInteger(0, 255);
+            int v2 = randomInteger(0, 255);
+            int v3 = randomInteger(0, 255);
+            double value = (v1 + v2 + v3) / 3d;
             if (isValueDistanceEnough(value, values)) {
                 values.add(value);
-                Color c = new Color(r, g, b);
+                List<Integer> v = Arrays.asList(v1, v2, v3);
+                Collections.shuffle(v);
+                Color c = new Color(v.get(0), v.get(1), v.get(2));
                 wrongColors.add(c);
             }
         }

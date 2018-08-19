@@ -284,13 +284,13 @@ public class Init {
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.25)
         ))));
 
-//        taskTypes.add(new TaskType(Category.RIDDLE, RiddleTaskType.MISSING_CLIPART.name(), TaskRenderer.TEXT_IMAGE_PNG, TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
-//                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.09),
-//                new TaskWisdomAttribute(WisdomAttribute.PATTERN_RECOGNITION, 0.41),
-//                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.4),
-//                new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.1)
-//        ))));
-        taskTypes.add(new TaskType(Category.RIDDLE, RiddleTaskType.COLOR_MIXING.name(), TaskRenderer.TEXT_HTML, TaskRenderer.HTML, 5, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.RIDDLE, RiddleTaskType.MISSING_CLIPART.name(), TaskRenderer.TEXT_IMAGE_PNG, TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.09),
+                new TaskWisdomAttribute(WisdomAttribute.PATTERN_RECOGNITION, 0.41),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.4),
+                new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.1)
+        ))));
+        taskTypes.add(new TaskType(Category.RIDDLE, RiddleTaskType.COLOR_MIXING.name(), TaskRenderer.TEXT_HTML, TaskRenderer.HTML, 8, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.PATTERN_RECOGNITION, 0.1),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1),
                 new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.8)
@@ -347,6 +347,10 @@ public class Init {
         cliparts.add(new Clipart("emoticon.svg", "Emotikona", "Emoticon"));
         cliparts.add(new Clipart("tree.svg", "Drzewo", "Tree"));
         cliparts.add(new Clipart("snowman.svg", "Bałwan", "Snowman"));
+        cliparts.add(new Clipart("clouds.svg", "Chmury", "Clouds"));
+        cliparts.add(new Clipart("podium.svg", "Podium", "Podium"));
+        cliparts.add(new Clipart("medal.svg", "Medal", "Medal"));
+        cliparts.add(new Clipart("speaker.svg", "Głośnik", "Speaker"));
         cliparts.forEach(clipart -> convertSvgToPng(clipart.getResourcePath(), clipart.getPngResourcePath()));
         clipartRepository.saveAll(cliparts);
     }

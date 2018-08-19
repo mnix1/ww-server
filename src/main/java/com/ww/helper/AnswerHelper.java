@@ -3,8 +3,12 @@ package com.ww.helper;
 import java.util.List;
 
 public class AnswerHelper {
+    public static boolean isValueDistanceEnough(Double value, List<Double> values, double rate) {
+        return values.stream().noneMatch(e -> Math.abs(value - e) / value < rate);
+    }
+
     public static boolean isValueDistanceEnough(Double value, List<Double> values) {
-        return values.stream().noneMatch(e -> Math.abs(value - e) / value < 0.05);
+        return isValueDistanceEnough(value, values, 0.05);
     }
 
     public static int difficultyCalibration(int remainedDifficulty) {
