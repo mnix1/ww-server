@@ -351,6 +351,11 @@ public class Init {
         cliparts.add(new Clipart("podium.svg", "Podium", "Podium"));
         cliparts.add(new Clipart("medal.svg", "Medal", "Medal"));
         cliparts.add(new Clipart("speaker.svg", "Głośnik", "Speaker"));
+        cliparts.add(new Clipart("helmet.svg", "Kask", "Helmet"));
+        cliparts.add(new Clipart("scooter.svg", "Skuter", "Scooter"));
+        cliparts.add(new Clipart("trashCan.svg", "Kosz na śmieci", "Trash can"));
+        cliparts.add(new Clipart("balloon.svg", "Balon", "Balloon"));
+        cliparts.add(new Clipart("aeroplan.svg", "Samolot", "Aeroplan"));
         cliparts.forEach(clipart -> convertSvgToPng(clipart.getResourcePath(), clipart.getPngResourcePath()));
         clipartRepository.saveAll(cliparts);
     }

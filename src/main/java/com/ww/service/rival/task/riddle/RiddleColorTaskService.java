@@ -67,7 +67,7 @@ public class RiddleColorTaskService {
             int v2 = randomInteger(0, 255);
             int v3 = randomInteger(0, 255);
             double value = (v1 + v2 + v3) / 3d;
-            if (isValueDistanceEnough(value, values)) {
+            if (isValueDistanceEnough(value, values, Math.max(0.08, 0.3 - count * 0.05))) {
                 values.add(value);
                 List<Integer> v = Arrays.asList(v1, v2, v3);
                 Collections.shuffle(v);
