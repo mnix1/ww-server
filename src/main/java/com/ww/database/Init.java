@@ -380,7 +380,7 @@ public class Init {
         List<Book> books = new ArrayList<>();
         books.add(new Book(BookType.LEAFLET, 1, 0, 1L, 0L, 0L, false, false, 0L, 0L, "Gazetka sklepowa", "Leaflet"));
         books.add(new Book(BookType.FAIRY_TALE, 1, 0, 0L, 0L, 1L, false, false, 0L, 0L, "Bajka", "Fairy tale"));
-        books.add(new Book(BookType.TV_PROGRAM, 2, 1, 3L, 0L, 0L, false, false, 0L, 0L, "Program TV", "TV program"));
+        books.add(new Book(BookType.TV_GUIDE, 2, 1, 3L, 0L, 0L, false, false, 0L, 0L, "Program TV", "TV program"));
         books.add(new Book(BookType.COLORFUL_MAGAZINE, 2, 1, 2L, 0L, 1L, false, false, 0L, 0L, "Kolorowe czasopismo", "Colorful magazine"));
         books.add(new Book(BookType.SPORT_MAGAZINE, 2, 1, 1L, 0L, 2L, false, false, 0L, 0L, "Magazyn sportowy", "Sports magazine"));
         books.add(new Book(BookType.NEWSPAPER, 2, 1, 0L, 0L, 3L, false, false, 0L, 0L, "Gazeta", "Newspaper"));

@@ -18,6 +18,10 @@ public class ProfileBookDTO {
     private Long gainElixir;
     private Long gainWisdom;
 
+    private Boolean isInProgress;
+    private Long inProgressInterval;
+    private Boolean canClaimReward;
+
     private String namePolish;
     private String nameEnglish;
 
@@ -35,5 +39,8 @@ public class ProfileBookDTO {
     public ProfileBookDTO(ProfileBook profileBook) {
         this(profileBook.getBook());
         this.id = profileBook.getId();
+        this.isInProgress = profileBook.isInProgress();
+        this.inProgressInterval = profileBook.inProgressInterval();
+        this.canClaimReward = profileBook.canClaimReward();
     }
 }

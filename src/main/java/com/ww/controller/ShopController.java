@@ -24,9 +24,9 @@ public class ShopController {
     @Autowired
     ShopService shopService;
 
-    @RequestMapping(value = "/listBooks", method = RequestMethod.GET)
-    public List<ShopBookDTO> listBooks() {
-        return shopService.listBooks();
+    @RequestMapping(value = "/listBook", method = RequestMethod.GET)
+    public List<ShopBookDTO> listBook() {
+        return shopService.listBook();
     }
 
 }

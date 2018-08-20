@@ -29,10 +29,12 @@ import java.util.concurrent.TimeUnit;
 
 public class BattleManager {
     private static final Logger logger = LoggerFactory.getLogger(BattleManager.class);
-    public static final Integer TASK_COUNT = 5;
+    public static final Integer TASK_COUNT = 1;
+//    public static final Integer TASK_COUNT = 5;
 
     private static final Integer ANSWERING_INTERVAL = 45000;
-    private static final Integer INTRO_INTERVAL = 18000;
+//    private static final Integer INTRO_INTERVAL = 18000;
+    private static final Integer INTRO_INTERVAL = 1000;
     private static final Integer NEXT_TASK_INTERVAL = 4000;
     private static final Integer SHOWING_ANSWER_INTERVAL = 11000;
     private static final Integer RANDOM_CHOOSE_TASK_PROPS_INTERVAL = 8000;

@@ -31,7 +31,7 @@ public class ProfileBookService {
     @Autowired
     BookService bookService;
 
-    public List<ProfileBookDTO> listBooks() {
+    public List<ProfileBookDTO> listBook() {
         return profileService.getProfile().getBooks().stream()
                 .filter(profileBook -> !profileBook.isRewardClaimed())
                 .map(ProfileBookDTO::new)
@@ -42,7 +42,7 @@ public class ProfileBookService {
         return profileBooks.stream().noneMatch(profileBook -> profileBook.isInProgress() && !profileBook.canClaimReward());
     }
 
-    public Map<String, Object> startReadBook(Long profileBookId) {
+    public synchronized  Map<String, Object> startReadBook(Long profileBookId) {
         Map<String, Object> model = new HashMap<>();
         List<ProfileBook> profileBooks = profileBookRepository.findByProfile_Id(sessionService.getProfileId());
         if (!checkIfProfileReadingBook(profileBooks)) {
@@ -56,11 +56,12 @@ public class ProfileBookService {
         }
         ProfileBook profileBook = optionalProfileChest.get();
         profileBook.setInProgressDate(Instant.now());
+        profileBookRepository.save(profileBook);
         model.put("code", 1);
         return model;
     }
 
-    public Map<String, Object> claimRewardBook(Long profileBookId) {
+    public synchronized Map<String, Object> claimRewardBook(Long profileBookId) {
         Map<String, Object> model = new HashMap<>();
         Optional<ProfileBook> optionalProfileChest = profileBookRepository.findByIdAndProfile_Id(profileBookId, sessionService.getProfileId());
         if (!optionalProfileChest.isPresent()) {
@@ -92,7 +93,7 @@ public class ProfileBookService {
 
     public void giveBook(String profileTag) {
         Profile profile = profileService.getProfile(profileTag);
-        if (profile.getBooks().size() >= BOOK_SHELF_COUNT) {
+        if (profileBookRepository.findByProfile_Id(profile.getId()).size() >= BOOK_SHELF_COUNT) {
             return;
         }
         Book book = bookService.findRandomBook();

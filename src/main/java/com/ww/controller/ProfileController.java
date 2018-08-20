@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping(value = "/profile")
 public class ProfileController {
 
     @Autowired
@@ -41,9 +42,9 @@ public class ProfileController {
         return model;
     }
 
-    @RequestMapping(value = "/listBooks", method = RequestMethod.GET)
-    public List<ProfileBookDTO> listBooks() {
-        return profileBookService.listBooks();
+    @RequestMapping(value = "/listBook", method = RequestMethod.GET)
+    public List<ProfileBookDTO> listBook() {
+        return profileBookService.listBook();
     }
 
     @RequestMapping(value = "/startReadBook", method = RequestMethod.POST)

@@ -14,7 +14,7 @@ public class ShopService {
     @Autowired
     BookRepository bookRepository;
 
-    public List<ShopBookDTO> listBooks() {
+    public List<ShopBookDTO> listBook() {
         return bookRepository.findAllByCanBuyByDiamondOrCanBuyByGold(true, true).stream().map(ShopBookDTO::new).collect(Collectors.toList());
     }
 
