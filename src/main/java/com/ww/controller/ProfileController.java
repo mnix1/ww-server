@@ -1,9 +1,9 @@
 package com.ww.controller;
 
-import com.ww.model.dto.social.ProfileDTO;
+import com.ww.model.dto.social.ProfileResourcesDTO;
 import com.ww.model.entity.social.Profile;
-import com.ww.service.social.ProfileService;
 import com.ww.service.SessionService;
+import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,7 +29,7 @@ public class ProfileController {
         if (authId != null) {
             Profile profile = profileService.createOrRetrieveProfile(authId);
             sessionService.setProfileId(profile.getId());
-            model.put("profile", new ProfileDTO(profile));
+            model.put("profile", new ProfileResourcesDTO(profile));
         }
         return model;
     }

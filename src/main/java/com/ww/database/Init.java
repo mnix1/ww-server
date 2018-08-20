@@ -6,12 +6,12 @@ import com.ww.model.constant.hero.HeroType;
 import com.ww.model.constant.hero.WisdomAttribute;
 import com.ww.model.constant.rival.task.TaskRenderer;
 import com.ww.model.constant.rival.task.type.*;
-import com.ww.model.constant.shop.ChestType;
+import com.ww.model.constant.shop.BookType;
 import com.ww.model.entity.hero.Hero;
 import com.ww.model.entity.rival.task.Clipart;
 import com.ww.model.entity.rival.task.TaskType;
 import com.ww.model.entity.rival.task.TaskWisdomAttribute;
-import com.ww.model.entity.shop.Chest;
+import com.ww.model.entity.shop.Book;
 import com.ww.model.entity.social.Profile;
 import com.ww.repository.hero.HeroRepository;
 import com.ww.repository.rival.task.AnswerRepository;
@@ -19,7 +19,7 @@ import com.ww.repository.rival.task.QuestionRepository;
 import com.ww.repository.rival.task.TaskTypeRepository;
 import com.ww.repository.rival.task.TaskWisdomAttributeRepository;
 import com.ww.repository.rival.task.category.ClipartRepository;
-import com.ww.repository.shop.ChestRepository;
+import com.ww.repository.shop.BookRepository;
 import com.ww.repository.social.ProfileRepository;
 import com.ww.service.rival.task.country.CountryService;
 import com.ww.service.rival.task.element.ElementService;
@@ -69,14 +69,15 @@ public class Init {
     HeroRepository heroRepository;
 
     @Autowired
-    ChestRepository chestRepository;
+    BookRepository bookRepository;
+
     @Autowired
     ClipartRepository clipartRepository;
 
     private Random random = new SecureRandom();
 
     public void init() {
-        initChests();
+        initBooks();
         initTaskTypes();
         initHeroes();
         initProfiles();
@@ -375,10 +376,27 @@ public class Init {
         clipartRepository.saveAll(cliparts);
     }
 
-    public void initChests() {
-        List<Chest> chests = new ArrayList<>();
-        chests.add(new Chest(ChestType.HERO));
-        chestRepository.saveAll(chests);
+    public void initBooks() {
+        List<Book> books = new ArrayList<>();
+        books.add(new Book(BookType.LEAFLET, 1, 0, 1L, 0L, 0L, false, false, 0L, 0L, "Gazetka sklepowa", "Leaflet"));
+        books.add(new Book(BookType.FAIRY_TALE, 1, 0, 0L, 0L, 1L, false, false, 0L, 0L, "Bajka", "Fairy tale"));
+        books.add(new Book(BookType.TV_PROGRAM, 2, 1, 3L, 0L, 0L, false, false, 0L, 0L, "Program TV", "TV program"));
+        books.add(new Book(BookType.COLORFUL_MAGAZINE, 2, 1, 2L, 0L, 1L, false, false, 0L, 0L, "Kolorowe czasopismo", "Colorful magazine"));
+        books.add(new Book(BookType.SPORT_MAGAZINE, 2, 1, 1L, 0L, 2L, false, false, 0L, 0L, "Magazyn sportowy", "Sports magazine"));
+        books.add(new Book(BookType.NEWSPAPER, 2, 1, 0L, 0L, 3L, false, false, 0L, 0L, "Gazeta", "Newspaper"));
+        books.add(new Book(BookType.ROMANCE_NOVEL, 4, 2, 7L, 0L, 0L, false, false, 0L, 0L, "Romans", "Romance novel"));
+        books.add(new Book(BookType.USER_MANUAL, 4, 2, 3L, 0L, 4L, false, false, 0L, 0L, "Instrukcja obsługi", "User manual"));
+        books.add(new Book(BookType.BIOGRAPHY, 4, 2, 1L, 0L, 6L, false, false, 0L, 0L, "Biografia", "Biography"));
+        books.add(new Book(BookType.HISTORICAL_NOVEL, 8, 3, 10L, 0L, 5L, false, false, 0L, 0L, "Powieść historyczna", "Historical novel"));
+        books.add(new Book(BookType.CROSSWORD, 8, 3, 7L, 0L, 8L, false, false, 0L, 0L, "Krzyżówka", "Crossword"));
+        books.add(new Book(BookType.COMPANY_FINANCIAL_REPORT, 8, 3, 1L, 0L, 14L, false, false, 0L, 0L, "Sprawozdanie finansowe", "Financial Statement"));
+        books.add(new Book(BookType.WORLD_ATLAS, 12, 4, 10L, 0L, 13L, false, false, 0L, 0L, "Atlas świata", "World Atlas"));
+        books.add(new Book(BookType.STUDENT_BOOK, 12, 4, 3L, 0L, 20L, false, false, 0L, 0L, "Podręcznik szkolny", "Student's book"));
+        books.add(new Book(BookType.ENCYCLOPEDIA, 16, 5, 11L, 0L, 20L, false, false, 0L, 0L, "Encyklopedia", "Encyclopedia"));
+        books.add(new Book(BookType.SCIENCE_ARTICLE, 16, 5, 5L, 0L, 26L, false, false, 0L, 0L, "Artykuł naukowy", "Science article"));
+        books.add(new Book(BookType.MYSTERIOUS_BOOK, 20, 6, 4L, 30L, 5L, false, false, 0L, 0L, "Zagadkowa księga", "Mysterious  book"));
+        books.add(new Book(BookType.SECRET_BOOK, 20, 6, 9L, 20L, 10L, false, false, 0L, 0L, "Tajemna księga", "Secret book"));
+        bookRepository.saveAll(books);
     }
 
     public void initHeroes() {

@@ -1,17 +1,14 @@
 package com.ww.service.shop;
 
 import com.ww.model.Session;
-import com.ww.model.constant.shop.ChestType;
+import com.ww.model.constant.shop.BookType;
 import com.ww.model.dto.hero.HeroDTO;
-import com.ww.model.dto.shop.ChestDTO;
-import com.ww.model.entity.hero.Hero;
+import com.ww.model.dto.shop.BookDTO;
 import com.ww.model.entity.hero.ProfileHero;
-import com.ww.model.entity.shop.Chest;
+import com.ww.model.entity.shop.Book;
 import com.ww.model.entity.shop.ProfileChest;
 import com.ww.model.entity.social.Profile;
-import com.ww.repository.hero.HeroRepository;
-import com.ww.repository.hero.ProfileHeroRepository;
-import com.ww.repository.shop.ChestRepository;
+import com.ww.repository.shop.BookRepository;
 import com.ww.repository.shop.ProfileChestRepository;
 import com.ww.service.SessionService;
 import com.ww.service.hero.HeroService;
@@ -38,12 +35,12 @@ public class ShopService {
     private HeroService heroService;
 
     @Autowired
-    ChestRepository chestRepository;
+    BookRepository bookRepository;
     @Autowired
     ProfileChestRepository profileChestRepository;
 
-    public List<ChestDTO> list() {
-        return profileService.getProfile().getChests().stream().map(profileChest -> new ChestDTO(profileChest)).collect(Collectors.toList());
+    public List<BookDTO> list() {
+        return profileService.getProfile().getChests().stream().map(profileChest -> new BookDTO(profileChest)).collect(Collectors.toList());
     }
 
     public Map<String, Object> open(Long profileChestId) {
@@ -55,8 +52,8 @@ public class ShopService {
         }
         Profile profile = profileService.getProfile();
         ProfileChest profileChest = optionalProfileChest.get();
-        ChestType chestType = profileChest.getChest().getType();
-        if (chestType == ChestType.HERO) {
+        BookType bookType = profileChest.getBook().getType();
+        if (bookType == BookType.HERO) {
             ProfileHero profileHero = heroService.addHero(profile, heroService.random());
             model.put("hero", new HeroDTO(profileHero));
         }
@@ -69,9 +66,9 @@ public class ShopService {
     }
 
     public void addChest(String profileTag) {
-        Chest chest = chestRepository.findFirstByType(ChestType.HERO);
+        Book book = bookRepository.findFirstByType(BookType.HERO);
         Profile profile = profileService.getProfile(profileTag);
-        ProfileChest profileChest = new ProfileChest(profile, chest);
+        ProfileChest profileChest = new ProfileChest(profile, book);
         profileChestRepository.save(profileChest);
     }
 }

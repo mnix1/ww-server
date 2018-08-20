@@ -22,11 +22,11 @@ public class ProfileChest {
     private Profile profile;
     @ManyToOne
     @JoinColumn(name = "chest_id", nullable = false, updatable = false)
-    private Chest chest;
+    private Book book;
 
-    public ProfileChest(Profile profile, Chest chest) {
+    public ProfileChest(Profile profile, Book book) {
         this.profile = profile;
-        this.chest = chest;
+        this.book = book;
     }
 
     @Override

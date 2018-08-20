@@ -26,8 +26,10 @@ public class Profile {
     private HeroType heroType;
     private Long level;
     private Long experience;
-    private Long wisdomPoint;
+    private Long gold;
+    private Long wisdom;
     private Long diamond;
+    private Long elixir;
 
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
     private Set<ProfileFriend> friends = new HashSet<>();
@@ -44,8 +46,10 @@ public class Profile {
         this.authId = authId;
         this.level = 0L;
         this.experience = 0L;
-        this.wisdomPoint = 0L;
+        this.wisdom = 0L;
         this.diamond = 0L;
+        this.gold = 0L;
+        this.elixir = 0L;
         this.heroType = HeroType.random();
     }
 

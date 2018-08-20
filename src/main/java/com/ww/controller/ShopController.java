@@ -1,6 +1,6 @@
 package com.ww.controller;
 
-import com.ww.model.dto.shop.ChestDTO;
+import com.ww.model.dto.shop.BookDTO;
 import com.ww.service.SessionService;
 import com.ww.service.shop.ShopService;
 import com.ww.service.social.ProfileService;
@@ -27,7 +27,7 @@ public class ShopController {
     ShopService shopService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public List<ChestDTO> list() {
+    public List<BookDTO> list() {
         return shopService.list();
     }
 
