@@ -15,7 +15,9 @@ import java.util.stream.Collectors;
 import static com.ww.helper.AnswerHelper.difficultyCalibration;
 import static com.ww.helper.AnswerHelper.isValueDistanceEnough;
 import static com.ww.helper.ColorHelper.colorToHex;
+import static com.ww.helper.ColorHelper.colorToInt;
 import static com.ww.helper.ColorHelper.randomColor;
+import static com.ww.helper.RandomHelper.randomDistinctIntegers;
 import static com.ww.helper.RandomHelper.randomInteger;
 
 @Service
@@ -35,7 +37,7 @@ public class RiddleColorTaskService {
     }
 
     private Color prepareCorrectColor() {
-        return randomColor(90, 255);
+        return randomColor(80, 255);
     }
 
     private List<Color> prepareMixColors(int count, Color correctColor) {
@@ -44,8 +46,8 @@ public class RiddleColorTaskService {
         int totalG = correctColor.getGreen();
         int totalB = correctColor.getBlue();
         for (int i = 0; i < count - 1; i++) {
-            int r = randomInteger(0, totalR);
-            int g = randomInteger(0, totalG);
+            int r = randomInteger(0, totalR / count);
+            int g = randomInteger(0, totalG / (count * 2));
             int b = randomInteger(0, totalB);
             colors.add(new Color(r, g, b));
             totalR -= r;
@@ -57,22 +59,43 @@ public class RiddleColorTaskService {
         return colors;
     }
 
+    //    private List<Color> prepareWrongColors(int count, Color correctColor) {
+//        List<Double> values = new ArrayList<>(count);
+//        double correctValue = correctColor.getRed() * 255 * 255 + correctColor.getGreen() * 255 + correctColor.getBlue();
+//        values.add(correctValue);
+//        List<Color> wrongColors = new ArrayList<>(count);
+//        while (wrongColors.size() < count) {
+//            int v1 = randomInteger(0, 255);
+//            int v2 = randomInteger(0, 255);
+//            int v3 = randomInteger(0, 255);
+//            double value = v1 * 255 * 255 + v2 * 255 + v3;
+//            if (isValueDistanceEnough(value, values, Math.max(0.1, 0.3 - count * 0.05))) {
+//                values.add(value);
+//                List<Integer> v = Arrays.asList(v1, v2, v3);
+//                Collections.shuffle(v);
+//                Color c = new Color(v1, v2, v3);
+//                wrongColors.add(c);
+//            }
+//        }
+//        return wrongColors;
+//    }
+
     private List<Color> prepareWrongColors(int count, Color correctColor) {
         List<Double> values = new ArrayList<>(count);
-        double correctValue = correctColor.getRed() + correctColor.getGreen() + correctColor.getBlue() / 3d;
+        double correctValue = colorToInt(correctColor);
         values.add(correctValue);
         List<Color> wrongColors = new ArrayList<>(count);
+        int[] numbers = randomDistinctIntegers(count, 0, 255 * 255 * 255);
+        int index = 0;
         while (wrongColors.size() < count) {
-            int v1 = randomInteger(0, 255);
-            int v2 = randomInteger(0, 255);
-            int v3 = randomInteger(0, 255);
-            double value = (v1 + v2 + v3) / 3d;
+            Color c = new Color(numbers[index]);
+            double value = colorToInt(c);
             if (isValueDistanceEnough(value, values, Math.max(0.08, 0.3 - count * 0.05))) {
-                values.add(value);
-                List<Integer> v = Arrays.asList(v1, v2, v3);
-                Collections.shuffle(v);
-                Color c = new Color(v.get(0), v.get(1), v.get(2));
                 wrongColors.add(c);
+                values.add(value);
+                index++;
+            } else {
+                numbers[index] = randomInteger(0, 255 * 255 * 255);
             }
         }
         return wrongColors;
@@ -82,8 +105,8 @@ public class RiddleColorTaskService {
         Question question = new Question(type, difficultyLevel);
         if (typeValue == RiddleTaskType.COLOR_MIXING) {
             question.setHtmlContent("<div style=\"display:flex;\">" + StringUtils.join(colorsToMix.stream().map(this::colorToHtml).collect(Collectors.toList()), "") + "</div>");
-            question.setTextContentPolish("Jaki kolor powstanie z połączenia następujących kolorów?");
-            question.setTextContentEnglish("What color will result from the combination of the following colors?");
+            question.setTextContentPolish("Jaki kolor powstanie z dodania następujących kolorów w systemie RGB?");
+            question.setTextContentEnglish("What color will be created by adding the following colors in the RGB system?");
         }
         return question;
     }

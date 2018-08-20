@@ -38,7 +38,7 @@ public class RiddleClipartService {
             targetWidth *= 2;
             oneRow = true;
         } else if (images.size() < 4) {
-            targetHeight *= 2;
+            targetHeight *= 1.33;
             targetWidth *= 1.33;
             oneRow = true;
         }
@@ -61,7 +61,7 @@ public class RiddleClipartService {
         int halfCount = (int) Math.ceil(count / (oneRow ? 1d : 2d));
         for (int i = 0; i < count; i++) {
             int x = (i % halfCount) * (offsetWidth + (width - offsetWidth * halfCount) / halfCount);
-            int y = oneRow ? 0 : (i < halfCount ? marginHeight : height / 2 + marginHeight);
+            int y = oneRow ? (height / 2 - offsetHeight / 2) : (i < halfCount ? marginHeight : height / 2 + marginHeight);
             positions.add(new Position(y, x));
         }
         return positions;

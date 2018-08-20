@@ -22,7 +22,7 @@ public class TaskDTO {
     private TaskRenderer answerRenderer;
     private String imageContent;
     private String htmlContent;
-    private Instant dateContent;
+    private String dateContent;
     private String animationContent;
     private String textContentPolish;
     private String textContentEnglish;
@@ -37,7 +37,7 @@ public class TaskDTO {
         this.answerRenderer = question.getType().getAnswerRenderer();
         this.imageContent = question.getImageContent();
         this.htmlContent = question.getHtmlContent();
-        this.dateContent = question.getDateContent();
+        this.dateContent = question.getDateContent() != null ? question.getDateContent().toString() : null;
         this.animationContent = question.getAnimationContent();
         this.textContentPolish = question.getTextContentPolish();
         this.textContentEnglish = question.getTextContentEnglish();

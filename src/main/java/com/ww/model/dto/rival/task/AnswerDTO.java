@@ -11,7 +11,7 @@ public class AnswerDTO {
     private Long id;
     private String imageContent;
     private String htmlContent;
-    private Instant dateContent;
+    private String dateContent;
     private String textContentPolish;
     private String textContentEnglish;
 
@@ -19,7 +19,7 @@ public class AnswerDTO {
         this.id = answer.getId();
         this.imageContent = answer.getImageContent();
         this.htmlContent = answer.getHtmlContent();
-        this.dateContent = answer.getDateContent();
+        this.dateContent =  answer.getDateContent() != null ? answer.getDateContent().toString() : null;
         this.textContentPolish = answer.getTextContentPolish();
         this.textContentEnglish = answer.getTextContentEnglish();
     }
