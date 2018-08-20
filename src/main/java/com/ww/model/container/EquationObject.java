@@ -14,12 +14,20 @@ public class EquationObject {
         leftSide += v;
     }
 
-    public void addLeftSide(Integer v) {
+    private String add(Integer v){
         if (v > 0) {
-            leftSide += "+" + v;
+            return "+" + v;
         } else {
-            leftSide += v;
+            return v+"";
         }
+    }
+
+    public void addLeftSide(Integer v) {
+        leftSide += add(v);
+    }
+
+    public void addRightSide(Integer v) {
+        rightSide += add(v);
     }
 
     public void appendRightSide(String v) {

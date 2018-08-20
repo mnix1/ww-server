@@ -21,14 +21,15 @@ public class EquationSolveTaskService {
     public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, EquationTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
         int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
-        EquationObject equationObject = prepareEquation(difficultyCalibration(remainedDifficulty));
+        int calibration = difficultyCalibration(remainedDifficulty);
+        EquationObject equationObject = calibration > 2 ? prepareEquationType2(calibration) : prepareEquationType1(calibration);
         Question question = prepareQuestion(type, difficultyLevel, typeValue, equationObject);
         List<Answer> answers = prepareAnswers(typeValue, equationObject.getValue(), answersCount);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
 
-    private EquationObject prepareEquation(int calibration) {
+    private EquationObject prepareEquationType1(int calibration) {
         int bound = calibration * 10 + 40;
         int value = randomInteger(-bound, bound);
         EquationObject eq = new EquationObject(value);
@@ -39,6 +40,29 @@ public class EquationSolveTaskService {
         eq.appendLeftSide(Math.abs(multiplier) > 1 ? multiplier + "*x" : "x");
         eq.addLeftSide(-value * multiplier);
         eq.appendRightSide("0");
+        return eq;
+    }
+
+    private EquationObject prepareEquationType2(int calibration) {
+        int bound = calibration * 10 + 40;
+        int value = randomInteger(-bound, bound);
+        EquationObject eq = new EquationObject(value);
+        int multiplier = randomInteger(-calibration * 2 - 6, calibration * 2 + 6);
+        if (Math.abs(multiplier) < 2) {
+            multiplier = randomInteger(2, calibration * 2 + 6);
+        }
+        int leftConstant = randomInteger(2, calibration * 2 + 5);
+        int leftMultiplier = randomInteger(2, calibration + 6);
+        int rightMultiplier = multiplier - leftMultiplier;
+        eq.appendLeftSide(leftMultiplier + "*x");
+        eq.addLeftSide(leftConstant * multiplier);
+        if (rightMultiplier != 0) {
+            eq.appendRightSide(Math.abs(rightMultiplier) > 1 ? -rightMultiplier + "*x" : "x");
+            eq.addRightSide((value + leftConstant) * multiplier);
+        } else {
+            eq.appendRightSide("" + (value + leftConstant) * multiplier);
+        }
+
         return eq;
     }
 
