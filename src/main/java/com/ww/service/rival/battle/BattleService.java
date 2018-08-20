@@ -10,7 +10,7 @@ import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
-import com.ww.service.shop.ShopService;
+import com.ww.service.book.ProfileBookService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.websocket.message.Message;
 import org.slf4j.Logger;
@@ -35,7 +35,7 @@ public class BattleService {
     private ProfileConnectionService profileConnectionService;
 
     @Autowired
-    private ShopService shopService;
+    private ProfileBookService profileBookService;
 
     @Autowired
     private TaskGenerateService taskGenerateService;
@@ -74,7 +74,7 @@ public class BattleService {
             }
         });
         if (winnerTag != null) {
-            shopService.addChest(winnerTag);
+            profileBookService.giveBook(winnerTag);
         }
 
         // TODO STORE RESULT

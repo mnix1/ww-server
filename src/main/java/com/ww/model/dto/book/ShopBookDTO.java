@@ -1,12 +1,11 @@
-package com.ww.model.dto.shop;
+package com.ww.model.dto.book;
 
-import com.ww.model.constant.shop.BookType;
-import com.ww.model.entity.shop.Book;
-import com.ww.model.entity.shop.ProfileChest;
+import com.ww.model.constant.book.BookType;
+import com.ww.model.entity.book.Book;
 import lombok.Getter;
 
 @Getter
-public class BookDTO {
+public class ShopBookDTO {
 
     private Long id;
     private BookType type;
@@ -27,7 +26,7 @@ public class BookDTO {
     private String namePolish;
     private String nameEnglish;
 
-    public BookDTO(Book book) {
+    public ShopBookDTO(Book book) {
         this.type = book.getType();
         this.readTime = book.getReadTime();
         this.level = book.getLevel();
@@ -40,10 +39,5 @@ public class BookDTO {
         this.diamondCost = book.getDiamondCost();
         this.namePolish = book.getNamePolish();
         this.nameEnglish = book.getNameEnglish();
-    }
-
-    public BookDTO(ProfileChest profileChest) {
-        this(profileChest.getBook());
-        this.id = profileChest.getId();
     }
 }

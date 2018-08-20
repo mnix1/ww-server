@@ -78,6 +78,10 @@ public class ProfileService {
         return profile;
     }
 
+    public void save(Profile profile) {
+        profileRepository.save(profile);
+    }
+
     public Profile updateProfileName(String name) {
         Profile profile = getProfile();
         profile.setName(name);

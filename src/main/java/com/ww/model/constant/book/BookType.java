@@ -1,4 +1,4 @@
-package com.ww.model.constant.shop;
+package com.ww.model.constant.book;
 
 import java.util.Arrays;
 import java.util.List;

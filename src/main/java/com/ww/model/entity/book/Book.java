@@ -1,8 +1,7 @@
-package com.ww.model.entity.shop;
+package com.ww.model.entity.book;
 
 
-import com.ww.model.constant.shop.BookType;
-import lombok.AllArgsConstructor;
+import com.ww.model.constant.book.BookType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

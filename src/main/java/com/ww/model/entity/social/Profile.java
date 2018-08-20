@@ -3,7 +3,7 @@ package com.ww.model.entity.social;
 import com.ww.helper.TagHelper;
 import com.ww.model.constant.hero.HeroType;
 import com.ww.model.entity.hero.ProfileHero;
-import com.ww.model.entity.shop.ProfileChest;
+import com.ww.model.entity.book.ProfileBook;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,8 +27,8 @@ public class Profile {
     private Long level;
     private Long experience;
     private Long gold;
-    private Long wisdom;
     private Long diamond;
+    private Long wisdom;
     private Long elixir;
 
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
@@ -38,7 +38,7 @@ public class Profile {
     private Set<ProfileHero> heroes = new HashSet<>();
 
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
-    private Set<ProfileChest> chests = new HashSet<>();
+    private Set<ProfileBook> books = new HashSet<>();
 
     public Profile(String authId) {
         this.tag = TagHelper.randomTag();
@@ -46,9 +46,9 @@ public class Profile {
         this.authId = authId;
         this.level = 0L;
         this.experience = 0L;
-        this.wisdom = 0L;
-        this.diamond = 0L;
         this.gold = 0L;
+        this.diamond = 0L;
+        this.wisdom = 0L;
         this.elixir = 0L;
         this.heroType = HeroType.random();
     }
@@ -62,6 +62,21 @@ public class Profile {
         this.name = name;
         this.level = level;
         this.heroType = HeroType.random();
+    }
+
+    public void changeResources(Long gold, Long diamond, Long wisdom, Long elixir) {
+        if (gold != null) {
+            this.gold += gold;
+        }
+        if (gold != null) {
+            this.diamond += diamond;
+        }
+        if (gold != null) {
+            this.wisdom += wisdom;
+        }
+        if (gold != null) {
+            this.elixir += elixir;
+        }
     }
 
     @Override
