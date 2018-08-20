@@ -12,10 +12,5 @@ import lombok.Setter;
 @Setter
 public class NumberObject {
     private Double value;
-    private String html;
-
-    public void writeToObjectNode(ObjectNode objectNode){
-        objectNode.put("value", value)
-                .put("html", html);
-    }
+    private String stringValue;
 }

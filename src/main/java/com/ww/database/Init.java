@@ -134,11 +134,11 @@ public class Init {
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.1)
         ))));
 
-        taskTypes.add(new TaskType(Category.NUMBER, NumberTaskType.MAX.name(), TaskRenderer.TEXT, TaskRenderer.HTML, 0, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.NUMBER, NumberTaskType.MAX.name(), TaskRenderer.TEXT, TaskRenderer.EQUATION, 0, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.55),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.45)
         ))));
-        taskTypes.add(new TaskType(Category.NUMBER, NumberTaskType.MIN.name(), TaskRenderer.TEXT, TaskRenderer.HTML, 0, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.NUMBER, NumberTaskType.MIN.name(), TaskRenderer.TEXT, TaskRenderer.EQUATION, 0, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.5),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.5)
         ))));
@@ -155,20 +155,24 @@ public class Init {
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.06)
         ))));
 
-        taskTypes.add(new TaskType(Category.EQUATION, EquationTaskType.ADDITION.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
-                new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.9),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.1)
-        ))));
-        taskTypes.add(new TaskType(Category.EQUATION, EquationTaskType.MULTIPLICATION.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 4, new HashSet<>(Arrays.asList(
-                new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.8),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.05),
-                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.05),
-                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.1)
-        ))));
-        taskTypes.add(new TaskType(Category.EQUATION, EquationTaskType.MODULO.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 5, new HashSet<>(Arrays.asList(
-                new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.8),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.05),
-                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.15)
+//        taskTypes.add(new TaskType(Category.EQUATION, EquationTaskType.ADDITION.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
+//                new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.9),
+//                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.1)
+//        ))));
+//        taskTypes.add(new TaskType(Category.EQUATION, EquationTaskType.MULTIPLICATION.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 4, new HashSet<>(Arrays.asList(
+//                new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.8),
+//                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.05),
+//                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.05),
+//                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.1)
+//        ))));
+//        taskTypes.add(new TaskType(Category.EQUATION, EquationTaskType.MODULO.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 5, new HashSet<>(Arrays.asList(
+//                new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.8),
+//                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.05),
+//                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.15)
+//        ))));
+        taskTypes.add(new TaskType(Category.EQUATION, EquationTaskType.FIND_X.name(), TaskRenderer.TEXT_EQUATION, TaskRenderer.EQUATION, 6, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.95),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.05)
         ))));
 
         taskTypes.add(new TaskType(Category.COUNTRY, CountryTaskType.COUNTRY_NAME_FROM_ALPHA_2.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 0, new HashSet<>(Arrays.asList(

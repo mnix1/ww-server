@@ -82,9 +82,9 @@ public class NumberMatchAnswerTaskService {
         int downBound = difficultyCalibration(difficulty) < 3 ? 1 : -upBound;
         int numerator = randomInteger(downBound, upBound);
         int denominator = randomInteger(2, upBound);
-        String html = "<div>" + numerator + "</div>" + "<hr style=\"width:12px;margin:0 auto;\"/>" + " <div> " + denominator + " </div > ";
+        String stringValue = numerator + "/" + denominator;
         double value = numerator * 1.0 / denominator;
-        return new NumberObject(value, html);
+        return new NumberObject(value, stringValue);
     }
 
     private NumberObject generateRandomDecimal(int difficulty) {
@@ -97,16 +97,14 @@ public class NumberMatchAnswerTaskService {
             bigDecimal = new BigDecimal(bigDecimal.doubleValue() + 0.01);
         }
         number = bigDecimal.doubleValue();
-        String html = number + "";
-        return new NumberObject(number, html);
+        return new NumberObject(number, number + "");
     }
 
     private NumberObject generateRandomInteger(int difficulty) {
         int upBound = 9 + difficultyCalibration(difficulty) * 11;
         int downBound = difficultyCalibration(difficulty) < 3 ? 1 : -upBound;
         int number = randomInteger(downBound, upBound);
-        String html = number + "";
-        return new NumberObject((double) number, html);
+        return new NumberObject((double) number, number + "");
     }
 
     private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, NumberTaskType typeValue) {
@@ -143,7 +141,7 @@ public class NumberMatchAnswerTaskService {
         NumberObject correctNumber = numbers.get(correctIndex);
         return numbers.stream().map(numberObject -> {
             Answer answer = new Answer(correctNumber == numberObject);
-            answer.setHtmlContent(numberObject.getHtml());
+            answer.setTextContent(numberObject.getStringValue());
             return answer;
         }).collect(Collectors.toList());
     }
