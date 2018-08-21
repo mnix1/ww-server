@@ -125,7 +125,15 @@ public class ProfileBookService {
         if (profileBookRepository.findByProfile_Id(profile.getId()).size() >= BOOK_SHELF_COUNT) {
             return;
         }
+        giveBook(profile);
+    }
+
+    public void giveBook(Profile profile) {
         Book book = bookService.findRandomBook();
+        giveBook(profile, book);
+    }
+
+    public void giveBook(Profile profile, Book book) {
         ProfileBook profileBook = new ProfileBook(profile, book);
         profileBookRepository.save(profileBook);
     }

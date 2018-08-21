@@ -68,13 +68,13 @@ public class Profile {
         if (gold != null) {
             this.gold += gold;
         }
-        if (gold != null) {
+        if (crystal != null) {
             this.crystal += crystal;
         }
-        if (gold != null) {
+        if (wisdom != null) {
             this.wisdom += wisdom;
         }
-        if (gold != null) {
+        if (elixir != null) {
             this.elixir += elixir;
         }
     }

@@ -2,10 +2,6 @@ package com.ww.service.book;
 
 import com.ww.model.entity.book.Book;
 import com.ww.repository.book.BookRepository;
-import com.ww.repository.book.ProfileBookRepository;
-import com.ww.service.SessionService;
-import com.ww.service.hero.HeroService;
-import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
