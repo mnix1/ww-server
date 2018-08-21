@@ -22,7 +22,7 @@ public enum BookType {
     //3,
     HISTORICAL_NOVEL,
     CROSSWORD,
-    COMPANY_FINANCIAL_REPORT,
+    FINANCIAL_STATEMENT,
     //4
     WORLD_ATLAS,
     STUDENT_BOOK,

@@ -389,7 +389,7 @@ public class Init {
         books.add(new Book(BookType.BIOGRAPHY, 4, 2, 1L, 0L, 6L, false, false, 0L, 0L, "Biografia", "Biography"));
         books.add(new Book(BookType.HISTORICAL_NOVEL, 8, 3, 10L, 0L, 5L, false, false, 0L, 0L, "Powieść historyczna", "Historical novel"));
         books.add(new Book(BookType.CROSSWORD, 8, 3, 7L, 0L, 8L, false, false, 0L, 0L, "Krzyżówka", "Crossword"));
-        books.add(new Book(BookType.COMPANY_FINANCIAL_REPORT, 8, 3, 1L, 0L, 14L, false, false, 0L, 0L, "Sprawozdanie finansowe", "Financial Statement"));
+        books.add(new Book(BookType.FINANCIAL_STATEMENT, 8, 3, 1L, 0L, 14L, false, false, 0L, 0L, "Sprawozdanie finansowe", "Financial Statement"));
         books.add(new Book(BookType.WORLD_ATLAS, 12, 4, 10L, 0L, 13L, false, false, 0L, 0L, "Atlas świata", "World Atlas"));
         books.add(new Book(BookType.STUDENT_BOOK, 12, 4, 3L, 0L, 20L, false, false, 0L, 0L, "Podręcznik szkolny", "Student's book"));
         books.add(new Book(BookType.ENCYCLOPEDIA, 16, 5, 11L, 0L, 20L, false, false, 0L, 0L, "Encyklopedia", "Encyclopedia"));
