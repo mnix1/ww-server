@@ -69,8 +69,8 @@ public class ProfileBookService {
             return model;
         }
         ProfileBook profileBook = optionalProfileBook.get();
-        Long inProgressInterval = profileBook.inProgressInterval();
-        profileBook.setAlreadyReadInterval(inProgressInterval);
+        Long alreadyReadInterval = profileBook.inProgressInterval() + profileBook.getAlreadyReadInterval();
+        profileBook.setAlreadyReadInterval(alreadyReadInterval);
         profileBook.setInProgressDate(null);
         profileBookRepository.save(profileBook);
         model.put("code", 1);

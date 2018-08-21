@@ -114,6 +114,9 @@ public class BattleManager {
     private synchronized void statePreparingNextTask(Integer interval) {
         Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS)
                 .subscribe(aLong -> {
+                    if(isClosed()){
+                        return;
+                    }
                     battleContainer.setNextTaskDate(Instant.now().plus(NEXT_TASK_INTERVAL, ChronoUnit.MILLIS));
                     battleContainer.setStatus(BattleStatus.PREPARING_NEXT_TASK);
                     Map<String, Object> model = new HashMap<>();
@@ -128,6 +131,9 @@ public class BattleManager {
     private synchronized void stateAnswering() {
         Flowable.intervalRange(0L, 1L, NEXT_TASK_INTERVAL, NEXT_TASK_INTERVAL, TimeUnit.MILLISECONDS)
                 .subscribe(aLong -> {
+                    if(isClosed()){
+                        return;
+                    }
                     battleContainer.setEndAnsweringDate(Instant.now().plus(ANSWERING_INTERVAL, ChronoUnit.MILLIS));
                     battleContainer.setStatus(BattleStatus.ANSWERING);
                     battleContainer.forEachProfile(battleProfileContainer -> {
@@ -189,6 +195,9 @@ public class BattleManager {
     public synchronized void stateClose() {
         Flowable.intervalRange(0L, 1L, SHOWING_ANSWER_INTERVAL, SHOWING_ANSWER_INTERVAL, TimeUnit.MILLISECONDS)
                 .subscribe(aLong -> {
+                    if(isClosed()){
+                        return;
+                    }
                     battleContainer.setStatus(BattleStatus.CLOSED);
                     String winnerTag = battleContainer.findWinnerTag();
                     battleContainer.setWinnerTag(winnerTag);
@@ -222,6 +231,9 @@ public class BattleManager {
     public synchronized void stateChoosingTaskProps() {
         Flowable.intervalRange(0L, 1L, SHOWING_ANSWER_INTERVAL, SHOWING_ANSWER_INTERVAL, TimeUnit.MILLISECONDS)
                 .subscribe(aLong -> {
+                    if(isClosed()){
+                        return;
+                    }
                     battleContainer.setStatus(BattleStatus.CHOOSING_TASK_PROPS);
                     battleContainer.increaseCurrentTaskIndex();
                     boolean randomChooseTaskProps = battleContainer.randomChooseTaskProps();
