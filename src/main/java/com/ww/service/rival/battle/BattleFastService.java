@@ -24,6 +24,8 @@ public class BattleFastService {
 
     private final CopyOnWriteArrayList<Profile> waitingForBattleProfiles = new CopyOnWriteArrayList<>();
 
+    private static final int FAST_BATTLE_JOB_RATE = 2000;
+
     @Autowired
     private SessionService sessionService;
 
@@ -52,7 +54,7 @@ public class BattleFastService {
         return model;
     }
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = FAST_BATTLE_JOB_RATE)
     private void maybeInitFastBattle() {
         if (waitingForBattleProfiles.isEmpty()) {
 //            logger.debug("No waiting for battle profiles");

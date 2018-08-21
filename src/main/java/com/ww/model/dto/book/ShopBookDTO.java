@@ -27,6 +27,7 @@ public class ShopBookDTO {
     private String nameEnglish;
 
     public ShopBookDTO(Book book) {
+        this.id = book.getId();
         this.type = book.getType();
         this.readTime = book.getReadTime();
         this.level = book.getLevel();
