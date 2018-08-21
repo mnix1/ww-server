@@ -56,6 +56,23 @@ public class ProfileController {
         return profileBookService.startReadBook(profileBookId);
     }
 
+    @RequestMapping(value = "/stopReadBook", method = RequestMethod.POST)
+    public Map stopReadBook(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("id")) {
+            throw new IllegalArgumentException();
+        }
+        Long profileBookId = ((Integer) payload.get("id")).longValue();
+        return profileBookService.stopReadBook(profileBookId);
+    }
+    @RequestMapping(value = "/discardBook", method = RequestMethod.POST)
+    public Map discardBook(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("id")) {
+            throw new IllegalArgumentException();
+        }
+        Long profileBookId = ((Integer) payload.get("id")).longValue();
+        return profileBookService.discardBook(profileBookId);
+    }
+
     @RequestMapping(value = "/claimRewardBook", method = RequestMethod.POST)
     public Map claimRewardBook(@RequestBody Map<String, Object> payload) {
         if (!payload.containsKey("id")) {

@@ -14,12 +14,12 @@ public class ProfileBookDTO {
     private Long readTime;
     private Integer level;
 
-    private Long gainDiamond;
+    private Long gainCrystal;
     private Long gainElixir;
     private Long gainWisdom;
 
     private Boolean isInProgress;
-    private Long inProgressInterval;
+    private Long alreadyReadInterval;
     private Boolean canClaimReward;
 
     private String namePolish;
@@ -29,7 +29,7 @@ public class ProfileBookDTO {
         this.type = book.getType();
         this.readTime = book.getReadTime();
         this.level = book.getLevel();
-        this.gainDiamond = book.getGainDiamond();
+        this.gainCrystal = book.getGainCrystal();
         this.gainElixir = book.getGainElixir();
         this.gainWisdom = book.getGainWisdom();
         this.namePolish = book.getNamePolish();
@@ -40,7 +40,7 @@ public class ProfileBookDTO {
         this(profileBook.getBook());
         this.id = profileBook.getId();
         this.isInProgress = profileBook.isInProgress();
-        this.inProgressInterval = profileBook.inProgressInterval();
+        this.alreadyReadInterval = profileBook.inProgressInterval() + profileBook.getAlreadyReadInterval();
         this.canClaimReward = profileBook.canClaimReward();
     }
 }

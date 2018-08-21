@@ -19,6 +19,7 @@ public class ProfileBook {
     private Instant createDate;
     private Instant inProgressDate;
     private Instant closeDate;
+    private Long alreadyReadInterval = 0L;
     @ManyToOne
     @JoinColumn(name = "profile_id", nullable = false, updatable = false)
     private Profile profile;
@@ -36,11 +37,15 @@ public class ProfileBook {
         if (isInProgress()) {
             return Instant.now().toEpochMilli() - inProgressDate.toEpochMilli();
         }
-        return null;
+        return 0L;
     }
 
     public Boolean isInProgress() {
         return inProgressDate != null;
+    }
+
+    public Boolean isReadingFinished() {
+        return inProgressInterval() + alreadyReadInterval > book.getReadTime();
     }
 
     public Boolean isRewardClaimed() {
@@ -48,10 +53,10 @@ public class ProfileBook {
     }
 
     public Boolean canClaimReward() {
-        if (isRewardClaimed() || !isInProgress()) {
+        if (isRewardClaimed()) {
             return false;
         }
-        return inProgressInterval() > book.getReadTime();
+        return isReadingFinished();
     }
 
     @Override

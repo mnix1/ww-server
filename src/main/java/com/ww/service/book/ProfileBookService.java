@@ -42,21 +42,50 @@ public class ProfileBookService {
         return profileBooks.stream().noneMatch(profileBook -> profileBook.isInProgress() && !profileBook.canClaimReward());
     }
 
-    public synchronized  Map<String, Object> startReadBook(Long profileBookId) {
+    public synchronized Map<String, Object> startReadBook(Long profileBookId) {
         Map<String, Object> model = new HashMap<>();
         List<ProfileBook> profileBooks = profileBookRepository.findByProfile_Id(sessionService.getProfileId());
         if (!checkIfProfileReadingBook(profileBooks)) {
             model.put("code", -1);
             return model;
         }
-        Optional<ProfileBook> optionalProfileChest = profileBooks.stream().filter(profileBook -> profileBook.getId().equals(profileBookId)).findFirst();
-        if (!optionalProfileChest.isPresent()) {
+        Optional<ProfileBook> optionalProfileBook = profileBooks.stream().filter(profileBook -> profileBook.getId().equals(profileBookId)).findFirst();
+        if (!optionalProfileBook.isPresent()) {
             model.put("code", -1);
             return model;
         }
-        ProfileBook profileBook = optionalProfileChest.get();
+        ProfileBook profileBook = optionalProfileBook.get();
         profileBook.setInProgressDate(Instant.now());
         profileBookRepository.save(profileBook);
+        model.put("code", 1);
+        return model;
+    }
+
+    public synchronized Map<String, Object> stopReadBook(Long profileBookId) {
+        Map<String, Object> model = new HashMap<>();
+        Optional<ProfileBook> optionalProfileBook = profileBookRepository.findByIdAndProfile_Id(profileBookId, sessionService.getProfileId());
+        if (!optionalProfileBook.isPresent()) {
+            model.put("code", -1);
+            return model;
+        }
+        ProfileBook profileBook = optionalProfileBook.get();
+        Long inProgressInterval = profileBook.inProgressInterval();
+        profileBook.setAlreadyReadInterval(inProgressInterval);
+        profileBook.setInProgressDate(null);
+        profileBookRepository.save(profileBook);
+        model.put("code", 1);
+        return model;
+    }
+
+    public synchronized Map<String, Object> discardBook(Long profileBookId) {
+        Map<String, Object> model = new HashMap<>();
+        Optional<ProfileBook> optionalProfileBook = profileBookRepository.findByIdAndProfile_Id(profileBookId, sessionService.getProfileId());
+        if (!optionalProfileBook.isPresent()) {
+            model.put("code", -1);
+            return model;
+        }
+        ProfileBook profileBook = optionalProfileBook.get();
+        profileBookRepository.delete(profileBook);
         model.put("code", 1);
         return model;
     }
@@ -83,7 +112,7 @@ public class ProfileBookService {
     public void addRewardForBook(ProfileBook profileBook) {
         Profile profile = profileBook.getProfile();
         Book b = profileBook.getBook();
-        profile.changeResources(null, b.getGainDiamond(), b.getGainWisdom(), b.getGainElixir());
+        profile.changeResources(null, b.getGainCrystal(), b.getGainWisdom(), b.getGainElixir());
         profileService.save(profile);
     }
 

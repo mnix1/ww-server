@@ -8,7 +8,7 @@ public class ProfileResourcesDTO extends ProfileDTO {
 
     private Long experience;
     private Long wisdom;
-    private Long diamond;
+    private Long crystal;
     private Long gold;
     private Long elixir;
 
@@ -16,7 +16,7 @@ public class ProfileResourcesDTO extends ProfileDTO {
         super(profile);
         this.experience = profile.getExperience();
         this.wisdom = profile.getWisdom();
-        this.diamond = profile.getDiamond();
+        this.crystal = profile.getCrystal();
         this.gold = profile.getGold();
         this.elixir = profile.getElixir();
     }

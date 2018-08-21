@@ -13,15 +13,15 @@ public class ShopBookDTO {
     private Long readTime;
     private Integer level;
 
-    private Long gainDiamond;
+    private Long gainCrystal;
     private Long gainElixir;
     private Long gainWisdom;
 
     private Boolean canBuyByGold;
-    private Boolean canBuyByDiamond;
+    private Boolean canBuyByCrystal;
 
     private Long goldCost;
-    private Long diamondCost;
+    private Long crystalCost;
 
     private String namePolish;
     private String nameEnglish;
@@ -30,13 +30,13 @@ public class ShopBookDTO {
         this.type = book.getType();
         this.readTime = book.getReadTime();
         this.level = book.getLevel();
-        this.gainDiamond = book.getGainDiamond();
+        this.gainCrystal = book.getGainCrystal();
         this.gainElixir = book.getGainElixir();
         this.gainWisdom = book.getGainWisdom();
         this.canBuyByGold = book.getCanBuyByGold();
-        this.canBuyByDiamond = book.getCanBuyByDiamond();
+        this.canBuyByCrystal = book.getCanBuyByCrystal();
         this.goldCost = book.getGoldCost();
-        this.diamondCost = book.getDiamondCost();
+        this.crystalCost = book.getCrystalCost();
         this.namePolish = book.getNamePolish();
         this.nameEnglish = book.getNameEnglish();
     }

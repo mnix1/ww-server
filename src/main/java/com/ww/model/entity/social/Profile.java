@@ -27,7 +27,7 @@ public class Profile {
     private Long level;
     private Long experience;
     private Long gold;
-    private Long diamond;
+    private Long crystal;
     private Long wisdom;
     private Long elixir;
 
@@ -47,7 +47,7 @@ public class Profile {
         this.level = 0L;
         this.experience = 0L;
         this.gold = 0L;
-        this.diamond = 0L;
+        this.crystal = 0L;
         this.wisdom = 0L;
         this.elixir = 0L;
         this.heroType = HeroType.random();
@@ -64,12 +64,12 @@ public class Profile {
         this.heroType = HeroType.random();
     }
 
-    public void changeResources(Long gold, Long diamond, Long wisdom, Long elixir) {
+    public void changeResources(Long gold, Long crystal, Long wisdom, Long elixir) {
         if (gold != null) {
             this.gold += gold;
         }
         if (gold != null) {
-            this.diamond += diamond;
+            this.crystal += crystal;
         }
         if (gold != null) {
             this.wisdom += wisdom;

@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface BookRepository extends CrudRepository<Book, Long> {
-    List<Book> findAllByCanBuyByDiamondOrCanBuyByGold(Boolean canBuyByDiamond, Boolean canBuyByGold);
+    List<Book> findAllByCanBuyByCrystalOrCanBuyByGold(Boolean canBuyByCrystal, Boolean canBuyByGold);
     List<Book> findAll();
 }

@@ -15,7 +15,7 @@ public class ShopService {
     BookRepository bookRepository;
 
     public List<ShopBookDTO> listBook() {
-        return bookRepository.findAllByCanBuyByDiamondOrCanBuyByGold(true, true).stream().map(ShopBookDTO::new).collect(Collectors.toList());
+        return bookRepository.findAllByCanBuyByCrystalOrCanBuyByGold(true, true).stream().map(ShopBookDTO::new).collect(Collectors.toList());
     }
 
 }
