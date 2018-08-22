@@ -1,10 +1,12 @@
 package com.ww.controller;
 
 import com.ww.model.dto.book.ProfileBookDTO;
+import com.ww.model.dto.hero.ProfileHeroDTO;
 import com.ww.model.dto.social.ProfileResourcesDTO;
 import com.ww.model.entity.social.Profile;
 import com.ww.service.SessionService;
 import com.ww.service.book.ProfileBookService;
+import com.ww.service.hero.ProfileHeroService;
 import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +28,9 @@ public class ProfileController {
 
     @Autowired
     ProfileBookService profileBookService;
+
+    @Autowired
+    ProfileHeroService profileHeroService;
 
     @Autowired
     SessionService sessionService;
@@ -50,6 +55,11 @@ public class ProfileController {
     @RequestMapping(value = "/listBook", method = RequestMethod.GET)
     public List<ProfileBookDTO> listBook() {
         return profileBookService.listBook();
+    }
+
+    @RequestMapping(value = "/listHero", method = RequestMethod.GET)
+    public List<ProfileHeroDTO> listHero() {
+        return profileHeroService.list();
     }
 
     @RequestMapping(value = "/startReadBook", method = RequestMethod.POST)
