@@ -47,6 +47,15 @@ public class ProfileController {
         return model;
     }
 
+    @RequestMapping(value = "/superPromo", method = RequestMethod.GET)
+    public Map superPromo() {
+        Map<String, Object> model = new HashMap<>();
+        Profile profile = profileService.getProfile();
+        profile.changeResources(1000L, 1000L, 1000L, 1000L);
+        profileService.save(profile);
+        return model;
+    }
+
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public ProfileResourcesDTO profile() {
         return new ProfileResourcesDTO(profileService.getProfile());

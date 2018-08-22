@@ -10,14 +10,14 @@ import java.util.Set;
 @Getter
 public class HeroDTO {
 
-    private Long id;
+//    private Long id;
     private String namePolish;
     private String nameEnglish;
     private HeroType type;
     private Set<Category> hobbies;
 
     public HeroDTO(Hero hero) {
-        this.id = hero.getId();
+//        this.id = hero.getId();
         this.namePolish = hero.getNamePolish();
         this.nameEnglish = hero.getNameEnglish();
         this.type = hero.getType();

@@ -20,9 +20,9 @@ import static com.ww.helper.RandomHelper.randomElement;
 @Service
 public class HeroService {
 
-    public static Long EXPERIMENT_CRYSTAL_COST = 0L;
-    public static Long EXPERIMENT_ELIXIR_COST = 0L;
-    public static Long EXPERIMENT_WISDOM_COST = 0L;
+    public static Long EXPERIMENT_CRYSTAL_COST = 100L;
+    public static Long EXPERIMENT_ELIXIR_COST = 100L;
+    public static Long EXPERIMENT_WISDOM_COST = 100L;
 
     @Autowired
     private HeroRepository heroRepository;
@@ -61,7 +61,7 @@ public class HeroService {
     public synchronized Map<String, Object> experiment() {
         Map<String, Object> model = new HashMap<>();
         Profile profile = profileService.getProfile();
-        if (checkEnoughResourcesToExperiment(profile)) {
+        if (!checkEnoughResourcesToExperiment(profile)) {
             model.put("code", -3);//no resources
             return model;
         }

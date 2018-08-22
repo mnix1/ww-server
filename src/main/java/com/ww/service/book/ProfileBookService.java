@@ -31,8 +31,6 @@ public class ProfileBookService {
     @Autowired
     private ProfileService profileService;
     @Autowired
-    private ProfileConnectionService profileConnectionService;
-    @Autowired
     ProfileBookRepository profileBookRepository;
     @Autowired
     BookService bookService;
@@ -52,7 +50,7 @@ public class ProfileBookService {
         Map<String, Object> model = new HashMap<>();
         List<ProfileBook> profileBooks = profileBookRepository.findByProfile_Id(sessionService.getProfileId());
         if (!checkIfProfileReadingBook(profileBooks)) {
-            model.put("code", -1);
+            model.put("code", -2);//reading another book
             return model;
         }
         Optional<ProfileBook> optionalProfileBook = profileBooks.stream().filter(profileBook -> profileBook.getId().equals(profileBookId)).findFirst();
