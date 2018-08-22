@@ -6,7 +6,10 @@ import com.ww.model.entity.book.ProfileBook;
 import com.ww.model.entity.social.Profile;
 import com.ww.repository.book.ProfileBookRepository;
 import com.ww.service.SessionService;
+import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
+import com.ww.service.social.RewardService;
+import com.ww.websocket.message.MessageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.ww.service.book.BookService.BOOK_SHELF_COUNT;
+import static com.ww.websocket.message.Message.REWARD;
 
 @Service
 public class ProfileBookService {
@@ -26,6 +30,8 @@ public class ProfileBookService {
     private SessionService sessionService;
     @Autowired
     private ProfileService profileService;
+    @Autowired
+    private ProfileConnectionService profileConnectionService;
     @Autowired
     ProfileBookRepository profileBookRepository;
     @Autowired
@@ -103,13 +109,13 @@ public class ProfileBookService {
             return model;
         }
         profileBook.setCloseDate(Instant.now());
-        addRewardForBook(profileBook);
+        addRewardFromBook(profileBook);
         model.put("code", 1);
         remove(profileBook);
         return model;
     }
 
-    public void addRewardForBook(ProfileBook profileBook) {
+    public void addRewardFromBook(ProfileBook profileBook) {
         Profile profile = profileBook.getProfile();
         Book b = profileBook.getBook();
         profile.changeResources(null, b.getGainCrystal(), b.getGainWisdom(), b.getGainElixir());
@@ -120,21 +126,14 @@ public class ProfileBookService {
         profileBookRepository.delete(profileBook);
     }
 
-    public void giveBook(String profileTag) {
-        Profile profile = profileService.getProfile(profileTag);
-        if (profileBookRepository.findByProfile_Id(profile.getId()).size() >= BOOK_SHELF_COUNT) {
-            return;
-        }
-        giveBook(profile);
-    }
-
-    public void giveBook(Profile profile) {
-        Book book = bookService.findRandomBook();
-        giveBook(profile, book);
-    }
-
     public void giveBook(Profile profile, Book book) {
         ProfileBook profileBook = new ProfileBook(profile, book);
         profileBookRepository.save(profileBook);
     }
+
+
+    public boolean isProfileBookShelfFull(Long profileId) {
+        return profileBookRepository.countByProfile_Id(profileId) >= BOOK_SHELF_COUNT;
+    }
+
 }

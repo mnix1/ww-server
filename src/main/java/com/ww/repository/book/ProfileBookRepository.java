@@ -14,4 +14,6 @@ public interface ProfileBookRepository extends CrudRepository<ProfileBook, Long>
     Optional<ProfileBook> findByIdAndProfile_Id(Long id, Long profileId);
 
     List<ProfileBook> findByProfile_Id(Long profileId);
+
+    Long countByProfile_Id(Long profileId);
 }

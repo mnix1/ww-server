@@ -12,6 +12,7 @@ import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.book.ProfileBookService;
 import com.ww.service.social.ProfileConnectionService;
+import com.ww.service.social.RewardService;
 import com.ww.websocket.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +43,9 @@ public class BattleService {
 
     @Autowired
     private TaskRendererService taskRendererService;
+
+    @Autowired
+    private RewardService rewardService;
 
     public ConcurrentHashMap<Long, BattleManager> getProfileIdToBattleManagerMap() {
         return profileIdToBattleManagerMap;
@@ -74,7 +78,7 @@ public class BattleService {
             }
         });
         if (winnerTag != null) {
-            profileBookService.giveBook(winnerTag);
+            rewardService.addRewardFromBattleWin(winnerTag);
         }
 
         // TODO STORE RESULT

@@ -6,6 +6,7 @@ import com.ww.model.entity.social.Profile;
 import com.ww.repository.book.BookRepository;
 import com.ww.service.book.ProfileBookService;
 import com.ww.service.social.ProfileService;
+import com.ww.service.social.RewardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,9 @@ public class ShopService {
 
     @Autowired
     ProfileService profileService;
+
+    @Autowired
+    RewardService rewardService;
     @Autowired
     ProfileBookService profileBookService;
 
@@ -41,10 +45,6 @@ public class ShopService {
         }
         Book book = optionalBook.get();
         Profile profile = profileService.getProfile();
-        if (profile.getBooks().size() >= BOOK_SHELF_COUNT) {
-            model.put("code", -2);//no space at shelf
-            return model;
-        }
         boolean isEnoughResources = false;
         if (book.getCanBuyByCrystal() && profile.getCrystal() > book.getCrystalCost()) {
             profile.changeResources(null, -book.getCrystalCost(), null, null);
@@ -55,6 +55,10 @@ public class ShopService {
         }
         if (!isEnoughResources) {
             model.put("code", -3);//no resources
+            return model;
+        }
+        if (profileBookService.isProfileBookShelfFull(profile.getId())) {
+            model.put("code", -2);//no space at shelf
             return model;
         }
         profileService.save(profile);

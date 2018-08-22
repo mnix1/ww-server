@@ -7,7 +7,6 @@ import com.ww.model.entity.rival.task.Question;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +16,7 @@ public class TaskDTO {
 
     private Long id;
     private Category category;
-    private TaskDifficultyLevel taskDifficultyLevel;
+    private TaskDifficultyLevel difficultyLevel;
     private TaskRenderer questionRenderer;
     private TaskRenderer answerRenderer;
     private String imageContent;
@@ -32,7 +31,7 @@ public class TaskDTO {
     public TaskDTO(Question question) {
         this.id = question.getId();
         this.category = question.getType().getCategory();
-        this.taskDifficultyLevel = question.getDifficultyLevel();
+        this.difficultyLevel = question.getDifficultyLevel();
         this.questionRenderer = question.getType().getQuestionRenderer();
         this.answerRenderer = question.getType().getAnswerRenderer();
         this.imageContent = question.getImageContent();
@@ -42,14 +41,14 @@ public class TaskDTO {
         this.textContentPolish = question.getTextContentPolish();
         this.textContentEnglish = question.getTextContentEnglish();
         this.answers = question.getAnswers().stream().map(AnswerDTO::new).collect(Collectors.toList());
-        this.points = this.taskDifficultyLevel.getPoints();
+        this.points = this.difficultyLevel.getPoints();
     }
 
     public TaskDTO(TaskDTO taskDTO) {
         this.id = taskDTO.getId();
         this.category = taskDTO.getCategory();
-        this.taskDifficultyLevel = taskDTO.getTaskDifficultyLevel();
-        this.points = this.taskDifficultyLevel.getPoints();
+        this.difficultyLevel = taskDTO.getDifficultyLevel();
+        this.points = this.difficultyLevel.getPoints();
     }
 
     public TaskDTO toTaskMeta(){
