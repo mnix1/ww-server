@@ -57,11 +57,6 @@ public class ProfileController {
         return profileBookService.listBook();
     }
 
-    @RequestMapping(value = "/listHero", method = RequestMethod.GET)
-    public List<ProfileHeroDTO> listHero() {
-        return profileHeroService.list();
-    }
-
     @RequestMapping(value = "/startReadBook", method = RequestMethod.POST)
     public Map startReadBook(@RequestBody Map<String, Object> payload) {
         if (!payload.containsKey("id")) {
@@ -97,4 +92,10 @@ public class ProfileController {
         Long profileBookId = ((Integer) payload.get("id")).longValue();
         return profileBookService.claimRewardBook(profileBookId);
     }
+
+    @RequestMapping(value = "/listHero", method = RequestMethod.GET)
+    public List<ProfileHeroDTO> listHero() {
+        return profileHeroService.list();
+    }
+
 }
