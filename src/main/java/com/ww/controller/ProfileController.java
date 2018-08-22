@@ -30,16 +30,21 @@ public class ProfileController {
     @Autowired
     SessionService sessionService;
 
-    @RequestMapping(value = "/profile", method = RequestMethod.GET)
-    public Map profileId(Principal user) {
+    @RequestMapping(value = "/profileTag", method = RequestMethod.GET)
+    public Map profileTag(Principal user) {
         Map<String, Object> model = new HashMap<>();
         String authId = profileService.getAuthId(user);
         if (authId != null) {
             Profile profile = profileService.createOrRetrieveProfile(authId);
             sessionService.setProfileId(profile.getId());
-            model.put("profile", new ProfileResourcesDTO(profile));
+            model.put("profileTag", profile.getTag());
         }
         return model;
+    }
+
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    public ProfileResourcesDTO profile() {
+        return new ProfileResourcesDTO(profileService.getProfile());
     }
 
     @RequestMapping(value = "/listBook", method = RequestMethod.GET)
@@ -64,6 +69,7 @@ public class ProfileController {
         Long profileBookId = ((Integer) payload.get("id")).longValue();
         return profileBookService.stopReadBook(profileBookId);
     }
+
     @RequestMapping(value = "/discardBook", method = RequestMethod.POST)
     public Map discardBook(@RequestBody Map<String, Object> payload) {
         if (!payload.containsKey("id")) {

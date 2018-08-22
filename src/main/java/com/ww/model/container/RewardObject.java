@@ -1,9 +1,6 @@
 package com.ww.model.container;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.ww.model.constant.book.BookType;
-import com.ww.model.constant.hero.HeroType;
-import com.ww.model.entity.social.Profile;
 import lombok.Getter;
 import lombok.Setter;
 

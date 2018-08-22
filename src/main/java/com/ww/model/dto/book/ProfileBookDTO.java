@@ -40,7 +40,7 @@ public class ProfileBookDTO {
         this(profileBook.getBook());
         this.id = profileBook.getId();
         this.isInProgress = profileBook.isInProgress();
-        this.alreadyReadInterval = profileBook.inProgressInterval() + profileBook.getAlreadyReadInterval();
+        this.alreadyReadInterval = Math.min(profileBook.inProgressInterval() + profileBook.getAlreadyReadInterval(), this.readTime);
         this.canClaimReward = profileBook.canClaimReward();
     }
 }
