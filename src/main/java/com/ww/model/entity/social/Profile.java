@@ -46,8 +46,8 @@ public class Profile {
         this.authId = authId;
         this.level = 0L;
         this.experience = 0L;
-        this.gold = 0L;
-        this.crystal = 0L;
+        this.gold = 10L;
+        this.crystal = 10L;
         this.wisdom = 0L;
         this.elixir = 0L;
         this.heroType = HeroType.random();

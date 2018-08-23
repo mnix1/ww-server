@@ -5,5 +5,7 @@ public enum MentalAttribute {
     CONCENTRATION,
     LEADERSHIP,
     CHARISMA,
-    INTUITION
+    INTUITION;
+
+    public static int COUNT = 5;
 }

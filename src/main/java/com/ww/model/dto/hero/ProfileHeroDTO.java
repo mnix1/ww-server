@@ -1,8 +1,12 @@
 package com.ww.model.dto.hero;
 
 import com.ww.model.constant.hero.HeroType;
+import com.ww.model.constant.hero.MentalAttribute;
+import com.ww.model.constant.hero.WisdomAttribute;
 import com.ww.model.entity.hero.ProfileHero;
 import lombok.Getter;
+
+import static com.ww.helper.NumberHelper.round2;
 
 @Getter
 public class ProfileHeroDTO {
@@ -24,21 +28,36 @@ public class ProfileHeroDTO {
     private Double charisma;
     private Double intuition;
 
+    private Double value;
+
     public ProfileHeroDTO(ProfileHero profileHero) {
         this.id = profileHero.getId();
         this.type = profileHero.getHero().getType();
-        this.memory = profileHero.getWisdomAttributeMemory();
-        this.logic = profileHero.getWisdomAttributeLogic();
-        this.perceptivity = profileHero.getWisdomAttributePerceptivity();
-        this.counting = profileHero.getWisdomAttributeCounting();
-        this.combiningFacts = profileHero.getWisdomAttributeCombiningFacts();
-        this.patternRecognition = profileHero.getWisdomAttributePatternRecognition();
-        this.imagination = profileHero.getWisdomAttributeImagination();
-        this.reflex = profileHero.getMentalAttributeReflex();
-        this.concentration = profileHero.getMentalAttributeConcentration();
-        this.leadership = profileHero.getMentalAttributeLeadership();
-        this.charisma = profileHero.getMentalAttributeCharisma();
-        this.intuition = profileHero.getMentalAttributeIntuition();
+        this.memory = round2(profileHero.getWisdomAttributeMemory());
+        this.logic = round2(profileHero.getWisdomAttributeLogic());
+        this.perceptivity = round2(profileHero.getWisdomAttributePerceptivity());
+        this.counting = round2(profileHero.getWisdomAttributeCounting());
+        this.combiningFacts = round2(profileHero.getWisdomAttributeCombiningFacts());
+        this.patternRecognition = round2(profileHero.getWisdomAttributePatternRecognition());
+        this.imagination = round2(profileHero.getWisdomAttributeImagination());
+        this.reflex = round2(profileHero.getMentalAttributeReflex());
+        this.concentration = round2(profileHero.getMentalAttributeConcentration());
+        this.leadership = round2(profileHero.getMentalAttributeLeadership());
+        this.charisma = round2(profileHero.getMentalAttributeCharisma());
+        this.intuition = round2(profileHero.getMentalAttributeIntuition());
+        prepareValue(profileHero);
+    }
+
+    private void prepareValue(ProfileHero profileHero) {
+        this.value = 0d;
+        for (WisdomAttribute wisdomAttribute : WisdomAttribute.values()) {
+            this.value += profileHero.getWisdomAttributeValue(wisdomAttribute);
+        }
+        for (MentalAttribute mentalAttribute : MentalAttribute.values()) {
+            this.value += profileHero.getMentalAttributeValue(mentalAttribute);
+        }
+        this.value /= WisdomAttribute.COUNT + MentalAttribute.COUNT;
+        this.value = round2(this.value);
     }
 
 }

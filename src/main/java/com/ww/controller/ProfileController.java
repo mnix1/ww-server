@@ -56,7 +56,7 @@ public class ProfileController {
     public Map superPromo() {
         Map<String, Object> model = new HashMap<>();
         Profile profile = profileService.getProfile();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 10; i++) {
             Hero hero = heroService.randomHeroForProfile(profile.getId());
             profileHeroService.addHero(profile, hero);
         }

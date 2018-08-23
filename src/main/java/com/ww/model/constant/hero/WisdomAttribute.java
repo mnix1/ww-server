@@ -7,5 +7,7 @@ public enum WisdomAttribute {
     COUNTING,
     COMBINING_FACTS,
     PATTERN_RECOGNITION,
-    IMAGINATION
+    IMAGINATION;
+
+    public static int COUNT = 8;
 }
