@@ -1,7 +1,7 @@
-package com.ww.service.rival.task.riddle;
+package com.ww.service.rival.task.color;
 
 import com.ww.model.constant.rival.task.TaskDifficultyLevel;
-import com.ww.model.constant.rival.task.type.RiddleTaskType;
+import com.ww.model.constant.rival.task.type.ColorTaskType;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.TaskType;
@@ -21,9 +21,9 @@ import static com.ww.helper.RandomHelper.randomDistinctIntegers;
 import static com.ww.helper.RandomHelper.randomInteger;
 
 @Service
-public class RiddleColorTaskService {
+public class ColorMixingTaskService {
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, RiddleTaskType typeValue) {
+    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, ColorTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
         int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
         int colorsToMixCount = difficultyCalibration(remainedDifficulty) / 3 + 2;
@@ -101,9 +101,9 @@ public class RiddleColorTaskService {
         return wrongColors;
     }
 
-    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, RiddleTaskType typeValue, List<Color> colorsToMix) {
+    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, ColorTaskType typeValue, List<Color> colorsToMix) {
         Question question = new Question(type, difficultyLevel);
-        if (typeValue == RiddleTaskType.COLOR_MIXING) {
+        if (typeValue == ColorTaskType.COLOR_MIXING) {
             question.setHtmlContent("<div style=\"display:flex;\">" + StringUtils.join(colorsToMix.stream().map(this::colorToHtml).collect(Collectors.toList()), "") + "</div>");
             question.setTextContentPolish("Jaki kolor powstanie z dodania następujących kolorów w systemie RGB?");
             question.setTextContentEnglish("What color will be created by adding the following colors in the RGB system?");
@@ -111,7 +111,7 @@ public class RiddleColorTaskService {
         return question;
     }
 
-    private List<Answer> prepareAnswers(RiddleTaskType typeValue, Color correctColor, List<Color> wrongColors) {
+    private List<Answer> prepareAnswers(ColorTaskType typeValue, Color correctColor, List<Color> wrongColors) {
         Answer correctAnswer = new Answer(true);
         fillAnswerContent(typeValue, correctAnswer, correctColor);
         List<Answer> wrongAnswers = wrongColors.stream().map(clipart -> {
@@ -125,8 +125,8 @@ public class RiddleColorTaskService {
         return answers;
     }
 
-    private void fillAnswerContent(RiddleTaskType typeValue, Answer answer, Color color) {
-        if (typeValue == RiddleTaskType.COLOR_MIXING) {
+    private void fillAnswerContent(ColorTaskType typeValue, Answer answer, Color color) {
+        if (typeValue == ColorTaskType.COLOR_MIXING) {
             answer.setHtmlContent(colorToHtml(color));
         }
     }

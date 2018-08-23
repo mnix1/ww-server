@@ -4,10 +4,10 @@ import java.util.Arrays;
 
 import static com.ww.helper.RandomHelper.randomElement;
 
-public enum RiddleTaskType {
-    MISSING_CLIPART;
+public enum ColorTaskType {
+    COLOR_MIXING;
 
-    public static RiddleTaskType random() {
+    public static ColorTaskType random() {
         return randomElement(Arrays.asList(values()));
     }
 }

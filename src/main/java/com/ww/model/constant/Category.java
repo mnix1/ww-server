@@ -13,6 +13,7 @@ public enum Category {
     LYRICS,
     ELEMENT,
     RIDDLE,
+    COLOR,
 //    HISTORY,
     COUNTRY,
     TIME,

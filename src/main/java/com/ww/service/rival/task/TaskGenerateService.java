@@ -6,6 +6,7 @@ import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.TaskType;
 import com.ww.repository.rival.task.TaskTypeRepository;
+import com.ww.service.rival.task.color.ColorTaskService;
 import com.ww.service.rival.task.element.ElementTaskService;
 import com.ww.service.rival.task.number.NumberTaskService;
 import com.ww.service.rival.task.country.CountryTaskService;
@@ -43,6 +44,9 @@ public class TaskGenerateService {
     ElementTaskService elementTaskService;
 
     @Autowired
+    ColorTaskService colorTaskService;
+
+    @Autowired
     RiddleTaskService riddleTaskService;
 
     @Autowired
@@ -76,6 +80,9 @@ public class TaskGenerateService {
         }
         if (category == Category.RIDDLE) {
             return riddleTaskService.generate(taskType, difficultyLevel);
+        }
+        if (category == Category.COLOR) {
+            return colorTaskService.generate(taskType, difficultyLevel);
         }
         if (category == Category.TIME) {
             return timeTaskService.generate(taskType, difficultyLevel);
