@@ -310,10 +310,40 @@ public class Init {
                 new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.2)
         ))));
 
-        taskTypes.add(new TaskType(Category.COLOR, ColorTaskType.COLOR_MIXING.name(), TaskRenderer.TEXT_HTML, TaskRenderer.HTML, 4, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.COLOR, ColorTaskType.COLOR_MIXING.name(), TaskRenderer.TEXT_HTML, TaskRenderer.HTML, 5, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.PATTERN_RECOGNITION, 0.1),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1),
                 new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.8)
+        ))));
+        taskTypes.add(new TaskType(Category.COLOR, ColorTaskType.BIGGEST_R.name(), TaskRenderer.TEXT, TaskRenderer.HTML, 8, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.PATTERN_RECOGNITION, 0.05),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.35),
+                new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.6)
+        ))));
+        taskTypes.add(new TaskType(Category.COLOR, ColorTaskType.BIGGEST_G.name(), TaskRenderer.TEXT, TaskRenderer.HTML, 8, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.PATTERN_RECOGNITION, 0.05),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.35),
+                new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.6)
+        ))));
+        taskTypes.add(new TaskType(Category.COLOR, ColorTaskType.BIGGEST_B.name(), TaskRenderer.TEXT, TaskRenderer.HTML, 8, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.PATTERN_RECOGNITION, 0.05),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.35),
+                new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.6)
+        ))));
+        taskTypes.add(new TaskType(Category.COLOR, ColorTaskType.LOWEST_R.name(), TaskRenderer.TEXT, TaskRenderer.HTML, 8, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.PATTERN_RECOGNITION, 0.05),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.35),
+                new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.6)
+        ))));
+        taskTypes.add(new TaskType(Category.COLOR, ColorTaskType.LOWEST_G.name(), TaskRenderer.TEXT, TaskRenderer.HTML, 8, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.PATTERN_RECOGNITION, 0.05),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.35),
+                new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.6)
+        ))));
+        taskTypes.add(new TaskType(Category.COLOR, ColorTaskType.LOWEST_B.name(), TaskRenderer.TEXT, TaskRenderer.HTML, 8, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.PATTERN_RECOGNITION, 0.05),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.35),
+                new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.6)
         ))));
 
         taskTypes.add(new TaskType(Category.TIME, TimeTaskType.CLOCK_ADD.name(), TaskRenderer.TEXT_DATE, TaskRenderer.DATE, 1, new HashSet<>(Arrays.asList(

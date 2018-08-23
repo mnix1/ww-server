@@ -19,6 +19,7 @@ import static com.ww.helper.ColorHelper.colorToInt;
 import static com.ww.helper.ColorHelper.randomColor;
 import static com.ww.helper.RandomHelper.randomDistinctIntegers;
 import static com.ww.helper.RandomHelper.randomInteger;
+import static com.ww.service.rival.task.color.ColorTaskService.prepareAnswers;
 
 @Service
 public class ColorMixingTaskService {
@@ -26,12 +27,12 @@ public class ColorMixingTaskService {
     public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, ColorTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
         int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
-        int colorsToMixCount = difficultyCalibration(remainedDifficulty) / 3 + 2;
+        int colorsToMixCount =  difficultyCalibration(remainedDifficulty) / 4 + 2;
         Color correctColor = prepareCorrectColor();
         List<Color> colorsToMix = prepareMixColors(colorsToMixCount, correctColor);
         List<Color> answerColors = prepareWrongColors(answersCount - 1, correctColor);
         Question question = prepareQuestion(type, difficultyLevel, typeValue, colorsToMix);
-        List<Answer> answers = prepareAnswers(typeValue, correctColor, answerColors);
+        List<Answer> answers = prepareAnswers(correctColor, answerColors);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
@@ -59,27 +60,6 @@ public class ColorMixingTaskService {
         return colors;
     }
 
-    //    private List<Color> prepareWrongColors(int count, Color correctColor) {
-//        List<Double> values = new ArrayList<>(count);
-//        double correctValue = correctColor.getRed() * 255 * 255 + correctColor.getGreen() * 255 + correctColor.getBlue();
-//        values.add(correctValue);
-//        List<Color> wrongColors = new ArrayList<>(count);
-//        while (wrongColors.size() < count) {
-//            int v1 = randomInteger(0, 255);
-//            int v2 = randomInteger(0, 255);
-//            int v3 = randomInteger(0, 255);
-//            double value = v1 * 255 * 255 + v2 * 255 + v3;
-//            if (isValueDistanceEnough(value, values, Math.max(0.1, 0.3 - count * 0.05))) {
-//                values.add(value);
-//                List<Integer> v = Arrays.asList(v1, v2, v3);
-//                Collections.shuffle(v);
-//                Color c = new Color(v1, v2, v3);
-//                wrongColors.add(c);
-//            }
-//        }
-//        return wrongColors;
-//    }
-
     private List<Color> prepareWrongColors(int count, Color correctColor) {
         List<Double> values = new ArrayList<>(count);
         double correctValue = colorToInt(correctColor);
@@ -104,36 +84,12 @@ public class ColorMixingTaskService {
     private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, ColorTaskType typeValue, List<Color> colorsToMix) {
         Question question = new Question(type, difficultyLevel);
         if (typeValue == ColorTaskType.COLOR_MIXING) {
-            question.setHtmlContent("<div style=\"display:flex;\">" + StringUtils.join(colorsToMix.stream().map(this::colorToHtml).collect(Collectors.toList()), "") + "</div>");
+            question.setHtmlContent("<div style=\"display:flex;\">" + StringUtils.join(colorsToMix.stream().map(ColorTaskService::colorToHtml).collect(Collectors.toList()), "") + "</div>");
             question.setTextContentPolish("Jaki kolor powstanie z dodania następujących kolorów w systemie RGB?");
             question.setTextContentEnglish("What color will be created by adding the following colors in the RGB system?");
         }
         return question;
     }
 
-    private List<Answer> prepareAnswers(ColorTaskType typeValue, Color correctColor, List<Color> wrongColors) {
-        Answer correctAnswer = new Answer(true);
-        fillAnswerContent(typeValue, correctAnswer, correctColor);
-        List<Answer> wrongAnswers = wrongColors.stream().map(clipart -> {
-            Answer answer = new Answer(false);
-            fillAnswerContent(typeValue, answer, clipart);
-            return answer;
-        }).collect(Collectors.toList());
-        List<Answer> answers = new ArrayList<>();
-        answers.add(correctAnswer);
-        answers.addAll(wrongAnswers);
-        return answers;
-    }
-
-    private void fillAnswerContent(ColorTaskType typeValue, Answer answer, Color color) {
-        if (typeValue == ColorTaskType.COLOR_MIXING) {
-            answer.setHtmlContent(colorToHtml(color));
-        }
-    }
-
-
-    private String colorToHtml(Color color) {
-        return "<div class=\"colorMixing\" style=\"background:" + colorToHex(color) + "\"></div>";
-    }
 
 }
