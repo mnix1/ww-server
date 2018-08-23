@@ -14,7 +14,8 @@ public class RiddleTaskService {
 
     public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel) {
         RiddleTaskType typeValue = RiddleTaskType.valueOf(type.getValue());
-        if (typeValue == RiddleTaskType.MISSING_CLIPART) {
+        if (typeValue == RiddleTaskType.MISSING_CLIPART
+                || typeValue == RiddleTaskType.FIND_CLIPART) {
             return riddleClipartTaskService.generate(type, difficultyLevel, typeValue);
         }
         return null;

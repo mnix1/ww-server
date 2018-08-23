@@ -23,13 +23,14 @@ public class RiddleClipartTaskService {
     @Autowired
     ClipartRepository clipartRepository;
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel,  RiddleTaskType typeValue) {
+    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, RiddleTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
         int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
         List<Clipart> cliparts = prepareCliparts(answersCount);
         Clipart correctClipart = cliparts.get(0);
-        List<Clipart> wrongCliparts = cliparts.subList(1, cliparts.size());
-        Question question = prepareQuestion(type, difficultyLevel, typeValue, wrongCliparts);
+        List<Clipart> questionCliparts = prepareQuestionCliparts(typeValue, cliparts, answersCount);
+        List<Clipart> wrongCliparts = prepareWrongCliparts(typeValue, cliparts, answersCount);
+        Question question = prepareQuestion(type, difficultyLevel, typeValue, questionCliparts);
         List<Answer> answers = prepareAnswers(typeValue, correctClipart, wrongCliparts);
         question.setAnswers(new HashSet<>(answers));
         return question;
@@ -38,15 +39,39 @@ public class RiddleClipartTaskService {
     private List<Clipart> prepareCliparts(int answersCount) {
         List<Clipart> allCliparts = clipartRepository.findAll();
         Collections.shuffle(allCliparts);
-        return allCliparts.stream().limit(answersCount).collect(Collectors.toList());
+        return allCliparts.stream().limit(answersCount * 2).collect(Collectors.toList());
     }
 
-    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, RiddleTaskType typeValue, List<Clipart> wrongCliparts) {
-        Question question = new Question(type, difficultyLevel);
+    private List<Clipart> prepareQuestionCliparts(RiddleTaskType typeValue, List<Clipart> cliparts, int answersCount) {
         if (typeValue == RiddleTaskType.MISSING_CLIPART) {
-            question.setImageContent(StringUtils.join(wrongCliparts.stream().map(Clipart::getPngResourcePath).collect(Collectors.toList()), ","));
+            return cliparts.subList(1, answersCount);
+        }
+        if (typeValue == RiddleTaskType.FIND_CLIPART) {
+            return cliparts.subList(0, answersCount);
+        }
+        throw new IllegalArgumentException("No RiddleTaskType handled");
+    }
+
+    private List<Clipart> prepareWrongCliparts(RiddleTaskType typeValue, List<Clipart> cliparts, int answersCount) {
+        if (typeValue == RiddleTaskType.MISSING_CLIPART) {
+            return cliparts.subList(1, answersCount);
+        }
+        if (typeValue == RiddleTaskType.FIND_CLIPART) {
+            return cliparts.subList(answersCount + 1, cliparts.size());
+        }
+        throw new IllegalArgumentException("No RiddleTaskType handled");
+    }
+
+    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, RiddleTaskType typeValue, List<Clipart> questionCliparts) {
+        Question question = new Question(type, difficultyLevel);
+        question.setImageContent(StringUtils.join(questionCliparts.stream().map(Clipart::getPngResourcePath).collect(Collectors.toList()), ","));
+        if (typeValue == RiddleTaskType.MISSING_CLIPART) {
             question.setTextContentPolish("Czego brakuje na obrazku?");
             question.setTextContentEnglish("What is missing in the picture?");
+        }
+        if (typeValue == RiddleTaskType.FIND_CLIPART) {
+            question.setTextContentPolish("Co znajduje się na obrazku?");
+            question.setTextContentEnglish("What is in the picture?");
         }
         return question;
     }
@@ -66,7 +91,8 @@ public class RiddleClipartTaskService {
     }
 
     private void fillAnswerContent(RiddleTaskType typeValue, Answer answer, Clipart clipart) {
-        if (typeValue == RiddleTaskType.MISSING_CLIPART) {
+        if (typeValue == RiddleTaskType.MISSING_CLIPART
+                || typeValue == RiddleTaskType.FIND_CLIPART) {
             answer.setTextContentPolish(clipart.getNamePolish());
             answer.setTextContentEnglish(clipart.getNameEnglish());
         }

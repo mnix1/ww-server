@@ -295,6 +295,16 @@ public class Init {
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.4),
                 new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.1)
         ))));
+        taskTypes.add(new TaskType(Category.RIDDLE, RiddleTaskType.FIND_CLIPART.name(), TaskRenderer.TEXT_IMAGE_PNG, TaskRenderer.TEXT, 4, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.PATTERN_RECOGNITION, 0.21),
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.79)
+        ))));
+
+//        taskTypes.add(new TaskType(Category.RIDDLE, RiddleTaskType.FIND_DIFFERENCE.name(), TaskRenderer.TEXT_IMAGE_PNG, TaskRenderer.TEXT, 4, new HashSet<>(Arrays.asList(
+//                new TaskWisdomAttribute(WisdomAttribute.PATTERN_RECOGNITION, 0.21),
+//                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.59),
+//                new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.2)
+//        ))));
 
         taskTypes.add(new TaskType(Category.COLOR, ColorTaskType.COLOR_MIXING.name(), TaskRenderer.TEXT_HTML, TaskRenderer.HTML, 4, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.PATTERN_RECOGNITION, 0.1),
