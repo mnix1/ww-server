@@ -45,9 +45,9 @@ public class HeroService {
                 && profile.getWisdom() >= EXPERIMENT_WISDOM_COST;
     }
 
-    public Hero randomHeroForProfile(Profile profile) {
+    public Hero randomHeroForProfile(Long profileId) {
         List<Hero> allHeroes = heroRepository.findAll();
-        Set<Long> profileHeroesIds = profile.getHeroes().stream().map(profileHero -> profileHero.getHero().getId()).collect(Collectors.toSet());
+        Set<Long> profileHeroesIds = profileHeroService.findAll(profileId).stream().map(profileHero -> profileHero.getHero().getId()).collect(Collectors.toSet());
         if (allHeroes.size() == profileHeroesIds.size()) {
             return null;
         }
@@ -65,7 +65,7 @@ public class HeroService {
             model.put("code", -3);//no resources
             return model;
         }
-        Hero hero = randomHeroForProfile(profile);
+        Hero hero = randomHeroForProfile(profile.getId());
         if (hero == null) {
             model.put("code", -2);//all discovered
             return model;

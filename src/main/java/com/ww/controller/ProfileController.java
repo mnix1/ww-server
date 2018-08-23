@@ -3,9 +3,11 @@ package com.ww.controller;
 import com.ww.model.dto.book.ProfileBookDTO;
 import com.ww.model.dto.hero.ProfileHeroDTO;
 import com.ww.model.dto.social.ProfileResourcesDTO;
+import com.ww.model.entity.hero.Hero;
 import com.ww.model.entity.social.Profile;
 import com.ww.service.SessionService;
 import com.ww.service.book.ProfileBookService;
+import com.ww.service.hero.HeroService;
 import com.ww.service.hero.ProfileHeroService;
 import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,9 @@ public class ProfileController {
     ProfileHeroService profileHeroService;
 
     @Autowired
+    HeroService heroService;
+
+    @Autowired
     SessionService sessionService;
 
     @RequestMapping(value = "/profileTag", method = RequestMethod.GET)
@@ -51,6 +56,10 @@ public class ProfileController {
     public Map superPromo() {
         Map<String, Object> model = new HashMap<>();
         Profile profile = profileService.getProfile();
+        for (int i = 0; i < 4; i++) {
+            Hero hero = heroService.randomHeroForProfile(profile.getId());
+            profileHeroService.addHero(profile, hero);
+        }
         profile.changeResources(1000L, 1000L, 1000L, 1000L);
         profileService.save(profile);
         return model;

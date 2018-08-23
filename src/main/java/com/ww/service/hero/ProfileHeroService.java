@@ -27,6 +27,10 @@ public class ProfileHeroService {
                 .collect(Collectors.toList());
     }
 
+    public List<ProfileHero> findAll(Long profileId) {
+        return profileHeroRepository.findAllByProfile_Id(profileId);
+    }
+
     public ProfileHero addHero(Profile profile, Hero hero) {
         ProfileHero profileHero = new ProfileHero(profile, hero);
         profileHeroRepository.save(profileHero);
