@@ -25,63 +25,68 @@ public class ColorMatchAnswerTaskService {
     public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, ColorTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
         int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
-        List<Color> colors = prepareColors(answersCount);
-        Color correctColor = findCorrectColor(typeValue, colors);
-        List<Color> wrongColors = findWrongColors(colors, correctColor);
+        Color correctColor = prepareCorrectColor();
+        List<Color> wrongColors = prepareWrongColors(typeValue, answersCount - 1, correctColor);
         Question question = prepareQuestion(type, difficultyLevel, typeValue);
         List<Answer> answers = prepareAnswers(correctColor, wrongColors);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
 
-    private List<Color> prepareColors(int count) {
-        List<Color> colors = new ArrayList<>(count);
-        int[] numbers = randomDistinctIntegers(count * 3, 0, 255);
-        for (int i = 0; i < count * 3; i += 3) {
-            colors.add(new Color(numbers[i], numbers[i + 1], numbers[i + 2]));
-        }
-        return colors;
+    private Color prepareCorrectColor() {
+        return randomColor(40, 210);
     }
 
-    private Color findCorrectColor(ColorTaskType typeValue, List<Color> colors) {
-        int[] red = new int[colors.size()];
-        int[] green = new int[colors.size()];
-        int[] blue = new int[colors.size()];
-        for (int i = 0; i < colors.size(); i++) {
-            Color c = colors.get(i);
-            red[i] = c.getRed();
-            green[i] = c.getGreen();
-            blue[i] = c.getBlue();
+    private List<Color> prepareWrongColors(ColorTaskType typeValue, int count, Color correctColor) {
+        List<Color> wrongColors = new ArrayList<>(count);
+        int correctColorSum = colorToSumInt(correctColor);
+        int correctComp = findComponent(typeValue, correctColor);
+        double correctPercentComp = 1.0 * correctComp / correctColorSum;
+        while (wrongColors.size() < count) {
+            Color wrongColor = null;
+            if (typeValue == ColorTaskType.BIGGEST_R) {
+                wrongColor = randomColor(0, correctComp - 1, 0, 255, 0, 255);
+            } else if (typeValue == ColorTaskType.BIGGEST_G) {
+                wrongColor = randomColor(0, 255, 0, correctComp - 1, 0, 255);
+            } else if (typeValue == ColorTaskType.BIGGEST_B) {
+                wrongColor = randomColor(0, 255, 0, 255, 0, correctComp - 1);
+            } else if (typeValue == ColorTaskType.LOWEST_R) {
+                wrongColor = randomColor(correctComp + 1, 255, 0, 255, 0, 255);
+            } else if (typeValue == ColorTaskType.LOWEST_G) {
+                wrongColor = randomColor(0, 255, correctComp + 1, 255, 0, 255);
+            } else if (typeValue == ColorTaskType.LOWEST_B) {
+                wrongColor = randomColor(0, 255, 0, 255, correctComp + 1, 255);
+            }
+            int wrongColorSum = colorToSumInt(wrongColor);
+            int wrongComp = findComponent(typeValue, wrongColor);
+            double wrongPercentComp = 1.0 * wrongComp / wrongColorSum;
+            if (ColorTaskType.aboutLowest(typeValue)) {
+                if (wrongPercentComp > correctPercentComp + 0.05) {
+                    wrongColors.add(wrongColor);
+                }
+            } else {
+                if (wrongPercentComp < correctPercentComp - 0.05) {
+                    wrongColors.add(wrongColor);
+                }
+            }
         }
-        if (typeValue == ColorTaskType.BIGGEST_R) {
-            int max = Arrays.stream(red).max().getAsInt();
-            return colors.stream().filter(color -> color.getRed() == max).findFirst().get();
-        }
-        if (typeValue == ColorTaskType.BIGGEST_G) {
-            int max = Arrays.stream(green).max().getAsInt();
-            return colors.stream().filter(color -> color.getGreen() == max).findFirst().get();
-        }
-        if (typeValue == ColorTaskType.BIGGEST_B) {
-            int max = Arrays.stream(blue).max().getAsInt();
-            return colors.stream().filter(color -> color.getBlue() == max).findFirst().get();
-        }
-        if (typeValue == ColorTaskType.LOWEST_R) {
-            int min = Arrays.stream(red).min().getAsInt();
-            return colors.stream().filter(color -> color.getRed() == min).findFirst().get();
-        }
-        if (typeValue == ColorTaskType.LOWEST_G) {
-            int min = Arrays.stream(green).min().getAsInt();
-            return colors.stream().filter(color -> color.getGreen() == min).findFirst().get();
-        }
-        if (typeValue == ColorTaskType.LOWEST_B) {
-            int min = Arrays.stream(blue).min().getAsInt();
-            return colors.stream().filter(color -> color.getBlue() == min).findFirst().get();
-        }
-        return null;
+        return wrongColors;
     }
 
-    private List<Color> findWrongColors(List<Color> colors, Color correctColor) {
-        return colors.stream().filter(color -> !color.equals(correctColor)).collect(Collectors.toList());
+    private int findComponent(ColorTaskType typeValue, Color color) {
+        if (typeValue == ColorTaskType.BIGGEST_R
+                || typeValue == ColorTaskType.LOWEST_R) {
+            return color.getRed();
+        }
+        if (typeValue == ColorTaskType.BIGGEST_G
+                || typeValue == ColorTaskType.LOWEST_G) {
+            return color.getGreen();
+        }
+        if (typeValue == ColorTaskType.BIGGEST_B
+                || typeValue == ColorTaskType.LOWEST_B) {
+            return color.getBlue();
+        }
+        throw new IllegalArgumentException("No typeValue handled");
     }
 
     private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, ColorTaskType typeValue) {
@@ -89,24 +94,19 @@ public class ColorMatchAnswerTaskService {
         if (typeValue == ColorTaskType.BIGGEST_R) {
             question.setTextContentPolish("Który kolor składa się procentowo z największej ilości czerwieni?");
             question.setTextContentEnglish("Which color consists of the percentage of the largest amount of red?");
-        }
-        if (typeValue == ColorTaskType.BIGGEST_G) {
+        } else if (typeValue == ColorTaskType.BIGGEST_G) {
             question.setTextContentPolish("Który kolor składa się procentowo z największej ilości zieleni?");
             question.setTextContentEnglish("Which color consists of the percentage of the largest amount of green?");
-        }
-        if (typeValue == ColorTaskType.BIGGEST_B) {
+        } else if (typeValue == ColorTaskType.BIGGEST_B) {
             question.setTextContentPolish("Który kolor składa się procentowo z największej ilości niebieskiego?");
             question.setTextContentEnglish("Which color consists of the percentage of the largest amount of blue?");
-        }
-        if (typeValue == ColorTaskType.LOWEST_R) {
+        } else if (typeValue == ColorTaskType.LOWEST_R) {
             question.setTextContentPolish("Który kolor składa się procentowo z najmniejszej ilości czerwieni?");
             question.setTextContentEnglish("Which color consists of the percentage of the smallest amount of red?");
-        }
-        if (typeValue == ColorTaskType.LOWEST_G) {
+        } else if (typeValue == ColorTaskType.LOWEST_G) {
             question.setTextContentPolish("Który kolor składa się procentowo z najmniejszej ilości zieleni?");
             question.setTextContentEnglish("Which color consists of the percentage of the smallest amount of green?");
-        }
-        if (typeValue == ColorTaskType.LOWEST_B) {
+        } else if (typeValue == ColorTaskType.LOWEST_B) {
             question.setTextContentPolish("Który kolor składa się procentowo z najmniejszej ilości niebieskiego?");
             question.setTextContentEnglish("Which color consists of the percentage of the smallest amount of blue?");
         }

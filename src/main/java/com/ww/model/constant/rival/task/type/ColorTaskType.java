@@ -16,4 +16,10 @@ public enum ColorTaskType {
     public static ColorTaskType random() {
         return randomElement(Arrays.asList(values()));
     }
+
+    public static boolean aboutLowest(ColorTaskType type){
+        return type == LOWEST_R
+                ||type == LOWEST_G
+                ||type == LOWEST_B;
+    }
 }

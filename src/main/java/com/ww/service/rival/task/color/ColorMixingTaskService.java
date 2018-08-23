@@ -30,9 +30,9 @@ public class ColorMixingTaskService {
         int colorsToMixCount =  difficultyCalibration(remainedDifficulty) / 4 + 2;
         Color correctColor = prepareCorrectColor();
         List<Color> colorsToMix = prepareMixColors(colorsToMixCount, correctColor);
-        List<Color> answerColors = prepareWrongColors(answersCount - 1, correctColor);
+        List<Color> wrongColors = prepareWrongColors(answersCount - 1, correctColor);
         Question question = prepareQuestion(type, difficultyLevel, typeValue, colorsToMix);
-        List<Answer> answers = prepareAnswers(correctColor, answerColors);
+        List<Answer> answers = prepareAnswers(correctColor, wrongColors);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }

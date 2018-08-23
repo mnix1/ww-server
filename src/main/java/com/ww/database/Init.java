@@ -310,7 +310,7 @@ public class Init {
                 new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.2)
         ))));
 
-        taskTypes.add(new TaskType(Category.COLOR, ColorTaskType.COLOR_MIXING.name(), TaskRenderer.TEXT_HTML, TaskRenderer.HTML, 5, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.COLOR, ColorTaskType.COLOR_MIXING.name(), TaskRenderer.TEXT_HTML, TaskRenderer.HTML, 4, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.PATTERN_RECOGNITION, 0.1),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1),
                 new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.8)
