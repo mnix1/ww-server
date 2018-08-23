@@ -1,6 +1,7 @@
 package com.ww.service.rival.task.riddle;
 
 import com.ww.model.container.Position;
+import org.apache.commons.lang3.StringUtils;
 import org.imgscalr.Scalr;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,15 @@ import static com.ww.helper.ImageHelper.toBase64;
 
 @Service
 public class RiddleClipartService {
+
+    public String generateMulti(String imageContent) {
+        String[] stringPaths = imageContent.split(";");
+        List<String> images = new ArrayList<>();
+        for (String stringPath : stringPaths) {
+            images.add(generate(stringPath));
+        }
+        return StringUtils.join(images, "^_^");
+    }
 
     public String generate(String stringPaths) {
         List<BufferedImage> images = prepareImages(stringPaths.split(","));

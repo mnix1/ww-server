@@ -12,5 +12,6 @@ public enum TaskRenderer {
     IMAGE_PNG,
     TEXT_IMAGE_SVG,
     TEXT_IMAGE_PNG,
+    IMAGE_PNG_TEXT_IMAGE_PNG,
     TEXT_ANIMATION;
 }

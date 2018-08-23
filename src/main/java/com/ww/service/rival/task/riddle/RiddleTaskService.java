@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 public class RiddleTaskService {
     @Autowired
     RiddleClipartTaskService riddleClipartTaskService;
+    @Autowired
+    RiddleDifferenceTaskService riddleDifferenceTaskService;
 
     public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel) {
         RiddleTaskType typeValue = RiddleTaskType.valueOf(type.getValue());
@@ -18,6 +20,6 @@ public class RiddleTaskService {
                 || typeValue == RiddleTaskType.FIND_CLIPART) {
             return riddleClipartTaskService.generate(type, difficultyLevel, typeValue);
         }
-        return null;
+        return riddleDifferenceTaskService.generate(type, difficultyLevel, typeValue);
     }
 }

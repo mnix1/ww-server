@@ -31,6 +31,9 @@ public class TaskRendererService {
         if (question.getType().getQuestionRenderer() == TaskRenderer.TEXT_IMAGE_PNG) {
             taskDTO.setImageContent(riddleClipartService.generate(taskDTO.getImageContent()));
         }
+        if (question.getType().getQuestionRenderer() == TaskRenderer.IMAGE_PNG_TEXT_IMAGE_PNG) {
+            taskDTO.setImageContent(riddleClipartService.generateMulti(taskDTO.getImageContent()));
+        }
         if (question.getType().getQuestionRenderer() == TaskRenderer.TEXT_ANIMATION) {
             swapShapeKeyToShapeData(taskDTO);
             taskDTO.setAnimationContent(encodeData(taskDTO.getAnimationContent()));
