@@ -19,6 +19,8 @@ public class ProfileHero {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private Boolean inTeam = false;
+
     private Double wisdomAttributeMemory;
     private Double wisdomAttributeLogic;
     private Double wisdomAttributePerceptivity;

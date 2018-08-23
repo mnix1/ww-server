@@ -14,6 +14,8 @@ public class ProfileHeroDTO {
     private Long id;
     private HeroType type;
 
+    private Boolean inTeam;
+
     private Double memory;
     private Double logic;
     private Double perceptivity;
@@ -33,6 +35,7 @@ public class ProfileHeroDTO {
     public ProfileHeroDTO(ProfileHero profileHero) {
         this.id = profileHero.getId();
         this.type = profileHero.getHero().getType();
+        this.inTeam = profileHero.getInTeam();
         this.memory = round2(profileHero.getWisdomAttributeMemory());
         this.logic = round2(profileHero.getWisdomAttributeLogic());
         this.perceptivity = round2(profileHero.getWisdomAttributePerceptivity());
