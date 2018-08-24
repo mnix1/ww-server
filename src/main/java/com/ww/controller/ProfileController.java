@@ -56,11 +56,23 @@ public class ProfileController {
     public Map superPromo() {
         Map<String, Object> model = new HashMap<>();
         Profile profile = profileService.getProfile();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 4; i++) {
             Hero hero = heroService.randomHeroForProfile(profile.getId());
             profileHeroService.addHero(profile, hero);
         }
         profile.changeResources(1000L, 1000L, 1000L, 1000L);
+        profileService.save(profile);
+        return model;
+    }
+    @RequestMapping(value = "/promo", method = RequestMethod.GET)
+    public Map promo() {
+        Map<String, Object> model = new HashMap<>();
+        Profile profile = profileService.getProfile();
+        for (int i = 0; i < 1; i++) {
+            Hero hero = heroService.randomHeroForProfile(profile.getId());
+            profileHeroService.addHero(profile, hero);
+        }
+        profile.changeResources(100L, 100L, 100L, 100L);
         profileService.save(profile);
         return model;
     }
