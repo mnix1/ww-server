@@ -111,9 +111,4 @@ public class ProfileController {
         return profileBookService.claimRewardBook(profileBookId);
     }
 
-    @RequestMapping(value = "/listHero", method = RequestMethod.GET)
-    public List<ProfileHeroDTO> listHero() {
-        return profileHeroService.list();
-    }
-
 }

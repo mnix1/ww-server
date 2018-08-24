@@ -29,7 +29,6 @@ public class FriendController {
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-
     public Map delete(@RequestBody Map<String, Object> payload) {
         return friendService.delete((String) payload.get("tag"));
     }

@@ -35,7 +35,7 @@ public class ChallengeController {
     }
 
     @RequestMapping(value = "/startFast", method = RequestMethod.POST)
-    public ChallengeTaskDTO startFast(@RequestBody Map<String, Object> payload) {
+    public ChallengeTaskDTO startFast() {
         return challengeService.startFast();
     }
 

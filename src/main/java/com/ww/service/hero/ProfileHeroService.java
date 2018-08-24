@@ -9,13 +9,18 @@ import com.ww.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 
 @Service
 public class ProfileHeroService {
+
+    public static final int HERO_TEAM_COUNT = 4;
 
     @Autowired
     private SessionService sessionService;
@@ -27,6 +32,32 @@ public class ProfileHeroService {
         return profileHeroRepository.findAllByProfile_Id(sessionService.getProfileId()).stream()
                 .map(ProfileHeroDTO::new)
                 .collect(Collectors.toList());
+    }
+
+    public Map<String, Object> teamSave(List<Long> ids) {
+        Map<String, Object> model = new HashMap<>();
+        if (ids.size() > HERO_TEAM_COUNT) {
+            model.put("code", -1);
+            return model;
+        }
+        List<ProfileHero> heroes = profileHeroRepository.findAllByProfile_IdAndIdIn(sessionService.getProfileId(), ids);
+        if (ids.size() != heroes.size()) {
+            model.put("code", -1);
+            return model;
+        }
+        List<ProfileHero> actualInTeam = profileHeroRepository.findAllByProfile_IdAndInTeam(sessionService.getProfileId(), true);
+        for (ProfileHero profileHero : actualInTeam) {
+            profileHero.setInTeam(false);
+        }
+        for (ProfileHero profileHero : heroes) {
+            profileHero.setInTeam(true);
+        }
+        List<ProfileHero> changes = new ArrayList<>();
+        changes.addAll(actualInTeam);
+        changes.addAll(heroes);
+        profileHeroRepository.saveAll(changes);
+        model.put("code", 1);
+        return model;
     }
 
     public List<ProfileHero> findAll(Long profileId) {
