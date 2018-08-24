@@ -464,7 +464,7 @@ public class Init {
         heroes.add(new Hero("Goruś", "Gorilla", HeroType.GORILLA, new HashSet<>(Arrays.asList(Category.random()))));
         heroes.add(new Hero("Lizuś", "Fox", HeroType.FOX_MAN, new HashSet<>(Arrays.asList(Category.random()))));
         heroes.add(new Hero("Lisiczka", "Foxie", HeroType.FOX, new HashSet<>(Arrays.asList(Category.random()))));
-        heroes.add(new Hero("Trąbuś", "Elephant", HeroType.ELEPHANT, new HashSet<>(Arrays.asList(Category.EQUATION, Category.MEMORY))));
+        heroes.add(new Hero("Trąbcia", "Elephant", HeroType.ELEPHANT, new HashSet<>(Arrays.asList(Category.EQUATION, Category.MEMORY))));
         heroes.add(new Hero("Orłuś", "Eagle", HeroType.EAGLE, new HashSet<>(Arrays.asList(Category.random()))));
         heroes.add(new Hero("Grubełło", "Fat Dragon", HeroType.DRAGON_FAT, new HashSet<>(Arrays.asList(Category.COUNTRY, Category.EQUATION))));
         heroes.add(new Hero("Supełło", "Blue Dragon", HeroType.DRAGON_BLUE, new HashSet<>(Arrays.asList(Category.random(), Category.random()))));
@@ -482,6 +482,14 @@ public class Init {
         heroes.add(new Hero("Żądłolot", "Bee", HeroType.BEE, new HashSet<>(Arrays.asList(Category.LYRICS))));
         heroes.add(new Hero("Żubrowar", "Aurochs", HeroType.AUROCHS, new HashSet<>(Arrays.asList(Category.MEMORY))));
         heroes.add(new Hero("Mrówkacz", "Ant", HeroType.ANT, new HashSet<>(Arrays.asList(Category.COUNTRY, Category.LYRICS))));
+        heroes.add(new Hero("Pardzio", "Lampard", HeroType.LAMPARD, new HashSet<>(Arrays.asList(Category.COLOR, Category.LYRICS))));
+        heroes.add(new Hero("Smakełło", "Red Dragon", HeroType.DRAGON_RED, new HashSet<>(Arrays.asList(Category.COLOR))));
+        heroes.add(new Hero("Słodzik", "Sweet Dog", HeroType.DOG_SWEET, new HashSet<>(Arrays.asList(Category.COLOR))));
+        heroes.add(new Hero("Sowcia", "Owl", HeroType.OWL, new HashSet<>(Arrays.asList(Category.random()))));
+        heroes.add(new Hero("Żabcia", "Frog", HeroType.FROG, new HashSet<>(Arrays.asList(Category.random()))));
+        heroes.add(new Hero("Wiewcia", "Squirrel", HeroType.SQUIRREL, new HashSet<>(Arrays.asList(Category.random()))));
+        heroes.add(new Hero("Pinguś", "Penguin", HeroType.PENGUIN, new HashSet<>(Arrays.asList(Category.random()))));
+        heroes.add(new Hero("Morsu", "Walrus", HeroType.WALRUS, new HashSet<>(Arrays.asList(Category.random()))));
         heroRepository.saveAll(heroes);
     }
 
