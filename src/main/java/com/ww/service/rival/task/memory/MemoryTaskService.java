@@ -14,10 +14,7 @@ import com.ww.service.rival.task.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.ww.helper.RandomHelper.*;
@@ -57,6 +54,7 @@ public class MemoryTaskService {
         if (animationObjects.size() < animationObjectsCount) {
             animationObjects.addAll(wrongObjects.subList(0, animationObjectsCount - 1));
         }
+        Collections.shuffle(animationObjects);
         question.setAnimationContent(prepareAnimation(animationObjects));
         List<Answer> answers = prepareAnswers(typeValue, correctObject, wrongObjects, answersCount);
         question.setAnswers(new HashSet<>(answers));
