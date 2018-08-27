@@ -80,7 +80,7 @@ public abstract class RivalContainer {
         Integer p1Score = rivalProfileContainers.get(0).getScore();
         Integer p2Score = rivalProfileContainers.get(1).getScore();
         if (p1Score.equals(p2Score)) {
-            return null;
+            return RivalManager.DRAW_WINNER_TAG;
         }
         if (p1Score.compareTo(p2Score) < 0) {
             return rivalProfileContainers.get(1).getProfile().getTag();

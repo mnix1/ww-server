@@ -30,6 +30,7 @@ public abstract class RivalManager {
     private static final Logger logger = LoggerFactory.getLogger(RivalManager.class);
 
     public static final Integer TASK_COUNT = 5;
+    public static final String DRAW_WINNER_TAG = "";
 
     protected Integer ANSWERING_INTERVAL = 45000;
     protected Integer NEXT_TASK_INTERVAL = 2000;
@@ -208,23 +209,6 @@ public abstract class RivalManager {
                 });
     }
 
-    public void surrender(Long profileId) {
-        if (isClosed()) {
-            return;
-        }
-        rivalContainer.setStatus(RivalStatus.CLOSED);
-        Long winnerId = rivalContainer.getProfileIdRivalProfileContainerMap().get(profileId).getOpponentId();
-        rivalContainer.setWinner(winnerId);
-        rivalContainer.setResigned(true);
-        rivalContainer.forEachProfile(rivalProfileContainer -> {
-            Map<String, Object> model = new HashMap<>();
-            rivalContainer.fillModelClosed(model, rivalProfileContainer);
-            send(model, getMessageContent(), rivalProfileContainer.getProfileId());
-        });
-        rivalService.disposeManager(this);
-    }
-
-
     public synchronized void stateChoosingTaskProps() {
         Flowable.intervalRange(0L, 1L, SHOWING_ANSWER_INTERVAL, SHOWING_ANSWER_INTERVAL, TimeUnit.MILLISECONDS)
                 .subscribe(aLong -> {
@@ -304,6 +288,22 @@ public abstract class RivalManager {
         RivalProfileContainer rivalProfileContainer = rivalContainer.getProfileIdRivalProfileContainerMap().get(profileId);
         rivalContainer.fillModel(model, rivalProfileContainer);
         return model;
+    }
+
+    public void surrender(Long profileId) {
+        if (isClosed()) {
+            return;
+        }
+        rivalContainer.setStatus(RivalStatus.CLOSED);
+        Long winnerId = rivalContainer.getProfileIdRivalProfileContainerMap().get(profileId).getOpponentId();
+        rivalContainer.setWinner(winnerId);
+        rivalContainer.setResigned(true);
+        rivalContainer.forEachProfile(rivalProfileContainer -> {
+            Map<String, Object> model = new HashMap<>();
+            rivalContainer.fillModelClosed(model, rivalProfileContainer);
+            send(model, getMessageContent(), rivalProfileContainer.getProfileId());
+        });
+        rivalService.disposeManager(this);
     }
 
     public void send(Map<String, Object> model, Message message, Long profileId) {

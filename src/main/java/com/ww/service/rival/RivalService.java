@@ -63,7 +63,7 @@ public abstract class RivalService {
                 profileIdToRivalManagerMap.remove(rivalProfileContainer.getProfileId());
             }
         });
-        if (winnerTag != null) {
+        if (winnerTag != null && !winnerTag.equals(RivalManager.DRAW_WINNER_TAG)) {
             addRewardFromWin(winnerTag);
         }
 
