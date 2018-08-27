@@ -48,19 +48,7 @@ public class ProfileHeroDTO {
         this.leadership = round2(profileHero.getMentalAttributeLeadership());
         this.charisma = round2(profileHero.getMentalAttributeCharisma());
         this.intuition = round2(profileHero.getMentalAttributeIntuition());
-        prepareValue(profileHero);
-    }
-
-    private void prepareValue(ProfileHero profileHero) {
-        this.value = 0d;
-        for (WisdomAttribute wisdomAttribute : WisdomAttribute.values()) {
-            this.value += profileHero.getWisdomAttributeValue(wisdomAttribute);
-        }
-        for (MentalAttribute mentalAttribute : MentalAttribute.values()) {
-            this.value += profileHero.getMentalAttributeValue(mentalAttribute);
-        }
-        this.value /= WisdomAttribute.COUNT + MentalAttribute.COUNT;
-        this.value = round2(this.value);
+        this.value = profileHero.calculateValue();
     }
 
 }

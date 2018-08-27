@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class RivalContainer {
+public abstract class RivalContainer {
     private final Map<Long, RivalProfileContainer> profileIdRivalProfileContainerMap = new HashMap<>();
     private int taskCount = RivalManager.TASK_COUNT;
     private int currentTaskIndex = 0;
@@ -41,8 +41,8 @@ public class RivalContainer {
 
     private RivalStatus status = RivalStatus.OPEN;
 
-    public void addProfile(Long id, RivalProfileContainer battleProfileContainer) {
-        this.profileIdRivalProfileContainerMap.put(id, battleProfileContainer);
+    public void addProfile(Long id, RivalProfileContainer rivalProfileContainer) {
+        this.profileIdRivalProfileContainerMap.put(id, rivalProfileContainer);
     }
 
     public RivalProfileContainer getRivalProfileContainer(Long id) {
@@ -63,29 +63,29 @@ public class RivalContainer {
     }
 
     public String findChoosingTaskPropsTag() {
-        List<RivalProfileContainer> battleProfileContainers = new ArrayList<>(profileIdRivalProfileContainerMap.values());
-        Integer p1Score = battleProfileContainers.get(0).getScore();
-        Integer p2Score = battleProfileContainers.get(1).getScore();
+        List<RivalProfileContainer> rivalProfileContainers = new ArrayList<>(profileIdRivalProfileContainerMap.values());
+        Integer p1Score = rivalProfileContainers.get(0).getScore();
+        Integer p2Score = rivalProfileContainers.get(1).getScore();
         if (p1Score.equals(p2Score)) {
             return null;
         }
         if (p1Score.compareTo(p2Score) < 0) {
-            return battleProfileContainers.get(0).getProfile().getTag();
+            return rivalProfileContainers.get(0).getProfile().getTag();
         }
-        return battleProfileContainers.get(1).getProfile().getTag();
+        return rivalProfileContainers.get(1).getProfile().getTag();
     }
 
     public String findWinnerTag() {
-        List<RivalProfileContainer> battleProfileContainers = new ArrayList<>(profileIdRivalProfileContainerMap.values());
-        Integer p1Score = battleProfileContainers.get(0).getScore();
-        Integer p2Score = battleProfileContainers.get(1).getScore();
+        List<RivalProfileContainer> rivalProfileContainers = new ArrayList<>(profileIdRivalProfileContainerMap.values());
+        Integer p1Score = rivalProfileContainers.get(0).getScore();
+        Integer p2Score = rivalProfileContainers.get(1).getScore();
         if (p1Score.equals(p2Score)) {
             return null;
         }
         if (p1Score.compareTo(p2Score) < 0) {
-            return battleProfileContainers.get(1).getProfile().getTag();
+            return rivalProfileContainers.get(1).getProfile().getTag();
         }
-        return battleProfileContainers.get(0).getProfile().getTag();
+        return rivalProfileContainers.get(0).getProfile().getTag();
     }
 
     public boolean randomChooseTaskProps() {
@@ -101,17 +101,17 @@ public class RivalContainer {
     }
 
     public void profileReady(Long profileId) {
-        profileIdRivalProfileContainerMap.get(profileId).setStatus(RivalProfileStatus.READY);
+        getRivalProfileContainer(profileId).setStatus(RivalProfileStatus.READY);
     }
 
     public boolean isReady() {
         return profileIdRivalProfileContainerMap.values().stream()
-                .filter(battleProfileContainer -> battleProfileContainer.getStatus() != RivalProfileStatus.READY)
+                .filter(rivalProfileContainer -> rivalProfileContainer.getStatus() != RivalProfileStatus.READY)
                 .collect(Collectors.toList()).size() == 0;
     }
 
     public ProfileDTO prepareProfile(Long profileId) {
-        return new ProfileDTO(profileIdRivalProfileContainerMap.get(profileId).getProfile());
+        return new ProfileDTO(getRivalProfileContainer(profileId).getProfile());
     }
 
     public void addTask(Question question, TaskDTO taskDTO) {
@@ -119,16 +119,16 @@ public class RivalContainer {
         taskDTOs.add(taskDTO);
     }
 
-    private void fillModelBasic(Map<String, Object> model, RivalProfileContainer battleProfileContainer) {
+    public void fillModelBasic(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         model.put("status", status);
         model.put("taskCount", taskCount);
-        model.put("opponent", prepareProfile(battleProfileContainer.getOpponentId()));
-        model.put("score", profileIdRivalProfileContainerMap.get(battleProfileContainer.getProfileId()).getScore());
-        model.put("opponentScore", profileIdRivalProfileContainerMap.get(battleProfileContainer.getOpponentId()).getScore());
+        model.put("opponent", prepareProfile(rivalProfileContainer.getOpponentId()));
+        model.put("score", rivalProfileContainer.getScore());
+        model.put("opponentScore", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getScore());
     }
 
-    public void fillModelIntro(Map<String, Object> model, RivalProfileContainer battleProfileContainer) {
-        fillModelBasic(model, battleProfileContainer);
+    public void fillModelIntro(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
+        fillModelBasic(model, rivalProfileContainer);
         model.put("task", taskDTOs.get(currentTaskIndex).toTaskMeta());
     }
 
@@ -138,7 +138,7 @@ public class RivalContainer {
         model.put("nextTaskInterval", Math.max(nextTaskDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
     }
 
-    public void fillModelAnswering(Map<String, Object> model, RivalProfileContainer battleProfileContainer) {
+    public void fillModelAnswering(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         model.put("status", status);
         model.put("task", taskDTOs.get(currentTaskIndex));
         model.put("correctAnswerId", null);
@@ -147,13 +147,13 @@ public class RivalContainer {
         model.put("endAnsweringInterval", Math.max(endAnsweringDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
     }
 
-    public void fillModelAnswered(Map<String, Object> model, RivalProfileContainer battleProfileContainer) {
+    public void fillModelAnswered(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         model.put("status", status);
         model.put("correctAnswerId", findCorrectAnswerId(currentTaskIndex));
         model.put("markedAnswerId", markedAnswerId);
-        model.put("meAnswered", answeredProfileId.equals(battleProfileContainer.getProfileId()));
-        model.put("newScore", profileIdRivalProfileContainerMap.get(battleProfileContainer.getProfileId()).getScore());
-        model.put("newOpponentScore", profileIdRivalProfileContainerMap.get(battleProfileContainer.getOpponentId()).getScore());
+        model.put("meAnswered", answeredProfileId.equals(rivalProfileContainer.getProfileId()));
+        model.put("newScore", rivalProfileContainer.getScore());
+        model.put("newOpponentScore", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getScore());
     }
 
     public void fillModelAnsweringTimeout(Map<String, Object> model) {
@@ -169,10 +169,10 @@ public class RivalContainer {
         model.put("task", taskDTOs.get(currentTaskIndex).toTaskMeta());
     }
 
-    public void fillModelChoosingTaskProps(Map<String, Object> model, RivalProfileContainer battleProfileContainer) {
+    public void fillModelChoosingTaskProps(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         model.put("status", status);
-        model.put("score", profileIdRivalProfileContainerMap.get(battleProfileContainer.getProfileId()).getScore());
-        model.put("opponentScore", profileIdRivalProfileContainerMap.get(battleProfileContainer.getOpponentId()).getScore());
+        model.put("score", rivalProfileContainer.getScore());
+        model.put("opponentScore", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getScore());
         model.put("choosingTaskPropsInterval", Math.max(endChoosingTaskPropsDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
         model.put("choosingTaskPropsTag", findChoosingTaskPropsTag());
         model.put("taskId", currentTaskIndex + 1);
@@ -188,12 +188,12 @@ public class RivalContainer {
         model.put("task", taskDTOs.get(currentTaskIndex).toTaskMeta());
     }
 
-    public void fillModelClosed(Map<String, Object> model, RivalProfileContainer battleProfileContainer) {
+    public void fillModelClosed(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         model.put("status", status);
         model.put("winnerTag", winnerTag);
         model.put("resigned", resigned);
-        model.put("score", profileIdRivalProfileContainerMap.get(battleProfileContainer.getProfileId()).getScore());
-        model.put("opponentScore", profileIdRivalProfileContainerMap.get(battleProfileContainer.getOpponentId()).getScore());
+        model.put("score", rivalProfileContainer.getScore());
+        model.put("opponentScore", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getScore());
     }
 
     public void forEachProfile(Consumer<? super RivalProfileContainer> action) {
@@ -201,28 +201,28 @@ public class RivalContainer {
     }
 
 
-    public void fillModel(Map<String, Object> model, RivalProfileContainer battleProfileContainer) {
-        fillModelBasic(model, battleProfileContainer);
+    public void fillModel(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
+        fillModelBasic(model, rivalProfileContainer);
         if (status == RivalStatus.ANSWERING) {
-            fillModelAnswering(model, battleProfileContainer);
+            fillModelAnswering(model, rivalProfileContainer);
         } else if (status == RivalStatus.ANSWERED) {
             model.put("task", taskDTOs.get(currentTaskIndex));
-            fillModelAnswered(model, battleProfileContainer);
+            fillModelAnswered(model, rivalProfileContainer);
         } else if (status == RivalStatus.PREPARING_NEXT_TASK) {
             fillModelPreparingNextTask(model);
         } else if (status == RivalStatus.ANSWERING_TIMEOUT) {
-            fillModelAnswering(model, battleProfileContainer);
+            fillModelAnswering(model, rivalProfileContainer);
             fillModelAnsweringTimeout(model);
         } else if (status == RivalStatus.CLOSED) {
-            fillModelClosed(model, battleProfileContainer);
+            fillModelClosed(model, rivalProfileContainer);
         } else if (status == RivalStatus.CHOOSING_TASK_PROPS) {
-            fillModelChoosingTaskProps(model, battleProfileContainer);
+            fillModelChoosingTaskProps(model, rivalProfileContainer);
         } else if (status == RivalStatus.CHOOSING_TASK_PROPS_TIMEOUT) {
             fillModelChoosingTaskPropsTimeout(model);
         } else if (status == RivalStatus.CHOSEN_TASK_PROPS) {
             fillModelChosenTaskProps(model);
         } else if (status == RivalStatus.INTRO) {
-            fillModelIntro(model, battleProfileContainer);
+            fillModelIntro(model, rivalProfileContainer);
         }
     }
 }

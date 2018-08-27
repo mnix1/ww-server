@@ -1,6 +1,7 @@
 package com.ww.model.entity.hero;
 
 
+import com.ww.helper.HeroHelper;
 import com.ww.model.constant.hero.MentalAttribute;
 import com.ww.model.constant.hero.WisdomAttribute;
 import com.ww.model.entity.social.Profile;
@@ -94,5 +95,9 @@ public class ProfileHero {
             return mentalAttributeIntuition;
         }
         throw new IllegalArgumentException();
+    }
+
+    public Double calculateValue() {
+        return HeroHelper.calculateValue(this);
     }
 }

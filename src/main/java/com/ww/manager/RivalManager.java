@@ -6,7 +6,6 @@ import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.container.rival.RivalContainer;
-import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.rival.task.Question;
@@ -32,30 +31,29 @@ public abstract class RivalManager {
 
     public static final Integer TASK_COUNT = 5;
 
-    private static final Integer ANSWERING_INTERVAL = 45000;
-    private static final Integer INTRO_INTERVAL = 18000;
-    private static final Integer NEXT_TASK_INTERVAL = 2000;
-    private static final Integer SHOWING_ANSWER_INTERVAL = 11000;
-    private static final Integer RANDOM_CHOOSE_TASK_PROPS_INTERVAL = 8000;
-    private static final Integer CHOOSING_TASK_PROPS_INTERVAL = 14000;
+    protected Integer ANSWERING_INTERVAL = 45000;
+    protected Integer NEXT_TASK_INTERVAL = 2000;
+    protected Integer SHOWING_ANSWER_INTERVAL = 8000;
+    protected Integer RANDOM_CHOOSE_TASK_PROPS_INTERVAL = 6000;
+    protected Integer CHOOSING_TASK_PROPS_INTERVAL = 14000;
 
-    private RivalContainer rivalContainer;
+    protected RivalContainer rivalContainer;
 
-    private RivalService rivalService;
-    private ProfileConnectionService profileConnectionService;
+    protected RivalService rivalService;
+
+    protected ProfileConnectionService profileConnectionService;
 
     private Disposable answeringTimeoutDisposable;
     private Disposable choosingTaskPropsTimeoutDisposable;
 
-    protected RivalManager(RivalInitContainer bic, RivalService rivalService, ProfileConnectionService profileConnectionService) {
-        Long creatorId = bic.getCreatorProfile().getId();
-        Long opponentId = bic.getOpponentProfile().getId();
-        this.rivalContainer = new RivalContainer();
-        this.rivalContainer.addProfile(creatorId, new RivalProfileContainer(bic.getCreatorProfile(), opponentId));
-        this.rivalContainer.addProfile(opponentId, new RivalProfileContainer(bic.getOpponentProfile(), creatorId));
-        this.rivalService = rivalService;
-        this.profileConnectionService = profileConnectionService;
+
+    protected Integer getIntroInterval() {
+        return 9500;
     }
+
+    protected abstract Message getMessageReadyFast();
+
+    protected abstract Message getMessageContent();
 
     public boolean canAnswer() {
         return rivalContainer.getStatus() == RivalStatus.ANSWERING;
@@ -95,7 +93,7 @@ public abstract class RivalManager {
         }
     }
 
-    private synchronized void stateIntro() {
+    protected synchronized void stateIntro() {
         rivalContainer.setStatus(RivalStatus.INTRO);
         prepareTask((long) rivalContainer.getCurrentTaskIndex() + 1);
         rivalContainer.forEachProfile(rivalProfileContainer -> {
@@ -106,14 +104,14 @@ public abstract class RivalManager {
         statePreparingNextTaskAfterIntro();
     }
 
-    private synchronized void statePreparingNextTaskAfterIntro() {
-        statePreparingNextTask(INTRO_INTERVAL);
+    protected synchronized void statePreparingNextTaskAfterIntro() {
+        statePreparingNextTask(getIntroInterval());
     }
 
-    private synchronized void statePreparingNextTask(Integer interval) {
+    protected synchronized void statePreparingNextTask(Integer interval) {
         Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS)
                 .subscribe(aLong -> {
-                    if(isClosed()){
+                    if (isClosed()) {
                         return;
                     }
                     rivalContainer.setNextTaskDate(Instant.now().plus(NEXT_TASK_INTERVAL, ChronoUnit.MILLIS));
@@ -127,10 +125,10 @@ public abstract class RivalManager {
                 });
     }
 
-    private synchronized void stateAnswering() {
+    protected synchronized void stateAnswering() {
         Flowable.intervalRange(0L, 1L, NEXT_TASK_INTERVAL, NEXT_TASK_INTERVAL, TimeUnit.MILLISECONDS)
                 .subscribe(aLong -> {
-                    if(isClosed()){
+                    if (isClosed()) {
                         return;
                     }
                     rivalContainer.setEndAnsweringDate(Instant.now().plus(ANSWERING_INTERVAL, ChronoUnit.MILLIS));
@@ -144,7 +142,7 @@ public abstract class RivalManager {
                 });
     }
 
-    private synchronized void stateAnsweringTimeout() {
+    protected synchronized void stateAnsweringTimeout() {
         answeringTimeoutDisposable = Flowable.intervalRange(0L, 1L, ANSWERING_INTERVAL, ANSWERING_INTERVAL, TimeUnit.MILLISECONDS)
                 .subscribe(aLong -> {
                     if (rivalContainer.getStatus() != RivalStatus.ANSWERING) {
@@ -194,7 +192,7 @@ public abstract class RivalManager {
     public synchronized void stateClose() {
         Flowable.intervalRange(0L, 1L, SHOWING_ANSWER_INTERVAL, SHOWING_ANSWER_INTERVAL, TimeUnit.MILLISECONDS)
                 .subscribe(aLong -> {
-                    if(isClosed()){
+                    if (isClosed()) {
                         return;
                     }
                     rivalContainer.setStatus(RivalStatus.CLOSED);
@@ -230,7 +228,7 @@ public abstract class RivalManager {
     public synchronized void stateChoosingTaskProps() {
         Flowable.intervalRange(0L, 1L, SHOWING_ANSWER_INTERVAL, SHOWING_ANSWER_INTERVAL, TimeUnit.MILLISECONDS)
                 .subscribe(aLong -> {
-                    if(isClosed()){
+                    if (isClosed()) {
                         return;
                     }
                     rivalContainer.setStatus(RivalStatus.CHOOSING_TASK_PROPS);
@@ -316,10 +314,6 @@ public abstract class RivalManager {
             logger.error("Error when sending message");
         }
     }
-
-    protected abstract Message getMessageReadyFast();
-
-    protected abstract Message getMessageContent();
 
     public void sendReadyFast() {
         rivalContainer.getProfileIdRivalProfileContainerMap().values().stream().forEach(rivalProfileContainer -> {

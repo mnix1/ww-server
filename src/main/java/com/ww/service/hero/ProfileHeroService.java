@@ -34,6 +34,10 @@ public class ProfileHeroService {
                 .collect(Collectors.toList());
     }
 
+    public List<ProfileHero> listTeam(Long profileId){
+        return profileHeroRepository.findAllByProfile_IdAndInTeam(profileId, true);
+    }
+
     public Map<String, Object> teamSave(List<Long> ids) {
         Map<String, Object> model = new HashMap<>();
         if (ids.size() > HERO_TEAM_COUNT) {

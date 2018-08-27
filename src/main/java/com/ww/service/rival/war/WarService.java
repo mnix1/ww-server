@@ -1,5 +1,7 @@
 package com.ww.service.rival.war;
 
+import com.ww.model.entity.hero.ProfileHero;
+import com.ww.service.hero.ProfileHeroService;
 import com.ww.service.rival.RivalService;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
@@ -9,8 +11,13 @@ import com.ww.websocket.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class WarService extends RivalService {
+
+    @Autowired
+    protected ProfileHeroService profileHeroService;
 
     @Autowired
     protected ProfileConnectionService profileConnectionService;
@@ -20,6 +27,7 @@ public class WarService extends RivalService {
 
     @Autowired
     protected TaskRendererService taskRendererService;
+
     @Autowired
     protected RewardService rewardService;
 
@@ -42,8 +50,13 @@ public class WarService extends RivalService {
     protected TaskRendererService getTaskRendererService() {
         return taskRendererService;
     }
+
     @Override
     protected Message getMessageContent() {
         return Message.WAR_CONTENT;
+    }
+
+    public List<ProfileHero> getProfileHeroes(Long profileId){
+        return profileHeroService.listTeam(profileId);
     }
 }
