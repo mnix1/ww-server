@@ -10,7 +10,8 @@ import com.ww.websocket.message.Message;
 public class WarManager extends RivalManager {
 
     protected Integer getIntroInterval(){
-        return 20500;
+//        return 20500;
+        return 1000;
     }
 
     public WarManager(RivalInitContainer bic, WarService warService, ProfileConnectionService profileConnectionService) {
