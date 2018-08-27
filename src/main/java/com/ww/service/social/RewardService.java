@@ -57,6 +57,21 @@ public class RewardService {
         send(model, Message.REWARD, profile.getId());
     }
 
+    public void addRewardFromWarWin(String profileTag) {
+        RewardObject rewardObject = new RewardObject();
+        rewardObject.setGainGold(2L);
+        Profile profile = profileService.getProfile(profileTag);
+        profile.changeResources(2L, null, null, null);
+        profileService.save(profile);
+        if (!profileBookService.isProfileBookShelfFull(profile.getId())) {
+            Book book = giveBook(profile);
+            rewardObject.setBookType(book.getType());
+        }
+        Map<String, Object> model = new HashMap<>();
+        rewardObject.writeToMap(model);
+        send(model, Message.REWARD, profile.getId());
+    }
+
     public Book giveBook(Profile profile) {
         Book book = bookService.findRandomBook();
         profileBookService.giveBook(profile, book);

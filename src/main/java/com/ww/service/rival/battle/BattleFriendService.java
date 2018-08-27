@@ -3,7 +3,7 @@ package com.ww.service.rival.battle;
 import com.ww.manager.BattleManager;
 import com.ww.model.constant.social.FriendStatus;
 import com.ww.model.container.ProfileConnection;
-import com.ww.model.container.battle.BattleFriendContainer;
+import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.dto.social.FriendDTO;
 import com.ww.model.entity.social.Profile;
 import com.ww.service.SessionService;
@@ -24,7 +24,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class BattleFriendService {
     private static final Logger logger = LoggerFactory.getLogger(BattleFriendService.class);
 
-    private final CopyOnWriteArrayList<BattleFriendContainer> battleFriendContainers = new CopyOnWriteArrayList<BattleFriendContainer>();
+    private final CopyOnWriteArrayList<RivalInitContainer> rivalInitContainers = new CopyOnWriteArrayList<RivalInitContainer>();
 
     @Autowired
     private SessionService sessionService;
@@ -42,31 +42,31 @@ public class BattleFriendService {
         Map<String, Object> model = new HashMap<>();
         cleanBattlesCreator();
         cleanBattlesOpponent();
-        if (battleFriendContainers.stream().anyMatch(e -> e.getOpponentProfile().getTag().equals(tag) || e.getCreatorProfile().getTag().equals(tag))) {
+        if (rivalInitContainers.stream().anyMatch(e -> e.getOpponentProfile().getTag().equals(tag) || e.getCreatorProfile().getTag().equals(tag))) {
             model.put("code", -1);
             return model;
         }
-        BattleFriendContainer battleFriendContainer = prepareBattleContainer(tag);
-        if (battleFriendContainer == null) {
+        RivalInitContainer rivalInitContainer = prepareBattleContainer(tag);
+        if (rivalInitContainer == null) {
             model.put("code", -1);
             return model;
         }
-        battleFriendContainers.add(battleFriendContainer);
+        rivalInitContainers.add(rivalInitContainer);
         model.put("code", 1);
         return model;
     }
 
     private void cleanBattlesCreator() {
-        battleFriendContainers.removeIf(battleFriendContainer -> battleFriendContainer.getCreatorProfile().getId().equals(sessionService.getProfileId()));
+        rivalInitContainers.removeIf(rivalInitContainer -> rivalInitContainer.getCreatorProfile().getId().equals(sessionService.getProfileId()));
     }
 
     private void cleanBattlesOpponent() {
-        battleFriendContainers.removeIf(battleFriendContainer -> battleFriendContainer.getOpponentProfile().getId().equals(sessionService.getProfileId()));
+        rivalInitContainers.removeIf(rivalInitContainer -> rivalInitContainer.getOpponentProfile().getId().equals(sessionService.getProfileId()));
     }
 
     public Map cancelFriend() {
         Map<String, Object> model = new HashMap<>();
-        battleFriendContainers.stream().filter(battleFriendContainer -> battleFriendContainer.getCreatorProfile().getId().equals(sessionService.getProfileId()))
+        rivalInitContainers.stream().filter(rivalInitContainer -> rivalInitContainer.getCreatorProfile().getId().equals(sessionService.getProfileId()))
                 .forEach(this::sendCancelInvite);
         this.cleanBattlesCreator();
         return model;
@@ -74,23 +74,23 @@ public class BattleFriendService {
 
     public Map acceptFriend() {
         Map<String, Object> model = new HashMap<>();
-        BattleFriendContainer battle = battleFriendContainers.stream().filter(battleFriendContainer -> battleFriendContainer.getOpponentProfile().getId().equals(sessionService.getProfileId())).findFirst().get();
+        RivalInitContainer battle = rivalInitContainers.stream().filter(rivalInitContainer -> rivalInitContainer.getOpponentProfile().getId().equals(sessionService.getProfileId())).findFirst().get();
         BattleManager battleManager = new BattleManager(battle, battleService, profileConnectionService);
-        battleService.getProfileIdToBattleManagerMap().put(battle.getCreatorProfile().getId(), battleManager);
-        battleService.getProfileIdToBattleManagerMap().put(battle.getOpponentProfile().getId(), battleManager);
+        battleService.getProfileIdToRivalManagerMap().put(battle.getCreatorProfile().getId(), battleManager);
+        battleService.getProfileIdToRivalManagerMap().put(battle.getOpponentProfile().getId(), battleManager);
         this.sendAcceptInvite(battle);
         return model;
     }
 
     public Map rejectFriend() {
         Map<String, Object> model = new HashMap<>();
-        battleFriendContainers.stream().filter(battleFriendContainer -> battleFriendContainer.getOpponentProfile().getId().equals(sessionService.getProfileId()))
+        rivalInitContainers.stream().filter(rivalInitContainer -> rivalInitContainer.getOpponentProfile().getId().equals(sessionService.getProfileId()))
                 .forEach(this::sendRejectInvite);
         this.cleanBattlesOpponent();
         return model;
     }
 
-    private BattleFriendContainer prepareBattleContainer(String tag) {
+    private RivalInitContainer prepareBattleContainer(String tag) {
         Profile opponentProfile = profileService.getProfile(tag);
         ProfileConnection opponentProfileConnection = profileConnectionService.findByProfileId(opponentProfile.getId()).orElseGet(null);
         if (opponentProfileConnection == null) {
@@ -98,31 +98,31 @@ public class BattleFriendService {
             return null;
         }
         Profile creatorProfile = profileService.getProfile();
-        BattleFriendContainer battle = new BattleFriendContainer(creatorProfile, opponentProfile);
+        RivalInitContainer battle = new RivalInitContainer(creatorProfile, opponentProfile);
         sendInvite(battle);
         return battle;
     }
 
-    private void sendInvite(BattleFriendContainer battleFriendContainer) {
-        profileConnectionService.findByProfileId(battleFriendContainer.getOpponentProfile().getId()).ifPresent(profileConnection -> {
-            profileConnection.sendMessage(new MessageDTO(Message.BATTLE_INVITE, new FriendDTO(battleFriendContainer.getCreatorProfile(), FriendStatus.ACCEPTED, true).toString()).toString());
+    private void sendInvite(RivalInitContainer rivalInitContainer) {
+        profileConnectionService.findByProfileId(rivalInitContainer.getOpponentProfile().getId()).ifPresent(profileConnection -> {
+            profileConnection.sendMessage(new MessageDTO(Message.BATTLE_INVITE, new FriendDTO(rivalInitContainer.getCreatorProfile(), FriendStatus.ACCEPTED, true).toString()).toString());
         });
     }
 
-    private void sendCancelInvite(BattleFriendContainer battleFriendContainer) {
-        profileConnectionService.findByProfileId(battleFriendContainer.getOpponentProfile().getId()).ifPresent(profileConnection -> {
+    private void sendCancelInvite(RivalInitContainer rivalInitContainer) {
+        profileConnectionService.findByProfileId(rivalInitContainer.getOpponentProfile().getId()).ifPresent(profileConnection -> {
             profileConnection.sendMessage(new MessageDTO(Message.BATTLE_CANCEL_INVITE, "").toString());
         });
     }
 
-    private void sendRejectInvite(BattleFriendContainer battleFriendContainer) {
-        profileConnectionService.findByProfileId(battleFriendContainer.getCreatorProfile().getId()).ifPresent(profileConnection -> {
+    private void sendRejectInvite(RivalInitContainer rivalInitContainer) {
+        profileConnectionService.findByProfileId(rivalInitContainer.getCreatorProfile().getId()).ifPresent(profileConnection -> {
             profileConnection.sendMessage(new MessageDTO(Message.BATTLE_REJECT_INVITE, "").toString());
         });
     }
 
-    private void sendAcceptInvite(BattleFriendContainer battleFriendContainer) {
-        profileConnectionService.findByProfileId(battleFriendContainer.getCreatorProfile().getId()).ifPresent(profileConnection -> {
+    private void sendAcceptInvite(RivalInitContainer rivalInitContainer) {
+        profileConnectionService.findByProfileId(rivalInitContainer.getCreatorProfile().getId()).ifPresent(profileConnection -> {
             profileConnection.sendMessage(new MessageDTO(Message.BATTLE_ACCEPT_INVITE, "").toString());
         });
     }

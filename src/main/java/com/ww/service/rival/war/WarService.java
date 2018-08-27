@@ -1,4 +1,4 @@
-package com.ww.service.rival.battle;
+package com.ww.service.rival.war;
 
 import com.ww.service.rival.RivalService;
 import com.ww.service.rival.task.TaskGenerateService;
@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BattleService extends RivalService {
+public class WarService extends RivalService {
 
     @Autowired
     protected ProfileConnectionService profileConnectionService;
@@ -25,7 +25,7 @@ public class BattleService extends RivalService {
 
     @Override
     protected void addRewardFromWin(String winnerTag) {
-        rewardService.addRewardFromBattleWin(winnerTag);
+        rewardService.addRewardFromWarWin(winnerTag);
     }
 
     @Override
@@ -42,10 +42,8 @@ public class BattleService extends RivalService {
     protected TaskRendererService getTaskRendererService() {
         return taskRendererService;
     }
-
     @Override
     protected Message getMessageContent() {
-        return Message.BATTLE_CONTENT;
+        return Message.WAR_CONTENT;
     }
-
 }

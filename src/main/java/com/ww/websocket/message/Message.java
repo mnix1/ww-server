@@ -11,5 +11,7 @@ public enum Message {
     BATTLE_ACCEPT_INVITE,
     BATTLE_READY_FAST,
     BATTLE_CONTENT,
+    WAR_CONTENT,
+    WAR_READY_FAST,
     REWARD,
 }

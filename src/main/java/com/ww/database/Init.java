@@ -77,16 +77,18 @@ public class Init {
     private Random random = new SecureRandom();
 
     public void init() {
-        initBooks();
-        initTaskTypes();
-        initHeroes();
-        initProfiles();
-        initMusicTracks();
-        initCliparts();
-        initGeographyCountries();
-        initChemistryElements();
-        memoryTaskHelperService.initShapes();
-        memoryTaskHelperService.initColors();
+//        if (bookRepository.findAll().size() == 0) {
+//            initBooks();
+//            initTaskTypes();
+//            initHeroes();
+//            initProfiles();
+//            initMusicTracks();
+//            initCliparts();
+//            initGeographyCountries();
+//            initChemistryElements();
+//            memoryTaskHelperService.initShapes();
+//            memoryTaskHelperService.initColors();
+//        }
     }
 
     public void initTaskTypes() {

@@ -1,19 +1,19 @@
-package com.ww.model.container.battle;
+package com.ww.model.container.rival;
 
-import com.ww.model.constant.rival.battle.BattleProfileStatus;
+import com.ww.model.constant.rival.RivalProfileStatus;
 import com.ww.model.entity.social.Profile;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class BattleProfileContainer {
+public class RivalProfileContainer {
     private Profile profile;
     private Long opponentId;
-    private BattleProfileStatus status = BattleProfileStatus.OPEN;
+    private RivalProfileStatus status = RivalProfileStatus.OPEN;
     private Integer score = 0;
 
-    public BattleProfileContainer(Profile profile, Long opponentId) {
+    public RivalProfileContainer(Profile profile, Long opponentId) {
         this.profile = profile;
         this.opponentId = opponentId;
     }

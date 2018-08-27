@@ -1,4 +1,4 @@
-package com.ww.model.container.battle;
+package com.ww.model.container.rival;
 
 import com.ww.model.entity.social.Profile;
 import lombok.Getter;
@@ -8,11 +8,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class BattleFriendContainer {
+public class RivalInitContainer {
     private Profile creatorProfile;
     private Profile opponentProfile;
 
-    public BattleFriendContainer(Profile creatorProfile, Profile opponentProfile) {
+    public RivalInitContainer(Profile creatorProfile, Profile opponentProfile) {
         this.creatorProfile = creatorProfile;
         this.opponentProfile = opponentProfile;
     }

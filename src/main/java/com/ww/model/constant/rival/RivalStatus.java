@@ -1,6 +1,6 @@
-package com.ww.model.constant.rival.battle;
+package com.ww.model.constant.rival;
 
-public enum BattleStatus {
+public enum RivalStatus {
     OPEN,
     INTRO,
     PREPARING_NEXT_TASK,

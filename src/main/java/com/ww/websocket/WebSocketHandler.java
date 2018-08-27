@@ -2,6 +2,7 @@ package com.ww.websocket;
 
 import com.ww.model.container.ProfileConnection;
 import com.ww.service.rival.battle.BattleService;
+import com.ww.service.rival.war.WarService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
 import org.slf4j.Logger;
@@ -27,6 +28,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
     @Autowired
     BattleService battleService;
 
+    @Autowired
+    WarService warService;
+
     @Override
     public void handleTransportError(WebSocketSession session, Throwable throwable) throws Exception {
         logger.error("error occured at sender " + session, throwable);
@@ -41,8 +45,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         logger.debug("Connected: sessionId: " + session.getId());
-        ProfileConnection profileConnection =profileConnectionService.newConnection(session);
-        battleService.sendActualBattleModelToNewProfileConnection(profileConnection);
+        ProfileConnection profileConnection = profileConnectionService.newConnection(session);
+        battleService.sendActualRivalModelToNewProfileConnection(profileConnection);
+        warService.sendActualRivalModelToNewProfileConnection(profileConnection);
     }
 
 //    private ProfileConnection findProfileConnection(WebSocketSession session) {
@@ -61,6 +66,14 @@ public class WebSocketHandler extends TextWebSocketHandler {
             battleService.chooseTaskProps(session.getId(), message.substring("BATTLE_CHOOSE_TASK_PROPS".length()));
         } else if (message.contains("BATTLE_SURRENDER")) {
             battleService.surrender(session.getId());
+        } else if (message.equals("WAR_READY_FOR_START")) {
+            warService.readyForStart(session.getId());
+        } else if (message.contains("WAR_ANSWER")) {
+            warService.answer(session.getId(), message.substring("WAR_ANSWER".length()));
+        } else if (message.contains("WAR_CHOOSE_TASK_PROPS")) {
+            warService.chooseTaskProps(session.getId(), message.substring("WAR_CHOOSE_TASK_PROPS".length()));
+        } else if (message.contains("WAR_SURRENDER")) {
+            warService.surrender(session.getId());
         }
     }
 }
