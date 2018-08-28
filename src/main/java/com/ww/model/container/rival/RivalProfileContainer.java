@@ -11,7 +11,6 @@ public class RivalProfileContainer {
     private Profile profile;
     private Long opponentId;
     private RivalProfileStatus status = RivalProfileStatus.OPEN;
-    private Integer score = 0;
 
     public RivalProfileContainer(Profile profile, Long opponentId) {
         this.profile = profile;

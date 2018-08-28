@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BattleProfileContainer extends RivalProfileContainer {
+    private Integer score = 0;
     public BattleProfileContainer(Profile profile, Long opponentId) {
         super(profile, opponentId);
     }

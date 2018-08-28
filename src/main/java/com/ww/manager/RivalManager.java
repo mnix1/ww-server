@@ -27,15 +27,15 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public abstract class RivalManager {
-    private static final Logger logger = LoggerFactory.getLogger(RivalManager.class);
+    protected static final Logger logger = LoggerFactory.getLogger(RivalManager.class);
 
-    public static final Integer TASK_COUNT = 5;
     public static final String DRAW_WINNER_TAG = "";
 
-    protected Integer ANSWERING_INTERVAL = 45000;
+//    protected Integer ANSWERING_INTERVAL = 45000;
+    protected Integer ANSWERING_INTERVAL = 1000;
     protected Integer NEXT_TASK_INTERVAL = 2000;
-    protected Integer SHOWING_ANSWER_INTERVAL = 8000;
-    protected Integer RANDOM_CHOOSE_TASK_PROPS_INTERVAL = 6000;
+//    protected Integer SHOWING_ANSWER_INTERVAL = 8000;
+    protected Integer SHOWING_ANSWER_INTERVAL = 1000;
     protected Integer CHOOSING_TASK_PROPS_INTERVAL = 14000;
 
     protected RivalContainer rivalContainer;
@@ -44,12 +44,15 @@ public abstract class RivalManager {
 
     protected ProfileConnectionService profileConnectionService;
 
-    private Disposable answeringTimeoutDisposable;
-    private Disposable choosingTaskPropsTimeoutDisposable;
+    protected Disposable answeringTimeoutDisposable;
+    protected Disposable choosingTaskPropsTimeoutDisposable;
 
 
     protected Integer getIntroInterval() {
         return 9500;
+    }
+    protected Integer getRandomChooseTaskPropsInterval() {
+        return 6000;
     }
 
     protected abstract Message getMessageReadyFast();
@@ -76,11 +79,11 @@ public abstract class RivalManager {
         return new ArrayList<>(this.rivalContainer.getProfileIdRivalProfileContainerMap().values());
     }
 
-    private void prepareTask(Long id) {
+    protected void prepareTask(Long id) {
         prepareTask(id, Category.random(), TaskDifficultyLevel.random());
     }
 
-    private void prepareTask(Long id, Category category, TaskDifficultyLevel difficultyLevel) {
+    protected void prepareTask(Long id, Category category, TaskDifficultyLevel difficultyLevel) {
         Question question = rivalService.prepareQuestion(category, difficultyLevel);
         question.setId(id);
         TaskDTO taskDTO = rivalService.prepareTaskDTO(question);
@@ -126,69 +129,11 @@ public abstract class RivalManager {
                 });
     }
 
-    protected synchronized void stateAnswering() {
-        Flowable.intervalRange(0L, 1L, NEXT_TASK_INTERVAL, NEXT_TASK_INTERVAL, TimeUnit.MILLISECONDS)
-                .subscribe(aLong -> {
-                    if (isClosed()) {
-                        return;
-                    }
-                    rivalContainer.setEndAnsweringDate(Instant.now().plus(ANSWERING_INTERVAL, ChronoUnit.MILLIS));
-                    rivalContainer.setStatus(RivalStatus.ANSWERING);
-                    rivalContainer.forEachProfile(rivalProfileContainer -> {
-                        Map<String, Object> model = new HashMap<>();
-                        rivalContainer.fillModelAnswering(model, rivalProfileContainer);
-                        send(model, getMessageContent(), rivalProfileContainer.getProfileId());
-                    });
-                    stateAnsweringTimeout();
-                });
-    }
+    protected abstract void stateAnswering();
 
-    protected synchronized void stateAnsweringTimeout() {
-        answeringTimeoutDisposable = Flowable.intervalRange(0L, 1L, ANSWERING_INTERVAL, ANSWERING_INTERVAL, TimeUnit.MILLISECONDS)
-                .subscribe(aLong -> {
-                    if (rivalContainer.getStatus() != RivalStatus.ANSWERING) {
-                        return;
-                    }
-                    rivalContainer.setStatus(RivalStatus.ANSWERING_TIMEOUT);
-                    Map<String, Object> model = new HashMap<>();
-                    rivalContainer.fillModelAnsweringTimeout(model);
-                    rivalContainer.forEachProfile(rivalProfileContainer -> {
-                        send(model, getMessageContent(), rivalProfileContainer.getProfileId());
-                    });
-                    if (rivalContainer.getCurrentTaskIndex() == TASK_COUNT - 1) {
-                        stateClose();
-                    } else {
-                        stateChoosingTaskProps();
-                    }
-                });
-    }
+    protected abstract void stateAnsweringTimeout();
 
-    public synchronized void stateAnswered(Long profileId, Map<String, Object> content) {
-        rivalContainer.setStatus(RivalStatus.ANSWERED);
-        if (answeringTimeoutDisposable != null && !answeringTimeoutDisposable.isDisposed()) {
-            answeringTimeoutDisposable.dispose();
-            answeringTimeoutDisposable = null;
-        }
-        rivalContainer.setAnsweredProfileId(profileId);
-        Boolean isAnswerCorrect = false;
-        if (content.containsKey("answerId")) {
-            Long markedAnswerId = ((Integer) content.get("answerId")).longValue();
-            rivalContainer.setMarkedAnswerId(markedAnswerId);
-            isAnswerCorrect = rivalContainer.findCurrentCorrectAnswerId().equals(markedAnswerId);
-        }
-        RivalProfileContainer container = rivalContainer.getProfileIdRivalProfileContainerMap().get(profileId);
-        container.setScore(isAnswerCorrect ? container.getScore() + rivalContainer.getCurrentTaskPoints() : container.getScore() - rivalContainer.getCurrentTaskPoints());
-        rivalContainer.forEachProfile(rivalProfileContainer -> {
-            Map<String, Object> model = new HashMap<>();
-            rivalContainer.fillModelAnswered(model, rivalProfileContainer);
-            send(model, getMessageContent(), rivalProfileContainer.getProfileId());
-        });
-        if (rivalContainer.getCurrentTaskIndex() == TASK_COUNT - 1) {
-            stateClose();
-        } else {
-            stateChoosingTaskProps();
-        }
-    }
+    public abstract void stateAnswered(Long profileId, Map<String, Object> content);
 
     public synchronized void stateClose() {
         Flowable.intervalRange(0L, 1L, SHOWING_ANSWER_INTERVAL, SHOWING_ANSWER_INTERVAL, TimeUnit.MILLISECONDS)
@@ -209,31 +154,7 @@ public abstract class RivalManager {
                 });
     }
 
-    public synchronized void stateChoosingTaskProps() {
-        Flowable.intervalRange(0L, 1L, SHOWING_ANSWER_INTERVAL, SHOWING_ANSWER_INTERVAL, TimeUnit.MILLISECONDS)
-                .subscribe(aLong -> {
-                    if (isClosed()) {
-                        return;
-                    }
-                    rivalContainer.setStatus(RivalStatus.CHOOSING_TASK_PROPS);
-                    rivalContainer.increaseCurrentTaskIndex();
-                    boolean randomChooseTaskProps = rivalContainer.randomChooseTaskProps();
-                    if (randomChooseTaskProps) {
-                        prepareTask((long) rivalContainer.getCurrentTaskIndex() + 1);
-                    }
-                    rivalContainer.setEndChoosingTaskPropsDate(Instant.now().plus(CHOOSING_TASK_PROPS_INTERVAL, ChronoUnit.MILLIS));
-                    rivalContainer.forEachProfile(rivalProfileContainer -> {
-                        Map<String, Object> model = new HashMap<>();
-                        rivalContainer.fillModelChoosingTaskProps(model, rivalProfileContainer);
-                        send(model, getMessageContent(), rivalProfileContainer.getProfileId());
-                    });
-                    if (randomChooseTaskProps) {
-                        statePreparingNextTask(RANDOM_CHOOSE_TASK_PROPS_INTERVAL);
-                    } else {
-                        stateChoosingTaskPropsTimeout();
-                    }
-                });
-    }
+    public abstract void stateChoosingTaskProps();
 
     public synchronized void stateChoosingTaskPropsTimeout() {
         choosingTaskPropsTimeoutDisposable = Flowable.intervalRange(0L, 1L, CHOOSING_TASK_PROPS_INTERVAL, CHOOSING_TASK_PROPS_INTERVAL, TimeUnit.MILLISECONDS)
@@ -248,40 +169,11 @@ public abstract class RivalManager {
                     rivalContainer.forEachProfile(rivalProfileContainer -> {
                         send(model, getMessageContent(), rivalProfileContainer.getProfileId());
                     });
-                    statePreparingNextTask(RANDOM_CHOOSE_TASK_PROPS_INTERVAL);
+                    statePreparingNextTask(getRandomChooseTaskPropsInterval());
                 });
     }
 
-    public synchronized void stateChosenTaskProps(Long profileId, Map<String, Object> content) {
-        if (!rivalContainer.getRivalProfileContainer(profileId).getProfile().getTag().equals(rivalContainer.findChoosingTaskPropsTag())) {
-            logger.error("Not choosing profile tried to choose task props, profileId: {}", profileId);
-            return;
-        }
-        rivalContainer.setStatus(RivalStatus.CHOSEN_TASK_PROPS);
-        if (choosingTaskPropsTimeoutDisposable != null && !choosingTaskPropsTimeoutDisposable.isDisposed()) {
-            choosingTaskPropsTimeoutDisposable.dispose();
-            choosingTaskPropsTimeoutDisposable = null;
-        }
-        Category category = Category.random();
-        TaskDifficultyLevel difficultyLevel = TaskDifficultyLevel.random();
-        try {
-            if (content.containsKey("category")) {
-                category = Category.fromString((String) content.get("category"));
-            }
-            if (content.containsKey("difficultyLevel")) {
-                difficultyLevel = TaskDifficultyLevel.fromString((String) content.get("difficultyLevel"));
-            }
-        } catch (Exception e) {
-            logger.error("Wrong content on stateChosenTaskProps for profileId: {}", profileId);
-        }
-        prepareTask((long) rivalContainer.getCurrentTaskIndex() + 1, category, difficultyLevel);
-//        Map<String, Object> model = new HashMap<>();
-//        rivalContainer.fillModelChosenTaskProps(model);
-//        rivalContainer.forEachProfile(rivalProfileContainer -> {
-//            send(model, getMessageContent(), rivalProfileContainer.getProfileId());
-//        });
-        statePreparingNextTask(0);
-    }
+    public abstract void stateChosenTaskProps(Long profileId, Map<String, Object> content);
 
     public synchronized Map<String, Object> actualModel(Long profileId) {
         Map<String, Object> model = new HashMap<>();
