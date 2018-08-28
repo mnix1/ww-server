@@ -34,8 +34,12 @@ public class ProfileHeroService {
                 .collect(Collectors.toList());
     }
 
-    public List<ProfileHero> listTeam(Long profileId){
+    public List<ProfileHero> listTeam(Long profileId) {
         return profileHeroRepository.findAllByProfile_IdAndInTeam(profileId, true);
+    }
+
+    public void saveTeam(List<ProfileHero> team) {
+        profileHeroRepository.saveAll(team);
     }
 
     public Map<String, Object> teamSave(List<Long> ids) {

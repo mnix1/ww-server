@@ -22,12 +22,13 @@ public class WarManager extends RivalManager {
     private WarContainer warContainer;
 
     protected Integer getIntroInterval() {
-        return 20500;
-//        return 1000;
+//        return 20500;
+        return 1000;
     }
 
     protected Integer getRandomChooseTaskPropsInterval() {
-        return 16000;
+        return 1000;
+//        return 16000;
     }
 
     public WarManager(RivalInitContainer bic, WarService warService, ProfileConnectionService profileConnectionService) {
@@ -45,7 +46,7 @@ public class WarManager extends RivalManager {
         return Message.WAR_READY_FAST;
     }
 
-    protected Message getMessageContent() {
+    public Message getMessageContent() {
         return Message.WAR_CONTENT;
     }
 

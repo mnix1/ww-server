@@ -78,6 +78,26 @@ public class ProfileHero {
         throw new IllegalArgumentException();
     }
 
+    public void setWisdomAttributeValue(WisdomAttribute wisdomAttribute, Double value) {
+        if (wisdomAttribute == WisdomAttribute.MEMORY) {
+            setWisdomAttributeMemory(value);
+        } else if (wisdomAttribute == WisdomAttribute.LOGIC) {
+            setWisdomAttributeLogic(value);
+        } else if (wisdomAttribute == WisdomAttribute.PERCEPTIVITY) {
+            setWisdomAttributePerceptivity(value);
+        } else if (wisdomAttribute == WisdomAttribute.COUNTING) {
+            setWisdomAttributeCounting(value);
+        } else if (wisdomAttribute == WisdomAttribute.COMBINING_FACTS) {
+            setWisdomAttributeCombiningFacts(value);
+        } else if (wisdomAttribute == WisdomAttribute.PATTERN_RECOGNITION) {
+            setWisdomAttributePatternRecognition(value);
+        } else if (wisdomAttribute == WisdomAttribute.IMAGINATION) {
+            setWisdomAttributeImagination(value);
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
     public Double getMentalAttributeValue(MentalAttribute mentalAttribute) {
         if (mentalAttribute == MentalAttribute.SPEED) {
             return mentalAttributeSpeed;
@@ -95,6 +115,22 @@ public class ProfileHero {
             return mentalAttributeIntuition;
         }
         throw new IllegalArgumentException();
+    }
+
+    public void setMentalAttributeValue(MentalAttribute mentalAttribute, Double value) {
+        if (mentalAttribute == MentalAttribute.SPEED) {
+            setMentalAttributeSpeed(value);
+        } else if (mentalAttribute == MentalAttribute.REFLEX) {
+            setMentalAttributeReflex(value);
+        } else if (mentalAttribute == MentalAttribute.CONCENTRATION) {
+            setMentalAttributeConcentration(value);
+        } else if (mentalAttribute == MentalAttribute.CONFIDENCE) {
+            setMentalAttributeConfidence(value);
+        } else if (mentalAttribute == MentalAttribute.INTUITION) {
+            setMentalAttributeIntuition(value);
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public Double calculateValue() {

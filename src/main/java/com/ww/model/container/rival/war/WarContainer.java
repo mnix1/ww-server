@@ -1,19 +1,14 @@
 package com.ww.model.container.rival.war;
 
-import com.ww.manager.HeroAnswerManager;
+import com.ww.manager.heroanswer.HeroAnswerManager;
 import com.ww.manager.RivalManager;
-import com.ww.model.constant.hero.HeroAnswerAction;
 import com.ww.model.container.rival.RivalContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
-import com.ww.model.container.rival.battle.BattleProfileContainer;
-import com.ww.model.dto.hero.ProfileHeroDTO;
 import com.ww.model.dto.hero.WarProfileHeroDTO;
 import com.ww.model.entity.hero.ProfileHero;
-import com.ww.model.entity.rival.task.Question;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

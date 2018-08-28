@@ -57,7 +57,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage jsonTextMessage) throws Exception {
         String message = jsonTextMessage.getPayload();
-        logger.debug("Message received: " + jsonTextMessage.getPayload() + ", from sessionId: " + session.getId());
+//        logger.debug("Message received: " + jsonTextMessage.getPayload() + ", from sessionId: " + session.getId());
         if (message.equals("BATTLE_READY_FOR_START")) {
             battleService.readyForStart(session.getId());
         } else if (message.contains("BATTLE_ANSWER")) {
