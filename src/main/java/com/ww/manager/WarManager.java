@@ -19,10 +19,11 @@ import java.util.concurrent.TimeUnit;
 public class WarManager extends RivalManager {
 
     public static final int PROFILE_ACTIVE_INDEX = 0;
+    private WarContainer warContainer;
 
     protected Integer getIntroInterval() {
-//        return 20500;
-        return 1000;
+        return 20500;
+//        return 1000;
     }
 
     protected Integer getRandomChooseTaskPropsInterval() {
@@ -37,6 +38,7 @@ public class WarManager extends RivalManager {
         this.rivalContainer = new WarContainer();
         this.rivalContainer.addProfile(creatorId, new WarProfileContainer(bic.getCreatorProfile(), warService.getProfileHeroes(creatorId), opponentId));
         this.rivalContainer.addProfile(opponentId, new WarProfileContainer(bic.getOpponentProfile(), warService.getProfileHeroes(opponentId), creatorId));
+        this.warContainer = (WarContainer) this.rivalContainer;
     }
 
     protected Message getMessageReadyFast() {
@@ -48,12 +50,6 @@ public class WarManager extends RivalManager {
     }
 
     protected synchronized void stateAnswering() {
-        for (RivalProfileContainer rivalProfileContainer : getRivalProfileContainers()) {
-            WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
-            if (warProfileContainer.getActiveIndex() == PROFILE_ACTIVE_INDEX) {
-                continue;
-            }
-        }
         Flowable.intervalRange(0L, 1L, NEXT_TASK_INTERVAL, NEXT_TASK_INTERVAL, TimeUnit.MILLISECONDS)
                 .subscribe(aLong -> {
                     if (isClosed()) {
@@ -61,12 +57,16 @@ public class WarManager extends RivalManager {
                     }
                     rivalContainer.setEndAnsweringDate(Instant.now().plus(ANSWERING_INTERVAL, ChronoUnit.MILLIS));
                     rivalContainer.setStatus(RivalStatus.ANSWERING);
+
+                    warContainer.updateHeroAnswerManagers(this);
+
                     rivalContainer.forEachProfile(rivalProfileContainer -> {
                         Map<String, Object> model = new HashMap<>();
                         rivalContainer.fillModelAnswering(model, rivalProfileContainer);
                         send(model, getMessageContent(), rivalProfileContainer.getProfileId());
                     });
                     stateAnsweringTimeout();
+                    warContainer.startHeroAnswerManager();
                 });
     }
 
@@ -76,6 +76,7 @@ public class WarManager extends RivalManager {
                     if (rivalContainer.getStatus() != RivalStatus.ANSWERING) {
                         return;
                     }
+                    warContainer.stopHeroAnswerManager();
                     boolean end = false;
                     for (RivalProfileContainer rivalProfileContainer : getRivalProfileContainers()) {
                         WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
@@ -98,8 +99,15 @@ public class WarManager extends RivalManager {
                 });
     }
 
+    public synchronized void heroAnswered(Long profileId, Long answerId) {
+        Map<String, Object> content = new HashMap<>();
+        content.put("answerId", answerId.intValue());
+        stateAnswered(profileId, content);
+    }
+
     public synchronized void stateAnswered(Long profileId, Map<String, Object> content) {
         rivalContainer.setStatus(RivalStatus.ANSWERED);
+        warContainer.stopHeroAnswerManager();
         if (answeringTimeoutDisposable != null && !answeringTimeoutDisposable.isDisposed()) {
             answeringTimeoutDisposable.dispose();
             answeringTimeoutDisposable = null;
@@ -153,5 +161,10 @@ public class WarManager extends RivalManager {
 
     public synchronized void stateChosenTaskProps(Long profileId, Map<String, Object> content) {
         return;
+    }
+
+    public synchronized void surrender(Long profileId) {
+        warContainer.stopHeroAnswerManager();
+        super.surrender(profileId);
     }
 }

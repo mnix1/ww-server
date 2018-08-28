@@ -7,6 +7,8 @@ import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.social.Profile;
 import com.ww.repository.rival.task.AnswerRepository;
 import com.ww.repository.rival.task.QuestionRepository;
+import com.ww.repository.rival.task.TaskTypeRepository;
+import com.ww.repository.rival.task.TaskWisdomAttributeRepository;
 import javafx.concurrent.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,9 @@ public class TaskService {
 
     @Autowired
     private TaskGenerateService taskGenerateService;
+
+    @Autowired
+    private TaskWisdomAttributeRepository taskWisdomAttributeRepository;
 
     public List<Question> generateQuestions(List<Category> categories) {
         return generateQuestions(categories, TaskDifficultyLevel.random());
@@ -67,5 +72,10 @@ public class TaskService {
         });
         answerRepository.saveAll(answers);
     }
+
+    public void initTaskWisdomAtributes(Question question) {
+        question.getType().setWisdomAttributes(taskWisdomAttributeRepository.findAllByType(question.getType()));
+    }
+
 
 }

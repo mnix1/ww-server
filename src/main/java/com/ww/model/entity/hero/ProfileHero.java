@@ -30,10 +30,10 @@ public class ProfileHero {
     private Double wisdomAttributePatternRecognition;
     private Double wisdomAttributeImagination;
 
+    private Double mentalAttributeSpeed;
     private Double mentalAttributeReflex;
     private Double mentalAttributeConcentration;
-    private Double mentalAttributeLeadership;
-    private Double mentalAttributeCharisma;
+    private Double mentalAttributeConfidence;
     private Double mentalAttributeIntuition;
 
     @ManyToOne
@@ -79,17 +79,17 @@ public class ProfileHero {
     }
 
     public Double getMentalAttributeValue(MentalAttribute mentalAttribute) {
+        if (mentalAttribute == MentalAttribute.SPEED) {
+            return mentalAttributeSpeed;
+        }
         if (mentalAttribute == MentalAttribute.REFLEX) {
             return mentalAttributeReflex;
         }
         if (mentalAttribute == MentalAttribute.CONCENTRATION) {
             return mentalAttributeConcentration;
         }
-        if (mentalAttribute == MentalAttribute.LEADERSHIP) {
-            return mentalAttributeLeadership;
-        }
-        if (mentalAttribute == MentalAttribute.CHARISMA) {
-            return mentalAttributeCharisma;
+        if (mentalAttribute == MentalAttribute.CONFIDENCE) {
+            return mentalAttributeConfidence;
         }
         if (mentalAttribute == MentalAttribute.INTUITION) {
             return mentalAttributeIntuition;

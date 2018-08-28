@@ -24,10 +24,10 @@ public class ProfileHeroDTO {
     private Double patternRecognition;
     private Double imagination;
 
+    private Double speed;
     private Double reflex;
     private Double concentration;
-    private Double leadership;
-    private Double charisma;
+    private Double confidence;
     private Double intuition;
 
     private Double value;
@@ -43,10 +43,10 @@ public class ProfileHeroDTO {
         this.combiningFacts = round2(profileHero.getWisdomAttributeCombiningFacts());
         this.patternRecognition = round2(profileHero.getWisdomAttributePatternRecognition());
         this.imagination = round2(profileHero.getWisdomAttributeImagination());
+        this.speed = round2(profileHero.getMentalAttributeSpeed());
         this.reflex = round2(profileHero.getMentalAttributeReflex());
         this.concentration = round2(profileHero.getMentalAttributeConcentration());
-        this.leadership = round2(profileHero.getMentalAttributeLeadership());
-        this.charisma = round2(profileHero.getMentalAttributeCharisma());
+        this.confidence = round2(profileHero.getMentalAttributeConfidence());
         this.intuition = round2(profileHero.getMentalAttributeIntuition());
         this.value = profileHero.calculateValue();
     }

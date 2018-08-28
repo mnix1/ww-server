@@ -1,12 +1,15 @@
 package com.ww.model.container.rival.war;
 
+import com.ww.manager.HeroAnswerManager;
 import com.ww.manager.RivalManager;
+import com.ww.model.constant.hero.HeroAnswerAction;
 import com.ww.model.container.rival.RivalContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.container.rival.battle.BattleProfileContainer;
 import com.ww.model.dto.hero.ProfileHeroDTO;
 import com.ww.model.dto.hero.WarProfileHeroDTO;
 import com.ww.model.entity.hero.ProfileHero;
+import com.ww.model.entity.rival.task.Question;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +22,44 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public class WarContainer extends RivalContainer {
+    List<HeroAnswerManager> heroAnswerManagers;
+
+    public void updateHeroAnswerManagers(RivalManager rivalManager) {
+        heroAnswerManagers = new ArrayList<>();
+        forEachProfile(rivalProfileContainer -> {
+            WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
+            ProfileHero answeringHero = warProfileContainer.getAnsweringHero();
+            if (answeringHero != null) {
+                heroAnswerManagers.add(new HeroAnswerManager(answeringHero, rivalManager));
+            }
+        });
+    }
+
+    private HeroAnswerManager getHeroAnswerManager(WarProfileContainer warProfileContainer) {
+        ProfileHero answeringHero = warProfileContainer.getAnsweringHero();
+        if(answeringHero == null){
+            return null;
+        }
+        for (HeroAnswerManager answerManager : heroAnswerManagers) {
+            if (answerManager.getHero().getId().equals(answeringHero.getId())) {
+                return answerManager;
+            }
+        }
+        return null;
+    }
+
+    public void startHeroAnswerManager() {
+        for (HeroAnswerManager manager : heroAnswerManagers) {
+            manager.start();
+        }
+    }
+
+    public void stopHeroAnswerManager() {
+        for (HeroAnswerManager manager : heroAnswerManagers) {
+            manager.stop();
+        }
+    }
+
     private List<WarProfileHeroDTO> prepareTeam(List<ProfileHero> heroes) {
         return heroes.stream().map(WarProfileHeroDTO::new).collect(Collectors.toList());
     }
@@ -58,13 +99,34 @@ public class WarContainer extends RivalContainer {
     public void fillModelAnswered(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         super.fillModelAnswered(model, rivalProfileContainer);
         WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
+        model.put("heroActions", null);
+        model.put("opponentHeroActions", null);
         model.put("presentIndexes", warProfileContainer.getPresentIndexes());
         model.put("opponentPresentIndexes", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getPresentIndexes());
+    }
+
+    public void fillModelAnswering(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
+        super.fillModelAnswering(model, rivalProfileContainer);
+        fillModelHeroAnswering(model, rivalProfileContainer);
+    }
+
+    public void fillModelHeroAnswering(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
+        WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
+        HeroAnswerManager manager = getHeroAnswerManager(warProfileContainer);
+        if (manager != null) {
+            model.put("heroActions", manager.getActions());
+        }
+        manager = getHeroAnswerManager(getRivalProfileContainer(rivalProfileContainer.getOpponentId()));
+        if (manager != null) {
+            model.put("opponentHeroActions", manager.getActions());
+        }
     }
 
     public void fillModelAnsweringTimeout(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         super.fillModelAnsweringTimeout(model, rivalProfileContainer);
         WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
+        model.put("heroActions", null);
+        model.put("opponentHeroActions", null);
         model.put("presentIndexes", warProfileContainer.getPresentIndexes());
         model.put("opponentPresentIndexes", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getPresentIndexes());
     }

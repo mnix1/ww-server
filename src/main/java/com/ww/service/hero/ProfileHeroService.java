@@ -84,10 +84,10 @@ public class ProfileHeroService {
         hero.setWisdomAttributePatternRecognition(randomDouble(1, 10));
         hero.setWisdomAttributeImagination(randomDouble(1, 10));
 
+        hero.setMentalAttributeSpeed(randomDouble(1, 10));
         hero.setMentalAttributeReflex(randomDouble(1, 10));
         hero.setMentalAttributeConcentration(randomDouble(1, 10));
-        hero.setMentalAttributeLeadership(randomDouble(1, 10));
-        hero.setMentalAttributeCharisma(randomDouble(1, 10));
+        hero.setMentalAttributeConfidence(randomDouble(1, 10));
         hero.setMentalAttributeIntuition(randomDouble(1, 10));
     }
 }

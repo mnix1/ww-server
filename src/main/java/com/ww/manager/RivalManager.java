@@ -31,11 +31,11 @@ public abstract class RivalManager {
 
     public static final String DRAW_WINNER_TAG = "";
 
-//    protected Integer ANSWERING_INTERVAL = 45000;
-    protected Integer ANSWERING_INTERVAL = 1000;
+    protected Integer ANSWERING_INTERVAL = 45000;
+//    protected Integer ANSWERING_INTERVAL = 1000;
     protected Integer NEXT_TASK_INTERVAL = 2000;
-//    protected Integer SHOWING_ANSWER_INTERVAL = 8000;
-    protected Integer SHOWING_ANSWER_INTERVAL = 1000;
+    protected Integer SHOWING_ANSWER_INTERVAL = 8000;
+//    protected Integer SHOWING_ANSWER_INTERVAL = 100000;
     protected Integer CHOOSING_TASK_PROPS_INTERVAL = 14000;
 
     protected RivalContainer rivalContainer;
@@ -182,7 +182,7 @@ public abstract class RivalManager {
         return model;
     }
 
-    public void surrender(Long profileId) {
+    public synchronized void surrender(Long profileId) {
         if (isClosed()) {
             return;
         }
