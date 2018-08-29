@@ -79,7 +79,7 @@ public class PromoController {
         List<ProfileHero> team = profileHeroService.listTeam(profile.getId());
         for (ProfileHero hero : team) {
             for (MentalAttribute attribute : MentalAttribute.values()) {
-                hero.setMentalAttributeValue(attribute, Math.pow(hero.getMentalAttributeValue(attribute), 3));
+                hero.setMentalAttributeValue(attribute, Math.pow(hero.getMentalAttributeValue(attribute), 1.1) + 100);
             }
         }
         profileHeroService.saveTeam(team);
@@ -93,7 +93,7 @@ public class PromoController {
         List<ProfileHero> team = profileHeroService.listTeam(profile.getId());
         for (ProfileHero hero : team) {
             for (WisdomAttribute attribute : WisdomAttribute.values()) {
-                hero.setWisdomAttributeValue(attribute, Math.pow(hero.getWisdomAttributeValue(attribute), 3));
+                hero.setWisdomAttributeValue(attribute, Math.pow(hero.getWisdomAttributeValue(attribute), 1.1)+ 100);
             }
         }
         profileHeroService.saveTeam(team);

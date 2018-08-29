@@ -30,7 +30,7 @@ public class State {
     }
 
     protected HeroAnswerAction processHeroAnswerAction() {
-        return HeroAnswerAction.ANSWERED;
+        return HeroAnswerAction.NONE;
     }
 
     public void startVoid() {
