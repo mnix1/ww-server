@@ -15,17 +15,11 @@ public class StateChoosingTaskPropsTimeout extends State {
     }
 
     @Override
-    protected Flowable<Long> processFlowable() {
+    protected void processVoid() {
         if (rivalContainer.getStatus() != RivalStatus.CHOOSING_TASK_PROPS) {
-            return Flowable.empty();
+            return;
         }
         rivalContainer.setStatus(RivalStatus.CHOOSING_TASK_PROPS_TIMEOUT);
-        rivalManager.prepareTask((long) rivalContainer.getCurrentTaskIndex() + 1);
-        Map<String, Object> model = new HashMap<>();
-        rivalContainer.fillModelChoosingTaskPropsTimeout(model);
-        rivalContainer.forEachProfile(rivalProfileContainer -> {
-            rivalManager.send(model, rivalManager.getMessageContent(), rivalProfileContainer.getProfileId());
-        });
-        return Flowable.intervalRange(0L, 1L, rivalManager.getRandomChooseTaskPropsInterval(), rivalManager.getRandomChooseTaskPropsInterval(), TimeUnit.MILLISECONDS);
+        rivalManager.prepareTask((long) rivalContainer.getCurrentTaskIndex() + 1, rivalContainer.getChosenCategory(), rivalContainer.getChosenDifficulty());
     }
 }

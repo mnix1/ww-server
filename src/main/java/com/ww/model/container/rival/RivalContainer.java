@@ -1,7 +1,9 @@
 package com.ww.model.container.rival;
 
-import com.ww.model.constant.rival.RivalStatus;
+import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.RivalProfileStatus;
+import com.ww.model.constant.rival.RivalStatus;
+import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.dto.social.ProfileDTO;
 import com.ww.model.entity.rival.task.Answer;
@@ -36,6 +38,11 @@ public abstract class RivalContainer {
 
     protected String winnerTag;
     protected Boolean resigned;
+
+    protected Category chosenCategory;
+    protected TaskDifficultyLevel chosenDifficulty;
+    protected Boolean isChosenCategory;
+    protected Boolean isChosenDifficulty;
 
     protected RivalStatus status = RivalStatus.OPEN;
 
@@ -131,7 +138,7 @@ public abstract class RivalContainer {
         model.put("status", status);
         model.put("correctAnswerId", findCorrectAnswerId(currentTaskIndex));
         model.put("markedAnswerId", null);
-        model.put("meAnswered",null);
+        model.put("meAnswered", null);
 //        model.put("nextTaskInterval", Math.max(nextTaskDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
     }
 
@@ -149,6 +156,10 @@ public abstract class RivalContainer {
             model.put("task", taskDTOs.get(currentTaskIndex).toTaskMeta());
         } else {
             model.put("task", null);
+            model.put("chosenCategory", chosenCategory);
+            model.put("chosenDifficulty", chosenDifficulty);
+            model.put("isChosenCategory", isChosenCategory);
+            model.put("isChosenDifficulty", isChosenDifficulty);
         }
     }
 

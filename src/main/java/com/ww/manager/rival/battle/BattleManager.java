@@ -63,9 +63,8 @@ public class BattleManager extends RivalManager {
                 if (randomChooseTaskProps) {
                     phase1();
                 } else {
-                    new StateChoosingTaskPropsTimeout(this).startFlowable().subscribe(aLong7 -> {
-                        phase1();
-                    });
+                    new StateChoosingTaskPropsTimeout(this).startVoid();
+                    phase1();
                 }
             });
         }
@@ -79,8 +78,8 @@ public class BattleManager extends RivalManager {
     }
 
     public synchronized void chosenTaskProps(Long profileId, Map<String, Object> content) {
-        disposeFlowable();
         if (new StateChosenTaskProps(this, profileId, content).startBoolean()) {
+            disposeFlowable();
             phase1();
         }
     }

@@ -126,6 +126,7 @@ public abstract class RivalManager {
 
     public Integer getChoosingTaskPropsInterval() {
         return 14000;
+//        return 10004000;
     }
 
     public Integer getRandomChooseTaskPropsInterval() {

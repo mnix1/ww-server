@@ -2,7 +2,9 @@ package com.ww.manager.rival.battle.state;
 
 import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.state.State;
+import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.RivalStatus;
+import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import io.reactivex.Flowable;
 
 import java.time.Instant;
@@ -24,6 +26,11 @@ public class BattleStateChoosingTaskProps extends State {
         boolean randomChooseTaskProps = rivalContainer.randomChooseTaskProps();
         if (randomChooseTaskProps) {
             rivalManager.prepareTask((long) rivalContainer.getCurrentTaskIndex() + 1);
+        } else {
+            rivalContainer.setChosenCategory(Category.RANDOM);
+            rivalContainer.setIsChosenCategory(false);
+            rivalContainer.setChosenDifficulty(TaskDifficultyLevel.EXTREMELY_EASY);
+            rivalContainer.setIsChosenDifficulty(false);
         }
         rivalContainer.setEndChoosingTaskPropsDate(Instant.now().plus(rivalManager.getChoosingTaskPropsInterval(), ChronoUnit.MILLIS));
         rivalContainer.forEachProfile(rivalProfileContainer -> {

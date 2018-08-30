@@ -27,9 +27,8 @@ public class StateChosenTaskProps extends State {
             logger.error("Not choosing profile tried to choose task props, profileId: {}", profileId);
             return false;
         }
-        rivalContainer.setStatus(RivalStatus.CHOSEN_TASK_PROPS);
-        Category category = Category.random();
-        TaskDifficultyLevel difficultyLevel = TaskDifficultyLevel.random();
+        Category category = null;
+        TaskDifficultyLevel difficultyLevel = null;
         try {
             if (content.containsKey("category")) {
                 category = Category.fromString((String) content.get("category"));
@@ -40,7 +39,19 @@ public class StateChosenTaskProps extends State {
         } catch (Exception e) {
             logger.error("Wrong content on stateChosenTaskProps for profileId: {}", profileId);
         }
-        rivalManager.prepareTask((long) rivalContainer.getCurrentTaskIndex() + 1, category, difficultyLevel);
+        if (!rivalContainer.getIsChosenDifficulty() && difficultyLevel != null) {
+            rivalContainer.setIsChosenDifficulty(true);
+            rivalContainer.setChosenDifficulty(difficultyLevel);
+        }
+        if (!rivalContainer.getIsChosenCategory() && category != null) {
+            rivalContainer.setIsChosenCategory(true);
+            rivalContainer.setChosenCategory(category);
+        }
+        if (!rivalContainer.getIsChosenDifficulty() || !rivalContainer.getIsChosenCategory()) {
+            return false;
+        }
+        rivalContainer.setStatus(RivalStatus.CHOSEN_TASK_PROPS);
+        rivalManager.prepareTask((long) rivalContainer.getCurrentTaskIndex() + 1, rivalContainer.getChosenCategory(), rivalContainer.getChosenDifficulty());
         return true;
     }
 }
