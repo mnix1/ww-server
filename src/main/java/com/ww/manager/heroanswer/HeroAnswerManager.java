@@ -1,13 +1,14 @@
 package com.ww.manager.heroanswer;
 
+import com.ww.helper.AnswerHelper;
 import com.ww.manager.RivalManager;
 import com.ww.manager.WarManager;
 import com.ww.manager.heroanswer.state.phase3.StateAnsweringPhase3;
 import com.ww.manager.heroanswer.state.multiphase.StateCheckNoConcentration;
 import com.ww.manager.heroanswer.state.multiphase.StateLostConcentration;
-import com.ww.manager.heroanswer.state.phase1.StateStartReadingQuestion;
+import com.ww.manager.heroanswer.state.phase1.StateStartRecognizingQuestion;
 import com.ww.manager.heroanswer.state.phase2.StateCheckKnowAnswerAfterThinkingAboutQuestion;
-import com.ww.manager.heroanswer.state.phase2.StateEndReadingQuestion;
+import com.ww.manager.heroanswer.state.phase2.StateEndRecognizingQuestion;
 import com.ww.manager.heroanswer.state.phase2.StateStartThinkingAboutQuestion;
 import com.ww.manager.heroanswer.state.phase3.*;
 import com.ww.manager.heroanswer.state.phase4.StateEndReadingAnswer;
@@ -37,6 +38,7 @@ public class HeroAnswerManager {
 
     private boolean inProgress = false;
 
+
     private List<HeroAnswerAction> actions = new ArrayList<>();
 
     private ProfileHero hero;
@@ -44,11 +46,49 @@ public class HeroAnswerManager {
     private WarContainer warContainer;
     private Question question;
 
+    private int difficulty;
+    private int answerCount;
+
+    private double wisdomSum;
+    private double speedF1;
+    private double reflexF1;
+    private double concentrationF1;
+    private double confidenceF1;
+    private double intuitionF1;
+
+    private boolean isHobby;
+    private int hobbyCount;
+    private double hobbyFactor;
+
+
     public HeroAnswerManager(ProfileHero hero, RivalManager rivalManager) {
         this.hero = hero;
         this.warManager = (WarManager) rivalManager;
         this.warContainer = (WarContainer) this.warManager.rivalContainer;
         this.question = warContainer.getQuestions().get(warContainer.getCurrentTaskIndex());
+        this.difficulty = AnswerHelper.difficultyCalibration(question) + 1;
+        this.answerCount = question.getAnswers().size();
+        this.isHobby = hero.getHero().getHobbies().contains(question.getType().getCategory());
+        this.hobbyCount = hero.getHero().getHobbies().size();
+        this.hobbyFactor = 1 + 1d / hobbyCount;
+        this.cacheAttributes();
+    }
+
+    private void cacheAttributes() {
+        this.wisdomSum = prepareWisdomSum();
+        this.speedF1 = f1(hero.getMentalAttributeSpeed());
+        this.reflexF1 = f1(hero.getMentalAttributeReflex());
+        this.concentrationF1 = f1(hero.getMentalAttributeConcentration());
+        this.confidenceF1 = f1(hero.getMentalAttributeConfidence());
+        this.intuitionF1 = f1(hero.getMentalAttributeIntuition());
+    }
+
+    private double prepareWisdomSum() {
+        double sum = 0;
+        for (TaskWisdomAttribute attribute : question.getType().getWisdomAttributes()) {
+            sum += f1(hero.getWisdomAttributeValue(attribute.getWisdomAttribute())) * attribute.getValue();
+        }
+        return sum;
     }
 
     public void start() {
@@ -56,8 +96,14 @@ public class HeroAnswerManager {
         phase1();
     }
 
+    public void stop() {
+        if (inProgress) {
+            inProgress = false;
+        }
+    }
+
     public void phase1() {
-        new StateStartReadingQuestion(this).startFlowable().subscribe(aLong1 -> {
+        new StateStartRecognizingQuestion(this).startFlowable().subscribe(aLong1 -> {
             HeroAnswerAction aa1 = new StateCheckNoConcentration(this).startHeroAnswerAction();
             if (HeroAnswerAction.isNoConcentration(aa1)) {
                 new StateLostConcentration(this, aa1).startFlowable().subscribe(aLong2 -> {
@@ -71,7 +117,7 @@ public class HeroAnswerManager {
     }
 
     public void phase2() {
-        new StateEndReadingQuestion(this).startFlowable().subscribe(aLong2 -> {
+        new StateEndRecognizingQuestion(this).startFlowable().subscribe(aLong2 -> {
             new StateStartThinkingAboutQuestion(this).startFlowable().subscribe(aLong3 -> {
                 HeroAnswerAction aa2 = new StateCheckKnowAnswerAfterThinkingAboutQuestion(this).startHeroAnswerAction();
                 if (aa2 == HeroAnswerAction.THINK_KNOW_ANSWER) {
@@ -141,12 +187,6 @@ public class HeroAnswerManager {
         });
     }
 
-    public void stop() {
-        if (inProgress) {
-            inProgress = false;
-        }
-    }
-
     public HeroAnswerAction lastAction() {
         return actions.get(actions.size() - 1);
     }
@@ -163,39 +203,7 @@ public class HeroAnswerManager {
     }
 
     public Double f1(Double arg) {
-        double log = Math.log(arg + 1);
-        return log / (6 + log);
-    }
-
-    public Double f2(Double arg) {
-        double log = Math.log(arg + 1);
-        return log * 0.75 / (6 + log) + 0.25;
-    }
-
-    public Double f4(Double arg) {
-        double log = Math.log(arg + 1);
-        return log * 0.8 / (10 + log) + 0.2;
-    }
-
-    public Double f3(Double arg) {
-        double log = Math.log(arg + 1);
-        return log / (3 + log);
-    }
-
-    public double sumWisdomAttributeF1() {
-        double sum = 0;
-        for (TaskWisdomAttribute attribute : question.getType().getWisdomAttributes()) {
-            sum += f1(hero.getWisdomAttributeValue(attribute.getWisdomAttribute())) * attribute.getValue();
-        }
-        return sum;
-    }
-
-    public double sumWisdomAttributeF2() {
-        double sum = 0;
-        for (TaskWisdomAttribute attribute : question.getType().getWisdomAttributes()) {
-            sum += f2(hero.getWisdomAttributeValue(attribute.getWisdomAttribute())) * attribute.getValue();
-        }
-        return sum;
+        return Math.log(1.87 * arg + 1) * 12.9 / (83.25 + Math.log(0.025 * arg + 51.24) * 12.9);
     }
 
 }

@@ -16,9 +16,12 @@ public class StateCheckFoundAnswerLookingFor extends State {
     }
 
     protected HeroAnswerAction processHeroAnswerAction() {
-        double sumWisdomAttributeF2 = manager.sumWisdomAttributeF2();
-        boolean foundAnswerLookingFor = sumWisdomAttributeF2 > randomDouble();
-        logger.debug(manager.getHero().getHero().getNamePolish() + ", " + manager.lastAction().name() + ", sumWisdomAttributeF2: " + sumWisdomAttributeF2 + ", foundAnswerLookingFor: " + foundAnswerLookingFor);
+        double diffPart = (4 - manager.getDifficulty()) * 0.05;
+        double attrPart = (manager.getWisdomSum() - 0.5) * 4 / 5;
+        double hobbyPart = manager.isHobby() ? 0.1 : 0;
+        double chance = 0.5 + diffPart + attrPart + hobbyPart;
+        boolean foundAnswerLookingFor = chance > randomDouble();
+        logger.debug(manager.getHero().getHero().getNamePolish() + ", " + manager.lastAction().name() + ", foundAnswerLookingFor: " + foundAnswerLookingFor);
         if (foundAnswerLookingFor) {
             return HeroAnswerAction.FOUND_ANSWER_LOOKING_FOR;
         }

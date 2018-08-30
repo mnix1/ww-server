@@ -13,7 +13,6 @@ import static com.ww.helper.RandomHelper.randomDouble;
 
 public class StateStartThinkingAboutQuestion extends State {
     protected static final Logger logger = LoggerFactory.getLogger(StateStartThinkingAboutQuestion.class);
-    private static final double MIN_INTERVAL = 1;
 
     public StateStartThinkingAboutQuestion(HeroAnswerManager manager) {
         super(manager);
@@ -21,11 +20,12 @@ public class StateStartThinkingAboutQuestion extends State {
 
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(HeroAnswerAction.THINKING);
-        //[1;10]max
-        //[1;1]min
-        double sumWisdomAttributeF1 = manager.sumWisdomAttributeF1();
-        long interval = (long) (randomDouble(MIN_INTERVAL, (10 - 9 * sumWisdomAttributeF1) * MIN_INTERVAL) * 1000);
-        logger.debug(manager.getHero().getHero().getNamePolish() + ", " + manager.lastAction().name() + ", sumWisdomAttributeF1: " + sumWisdomAttributeF1 + ", interval: " + interval);
+        double doubleInterval = randomDouble(manager.getDifficulty() - manager.getWisdomSum(), 2 * manager.getDifficulty() - 2 * manager.getWisdomSum());
+        if (manager.isHobby()) {
+            doubleInterval /= manager.getHobbyFactor();
+        }
+        long interval = (long) (doubleInterval * 1000);
+        logger.debug(manager.getHero().getHero().getNamePolish() + ", " + manager.lastAction().name() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

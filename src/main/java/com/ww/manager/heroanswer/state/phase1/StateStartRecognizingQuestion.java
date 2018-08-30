@@ -1,4 +1,4 @@
-package com.ww.manager.heroanswer.state.phase3;
+package com.ww.manager.heroanswer.state.phase1;
 
 import com.ww.manager.heroanswer.HeroAnswerManager;
 import com.ww.manager.heroanswer.state.State;
@@ -11,16 +11,16 @@ import java.util.concurrent.TimeUnit;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 
-public class StateNoFoundAnswerLookingFor extends State {
-    protected static final Logger logger = LoggerFactory.getLogger(StateNoFoundAnswerLookingFor.class);
+public class StateStartRecognizingQuestion extends State {
+    protected static final Logger logger = LoggerFactory.getLogger(StateStartRecognizingQuestion.class);
 
-    public StateNoFoundAnswerLookingFor(HeroAnswerManager manager) {
+    public StateStartRecognizingQuestion(HeroAnswerManager manager) {
         super(manager);
     }
 
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(HeroAnswerAction.NO_FOUND_ANSWER_LOOKING_FOR);
-        long interval = (long) (randomDouble(2 - manager.getReflexF1() - manager.getConfidenceF1(), 4 - 2 * manager.getReflexF1() - 2 * manager.getConfidenceF1()) * 1000);
+        manager.addAndSendAction(HeroAnswerAction.WAITING_FOR_QUESTION);
+        long interval = (long) (randomDouble(1 - manager.getReflexF1(), 3 - 2 * manager.getReflexF1() - manager.getConcentrationF1()) * 1000);
         logger.debug(manager.getHero().getHero().getNamePolish() + ", " + manager.lastAction().name() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

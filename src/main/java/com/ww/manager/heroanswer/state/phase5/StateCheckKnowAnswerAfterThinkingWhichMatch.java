@@ -16,12 +16,12 @@ public class StateCheckKnowAnswerAfterThinkingWhichMatch extends State {
     }
 
     protected HeroAnswerAction processHeroAnswerAction() {
-        double sumWisdomAttributeF1 = manager.sumWisdomAttributeF1();
+        double sumWisdomAttributeF1 = manager.getWisdomSum();
         double intuitionF1 = manager.f1(manager.getHero().getMentalAttributeIntuition());
         double confidenceF1 = manager.f1(manager.getHero().getMentalAttributeConfidence());
         boolean thinkKnowAnswer = sumWisdomAttributeF1 + intuitionF1 + confidenceF1 > randomDouble() * 3;
         logger.debug(manager.getHero().getHero().getNamePolish() + ", " + manager.lastAction().name()
-                + ", sumWisdomAttributeF1: " + sumWisdomAttributeF1
+                + ", sumWisdom: " + sumWisdomAttributeF1
                 + ", intuitionF1: " + intuitionF1
                 + ", confidenceF1: " + confidenceF1
                 + ", thinkKnowAnswer: " + thinkKnowAnswer);

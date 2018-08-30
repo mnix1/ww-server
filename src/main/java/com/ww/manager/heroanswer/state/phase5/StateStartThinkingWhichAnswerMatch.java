@@ -24,10 +24,10 @@ public class StateStartThinkingWhichAnswerMatch extends State {
     protected Flowable<Long> processFlowable(){
         manager.addAndSendAction(HeroAnswerAction.THINKING_WHICH_ANSWER_MATCH);
         double intuitionF1 = manager.f1(manager.getHero().getMentalAttributeIntuition());
-        double sumWisdomAttributeF1 = manager.sumWisdomAttributeF1();
+        double sumWisdomAttributeF1 = manager.getWisdomSum();
         double minInterval = getMinInterval();
         long interval = (long) (randomDouble(minInterval, (5 - 2 * intuitionF1 - 2 * sumWisdomAttributeF1) * minInterval) * 1000);
-        logger.debug(manager.getHero().getHero().getNamePolish() + ", " + manager.lastAction().name() + ", intuitionF1: " + intuitionF1 + ", sumWisdomAttributeF1: " + sumWisdomAttributeF1 + ", interval: " + interval);
+        logger.debug(manager.getHero().getHero().getNamePolish() + ", " + manager.lastAction().name() + ", intuitionF1: " + intuitionF1 + ", sumWisdom: " + sumWisdomAttributeF1 + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

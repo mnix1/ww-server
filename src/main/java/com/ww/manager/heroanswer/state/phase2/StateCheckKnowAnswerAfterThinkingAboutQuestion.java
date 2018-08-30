@@ -16,9 +16,12 @@ public class StateCheckKnowAnswerAfterThinkingAboutQuestion extends State {
     }
 
     protected HeroAnswerAction processHeroAnswerAction() {
-        double sumWisdomAttributeF2 = manager.sumWisdomAttributeF2();
-        boolean thinkKnowAnswer = sumWisdomAttributeF2 > randomDouble();
-        logger.debug(manager.getHero().getHero().getNamePolish() + ", " + manager.lastAction().name() + ", sumWisdomAttributeF2: " + sumWisdomAttributeF2 + ", thinkKnowAnswer: " + thinkKnowAnswer);
+        double diffPart = (4 - manager.getDifficulty()) * 0.05;
+        double attrPart = ((manager.getWisdomSum() + manager.getConfidenceF1()) / 2 - 0.5) * 4 / 5;
+        double hobbyPart = manager.isHobby() ? 0.1 : 0;
+        double chance = 0.5 + diffPart + attrPart + hobbyPart;
+        boolean thinkKnowAnswer = chance > randomDouble();
+        logger.debug(manager.getHero().getHero().getNamePolish() + ", " + manager.lastAction().name() + ", thinkKnowAnswer: " + thinkKnowAnswer);
         if (thinkKnowAnswer) {
             return HeroAnswerAction.THINK_KNOW_ANSWER;
         }

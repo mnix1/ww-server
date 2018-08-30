@@ -20,9 +20,14 @@ public class RandomHelper {
     public static double randomDouble(int from, int to) {
         return random.nextDouble() * (to - from) + from;
     }
+
     public static double randomDouble(double from, double to) {
+        if (from == to) {
+            return to;
+        }
         return random.nextDouble() * (to - from) + from;
     }
+
     public static double randomDouble() {
         return random.nextDouble();
     }

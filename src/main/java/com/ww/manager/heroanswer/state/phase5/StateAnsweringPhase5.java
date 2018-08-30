@@ -21,7 +21,7 @@ public class StateAnsweringPhase5 extends State {
 
     protected void processVoid() {
         manager.addAndSendAction(HeroAnswerAction.ANSWERED);
-        double sumWisdomAttributeF2 = manager.sumWisdomAttributeF2();
+        double sumWisdomAttributeF2 = manager.getWisdomSum();
         double intuitionF2 = manager.f1(manager.getHero().getMentalAttributeIntuition());
         boolean correctAnswer = sumWisdomAttributeF2 + intuitionF2 > randomDouble() * 2;
         logger.debug(manager.getHero().getHero().getNamePolish() + ", " + manager.lastAction().name() + ", sumWisdomAttributeF2: " + sumWisdomAttributeF2 + ", intuitionF2: " + intuitionF2 + ", correctAnswer: " + correctAnswer);

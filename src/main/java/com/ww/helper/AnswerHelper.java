@@ -1,5 +1,7 @@
 package com.ww.helper;
 
+import com.ww.model.entity.rival.task.Question;
+
 import java.util.List;
 
 public class AnswerHelper {
@@ -31,6 +33,10 @@ public class AnswerHelper {
             return 5;
         }
         return 6;
+    }
+
+    public static int difficultyCalibration(Question question) {
+        return difficultyCalibration(question.getDifficultyLevel().getLevel() - question.getType().getDifficulty());
     }
 
     public static String numbersToString(int[] numbers, String andWorld) {

@@ -7,7 +7,7 @@ public enum HeroAnswerAction {
     NONE,
 
     WAITING_FOR_QUESTION,
-    READING_QUESTION,
+    RECOGNIZING_QUESTION,
     THINKING,
 
     THINK_KNOW_ANSWER,
