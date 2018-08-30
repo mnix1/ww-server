@@ -4,7 +4,7 @@ import com.ww.model.constant.hero.MentalAttribute;
 import com.ww.model.constant.hero.WisdomAttribute;
 import com.ww.model.entity.hero.ProfileHero;
 
-import static com.ww.helper.NumberHelper.round2;
+import static com.ww.helper.NumberHelper.smartRound;
 
 public class HeroHelper {
     static public Double calculateValue(ProfileHero profileHero) {
@@ -16,7 +16,7 @@ public class HeroHelper {
             value += profileHero.getMentalAttributeValue(mentalAttribute);
         }
         value /= WisdomAttribute.COUNT + MentalAttribute.COUNT;
-        value = round2(value);
+        value = smartRound(value);
         return value;
     }
 }

@@ -203,7 +203,6 @@ public class HeroAnswerManager {
     }
 
     public void addAndSendAction(HeroAnswerAction action) {
-//        logger.error(hero.getHero().getNamePolish() + " " + action.name());
         actions.add(action);
         warContainer.forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();

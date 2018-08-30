@@ -20,7 +20,8 @@ public class StateStartThinkingAboutQuestion extends State {
 
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(HeroAnswerAction.THINKING);
-        double doubleInterval = randomDouble(manager.getDifficulty() - manager.getWisdomSum(), 2 * manager.getDifficulty() - 2 * manager.getWisdomSum());
+        double diffPart = (manager.getDifficulty() - 4) * 0.5;
+        double doubleInterval = randomDouble(2.5 + diffPart - manager.getWisdomSum(), 6.5 + diffPart - 5 * manager.getWisdomSum());
         if (manager.isHobby()) {
             doubleInterval /= manager.getHobbyFactor();
         }

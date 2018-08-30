@@ -1,12 +1,10 @@
 package com.ww.model.dto.hero;
 
 import com.ww.model.constant.hero.HeroType;
-import com.ww.model.constant.hero.MentalAttribute;
-import com.ww.model.constant.hero.WisdomAttribute;
 import com.ww.model.entity.hero.ProfileHero;
 import lombok.Getter;
 
-import static com.ww.helper.NumberHelper.round2;
+import static com.ww.helper.NumberHelper.smartRound;
 
 @Getter
 public class ProfileHeroDTO {
@@ -36,18 +34,18 @@ public class ProfileHeroDTO {
         this.id = profileHero.getId();
         this.type = profileHero.getHero().getType();
         this.inTeam = profileHero.getInTeam();
-        this.memory = round2(profileHero.getWisdomAttributeMemory());
-        this.logic = round2(profileHero.getWisdomAttributeLogic());
-        this.perceptivity = round2(profileHero.getWisdomAttributePerceptivity());
-        this.counting = round2(profileHero.getWisdomAttributeCounting());
-        this.combiningFacts = round2(profileHero.getWisdomAttributeCombiningFacts());
-        this.patternRecognition = round2(profileHero.getWisdomAttributePatternRecognition());
-        this.imagination = round2(profileHero.getWisdomAttributeImagination());
-        this.speed = round2(profileHero.getMentalAttributeSpeed());
-        this.reflex = round2(profileHero.getMentalAttributeReflex());
-        this.concentration = round2(profileHero.getMentalAttributeConcentration());
-        this.confidence = round2(profileHero.getMentalAttributeConfidence());
-        this.intuition = round2(profileHero.getMentalAttributeIntuition());
+        this.memory = smartRound(profileHero.getWisdomAttributeMemory());
+        this.logic = smartRound(profileHero.getWisdomAttributeLogic());
+        this.perceptivity = smartRound(profileHero.getWisdomAttributePerceptivity());
+        this.counting = smartRound(profileHero.getWisdomAttributeCounting());
+        this.combiningFacts = smartRound(profileHero.getWisdomAttributeCombiningFacts());
+        this.patternRecognition = smartRound(profileHero.getWisdomAttributePatternRecognition());
+        this.imagination = smartRound(profileHero.getWisdomAttributeImagination());
+        this.speed = smartRound(profileHero.getMentalAttributeSpeed());
+        this.reflex = smartRound(profileHero.getMentalAttributeReflex());
+        this.concentration = smartRound(profileHero.getMentalAttributeConcentration());
+        this.confidence = smartRound(profileHero.getMentalAttributeConfidence());
+        this.intuition = smartRound(profileHero.getMentalAttributeIntuition());
         this.value = profileHero.calculateValue();
     }
 
