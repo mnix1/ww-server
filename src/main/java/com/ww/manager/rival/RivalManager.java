@@ -70,6 +70,8 @@ public abstract class RivalManager {
         }
     }
 
+    public abstract boolean isEnd();
+
     public abstract void start();
 
     public abstract void answer(Long profileId, Map<String, Object> content);
@@ -152,6 +154,5 @@ public abstract class RivalManager {
     public List<RivalProfileContainer> getRivalProfileContainers() {
         return new ArrayList<>(this.rivalContainer.getProfileIdRivalProfileContainerMap().values());
     }
-
 
 }

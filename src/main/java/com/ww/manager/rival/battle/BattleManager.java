@@ -4,15 +4,16 @@ import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.battle.state.BattleStateAnswered;
 import com.ww.manager.rival.battle.state.BattleStateAnswering;
 import com.ww.manager.rival.battle.state.BattleStateAnsweringTimeout;
-import com.ww.manager.rival.battle.state.BattleStateChoosingTaskProps;
+import com.ww.manager.rival.state.StateChoosingTaskProps;
 import com.ww.manager.rival.state.*;
 import com.ww.model.container.rival.RivalInitContainer;
+import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.container.rival.battle.BattleContainer;
 import com.ww.model.container.rival.battle.BattleProfileContainer;
+import com.ww.model.container.rival.war.WarProfileContainer;
 import com.ww.service.rival.battle.BattleService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.websocket.message.Message;
-import io.reactivex.disposables.Disposable;
 
 import java.util.Map;
 
@@ -38,6 +39,10 @@ public class BattleManager extends RivalManager {
         return Message.BATTLE_CONTENT;
     }
 
+    public boolean isEnd() {
+        return rivalContainer.getCurrentTaskIndex() == TASK_COUNT - 1;
+    }
+
     public synchronized void start() {
         new StateIntro(this).startFlowable().subscribe(aLong1 -> {
             phase1();
@@ -55,10 +60,10 @@ public class BattleManager extends RivalManager {
     }
 
     public synchronized void phase2() {
-        if (rivalContainer.getCurrentTaskIndex() == TASK_COUNT - 1) {
+        if (isEnd()) {
             new StateClose(this).startVoid();
         } else {
-            choosingTaskPropsDisposable = new BattleStateChoosingTaskProps(this).startFlowable().subscribe(aLong5 -> {
+            choosingTaskPropsDisposable = new StateChoosingTaskProps(this).startFlowable().subscribe(aLong5 -> {
                 boolean randomChooseTaskProps = rivalContainer.randomChooseTaskProps();
                 if (randomChooseTaskProps) {
                     phase1();

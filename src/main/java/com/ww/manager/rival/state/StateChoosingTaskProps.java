@@ -1,4 +1,4 @@
-package com.ww.manager.rival.battle.state;
+package com.ww.manager.rival.state;
 
 import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.state.State;
@@ -13,9 +13,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class BattleStateChoosingTaskProps extends State {
+public class StateChoosingTaskProps extends State {
 
-    public BattleStateChoosingTaskProps(RivalManager manager) {
+    public StateChoosingTaskProps(RivalManager manager) {
         super(manager);
     }
 
@@ -24,21 +24,23 @@ public class BattleStateChoosingTaskProps extends State {
         rivalContainer.setStatus(RivalStatus.CHOOSING_TASK_PROPS);
         rivalContainer.increaseCurrentTaskIndex();
         boolean randomChooseTaskProps = rivalContainer.randomChooseTaskProps();
+        int interval;
         if (randomChooseTaskProps) {
             rivalManager.prepareTask((long) rivalContainer.getCurrentTaskIndex() + 1);
+            interval = rivalManager.getRandomChooseTaskPropsInterval();
         } else {
             rivalContainer.setChosenCategory(Category.RANDOM);
             rivalContainer.setIsChosenCategory(false);
             rivalContainer.setChosenDifficulty(TaskDifficultyLevel.EXTREMELY_EASY);
             rivalContainer.setIsChosenDifficulty(false);
+            interval = rivalManager.getChoosingTaskPropsInterval();
         }
-        rivalContainer.setEndChoosingTaskPropsDate(Instant.now().plus(rivalManager.getChoosingTaskPropsInterval(), ChronoUnit.MILLIS));
+        rivalContainer.setEndChoosingTaskPropsDate(Instant.now().plus(interval, ChronoUnit.MILLIS));
         rivalContainer.forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
             rivalContainer.fillModelChoosingTaskProps(model, rivalProfileContainer);
             rivalManager.send(model, rivalManager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
-        int interval = randomChooseTaskProps ? rivalManager.getRandomChooseTaskPropsInterval() : rivalManager.getChoosingTaskPropsInterval();
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

@@ -1,13 +1,10 @@
 package com.ww.manager.rival.war;
 
 import com.ww.manager.rival.RivalManager;
-import com.ww.manager.rival.battle.state.BattleStateAnsweringTimeout;
-import com.ww.manager.rival.battle.state.BattleStateChoosingTaskProps;
 import com.ww.manager.rival.state.*;
 import com.ww.manager.rival.war.state.WarStateAnswered;
 import com.ww.manager.rival.war.state.WarStateAnswering;
 import com.ww.manager.rival.war.state.WarStateAnsweringTimeout;
-import com.ww.manager.rival.war.state.WarStateChoosingTaskProps;
 import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.container.rival.war.WarContainer;
@@ -29,11 +26,6 @@ public class WarManager extends RivalManager {
 //        return 1000;
     }
 
-    public Integer getRandomChooseTaskPropsInterval() {
-//        return 1000;
-        return 16000;
-    }
-
     public WarManager(RivalInitContainer bic, WarService warService, ProfileConnectionService profileConnectionService) {
         this.rivalService = warService;
         this.profileConnectionService = profileConnectionService;
@@ -53,6 +45,15 @@ public class WarManager extends RivalManager {
         return Message.WAR_CONTENT;
     }
 
+    public boolean isEnd() {
+        for (RivalProfileContainer rivalProfileContainer : getRivalProfileContainers()) {
+            WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
+            if (warProfileContainer.getPresentIndexes().size() == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public synchronized void start() {
         new StateIntro(this).startFlowable().subscribe(aLong1 -> {
@@ -74,15 +75,18 @@ public class WarManager extends RivalManager {
         if (isEnd()) {
             new StateClose(this).startVoid();
         } else {
-            new WarStateChoosingTaskProps(this).startFlowable().subscribe(aLong5 -> {
-//                boolean randomChooseTaskProps = rivalContainer.randomChooseTaskProps();
-//                if (randomChooseTaskProps) {
-                phase1();
-//                } else {
-//                    new StateChoosingTaskPropsTimeout(this).startFlowable().subscribe(aLong7 -> {
-//                        phase1();
-//                    });
-//                }
+            for (RivalProfileContainer rivalProfileContainer : getRivalProfileContainers()) {
+                WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
+                warProfileContainer.randomActiveIndex(rivalContainer.getCurrentTaskIndex());
+            }
+            choosingTaskPropsDisposable = new StateChoosingTaskProps(this).startFlowable().subscribe(aLong5 -> {
+                boolean randomChooseTaskProps = rivalContainer.randomChooseTaskProps();
+                if (randomChooseTaskProps) {
+                    phase1();
+                } else {
+                    new StateChoosingTaskPropsTimeout(this).startVoid();
+                    phase1();
+                }
             });
         }
     }
@@ -106,19 +110,10 @@ public class WarManager extends RivalManager {
     }
 
     public synchronized void chosenTaskProps(Long profileId, Map<String, Object> content) {
-//        if (new StateChosenTaskProps(this, profileId, content).startBoolean()) {
-//            phase1();
-//        }
-    }
-
-    private boolean isEnd() {
-        for (RivalProfileContainer rivalProfileContainer : getRivalProfileContainers()) {
-            WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
-            if (warProfileContainer.getPresentIndexes().size() == 0) {
-                return true;
-            }
+        if (new StateChosenTaskProps(this, profileId, content).startBoolean()) {
+            disposeFlowable();
+            phase1();
         }
-        return false;
     }
 
 }

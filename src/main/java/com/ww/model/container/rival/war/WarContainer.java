@@ -4,6 +4,7 @@ import com.ww.manager.heroanswer.HeroAnswerManager;
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.container.rival.RivalContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
+import com.ww.model.container.rival.battle.BattleProfileContainer;
 import com.ww.model.dto.hero.WarProfileHeroDTO;
 import com.ww.model.entity.hero.ProfileHero;
 import lombok.Getter;
@@ -60,7 +61,16 @@ public class WarContainer extends RivalContainer {
     }
 
     public String findChoosingTaskPropsTag() {
-        return null;
+        List<RivalProfileContainer> rivalProfileContainers = new ArrayList<>(getProfileIdRivalProfileContainerMap().values());
+        Integer presentIndexSize1 = ((WarProfileContainer) rivalProfileContainers.get(0)).getPresentIndexes().size();
+        Integer presentIndexSize2 = ((WarProfileContainer) rivalProfileContainers.get(1)).getPresentIndexes().size();
+        if (presentIndexSize1.equals(presentIndexSize2)) {
+            return null;
+        }
+        if (presentIndexSize1.compareTo(presentIndexSize2) < 0) {
+            return rivalProfileContainers.get(0).getProfile().getTag();
+        }
+        return rivalProfileContainers.get(1).getProfile().getTag();
     }
 
     public String findWinnerTag() {
@@ -127,11 +137,9 @@ public class WarContainer extends RivalContainer {
     }
 
     public void fillModelChoosingTaskProps(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
+        super.fillModelChoosingTaskProps(model, rivalProfileContainer);
         WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
-        model.put("status", status);
         model.put("activeIndex", warProfileContainer.getActiveIndex());
         model.put("opponentActiveIndex", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getActiveIndex());
-        model.put("taskId", currentTaskIndex + 1);
-        model.put("task", taskDTOs.get(currentTaskIndex).toTaskMeta());
     }
 }
