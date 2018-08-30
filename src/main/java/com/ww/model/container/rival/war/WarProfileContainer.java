@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.ww.manager.WarManager.PROFILE_ACTIVE_INDEX;
+import static com.ww.manager.rival.war.WarManager.PROFILE_ACTIVE_INDEX;
 
 
 @Getter

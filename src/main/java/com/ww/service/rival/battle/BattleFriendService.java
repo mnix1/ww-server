@@ -1,6 +1,6 @@
 package com.ww.service.rival.battle;
 
-import com.ww.manager.BattleManager;
+import com.ww.manager.rival.battle.BattleManager;
 import com.ww.model.constant.social.FriendStatus;
 import com.ww.model.container.ProfileConnection;
 import com.ww.model.container.rival.RivalInitContainer;

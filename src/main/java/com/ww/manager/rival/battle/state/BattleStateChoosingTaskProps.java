@@ -1,0 +1,37 @@
+package com.ww.manager.rival.battle.state;
+
+import com.ww.manager.rival.RivalManager;
+import com.ww.manager.rival.state.State;
+import com.ww.model.constant.rival.RivalStatus;
+import io.reactivex.Flowable;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+public class BattleStateChoosingTaskProps extends State {
+
+    public BattleStateChoosingTaskProps(RivalManager manager) {
+        super(manager);
+    }
+
+    @Override
+    protected Flowable<Long> processFlowable() {
+        rivalContainer.setStatus(RivalStatus.CHOOSING_TASK_PROPS);
+        rivalContainer.increaseCurrentTaskIndex();
+        boolean randomChooseTaskProps = rivalContainer.randomChooseTaskProps();
+        if (randomChooseTaskProps) {
+            rivalManager.prepareTask((long) rivalContainer.getCurrentTaskIndex() + 1);
+        }
+        rivalContainer.setEndChoosingTaskPropsDate(Instant.now().plus(rivalManager.getChoosingTaskPropsInterval(), ChronoUnit.MILLIS));
+        rivalContainer.forEachProfile(rivalProfileContainer -> {
+            Map<String, Object> model = new HashMap<>();
+            rivalContainer.fillModelChoosingTaskProps(model, rivalProfileContainer);
+            rivalManager.send(model, rivalManager.getMessageContent(), rivalProfileContainer.getProfileId());
+        });
+        int interval = randomChooseTaskProps ? rivalManager.getRandomChooseTaskPropsInterval() : rivalManager.getChoosingTaskPropsInterval();
+        return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
+    }
+}

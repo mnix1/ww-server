@@ -1,8 +1,8 @@
 package com.ww.manager.heroanswer;
 
 import com.ww.helper.AnswerHelper;
-import com.ww.manager.RivalManager;
-import com.ww.manager.WarManager;
+import com.ww.manager.rival.RivalManager;
+import com.ww.manager.rival.war.WarManager;
 import com.ww.manager.heroanswer.state.phase3.StateAnsweringPhase3;
 import com.ww.manager.heroanswer.state.multiphase.StateCheckNoConcentration;
 import com.ww.manager.heroanswer.state.multiphase.StateLostConcentration;

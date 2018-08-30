@@ -1,7 +1,7 @@
 package com.ww.service.rival.battle;
 
-import com.ww.manager.BattleManager;
-import com.ww.manager.RivalManager;
+import com.ww.manager.rival.battle.BattleManager;
+import com.ww.manager.rival.RivalManager;
 import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.service.SessionService;
 import com.ww.service.rival.RivalFastService;

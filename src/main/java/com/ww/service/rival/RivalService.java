@@ -1,7 +1,7 @@
 package com.ww.service.rival;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ww.manager.RivalManager;
+import com.ww.manager.rival.RivalManager;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.container.ProfileConnection;
@@ -82,7 +82,7 @@ public abstract class RivalService {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             Map<String, Object> map = objectMapper.readValue(content, HashMap.class);
-            rivalManager.stateAnswered(profileId.get(), map);
+            rivalManager.answer(profileId.get(), map);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -100,7 +100,7 @@ public abstract class RivalService {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             Map<String, Object> map = objectMapper.readValue(content, HashMap.class);
-            rivalManager.stateChosenTaskProps(profileId.get(), map);
+            rivalManager.chosenTaskProps(profileId.get(), map);
         } catch (IOException e) {
             e.printStackTrace();
         }

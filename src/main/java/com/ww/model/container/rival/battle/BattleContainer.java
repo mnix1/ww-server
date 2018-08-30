@@ -1,14 +1,12 @@
 package com.ww.model.container.rival.battle;
 
-import com.ww.manager.BattleManager;
-import com.ww.manager.RivalManager;
+import com.ww.manager.rival.battle.BattleManager;
+import com.ww.manager.rival.RivalManager;
 import com.ww.model.container.rival.RivalContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
-import com.ww.model.container.rival.war.WarProfileContainer;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -62,14 +60,14 @@ public class BattleContainer extends RivalContainer {
     public void fillModelChoosingTaskProps(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         super.fillModelChoosingTaskProps(model, rivalProfileContainer);
         BattleProfileContainer battleProfileContainer = (BattleProfileContainer) rivalProfileContainer;
-        model.put("newScore", battleProfileContainer.getScore());
-        model.put("newOpponentScore", ((BattleProfileContainer) getRivalProfileContainer(rivalProfileContainer.getOpponentId())).getScore());
+        model.put("score", battleProfileContainer.getScore());
+        model.put("opponentScore", ((BattleProfileContainer) getRivalProfileContainer(rivalProfileContainer.getOpponentId())).getScore());
     }
 
     public void fillModelClosed(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         super.fillModelClosed(model, rivalProfileContainer);
         BattleProfileContainer battleProfileContainer = (BattleProfileContainer) rivalProfileContainer;
-        model.put("newScore", battleProfileContainer.getScore());
-        model.put("newOpponentScore", ((BattleProfileContainer) getRivalProfileContainer(rivalProfileContainer.getOpponentId())).getScore());
+        model.put("score", battleProfileContainer.getScore());
+        model.put("opponentScore", ((BattleProfileContainer) getRivalProfileContainer(rivalProfileContainer.getOpponentId())).getScore());
     }
 }

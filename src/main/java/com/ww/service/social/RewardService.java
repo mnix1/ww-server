@@ -2,14 +2,11 @@ package com.ww.service.social;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ww.manager.BattleManager;
+import com.ww.manager.rival.battle.BattleManager;
 import com.ww.model.container.RewardObject;
-import com.ww.model.dto.book.ProfileBookDTO;
 import com.ww.model.entity.book.Book;
-import com.ww.model.entity.book.ProfileBook;
 import com.ww.model.entity.social.Profile;
 import com.ww.repository.book.ProfileBookRepository;
-import com.ww.service.SessionService;
 import com.ww.service.book.BookService;
 import com.ww.service.book.ProfileBookService;
 import com.ww.websocket.message.Message;
@@ -19,14 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static com.ww.service.book.BookService.BOOK_SHELF_COUNT;
 
 @Service
 public class RewardService {

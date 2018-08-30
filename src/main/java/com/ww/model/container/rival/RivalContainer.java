@@ -1,6 +1,5 @@
 package com.ww.model.container.rival;
 
-import com.ww.manager.RivalManager;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.constant.rival.RivalProfileStatus;
 import com.ww.model.dto.rival.task.TaskDTO;

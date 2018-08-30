@@ -1,7 +1,7 @@
 package com.ww.model.container.rival.war;
 
 import com.ww.manager.heroanswer.HeroAnswerManager;
-import com.ww.manager.RivalManager;
+import com.ww.manager.rival.RivalManager;
 import com.ww.model.container.rival.RivalContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.dto.hero.WarProfileHeroDTO;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public class WarContainer extends RivalContainer {
-    List<HeroAnswerManager> heroAnswerManagers;
+    List<HeroAnswerManager> heroAnswerManagers = new ArrayList<>();
 
     public void updateHeroAnswerManagers(RivalManager rivalManager) {
         heroAnswerManagers = new ArrayList<>();
@@ -32,7 +32,7 @@ public class WarContainer extends RivalContainer {
 
     private HeroAnswerManager getHeroAnswerManager(WarProfileContainer warProfileContainer) {
         ProfileHero answeringHero = warProfileContainer.getAnsweringHero();
-        if(answeringHero == null){
+        if (answeringHero == null) {
             return null;
         }
         for (HeroAnswerManager answerManager : heroAnswerManagers) {
