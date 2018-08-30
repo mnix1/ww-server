@@ -11,16 +11,20 @@ import java.util.concurrent.TimeUnit;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 
-public class StateNotSureOfAnswer extends State {
-    protected static final Logger logger = LoggerFactory.getLogger(StateNotSureOfAnswer.class);
+public class StateEndThinkingIfGiveRandomAnswer extends State {
+    protected static final Logger logger = LoggerFactory.getLogger(StateEndThinkingIfGiveRandomAnswer.class);
 
-    public StateNotSureOfAnswer(HeroAnswerManager manager) {
+    public StateEndThinkingIfGiveRandomAnswer(HeroAnswerManager manager) {
         super(manager);
     }
 
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(HeroAnswerAction.NOT_SURE_OF_ANSWER);
-        long interval = (long) (randomDouble(2 - manager.getReflexF1() - manager.getConfidenceF1(), 4 - 2 * manager.getReflexF1() - 2 * manager.getConfidenceF1()) * 1000);
+        manager.addAndSendAction(HeroAnswerAction.THINKING_IF_GIVE_RANDOM_ANSWER);
+        double sumInterval = randomDouble(1 - manager.getConfidenceF1(), 4 - 2 * manager.getConfidenceF1() - manager.getIntuitionF1());
+        if (manager.isHobby()) {
+            sumInterval /= manager.getHobbyFactor();
+        }
+        long interval = (long) (sumInterval * 1000);
         logger.debug(manager.getHero().getHero().getNamePolish() + ", " + manager.lastAction().name() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

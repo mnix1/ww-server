@@ -11,11 +11,11 @@ import com.ww.manager.heroanswer.state.phase2.StateCheckKnowAnswerAfterThinkingA
 import com.ww.manager.heroanswer.state.phase2.StateEndRecognizingQuestion;
 import com.ww.manager.heroanswer.state.phase2.StateStartThinkingAboutQuestion;
 import com.ww.manager.heroanswer.state.phase3.*;
-import com.ww.manager.heroanswer.state.phase4.StateEndReadingAnswer;
-import com.ww.manager.heroanswer.state.phase4.StateStartReadingAnswer;
+import com.ww.manager.heroanswer.state.phase4.StateEndRecognizingAnswers;
+import com.ww.manager.heroanswer.state.phase4.StateStartRecognizingAnswers;
 import com.ww.manager.heroanswer.state.phase5.StateAnsweringPhase5;
 import com.ww.manager.heroanswer.state.phase5.StateCheckKnowAnswerAfterThinkingWhichMatch;
-import com.ww.manager.heroanswer.state.phase5.StateStartThinkingWhichAnswerMatch;
+import com.ww.manager.heroanswer.state.phase5.StateEndThinkingWhichAnswerMatch;
 import com.ww.manager.heroanswer.state.phase5.StateThinkKnowAnswer;
 import com.ww.manager.heroanswer.state.phase6.*;
 import com.ww.model.constant.hero.HeroAnswerAction;
@@ -60,7 +60,6 @@ public class HeroAnswerManager {
     private int hobbyCount;
     private double hobbyFactor;
 
-
     public HeroAnswerManager(ProfileHero hero, RivalManager rivalManager) {
         this.hero = hero;
         this.warManager = (WarManager) rivalManager;
@@ -72,6 +71,18 @@ public class HeroAnswerManager {
         this.hobbyCount = hero.getHero().getHobbies().size();
         this.hobbyFactor = 1 + 1d / hobbyCount;
         this.cacheAttributes();
+        logger.debug(getHero().getHero().getNamePolish() +
+                ", difficulty=" + difficulty +
+                ", answerCount=" + answerCount +
+                ", wisdomSum=" + wisdomSum +
+                ", speedF1=" + speedF1 +
+                ", reflexF1=" + reflexF1 +
+                ", concentrationF1=" + concentrationF1 +
+                ", confidenceF1=" + confidenceF1 +
+                ", intuitionF1=" + intuitionF1 +
+                ", isHobby=" + isHobby +
+                ", hobbyCount=" + hobbyCount +
+                ", hobbyFactor=" + hobbyFactor);
     }
 
     private void cacheAttributes() {
@@ -147,8 +158,8 @@ public class HeroAnswerManager {
     }
 
     public void phase4() {
-        new StateStartReadingAnswer(this).startFlowable().subscribe(aLong5 -> {
-            new StateEndReadingAnswer(this).startFlowable().subscribe(aLong6 -> {
+        new StateStartRecognizingAnswers(this).startFlowable().subscribe(aLong5 -> {
+            new StateEndRecognizingAnswers(this).startFlowable().subscribe(aLong6 -> {
                 HeroAnswerAction aa3 = new StateCheckNoConcentration(this).startHeroAnswerAction();
                 if (HeroAnswerAction.isNoConcentration(aa3)) {
                     new StateLostConcentration(this, aa3).startFlowable().subscribe(aLong7 -> {
@@ -162,7 +173,7 @@ public class HeroAnswerManager {
     }
 
     public void phase5() {
-        new StateStartThinkingWhichAnswerMatch(this).startFlowable().subscribe(aLong8 -> {
+        new StateEndThinkingWhichAnswerMatch(this).startFlowable().subscribe(aLong8 -> {
             HeroAnswerAction aa4 = new StateCheckKnowAnswerAfterThinkingWhichMatch(this).startHeroAnswerAction();
             if (aa4 == HeroAnswerAction.THINK_KNOW_ANSWER) {
                 new StateThinkKnowAnswer(this).startFlowable().subscribe(aLong9 -> {
@@ -176,7 +187,7 @@ public class HeroAnswerManager {
 
     public void phase6() {
         new StateNotSureOfAnswer(this).startFlowable().subscribe(aLong10 -> {
-            new StateThinkingIfGiveRandomAnswer(this).startFlowable().subscribe(aLong11 -> {
+            new StateEndThinkingIfGiveRandomAnswer(this).startFlowable().subscribe(aLong11 -> {
                 HeroAnswerAction aa5 = new StateCheckIfGiveRandomAnswer(this).startHeroAnswerAction();
                 if (aa5 == HeroAnswerAction.WILL_GIVE_RANDOM_ANSWER) {
                     new StateAnsweringPhase6(this).startVoid();

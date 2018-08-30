@@ -17,7 +17,7 @@ public enum HeroAnswerAction {
     FOUND_ANSWER_LOOKING_FOR,
 
     NOT_SURE_OF_ANSWER,
-    READING_ANSWERS,
+    RECOGNIZING_ANSWERS,
 
     ANSWERED,
     SURRENDER,

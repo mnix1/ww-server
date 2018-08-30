@@ -17,8 +17,10 @@ public class StateCheckNoConcentration extends State {
     }
 
     protected HeroAnswerAction processHeroAnswerAction() {
-        boolean lostConcentration = manager.getConcentrationF1() < randomDouble();
-        logger.debug(manager.getHero().getHero().getNamePolish() + ", " + manager.lastAction().name() + ", lostConcentration: " + lostConcentration);
+        double hobbyPart = manager.isHobby() ? 0.1 : 0;
+        double chance = manager.getConcentrationF1() + hobbyPart;
+        boolean lostConcentration = chance < randomDouble();
+        logger.debug(manager.getHero().getHero().getNamePolish() + ", " + manager.lastAction().name() + ", chance: " + chance + ", lostConcentration: " + lostConcentration);
         if (lostConcentration) {
             return randomElement(HeroAnswerAction.getNoConcentrationActions());
         }

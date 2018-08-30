@@ -21,7 +21,7 @@ public class StateCheckFoundAnswerLookingFor extends State {
         double hobbyPart = manager.isHobby() ? 0.1 : 0;
         double chance = 0.5 + diffPart + attrPart + hobbyPart;
         boolean foundAnswerLookingFor = chance > randomDouble();
-        logger.debug(manager.getHero().getHero().getNamePolish() + ", " + manager.lastAction().name() + ", foundAnswerLookingFor: " + foundAnswerLookingFor);
+        logger.debug(manager.getHero().getHero().getNamePolish() + ", " + manager.lastAction().name() + ", chance: " + chance+ ", foundAnswerLookingFor: " + foundAnswerLookingFor);
         if (foundAnswerLookingFor) {
             return HeroAnswerAction.FOUND_ANSWER_LOOKING_FOR;
         }

@@ -22,7 +22,7 @@ public class StateEndRecognizingQuestion extends State {
 
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(HeroAnswerAction.RECOGNIZING_QUESTION);
-        long readingInterval = manager.getQuestion().getTextContentEnglish().length() * ONE_CHAR_READING_SPEED;
+        long readingInterval = manager.getQuestion().getTextContent().length() * ONE_CHAR_READING_SPEED;
         long otherInterval;
         TaskRenderer taskRenderer = manager.getQuestion().getType().getQuestionRenderer();
         if (taskRenderer == TaskRenderer.TEXT) {
@@ -42,7 +42,7 @@ public class StateEndRecognizingQuestion extends State {
         } else {
             otherInterval = manager.getDifficulty() * 1000;
         }
-        double sumInterval = readingInterval + randomDouble(otherInterval, otherInterval * 2);
+        double sumInterval = readingInterval + randomDouble(otherInterval / 0.5, otherInterval);
         if (manager.isHobby()) {
             sumInterval /= manager.getHobbyFactor();
         }

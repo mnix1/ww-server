@@ -19,13 +19,12 @@ public class StateCheckIfGiveRandomAnswer extends State {
     }
 
     protected HeroAnswerAction processHeroAnswerAction() {
-        double intuitionF2 = manager.f1(manager.getHero().getMentalAttributeIntuition());
-        double confidenceF2 = manager.f1(manager.getHero().getMentalAttributeConfidence());
-        boolean willGiveRandomAnswer = intuitionF2 + confidenceF2 > randomDouble() * 2;
-        logger.debug(manager.getHero().getHero().getNamePolish() + ", " + manager.lastAction().name()
-                + ", intuitionF1: " + intuitionF2
-                + ", confidenceF1: " + confidenceF2
-                + ", willGiveRandomAnswer: " + willGiveRandomAnswer);
+        double diffPart = (4 - manager.getDifficulty()) * 0.15;
+        double attrPart = ((2 * manager.getConfidenceF1() + manager.getIntuitionF1()) / 2 - 0.5) * 4 / 5;
+        double hobbyPart = manager.isHobby() ? 0.1 : 0;
+        double chance = 0.5 + diffPart + attrPart + hobbyPart;
+        boolean willGiveRandomAnswer = chance > randomDouble();
+        logger.debug(manager.getHero().getHero().getNamePolish() + ", " + manager.lastAction().name() + ", chance: " + chance + ", willGiveRandomAnswer: " + willGiveRandomAnswer);
         if (willGiveRandomAnswer) {
             return HeroAnswerAction.WILL_GIVE_RANDOM_ANSWER;
         }

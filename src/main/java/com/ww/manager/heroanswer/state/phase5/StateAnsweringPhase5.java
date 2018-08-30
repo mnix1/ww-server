@@ -21,10 +21,12 @@ public class StateAnsweringPhase5 extends State {
 
     protected void processVoid() {
         manager.addAndSendAction(HeroAnswerAction.ANSWERED);
-        double sumWisdomAttributeF2 = manager.getWisdomSum();
-        double intuitionF2 = manager.f1(manager.getHero().getMentalAttributeIntuition());
-        boolean correctAnswer = sumWisdomAttributeF2 + intuitionF2 > randomDouble() * 2;
-        logger.debug(manager.getHero().getHero().getNamePolish() + ", " + manager.lastAction().name() + ", sumWisdomAttributeF2: " + sumWisdomAttributeF2 + ", intuitionF2: " + intuitionF2 + ", correctAnswer: " + correctAnswer);
+        double diffPart = (4 - manager.getDifficulty()) * 0.1;
+        double attrPart = ((manager.getWisdomSum() + 2 * manager.getIntuitionF1())/2 - 0.5) * 4 / 5;
+        double hobbyPart = manager.isHobby() ? 0.1 : 0;
+        double chance = 0.5 + diffPart + attrPart + hobbyPart;
+        boolean correctAnswer = chance > randomDouble();
+        logger.debug(manager.getHero().getHero().getNamePolish() + ", " + manager.lastAction().name() + ", chance: " + chance + ", correctAnswer: " + correctAnswer);
         Answer answer = correctAnswer
                 ? manager.getQuestion().getAnswers().stream().filter(Answer::getCorrect).findFirst().get()
                 : randomElement(new ArrayList<>(manager.getQuestion().getAnswers()));

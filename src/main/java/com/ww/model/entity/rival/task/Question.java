@@ -49,6 +49,13 @@ public class Question {
         this.setTextContentEnglish(content);
     }
 
+    public String getTextContent() {
+        if (getTextContentEnglish() != null) {
+            return getTextContentEnglish();
+        }
+        return getTextContentPolish();
+    }
+
     public void initAnswerIds() {
         long id = 0;
         for (Answer answer : answers) {
