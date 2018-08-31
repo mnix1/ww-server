@@ -126,10 +126,26 @@ public class ProfileHeroService {
 
     public ProfileHero addHero(Profile profile, Hero hero) {
         ProfileHero profileHero = new ProfileHero(profile, hero);
+        if (maybeAddHeroToTeam(profile, profileHero)) {
+            profile.setTeamInitialized(true);
+            profileService.save(profile);
+        }
         initHeroAttributes(profileHero);
         initHeroHobbies(profileHero);
         profileHeroRepository.save(profileHero);
         return profileHero;
+    }
+
+    //if not full actually
+    public boolean maybeAddHeroToTeam(Profile profile, ProfileHero profileHero) {
+        if (profile.getTeamInitialized()) {
+            return false;
+        }
+        int actualTeamSize = listTeam(profile.getId()).size();
+        if (actualTeamSize < HERO_TEAM_COUNT) {
+            profileHero.setInTeam(true);
+        }
+        return actualTeamSize + 1 == HERO_TEAM_COUNT;
     }
 
     public void initHeroAttributes(ProfileHero hero) {

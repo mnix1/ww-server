@@ -30,6 +30,7 @@ public class Profile {
     private Long crystal;
     private Long wisdom;
     private Long elixir;
+    private Boolean teamInitialized;
 
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
     private Set<ProfileFriend> friends = new HashSet<>();
@@ -51,6 +52,7 @@ public class Profile {
         this.wisdom = 0L;
         this.elixir = 0L;
         this.heroType = HeroType.random();
+        this.teamInitialized = false;
     }
 
     public Profile(Long id) {
