@@ -112,7 +112,7 @@ public abstract class RivalContainer {
         model.put("task", taskDTOs.get(currentTaskIndex).toTaskMeta());
     }
 
-    public void fillModelPreparingNextTask(Map<String, Object> model) {
+    public void fillModelPreparingNextTask(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         model.put("status", status);
         model.put("task", taskDTOs.get(currentTaskIndex).toTaskMeta());
         model.put("nextTaskInterval", Math.max(nextTaskDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
@@ -187,7 +187,7 @@ public abstract class RivalContainer {
             model.put("task", taskDTOs.get(currentTaskIndex));
             fillModelAnswered(model, rivalProfileContainer);
         } else if (status == RivalStatus.PREPARING_NEXT_TASK) {
-            fillModelPreparingNextTask(model);
+            fillModelPreparingNextTask(model, rivalProfileContainer);
         } else if (status == RivalStatus.ANSWERING_TIMEOUT) {
             fillModelAnswering(model, rivalProfileContainer);
             fillModelAnsweringTimeout(model, rivalProfileContainer);

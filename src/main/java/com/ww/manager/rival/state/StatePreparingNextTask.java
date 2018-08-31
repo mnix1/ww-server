@@ -20,9 +20,9 @@ public class StatePreparingNextTask extends State {
     protected Flowable<Long> processFlowable() {
         rivalContainer.setNextTaskDate(Instant.now().plus(rivalManager.getPreparingNextTaskInterval(), ChronoUnit.MILLIS));
         rivalContainer.setStatus(RivalStatus.PREPARING_NEXT_TASK);
-        Map<String, Object> model = new HashMap<>();
-        rivalContainer.fillModelPreparingNextTask(model);
         rivalContainer.forEachProfile(rivalProfileContainer -> {
+            Map<String, Object> model = new HashMap<>();
+            rivalContainer.fillModelPreparingNextTask(model, rivalProfileContainer);
             rivalManager.send(model, rivalManager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
         return Flowable.intervalRange(0L, 1L, rivalManager.getPreparingNextTaskInterval(), rivalManager.getPreparingNextTaskInterval(), TimeUnit.MILLISECONDS);

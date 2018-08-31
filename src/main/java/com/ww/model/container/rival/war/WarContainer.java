@@ -104,6 +104,11 @@ public class WarContainer extends RivalContainer {
         model.put("opponentTeam", prepareTeam(getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getHeroes()));
     }
 
+    public void fillModelPreparingNextTask(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
+        super.fillModelPreparingNextTask(model, rivalProfileContainer);
+        model.put("opponentActiveIndex", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getActiveIndex());
+    }
+
     public void fillModelAnswered(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         super.fillModelAnswered(model, rivalProfileContainer);
         WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
