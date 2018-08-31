@@ -63,9 +63,9 @@ public abstract class RivalManager {
         rivalContainer.addTask(question, taskDTO);
     }
 
-    public void maybeStart(Long profileId) {
+    public synchronized void maybeStart(Long profileId) {
         rivalContainer.profileReady(profileId);
-        if (rivalContainer.isReady()) {
+        if (rivalContainer.isReady() && rivalContainer.getStatus() == RivalStatus.OPEN) {
             start();
         }
     }

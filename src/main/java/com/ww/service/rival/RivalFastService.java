@@ -1,6 +1,7 @@
 package com.ww.service.rival;
 
 import com.ww.manager.rival.RivalManager;
+import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.ProfileConnection;
 import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.entity.social.Profile;
@@ -24,6 +25,8 @@ public abstract class RivalFastService {
     protected abstract ProfileService getProfileService();
 
     protected abstract RivalService getRivalService();
+
+    protected abstract RivalType getRivalType();
 
     protected abstract ProfileConnectionService getProfileConnectionService();
 
@@ -72,7 +75,7 @@ public abstract class RivalFastService {
 //        logger.debug("Matched profiles {} and {}, now creating rival rivalManager", profile.getId(), opponent.getId());
         waitingForRivalProfiles.remove(profile);
         waitingForRivalProfiles.remove(opponent);
-        RivalInitContainer rival = new RivalInitContainer(profile, opponent);
+        RivalInitContainer rival = new RivalInitContainer(getRivalType(), profile, opponent);
         RivalManager rivalManager = createManager(rival);
         getRivalService().getProfileIdToRivalManagerMap().put(rival.getCreatorProfile().getId(), rivalManager);
         getRivalService().getProfileIdToRivalManagerMap().put(rival.getOpponentProfile().getId(), rivalManager);
