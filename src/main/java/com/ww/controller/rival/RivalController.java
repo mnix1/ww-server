@@ -4,6 +4,7 @@ import com.ww.model.constant.rival.RivalType;
 import com.ww.service.SessionService;
 import com.ww.service.rival.RivalFriendService;
 import com.ww.service.rival.battle.BattleFastService;
+import com.ww.service.rival.war.WarFastService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,40 @@ public class RivalController {
 
     @Autowired
     RivalFriendService rivalFriendService;
+
+    @Autowired
+    BattleFastService battleFastService;
+
+    @Autowired
+    WarFastService warFastService;
+
+    @RequestMapping(value = "/startFast", method = RequestMethod.POST)
+    public Map startFast(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("type")) {
+            throw new IllegalArgumentException();
+        }
+        RivalType type = RivalType.valueOf((String) payload.get("type"));
+        if (type == RivalType.BATTLE) {
+            return battleFastService.startFast();
+        } else if (type == RivalType.WAR) {
+            return warFastService.startFast();
+        }
+        throw new IllegalArgumentException();
+    }
+
+    @RequestMapping(value = "/cancelFast", method = RequestMethod.POST)
+    public Map cancelFast(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("type")) {
+            throw new IllegalArgumentException();
+        }
+        RivalType type = RivalType.valueOf((String) payload.get("type"));
+        if (type == RivalType.BATTLE) {
+            return battleFastService.cancelFast();
+        } else if (type == RivalType.WAR) {
+            return warFastService.cancelFast();
+        }
+        throw new IllegalArgumentException();
+    }
 
     @RequestMapping(value = "/startFriend", method = RequestMethod.POST)
     public Map startFriend(@RequestBody Map<String, Object> payload) {
