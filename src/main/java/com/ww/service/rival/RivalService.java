@@ -70,6 +70,16 @@ public abstract class RivalService {
         // TODO STORE RESULT
     }
 
+    public synchronized Map<String, Object> handleInput(String content) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(content, HashMap.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public synchronized void answer(String sessionId, String content) {
         Optional<Long> profileId = getProfileConnectionService().getProfileId(sessionId);
         if (!profileId.isPresent()) {
@@ -79,12 +89,9 @@ public abstract class RivalService {
         if (!rivalManager.canAnswer()) {
             return;
         }
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            Map<String, Object> map = objectMapper.readValue(content, HashMap.class);
-            rivalManager.answer(profileId.get(), map);
-        } catch (IOException e) {
-            e.printStackTrace();
+        Map<String, Object> contentMap = handleInput(content);
+        if (contentMap != null) {
+            rivalManager.answer(profileId.get(), contentMap);
         }
     }
 
@@ -97,12 +104,9 @@ public abstract class RivalService {
         if (!rivalManager.canChooseTaskProps()) {
             return;
         }
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            Map<String, Object> map = objectMapper.readValue(content, HashMap.class);
-            rivalManager.chosenTaskProps(profileId.get(), map);
-        } catch (IOException e) {
-            e.printStackTrace();
+        Map<String, Object> contentMap = handleInput(content);
+        if (contentMap != null) {
+            rivalManager.chosenTaskProps(profileId.get(), contentMap);
         }
     }
 

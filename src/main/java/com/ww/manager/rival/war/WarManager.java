@@ -2,9 +2,8 @@ package com.ww.manager.rival.war;
 
 import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.state.*;
-import com.ww.manager.rival.war.state.WarStateAnswered;
-import com.ww.manager.rival.war.state.WarStateAnswering;
-import com.ww.manager.rival.war.state.WarStateAnsweringTimeout;
+import com.ww.manager.rival.war.state.*;
+import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.container.rival.war.WarContainer;
@@ -12,6 +11,7 @@ import com.ww.model.container.rival.war.WarProfileContainer;
 import com.ww.service.rival.war.WarService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.websocket.message.Message;
+import io.reactivex.disposables.Disposable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,10 +21,7 @@ public class WarManager extends RivalManager {
     public static final int PROFILE_ACTIVE_INDEX = 0;
     public WarContainer warContainer;
 
-    public Integer getIntroInterval() {
-        return 20500;
-//        return 1000;
-    }
+    protected Disposable choosingWhoAnswerDisposable;
 
     public WarManager(RivalInitContainer bic, WarService warService, ProfileConnectionService profileConnectionService) {
         this.rivalService = warService;
@@ -35,6 +32,14 @@ public class WarManager extends RivalManager {
         this.rivalContainer.addProfile(creatorId, new WarProfileContainer(bic.getCreatorProfile(), warService.getProfileHeroes(creatorId), opponentId));
         this.rivalContainer.addProfile(opponentId, new WarProfileContainer(bic.getOpponentProfile(), warService.getProfileHeroes(opponentId), creatorId));
         this.warContainer = (WarContainer) this.rivalContainer;
+    }
+
+    public void disposeFlowable() {
+        super.disposeFlowable();
+        if (choosingWhoAnswerDisposable != null) {
+            choosingWhoAnswerDisposable.dispose();
+            choosingWhoAnswerDisposable = null;
+        }
     }
 
     protected Message getMessageReadyFast() {
@@ -57,7 +62,7 @@ public class WarManager extends RivalManager {
 
     public synchronized void start() {
         new StateIntro(this).startFlowable().subscribe(aLong1 -> {
-            phase1();
+            phase3();
         });
     }
 
@@ -75,20 +80,22 @@ public class WarManager extends RivalManager {
         if (isEnd()) {
             new StateClose(this).startVoid();
         } else {
-            for (RivalProfileContainer rivalProfileContainer : getRivalProfileContainers()) {
-                WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
-                warProfileContainer.randomActiveIndex(rivalContainer.getCurrentTaskIndex());
-            }
             choosingTaskPropsDisposable = new StateChoosingTaskProps(this).startFlowable().subscribe(aLong5 -> {
                 boolean randomChooseTaskProps = rivalContainer.randomChooseTaskProps();
                 if (randomChooseTaskProps) {
-                    phase1();
+                    phase3();
                 } else {
                     new StateChoosingTaskPropsTimeout(this).startVoid();
-                    phase1();
+                    phase3();
                 }
             });
         }
+    }
+
+    public synchronized void phase3() {
+        choosingWhoAnswerDisposable = new WarStateChoosingWhoAnswer(this).startFlowable().subscribe(aLong2 -> {
+            phase1();
+        });
     }
 
     public synchronized void heroAnswered(Long profileId, Long answerId) {
@@ -104,16 +111,32 @@ public class WarManager extends RivalManager {
         });
     }
 
+    public synchronized void chosenTaskProps(Long profileId, Map<String, Object> content) {
+        if (new StateChosenTaskProps(this, profileId, content).startBoolean()) {
+            disposeFlowable();
+            phase3();
+        }
+    }
+
+    public synchronized void chosenWhoAnswer(Long profileId, Map<String, Object> content) {
+        if (new WarStateChosenWhoAnswer(this, profileId, content).startBoolean()) {
+            disposeFlowable();
+            phase1();
+        }
+    }
+
     public synchronized void surrender(Long profileId) {
         warContainer.stopHeroAnswerManager();
         super.surrender(profileId);
     }
 
-    public synchronized void chosenTaskProps(Long profileId, Map<String, Object> content) {
-        if (new StateChosenTaskProps(this, profileId, content).startBoolean()) {
-            disposeFlowable();
-            phase1();
-        }
+
+    public Integer getIntroInterval() {
+        return 10500;
+    }
+
+    public Integer getChoosingWhoAnswerInterval() {
+        return 10000;
     }
 
 }

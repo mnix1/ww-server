@@ -21,27 +21,13 @@ public class WarProfileContainer extends RivalProfileContainer {
     private List<Integer> presentIndexes;
     private List<Integer> activeIndexesOrder;
     private int activeIndex;
+    private boolean isChosenActiveIndex;
 
     public WarProfileContainer(Profile profile, List<ProfileHero> heroes, Long opponentId) {
         super(profile, opponentId);
         this.presentIndexes = Arrays.asList(0, 1, 2, 3, 4);
-        this.activeIndexesOrder = Arrays.asList(0, 1, 2, 3, 4);
-        Collections.shuffle(this.activeIndexesOrder);
         this.heroes = heroes;
-        this.activeIndex = activeIndexesOrder.get(0);
-    }
-
-    public int randomActiveIndex(int taskIndex) {
-        if (presentIndexes.size() == 1) {
-            activeIndex = presentIndexes.get(0);
-            return activeIndex;
-        }
-        activeIndex = activeIndexesOrder.get(taskIndex % activeIndexesOrder.size());
-        int offset = 0;
-        while (!presentIndexes.contains(activeIndex)) {
-            activeIndex = activeIndexesOrder.get((taskIndex + offset++) % activeIndexesOrder.size());
-        }
-        return activeIndex;
+        this.activeIndex = 0;
     }
 
     public ProfileHero getAnsweringHero() {

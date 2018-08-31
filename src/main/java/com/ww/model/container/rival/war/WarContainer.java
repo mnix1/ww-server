@@ -2,6 +2,7 @@ package com.ww.model.container.rival.war;
 
 import com.ww.manager.heroanswer.HeroAnswerManager;
 import com.ww.manager.rival.RivalManager;
+import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.container.rival.RivalContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.container.rival.battle.BattleProfileContainer;
@@ -10,6 +11,7 @@ import com.ww.model.entity.hero.ProfileHero;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 @Setter
 public class WarContainer extends RivalContainer {
     List<HeroAnswerManager> heroAnswerManagers = new ArrayList<>();
+    protected Instant endChoosingWhoAnswerDate;
 
     public void updateHeroAnswerManagers(RivalManager rivalManager) {
         heroAnswerManagers = new ArrayList<>();
@@ -117,6 +120,8 @@ public class WarContainer extends RivalContainer {
 
     public void fillModelHeroAnswering(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
+        model.put("activeIndex", warProfileContainer.getActiveIndex());
+        model.put("opponentActiveIndex", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getActiveIndex());
         HeroAnswerManager manager = getHeroAnswerManager(warProfileContainer);
         if (manager != null) {
             model.put("heroActions", manager.getActions());
@@ -136,10 +141,20 @@ public class WarContainer extends RivalContainer {
         model.put("opponentPresentIndexes", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getPresentIndexes());
     }
 
-    public void fillModelChoosingTaskProps(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
-        super.fillModelChoosingTaskProps(model, rivalProfileContainer);
+    public void fillModelChoosingWhoAnswer(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
+        model.put("status", status);
+        model.put("choosingWhoAnswerInterval", Math.max(endChoosingWhoAnswerDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
         model.put("activeIndex", warProfileContainer.getActiveIndex());
-        model.put("opponentActiveIndex", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getActiveIndex());
+        model.put("presentIndexes", warProfileContainer.getPresentIndexes());
+        model.put("isChosenActiveIndex", warProfileContainer.isChosenActiveIndex());
+        model.put("task", taskDTOs.get(currentTaskIndex).toTaskMeta());
+    }
+
+    public void fillModel(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
+        super.fillModel(model, rivalProfileContainer);
+        if (status == RivalStatus.CHOOSING_WHO_ANSWER) {
+            fillModelChoosingWhoAnswer(model, rivalProfileContainer);
+        }
     }
 }

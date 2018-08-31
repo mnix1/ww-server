@@ -72,6 +72,8 @@ public class WebSocketHandler extends TextWebSocketHandler {
             warService.answer(session.getId(), message.substring("WAR_ANSWER".length()));
         } else if (message.contains("WAR_CHOOSE_TASK_PROPS")) {
             warService.chooseTaskProps(session.getId(), message.substring("WAR_CHOOSE_TASK_PROPS".length()));
+        } else if (message.contains("WAR_CHOOSE_WHO_ANSWER")) {
+            warService.chooseWhoAnswer(session.getId(), message.substring("WAR_CHOOSE_WHO_ANSWER".length()));
         } else if (message.contains("WAR_SURRENDER")) {
             warService.surrender(session.getId());
         }

@@ -46,8 +46,8 @@ public abstract class RivalManager {
             choosingTaskPropsDisposable.dispose();
             choosingTaskPropsDisposable = null;
         }
-
     }
+
     protected abstract Message getMessageReadyFast();
 
     public abstract Message getMessageContent();
@@ -124,6 +124,7 @@ public abstract class RivalManager {
 
     public Integer getShowingAnswerInterval() {
         return 8000;
+//        return 800000;
     }
 
     public Integer getChoosingTaskPropsInterval() {
@@ -141,6 +142,10 @@ public abstract class RivalManager {
 
     public boolean canChooseTaskProps() {
         return rivalContainer.getStatus() == RivalStatus.CHOOSING_TASK_PROPS;
+    }
+
+    public boolean canChooseWhoAnswer() {
+        return rivalContainer.getStatus() == RivalStatus.CHOOSING_WHO_ANSWER;
     }
 
     public boolean isClosed() {
