@@ -9,5 +9,16 @@ public enum WisdomAttribute {
     PATTERN_RECOGNITION,
     IMAGINATION;
 
-    public static int COUNT = 8;
+
+    public static WisdomAttribute fromString(String name) {
+        try {
+            return WisdomAttribute.valueOf(name);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    public static Long UPGRADE_COST = 1L;
+
+    public static int COUNT = 7;
 }

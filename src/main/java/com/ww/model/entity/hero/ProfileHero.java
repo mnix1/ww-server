@@ -133,6 +133,14 @@ public class ProfileHero {
         }
     }
 
+    public void upgradeWisdomAttribute(WisdomAttribute wisdomAttribute, double change) {
+        setWisdomAttributeValue(wisdomAttribute, getWisdomAttributeValue(wisdomAttribute) + change);
+    }
+
+    public void upgradeMentalAttribute(MentalAttribute mentalAttribute, double change) {
+        setMentalAttributeValue(mentalAttribute, getMentalAttributeValue(mentalAttribute) + change);
+    }
+
     public Double calculateValue() {
         return HeroHelper.calculateValue(this);
     }

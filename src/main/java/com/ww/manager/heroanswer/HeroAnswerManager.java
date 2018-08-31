@@ -32,6 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.ww.helper.HeroHelper.f1;
+
 @Getter
 public class HeroAnswerManager {
     protected static final Logger logger = LoggerFactory.getLogger(RivalManager.class);
@@ -210,10 +212,6 @@ public class HeroAnswerManager {
             warManager.send(model, warManager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
 
-    }
-
-    public Double f1(Double arg) {
-        return Math.log(1.87 * arg + 1) * 12.9 / (83.25 + Math.log(0.025 * arg + 51.24) * 12.9);
     }
 
 }

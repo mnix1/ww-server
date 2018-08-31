@@ -1,5 +1,7 @@
 package com.ww.controller;
 
+import com.ww.model.constant.hero.MentalAttribute;
+import com.ww.model.constant.hero.WisdomAttribute;
 import com.ww.model.dto.hero.HeroDTO;
 import com.ww.model.dto.hero.ProfileHeroDTO;
 import com.ww.service.SessionService;
@@ -56,5 +58,16 @@ public class HeroController {
         return profileHeroService.teamSave(ids);
     }
 
+    @RequestMapping(value = "/upgradeHero", method = RequestMethod.POST)
+    public Map<String, Object> upgradeHero(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("id") || !payload.containsKey("attribute")) {
+            throw new IllegalArgumentException();
+        }
+        String attribute = (String) payload.get("attribute");
+        Long profileHeroId = ((Integer) payload.get("id")).longValue();
+        WisdomAttribute wisdomAttribute = WisdomAttribute.fromString(attribute);
+        MentalAttribute mentalAttribute = MentalAttribute.fromString(attribute);
+        return profileHeroService.upgradeHero(profileHeroId, wisdomAttribute, mentalAttribute);
+    }
 
 }
