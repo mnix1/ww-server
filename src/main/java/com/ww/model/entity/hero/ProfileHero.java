@@ -2,6 +2,8 @@ package com.ww.model.entity.hero;
 
 
 import com.ww.helper.HeroHelper;
+import com.ww.helper.HeroHobbyConverter;
+import com.ww.model.constant.Category;
 import com.ww.model.constant.hero.MentalAttribute;
 import com.ww.model.constant.hero.WisdomAttribute;
 import com.ww.model.entity.social.Profile;
@@ -10,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -39,6 +42,9 @@ public class ProfileHero {
     @ManyToOne
     @JoinColumn(name = "profile_id", nullable = false, updatable = false)
     private Profile profile;
+    @Column
+    @Convert(converter = HeroHobbyConverter.class)
+    private Set<Category> hobbies;
     @ManyToOne
     @JoinColumn(name = "hero_id", nullable = false, updatable = false)
     private Hero hero;

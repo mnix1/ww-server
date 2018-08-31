@@ -1,8 +1,11 @@
 package com.ww.model.dto.hero;
 
+import com.ww.model.constant.Category;
 import com.ww.model.constant.hero.HeroType;
 import com.ww.model.entity.hero.ProfileHero;
 import lombok.Getter;
+
+import java.util.Set;
 
 import static com.ww.helper.NumberHelper.smartRound;
 
@@ -13,6 +16,8 @@ public class ProfileHeroDTO {
     private HeroType type;
 
     private Boolean inTeam;
+
+    private Set<Category> hobbies;
 
     private Double memory;
     private Double logic;
@@ -34,6 +39,7 @@ public class ProfileHeroDTO {
         this.id = profileHero.getId();
         this.type = profileHero.getHero().getType();
         this.inTeam = profileHero.getInTeam();
+        this.hobbies = profileHero.getHobbies();
         this.memory = smartRound(profileHero.getWisdomAttributeMemory());
         this.logic = smartRound(profileHero.getWisdomAttributeLogic());
         this.perceptivity = smartRound(profileHero.getWisdomAttributePerceptivity());

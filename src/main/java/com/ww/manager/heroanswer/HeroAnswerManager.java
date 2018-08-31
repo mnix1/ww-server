@@ -69,8 +69,8 @@ public class HeroAnswerManager {
         this.question = warContainer.getQuestions().get(warContainer.getCurrentTaskIndex());
         this.difficulty = AnswerHelper.difficultyCalibration(question) + 1;
         this.answerCount = question.getAnswers().size();
-        this.isHobby = hero.getHero().getHobbies().contains(question.getType().getCategory());
-        this.hobbyCount = hero.getHero().getHobbies().size();
+        this.isHobby = hero.getHobbies().contains(question.getType().getCategory());
+        this.hobbyCount = hero.getHobbies().size();
         this.hobbyFactor = 1 + 1d / hobbyCount;
         this.cacheAttributes();
         logger.debug(getHero().getHero().getNamePolish() +

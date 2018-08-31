@@ -1,6 +1,7 @@
 package com.ww.service.hero;
 
 import com.ww.helper.HeroHelper;
+import com.ww.model.constant.Category;
 import com.ww.model.constant.hero.MentalAttribute;
 import com.ww.model.constant.hero.WisdomAttribute;
 import com.ww.model.dto.hero.ProfileHeroDTO;
@@ -125,12 +126,13 @@ public class ProfileHeroService {
 
     public ProfileHero addHero(Profile profile, Hero hero) {
         ProfileHero profileHero = new ProfileHero(profile, hero);
-        initHeroStats(profileHero);
+        initHeroAttributes(profileHero);
+        initHeroHobbies(profileHero);
         profileHeroRepository.save(profileHero);
         return profileHero;
     }
 
-    public void initHeroStats(ProfileHero hero) {
+    public void initHeroAttributes(ProfileHero hero) {
         hero.setWisdomAttributeMemory(randomDouble(1, 10));
         hero.setWisdomAttributeLogic(randomDouble(1, 10));
         hero.setWisdomAttributePerceptivity(randomDouble(1, 10));
@@ -144,5 +146,9 @@ public class ProfileHeroService {
         hero.setMentalAttributeConcentration(randomDouble(1, 10));
         hero.setMentalAttributeConfidence(randomDouble(1, 10));
         hero.setMentalAttributeIntuition(randomDouble(1, 10));
+    }
+
+    public void initHeroHobbies(ProfileHero hero) {
+        hero.setHobbies(new HashSet<>(Arrays.asList(Category.random())));
     }
 }

@@ -20,7 +20,7 @@ public class WarProfileHeroDTO {
         this.nameEnglish = profileHero.getHero().getNameEnglish();
         this.type = profileHero.getHero().getType();
         this.value = profileHero.calculateValue();
-        this.hobbies = profileHero.getHero().getHobbies();
+        this.hobbies = profileHero.getHobbies();
     }
 
 
