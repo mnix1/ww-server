@@ -49,13 +49,13 @@ public class ProfileHeroService {
         profileHeroRepository.saveAll(team);
     }
 
-    public synchronized Map<String, Object> teamSave(List<Long> ids) {
+    public synchronized Map<String, Object> teamSave(Set<Long> ids) {
         Map<String, Object> model = new HashMap<>();
-        if (ids.size() > HERO_TEAM_COUNT) {
+        if (ids.size() != HERO_TEAM_COUNT) {
             model.put("code", -1);
             return model;
         }
-        List<ProfileHero> heroes = profileHeroRepository.findAllByProfile_IdAndIdIn(sessionService.getProfileId(), ids);
+        List<ProfileHero> heroes = profileHeroRepository.findAllByProfile_IdAndIdIn(sessionService.getProfileId(), new ArrayList<>(ids));
         if (ids.size() != heroes.size()) {
             model.put("code", -1);
             return model;
