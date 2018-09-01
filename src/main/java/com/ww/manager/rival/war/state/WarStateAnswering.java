@@ -21,14 +21,14 @@ public class WarStateAnswering extends WarState {
         rivalContainer.setEndAnsweringDate(Instant.now().plus(warManager.getAnsweringInterval(), ChronoUnit.MILLIS));
         rivalContainer.setStatus(RivalStatus.ANSWERING);
 
-        warContainer.updateHeroAnswerManagers(warManager);
+        warContainer.updateWisieAnswerManagers(warManager);
 
         rivalContainer.forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
             rivalContainer.fillModelAnswering(model, rivalProfileContainer);
             warManager.send(model, warManager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
-        warContainer.startHeroAnswerManager();
+        warContainer.startWisieAnswerManager();
         return Flowable.intervalRange(0L, 1L, warManager.getAnsweringInterval(), warManager.getAnsweringInterval(), TimeUnit.MILLISECONDS);
     }
 }

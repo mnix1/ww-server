@@ -2,18 +2,18 @@ package com.ww.database;
 
 import com.ww.helper.TagHelper;
 import com.ww.model.constant.Category;
-import com.ww.model.constant.hero.HeroType;
-import com.ww.model.constant.hero.WisdomAttribute;
+import com.ww.model.constant.wisie.WisieType;
+import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.constant.rival.task.TaskRenderer;
 import com.ww.model.constant.rival.task.type.*;
 import com.ww.model.constant.book.BookType;
-import com.ww.model.entity.hero.Hero;
+import com.ww.model.entity.wisie.Wisie;
 import com.ww.model.entity.rival.task.Clipart;
 import com.ww.model.entity.rival.task.TaskType;
 import com.ww.model.entity.rival.task.TaskWisdomAttribute;
 import com.ww.model.entity.book.Book;
 import com.ww.model.entity.social.Profile;
-import com.ww.repository.hero.HeroRepository;
+import com.ww.repository.wisie.WisieRepository;
 import com.ww.repository.rival.task.AnswerRepository;
 import com.ww.repository.rival.task.QuestionRepository;
 import com.ww.repository.rival.task.TaskTypeRepository;
@@ -66,7 +66,7 @@ public class Init {
     AnswerRepository answerRepository;
 
     @Autowired
-    HeroRepository heroRepository;
+    WisieRepository wisieRepository;
 
     @Autowired
     BookRepository bookRepository;
@@ -80,7 +80,7 @@ public class Init {
         if (bookRepository.findAll().size() == 0) {
             initBooks();
             initTaskTypes();
-            initHeroes();
+            initWisies();
             initProfiles();
             initMusicTracks();
             initCliparts();
@@ -446,53 +446,53 @@ public class Init {
         bookRepository.saveAll(books);
     }
 
-    public void initHeroes() {
-        List<Hero> heroes = new ArrayList<>();
-        heroes.add(new Hero("Wilku", "Wolf", HeroType.WOLF));
-        heroes.add(new Hero("Skorupny", "Turtle", HeroType.TURTLE));
-        heroes.add(new Hero("Zdzigrys", "Tiger", HeroType.TIGER));
-        heroes.add(new Hero("Jaduś", "Snake", HeroType.SNAKE));
-        heroes.add(new Hero("Szopuś", "Raccoon", HeroType.RACCOON));
-        heroes.add(new Hero("Wełnuś", "Sheep", HeroType.SHEEP));
-        heroes.add(new Hero("Ząbek", "Shark", HeroType.SHARK));
-        heroes.add(new Hero("Kicek", "Rabbit", HeroType.RABBIT));
-        heroes.add(new Hero("Misiaczek", "Polar Bear", HeroType.POLAR_BEAR));
-        heroes.add(new Hero("Zgapka", "Parrot", HeroType.PARROT));
-        heroes.add(new Hero("Pandziu", "Panda", HeroType.PANDA_EAT));
-        heroes.add(new Hero("Strusior", "Ostrich", HeroType.OSTRICH));
-        heroes.add(new Hero("Bujnogrzyw", "Lion", HeroType.LION));
-        heroes.add(new Hero("Skoczka", "Kangaroo", HeroType.KANGAROO));
-        heroes.add(new Hero("Rumo", "Horse", HeroType.HORSE));
-        heroes.add(new Hero("Goruś", "Gorilla", HeroType.GORILLA));
-        heroes.add(new Hero("Lizuś", "Fox", HeroType.FOX_MAN));
-        heroes.add(new Hero("Lisiczka", "Foxie", HeroType.FOX));
-        heroes.add(new Hero("Trąbcia", "Elephant", HeroType.ELEPHANT));
-        heroes.add(new Hero("Orłuś", "Eagle", HeroType.EAGLE));
-        heroes.add(new Hero("Grubełło", "Fat Dragon", HeroType.DRAGON_FAT));
-        heroes.add(new Hero("Supełło", "Blue Dragon", HeroType.DRAGON_BLUE));
-        heroes.add(new Hero("Pikełło", "Green Dragon", HeroType.DRAGON));
-        heroes.add(new Hero("Pulszek", "Fat Dog", HeroType.DOG_FAT));
-        heroes.add(new Hero("Bystruś", "Idea Dog", HeroType.DOG));
-        heroes.add(new Hero("Kroczek", "Crocodile", HeroType.CROCODILE));
-        heroes.add(new Hero("Kicia", "Cat Teacher", HeroType.CAT_TEACHER));
-        heroes.add(new Hero("Kituś", "Apple Cat", HeroType.CAT_PRESENTER));
-        heroes.add(new Hero("Mruczka", "Kitty", HeroType.CAT_BLUE));
-        heroes.add(new Hero("Wielobłąd", "Camel", HeroType.CAMEL));
-        heroes.add(new Hero("Pudziuś", "Bulldog", HeroType.BULLDOG));
-        heroes.add(new Hero("Byku", "Bull", HeroType.BULL));
-        heroes.add(new Hero("Dźwiedzior", "Bear", HeroType.BEAR));
-        heroes.add(new Hero("Żądłolot", "Bee", HeroType.BEE));
-        heroes.add(new Hero("Żubrowar", "Aurochs", HeroType.AUROCHS));
-        heroes.add(new Hero("Mrówkacz", "Ant", HeroType.ANT));
-        heroes.add(new Hero("Pardzio", "Lampard", HeroType.LAMPARD));
-        heroes.add(new Hero("Smakełło", "Red Dragon", HeroType.DRAGON_RED));
-        heroes.add(new Hero("Słodzik", "Sweet Dog", HeroType.DOG_SWEET));
-        heroes.add(new Hero("Sowcia", "Owl", HeroType.OWL));
-        heroes.add(new Hero("Żabcia", "Frog", HeroType.FROG));
-        heroes.add(new Hero("Wiewcia", "Squirrel", HeroType.SQUIRREL));
-        heroes.add(new Hero("Pinguś", "Penguin", HeroType.PENGUIN));
-        heroes.add(new Hero("Morsu", "Walrus", HeroType.WALRUS));
-        heroRepository.saveAll(heroes);
+    public void initWisies() {
+        List<Wisie> wisies = new ArrayList<>();
+        wisies.add(new Wisie("Wilku", "Wolf", WisieType.WOLF));
+        wisies.add(new Wisie("Skorupny", "Turtle", WisieType.TURTLE));
+        wisies.add(new Wisie("Zdzigrys", "Tiger", WisieType.TIGER));
+        wisies.add(new Wisie("Jaduś", "Snake", WisieType.SNAKE));
+        wisies.add(new Wisie("Szopuś", "Raccoon", WisieType.RACCOON));
+        wisies.add(new Wisie("Wełnuś", "Sheep", WisieType.SHEEP));
+        wisies.add(new Wisie("Ząbek", "Shark", WisieType.SHARK));
+        wisies.add(new Wisie("Kicek", "Rabbit", WisieType.RABBIT));
+        wisies.add(new Wisie("Misiaczek", "Polar Bear", WisieType.POLAR_BEAR));
+        wisies.add(new Wisie("Zgapka", "Parrot", WisieType.PARROT));
+        wisies.add(new Wisie("Pandziu", "Panda", WisieType.PANDA_EAT));
+        wisies.add(new Wisie("Strusior", "Ostrich", WisieType.OSTRICH));
+        wisies.add(new Wisie("Bujnogrzyw", "Lion", WisieType.LION));
+        wisies.add(new Wisie("Skoczka", "Kangaroo", WisieType.KANGAROO));
+        wisies.add(new Wisie("Rumo", "Horse", WisieType.HORSE));
+        wisies.add(new Wisie("Goruś", "Gorilla", WisieType.GORILLA));
+        wisies.add(new Wisie("Lizuś", "Fox", WisieType.FOX_MAN));
+        wisies.add(new Wisie("Lisiczka", "Foxie", WisieType.FOX));
+        wisies.add(new Wisie("Trąbcia", "Elephant", WisieType.ELEPHANT));
+        wisies.add(new Wisie("Orłuś", "Eagle", WisieType.EAGLE));
+        wisies.add(new Wisie("Grubełło", "Fat Dragon", WisieType.DRAGON_FAT));
+        wisies.add(new Wisie("Supełło", "Blue Dragon", WisieType.DRAGON_BLUE));
+        wisies.add(new Wisie("Pikełło", "Green Dragon", WisieType.DRAGON));
+        wisies.add(new Wisie("Pulszek", "Fat Dog", WisieType.DOG_FAT));
+        wisies.add(new Wisie("Bystruś", "Idea Dog", WisieType.DOG));
+        wisies.add(new Wisie("Kroczek", "Crocodile", WisieType.CROCODILE));
+        wisies.add(new Wisie("Kicia", "Cat Teacher", WisieType.CAT_TEACHER));
+        wisies.add(new Wisie("Kituś", "Apple Cat", WisieType.CAT_PRESENTER));
+        wisies.add(new Wisie("Mruczka", "Kitty", WisieType.CAT_BLUE));
+        wisies.add(new Wisie("Wielobłąd", "Camel", WisieType.CAMEL));
+        wisies.add(new Wisie("Pudziuś", "Bulldog", WisieType.BULLDOG));
+        wisies.add(new Wisie("Byku", "Bull", WisieType.BULL));
+        wisies.add(new Wisie("Dźwiedzior", "Bear", WisieType.BEAR));
+        wisies.add(new Wisie("Żądłolot", "Bee", WisieType.BEE));
+        wisies.add(new Wisie("Żubrowar", "Aurochs", WisieType.AUROCHS));
+        wisies.add(new Wisie("Mrówkacz", "Ant", WisieType.ANT));
+        wisies.add(new Wisie("Pardzio", "Lampard", WisieType.LAMPARD));
+        wisies.add(new Wisie("Smakełło", "Red Dragon", WisieType.DRAGON_RED));
+        wisies.add(new Wisie("Słodzik", "Sweet Dog", WisieType.DOG_SWEET));
+        wisies.add(new Wisie("Sowcia", "Owl", WisieType.OWL));
+        wisies.add(new Wisie("Żabcia", "Frog", WisieType.FROG));
+        wisies.add(new Wisie("Wiewcia", "Squirrel", WisieType.SQUIRREL));
+        wisies.add(new Wisie("Pinguś", "Penguin", WisieType.PENGUIN));
+        wisies.add(new Wisie("Morsu", "Walrus", WisieType.WALRUS));
+        wisieRepository.saveAll(wisies);
     }
 
     public void initGeographyCountries() {

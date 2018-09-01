@@ -29,8 +29,8 @@ public class WarManager extends RivalManager {
         Long creatorId = bic.getCreatorProfile().getId();
         Long opponentId = bic.getOpponentProfile().getId();
         this.rivalContainer = new WarContainer();
-        this.rivalContainer.addProfile(creatorId, new WarProfileContainer(bic.getCreatorProfile(), warService.getProfileHeroes(creatorId), opponentId));
-        this.rivalContainer.addProfile(opponentId, new WarProfileContainer(bic.getOpponentProfile(), warService.getProfileHeroes(opponentId), creatorId));
+        this.rivalContainer.addProfile(creatorId, new WarProfileContainer(bic.getCreatorProfile(), warService.getProfileWisies(creatorId), opponentId));
+        this.rivalContainer.addProfile(opponentId, new WarProfileContainer(bic.getOpponentProfile(), warService.getProfileWisies(opponentId), creatorId));
         this.warContainer = (WarContainer) this.rivalContainer;
     }
 
@@ -98,7 +98,7 @@ public class WarManager extends RivalManager {
         });
     }
 
-    public synchronized void heroAnswered(Long profileId, Long answerId) {
+    public synchronized void wisieAnswered(Long profileId, Long answerId) {
         Map<String, Object> content = new HashMap<>();
         content.put("answerId", answerId.intValue());
         answer(profileId, content);
@@ -126,7 +126,7 @@ public class WarManager extends RivalManager {
     }
 
     public synchronized void surrender(Long profileId) {
-        warContainer.stopHeroAnswerManager();
+        warContainer.stopWisieAnswerManager();
         super.surrender(profileId);
     }
 

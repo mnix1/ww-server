@@ -5,8 +5,6 @@ import com.ww.model.dto.social.ProfileResourcesDTO;
 import com.ww.model.entity.social.Profile;
 import com.ww.service.SessionService;
 import com.ww.service.book.ProfileBookService;
-import com.ww.service.hero.HeroService;
-import com.ww.service.hero.ProfileHeroService;
 import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;

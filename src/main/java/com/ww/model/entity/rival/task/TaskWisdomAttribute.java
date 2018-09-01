@@ -1,7 +1,7 @@
 package com.ww.model.entity.rival.task;
 
 
-import com.ww.model.constant.hero.WisdomAttribute;
+import com.ww.model.constant.wisie.WisdomAttribute;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -1,13 +1,12 @@
 package com.ww.model.container.rival.war;
 
-import com.ww.manager.heroanswer.HeroAnswerManager;
+import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.container.rival.RivalContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
-import com.ww.model.container.rival.battle.BattleProfileContainer;
-import com.ww.model.dto.hero.WarProfileHeroDTO;
-import com.ww.model.entity.hero.ProfileHero;
+import com.ww.model.dto.wisie.WarProfileWisieDTO;
+import com.ww.model.entity.wisie.ProfileWisie;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,47 +19,47 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public class WarContainer extends RivalContainer {
-    List<HeroAnswerManager> heroAnswerManagers = new ArrayList<>();
+    List<WisieAnswerManager> wisieAnswerManagers = new ArrayList<>();
     protected Instant endChoosingWhoAnswerDate;
 
-    public void updateHeroAnswerManagers(RivalManager rivalManager) {
-        heroAnswerManagers = new ArrayList<>();
+    public void updateWisieAnswerManagers(RivalManager rivalManager) {
+        wisieAnswerManagers = new ArrayList<>();
         forEachProfile(rivalProfileContainer -> {
             WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
-            ProfileHero answeringHero = warProfileContainer.getAnsweringHero();
-            if (answeringHero != null) {
-                heroAnswerManagers.add(new HeroAnswerManager(answeringHero, rivalManager));
+            ProfileWisie answeringWisie = warProfileContainer.getAnsweringWisie();
+            if (answeringWisie != null) {
+                wisieAnswerManagers.add(new WisieAnswerManager(answeringWisie, rivalManager));
             }
         });
     }
 
-    private HeroAnswerManager getHeroAnswerManager(WarProfileContainer warProfileContainer) {
-        ProfileHero answeringHero = warProfileContainer.getAnsweringHero();
-        if (answeringHero == null) {
+    private WisieAnswerManager getWisieAnswerManager(WarProfileContainer warProfileContainer) {
+        ProfileWisie answeringWisie = warProfileContainer.getAnsweringWisie();
+        if (answeringWisie == null) {
             return null;
         }
-        for (HeroAnswerManager answerManager : heroAnswerManagers) {
-            if (answerManager.getHero().getId().equals(answeringHero.getId())) {
+        for (WisieAnswerManager answerManager : wisieAnswerManagers) {
+            if (answerManager.getWisie().getId().equals(answeringWisie.getId())) {
                 return answerManager;
             }
         }
         return null;
     }
 
-    public void startHeroAnswerManager() {
-        for (HeroAnswerManager manager : heroAnswerManagers) {
+    public void startWisieAnswerManager() {
+        for (WisieAnswerManager manager : wisieAnswerManagers) {
             manager.start();
         }
     }
 
-    public void stopHeroAnswerManager() {
-        for (HeroAnswerManager manager : heroAnswerManagers) {
+    public void stopWisieAnswerManager() {
+        for (WisieAnswerManager manager : wisieAnswerManagers) {
             manager.stop();
         }
     }
 
-    private List<WarProfileHeroDTO> prepareTeam(List<ProfileHero> heroes) {
-        return heroes.stream().map(WarProfileHeroDTO::new).collect(Collectors.toList());
+    private List<WarProfileWisieDTO> prepareTeam(List<ProfileWisie> wisies) {
+        return wisies.stream().map(WarProfileWisieDTO::new).collect(Collectors.toList());
     }
 
     public String findChoosingTaskPropsTag() {
@@ -98,10 +97,10 @@ public class WarContainer extends RivalContainer {
         WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
         model.put("presentIndexes", warProfileContainer.getPresentIndexes());
         model.put("activeIndex", warProfileContainer.getActiveIndex());
-        model.put("team", prepareTeam(warProfileContainer.getHeroes()));
+        model.put("team", prepareTeam(warProfileContainer.getWisies()));
         model.put("opponentPresentIndexes", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getPresentIndexes());
         model.put("opponentActiveIndex", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getActiveIndex());
-        model.put("opponentTeam", prepareTeam(getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getHeroes()));
+        model.put("opponentTeam", prepareTeam(getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getWisies()));
     }
 
     public void fillModelPreparingNextTask(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
@@ -112,36 +111,36 @@ public class WarContainer extends RivalContainer {
     public void fillModelAnswered(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         super.fillModelAnswered(model, rivalProfileContainer);
         WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
-        model.put("heroActions", null);
-        model.put("opponentHeroActions", null);
+        model.put("wisieActions", null);
+        model.put("opponentWisieActions", null);
         model.put("presentIndexes", warProfileContainer.getPresentIndexes());
         model.put("opponentPresentIndexes", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getPresentIndexes());
     }
 
     public void fillModelAnswering(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         super.fillModelAnswering(model, rivalProfileContainer);
-        fillModelHeroAnswering(model, rivalProfileContainer);
+        fillModelWisieAnswering(model, rivalProfileContainer);
     }
 
-    public void fillModelHeroAnswering(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
+    public void fillModelWisieAnswering(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
         model.put("activeIndex", warProfileContainer.getActiveIndex());
         model.put("opponentActiveIndex", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getActiveIndex());
-        HeroAnswerManager manager = getHeroAnswerManager(warProfileContainer);
+        WisieAnswerManager manager = getWisieAnswerManager(warProfileContainer);
         if (manager != null) {
-            model.put("heroActions", manager.getActions());
+            model.put("wisieActions", manager.getActions());
         }
-        manager = getHeroAnswerManager(getRivalProfileContainer(rivalProfileContainer.getOpponentId()));
+        manager = getWisieAnswerManager(getRivalProfileContainer(rivalProfileContainer.getOpponentId()));
         if (manager != null) {
-            model.put("opponentHeroActions", manager.getActions());
+            model.put("opponentWisieActions", manager.getActions());
         }
     }
 
     public void fillModelAnsweringTimeout(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         super.fillModelAnsweringTimeout(model, rivalProfileContainer);
         WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
-        model.put("heroActions", null);
-        model.put("opponentHeroActions", null);
+        model.put("wisieActions", null);
+        model.put("opponentWisieActions", null);
         model.put("presentIndexes", warProfileContainer.getPresentIndexes());
         model.put("opponentPresentIndexes", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getPresentIndexes());
     }

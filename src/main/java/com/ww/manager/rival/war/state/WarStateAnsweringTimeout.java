@@ -21,7 +21,7 @@ public class WarStateAnsweringTimeout extends WarState {
         if (rivalContainer.getStatus() != RivalStatus.ANSWERING) {
             return Flowable.empty();
         }
-        warContainer.stopHeroAnswerManager();
+        warContainer.stopWisieAnswerManager();
         for (RivalProfileContainer rivalProfileContainer : warManager.getRivalProfileContainers()) {
             WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
             warProfileContainer.removeActiveIndexFromPresentIndexes();

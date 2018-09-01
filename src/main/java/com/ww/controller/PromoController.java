@@ -1,14 +1,14 @@
 package com.ww.controller;
 
-import com.ww.model.constant.hero.MentalAttribute;
-import com.ww.model.constant.hero.WisdomAttribute;
-import com.ww.model.entity.hero.Hero;
-import com.ww.model.entity.hero.ProfileHero;
+import com.ww.model.constant.wisie.MentalAttribute;
+import com.ww.model.constant.wisie.WisdomAttribute;
+import com.ww.model.entity.wisie.Wisie;
+import com.ww.model.entity.wisie.ProfileWisie;
 import com.ww.model.entity.social.Profile;
 import com.ww.service.SessionService;
 import com.ww.service.book.ProfileBookService;
-import com.ww.service.hero.HeroService;
-import com.ww.service.hero.ProfileHeroService;
+import com.ww.service.wisie.WisieService;
+import com.ww.service.wisie.ProfileWisieService;
 import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,10 +30,10 @@ public class PromoController {
     ProfileBookService profileBookService;
 
     @Autowired
-    ProfileHeroService profileHeroService;
+    ProfileWisieService profileWisieService;
 
     @Autowired
-    HeroService heroService;
+    WisieService wisieService;
 
     @Autowired
     SessionService sessionService;
@@ -43,8 +43,8 @@ public class PromoController {
         Map<String, Object> model = new HashMap<>();
         Profile profile = profileService.getProfile();
         for (int i = 0; i < 1; i++) {
-            Hero hero = heroService.randomHeroForProfile(profile.getId());
-            profileHeroService.addHero(profile, hero);
+            Wisie wisie = wisieService.randomWisieForProfile(profile.getId());
+            profileWisieService.addWisie(profile, wisie);
         }
         profile.changeResources(100L, 100L, 100L, 100L);
         profileService.save(profile);
@@ -56,8 +56,8 @@ public class PromoController {
         Map<String, Object> model = new HashMap<>();
         Profile profile = profileService.getProfile();
         for (int i = 0; i < 4; i++) {
-            Hero hero = heroService.randomHeroForProfile(profile.getId());
-            profileHeroService.addHero(profile, hero);
+            Wisie wisie = wisieService.randomWisieForProfile(profile.getId());
+            profileWisieService.addWisie(profile, wisie);
         }
         profile.changeResources(1000L, 1000L, 1000L, 1000L);
         profileService.save(profile);
@@ -76,13 +76,13 @@ public class PromoController {
     public Map superTeamMental() {
         Map<String, Object> model = new HashMap<>();
         Profile profile = profileService.getProfile();
-        List<ProfileHero> team = profileHeroService.listTeam(profile.getId());
-        for (ProfileHero hero : team) {
+        List<ProfileWisie> team = profileWisieService.listTeam(profile.getId());
+        for (ProfileWisie wisie : team) {
             for (MentalAttribute attribute : MentalAttribute.values()) {
-                hero.setMentalAttributeValue(attribute, Math.pow(hero.getMentalAttributeValue(attribute), 1.1) + 100);
+                wisie.setMentalAttributeValue(attribute, Math.pow(wisie.getMentalAttributeValue(attribute), 1.1) + 100);
             }
         }
-        profileHeroService.saveTeam(team);
+        profileWisieService.saveTeam(team);
         return model;
     }
 
@@ -90,13 +90,13 @@ public class PromoController {
     public Map superTeamWisdom() {
         Map<String, Object> model = new HashMap<>();
         Profile profile = profileService.getProfile();
-        List<ProfileHero> team = profileHeroService.listTeam(profile.getId());
-        for (ProfileHero hero : team) {
+        List<ProfileWisie> team = profileWisieService.listTeam(profile.getId());
+        for (ProfileWisie wisie : team) {
             for (WisdomAttribute attribute : WisdomAttribute.values()) {
-                hero.setWisdomAttributeValue(attribute, Math.pow(hero.getWisdomAttributeValue(attribute), 1.1)+ 100);
+                wisie.setWisdomAttributeValue(attribute, Math.pow(wisie.getWisdomAttributeValue(attribute), 1.1)+ 100);
             }
         }
-        profileHeroService.saveTeam(team);
+        profileWisieService.saveTeam(team);
         return model;
     }
 

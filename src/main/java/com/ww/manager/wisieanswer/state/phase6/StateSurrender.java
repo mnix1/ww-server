@@ -1,0 +1,21 @@
+package com.ww.manager.wisieanswer.state.phase6;
+
+import com.ww.manager.wisieanswer.WisieAnswerManager;
+import com.ww.manager.wisieanswer.state.State;
+import com.ww.model.constant.wisie.WisieAnswerAction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static com.ww.helper.RandomHelper.randomElement;
+
+public class StateSurrender extends State {
+    protected static final Logger logger = LoggerFactory.getLogger(StateSurrender.class);
+
+    public StateSurrender(WisieAnswerManager manager) {
+        super(manager);
+    }
+
+    protected void processVoid() {
+        manager.addAndSendAction(WisieAnswerAction.SURRENDER);
+    }
+}

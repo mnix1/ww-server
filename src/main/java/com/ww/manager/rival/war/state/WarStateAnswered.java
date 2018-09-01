@@ -23,7 +23,7 @@ public class WarStateAnswered extends WarState {
     @Override
     protected Flowable<Long> processFlowable() {
         rivalContainer.setStatus(RivalStatus.ANSWERED);
-        warManager.warContainer.stopHeroAnswerManager();
+        warManager.warContainer.stopWisieAnswerManager();
         rivalContainer.setAnsweredProfileId(profileId);
         Boolean isAnswerCorrect = false;
         if (content.containsKey("answerId")) {

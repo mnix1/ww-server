@@ -1,8 +1,8 @@
 package com.ww.model.entity.social;
 
 import com.ww.helper.TagHelper;
-import com.ww.model.constant.hero.HeroType;
-import com.ww.model.entity.hero.ProfileHero;
+import com.ww.model.constant.wisie.WisieType;
+import com.ww.model.entity.wisie.ProfileWisie;
 import com.ww.model.entity.book.ProfileBook;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +23,7 @@ public class Profile {
     private String authId;
     private String tag;
     private String name;
-    private HeroType heroType;
+    private WisieType wisieType;
     private Long level;
     private Long experience;
     private Long gold;
@@ -36,7 +36,7 @@ public class Profile {
     private Set<ProfileFriend> friends = new HashSet<>();
 
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
-    private Set<ProfileHero> heroes = new HashSet<>();
+    private Set<ProfileWisie> wisies = new HashSet<>();
 
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
     private Set<ProfileBook> books = new HashSet<>();
@@ -51,7 +51,7 @@ public class Profile {
         this.crystal = 10L;
         this.wisdom = 0L;
         this.elixir = 0L;
-        this.heroType = HeroType.random();
+        this.wisieType = WisieType.random();
         this.teamInitialized = false;
     }
 
@@ -63,7 +63,7 @@ public class Profile {
         this.tag = tag;
         this.name = name;
         this.level = level;
-        this.heroType = HeroType.random();
+        this.wisieType = WisieType.random();
     }
 
     public void changeResources(Long gold, Long crystal, Long wisdom, Long elixir) {

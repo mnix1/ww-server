@@ -1,12 +1,11 @@
 package com.ww.service.rival.war;
 
-import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.task.TaskDifficultyLevel;
-import com.ww.model.entity.hero.ProfileHero;
+import com.ww.model.entity.wisie.ProfileWisie;
 import com.ww.model.entity.rival.task.Question;
-import com.ww.service.hero.ProfileHeroService;
+import com.ww.service.wisie.ProfileWisieService;
 import com.ww.service.rival.RivalService;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
@@ -25,7 +24,7 @@ import java.util.Optional;
 public class WarService extends RivalService {
 
     @Autowired
-    protected ProfileHeroService profileHeroService;
+    protected ProfileWisieService profileWisieService;
 
     @Autowired
     protected ProfileConnectionService profileConnectionService;
@@ -67,8 +66,8 @@ public class WarService extends RivalService {
         return Message.WAR_CONTENT;
     }
 
-    public List<ProfileHero> getProfileHeroes(Long profileId) {
-        return profileHeroService.listTeam(profileId);
+    public List<ProfileWisie> getProfileWisies(Long profileId) {
+        return profileWisieService.listTeam(profileId);
     }
 
     public Question prepareQuestion(Category category, TaskDifficultyLevel difficultyLevel) {
