@@ -16,6 +16,7 @@ public class FriendDTO {
     private Long level;
     private HeroType heroType;
     private Boolean isOnline;
+    private Boolean teamInitialized;
     private FriendStatus status;
 
     public FriendDTO(ProfileFriend profileFriend, Boolean isOnline) {
@@ -29,6 +30,7 @@ public class FriendDTO {
         this.status = status;
         this.heroType = profile.getHeroType();
         this.isOnline = isOnline;
+        this.teamInitialized = profile.getTeamInitialized();
     }
 
     @Override

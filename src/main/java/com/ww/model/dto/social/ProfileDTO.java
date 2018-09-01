@@ -11,11 +11,13 @@ public class ProfileDTO {
     private String name;
     private Long level;
     private HeroType heroType;
+    private Boolean teamInitialized;
 
     public ProfileDTO(Profile profile) {
         this.tag = profile.getTag();
         this.name = profile.getName();
         this.level = profile.getLevel();
         this.heroType = profile.getHeroType();
+        this.teamInitialized = profile.getTeamInitialized();
     }
 }
