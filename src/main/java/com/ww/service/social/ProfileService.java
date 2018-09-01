@@ -11,11 +11,15 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class ProfileService {
+
+    public static final int WISOR_MIN_ID = 1;
+    public static final int WISOR_MAX_ID = 47;
 
     @Autowired
     private ProfileRepository profileRepository;
@@ -53,6 +57,25 @@ public class ProfileService {
             return new ArrayList<>();
         }
         return profileRepository.findAllByIdIn(profileIds);
+    }
+
+    public Map<String, Object> changeWisor(String wisor) {
+        Map<String, Object> model = new HashMap<>();
+        if (wisor.length() > ("wisor" + WISOR_MAX_ID).length() || !wisor.contains("wisor")) {
+            model.put("code", -1);
+            return model;
+        }
+        String idString = wisor.replace("wisor", "");
+        int id = Integer.parseInt(idString);
+        if (id < WISOR_MIN_ID || id > WISOR_MAX_ID) {
+            model.put("code", -1);
+            return model;
+        }
+        Profile profile = getProfile();
+        profile.setWisorType("wisor" + id);
+        save(profile);
+        model.put("code", 1);
+        return model;
     }
 
     public String getAuthId(Principal user) {

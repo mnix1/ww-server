@@ -1,9 +1,8 @@
 package com.ww.model.entity.social;
 
 import com.ww.helper.TagHelper;
-import com.ww.model.constant.wisie.WisieType;
-import com.ww.model.entity.wisie.ProfileWisie;
 import com.ww.model.entity.book.ProfileBook;
+import com.ww.model.entity.wisie.ProfileWisie;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +22,7 @@ public class Profile {
     private String authId;
     private String tag;
     private String name;
-    private WisieType wisieType;
+    private String wisorType;
     private Long level;
     private Long experience;
     private Long gold;
@@ -51,7 +50,7 @@ public class Profile {
         this.crystal = 10L;
         this.wisdom = 0L;
         this.elixir = 0L;
-        this.wisieType = WisieType.random();
+        this.wisorType = "robot";
         this.teamInitialized = false;
     }
 
@@ -63,7 +62,7 @@ public class Profile {
         this.tag = tag;
         this.name = name;
         this.level = level;
-        this.wisieType = WisieType.random();
+        this.wisorType = "robot";
     }
 
     public void changeResources(Long gold, Long crystal, Long wisdom, Long elixir) {

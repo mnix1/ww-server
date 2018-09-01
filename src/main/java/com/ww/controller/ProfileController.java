@@ -42,6 +42,15 @@ public class ProfileController {
         return model;
     }
 
+    @RequestMapping(value = "/changeWisor", method = RequestMethod.POST)
+    public Map changeWisor(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("wisor")) {
+            throw new IllegalArgumentException();
+        }
+        String wisor = (String) payload.get("wisor");
+        return profileService.changeWisor(wisor);
+    }
+
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public ProfileResourcesDTO profile() {
         return new ProfileResourcesDTO(profileService.getProfile());
