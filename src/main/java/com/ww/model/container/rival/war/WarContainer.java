@@ -6,6 +6,7 @@ import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.container.rival.RivalContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.dto.wisie.WarProfileWisieDTO;
+import com.ww.model.entity.social.Profile;
 import com.ww.model.entity.wisie.ProfileWisie;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
@@ -75,17 +77,17 @@ public class WarContainer extends RivalContainer {
         return rivalProfileContainers.get(1).getProfile().getTag();
     }
 
-    public String findWinnerTag() {
+    public Optional<Profile> findWinner() {
         List<RivalProfileContainer> rivalProfileContainers = new ArrayList<>(getProfileIdRivalProfileContainerMap().values());
         Integer presentIndexSize1 = ((WarProfileContainer) rivalProfileContainers.get(0)).getPresentIndexes().size();
         Integer presentIndexSize2 = ((WarProfileContainer) rivalProfileContainers.get(1)).getPresentIndexes().size();
         if (presentIndexSize1.equals(presentIndexSize2)) {
-            return RivalManager.DRAW_WINNER_TAG;
+            return Optional.empty();
         }
         if (presentIndexSize1 == 0) {
-            return rivalProfileContainers.get(1).getProfile().getTag();
+            return Optional.of(rivalProfileContainers.get(1).getProfile());
         }
-        return rivalProfileContainers.get(0).getProfile().getTag();
+        return Optional.of(rivalProfileContainers.get(0).getProfile());
     }
 
     public WarProfileContainer getRivalProfileContainer(Long id) {

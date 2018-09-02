@@ -33,10 +33,10 @@ public class RewardService {
     @Autowired
     ProfileBookService profileBookService;
 
-    public void addRewardFromBattleWin(String profileTag) {
+    public void addRewardFromBattleWin(Profile winner) {
         RewardObject rewardObject = new RewardObject();
         rewardObject.setGainGold(1L);
-        Profile profile = profileService.getProfile(profileTag);
+        Profile profile = profileService.getProfile(winner.getId());
         profile.changeResources(1L, null, null, null);
         profileService.save(profile);
         if (!profileBookService.isProfileBookShelfFull(profile.getId())) {
@@ -48,10 +48,10 @@ public class RewardService {
         send(model, Message.REWARD, profile.getId());
     }
 
-    public void addRewardFromWarWin(String profileTag) {
+    public void addRewardFromWarWin(Profile winner) {
         RewardObject rewardObject = new RewardObject();
         rewardObject.setGainGold(2L);
-        Profile profile = profileService.getProfile(profileTag);
+        Profile profile = profileService.getProfile(winner.getId());
         profile.changeResources(2L, null, null, null);
         profileService.save(profile);
         if (!profileBookService.isProfileBookShelfFull(profile.getId())) {

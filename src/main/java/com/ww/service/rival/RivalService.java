@@ -3,11 +3,14 @@ package com.ww.service.rival;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.constant.Category;
+import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.container.ProfileConnection;
+import com.ww.model.container.rival.RivalContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.rival.task.Question;
+import com.ww.model.entity.social.Profile;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.social.ProfileConnectionService;
@@ -42,7 +45,9 @@ public abstract class RivalService {
         });
     }
 
-    protected abstract void addRewardFromWin(String winnerTag);
+    protected abstract void addRewardFromWin(Profile winner);
+
+    protected abstract void rankingGameResult(Boolean isDraw, Profile winner, Profile looser);
 
     protected abstract Message getMessageContent();
 
@@ -56,17 +61,22 @@ public abstract class RivalService {
         if (!rivalManager.isClosed()) {
             return;
         }
-        String winnerTag = rivalManager.getWinnerTag();
         List<RivalProfileContainer> rivalProfileContainers = rivalManager.getRivalProfileContainers();
         rivalProfileContainers.forEach(rivalProfileContainer -> {
             if (profileIdToRivalManagerMap.containsKey(rivalProfileContainer.getProfileId())) {
                 profileIdToRivalManagerMap.remove(rivalProfileContainer.getProfileId());
             }
         });
-        if (winnerTag != null && !winnerTag.equals(RivalManager.DRAW_WINNER_TAG)) {
-            addRewardFromWin(winnerTag);
+        RivalContainer rivalContainer = rivalManager.getRivalContainer();
+        Boolean isDraw = rivalContainer.getIsDraw();
+        Profile winner = rivalContainer.getWinner();
+        if (!isDraw) {
+            addRewardFromWin(winner);
         }
-
+        if (rivalManager.isRanking()) {
+            Profile looser = rivalContainer.getLooser();
+            rankingGameResult( isDraw, winner, looser);
+        }
         // TODO STORE RESULT
     }
 

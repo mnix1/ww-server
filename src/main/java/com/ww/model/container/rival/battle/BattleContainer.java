@@ -4,12 +4,14 @@ import com.ww.manager.rival.battle.BattleManager;
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.container.rival.RivalContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
+import com.ww.model.entity.social.Profile;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -36,17 +38,17 @@ public class BattleContainer extends RivalContainer {
         return rivalProfileContainers.get(1).getProfile().getTag();
     }
 
-    public String findWinnerTag() {
+    public Optional<Profile> findWinner() {
         List<RivalProfileContainer> rivalProfileContainers = new ArrayList<>(getProfileIdRivalProfileContainerMap().values());
         Integer p1Score = ((BattleProfileContainer)rivalProfileContainers.get(0)).getScore();
         Integer p2Score = ((BattleProfileContainer) rivalProfileContainers.get(1)).getScore();
         if (p1Score.equals(p2Score)) {
-            return RivalManager.DRAW_WINNER_TAG;
+            return Optional.empty();
         }
         if (p1Score.compareTo(p2Score) < 0) {
-            return rivalProfileContainers.get(1).getProfile().getTag();
+            return Optional.of(rivalProfileContainers.get(1).getProfile());
         }
-        return rivalProfileContainers.get(0).getProfile().getTag();
+        return Optional.of(rivalProfileContainers.get(0).getProfile());
     }
 
     public void fillModelAnswered(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {

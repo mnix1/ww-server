@@ -1,5 +1,9 @@
 package com.ww.service.rival.battle;
 
+import com.ww.model.constant.rival.RivalImportance;
+import com.ww.model.constant.rival.RivalType;
+import com.ww.model.entity.social.Profile;
+import com.ww.service.rival.RankingService;
 import com.ww.service.rival.RivalService;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
@@ -22,10 +26,17 @@ public class BattleService extends RivalService {
     protected TaskRendererService taskRendererService;
     @Autowired
     protected RewardService rewardService;
+    @Autowired
+    protected RankingService rankingService;
 
     @Override
-    protected void addRewardFromWin(String winnerTag) {
-        rewardService.addRewardFromBattleWin(winnerTag);
+    protected void addRewardFromWin(Profile winner) {
+        rewardService.addRewardFromBattleWin(winner);
+    }
+
+    @Override
+    protected void rankingGameResult( Boolean isDraw, Profile winner, Profile looser) {
+        rankingService.rankingGameResult(RivalType.BATTLE, isDraw, winner, looser);
     }
 
     @Override

@@ -13,10 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -36,7 +33,10 @@ public abstract class RivalContainer {
     protected Long answeredProfileId;
     protected Long markedAnswerId;
 
-    protected String winnerTag;
+    protected Boolean isDraw;
+    protected Profile winner;
+    protected Profile looser;
+
     protected Boolean resigned;
 
     protected Category chosenCategory;
@@ -47,16 +47,21 @@ public abstract class RivalContainer {
     protected RivalStatus status = RivalStatus.OPEN;
 
     public void addProfile(Long id, RivalProfileContainer rivalProfileContainer) {
-        this.profileIdRivalProfileContainerMap.put(id, rivalProfileContainer);
+        profileIdRivalProfileContainerMap.put(id, rivalProfileContainer);
     }
 
     public RivalProfileContainer getRivalProfileContainer(Long id) {
-        return this.profileIdRivalProfileContainerMap.get(id);
+        return profileIdRivalProfileContainerMap.get(id);
     }
 
-    public void setWinner(Long winnerId) {
-        Profile profile = profileIdRivalProfileContainerMap.get(winnerId).getProfile();
-        winnerTag = profile.getTag();
+    public RivalProfileContainer getOpponentRivalProfileContainer(Long id) {
+        return getRivalProfileContainer(getRivalProfileContainer(id).getOpponentId());
+    }
+
+    public void setWinnerLooser(Profile winner) {
+        this.isDraw = false;
+        this.winner = winner;
+        this.looser = getOpponentRivalProfileContainer(winner.getId()).getProfile();
     }
 
     public Long findCorrectAnswerId(int taskIndex) {
@@ -69,7 +74,7 @@ public abstract class RivalContainer {
 
     public abstract String findChoosingTaskPropsTag();
 
-    public abstract String findWinnerTag();
+    public abstract Optional<Profile> findWinner();
 
     public boolean randomChooseTaskProps() {
         return findChoosingTaskPropsTag() == null;
@@ -170,7 +175,7 @@ public abstract class RivalContainer {
 
     public void fillModelClosed(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         model.put("status", status);
-        model.put("winnerTag", winnerTag);
+        model.put("winnerTag", winner.getTag());
         model.put("resigned", resigned);
     }
 

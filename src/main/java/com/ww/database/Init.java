@@ -1,5 +1,6 @@
 package com.ww.database;
 
+import com.ww.helper.EloHelper;
 import com.ww.helper.TagHelper;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.wisie.WisieType;
@@ -89,6 +90,8 @@ public class Init {
             memoryTaskHelperService.initShapes();
             memoryTaskHelperService.initColors();
         }
+        System.out.println(EloHelper.prepareNewElo(0L, 0L, 1));
+        System.out.println(EloHelper.prepareNewElo(1200L, 1200L, 1));
     }
 
     public void initTaskTypes() {

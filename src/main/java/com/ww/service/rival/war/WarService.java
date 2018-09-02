@@ -2,16 +2,20 @@ package com.ww.service.rival.war;
 
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.Category;
+import com.ww.model.constant.rival.RivalImportance;
+import com.ww.model.constant.rival.RivalType;
 import com.ww.model.constant.rival.task.TaskDifficultyLevel;
-import com.ww.model.entity.wisie.ProfileWisie;
 import com.ww.model.entity.rival.task.Question;
-import com.ww.service.wisie.ProfileWisieService;
+import com.ww.model.entity.social.Profile;
+import com.ww.model.entity.wisie.ProfileWisie;
+import com.ww.service.rival.RankingService;
 import com.ww.service.rival.RivalService;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.rival.task.TaskService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.RewardService;
+import com.ww.service.wisie.ProfileWisieService;
 import com.ww.websocket.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,9 +45,17 @@ public class WarService extends RivalService {
     @Autowired
     protected RewardService rewardService;
 
+    @Autowired
+    protected RankingService rankingService;
+
     @Override
-    protected void addRewardFromWin(String winnerTag) {
-        rewardService.addRewardFromWarWin(winnerTag);
+    protected void addRewardFromWin(Profile profile) {
+        rewardService.addRewardFromWarWin(profile);
+    }
+
+    @Override
+    protected void rankingGameResult(Boolean isDraw, Profile winner, Profile looser) {
+        rankingService.rankingGameResult(RivalType.WAR, isDraw, winner, looser);
     }
 
     @Override

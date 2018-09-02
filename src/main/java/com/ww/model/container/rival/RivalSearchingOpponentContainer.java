@@ -10,16 +10,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class RivalInitContainer {
-    private RivalType type;
+public class RivalSearchingOpponentContainer {
     private RivalImportance importance;
-    private Profile creatorProfile;
-    private Profile opponentProfile;
+    private Profile profile;
 
-    public RivalInitContainer(RivalType type, RivalImportance importance, Profile creatorProfile, Profile opponentProfile) {
-        this.type = type;
+    public RivalSearchingOpponentContainer(RivalImportance importance, Profile profile) {
         this.importance = importance;
-        this.creatorProfile = creatorProfile;
-        this.opponentProfile = opponentProfile;
+        this.profile = profile;
     }
 }

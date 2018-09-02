@@ -16,7 +16,7 @@ public class State {
 
     public State(RivalManager rivalManager) {
         this.rivalManager = rivalManager;
-        this.rivalContainer = rivalManager.rivalContainer;
+        this.rivalContainer = rivalManager.getRivalContainer();
     }
 
     public Flowable<Long> startFlowable() {

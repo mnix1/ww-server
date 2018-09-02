@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.manager.rival.battle.BattleManager;
 import com.ww.manager.rival.war.WarManager;
+import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.constant.social.FriendStatus;
 import com.ww.model.container.ProfileConnection;
@@ -116,7 +117,7 @@ public class RivalFriendService {
             logger.error("Not connected profile with tag: {}, sessionProfileId: {}", tag, sessionService.getProfileId());
             return null;
         }
-        RivalInitContainer battle = new RivalInitContainer(type, creatorProfile, opponentProfile);
+        RivalInitContainer battle = new RivalInitContainer(type, RivalImportance.FRIEND, creatorProfile, opponentProfile);
         sendInvite(battle);
         return battle;
     }

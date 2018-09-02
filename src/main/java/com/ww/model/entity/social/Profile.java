@@ -30,6 +30,8 @@ public class Profile {
     private Long wisdom;
     private Long elixir;
     private Boolean teamInitialized;
+    private Long battleElo;
+    private Long warElo;
 
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
     private Set<ProfileFriend> friends = new HashSet<>();
@@ -52,6 +54,8 @@ public class Profile {
         this.elixir = 0L;
         this.wisorType = "robot";
         this.teamInitialized = false;
+        this.battleElo = 0L;
+        this.warElo = 0L;
     }
 
     public Profile(Long id) {

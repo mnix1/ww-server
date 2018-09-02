@@ -20,6 +20,7 @@ public class BattleManager extends RivalManager {
     public static final Integer TASK_COUNT = 5;
 
     public BattleManager(RivalInitContainer bic, BattleService battleService, ProfileConnectionService profileConnectionService) {
+        this.rivalInitContainer = bic;
         this.rivalService = battleService;
         this.profileConnectionService = profileConnectionService;
         Long creatorId = bic.getCreatorProfile().getId();

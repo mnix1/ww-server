@@ -23,6 +23,7 @@ public class WarManager extends RivalManager {
     protected Disposable choosingWhoAnswerDisposable;
 
     public WarManager(RivalInitContainer bic, WarService warService, ProfileConnectionService profileConnectionService) {
+        this.rivalInitContainer = bic;
         this.rivalService = warService;
         this.profileConnectionService = profileConnectionService;
         Long creatorId = bic.getCreatorProfile().getId();
