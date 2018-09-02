@@ -20,6 +20,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.ww.helper.TagHelper.isCorrectTag;
+import static com.ww.helper.TagHelper.prepareTag;
+
 @Service
 public class FriendService {
     private static final Logger logger = LoggerFactory.getLogger(FriendService.class);
@@ -45,6 +48,11 @@ public class FriendService {
 
     public Map<String, Object> add(Long profileId, String tag) {
         Map<String, Object> model = new HashMap<>();
+        tag = prepareTag(tag);
+        if (!isCorrectTag(tag)) {
+            model.put("code", -2);
+            return model;
+        }
         Profile profile = profileService.getProfile(profileId);
         Profile friendProfile = profileService.getProfile(tag);
         if (friendProfile == null) {
