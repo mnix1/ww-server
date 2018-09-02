@@ -4,6 +4,7 @@ import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.rival.RivalInitContainer;
+import com.ww.model.entity.social.Profile;
 import com.ww.service.SessionService;
 import com.ww.service.rival.RivalFastService;
 import com.ww.service.social.ProfileConnectionService;
@@ -53,4 +54,9 @@ public class WarFastService extends RivalFastService {
     protected RivalType getRivalType() {
         return RivalType.WAR;
     }
+
+    protected boolean checkIfCanPlay(Profile profile) {
+        return profile.getTeamInitialized();
+    }
+
 }

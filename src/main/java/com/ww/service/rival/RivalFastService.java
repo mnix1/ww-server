@@ -32,9 +32,17 @@ public abstract class RivalFastService {
 
     protected abstract RivalManager createManager(RivalInitContainer rival);
 
+    protected boolean checkIfCanPlay(Profile profile) {
+        return true;
+    }
+
     public Map startFast() {
         Map<String, Object> model = new HashMap<>();
         Profile profile = getProfileService().getProfile();
+        if (!checkIfCanPlay(profile)) {
+            model.put("code", -1);
+            return model;
+        }
         if (!waitingForRivalProfiles.contains(profile)) {
             waitingForRivalProfiles.add(profile);
         }

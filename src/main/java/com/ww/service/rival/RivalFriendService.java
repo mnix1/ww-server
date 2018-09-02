@@ -107,12 +107,15 @@ public class RivalFriendService {
 
     private RivalInitContainer prepareContainer(String tag, RivalType type) {
         Profile opponentProfile = profileService.getProfile(tag);
+        Profile creatorProfile = profileService.getProfile();
+        if (type == RivalType.WAR && !opponentProfile.getTeamInitialized() || !creatorProfile.getTeamInitialized()) {
+            return null;
+        }
         ProfileConnection opponentProfileConnection = profileConnectionService.findByProfileId(opponentProfile.getId()).orElseGet(null);
         if (opponentProfileConnection == null) {
             logger.error("Not connected profile with tag: {}, sessionProfileId: {}", tag, sessionService.getProfileId());
             return null;
         }
-        Profile creatorProfile = profileService.getProfile();
         RivalInitContainer battle = new RivalInitContainer(type, creatorProfile, opponentProfile);
         sendInvite(battle);
         return battle;
