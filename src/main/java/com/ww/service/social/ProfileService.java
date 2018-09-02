@@ -14,12 +14,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class ProfileService {
 
     public static final int WISOR_MIN_ID = 1;
     public static final int WISOR_MAX_ID = 47;
+    public static final int NAME_MIN_LENGTH = 2;
+    public static final int NAME_MAX_LENGTH = 15;
 
     @Autowired
     private ProfileRepository profileRepository;
@@ -72,9 +76,32 @@ public class ProfileService {
             return model;
         }
         Profile profile = getProfile();
-        profile.setWisorType("wisor" + id);
+        String newWisorType = "wisor" + id;
+        profile.setWisorType(newWisorType);
         save(profile);
         model.put("code", 1);
+        model.put("wisorType", newWisorType);
+        return model;
+    }
+
+    public Map<String, Object> changeName(String name) {
+        Map<String, Object> model = new HashMap<>();
+        name = name.trim();
+        if (name.length() > NAME_MAX_LENGTH || name.length() < NAME_MIN_LENGTH) {
+            model.put("code", -2);
+            return model;
+        }
+        Pattern pattern = Pattern.compile("^(\\w+\\s)*\\w+$");
+        Matcher matcher = pattern.matcher(name);
+        if (!matcher.matches()) {
+            model.put("code", -3);
+            return model;
+        }
+        Profile profile = getProfile();
+        profile.setName(name);
+        save(profile);
+        model.put("code", 1);
+        model.put("name", name);
         return model;
     }
 
