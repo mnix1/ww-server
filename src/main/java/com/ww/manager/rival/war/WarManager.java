@@ -3,7 +3,6 @@ package com.ww.manager.rival.war;
 import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.state.*;
 import com.ww.manager.rival.war.state.*;
-import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.container.rival.war.WarContainer;
@@ -43,7 +42,7 @@ public class WarManager extends RivalManager {
     }
 
     protected Message getMessageReadyFast() {
-        return Message.WAR_READY_FAST;
+        return Message.WAR_READY;
     }
 
     public Message getMessageContent() {

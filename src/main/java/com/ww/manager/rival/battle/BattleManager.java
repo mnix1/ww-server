@@ -7,10 +7,8 @@ import com.ww.manager.rival.battle.state.BattleStateAnsweringTimeout;
 import com.ww.manager.rival.state.StateChoosingTaskProps;
 import com.ww.manager.rival.state.*;
 import com.ww.model.container.rival.RivalInitContainer;
-import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.container.rival.battle.BattleContainer;
 import com.ww.model.container.rival.battle.BattleProfileContainer;
-import com.ww.model.container.rival.war.WarProfileContainer;
 import com.ww.service.rival.battle.BattleService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.websocket.message.Message;
@@ -32,7 +30,7 @@ public class BattleManager extends RivalManager {
     }
 
     protected Message getMessageReadyFast() {
-        return Message.BATTLE_READY_FAST;
+        return Message.BATTLE_READY;
     }
 
     public Message getMessageContent() {

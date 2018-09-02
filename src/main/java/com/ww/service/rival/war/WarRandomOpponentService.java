@@ -6,14 +6,14 @@ import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.entity.social.Profile;
 import com.ww.service.SessionService;
-import com.ww.service.rival.RivalFastService;
+import com.ww.service.rival.RivalRandomOpponentService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WarFastService extends RivalFastService {
+public class WarRandomOpponentService extends RivalRandomOpponentService {
     @Autowired
     private SessionService sessionService;
 

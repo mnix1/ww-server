@@ -1,10 +1,11 @@
 package com.ww.controller.rival;
 
+import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.service.SessionService;
 import com.ww.service.rival.RivalFriendService;
-import com.ww.service.rival.battle.BattleFastService;
-import com.ww.service.rival.war.WarFastService;
+import com.ww.service.rival.battle.BattleRandomOpponentService;
+import com.ww.service.rival.war.WarRandomOpponentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,35 +25,37 @@ public class RivalController {
     RivalFriendService rivalFriendService;
 
     @Autowired
-    BattleFastService battleFastService;
+    BattleRandomOpponentService battleRandomOpponentService;
 
     @Autowired
-    WarFastService warFastService;
+    WarRandomOpponentService warRandomOpponentService;
 
-    @RequestMapping(value = "/startFast", method = RequestMethod.POST)
-    public Map startFast(@RequestBody Map<String, Object> payload) {
-        if (!payload.containsKey("type")) {
+    @RequestMapping(value = "/startRandomOpponent", method = RequestMethod.POST)
+    public Map startRandomOpponent(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("type") || !payload.containsKey("importance")) {
             throw new IllegalArgumentException();
         }
         RivalType type = RivalType.valueOf((String) payload.get("type"));
+        RivalImportance importance = RivalImportance.valueOf((String) payload.get("importance"));
         if (type == RivalType.BATTLE) {
-            return battleFastService.startFast();
+            return battleRandomOpponentService.start(importance);
         } else if (type == RivalType.WAR) {
-            return warFastService.startFast();
+            return warRandomOpponentService.start(importance);
         }
         throw new IllegalArgumentException();
     }
 
-    @RequestMapping(value = "/cancelFast", method = RequestMethod.POST)
-    public Map cancelFast(@RequestBody Map<String, Object> payload) {
-        if (!payload.containsKey("type")) {
+    @RequestMapping(value = "/cancelRandomOpponent", method = RequestMethod.POST)
+    public Map cancelRandomOpponent(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("type") || !payload.containsKey("importance")) {
             throw new IllegalArgumentException();
         }
         RivalType type = RivalType.valueOf((String) payload.get("type"));
+        RivalImportance importance = RivalImportance.valueOf((String) payload.get("importance"));
         if (type == RivalType.BATTLE) {
-            return battleFastService.cancelFast();
+            return battleRandomOpponentService.cancel(importance);
         } else if (type == RivalType.WAR) {
-            return warFastService.cancelFast();
+            return warRandomOpponentService.cancel(importance);
         }
         throw new IllegalArgumentException();
     }
