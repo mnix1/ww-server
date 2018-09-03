@@ -59,6 +59,10 @@ public class ProfileBook {
         return isReadingFinished();
     }
 
+    public long timeToRead(){
+        return book.getReadTime() - inProgressInterval() - alreadyReadInterval;
+    }
+
     @Override
     public boolean equals(Object obj) {
         return id.equals(((ProfileBook) obj).id);

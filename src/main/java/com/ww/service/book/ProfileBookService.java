@@ -113,6 +113,33 @@ public class ProfileBookService {
         return model;
     }
 
+    public synchronized Map<String, Object> speedUpBook(Long profileBookId) {
+        Map<String, Object> model = new HashMap<>();
+        Optional<ProfileBook> optionalProfileChest = profileBookRepository.findByIdAndProfile_Id(profileBookId, sessionService.getProfileId());
+        if (!optionalProfileChest.isPresent()) {
+            model.put("code", -1);
+            return model;
+        }
+        ProfileBook profileBook = optionalProfileChest.get();
+        if (profileBook.isReadingFinished()) {
+            model.put("code", -1);
+            return model;
+        }
+        Profile profile = profileService.getProfile();
+        long crystalCost = (long) Math.ceil(profileBook.timeToRead() / 1000d / 3600d);
+        if (profile.getCrystal() < crystalCost) {
+            model.put("code", -2);
+            return model;
+        }
+        profile.changeResources(null, -crystalCost, null, null);
+        profileService.save(profile);
+        profileBook.setCloseDate(Instant.now());
+        addRewardFromBook(profileBook);
+        model.put("code", 1);
+        remove(profileBook);
+        return model;
+    }
+
     public void addRewardFromBook(ProfileBook profileBook) {
         Profile profile = profileBook.getProfile();
         Book b = profileBook.getBook();

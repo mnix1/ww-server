@@ -106,4 +106,13 @@ public class ProfileController {
         return profileBookService.claimRewardBook(profileBookId);
     }
 
+    @RequestMapping(value = "/speedUpBook", method = RequestMethod.POST)
+    public Map speedUpBook(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("id")) {
+            throw new IllegalArgumentException();
+        }
+        Long profileBookId = ((Integer) payload.get("id")).longValue();
+        return profileBookService.speedUpBook(profileBookId);
+    }
+
 }
