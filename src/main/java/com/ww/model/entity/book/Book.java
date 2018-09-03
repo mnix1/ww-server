@@ -40,7 +40,7 @@ public class Book {
     public Book(BookType type, int readTimeHours, Integer level, Long gainCrystal, Long gainElixir, Long gainWisdom, Boolean canBuyByGold, Boolean canBuyByCrystal, Long goldCost, Long crystalCost, String namePolish, String nameEnglish) {
         this.type = type;
         this.readTime = ((long) readTimeHours) * 1000 * 3600;
-//        this.readTime = ((long) readTimeHours) * 1000;
+//        this.readTime = ((long) readTimeHours) * 1000 * 900;
         this.level = level;
         this.gainCrystal = gainCrystal;
         this.gainElixir = gainElixir;

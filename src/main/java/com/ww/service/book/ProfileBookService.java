@@ -126,7 +126,7 @@ public class ProfileBookService {
             return model;
         }
         Profile profile = profileService.getProfile();
-        long crystalCost = (long) Math.ceil(profileBook.timeToRead() / 1000d / 3600d);
+        long crystalCost = (long) Math.floor((profileBook.timeToRead() - 1) / 1000d / 3600d);
         if (profile.getCrystal() < crystalCost) {
             model.put("code", -2);
             return model;
