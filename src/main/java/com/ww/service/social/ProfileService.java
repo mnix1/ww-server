@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 public class ProfileService {
 
     public static final int WISOR_MIN_ID = 1;
-    public static final int WISOR_MAX_ID = 47;
+    public static final int WISOR_MAX_ID = 48;
     public static final int NAME_MIN_LENGTH = 2;
     public static final int NAME_MAX_LENGTH = 15;
 
