@@ -8,12 +8,9 @@ import com.ww.model.entity.social.ProfileFriend;
 import lombok.Getter;
 
 @Getter
-public class FriendDTO {
+public class FriendDTO extends ProfileDTO {
 
-    private String tag;
-    private String name;
     private Long level;
-    private String wisorType;
     private Boolean isOnline;
     private Boolean teamInitialized;
     private FriendStatus status;
@@ -23,11 +20,9 @@ public class FriendDTO {
     }
 
     public FriendDTO(Profile profile, FriendStatus status, Boolean isOnline) {
-        this.tag = profile.getTag();
-        this.name = profile.getName();
+        super(profile);
         this.level = profile.getLevel();
         this.status = status;
-        this.wisorType = profile.getWisorType();
         this.isOnline = isOnline;
         this.teamInitialized = profile.getTeamInitialized();
     }

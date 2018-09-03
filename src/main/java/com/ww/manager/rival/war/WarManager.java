@@ -22,15 +22,15 @@ public class WarManager extends RivalManager {
 
     protected Disposable choosingWhoAnswerDisposable;
 
-    public WarManager(RivalInitContainer bic, WarService warService, ProfileConnectionService profileConnectionService) {
-        this.rivalInitContainer = bic;
+    public WarManager(RivalInitContainer container, WarService warService, ProfileConnectionService profileConnectionService) {
         this.rivalService = warService;
         this.profileConnectionService = profileConnectionService;
-        Long creatorId = bic.getCreatorProfile().getId();
-        Long opponentId = bic.getOpponentProfile().getId();
+        Long creatorId = container.getCreatorProfile().getId();
+        Long opponentId = container.getOpponentProfile().getId();
         this.rivalContainer = new WarContainer();
-        this.rivalContainer.addProfile(creatorId, new WarProfileContainer(bic.getCreatorProfile(), warService.getProfileWisies(creatorId), opponentId));
-        this.rivalContainer.addProfile(opponentId, new WarProfileContainer(bic.getOpponentProfile(), warService.getProfileWisies(opponentId), creatorId));
+        this.rivalContainer.storeInformationFromInitContainer(container);
+        this.rivalContainer.addProfile(creatorId, new WarProfileContainer(container.getCreatorProfile(), warService.getProfileWisies(creatorId), opponentId));
+        this.rivalContainer.addProfile(opponentId, new WarProfileContainer(container.getOpponentProfile(), warService.getProfileWisies(opponentId), creatorId));
         this.warContainer = (WarContainer) this.rivalContainer;
     }
 
@@ -133,6 +133,7 @@ public class WarManager extends RivalManager {
 
     public Integer getIntroInterval() {
         return 10500;
+//        return 1050000;
     }
 
     public Integer getChoosingWhoAnswerInterval() {

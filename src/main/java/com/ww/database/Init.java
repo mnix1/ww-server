@@ -90,8 +90,6 @@ public class Init {
             memoryTaskHelperService.initShapes();
             memoryTaskHelperService.initColors();
         }
-        System.out.println(EloHelper.prepareNewElo(0L, 0L, 1));
-        System.out.println(EloHelper.prepareNewElo(1200L, 1200L, 1));
     }
 
     public void initTaskTypes() {

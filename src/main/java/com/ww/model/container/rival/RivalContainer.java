@@ -1,11 +1,13 @@
 package com.ww.model.container.rival;
 
 import com.ww.model.constant.Category;
+import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalProfileStatus;
 import com.ww.model.constant.rival.RivalStatus;
+import com.ww.model.constant.rival.RivalType;
 import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.dto.rival.task.TaskDTO;
-import com.ww.model.dto.social.ProfileDTO;
+import com.ww.model.dto.social.RivalProfileDTO;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.social.Profile;
@@ -20,6 +22,14 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public abstract class RivalContainer {
+    protected RivalType type;
+    protected RivalImportance importance;
+    protected Profile creatorProfile;
+    protected Profile opponentProfile;
+
+    protected Long creatorEloChange;
+    protected Long opponentEloChange;
+
     protected final Map<Long, RivalProfileContainer> profileIdRivalProfileContainerMap = new HashMap<>();
     protected int currentTaskIndex = 0;
 
@@ -33,7 +43,7 @@ public abstract class RivalContainer {
     protected Long answeredProfileId;
     protected Long markedAnswerId;
 
-    protected Boolean isDraw;
+    protected Boolean draw;
     protected Profile winner;
     protected Profile looser;
 
@@ -45,6 +55,13 @@ public abstract class RivalContainer {
     protected Boolean isChosenDifficulty;
 
     protected RivalStatus status = RivalStatus.OPEN;
+
+    public void storeInformationFromInitContainer(RivalInitContainer container) {
+        this.type = container.getType();
+        this.importance = container.getImportance();
+        this.creatorProfile = container.getCreatorProfile();
+        this.opponentProfile = container.getOpponentProfile();
+    }
 
     public void addProfile(Long id, RivalProfileContainer rivalProfileContainer) {
         profileIdRivalProfileContainerMap.put(id, rivalProfileContainer);
@@ -59,9 +76,14 @@ public abstract class RivalContainer {
     }
 
     public void setWinnerLooser(Profile winner) {
-        this.isDraw = false;
+        this.draw = false;
         this.winner = winner;
         this.looser = getOpponentRivalProfileContainer(winner.getId()).getProfile();
+    }
+
+
+    public boolean isRanking() {
+        return importance == RivalImportance.RANKING;
     }
 
     public Long findCorrectAnswerId(int taskIndex) {
@@ -98,8 +120,12 @@ public abstract class RivalContainer {
                 .collect(Collectors.toList()).size() == 0;
     }
 
-    public ProfileDTO prepareProfile(Long profileId) {
-        return new ProfileDTO(getRivalProfileContainer(profileId).getProfile());
+    public RivalProfileDTO prepareProfile(Long profileId) {
+        return prepareProfile(getRivalProfileContainer(profileId).getProfile());
+    }
+
+    public RivalProfileDTO prepareProfile(Profile profile) {
+        return new RivalProfileDTO(profile, type);
     }
 
     public void addTask(Question question, TaskDTO taskDTO) {
@@ -107,8 +133,15 @@ public abstract class RivalContainer {
         taskDTOs.add(taskDTO);
     }
 
+    public void forEachProfile(Consumer<? super RivalProfileContainer> action) {
+        profileIdRivalProfileContainerMap.values().parallelStream().forEach(action);
+    }
+
     public void fillModelBasic(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         model.put("status", status);
+        model.put("importance", importance.name());
+        model.put("type", type.name());
+        model.put("profile", prepareProfile(rivalProfileContainer.getProfile()));
         model.put("opponent", prepareProfile(rivalProfileContainer.getOpponentId()));
     }
 
@@ -144,7 +177,6 @@ public abstract class RivalContainer {
         model.put("correctAnswerId", findCorrectAnswerId(currentTaskIndex));
         model.put("markedAnswerId", null);
         model.put("meAnswered", null);
-//        model.put("nextTaskInterval", Math.max(nextTaskDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
     }
 
     public void fillModelChoosingTaskPropsTimeout(Map<String, Object> model) {
@@ -175,14 +207,20 @@ public abstract class RivalContainer {
 
     public void fillModelClosed(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         model.put("status", status);
-        model.put("winnerTag", winner.getTag());
+        model.put("isDraw", draw);
+        if (!draw) {
+            model.put("winnerTag", winner.getTag());
+        }
         model.put("resigned", resigned);
     }
 
-    public void forEachProfile(Consumer<? super RivalProfileContainer> action) {
-        profileIdRivalProfileContainerMap.values().parallelStream().forEach(action);
+    public void fillModelEloChanged(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
+        if (!isRanking()) {
+            return;
+        }
+        model.put("newProfile", prepareProfile(rivalProfileContainer.getProfile()));
+        model.put("newOpponent", prepareProfile(rivalProfileContainer.getOpponentId()));
     }
-
 
     public void fillModel(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         fillModelBasic(model, rivalProfileContainer);

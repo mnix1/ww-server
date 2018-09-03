@@ -19,15 +19,15 @@ public class BattleManager extends RivalManager {
 
     public static final Integer TASK_COUNT = 5;
 
-    public BattleManager(RivalInitContainer bic, BattleService battleService, ProfileConnectionService profileConnectionService) {
-        this.rivalInitContainer = bic;
+    public BattleManager(RivalInitContainer container, BattleService battleService, ProfileConnectionService profileConnectionService) {
         this.rivalService = battleService;
         this.profileConnectionService = profileConnectionService;
-        Long creatorId = bic.getCreatorProfile().getId();
-        Long opponentId = bic.getOpponentProfile().getId();
+        Long creatorId = container.getCreatorProfile().getId();
+        Long opponentId = container.getOpponentProfile().getId();
         this.rivalContainer = new BattleContainer();
-        this.rivalContainer.addProfile(creatorId, new BattleProfileContainer(bic.getCreatorProfile(), opponentId));
-        this.rivalContainer.addProfile(opponentId, new BattleProfileContainer(bic.getOpponentProfile(), creatorId));
+        this.rivalContainer.storeInformationFromInitContainer(container);
+        this.rivalContainer.addProfile(creatorId, new BattleProfileContainer(container.getCreatorProfile(), opponentId));
+        this.rivalContainer.addProfile(opponentId, new BattleProfileContainer(container.getOpponentProfile(), creatorId));
     }
 
     protected Message getMessageReadyFast() {

@@ -21,11 +21,13 @@ public class StateClose extends State {
         if (optionalWinner.isPresent()) {
             rivalContainer.setWinnerLooser(optionalWinner.get());
         } else {
-            rivalManager.setDraw();
+            rivalContainer.setDraw(true);
         }
         rivalContainer.setResigned(false);
+        rivalManager.updateProfilesElo();
         rivalContainer.forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
+            rivalContainer.fillModelEloChanged(model, rivalProfileContainer);
             rivalContainer.fillModelClosed(model, rivalProfileContainer);
             rivalManager.send(model, rivalManager.getMessageContent(), rivalProfileContainer.getProfileId());
         });

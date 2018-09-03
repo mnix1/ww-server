@@ -1,5 +1,8 @@
 package com.ww.helper;
 
+import com.ww.model.constant.rival.RivalType;
+import com.ww.model.entity.social.Profile;
+
 public class EloHelper {
 
     public static final int WINNER = 1;
@@ -8,7 +11,7 @@ public class EloHelper {
     private static final int FACTOR_K = 32;
     private static final long MIN_ELO = 0;
 
-    public static Long prepareNewElo(Long profileElo, Long opponentElo, int result) {
+    public static Long prepareEloChange(Long profileElo, Long opponentElo, int result) {
         double score;
         if (result == WINNER) {
             score = 1.0;
@@ -17,7 +20,15 @@ public class EloHelper {
         } else {
             score = 0.5;
         }
-        double eloChange = FACTOR_K * (score - (1 / (1 + (Math.pow(10, (opponentElo - profileElo) / 400)))));
-        return Math.max(MIN_ELO, Math.round(profileElo + eloChange));
+        double eloChange = FACTOR_K * (score - (1 / (1 + (Math.pow(10, (opponentElo - profileElo) / 400d)))));
+        return Math.round(eloChange);
+    }
+
+    public static void updateElo(Profile p, Long eloChange, RivalType type) {
+        if (type == RivalType.BATTLE) {
+            p.setBattleElo(Math.max(0L, p.getBattleElo() + eloChange));
+        } else if (type == RivalType.WAR) {
+            p.setWarElo(Math.max(0L, p.getWarElo() + eloChange));
+        }
     }
 }

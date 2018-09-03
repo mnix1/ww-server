@@ -2,7 +2,6 @@ package com.ww.service.rival.war;
 
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.Category;
-import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.entity.rival.task.Question;
@@ -14,6 +13,7 @@ import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.rival.task.TaskService;
 import com.ww.service.social.ProfileConnectionService;
+import com.ww.service.social.ProfileService;
 import com.ww.service.social.RewardService;
 import com.ww.service.wisie.ProfileWisieService;
 import com.ww.websocket.message.Message;
@@ -48,14 +48,12 @@ public class WarService extends RivalService {
     @Autowired
     protected RankingService rankingService;
 
+    @Autowired
+    protected ProfileService profileService;
+
     @Override
     protected void addRewardFromWin(Profile profile) {
         rewardService.addRewardFromWarWin(profile);
-    }
-
-    @Override
-    protected void rankingGameResult(Boolean isDraw, Profile winner, Profile looser) {
-        rankingService.rankingGameResult(RivalType.WAR, isDraw, winner, looser);
     }
 
     @Override
@@ -71,6 +69,11 @@ public class WarService extends RivalService {
     @Override
     protected TaskRendererService getTaskRendererService() {
         return taskRendererService;
+    }
+
+    @Override
+    public ProfileService getProfileService() {
+        return profileService;
     }
 
     @Override

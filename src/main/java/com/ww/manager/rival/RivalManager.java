@@ -4,14 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.manager.rival.state.StateSurrender;
 import com.ww.model.constant.Category;
-import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalStatus;
+import com.ww.model.constant.rival.RivalType;
 import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.container.rival.RivalContainer;
-import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.rival.task.Question;
+import com.ww.model.entity.social.Profile;
 import com.ww.service.rival.RivalService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.websocket.message.Message;
@@ -26,11 +26,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.ww.helper.EloHelper.*;
+
 @Getter
 public abstract class RivalManager {
     protected static final Logger logger = LoggerFactory.getLogger(RivalManager.class);
 
-    protected RivalInitContainer rivalInitContainer;
     protected RivalContainer rivalContainer;
     protected RivalService rivalService;
     protected ProfileConnectionService profileConnectionService;
@@ -70,14 +71,38 @@ public abstract class RivalManager {
         }
     }
 
-    public void setDraw(){
-        rivalContainer.setIsDraw(true);
-        rivalContainer.setWinner(rivalInitContainer.getCreatorProfile());
-        rivalContainer.setLooser(rivalInitContainer.getOpponentProfile());
-    }
-
-    public boolean isRanking(){
-        return rivalInitContainer.getImportance() == RivalImportance.RANKING;
+    public void updateProfilesElo() {
+        if (!rivalContainer.isRanking()) {
+            return;
+        }
+        Profile winner = rivalContainer.getWinner();
+        Profile creator = rivalContainer.getCreatorProfile();
+        Profile opponent = rivalContainer.getOpponentProfile();
+        Long creatorEloChange = 0L;
+        Long opponentEloChange = 0L;
+        if (rivalContainer.getType() == RivalType.BATTLE) {
+            if (rivalContainer.getDraw()) {
+                creatorEloChange = prepareEloChange(creator.getBattleElo(), opponent.getBattleElo(), DRAW);
+                opponentEloChange = prepareEloChange(opponent.getBattleElo(), creator.getBattleElo(), DRAW);
+            } else {
+                creatorEloChange = prepareEloChange(creator.getBattleElo(), opponent.getBattleElo(), creator.equals(winner) ? WINNER : LOOSER);
+                opponentEloChange = prepareEloChange(opponent.getBattleElo(), creator.getBattleElo(), opponent.equals(winner) ? WINNER : LOOSER);
+            }
+        } else if (rivalContainer.getType() == RivalType.WAR) {
+            if (rivalContainer.getDraw()) {
+                creatorEloChange = prepareEloChange(creator.getWarElo(), opponent.getWarElo(), DRAW);
+                opponentEloChange = prepareEloChange(opponent.getWarElo(), creator.getWarElo(), DRAW);
+            } else {
+                creatorEloChange = prepareEloChange(creator.getWarElo(), opponent.getWarElo(), creator.equals(winner) ? WINNER : LOOSER);
+                opponentEloChange = prepareEloChange(opponent.getWarElo(), creator.getWarElo(), opponent.equals(winner) ? WINNER : LOOSER);
+            }
+        }
+        updateElo(creator, creatorEloChange, rivalContainer.getType());
+        rivalContainer.setCreatorEloChange(creatorEloChange);
+        updateElo(opponent, opponentEloChange, rivalContainer.getType());
+        rivalContainer.setOpponentEloChange(opponentEloChange);
+        rivalService.getProfileService().save(creator);
+        rivalService.getProfileService().save(opponent);
     }
 
     public abstract boolean isEnd();

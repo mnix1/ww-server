@@ -3,7 +3,6 @@ package com.ww.service.rival;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.constant.Category;
-import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.container.ProfileConnection;
 import com.ww.model.container.rival.RivalContainer;
@@ -14,6 +13,7 @@ import com.ww.model.entity.social.Profile;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.social.ProfileConnectionService;
+import com.ww.service.social.ProfileService;
 import com.ww.websocket.message.Message;
 
 import java.io.IOException;
@@ -47,8 +47,6 @@ public abstract class RivalService {
 
     protected abstract void addRewardFromWin(Profile winner);
 
-    protected abstract void rankingGameResult(Boolean isDraw, Profile winner, Profile looser);
-
     protected abstract Message getMessageContent();
 
     protected abstract ProfileConnectionService getProfileConnectionService();
@@ -57,25 +55,21 @@ public abstract class RivalService {
 
     protected abstract TaskRendererService getTaskRendererService();
 
+    public abstract ProfileService getProfileService();
+
     public synchronized void disposeManager(RivalManager rivalManager) {
         if (!rivalManager.isClosed()) {
             return;
         }
         List<RivalProfileContainer> rivalProfileContainers = rivalManager.getRivalProfileContainers();
         rivalProfileContainers.forEach(rivalProfileContainer -> {
-            if (profileIdToRivalManagerMap.containsKey(rivalProfileContainer.getProfileId())) {
-                profileIdToRivalManagerMap.remove(rivalProfileContainer.getProfileId());
-            }
+            profileIdToRivalManagerMap.remove(rivalProfileContainer.getProfileId());
         });
         RivalContainer rivalContainer = rivalManager.getRivalContainer();
-        Boolean isDraw = rivalContainer.getIsDraw();
+        Boolean isDraw = rivalContainer.getDraw();
         Profile winner = rivalContainer.getWinner();
         if (!isDraw) {
             addRewardFromWin(winner);
-        }
-        if (rivalManager.isRanking()) {
-            Profile looser = rivalContainer.getLooser();
-            rankingGameResult( isDraw, winner, looser);
         }
         // TODO STORE RESULT
     }
