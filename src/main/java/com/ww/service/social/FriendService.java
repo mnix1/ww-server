@@ -14,10 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.ww.helper.TagHelper.isCorrectTag;
@@ -138,9 +135,11 @@ public class FriendService {
         List<Long> notSuggestIds = profileService.getProfile().getFriends().stream()
                 .map(e -> e.getFriendProfile().getId()).collect(Collectors.toList());
         notSuggestIds.add(sessionService.getProfileId());
-        List<FriendDTO> possibleNewFriends = profileRepository.findAllByIdNotIn(notSuggestIds)
+        List<Profile> profiles = profileRepository.findAllByIdNotIn(notSuggestIds);
+        Collections.shuffle(profiles);
+        List<FriendDTO> possibleNewFriends = profiles
                 .stream()
-                .limit(5)
+                .limit(3)
                 .map(profile -> new FriendDTO(profile, FriendStatus.SUGGESTED, null))
                 .collect(Collectors.toList());
         model.put("suggestedFriends", possibleNewFriends);
