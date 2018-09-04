@@ -31,7 +31,7 @@ public abstract class RivalContainer {
     protected Long opponentEloChange;
 
     protected final Map<Long, RivalProfileContainer> profileIdRivalProfileContainerMap = new HashMap<>();
-    protected int currentTaskIndex = 0;
+    protected int currentTaskIndex = -1;
 
     protected List<Question> questions = new ArrayList<>();
     protected List<TaskDTO> taskDTOs = new ArrayList<>();

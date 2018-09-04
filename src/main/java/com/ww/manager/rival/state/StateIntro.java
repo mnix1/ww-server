@@ -17,7 +17,6 @@ public class StateIntro extends State {
     @Override
     protected Flowable<Long> processFlowable() {
         rivalContainer.setStatus(RivalStatus.INTRO);
-        rivalManager.prepareTask((long) rivalContainer.getCurrentTaskIndex() + 1);
         rivalContainer.forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
             rivalContainer.fillModelIntro(model, rivalProfileContainer);
