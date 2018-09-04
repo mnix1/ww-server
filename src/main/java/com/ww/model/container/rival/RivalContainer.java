@@ -147,7 +147,6 @@ public abstract class RivalContainer {
 
     public void fillModelIntro(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         fillModelBasic(model, rivalProfileContainer);
-        model.put("task", taskDTOs.get(currentTaskIndex).toTaskMeta());
     }
 
     public void fillModelPreparingNextTask(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {

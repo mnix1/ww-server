@@ -40,7 +40,7 @@ public class BattleManager extends RivalManager {
 
     public synchronized void start() {
         new StateIntro(this).startFlowable().subscribe(aLong1 -> {
-            phase1();
+            phase2();
         });
     }
 

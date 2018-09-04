@@ -81,7 +81,7 @@ public class WarManager extends RivalManager {
 
     public synchronized void start() {
         new StateIntro(this).startFlowable().subscribe(aLong1 -> {
-            phase3();
+            phase2();
         });
     }
 
@@ -151,7 +151,7 @@ public class WarManager extends RivalManager {
 
 
     public Integer getIntroInterval() {
-        return 10500;
+        return 5500;
 //        return 1050000;
     }
 

@@ -144,7 +144,7 @@ public abstract class RivalManager {
 
 
     public Integer getIntroInterval() {
-        return 8500;
+        return 3500;
     }
 
     public Integer getPreparingNextTaskInterval() {
