@@ -51,7 +51,9 @@ public abstract class RivalManager {
 
     protected abstract Message getMessageReadyFast();
 
-    public abstract Message getMessageContent();
+    public Message getMessageContent(){
+       return rivalService.getMessageContent();
+    }
 
     public void prepareTask(Long id) {
         prepareTask(id, Category.random(), TaskDifficultyLevel.random());

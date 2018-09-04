@@ -1,5 +1,6 @@
 package com.ww.repository.wisie;
 
+import com.ww.model.constant.wisie.WisieType;
 import com.ww.model.entity.wisie.Wisie;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.repository.CrudRepository;
@@ -11,4 +12,6 @@ import java.util.List;
 public interface WisieRepository extends CrudRepository<Wisie, Long> {
     @Cacheable("allWisies")
     List<Wisie> findAll();
+
+    Wisie findByType(WisieType type);
 }

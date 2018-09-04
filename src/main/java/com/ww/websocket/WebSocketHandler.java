@@ -2,6 +2,7 @@ package com.ww.websocket;
 
 import com.ww.model.container.ProfileConnection;
 import com.ww.service.rival.battle.BattleService;
+import com.ww.service.rival.campaign.CampaignService;
 import com.ww.service.rival.war.WarService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
@@ -30,6 +31,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     @Autowired
     WarService warService;
+
+    @Autowired
+    CampaignService campaignService;
 
     @Override
     public void handleTransportError(WebSocketSession session, Throwable throwable) throws Exception {
@@ -72,6 +76,16 @@ public class WebSocketHandler extends TextWebSocketHandler {
             warService.chooseWhoAnswer(session.getId(), message.substring("WAR_CHOOSE_WHO_ANSWER".length()));
         } else if (message.contains("WAR_SURRENDER")) {
             warService.surrender(session.getId());
+        } else if (message.equals("CAMPAIGN_READY_FOR_START")) {
+            campaignService.readyForStart(session.getId());
+        } else if (message.contains("CAMPAIGN_ANSWER")) {
+            campaignService.answer(session.getId(), message.substring("CAMPAIGN_ANSWER".length()));
+        } else if (message.contains("CAMPAIGN_CHOOSE_TASK_PROPS")) {
+            campaignService.chooseTaskProps(session.getId(), message.substring("CAMPAIGN_CHOOSE_TASK_PROPS".length()));
+        } else if (message.contains("CAMPAIGN_CHOOSE_WHO_ANSWER")) {
+            campaignService.chooseWhoAnswer(session.getId(), message.substring("CAMPAIGN_CHOOSE_WHO_ANSWER".length()));
+        } else if (message.contains("CAMPAIGN_SURRENDER")) {
+            campaignService.surrender(session.getId());
         }
     }
 }

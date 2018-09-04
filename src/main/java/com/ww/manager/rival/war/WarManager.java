@@ -7,14 +7,17 @@ import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.container.rival.war.WarContainer;
 import com.ww.model.container.rival.war.WarProfileContainer;
+import com.ww.model.entity.social.Profile;
 import com.ww.service.rival.war.WarService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.websocket.message.Message;
 import io.reactivex.disposables.Disposable;
+import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
 
+//@NoArgsConstructor
 public class WarManager extends RivalManager {
 
     public static final int PROFILE_ACTIVE_INDEX = 0;
@@ -25,14 +28,18 @@ public class WarManager extends RivalManager {
     public WarManager(RivalInitContainer container, WarService warService, ProfileConnectionService profileConnectionService) {
         this.rivalService = warService;
         this.profileConnectionService = profileConnectionService;
-        Long creatorId = container.getCreatorProfile().getId();
-        Long opponentId = container.getOpponentProfile().getId();
+        Profile creator = container.getCreatorProfile();
+        Long creatorId = creator.getId();
+        Profile opponent = container.getOpponentProfile();
+        Long opponentId = opponent.getId();
         this.rivalContainer = new WarContainer();
         this.rivalContainer.storeInformationFromInitContainer(container);
-        this.rivalContainer.addProfile(creatorId, new WarProfileContainer(container.getCreatorProfile(), warService.getProfileWisies(creatorId), opponentId));
-        this.rivalContainer.addProfile(opponentId, new WarProfileContainer(container.getOpponentProfile(), warService.getProfileWisies(opponentId), creatorId));
+        this.rivalContainer.addProfile(creatorId, new WarProfileContainer(creator, warService.getProfileWisies(creator), opponentId));
+        this.rivalContainer.addProfile(opponentId, new WarProfileContainer(opponent, warService.getProfileWisies(opponent), creatorId));
         this.warContainer = (WarContainer) this.rivalContainer;
     }
+
+
 
     public void disposeFlowable() {
         super.disposeFlowable();
@@ -44,10 +51,6 @@ public class WarManager extends RivalManager {
 
     protected Message getMessageReadyFast() {
         return Message.WAR_READY;
-    }
-
-    public Message getMessageContent() {
-        return Message.WAR_CONTENT;
     }
 
     public boolean isEnd() {

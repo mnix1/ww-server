@@ -34,10 +34,6 @@ public class BattleManager extends RivalManager {
         return Message.BATTLE_READY;
     }
 
-    public Message getMessageContent() {
-        return Message.BATTLE_CONTENT;
-    }
-
     public boolean isEnd() {
         return rivalContainer.getCurrentTaskIndex() == TASK_COUNT - 1;
     }

@@ -2,12 +2,10 @@ package com.ww.service.rival.war;
 
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.Category;
-import com.ww.model.constant.rival.RivalType;
 import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.social.Profile;
 import com.ww.model.entity.wisie.ProfileWisie;
-import com.ww.service.rival.RankingService;
 import com.ww.service.rival.RivalService;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
@@ -46,9 +44,6 @@ public class WarService extends RivalService {
     protected RewardService rewardService;
 
     @Autowired
-    protected RankingService rankingService;
-
-    @Autowired
     protected ProfileService profileService;
 
     @Override
@@ -77,12 +72,12 @@ public class WarService extends RivalService {
     }
 
     @Override
-    protected Message getMessageContent() {
+    public Message getMessageContent() {
         return Message.WAR_CONTENT;
     }
 
-    public List<ProfileWisie> getProfileWisies(Long profileId) {
-        return profileWisieService.listTeam(profileId);
+    public List<ProfileWisie> getProfileWisies(Profile profile) {
+        return profileWisieService.listTeam(profile.getId());
     }
 
     public Question prepareQuestion(Category category, TaskDifficultyLevel difficultyLevel) {
@@ -90,7 +85,6 @@ public class WarService extends RivalService {
         taskService.initTaskWisdomAtributes(question);
         return question;
     }
-
 
     public synchronized void chooseWhoAnswer(String sessionId, String content) {
         Optional<Long> profileId = getProfileConnectionService().getProfileId(sessionId);

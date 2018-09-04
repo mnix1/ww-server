@@ -1,5 +1,6 @@
 package com.ww.service.wisie;
 
+import com.ww.model.constant.wisie.WisieType;
 import com.ww.model.dto.wisie.WisieDTO;
 import com.ww.model.entity.wisie.Wisie;
 import com.ww.model.entity.social.Profile;
@@ -55,6 +56,10 @@ public class WisieService {
             wisie = randomElement(allWisies);
         }
         return wisie;
+    }
+
+    public Wisie getWisie(WisieType type) {
+        return wisieRepository.findByType(type);
     }
 
     public synchronized Map<String, Object> experiment() {

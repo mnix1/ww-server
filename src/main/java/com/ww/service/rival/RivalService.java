@@ -47,7 +47,7 @@ public abstract class RivalService {
 
     protected abstract void addRewardFromWin(Profile winner);
 
-    protected abstract Message getMessageContent();
+    public abstract Message getMessageContent();
 
     protected abstract ProfileConnectionService getProfileConnectionService();
 

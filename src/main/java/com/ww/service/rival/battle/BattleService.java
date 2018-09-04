@@ -1,7 +1,6 @@
 package com.ww.service.rival.battle;
 
 import com.ww.model.entity.social.Profile;
-import com.ww.service.rival.RankingService;
 import com.ww.service.rival.RivalService;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
@@ -26,9 +25,6 @@ public class BattleService extends RivalService {
 
     @Autowired
     protected RewardService rewardService;
-
-    @Autowired
-    protected RankingService rankingService;
 
     @Autowired
     protected ProfileService profileService;
@@ -59,7 +55,7 @@ public class BattleService extends RivalService {
     }
 
     @Override
-    protected Message getMessageContent() {
+    public Message getMessageContent() {
         return Message.BATTLE_CONTENT;
     }
 

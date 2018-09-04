@@ -41,7 +41,7 @@ public class WarContainer extends RivalContainer {
             return null;
         }
         for (WisieAnswerManager answerManager : wisieAnswerManagers) {
-            if (answerManager.getWisie().getId().equals(answeringWisie.getId())) {
+            if (answerManager.getWisie().equals(answeringWisie)) {
                 return answerManager;
             }
         }
