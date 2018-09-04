@@ -36,13 +36,20 @@ public class WarStateChosenWhoAnswer extends WarState {
             warProfileContainer.setChosenActiveIndex(true);
             warProfileContainer.setActiveIndex(activeIndex);
         }
+        if (!allPlayersChoosen()) {
+            return false;
+        }
+        rivalContainer.setStatus(RivalStatus.CHOSEN_WHO_ANSWER);
+        return true;
+    }
+
+    protected boolean allPlayersChoosen() {
         for (RivalProfileContainer rivalProfileContainer : warManager.getRivalProfileContainers()) {
-            warProfileContainer = (WarProfileContainer) rivalProfileContainer;
+            WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
             if (!warProfileContainer.isChosenActiveIndex()) {
                 return false;
             }
         }
-        rivalContainer.setStatus(RivalStatus.CHOSEN_WHO_ANSWER);
         return true;
     }
 }

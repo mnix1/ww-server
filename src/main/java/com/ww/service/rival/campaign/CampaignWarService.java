@@ -21,12 +21,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import static com.ww.manager.rival.campaign.CampaignWarManager.BOT_PROFILE_ID;
 import static com.ww.model.constant.rival.RivalType.CAMPAIGN_WAR;
 
 @Service
 public class CampaignWarService extends WarService {
-    public static final Long BOT_PROFILE_ID = -1L;
-
     @Autowired
     protected ProfileConnectionService profileConnectionService;
 

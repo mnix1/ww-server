@@ -1,13 +1,11 @@
 package com.ww.manager.rival.campaign;
 
+import com.ww.manager.rival.campaign.state.CampaignWarStateChosenWhoAnswer;
 import com.ww.manager.rival.war.WarManager;
-import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.wisie.HeroType;
 import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.container.rival.campaign.CampaignWarContainer;
 import com.ww.model.container.rival.war.TeamMember;
-import com.ww.model.dto.social.ProfileDTO;
-import com.ww.model.dto.social.RivalProfileDTO;
 import com.ww.model.dto.wisie.WarProfileWisieDTO;
 import com.ww.model.entity.social.Profile;
 import com.ww.model.entity.wisie.ProfileWisie;
@@ -16,10 +14,10 @@ import com.ww.service.social.ProfileConnectionService;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.ww.service.rival.campaign.CampaignWarService.BOT_PROFILE_ID;
+import java.util.Map;
 
 public class CampaignWarManager extends WarManager {
+    public static final Long BOT_PROFILE_ID = -1L;
 
     public CampaignWarContainer campaignWarContainer;
 
@@ -45,6 +43,51 @@ public class CampaignWarManager extends WarManager {
             teamMembers.add(new TeamMember(index++, HeroType.WISIE, wisie, new WarProfileWisieDTO(wisie)));
         }
         return teamMembers;
+    }
+
+//    public synchronized void start() {
+//        new StateIntro(this).startFlowable().subscribe(aLong1 -> {
+//            phase3();
+//        });
+//    }
+//
+//    public synchronized void phase1() {
+//        new StatePreparingNextTask(this).startFlowable().subscribe(aLong2 -> {
+//            answeringTimeoutDisposable = new WarStateAnswering(this).startFlowable().subscribe(aLong3 -> {
+//                new WarStateAnsweringTimeout(this).startFlowable().subscribe(aLong4 -> {
+//                    phase2();
+//                });
+//            });
+//        });
+//    }
+//
+//    public synchronized void phase2() {
+//        if (isEnd()) {
+//            new StateClose(this).startVoid();
+//        } else {
+//            choosingTaskPropsDisposable = new StateChoosingTaskProps(this).startFlowable().subscribe(aLong5 -> {
+//                boolean randomChooseTaskProps = rivalContainer.randomChooseTaskProps();
+//                if (randomChooseTaskProps) {
+//                    phase3();
+//                } else {
+//                    new StateChoosingTaskPropsTimeout(this).startVoid();
+//                    phase3();
+//                }
+//            });
+//        }
+//    }
+//
+//    public synchronized void phase3() {
+//        choosingWhoAnswerDisposable = new WarStateChoosingWhoAnswer(this).startFlowable().subscribe(aLong2 -> {
+//            phase1();
+//        });
+//    }
+
+    public synchronized void chosenWhoAnswer(Long profileId, Map<String, Object> content) {
+        if (new CampaignWarStateChosenWhoAnswer(this, profileId, content).startBoolean()) {
+            disposeFlowable();
+            phase1();
+        }
     }
 
 }
