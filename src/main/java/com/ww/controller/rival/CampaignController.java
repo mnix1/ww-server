@@ -1,7 +1,7 @@
 package com.ww.controller.rival;
 
 import com.ww.service.SessionService;
-import com.ww.service.rival.campaign.CampaignService;
+import com.ww.service.rival.campaign.CampaignWarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,10 +17,10 @@ public class CampaignController {
     SessionService sessionService;
 
     @Autowired
-    CampaignService campaignService;
+    CampaignWarService campaignWarService;
 
     @RequestMapping(value = "/start", method = RequestMethod.POST)
     public Map start(@RequestBody Map<String, Object> payload) {
-        return campaignService.start();
+        return campaignWarService.start();
     }
 }

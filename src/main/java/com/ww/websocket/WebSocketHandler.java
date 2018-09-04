@@ -1,8 +1,10 @@
 package com.ww.websocket;
 
+import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.ProfileConnection;
+import com.ww.service.rival.RivalService;
 import com.ww.service.rival.battle.BattleService;
-import com.ww.service.rival.campaign.CampaignService;
+import com.ww.service.rival.campaign.CampaignWarService;
 import com.ww.service.rival.war.WarService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
@@ -33,7 +35,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     WarService warService;
 
     @Autowired
-    CampaignService campaignService;
+    CampaignWarService campaignWarService;
 
     @Override
     public void handleTransportError(WebSocketSession session, Throwable throwable) throws Exception {
@@ -52,40 +54,45 @@ public class WebSocketHandler extends TextWebSocketHandler {
         ProfileConnection profileConnection = profileConnectionService.newConnection(session);
         battleService.sendActualRivalModelToNewProfileConnection(profileConnection);
         warService.sendActualRivalModelToNewProfileConnection(profileConnection);
+        campaignWarService.sendActualRivalModelToNewProfileConnection(profileConnection);
     }
+
+    private static final String READY_FOR_START_SUFFIX = "_^_READY_FOR_START";
+    private static final String ANSWER_SUFFIX = "_^_ANSWER";
+    private static final String CHOOSE_TASK_PROPS_SUFFIX = "_^_CHOOSE_TASK_PROPS";
+    private static final String SURRENDER_SUFFIX = "_^_SURRENDER";
+    private static final String CHOOSE_WHO_ANSWER_SUFFIX = "_^_CHOOSE_WHO_ANSWER";
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage jsonTextMessage) throws Exception {
         String message = jsonTextMessage.getPayload();
 //        logger.debug("Message received: " + jsonTextMessage.getPayload() + ", from sessionId: " + session.getId());
-        if (message.equals("BATTLE_READY_FOR_START")) {
-            battleService.readyForStart(session.getId());
-        } else if (message.contains("BATTLE_ANSWER")) {
-            battleService.answer(session.getId(), message.substring("BATTLE_ANSWER".length()));
-        } else if (message.contains("BATTLE_CHOOSE_TASK_PROPS")) {
-            battleService.chooseTaskProps(session.getId(), message.substring("BATTLE_CHOOSE_TASK_PROPS".length()));
-        } else if (message.contains("BATTLE_SURRENDER")) {
-            battleService.surrender(session.getId());
-        } else if (message.equals("WAR_READY_FOR_START")) {
-            warService.readyForStart(session.getId());
-        } else if (message.contains("WAR_ANSWER")) {
-            warService.answer(session.getId(), message.substring("WAR_ANSWER".length()));
-        } else if (message.contains("WAR_CHOOSE_TASK_PROPS")) {
-            warService.chooseTaskProps(session.getId(), message.substring("WAR_CHOOSE_TASK_PROPS".length()));
-        } else if (message.contains("WAR_CHOOSE_WHO_ANSWER")) {
-            warService.chooseWhoAnswer(session.getId(), message.substring("WAR_CHOOSE_WHO_ANSWER".length()));
-        } else if (message.contains("WAR_SURRENDER")) {
-            warService.surrender(session.getId());
-        } else if (message.equals("CAMPAIGN_READY_FOR_START")) {
-            campaignService.readyForStart(session.getId());
-        } else if (message.contains("CAMPAIGN_ANSWER")) {
-            campaignService.answer(session.getId(), message.substring("CAMPAIGN_ANSWER".length()));
-        } else if (message.contains("CAMPAIGN_CHOOSE_TASK_PROPS")) {
-            campaignService.chooseTaskProps(session.getId(), message.substring("CAMPAIGN_CHOOSE_TASK_PROPS".length()));
-        } else if (message.contains("CAMPAIGN_CHOOSE_WHO_ANSWER")) {
-            campaignService.chooseWhoAnswer(session.getId(), message.substring("CAMPAIGN_CHOOSE_WHO_ANSWER".length()));
-        } else if (message.contains("CAMPAIGN_SURRENDER")) {
-            campaignService.surrender(session.getId());
+        RivalService rivalService = null;
+        RivalType rivalType = null;
+        if (message.startsWith(RivalType.BATTLE.name())) {
+            rivalService = battleService;
+            rivalType = RivalType.BATTLE;
+        } else if (message.startsWith(RivalType.WAR.name())) {
+            rivalService = warService;
+            rivalType = RivalType.WAR;
+        } else if (message.startsWith(RivalType.CAMPAIGN_WAR.name())) {
+            rivalService = campaignWarService;
+            rivalType = RivalType.CAMPAIGN_WAR;
         }
+        if (message.contains(READY_FOR_START_SUFFIX)) {
+            rivalService.readyForStart(session.getId());
+        } else if (message.contains(ANSWER_SUFFIX)) {
+            rivalService.answer(session.getId(), trimPrefixFromMessage(message, rivalType, ANSWER_SUFFIX));
+        } else if (message.contains(CHOOSE_TASK_PROPS_SUFFIX)) {
+            rivalService.chooseTaskProps(session.getId(), trimPrefixFromMessage(message, rivalType, CHOOSE_TASK_PROPS_SUFFIX));
+        } else if (message.contains(SURRENDER_SUFFIX)) {
+            rivalService.surrender(session.getId());
+        } else if (message.contains(CHOOSE_WHO_ANSWER_SUFFIX)) {
+            rivalService.chooseWhoAnswer(session.getId(), trimPrefixFromMessage(message, rivalType, CHOOSE_WHO_ANSWER_SUFFIX));
+        }
+    }
+
+    private String trimPrefixFromMessage(String message, RivalType rivalType, String messageSuffix) {
+        return message.substring(rivalType.name().length() + messageSuffix.length());
     }
 }

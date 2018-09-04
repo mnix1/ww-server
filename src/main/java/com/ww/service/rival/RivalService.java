@@ -2,6 +2,7 @@ package com.ww.service.rival;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.manager.rival.RivalManager;
+import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.task.TaskDifficultyLevel;
 import com.ww.model.container.ProfileConnection;
@@ -112,6 +113,9 @@ public abstract class RivalService {
         if (contentMap != null) {
             rivalManager.chosenTaskProps(profileId.get(), contentMap);
         }
+    }
+
+    public synchronized void chooseWhoAnswer(String sessionId, String content) {
     }
 
     public synchronized void surrender(String sessionId) {

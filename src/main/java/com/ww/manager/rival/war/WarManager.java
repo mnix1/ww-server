@@ -39,8 +39,6 @@ public class WarManager extends RivalManager {
         this.warContainer = (WarContainer) this.rivalContainer;
     }
 
-
-
     public void disposeFlowable() {
         super.disposeFlowable();
         if (choosingWhoAnswerDisposable != null) {

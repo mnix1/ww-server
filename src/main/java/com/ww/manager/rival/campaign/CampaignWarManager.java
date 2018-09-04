@@ -2,26 +2,24 @@ package com.ww.manager.rival.campaign;
 
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.container.rival.RivalInitContainer;
-import com.ww.model.container.rival.campaign.CampaignContainer;
-import com.ww.model.container.rival.war.WarContainer;
-import com.ww.model.container.rival.war.WarProfileContainer;
-import com.ww.service.rival.campaign.CampaignService;
+import com.ww.model.container.rival.campaign.CampaignWarContainer;
+import com.ww.service.rival.campaign.CampaignWarService;
 import com.ww.service.social.ProfileConnectionService;
 
-public class CampaignManager extends WarManager {
+public class CampaignWarManager extends WarManager {
 
-    public CampaignContainer campaignContainer;
+    public CampaignWarContainer campaignWarContainer;
 
-    public CampaignManager(RivalInitContainer container, CampaignService campaignService, ProfileConnectionService profileConnectionService) {
-        super(container, campaignService, profileConnectionService);
+    public CampaignWarManager(RivalInitContainer container, CampaignWarService campaignWarService, ProfileConnectionService profileConnectionService) {
+        super(container, campaignWarService, profileConnectionService);
 //        this.rivalService = campaignService;
 //        this.profileConnectionService = profileConnectionService;
 //        Long creatorId = container.getCreatorProfile().getId();
-//        this.rivalContainer = new CampaignContainer();
+//        this.rivalContainer = new CampaignWarContainer();
 //        this.rivalContainer.storeInformationFromInitContainer(container);
 //        this.rivalContainer.addProfile(creatorId, new WarProfileContainer(container.getCreatorProfile(), campaignService.getProfileWisies(creatorId), null));
 //        this.warContainer = (WarContainer) this.rivalContainer;
-//        this.campaignContainer = (CampaignContainer) this.rivalContainer;
+//        this.campaignWarContainer = (CampaignWarContainer) this.rivalContainer;
     }
 
 }

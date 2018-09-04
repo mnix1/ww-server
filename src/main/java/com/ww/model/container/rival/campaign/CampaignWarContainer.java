@@ -6,5 +6,5 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CampaignContainer extends WarContainer {
+public class CampaignWarContainer extends WarContainer {
 }
