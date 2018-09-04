@@ -25,8 +25,8 @@ import static com.ww.model.constant.rival.RivalType.CAMPAIGN_WAR;
 
 @Service
 public class CampaignWarService extends WarService {
+    public static final Long BOT_PROFILE_ID = -1L;
 
-    private static final Long botProfileId = -1L;
     @Autowired
     protected ProfileConnectionService profileConnectionService;
 
@@ -91,12 +91,12 @@ public class CampaignWarService extends WarService {
 
     public Profile prepareComputerProfile() {
         Profile computerProfile = new Profile();
-        computerProfile.setId(botProfileId);
+        computerProfile.setId(BOT_PROFILE_ID);
         computerProfile.setName("Wielki Chrabąszcz");
         computerProfile.setWisorType("wisor18");
         computerProfile.setTag("0");
         computerProfile.setTeamInitialized(true);
-        List<WisieType> wisieTypes = Arrays.asList(WisieType.BEAR, WisieType.CROCODILE, WisieType.CAT_TEACHER, WisieType.BEE);
+        List<WisieType> wisieTypes = Arrays.asList(WisieType.BEAR, WisieType.CROCODILE, WisieType.CAT_TEACHER);
         long profileWisieId = -1;
         for (WisieType wisieType : wisieTypes) {
             ProfileWisie profileWisie = new ProfileWisie(computerProfile, wisieService.getWisie(wisieType));
@@ -113,7 +113,7 @@ public class CampaignWarService extends WarService {
     }
 
     public List<ProfileWisie> getProfileWisies(Profile profile) {
-        if (profile.getId().equals(botProfileId)) {
+        if (profile.getId().equals(BOT_PROFILE_ID)) {
             return new ArrayList<>(profile.getWisies());
         }
         return profileWisieService.listTeam(profile.getId());

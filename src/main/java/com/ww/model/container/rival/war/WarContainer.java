@@ -1,11 +1,12 @@
 package com.ww.model.container.rival.war;
 
-import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.rival.RivalManager;
+import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.model.constant.rival.RivalStatus;
+import com.ww.model.constant.wisie.WisieAnswerAction;
 import com.ww.model.container.rival.RivalContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
-import com.ww.model.dto.wisie.WarProfileWisieDTO;
+import com.ww.model.dto.rival.TeamMemberDTO;
 import com.ww.model.entity.social.Profile;
 import com.ww.model.entity.wisie.ProfileWisie;
 import lombok.Getter;
@@ -28,21 +29,23 @@ public class WarContainer extends RivalContainer {
         wisieAnswerManagers = new ArrayList<>();
         forEachProfile(rivalProfileContainer -> {
             WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
-            ProfileWisie answeringWisie = warProfileContainer.getAnsweringWisie();
-            if (answeringWisie != null) {
-                wisieAnswerManagers.add(new WisieAnswerManager(answeringWisie, rivalManager));
+            TeamMember teamMember = warProfileContainer.getActiveTeamMember();
+            if (teamMember.isWisie()) {
+                wisieAnswerManagers.add(new WisieAnswerManager((ProfileWisie) teamMember.getContent(), rivalManager));
             }
         });
     }
 
-    private WisieAnswerManager getWisieAnswerManager(WarProfileContainer warProfileContainer) {
-        ProfileWisie answeringWisie = warProfileContainer.getAnsweringWisie();
-        if (answeringWisie == null) {
+    private List<WisieAnswerAction> getAnsweringWisieActions(WarProfileContainer warProfileContainer) {
+        TeamMember teamMember = warProfileContainer.getActiveTeamMember();
+        if (!teamMember.isWisie()) {
             return null;
         }
+        ProfileWisie wisie = (ProfileWisie) teamMember.getContent();
         for (WisieAnswerManager answerManager : wisieAnswerManagers) {
-            if (answerManager.getWisie().equals(answeringWisie)) {
-                return answerManager;
+            if (answerManager.getWisie().equals(wisie)) {
+                List<WisieAnswerAction> actions = answerManager.getActions();
+                return actions.subList(Math.max(0, actions.size() - 2), actions.size());
             }
         }
         return null;
@@ -60,14 +63,14 @@ public class WarContainer extends RivalContainer {
         }
     }
 
-    private List<WarProfileWisieDTO> prepareTeam(List<ProfileWisie> wisies) {
-        return wisies.stream().map(WarProfileWisieDTO::new).collect(Collectors.toList());
+    private List<TeamMemberDTO> prepareTeam(List<TeamMember> teamMembers) {
+        return teamMembers.stream().map(TeamMemberDTO::new).collect(Collectors.toList());
     }
 
     public String findChoosingTaskPropsTag() {
         List<RivalProfileContainer> rivalProfileContainers = new ArrayList<>(getProfileIdRivalProfileContainerMap().values());
-        Integer presentIndexSize1 = ((WarProfileContainer) rivalProfileContainers.get(0)).getPresentIndexes().size();
-        Integer presentIndexSize2 = ((WarProfileContainer) rivalProfileContainers.get(1)).getPresentIndexes().size();
+        Integer presentIndexSize1 = ((WarProfileContainer) rivalProfileContainers.get(0)).countPresentMembers();
+        Integer presentIndexSize2 = ((WarProfileContainer) rivalProfileContainers.get(1)).countPresentMembers();
         if (presentIndexSize1.equals(presentIndexSize2)) {
             return null;
         }
@@ -79,8 +82,8 @@ public class WarContainer extends RivalContainer {
 
     public Optional<Profile> findWinner() {
         List<RivalProfileContainer> rivalProfileContainers = new ArrayList<>(getProfileIdRivalProfileContainerMap().values());
-        Integer presentIndexSize1 = ((WarProfileContainer) rivalProfileContainers.get(0)).getPresentIndexes().size();
-        Integer presentIndexSize2 = ((WarProfileContainer) rivalProfileContainers.get(1)).getPresentIndexes().size();
+        Integer presentIndexSize1 = ((WarProfileContainer) rivalProfileContainers.get(0)).countPresentMembers();
+        Integer presentIndexSize2 = ((WarProfileContainer) rivalProfileContainers.get(1)).countPresentMembers();
         if (presentIndexSize1.equals(presentIndexSize2)) {
             return Optional.empty();
         }
@@ -97,12 +100,12 @@ public class WarContainer extends RivalContainer {
     public void fillModelBasic(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         super.fillModelBasic(model, rivalProfileContainer);
         WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
-        model.put("presentIndexes", warProfileContainer.getPresentIndexes());
         model.put("activeIndex", warProfileContainer.getActiveIndex());
-        model.put("team", prepareTeam(warProfileContainer.getWisies()));
+        model.put("presentIndexes", warProfileContainer.getPresentIndexes());
+        model.put("team", prepareTeam(warProfileContainer.getTeamMembers()));
         model.put("opponentPresentIndexes", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getPresentIndexes());
         model.put("opponentActiveIndex", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getActiveIndex());
-        model.put("opponentTeam", prepareTeam(getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getWisies()));
+        model.put("opponentTeam", prepareTeam(getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getTeamMembers()));
     }
 
     public void fillModelPreparingNextTask(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
@@ -128,13 +131,15 @@ public class WarContainer extends RivalContainer {
         WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
         model.put("activeIndex", warProfileContainer.getActiveIndex());
         model.put("opponentActiveIndex", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getActiveIndex());
-        WisieAnswerManager manager = getWisieAnswerManager(warProfileContainer);
-        if (manager != null) {
-            model.put("wisieActions", manager.getActions());
-        }
-        manager = getWisieAnswerManager(getRivalProfileContainer(rivalProfileContainer.getOpponentId()));
-        if (manager != null) {
-            model.put("opponentWisieActions", manager.getActions());
+        if (warProfileContainer.getActiveTeamMember().isWisie()) {
+            List<WisieAnswerAction> wisieActions = getAnsweringWisieActions(warProfileContainer);
+            if (wisieActions != null) {
+                model.put("wisieActions", wisieActions);
+            }
+            List<WisieAnswerAction> opponentWisieActions = getAnsweringWisieActions(getRivalProfileContainer(rivalProfileContainer.getOpponentId()));
+            if (opponentWisieActions != null) {
+                model.put("opponentWisieActions", opponentWisieActions);
+            }
         }
     }
 

@@ -24,7 +24,7 @@ public class WarStateAnsweringTimeout extends WarState {
         warContainer.stopWisieAnswerManager();
         for (RivalProfileContainer rivalProfileContainer : warManager.getRivalProfileContainers()) {
             WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
-            warProfileContainer.removeActiveIndexFromPresentIndexes();
+            warProfileContainer.setActiveTeamMemberPresentToFalse();
         }
         rivalContainer.setStatus(RivalStatus.ANSWERING_TIMEOUT);
         rivalContainer.forEachProfile(rivalProfileContainer -> {

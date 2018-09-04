@@ -3,24 +3,30 @@ package com.ww.manager.rival.war;
 import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.state.*;
 import com.ww.manager.rival.war.state.*;
+import com.ww.model.constant.rival.RivalImportance;
+import com.ww.model.constant.wisie.HeroType;
 import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
+import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarContainer;
 import com.ww.model.container.rival.war.WarProfileContainer;
+import com.ww.model.dto.social.ProfileDTO;
+import com.ww.model.dto.social.RivalProfileDTO;
+import com.ww.model.dto.wisie.WarProfileWisieDTO;
 import com.ww.model.entity.social.Profile;
+import com.ww.model.entity.wisie.ProfileWisie;
 import com.ww.service.rival.war.WarService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.websocket.message.Message;
 import io.reactivex.disposables.Disposable;
-import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-//@NoArgsConstructor
 public class WarManager extends RivalManager {
 
-    public static final int PROFILE_ACTIVE_INDEX = 0;
     public WarContainer warContainer;
 
     protected Disposable choosingWhoAnswerDisposable;
@@ -30,13 +36,25 @@ public class WarManager extends RivalManager {
         this.profileConnectionService = profileConnectionService;
         Profile creator = container.getCreatorProfile();
         Long creatorId = creator.getId();
+        List<ProfileWisie> creatorWisies = warService.getProfileWisies(creator);
         Profile opponent = container.getOpponentProfile();
         Long opponentId = opponent.getId();
+        List<ProfileWisie> opponentWisies = warService.getProfileWisies(opponent);
         this.rivalContainer = new WarContainer();
         this.rivalContainer.storeInformationFromInitContainer(container);
-        this.rivalContainer.addProfile(creatorId, new WarProfileContainer(creator, warService.getProfileWisies(creator), opponentId));
-        this.rivalContainer.addProfile(opponentId, new WarProfileContainer(opponent, warService.getProfileWisies(opponent), creatorId));
+        this.rivalContainer.addProfile(creatorId, new WarProfileContainer(creator, opponentId, prepareTeamMembers(creator, creatorWisies)));
+        this.rivalContainer.addProfile(opponentId, new WarProfileContainer(opponent, creatorId, prepareTeamMembers(opponent, opponentWisies)));
         this.warContainer = (WarContainer) this.rivalContainer;
+    }
+
+    protected List<TeamMember> prepareTeamMembers(Profile profile, List<ProfileWisie> wisies) {
+        List<TeamMember> teamMembers = new ArrayList<>();
+        int index = 0;
+        teamMembers.add(new TeamMember(index++, HeroType.WISOR, profile, rivalContainer.getImportance() == RivalImportance.RANKING ? new RivalProfileDTO(profile, rivalContainer.getType()) : new ProfileDTO(profile)));
+        for (ProfileWisie wisie : wisies) {
+            teamMembers.add(new TeamMember(index++, HeroType.WISIE, wisie, new WarProfileWisieDTO(wisie)));
+        }
+        return teamMembers;
     }
 
     public void disposeFlowable() {
@@ -54,7 +72,7 @@ public class WarManager extends RivalManager {
     public boolean isEnd() {
         for (RivalProfileContainer rivalProfileContainer : getRivalProfileContainers()) {
             WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
-            if (warProfileContainer.getPresentIndexes().size() == 0) {
+            if (!warProfileContainer.isAnyPresentMember()) {
                 return true;
             }
         }

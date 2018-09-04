@@ -35,7 +35,7 @@ public class WarStateAnswered extends WarState {
         if (isAnswerCorrect) {
             container = (WarProfileContainer) rivalContainer.getProfileIdRivalProfileContainerMap().get(container.getOpponentId());
         }
-        container.removeActiveIndexFromPresentIndexes();
+        container.setActiveTeamMemberPresentToFalse();
         rivalContainer.forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
             rivalContainer.fillModelAnswered(model, rivalProfileContainer);
