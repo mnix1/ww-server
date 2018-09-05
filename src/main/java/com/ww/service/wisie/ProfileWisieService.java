@@ -4,11 +4,11 @@ import com.ww.helper.WisieHelper;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
-import com.ww.model.dto.wisie.ProfileWisieDTO;
 import com.ww.model.dto.social.ProfileResourcesDTO;
-import com.ww.model.entity.wisie.Wisie;
-import com.ww.model.entity.wisie.ProfileWisie;
+import com.ww.model.dto.wisie.ProfileWisieDTO;
 import com.ww.model.entity.social.Profile;
+import com.ww.model.entity.wisie.ProfileWisie;
+import com.ww.model.entity.wisie.Wisie;
 import com.ww.repository.wisie.ProfileWisieRepository;
 import com.ww.service.SessionService;
 import com.ww.service.social.ProfileService;
@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.ww.helper.ModelHelper.putErrorCode;
+import static com.ww.helper.ModelHelper.putSuccessCode;
 import static com.ww.helper.NumberHelper.smartRound;
 import static com.ww.helper.RandomHelper.randomDouble;
 
@@ -49,16 +51,22 @@ public class ProfileWisieService {
         profileWisieRepository.saveAll(team);
     }
 
-    public synchronized Map<String, Object> teamSave(Set<Long> ids) {
-        Map<String, Object> model = new HashMap<>();
+    public List<ProfileWisie> findByIds(Set<Long> ids) {
         if (ids.size() != HERO_TEAM_COUNT) {
-            model.put("code", -1);
-            return model;
+            return null;
         }
         List<ProfileWisie> wisies = profileWisieRepository.findAllByProfile_IdAndIdIn(sessionService.getProfileId(), new ArrayList<>(ids));
         if (ids.size() != wisies.size()) {
-            model.put("code", -1);
-            return model;
+            return null;
+        }
+        return wisies;
+    }
+
+    public synchronized Map<String, Object> teamSave(Set<Long> ids) {
+        Map<String, Object> model = new HashMap<>();
+        List<ProfileWisie> wisies = findByIds(ids);
+        if (wisies == null) {
+            return putErrorCode(model);
         }
         List<ProfileWisie> actualInTeam = profileWisieRepository.findAllByProfile_IdAndInTeam(sessionService.getProfileId(), true);
         for (ProfileWisie profileWisie : actualInTeam) {
@@ -71,8 +79,7 @@ public class ProfileWisieService {
         changes.addAll(actualInTeam);
         changes.addAll(wisies);
         profileWisieRepository.saveAll(changes);
-        model.put("code", 1);
-        return model;
+        return putSuccessCode(model);
     }
 
     public synchronized Map<String, Object> upgradeWisie(Long profileWisieId, WisdomAttribute wisdomAttribute, MentalAttribute mentalAttribute) {
@@ -84,13 +91,11 @@ public class ProfileWisieService {
         } else if (mentalAttribute != null && wisdom >= MentalAttribute.UPGRADE_COST) {
             profile.changeResources(null, null, -MentalAttribute.UPGRADE_COST, null);
         } else {
-            model.put("code", -1);
-            return model;
+            return putErrorCode(model);
         }
         Optional<ProfileWisie> optionalProfileWisie = profileWisieRepository.findByIdAndProfile_Id(profileWisieId, profile.getId());
         if (!optionalProfileWisie.isPresent()) {
-            model.put("code", -1);
-            return model;
+            return putErrorCode(model);
         }
         ProfileWisie profileWisie = optionalProfileWisie.get();
         double attributeChange = calculateWisieAttributeChange(profileWisie, wisdomAttribute, mentalAttribute);
@@ -104,8 +109,7 @@ public class ProfileWisieService {
         model.put("attributeChange", smartRound(attributeChange));
         model.put("profileWisie", new ProfileWisieDTO(profileWisie));
         model.put("profile", new ProfileResourcesDTO(profile));
-        model.put("code", 1);
-        return model;
+        return putSuccessCode(model);
     }
 
     private double calculateWisieAttributeChange(ProfileWisie profileWisie, WisdomAttribute wisdomAttribute, MentalAttribute mentalAttribute) {

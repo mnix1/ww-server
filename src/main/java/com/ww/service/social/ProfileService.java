@@ -17,6 +17,10 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.ww.helper.ModelHelper.putCode;
+import static com.ww.helper.ModelHelper.putErrorCode;
+import static com.ww.helper.ModelHelper.putSuccessCode;
+
 @Service
 public class ProfileService {
 
@@ -36,14 +40,6 @@ public class ProfileService {
         return profileRepository.findFirstByIdNot(sessionService.getProfileId());
     }
 
-    public Profile getProfileOnlyWithId() {
-        return getProfileOnlyWithId(sessionService.getProfileId());
-    }
-
-    public Profile getProfileOnlyWithId(Long profileId) {
-        return new Profile(profileId);
-    }
-
     public Profile getProfile() {
         return getProfile(sessionService.getProfileId());
     }
@@ -56,53 +52,40 @@ public class ProfileService {
         return profileRepository.findByTag(tag);
     }
 
-    public List<Profile> getProfiles(List<Long> profileIds) {
-        if (profileIds.isEmpty()) {
-            return new ArrayList<>();
-        }
-        return profileRepository.findAllByIdIn(profileIds);
-    }
-
     public Map<String, Object> changeWisor(String wisor) {
         Map<String, Object> model = new HashMap<>();
         if (wisor.length() > ("wisor" + WISOR_MAX_ID).length() || !wisor.contains("wisor")) {
-            model.put("code", -1);
-            return model;
+            return putErrorCode(model);
         }
         String idString = wisor.replace("wisor", "");
         int id = Integer.parseInt(idString);
         if (id < WISOR_MIN_ID || id > WISOR_MAX_ID) {
-            model.put("code", -1);
-            return model;
+            return putErrorCode(model);
         }
         Profile profile = getProfile();
         String newWisorType = "wisor" + id;
         profile.setWisorType(newWisorType);
         save(profile);
-        model.put("code", 1);
         model.put("wisorType", newWisorType);
-        return model;
+        return putSuccessCode(model);
     }
 
     public Map<String, Object> changeName(String name) {
         Map<String, Object> model = new HashMap<>();
         name = name.trim();
         if (name.length() > NAME_MAX_LENGTH || name.length() < NAME_MIN_LENGTH) {
-            model.put("code", -2);
-            return model;
+            return putCode(model, -2);
         }
         Pattern pattern = Pattern.compile("^(\\w+\\s)*\\w+$");
         Matcher matcher = pattern.matcher(name);
         if (!matcher.matches()) {
-            model.put("code", -3);
-            return model;
+            return putCode(model, -3);
         }
         Profile profile = getProfile();
         profile.setName(name);
         save(profile);
-        model.put("code", 1);
         model.put("name", name);
-        return model;
+        return putSuccessCode(model);
     }
 
     public String getAuthId(Principal user) {
@@ -130,12 +113,5 @@ public class ProfileService {
 
     public void save(Profile profile) {
         profileRepository.save(profile);
-    }
-
-    public Profile updateProfileName(String name) {
-        Profile profile = getProfile();
-        profile.setName(name);
-        profileRepository.save(profile);
-        return profile;
     }
 }

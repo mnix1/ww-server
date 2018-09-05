@@ -4,4 +4,6 @@ public enum CampaignType {
     SPACE_EXPEDITION,
     UNDERWATER_WORLD,
     CELEBRITY_LIFE,
+
+
 }

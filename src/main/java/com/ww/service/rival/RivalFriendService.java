@@ -27,6 +27,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static com.ww.helper.ModelHelper.putErrorCode;
+import static com.ww.helper.ModelHelper.putSuccessCode;
+
 @Service
 public class RivalFriendService {
     private static final Logger logger = LoggerFactory.getLogger(RivalFriendService.class);
@@ -52,17 +55,14 @@ public class RivalFriendService {
         cleanCreator();
         cleanOpponent();
         if (rivalInitContainers.stream().anyMatch(e -> e.getOpponentProfile().getTag().equals(tag) || e.getCreatorProfile().getTag().equals(tag))) {
-            model.put("code", -1);
-            return model;
+            return putErrorCode(model);
         }
         RivalInitContainer rivalInitContainer = prepareContainer(tag, type);
         if (rivalInitContainer == null) {
-            model.put("code", -1);
-            return model;
+            return putErrorCode(model);
         }
         rivalInitContainers.add(rivalInitContainer);
-        model.put("code", 1);
-        return model;
+        return putSuccessCode(model);
     }
 
     private void cleanCreator() {

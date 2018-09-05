@@ -21,10 +21,7 @@ public class PractiseController {
 
     @RequestMapping(value = "/start", method = RequestMethod.POST)
     public Map start(@RequestBody Map<String, Object> payload) {
-        if (!payload.containsKey("category")) {
-            throw new IllegalArgumentException();
-        }
-        if (!payload.containsKey("difficultyLevel")) {
+        if (!payload.containsKey("category") || !payload.containsKey("difficultyLevel")) {
             throw new IllegalArgumentException();
         }
         Map<String, Object> model = new HashMap<>();

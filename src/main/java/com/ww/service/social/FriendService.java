@@ -17,6 +17,9 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.ww.helper.ModelHelper.putCode;
+import static com.ww.helper.ModelHelper.putErrorCode;
+import static com.ww.helper.ModelHelper.putSuccessCode;
 import static com.ww.helper.TagHelper.isCorrectTag;
 import static com.ww.helper.TagHelper.prepareTag;
 
@@ -47,27 +50,26 @@ public class FriendService {
         Map<String, Object> model = new HashMap<>();
         tag = prepareTag(tag);
         if (!isCorrectTag(tag)) {
-            model.put("code", -2);
-            return model;
+            return putCode(model, -2);
         }
         Profile profile = profileService.getProfile(profileId);
         Profile friendProfile = profileService.getProfile(tag);
         if (friendProfile == null) {
-            model.put("code", -2); // no profile with this tag
             logger.error("Not existing profile tag requested: sessionProfileId: {} tag: {}", profileId, tag);
-            return model;
+            // no profile with this tag
+            return putCode(model, -2);
         }
         if (friendProfile.getId().equals(profileId)) {
-            model.put("code", -3); // added yourself
             logger.error("Requested to add yourself: sessionProfileId: {} tag: {}", profileId, tag);
-            return model;
+            // added yourself
+            return putCode(model, -3);
         }
         ProfileFriend profileFriend = profileFriendRepository.findByProfile_IdAndFriendProfile_Tag(profileId, tag);
         if (profileFriend != null) {
             if (profileFriend.getStatus() == FriendStatus.ACCEPTED) {
-                model.put("code", -1); // already friends
                 logger.error("Requested to add already friend: sessionProfileId: {} tag: {}", profileId, tag);
-                return model;
+                // already friends
+                return putErrorCode(model);
             }
             if (profileFriend.getStatus() == FriendStatus.REQUESTED) {
                 profileFriend.setStatus(FriendStatus.ACCEPTED);
@@ -75,20 +77,19 @@ public class FriendService {
                 profileFriend = new ProfileFriend(FriendStatus.ACCEPTED, friendProfile, profile);
                 profileFriendRepository.save(profileFriend);
                 sendWebSocketFriendAdd(profileFriend);
-                model.put("code", 1); // acceptFriend
-                return model;
+                // acceptFriend
+                return putSuccessCode(model);
             }
         }
         profileFriend = profileFriendRepository.findByProfile_IdAndFriendProfile_Id(friendProfile.getId(), profileId);
         if (profileFriend != null) {
-            model.put("code", -1); // request already sent
-            return model;
+            // request already sent
+            return putErrorCode(model);
         }
         profileFriend = new ProfileFriend(FriendStatus.REQUESTED, friendProfile, profile);
         profileFriendRepository.save(profileFriend);
         sendWebSocketFriendAdd(profileFriend);
-        model.put("code", 1);
-        return model;
+        return putSuccessCode(model);
     }
 
     public void sendWebSocketFriendAdd(ProfileFriend profileFriend) {
@@ -125,8 +126,7 @@ public class FriendService {
                 sendWebSocketFriendDelete(friendProfileId, profileFriend.getFriendProfile().getTag());
             }
         }
-        model.put("code", 1);
-        return model;
+        return putSuccessCode(model);
     }
 
 

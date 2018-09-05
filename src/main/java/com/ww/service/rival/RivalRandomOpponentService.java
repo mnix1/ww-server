@@ -16,6 +16,9 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import static com.ww.helper.ModelHelper.putErrorCode;
+import static com.ww.helper.ModelHelper.putSuccessCode;
+
 public abstract class RivalRandomOpponentService {
     private final ConcurrentHashMap<Long, RivalSearchingOpponentContainer> waitingForRivalProfiles = new ConcurrentHashMap<>();
 
@@ -41,14 +44,12 @@ public abstract class RivalRandomOpponentService {
         Map<String, Object> model = new HashMap<>();
         Profile profile = getProfileService().getProfile();
         if (!checkIfCanPlay(profile)) {
-            model.put("code", -1);
-            return model;
+            return putErrorCode(model);
         }
         if (!waitingForRivalProfiles.containsKey(profile.getId())) {
             waitingForRivalProfiles.put(profile.getId(), new RivalSearchingOpponentContainer(importance, profile));
         }
-        model.put("code", 1);
-        return model;
+        return putSuccessCode(model);
     }
 
     public Map cancel(RivalImportance importance) {

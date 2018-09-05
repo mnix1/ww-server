@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import static com.ww.helper.ModelHelper.putSuccessCode;
 import static com.ww.manager.rival.campaign.CampaignWarManager.BOT_PROFILE_ID;
 import static com.ww.model.constant.rival.RivalType.CAMPAIGN_WAR;
 
@@ -84,8 +85,7 @@ public class CampaignWarService extends WarService {
         getProfileIdToRivalManagerMap().put(rival.getCreatorProfile().getId(), rivalManager);
         getProfileIdToRivalManagerMap().put(rival.getOpponentProfile().getId(), rivalManager);
         rivalManager.maybeStart(rival.getOpponentProfile().getId());
-        model.put("code", 1);
-        return model;
+        return putSuccessCode(model);
     }
 
     public Profile prepareComputerProfile() {

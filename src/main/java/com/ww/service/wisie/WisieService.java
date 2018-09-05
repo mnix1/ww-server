@@ -15,6 +15,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.ww.helper.ModelHelper.putCode;
+import static com.ww.helper.ModelHelper.putSuccessCode;
 import static com.ww.helper.RandomHelper.randomElement;
 
 @Service
@@ -66,20 +68,19 @@ public class WisieService {
         Map<String, Object> model = new HashMap<>();
         Profile profile = profileService.getProfile();
         if (!checkEnoughResourcesToExperiment(profile)) {
-            model.put("code", -3);//no resources
-            return model;
+            //no resources
+            return putCode(model, -3);
         }
         Wisie wisie = randomWisieForProfile(profile.getId());
         if (wisie == null) {
-            model.put("code", -2);//all discovered
-            return model;
+            //all discovered
+            return putCode(model, -2);
         }
-        model.put("code", 1);
         model.put("wisieType", wisie.getType());
         profileWisieService.addWisie(profile, wisie);
         profile.changeResources(null, -EXPERIMENT_CRYSTAL_COST, -EXPERIMENT_WISDOM_COST, -EXPERIMENT_ELIXIR_COST);
         profileService.save(profile);
-        return model;
+        return putSuccessCode(model);
     }
 
 }

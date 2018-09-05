@@ -16,6 +16,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.ww.helper.ModelHelper.putCode;
+import static com.ww.helper.ModelHelper.putErrorCode;
+import static com.ww.helper.ModelHelper.putSuccessCode;
 import static com.ww.service.book.BookService.BOOK_SHELF_COUNT;
 
 @Service
@@ -40,8 +43,7 @@ public class ShopService {
         Map<String, Object> model = new HashMap<>();
         Optional<Book> optionalBook = bookRepository.findOneById(id);
         if (!optionalBook.isPresent()) {
-            model.put("code", -1);
-            return model;
+            return putErrorCode(model);
         }
         Book book = optionalBook.get();
         Profile profile = profileService.getProfile();
@@ -54,18 +56,15 @@ public class ShopService {
             isEnoughResources = true;
         }
         if (!isEnoughResources) {
-            model.put("code", -3);//no resources
-            return model;
+            return putCode(model, -3);//no resources
         }
         if (profileBookService.isProfileBookShelfFull(profile.getId())) {
-            model.put("code", -2);//no space at shelf
-            return model;
+            return putCode(model, -2);//no space at shelf
         }
         profileService.save(profile);
         profileBookService.giveBook(profile, book);
-        model.put("code", 1);
         model.put("bookType", book.getType());
-        return model;
+        return putSuccessCode(model);
     }
 
 }

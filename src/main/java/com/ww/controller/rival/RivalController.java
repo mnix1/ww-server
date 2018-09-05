@@ -62,10 +62,7 @@ public class RivalController {
 
     @RequestMapping(value = "/startFriend", method = RequestMethod.POST)
     public Map startFriend(@RequestBody Map<String, Object> payload) {
-        if (!payload.containsKey("tag")) {
-            throw new IllegalArgumentException();
-        }
-        if (!payload.containsKey("type")) {
+        if (!payload.containsKey("tag") || !payload.containsKey("type")) {
             throw new IllegalArgumentException();
         }
         RivalType type = RivalType.valueOf((String) payload.get("type"));
