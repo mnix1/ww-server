@@ -10,24 +10,24 @@ import java.util.Map;
 @Setter
 public class RewardObject {
 
-    private Long gainGold;
-    private Long gainCrystal;
-    private Long gainElixir;
-    private Long gainWisdom;
+    private Long goldGain;
+    private Long crystalGain;
+    private Long wisdomGain;
+    private Long elixirGain;
     private BookType bookType;
 
     public void writeToMap(Map<String,Object> model) {
-        if (gainGold != null) {
-            model.put("gainGold", gainGold);
+        if (goldGain != null) {
+            model.put("goldGain", goldGain);
         }
-        if (gainCrystal != null) {
-            model.put("gainCrystal", gainCrystal);
+        if (crystalGain != null) {
+            model.put("crystalGain", crystalGain);
         }
-        if (gainElixir != null) {
-            model.put("gainElixir", gainElixir);
+        if (wisdomGain != null) {
+            model.put("wisdomGain", wisdomGain);
         }
-        if (gainWisdom != null) {
-            model.put("gainWisdom", gainWisdom);
+        if (elixirGain != null) {
+            model.put("elixirGain", elixirGain);
         }
         if (bookType != null) {
             model.put("bookType", bookType.name());

@@ -35,7 +35,7 @@ public class RewardService {
 
     public void addRewardFromBattleWin(Profile winner) {
         RewardObject rewardObject = new RewardObject();
-        rewardObject.setGainGold(1L);
+        rewardObject.setGoldGain(1L);
         Profile profile = profileService.getProfile(winner.getId());
         profile.changeResources(1L, null, null, null);
         profileService.save(profile);
@@ -50,7 +50,7 @@ public class RewardService {
 
     public void addRewardFromWarWin(Profile winner) {
         RewardObject rewardObject = new RewardObject();
-        rewardObject.setGainGold(2L);
+        rewardObject.setGoldGain(2L);
         Profile profile = profileService.getProfile(winner.getId());
         profile.changeResources(2L, null, null, null);
         profileService.save(profile);

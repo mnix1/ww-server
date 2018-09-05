@@ -14,26 +14,21 @@ public class ProfileBookDTO {
     private Long readTime;
     private Integer level;
 
-    private Long gainCrystal;
-    private Long gainElixir;
-    private Long gainWisdom;
+    private Long crystalGain;
+    private Long wisdomGain;
+    private Long elixirGain;
 
     private Boolean isInProgress;
     private Long alreadyReadInterval;
     private Boolean canClaimReward;
 
-    private String namePolish;
-    private String nameEnglish;
-
     public ProfileBookDTO(Book book) {
         this.type = book.getType();
         this.readTime = book.getReadTime();
         this.level = book.getLevel();
-        this.gainCrystal = book.getGainCrystal();
-        this.gainElixir = book.getGainElixir();
-        this.gainWisdom = book.getGainWisdom();
-        this.namePolish = book.getNamePolish();
-        this.nameEnglish = book.getNameEnglish();
+        this.crystalGain = book.getCrystalGain();
+        this.elixirGain = book.getElixirGain();
+        this.wisdomGain = book.getWisdomGain();
     }
 
     public ProfileBookDTO(ProfileBook profileBook) {

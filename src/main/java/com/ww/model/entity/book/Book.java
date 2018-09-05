@@ -24,9 +24,9 @@ public class Book {
     private Long readTime;
     private Integer level;
 
-    private Long gainCrystal;
-    private Long gainElixir;
-    private Long gainWisdom;
+    private Long crystalGain;
+    private Long elixirGain;
+    private Long wisdomGain;
 
     private Boolean canBuyByGold;
     private Boolean canBuyByCrystal;
@@ -34,23 +34,18 @@ public class Book {
     private Long goldCost;
     private Long crystalCost;
 
-    private String namePolish;
-    private String nameEnglish;
-
-    public Book(BookType type, int readTimeHours, Integer level, Long gainCrystal, Long gainElixir, Long gainWisdom, Boolean canBuyByGold, Boolean canBuyByCrystal, Long goldCost, Long crystalCost, String namePolish, String nameEnglish) {
+    public Book(BookType type, int readTimeHours, Integer level, Long crystalGain, Long elixirGain, Long wisdomGain, Boolean canBuyByGold, Boolean canBuyByCrystal, Long goldCost, Long crystalCost) {
         this.type = type;
         this.readTime = ((long) readTimeHours) * 1000 * 3600;
 //        this.readTime = ((long) readTimeHours) * 1000 * 900;
         this.level = level;
-        this.gainCrystal = gainCrystal;
-        this.gainElixir = gainElixir;
-        this.gainWisdom = gainWisdom;
+        this.crystalGain = crystalGain;
+        this.elixirGain = elixirGain;
+        this.wisdomGain = wisdomGain;
         this.canBuyByGold = canBuyByGold;
         this.canBuyByCrystal = canBuyByCrystal;
         this.goldCost = goldCost;
         this.crystalCost = crystalCost;
-        this.namePolish = namePolish;
-        this.nameEnglish = nameEnglish;
     }
 
     @Override

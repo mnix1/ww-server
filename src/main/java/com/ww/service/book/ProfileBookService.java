@@ -6,10 +6,7 @@ import com.ww.model.entity.book.ProfileBook;
 import com.ww.model.entity.social.Profile;
 import com.ww.repository.book.ProfileBookRepository;
 import com.ww.service.SessionService;
-import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
-import com.ww.service.social.RewardService;
-import com.ww.websocket.message.MessageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +18,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.ww.service.book.BookService.BOOK_SHELF_COUNT;
-import static com.ww.websocket.message.Message.REWARD;
 
 @Service
 public class ProfileBookService {
@@ -144,7 +140,7 @@ public class ProfileBookService {
     public void addRewardFromBook(ProfileBook profileBook) {
         Profile profile = profileBook.getProfile();
         Book b = profileBook.getBook();
-        profile.changeResources(null, b.getGainCrystal(), b.getGainWisdom(), b.getGainElixir());
+        profile.changeResources(null, b.getCrystalGain(), b.getWisdomGain(), b.getElixirGain());
         profileService.save(profile);
     }
 

@@ -11,9 +11,9 @@ public enum BookType {
     FAIRY_TALE,
     //1
     TV_GUIDE,
-    DIARY,
-    SPORT_MAGAZINE,
+//    DIARY,
     COLORFUL_MAGAZINE,
+    SPORT_MAGAZINE,
     //2,
     NEWSPAPER,
     ROMANCE_NOVEL,
