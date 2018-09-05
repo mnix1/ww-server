@@ -1,96 +1,31 @@
 package com.ww.database;
 
-import com.ww.helper.EloHelper;
-import com.ww.helper.TagHelper;
 import com.ww.model.constant.Category;
-import com.ww.model.constant.wisie.WisieType;
-import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.constant.rival.task.TaskRenderer;
 import com.ww.model.constant.rival.task.type.*;
-import com.ww.model.constant.book.BookType;
-import com.ww.model.entity.wisie.Wisie;
-import com.ww.model.entity.rival.task.Clipart;
+import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.entity.rival.task.TaskType;
 import com.ww.model.entity.rival.task.TaskWisdomAttribute;
-import com.ww.model.entity.book.Book;
-import com.ww.model.entity.social.Profile;
-import com.ww.repository.wisie.WisieRepository;
-import com.ww.repository.rival.task.AnswerRepository;
-import com.ww.repository.rival.task.QuestionRepository;
 import com.ww.repository.rival.task.TaskTypeRepository;
 import com.ww.repository.rival.task.TaskWisdomAttributeRepository;
-import com.ww.repository.rival.task.category.ClipartRepository;
-import com.ww.repository.book.BookRepository;
-import com.ww.repository.social.ProfileRepository;
-import com.ww.service.rival.task.country.CountryService;
-import com.ww.service.rival.task.element.ElementService;
-import com.ww.service.rival.task.lyrics.TrackService;
-import com.ww.service.rival.task.memory.MemoryTaskHelperService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.SecureRandom;
-import java.util.*;
-
-import static com.ww.helper.ImageHelper.convertSvgToPng;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 
 
 @NoArgsConstructor
 @Service
-public class Init {
+public class InitTaskTypesService {
 
     @Autowired
-    TaskTypeRepository taskTypeRepository;
+    private TaskTypeRepository taskTypeRepository;
     @Autowired
-    TaskWisdomAttributeRepository taskWisdomAttributeRepository;
-
-    @Autowired
-    TrackService trackService;
-
-    @Autowired
-    CountryService countryService;
-
-    @Autowired
-    ElementService elementService;
-
-    @Autowired
-    MemoryTaskHelperService memoryTaskHelperService;
-
-    @Autowired
-    ProfileRepository profileRepository;
-
-    @Autowired
-    QuestionRepository questionRepository;
-
-    @Autowired
-    AnswerRepository answerRepository;
-
-    @Autowired
-    WisieRepository wisieRepository;
-
-    @Autowired
-    BookRepository bookRepository;
-
-    @Autowired
-    ClipartRepository clipartRepository;
-
-    private Random random = new SecureRandom();
-
-    public void init() {
-        if (bookRepository.findAll().size() == 0) {
-            initBooks();
-            initTaskTypes();
-            initWisies();
-            initProfiles();
-            initMusicTracks();
-            initCliparts();
-            initGeographyCountries();
-            initChemistryElements();
-            memoryTaskHelperService.initShapes();
-            memoryTaskHelperService.initColors();
-        }
-    }
+    private TaskWisdomAttributeRepository taskWisdomAttributeRepository;
 
     public void initTaskTypes() {
         List<TaskType> taskTypes = new ArrayList<>();
@@ -369,139 +304,6 @@ public class Init {
         }
         taskTypeRepository.saveAll(taskTypes);
         taskWisdomAttributeRepository.saveAll(wisdomAttributes);
-    }
-
-    public void initProfiles() {
-        List<Profile> profiles = new ArrayList<>();
-        profiles.add(new Profile(TagHelper.randomTag(), "Kozioł23", 3L));
-        profiles.add(new Profile(TagHelper.randomTag(), "bocian", 10L));
-        profileRepository.saveAll(profiles);
-    }
-
-    public void initMusicTracks() {
-        trackService.addTrack("Łzy", "Agnieszka", "http://www.tekstowo.pl/piosenka,Lzy,agnieszka.html");
-        trackService.addTrack("Hej", "Teksański", "https://ising.pl/hey-teksanski-tekst");
-        trackService.addTrack("Ich Troje", "Zawsze z Tobą chciałbym być", "https://ising.pl/ich-troje-zawsze-z-toba-chcialbym-byc-przez-miesiac-tekst");
-        trackService.addTrack("Marek Grechuta", "Dni których nie znamy", "https://ising.pl/marek-grechuta-dni-ktorych-nie-znamy-tekst");
-        trackService.addTrack("Myslovitz", "Długość dźwięku samotności", "https://ising.pl/myslovitz-dlugosc-dzwieku-samotnosci-tekst");
-        trackService.addTrack("Lady Pank", "Warszawa", "https://ising.pl/lady-pank-stacja-warszawa-tekst");
-    }
-
-    public void initCliparts() {
-        List<Clipart> cliparts = new ArrayList<>();
-        cliparts.add(new Clipart("pepper.svg", "Papryka", "Pepper"));
-        cliparts.add(new Clipart("notebook.svg", "Notes", "Notebook"));
-        cliparts.add(new Clipart("pickles.svg", "Ogórki konserwowe", "Pickles"));
-        cliparts.add(new Clipart("scales.svg", "Waga", "Scales"));
-        cliparts.add(new Clipart("cdDvd.svg", "Płyta CD/DVD", "CD/DVD"));
-        cliparts.add(new Clipart("microscope.svg", "Mikroskop", "Microscope"));
-        cliparts.add(new Clipart("basketball.svg", "Piłka do kosza", "Basketball ball"));
-        cliparts.add(new Clipart("football.svg", "Piłka do nogi", "Football ball"));
-        cliparts.add(new Clipart("fish.svg", "Ryba", "Fish"));
-        cliparts.add(new Clipart("calculator.svg", "Kalkulator", "Calculator"));
-        cliparts.add(new Clipart("hardDrive.svg", "Dysk twardy", "Hard drive"));
-        cliparts.add(new Clipart("piano.svg", "Fortepian", "Piano"));
-        cliparts.add(new Clipart("rubicCube.svg", "Kostka Rubika", "Rubic's cube"));
-        cliparts.add(new Clipart("seat.svg", "Fotel", "Seat"));
-        cliparts.add(new Clipart("car.svg", "Samochód", "Car"));
-        cliparts.add(new Clipart("plumbersWrench.svg", "Klucz francuski", "Plumbers Wrench"));
-        cliparts.add(new Clipart("thumbUp.svg", "Kciuk w górę", "Thumb up"));
-        cliparts.add(new Clipart("thumbDown.svg", "Kciuk w dół", "Thumb down"));
-        cliparts.add(new Clipart("gameController.svg", "Kontroler do gier", "Game controller"));
-        cliparts.add(new Clipart("emoticon.svg", "Emotikona", "Emoticon"));
-        cliparts.add(new Clipart("tree.svg", "Drzewo", "Tree"));
-        cliparts.add(new Clipart("snowman.svg", "Bałwan", "Snowman"));
-        cliparts.add(new Clipart("clouds.svg", "Chmury", "Clouds"));
-        cliparts.add(new Clipart("podium.svg", "Podium", "Podium"));
-        cliparts.add(new Clipart("medal.svg", "Medal", "Medal"));
-        cliparts.add(new Clipart("speaker.svg", "Głośnik", "Speaker"));
-        cliparts.add(new Clipart("helmet.svg", "Kask", "Helmet"));
-        cliparts.add(new Clipart("scooter.svg", "Skuter", "Scooter"));
-        cliparts.add(new Clipart("trashCan.svg", "Kosz na śmieci", "Trash can"));
-        cliparts.add(new Clipart("balloon.svg", "Balon", "Balloon"));
-        cliparts.add(new Clipart("aeroplan.svg", "Samolot", "Aeroplan"));
-        cliparts.forEach(clipart -> convertSvgToPng(clipart.getResourcePath(), clipart.getPngResourcePath()));
-        clipartRepository.saveAll(cliparts);
-    }
-
-    public void initBooks() {
-        List<Book> books = new ArrayList<>();
-        books.add(new Book(BookType.LEAFLET, 1, 0, 1L, 0L, 0L, true, false, 1L, 0L));
-        books.add(new Book(BookType.FAIRY_TALE, 1, 0, 0L, 0L, 1L, true, false, 1L, 0L));
-        books.add(new Book(BookType.TV_GUIDE, 2, 1, 3L, 0L, 0L, true, false, 2L, 0L));
-        books.add(new Book(BookType.COLORFUL_MAGAZINE, 2, 1, 2L, 0L, 1L, true, false, 2L, 0L));
-        books.add(new Book(BookType.SPORT_MAGAZINE, 2, 1, 1L, 0L, 2L, true, false, 2L, 0L));
-        books.add(new Book(BookType.NEWSPAPER, 2, 1, 0L, 0L, 3L, true, false, 2L, 0L));
-        books.add(new Book(BookType.ROMANCE_NOVEL, 4, 2, 7L, 0L, 0L, true, false, 4L, 0L));
-        books.add(new Book(BookType.USER_MANUAL, 4, 2, 3L, 0L, 4L, true, false, 4L, 0L));
-        books.add(new Book(BookType.BIOGRAPHY, 4, 2, 1L, 0L, 6L, true, false, 4L, 0L));
-        books.add(new Book(BookType.HISTORICAL_NOVEL, 8, 3, 10L, 0L, 5L, true, false, 8L, 0L));
-        books.add(new Book(BookType.CROSSWORD, 8, 3, 7L, 0L, 8L, true, false, 8L, 0L));
-        books.add(new Book(BookType.FINANCIAL_STATEMENT, 8, 3, 1L, 0L, 14L, true, false, 8L, 0L));
-        books.add(new Book(BookType.WORLD_ATLAS, 12, 4, 10L, 0L, 13L, true, false, 12L, 0L));
-        books.add(new Book(BookType.STUDENT_BOOK, 12, 4, 3L, 0L, 20L, true, false, 12L, 0L));
-        books.add(new Book(BookType.ENCYCLOPEDIA, 16, 5, 11L, 0L, 20L, true, false, 16L, 0L));
-        books.add(new Book(BookType.SCIENCE_ARTICLE, 16, 5, 5L, 0L, 26L, true, false, 16L, 0L));
-        books.add(new Book(BookType.MYSTERIOUS_BOOK, 20, 6, 0L, 30L, 9L, false, true, 0L, 100L));
-        books.add(new Book(BookType.SECRET_BOOK, 20, 6, 19L, 20L, 0L, false, false, 0L, 0L));
-        bookRepository.saveAll(books);
-    }
-
-    public void initWisies() {
-        List<Wisie> wisies = new ArrayList<>();
-        wisies.add(new Wisie("Wilku", "Wolf", WisieType.WOLF));
-        wisies.add(new Wisie("Skorupny", "Turtle", WisieType.TURTLE));
-        wisies.add(new Wisie("Zdzigrys", "Tiger", WisieType.TIGER));
-        wisies.add(new Wisie("Jaduś", "Snake", WisieType.SNAKE));
-        wisies.add(new Wisie("Szopuś", "Raccoon", WisieType.RACCOON));
-        wisies.add(new Wisie("Wełnuś", "Sheep", WisieType.SHEEP));
-        wisies.add(new Wisie("Ząbek", "Shark", WisieType.SHARK));
-        wisies.add(new Wisie("Kicek", "Rabbit", WisieType.RABBIT));
-        wisies.add(new Wisie("Misiaczek", "Polar Bear", WisieType.POLAR_BEAR));
-        wisies.add(new Wisie("Zgapka", "Parrot", WisieType.PARROT));
-        wisies.add(new Wisie("Pandziu", "Panda", WisieType.PANDA_EAT));
-        wisies.add(new Wisie("Strusior", "Ostrich", WisieType.OSTRICH));
-        wisies.add(new Wisie("Bujnogrzyw", "Lion", WisieType.LION));
-        wisies.add(new Wisie("Skoczka", "Kangaroo", WisieType.KANGAROO));
-        wisies.add(new Wisie("Rumo", "Horse", WisieType.HORSE));
-        wisies.add(new Wisie("Goruś", "Gorilla", WisieType.GORILLA));
-        wisies.add(new Wisie("Lizuś", "Fox", WisieType.FOX_MAN));
-        wisies.add(new Wisie("Lisiczka", "Foxie", WisieType.FOX));
-        wisies.add(new Wisie("Trąbcia", "Elephant", WisieType.ELEPHANT));
-        wisies.add(new Wisie("Orłuś", "Eagle", WisieType.EAGLE));
-        wisies.add(new Wisie("Grubełło", "Fat Dragon", WisieType.DRAGON_FAT));
-        wisies.add(new Wisie("Supełło", "Blue Dragon", WisieType.DRAGON_BLUE));
-        wisies.add(new Wisie("Pikełło", "Green Dragon", WisieType.DRAGON));
-        wisies.add(new Wisie("Pulszek", "Fat Dog", WisieType.DOG_FAT));
-        wisies.add(new Wisie("Bystruś", "Idea Dog", WisieType.DOG));
-        wisies.add(new Wisie("Kroczek", "Crocodile", WisieType.CROCODILE));
-        wisies.add(new Wisie("Kicia", "Cat Teacher", WisieType.CAT_TEACHER));
-        wisies.add(new Wisie("Kituś", "Apple Cat", WisieType.CAT_PRESENTER));
-        wisies.add(new Wisie("Mruczka", "Kitty", WisieType.CAT_BLUE));
-        wisies.add(new Wisie("Wielobłąd", "Camel", WisieType.CAMEL));
-        wisies.add(new Wisie("Pudziuś", "Bulldog", WisieType.BULLDOG));
-        wisies.add(new Wisie("Byku", "Bull", WisieType.BULL));
-        wisies.add(new Wisie("Dźwiedzior", "Bear", WisieType.BEAR));
-        wisies.add(new Wisie("Żądłolot", "Bee", WisieType.BEE));
-        wisies.add(new Wisie("Żubrowar", "Aurochs", WisieType.AUROCHS));
-        wisies.add(new Wisie("Mrówkacz", "Ant", WisieType.ANT));
-        wisies.add(new Wisie("Pardzio", "Lampard", WisieType.LAMPARD));
-        wisies.add(new Wisie("Smakełło", "Red Dragon", WisieType.DRAGON_RED));
-        wisies.add(new Wisie("Słodzik", "Sweet Dog", WisieType.DOG_SWEET));
-        wisies.add(new Wisie("Sowcia", "Owl", WisieType.OWL));
-        wisies.add(new Wisie("Żabcia", "Frog", WisieType.FROG));
-        wisies.add(new Wisie("Wiewcia", "Squirrel", WisieType.SQUIRREL));
-        wisies.add(new Wisie("Pinguś", "Penguin", WisieType.PENGUIN));
-        wisies.add(new Wisie("Morsu", "Walrus", WisieType.WALRUS));
-        wisieRepository.saveAll(wisies);
-    }
-
-    public void initGeographyCountries() {
-        countryService.loadAndDownloadResources();
-    }
-
-    public void initChemistryElements() {
-        elementService.loadResource();
     }
 
 

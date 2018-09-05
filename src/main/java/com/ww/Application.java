@@ -1,6 +1,6 @@
 package com.ww;
 
-import com.ww.database.Init;
+import com.ww.database.InitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,7 +19,7 @@ import java.util.concurrent.Executors;
 public class Application {
 
     @Autowired
-    Init init;
+    InitService initService;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
@@ -33,7 +33,7 @@ public class Application {
     @Bean
     public CommandLineRunner initDatabase() {
         return (args) -> {
-            init.init();
+            initService.init();
         };
     }
 }
