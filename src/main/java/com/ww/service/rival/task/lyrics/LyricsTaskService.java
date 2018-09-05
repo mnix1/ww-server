@@ -1,7 +1,7 @@
 package com.ww.service.rival.task.lyrics;
 
 import com.ww.model.constant.Language;
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.LyricsTaskTypeValue;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Track;
@@ -30,10 +30,10 @@ public class LyricsTaskService {
     private static String VERSE = "_V_";
     private static String LINE = "_L_";
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, Language lang) {
+    public Question generate(TaskType type, DifficultyLevel difficultyLevel, Language lang) {
         LyricsTaskTypeValue typeValue = LyricsTaskTypeValue.valueOf(type.getValue());
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
         List<Track> tracks = trackRepository.findAllByLang(lang);
         Track track = randomElement(tracks);
         List<List<String>> verses = trackVerseLineContent(track.getContent());
@@ -77,7 +77,7 @@ public class LyricsTaskService {
         return question;
     }
 
-    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, LyricsTaskTypeValue typeValue, Track track, String questionLine, Language lang) {
+    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, LyricsTaskTypeValue typeValue, Track track, String questionLine, Language lang) {
         Question question = new Question(type, difficultyLevel);
         if (Language.addPolish(lang)) {
             String content = "W tekście utworu \"" + track.getName() + "\" zespołu " + track.getAuthor();

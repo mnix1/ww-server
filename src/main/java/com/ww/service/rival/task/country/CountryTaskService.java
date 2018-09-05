@@ -1,6 +1,6 @@
 package com.ww.service.rival.task.country;
 
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.CountryTaskType;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.TaskType;
@@ -15,7 +15,7 @@ public class CountryTaskService {
     @Autowired
     CountryMatchAnswerTaskService countryMatchAnswerTaskService;
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel) {
+    public Question generate(TaskType type, DifficultyLevel difficultyLevel) {
         CountryTaskType typeValue = CountryTaskType.valueOf(type.getValue());
         if (typeValue == CountryTaskType.MAX_AREA
                 || typeValue == CountryTaskType.MIN_AREA

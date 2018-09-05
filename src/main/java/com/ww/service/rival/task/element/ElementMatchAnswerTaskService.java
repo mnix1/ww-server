@@ -1,6 +1,6 @@
 package com.ww.service.rival.task.element;
 
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.ElementTaskType;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Element;
@@ -24,9 +24,9 @@ public class ElementMatchAnswerTaskService {
     @Autowired
     ElementRepository elementRepository;
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, ElementTaskType typeValue) {
+    public Question generate(TaskType type, DifficultyLevel difficultyLevel, ElementTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
         List<Element> elements = prepareElements(typeValue, answersCount);
         Question question = prepareQuestion(type, difficultyLevel, typeValue);
         List<Answer> answers = prepareAnswers(typeValue, elements);
@@ -34,7 +34,7 @@ public class ElementMatchAnswerTaskService {
         return question;
     }
 
-    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, ElementTaskType typeValue) {
+    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, ElementTaskType typeValue) {
         Question question = new Question(type, difficultyLevel);
         if (typeValue == ElementTaskType.MAX_ATOMIC_MASS) {
             question.setTextContentPolish("Który z pierwiastków posiada największą masę atomową?");

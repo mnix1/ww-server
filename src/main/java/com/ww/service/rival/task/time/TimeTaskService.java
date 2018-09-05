@@ -1,6 +1,6 @@
 package com.ww.service.rival.task.time;
 
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.TimeTaskType;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.TaskType;
@@ -12,7 +12,7 @@ public class TimeTaskService {
     @Autowired
     TimeClockTaskService timeClockTaskService;
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel) {
+    public Question generate(TaskType type, DifficultyLevel difficultyLevel) {
         TimeTaskType typeValue = TimeTaskType.valueOf(type.getValue());
         if (typeValue == TimeTaskType.CLOCK_ADD
                 || typeValue == TimeTaskType.CLOCK_SUBTRACT) {

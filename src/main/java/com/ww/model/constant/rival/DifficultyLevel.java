@@ -1,4 +1,4 @@
-package com.ww.model.constant.rival.task;
+package com.ww.model.constant.rival;
 
 import lombok.Getter;
 
@@ -7,24 +7,26 @@ import java.util.Arrays;
 import static com.ww.helper.RandomHelper.randomElement;
 
 @Getter
-public enum TaskDifficultyLevel {
-    EXTREMELY_EASY(0, 1),
-    VERY_EASY(16, 2),
-    EASY(33, 3),
-    NORMAL(50, 4),
-    HARD(66, 5),
-    VERY_HARD(83, 6),
-    EXTREMELY_HARD(100, 7);
+public enum DifficultyLevel {
+    EXTREMELY_EASY(0, 0, 1),
+    VERY_EASY(16, 1, 2),
+    EASY(33, 2, 3),
+    NORMAL(50, 3, 4),
+    HARD(66, 4, 5),
+    VERY_HARD(83, 5, 6),
+    EXTREMELY_HARD(100, 6, 7);
 
     private int level;
+    private int rating;
     private int points;
 
-    private TaskDifficultyLevel(int level, int points) {
+    private DifficultyLevel(int level, int rating, int points) {
         this.level = level;
+        this.rating = rating;
         this.points = points;
     }
 
-    public static TaskDifficultyLevel random() {
+    public static DifficultyLevel random() {
         return randomElement(Arrays.asList(values()));
     }
 
@@ -50,15 +52,15 @@ public enum TaskDifficultyLevel {
         return 8;
     }
 
-    public static int answersCount(TaskDifficultyLevel difficultyLevel, int remainedDifficulty) {
+    public static int answersCount(DifficultyLevel difficultyLevel, int remainedDifficulty) {
         return answersCount(remainedDifficulty);
     }
 
-    public static TaskDifficultyLevel fromLevel(Integer level) {
+    public static DifficultyLevel fromLevel(Integer level) {
         if (level == null) {
             return random();
         }
-        for (TaskDifficultyLevel difficultyLevel : values()) {
+        for (DifficultyLevel difficultyLevel : values()) {
             if (difficultyLevel.getLevel() == level) {
                 return difficultyLevel;
             }
@@ -66,10 +68,10 @@ public enum TaskDifficultyLevel {
         return random();
     }
 
-    public static TaskDifficultyLevel fromString(String name){
+    public static DifficultyLevel fromString(String name) {
         try {
-            return TaskDifficultyLevel.valueOf(name);
-        } catch (IllegalArgumentException e){
+            return DifficultyLevel.valueOf(name);
+        } catch (IllegalArgumentException e) {
             return random();
         }
     }

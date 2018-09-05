@@ -1,30 +1,26 @@
 package com.ww.service.rival.task.color;
 
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.ColorTaskType;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.TaskType;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.awt.Color;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.ww.helper.AnswerHelper.difficultyCalibration;
 import static com.ww.helper.AnswerHelper.isValueDistanceEnough;
 import static com.ww.helper.ColorHelper.*;
-import static com.ww.helper.RandomHelper.randomDistinctIntegers;
-import static com.ww.helper.RandomHelper.randomInteger;
 import static com.ww.service.rival.task.color.ColorTaskService.prepareAnswers;
 
 @Service
 public class ColorMatchAnswerTaskService {
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, ColorTaskType typeValue) {
+    public Question generate(TaskType type, DifficultyLevel difficultyLevel, ColorTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
         Color correctColor = prepareCorrectColor();
         List<Color> wrongColors = prepareWrongColors(typeValue, answersCount - 1, correctColor);
         Question question = prepareQuestion(type, difficultyLevel, typeValue);
@@ -89,7 +85,7 @@ public class ColorMatchAnswerTaskService {
         throw new IllegalArgumentException("No typeValue handled");
     }
 
-    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, ColorTaskType typeValue) {
+    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, ColorTaskType typeValue) {
         Question question = new Question(type, difficultyLevel);
         if (typeValue == ColorTaskType.BIGGEST_R) {
             question.setTextContentPolish("Który kolor składa się procentowo z największej ilości czerwieni?");

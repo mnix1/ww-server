@@ -1,6 +1,6 @@
 package com.ww.service.rival.task.riddle;
 
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.RiddleTaskType;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Clipart;
@@ -23,9 +23,9 @@ public class RiddleClipartTaskService {
     @Autowired
     ClipartRepository clipartRepository;
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, RiddleTaskType typeValue) {
+    public Question generate(TaskType type, DifficultyLevel difficultyLevel, RiddleTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
         List<Clipart> cliparts = prepareCliparts(answersCount);
         Clipart correctClipart = cliparts.get(0);
         List<Clipart> questionCliparts = prepareQuestionCliparts(typeValue, cliparts, answersCount);
@@ -62,7 +62,7 @@ public class RiddleClipartTaskService {
         throw new IllegalArgumentException("No RiddleTaskType handled");
     }
 
-    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, RiddleTaskType typeValue, List<Clipart> questionCliparts) {
+    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, RiddleTaskType typeValue, List<Clipart> questionCliparts) {
         Question question = new Question(type, difficultyLevel);
         question.setImageContent(StringUtils.join(questionCliparts.stream().map(Clipart::getPngResourcePath).collect(Collectors.toList()), ","));
         if (typeValue == RiddleTaskType.MISSING_CLIPART) {

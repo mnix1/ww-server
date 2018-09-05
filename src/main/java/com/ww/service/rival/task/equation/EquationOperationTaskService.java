@@ -1,6 +1,6 @@
 package com.ww.service.rival.task.equation;
 
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.EquationTaskType;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Question;
@@ -19,9 +19,9 @@ import static com.ww.helper.RandomHelper.randomIntegers;
 @Service
 public class EquationOperationTaskService {
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, EquationTaskType typeValue) {
+    public Question generate(TaskType type, DifficultyLevel difficultyLevel, EquationTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
         int[] numbers = prepareNumbers(typeValue, remainedDifficulty);
         Question question = prepareQuestion(type, difficultyLevel, typeValue, numbers);
         List<Answer> answers = prepareAnswers(typeValue, numbers, answersCount);
@@ -55,7 +55,7 @@ public class EquationOperationTaskService {
         return numbers;
     }
 
-    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, EquationTaskType typeValue, int[] numbers) {
+    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, EquationTaskType typeValue, int[] numbers) {
         Question question = new Question(type, difficultyLevel);
         if (typeValue == EquationTaskType.ADDITION) {
             question.setTextContentPolish("Suma następujących liczb " + numbersToString(numbers, "i") + " wynosi");

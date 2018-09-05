@@ -1,6 +1,6 @@
 package com.ww.service.rival.task.time;
 
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.TimeTaskType;
 import com.ww.model.container.Interval;
 import com.ww.model.entity.rival.task.Answer;
@@ -22,9 +22,9 @@ import static java.time.temporal.ChronoUnit.*;
 @Service
 public class TimeClockTaskService {
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, TimeTaskType typeValue) {
+    public Question generate(TaskType type, DifficultyLevel difficultyLevel, TimeTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
         Instant questionDate = Instant.now().minusSeconds(randomInteger(100, 1000000));
         List<Interval> intervals = prepareIntervals(answersCount, remainedDifficulty);
         Interval correctInterval = intervals.get(0);
@@ -73,7 +73,7 @@ public class TimeClockTaskService {
         return date;
     }
 
-    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, TimeTaskType typeValue, Instant date, Interval correctInterval) {
+    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, TimeTaskType typeValue, Instant date, Interval correctInterval) {
         Question question = new Question(type, difficultyLevel);
         question.setDateContent(date);
         if (typeValue == TimeTaskType.CLOCK_ADD) {

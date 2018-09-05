@@ -6,7 +6,7 @@ import com.ww.manager.rival.state.StateSurrender;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.constant.rival.RivalType;
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.container.rival.RivalContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.dto.rival.task.TaskDTO;
@@ -56,10 +56,10 @@ public abstract class RivalManager {
     }
 
     public void prepareTask(Long id) {
-        prepareTask(id, Category.random(), TaskDifficultyLevel.random());
+        prepareTask(id, Category.random(), DifficultyLevel.random());
     }
 
-    public void prepareTask(Long id, Category category, TaskDifficultyLevel difficultyLevel) {
+    public void prepareTask(Long id, Category category, DifficultyLevel difficultyLevel) {
         Question question = rivalService.prepareQuestion(category, difficultyLevel);
         question.setId(id);
         TaskDTO taskDTO = rivalService.prepareTaskDTO(question);

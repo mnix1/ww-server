@@ -1,6 +1,6 @@
 package com.ww.service.rival.task.country;
 
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.CountryTaskType;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Country;
@@ -24,9 +24,9 @@ public class CountryMatchAnswerTaskService {
     @Autowired
     CountryRepository countryRepository;
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, CountryTaskType typeValue) {
+    public Question generate(TaskType type, DifficultyLevel difficultyLevel, CountryTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
         List<Country> countries = prepareCountries(typeValue, answersCount);
         Question question = prepareQuestion(type, difficultyLevel, typeValue);
         List<Answer> answers = prepareAnswers(typeValue, countries);
@@ -34,7 +34,7 @@ public class CountryMatchAnswerTaskService {
         return question;
     }
 
-    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, CountryTaskType typeValue) {
+    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, CountryTaskType typeValue) {
         Question question = new Question(type, difficultyLevel);
         if (typeValue == CountryTaskType.MAX_POPULATION) {
             question.setTextContentPolish("Które z państw posiada największą populację?");

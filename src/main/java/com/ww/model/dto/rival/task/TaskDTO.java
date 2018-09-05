@@ -1,7 +1,7 @@
 package com.ww.model.dto.rival.task;
 
 import com.ww.model.constant.Category;
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.TaskRenderer;
 import com.ww.model.entity.rival.task.Question;
 import lombok.Getter;
@@ -16,7 +16,7 @@ public class TaskDTO {
 
     private Long id;
     private Category category;
-    private TaskDifficultyLevel difficultyLevel;
+    private DifficultyLevel difficultyLevel;
     private TaskRenderer questionRenderer;
     private TaskRenderer answerRenderer;
     private String imageContent;

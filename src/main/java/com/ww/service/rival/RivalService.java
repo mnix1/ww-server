@@ -2,9 +2,8 @@ package com.ww.service.rival;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.manager.rival.RivalManager;
-import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.Category;
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.container.ProfileConnection;
 import com.ww.model.container.rival.RivalContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
@@ -131,7 +130,7 @@ public abstract class RivalService {
         rivalManager.surrender(profileId);
     }
 
-    public Question prepareQuestion(Category category, TaskDifficultyLevel difficultyLevel) {
+    public Question prepareQuestion(Category category, DifficultyLevel difficultyLevel) {
         Question question = getTaskGenerateService().generate(category, difficultyLevel);
         question.initAnswerIds();
         return question;

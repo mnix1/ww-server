@@ -2,7 +2,7 @@ package com.ww.service.rival.war;
 
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.Category;
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.social.Profile;
 import com.ww.model.entity.wisie.ProfileWisie;
@@ -80,7 +80,7 @@ public class WarService extends RivalService {
         return profileWisieService.listTeam(profile.getId());
     }
 
-    public Question prepareQuestion(Category category, TaskDifficultyLevel difficultyLevel) {
+    public Question prepareQuestion(Category category, DifficultyLevel difficultyLevel) {
         Question question = super.prepareQuestion(category, difficultyLevel);
         taskService.initTaskWisdomAtributes(question);
         return question;

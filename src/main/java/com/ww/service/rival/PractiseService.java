@@ -2,7 +2,7 @@ package com.ww.service.rival;
 
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.practise.PractiseResult;
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.dto.rival.task.PractiseDTO;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.rival.practise.Practise;
@@ -35,7 +35,7 @@ public class PractiseService {
     @Autowired
     private SessionService sessionService;
 
-    public PractiseDTO start(Category category, TaskDifficultyLevel difficultyLevel) {
+    public PractiseDTO start(Category category, DifficultyLevel difficultyLevel) {
         Question question = taskService.generateQuestion(category, difficultyLevel);
         TaskDTO taskDTO = taskRendererService.prepareTaskDTO(question);
         Practise practise = create(question);

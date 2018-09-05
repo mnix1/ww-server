@@ -1,6 +1,6 @@
 package com.ww.service.rival.task.riddle;
 
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.RiddleTaskType;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.TaskType;
@@ -14,7 +14,7 @@ public class RiddleTaskService {
     @Autowired
     RiddleDifferenceTaskService riddleDifferenceTaskService;
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel) {
+    public Question generate(TaskType type, DifficultyLevel difficultyLevel) {
         RiddleTaskType typeValue = RiddleTaskType.valueOf(type.getValue());
         if (typeValue == RiddleTaskType.MISSING_CLIPART
                 || typeValue == RiddleTaskType.FIND_CLIPART) {

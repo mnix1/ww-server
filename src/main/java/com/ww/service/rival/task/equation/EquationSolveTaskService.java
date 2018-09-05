@@ -1,6 +1,6 @@
 package com.ww.service.rival.task.equation;
 
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.EquationTaskType;
 import com.ww.model.container.EquationObject;
 import com.ww.model.entity.rival.task.Answer;
@@ -18,9 +18,9 @@ import static com.ww.helper.RandomHelper.randomInteger;
 @Service
 public class EquationSolveTaskService {
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, EquationTaskType typeValue) {
+    public Question generate(TaskType type, DifficultyLevel difficultyLevel, EquationTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
         int calibration = difficultyCalibration(remainedDifficulty);
         EquationObject equationObject = calibration > 2 ? prepareEquationType2(calibration) : prepareEquationType1(calibration);
         Question question = prepareQuestion(type, difficultyLevel, typeValue, equationObject);
@@ -66,7 +66,7 @@ public class EquationSolveTaskService {
         return eq;
     }
 
-    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, EquationTaskType typeValue, EquationObject equationObject) {
+    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, EquationTaskType typeValue, EquationObject equationObject) {
         Question question = new Question(type, difficultyLevel);
         if (typeValue == EquationTaskType.FIND_X) {
             question.setHtmlContent(equationObject.getEquation());

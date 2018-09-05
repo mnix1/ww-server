@@ -1,6 +1,6 @@
 package com.ww.service.rival.task.color;
 
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.ColorTaskType;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Question;
@@ -22,7 +22,7 @@ public class ColorTaskService {
     @Autowired
     ColorMatchAnswerTaskService colorMatchAnswerTaskService;
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel) {
+    public Question generate(TaskType type, DifficultyLevel difficultyLevel) {
         ColorTaskType typeValue = ColorTaskType.valueOf(type.getValue());
         if (typeValue == ColorTaskType.COLOR_MIXING) {
             return colorMixingTaskService.generate(type, difficultyLevel, typeValue);

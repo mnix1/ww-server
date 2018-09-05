@@ -1,10 +1,9 @@
 package com.ww.manager.rival.state;
 
 import com.ww.manager.rival.RivalManager;
-import com.ww.manager.rival.state.State;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.RivalStatus;
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import io.reactivex.Flowable;
 
 import java.time.Instant;
@@ -31,7 +30,7 @@ public class StateChoosingTaskProps extends State {
         } else {
             rivalContainer.setChosenCategory(Category.RANDOM);
             rivalContainer.setIsChosenCategory(false);
-            rivalContainer.setChosenDifficulty(TaskDifficultyLevel.EXTREMELY_EASY);
+            rivalContainer.setChosenDifficulty(DifficultyLevel.EXTREMELY_EASY);
             rivalContainer.setIsChosenDifficulty(false);
             interval = rivalManager.getChoosingTaskPropsInterval();
         }

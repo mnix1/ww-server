@@ -1,7 +1,7 @@
 package com.ww.model.constant.rival.campaign;
 
 public enum CampaignType {
-    EASY,
-    HARD,
-    EXTREME,
+    SPACE_EXPEDITION,
+    UNDERWATER_WORLD,
+    CELEBRITY_LIFE,
 }

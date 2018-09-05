@@ -3,7 +3,7 @@ package com.ww.manager.rival.state;
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.RivalStatus;
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,13 +28,13 @@ public class StateChosenTaskProps extends State {
             return false;
         }
         Category category = null;
-        TaskDifficultyLevel difficultyLevel = null;
+        DifficultyLevel difficultyLevel = null;
         try {
             if (content.containsKey("category")) {
                 category = Category.fromString((String) content.get("category"));
             }
             if (content.containsKey("difficultyLevel")) {
-                difficultyLevel = TaskDifficultyLevel.fromString((String) content.get("difficultyLevel"));
+                difficultyLevel = DifficultyLevel.fromString((String) content.get("difficultyLevel"));
             }
         } catch (Exception e) {
             logger.error("Wrong content on stateChosenTaskProps for profileId: {}", profileId);

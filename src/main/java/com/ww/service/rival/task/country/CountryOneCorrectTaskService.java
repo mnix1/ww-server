@@ -1,13 +1,12 @@
 package com.ww.service.rival.task.country;
 
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.CountryTaskType;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Country;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.TaskType;
 import com.ww.repository.rival.task.category.CountryRepository;
-import com.ww.service.rival.task.TaskRendererService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +22,9 @@ public class CountryOneCorrectTaskService {
     @Autowired
     CountryRepository countryRepository;
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, CountryTaskType typeValue) {
+    public Question generate(TaskType type, DifficultyLevel difficultyLevel, CountryTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
         List<Country> allCountries = countryRepository.findAll();
         Country correctCountry = randomElement(allCountries);
         Question question = prepareQuestion(type, difficultyLevel, typeValue, correctCountry);
@@ -34,7 +33,7 @@ public class CountryOneCorrectTaskService {
         return question;
     }
 
-    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, CountryTaskType typeValue, Country country) {
+    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, CountryTaskType typeValue, Country country) {
         Question question = new Question(type, difficultyLevel);
         if (typeValue == CountryTaskType.COUNTRY_NAME_FROM_ALPHA_2) {
             question.setTextContentPolish("Wskaż państwo, którego kod to " + country.getAlpha2Code());

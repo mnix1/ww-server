@@ -1,16 +1,11 @@
 package com.ww.service.rival.task.number;
 
 import com.ww.helper.PrimeHelper;
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
-import com.ww.model.constant.rival.task.type.ElementTaskType;
-import com.ww.model.constant.rival.task.type.EquationTaskType;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.NumberTaskType;
 import com.ww.model.entity.rival.task.Answer;
-import com.ww.model.entity.rival.task.Element;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.TaskType;
-import com.ww.repository.rival.task.category.ElementRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,9 +17,9 @@ import static com.ww.helper.RandomHelper.*;
 @Service
 public class NumberOneCorrectTaskService {
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, NumberTaskType typeValue) {
+    public Question generate(TaskType type, DifficultyLevel difficultyLevel, NumberTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
         int[] numbers = prepareNumbers(typeValue, remainedDifficulty, answersCount);
         Question question = prepareQuestion(type, difficultyLevel, typeValue, numbers);
         List<Answer> answers = prepareAnswers(typeValue, numbers, answersCount);
@@ -66,7 +61,7 @@ public class NumberOneCorrectTaskService {
     }
 
 
-    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, NumberTaskType typeValue, int[] numbers) {
+    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, NumberTaskType typeValue, int[] numbers) {
         Question question = new Question(type, difficultyLevel);
         if (typeValue == NumberTaskType.GCD) {
             question.setTextContentPolish("Największy wspólny dzielnik liczb " + numbersToString(numbers, "i") + " wynosi");

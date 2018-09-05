@@ -3,7 +3,7 @@ package com.ww.service.rival.task.memory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.MemoryTaskType;
 import com.ww.model.container.MemoryObject;
 import com.ww.model.entity.rival.task.*;
@@ -34,12 +34,12 @@ public class MemoryTaskService {
     @Autowired
     ColorRepository colorRepository;
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel) {
+    public Question generate(TaskType type, DifficultyLevel difficultyLevel) {
         MemoryTaskType typeValue = MemoryTaskType.valueOf(type.getValue());
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int animationObjectsCount = Math.min(Math.max(TaskDifficultyLevel.answersCount(remainedDifficulty) / 2, 2), 5);
+        int animationObjectsCount = Math.min(Math.max(DifficultyLevel.answersCount(remainedDifficulty) / 2, 2), 5);
         remainedDifficulty -= remainedDifficulty / 2;
-        int answersCount = Math.max(TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty), animationObjectsCount);
+        int answersCount = Math.max(DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty), animationObjectsCount);
         List<MemoryObject> allObjects = prepareObjects(answersCount);
         MemoryObject correctObject = randomElement(allObjects);
         List<MemoryObject> wrongObjects = new ArrayList<>(answersCount - 1);
@@ -75,7 +75,7 @@ public class MemoryTaskService {
         return null;
     }
 
-    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, MemoryTaskType typeValue, MemoryObject correctObject) {
+    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, MemoryTaskType typeValue, MemoryObject correctObject) {
         Question question = new Question(type, difficultyLevel);
         if (typeValue == MemoryTaskType.BACKGROUND_COLOR_FROM_FIGURE_KEY) {
             question.setTextContentPolish("Jaki kolor miał objekt " + correctObject.getKey() + "?");

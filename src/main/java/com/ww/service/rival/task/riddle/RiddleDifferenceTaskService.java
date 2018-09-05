@@ -1,6 +1,6 @@
 package com.ww.service.rival.task.riddle;
 
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.RiddleTaskType;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Clipart;
@@ -23,9 +23,9 @@ public class RiddleDifferenceTaskService {
     @Autowired
     ClipartRepository clipartRepository;
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, RiddleTaskType typeValue) {
+    public Question generate(TaskType type, DifficultyLevel difficultyLevel, RiddleTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
         List<Clipart> cliparts = prepareCliparts(answersCount);
         Clipart correctClipart = cliparts.get(0);
         List<Clipart> questionClipartsLeft = prepareQuestionClipartsLeft(typeValue, cliparts, answersCount);
@@ -69,7 +69,7 @@ public class RiddleDifferenceTaskService {
         return new ArrayList<>(cliparts.subList(1, answersCount));
     }
 
-    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, RiddleTaskType typeValue, List<Clipart> questionClipartsLeft, List<Clipart> questionClipartsRight) {
+    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, RiddleTaskType typeValue, List<Clipart> questionClipartsLeft, List<Clipart> questionClipartsRight) {
         Question question = new Question(type, difficultyLevel);
         String left = StringUtils.join(questionClipartsLeft.stream().map(Clipart::getPngResourcePath).collect(Collectors.toList()), ",");
         String right = StringUtils.join(questionClipartsRight.stream().map(Clipart::getPngResourcePath).collect(Collectors.toList()), ",");

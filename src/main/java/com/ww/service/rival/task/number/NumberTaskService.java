@@ -1,6 +1,6 @@
 package com.ww.service.rival.task.number;
 
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.NumberTaskType;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.TaskType;
@@ -16,7 +16,7 @@ public class NumberTaskService {
     @Autowired
     NumberOneCorrectTaskService numberOneCorrectTaskService;
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel) {
+    public Question generate(TaskType type, DifficultyLevel difficultyLevel) {
         NumberTaskType typeValue = NumberTaskType.valueOf(type.getValue());
         if (typeValue == NumberTaskType.MAX
                 || typeValue == NumberTaskType.MIN) {

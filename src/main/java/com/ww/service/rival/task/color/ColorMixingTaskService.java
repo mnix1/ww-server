@@ -1,6 +1,6 @@
 package com.ww.service.rival.task.color;
 
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.ColorTaskType;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Question;
@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 
 import static com.ww.helper.AnswerHelper.difficultyCalibration;
 import static com.ww.helper.AnswerHelper.isValueDistanceEnough;
-import static com.ww.helper.ColorHelper.colorToHex;
 import static com.ww.helper.ColorHelper.colorToInt;
 import static com.ww.helper.ColorHelper.randomColor;
 import static com.ww.helper.RandomHelper.randomDistinctIntegers;
@@ -24,9 +23,9 @@ import static com.ww.service.rival.task.color.ColorTaskService.prepareAnswers;
 @Service
 public class ColorMixingTaskService {
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, ColorTaskType typeValue) {
+    public Question generate(TaskType type, DifficultyLevel difficultyLevel, ColorTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
         int colorsToMixCount =  difficultyCalibration(remainedDifficulty) / 4 + 2;
         Color correctColor = prepareCorrectColor();
         List<Color> colorsToMix = prepareMixColors(colorsToMixCount, correctColor);
@@ -81,7 +80,7 @@ public class ColorMixingTaskService {
         return wrongColors;
     }
 
-    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, ColorTaskType typeValue, List<Color> colorsToMix) {
+    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, ColorTaskType typeValue, List<Color> colorsToMix) {
         Question question = new Question(type, difficultyLevel);
         if (typeValue == ColorTaskType.COLOR_MIXING) {
             question.setHtmlContent("<div style=\"display:flex;\">" + StringUtils.join(colorsToMix.stream().map(ColorTaskService::colorToHtml).collect(Collectors.toList()), "") + "</div>");

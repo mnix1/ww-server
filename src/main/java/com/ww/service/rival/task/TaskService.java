@@ -1,24 +1,18 @@
 package com.ww.service.rival.task;
 
 import com.ww.model.constant.Category;
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Question;
-import com.ww.model.entity.social.Profile;
 import com.ww.repository.rival.task.AnswerRepository;
 import com.ww.repository.rival.task.QuestionRepository;
-import com.ww.repository.rival.task.TaskTypeRepository;
 import com.ww.repository.rival.task.TaskWisdomAttributeRepository;
-import javafx.concurrent.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.ww.helper.RandomHelper.randomElement;
-import static com.ww.helper.RandomHelper.randomInteger;
 
 @Service
 public class TaskService {
@@ -36,10 +30,10 @@ public class TaskService {
     private TaskWisdomAttributeRepository taskWisdomAttributeRepository;
 
     public List<Question> generateQuestions(List<Category> categories) {
-        return generateQuestions(categories, TaskDifficultyLevel.random());
+        return generateQuestions(categories, DifficultyLevel.random());
     }
 
-    public List<Question> generateQuestions(List<Category> categories, TaskDifficultyLevel difficultyLevel) {
+    public List<Question> generateQuestions(List<Category> categories, DifficultyLevel difficultyLevel) {
         List<Question> questions = categories.stream()
                 .map(category -> taskGenerateService.generate(category, difficultyLevel))
                 .collect(Collectors.toList());
@@ -47,7 +41,7 @@ public class TaskService {
         return questions;
     }
 
-    public Question generateQuestion(Category category, TaskDifficultyLevel difficultyLevel) {
+    public Question generateQuestion(Category category, DifficultyLevel difficultyLevel) {
         Question question = taskGenerateService.generate(category, difficultyLevel);
         save(question);
         return question;

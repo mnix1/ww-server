@@ -5,7 +5,7 @@ import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalProfileStatus;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.constant.rival.RivalType;
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.dto.social.RivalProfileDTO;
 import com.ww.model.entity.rival.task.Answer;
@@ -50,7 +50,7 @@ public abstract class RivalContainer {
     protected Boolean resigned;
 
     protected Category chosenCategory;
-    protected TaskDifficultyLevel chosenDifficulty;
+    protected DifficultyLevel chosenDifficulty;
     protected Boolean isChosenCategory;
     protected Boolean isChosenDifficulty;
 

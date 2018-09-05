@@ -1,7 +1,7 @@
 package com.ww.controller.rival;
 
 import com.ww.model.constant.Category;
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.service.rival.PractiseService;
 import com.ww.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class PractiseController {
         }
         Map<String, Object> model = new HashMap<>();
         Category category = Category.fromString((String) payload.get("category"));
-        TaskDifficultyLevel difficultyLevel = TaskDifficultyLevel.fromString((String) payload.get("difficultyLevel"));
+        DifficultyLevel difficultyLevel = DifficultyLevel.fromString((String) payload.get("difficultyLevel"));
         model.put("practise", practiseService.start(category, difficultyLevel));
         return model;
     }

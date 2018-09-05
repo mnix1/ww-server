@@ -1,6 +1,6 @@
 package com.ww.service.rival.task.element;
 
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.ElementTaskType;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Element;
@@ -22,9 +22,9 @@ public class ElementOneCorrectTaskService {
     @Autowired
     ElementRepository elementRepository;
 
-    public Question generate(TaskType type, TaskDifficultyLevel difficultyLevel, ElementTaskType typeValue) {
+    public Question generate(TaskType type, DifficultyLevel difficultyLevel, ElementTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = TaskDifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
         List<Element> allElements = elementRepository.findAll();
         Element correctElement = randomElement(allElements);
 
@@ -34,7 +34,7 @@ public class ElementOneCorrectTaskService {
         return question;
     }
 
-    private Question prepareQuestion(TaskType type, TaskDifficultyLevel difficultyLevel, ElementTaskType typeValue, Element correctElement) {
+    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, ElementTaskType typeValue, Element correctElement) {
         Question question = new Question(type, difficultyLevel);
         if (typeValue == ElementTaskType.NAME_FROM_SYMBOL) {
             question.setTextContentPolish("Który z pierwiastków oznacza się jako " + correctElement.getSymbol());

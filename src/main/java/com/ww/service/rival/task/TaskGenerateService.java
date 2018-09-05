@@ -2,7 +2,7 @@ package com.ww.service.rival.task;
 
 import com.ww.model.constant.Category;
 import com.ww.model.constant.Language;
-import com.ww.model.constant.rival.task.TaskDifficultyLevel;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.TaskType;
 import com.ww.repository.rival.task.TaskTypeRepository;
@@ -55,7 +55,7 @@ public class TaskGenerateService {
     @Autowired
     TaskTypeRepository taskTypeRepository;
 
-    public Question generate(Category category, TaskDifficultyLevel difficultyLevel) {
+    public Question generate(Category category, DifficultyLevel difficultyLevel) {
         if (category == Category.RANDOM) {
             category = Category.random();
         }
@@ -90,7 +90,7 @@ public class TaskGenerateService {
         return null;
     }
 
-    private TaskType findProperTaskType(Category category, TaskDifficultyLevel difficultyLevel) {
+    private TaskType findProperTaskType(Category category, DifficultyLevel difficultyLevel) {
         List<TaskType> possibleTaskTypes = taskTypeRepository.findAllByCategory(category)
                 .stream()
                 .filter(taskType -> difficultyLevel.getLevel() - taskType.getDifficulty() > -25)
