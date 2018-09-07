@@ -20,6 +20,7 @@ import com.ww.manager.wisieanswer.state.phase5.StateThinkKnowAnswer;
 import com.ww.manager.wisieanswer.state.phase6.*;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import com.ww.model.container.rival.war.WarContainer;
+import com.ww.model.entity.wisie.OwnedWisie;
 import com.ww.model.entity.wisie.ProfileWisie;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.TaskWisdomAttribute;
@@ -43,7 +44,7 @@ public class WisieAnswerManager {
 
     private List<WisieAnswerAction> actions = new ArrayList<>();
 
-    private ProfileWisie wisie;
+    private OwnedWisie wisie;
     private WarManager warManager;
     private WarContainer warContainer;
     private Question question;
@@ -62,7 +63,7 @@ public class WisieAnswerManager {
     private int hobbyCount;
     private double hobbyFactor;
 
-    public WisieAnswerManager(ProfileWisie wisie, RivalManager rivalManager) {
+    public WisieAnswerManager(OwnedWisie wisie, RivalManager rivalManager) {
         this.wisie = wisie;
         this.warManager = (WarManager) rivalManager;
         this.warContainer = (WarContainer) this.warManager.getRivalContainer();

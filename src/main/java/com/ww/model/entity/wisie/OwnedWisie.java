@@ -44,8 +44,16 @@ public abstract class OwnedWisie {
     @Convert(converter = WisieHobbyConverter.class)
     protected Set<Category> hobbies;
     @ManyToOne
+    @JoinColumn(name = "profile_id", nullable = false, updatable = false)
+    protected Profile profile;
+    @ManyToOne
     @JoinColumn(name = "wisie_id", nullable = false, updatable = false)
     protected Wisie wisie;
+
+    protected OwnedWisie(Profile profile, Wisie wisie) {
+        this.profile = profile;
+        this.wisie = wisie;
+    }
 
     protected OwnedWisie(OwnedWisie profileWisie) {
         this.wisdomAttributeMemory = profileWisie.wisdomAttributeMemory;

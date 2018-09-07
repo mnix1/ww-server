@@ -8,7 +8,7 @@ import com.ww.model.container.rival.RivalContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.dto.rival.TeamMemberDTO;
 import com.ww.model.entity.social.Profile;
-import com.ww.model.entity.wisie.ProfileWisie;
+import com.ww.model.entity.wisie.OwnedWisie;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,7 +31,7 @@ public class WarContainer extends RivalContainer {
             WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
             TeamMember teamMember = warProfileContainer.getActiveTeamMember();
             if (teamMember.isWisie()) {
-                wisieAnswerManagers.add(new WisieAnswerManager((ProfileWisie) teamMember.getContent(), rivalManager));
+                wisieAnswerManagers.add(new WisieAnswerManager((OwnedWisie) teamMember.getContent(), rivalManager));
             }
         });
     }
@@ -41,7 +41,7 @@ public class WarContainer extends RivalContainer {
         if (!teamMember.isWisie()) {
             return null;
         }
-        ProfileWisie wisie = (ProfileWisie) teamMember.getContent();
+        OwnedWisie wisie = (OwnedWisie) teamMember.getContent();
         for (WisieAnswerManager answerManager : wisieAnswerManagers) {
             if (answerManager.getWisie().equals(wisie)) {
                 List<WisieAnswerAction> actions = answerManager.getActions();

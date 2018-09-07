@@ -27,6 +27,15 @@ public class TeamHelper {
         return teamMembers;
     }
 
+    public static List<TeamMember> prepareTeamMembers(List<? extends OwnedWisie> wisies) {
+        List<TeamMember> teamMembers = new ArrayList<>();
+        int index = 0;
+        for (OwnedWisie wisie : wisies) {
+            teamMembers.add(new TeamMember(index++, HeroType.WISIE, wisie, new WarProfileWisieDTO(wisie)));
+        }
+        return teamMembers;
+    }
+
     public static List<Integer> preparePresentIndexes(ProfileCampaign profileCampaign, List<TeamMember> teamMembers) {
         List<Integer> presentIndexes = new ArrayList<>();
         if (profileCampaign.getPresent()) {

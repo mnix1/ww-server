@@ -1,5 +1,6 @@
 package com.ww.manager.rival.campaign;
 
+import com.ww.helper.TeamHelper;
 import com.ww.manager.rival.campaign.state.CampaignWarStateChosenWhoAnswer;
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.container.rival.RivalInitContainer;
@@ -37,7 +38,7 @@ public class CampaignWarManager extends WarManager {
 
     protected List<TeamMember> prepareTeamMembers(Profile profile, ProfileCampaign profileCampaign) {
         if (profile.getId().equals(BOT_PROFILE_ID)) {
-            return super.prepareTeamMembers(profile, new ArrayList<>(profile.getWisies()));
+            return TeamHelper.prepareTeamMembers(new ArrayList<>(profile.getWisies()));
         }
         return super.prepareTeamMembers(profileCampaign.getProfile(), profileCampaign.getWisies());
     }

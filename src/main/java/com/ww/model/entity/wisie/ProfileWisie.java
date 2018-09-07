@@ -6,20 +6,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @Entity
 public class ProfileWisie extends OwnedWisie {
-    @ManyToOne
-    @JoinColumn(name = "profile_id", nullable = false, updatable = false)
-    protected Profile profile;
 
     public ProfileWisie(Profile profile, Wisie wisie) {
-        this.profile = profile;
-        this.wisie = wisie;
+        super(profile, wisie);
     }
 
 }
