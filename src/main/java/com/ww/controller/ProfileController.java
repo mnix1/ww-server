@@ -6,6 +6,8 @@ import com.ww.model.entity.social.Profile;
 import com.ww.service.SessionService;
 import com.ww.service.book.ProfileBookService;
 import com.ww.service.social.ProfileService;
+import com.ww.service.wisie.ProfileWisieService;
+import com.ww.service.wisie.WisieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +30,9 @@ public class ProfileController {
     ProfileBookService profileBookService;
 
     @Autowired
+    WisieService wisieService;
+
+    @Autowired
     SessionService sessionService;
 
     @RequestMapping(value = "/profileTag", method = RequestMethod.GET)
@@ -35,7 +40,11 @@ public class ProfileController {
         Map<String, Object> model = new HashMap<>();
         String authId = profileService.getAuthId(user);
         if (authId != null) {
-            Profile profile = profileService.createOrRetrieveProfile(authId);
+            Profile profile = profileService.retrieveProfile(authId);
+            if (profile == null) {
+                profile = profileService.createProfile(authId);
+                wisieService.initProfileWisies(profile);
+            }
             sessionService.setProfileId(profile.getId());
             model.put("profileTag", profile.getTag());
         }

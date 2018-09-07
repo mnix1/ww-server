@@ -18,40 +18,59 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class ProfileWisie {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    protected Long id;
 
-    private Boolean inTeam = false;
+    protected Boolean inTeam = false;
 
-    private Double wisdomAttributeMemory;
-    private Double wisdomAttributeLogic;
-    private Double wisdomAttributePerceptivity;
-    private Double wisdomAttributeCounting;
-    private Double wisdomAttributeCombiningFacts;
-    private Double wisdomAttributePatternRecognition;
-    private Double wisdomAttributeImagination;
+    protected Double wisdomAttributeMemory;
+    protected Double wisdomAttributeLogic;
+    protected Double wisdomAttributePerceptivity;
+    protected Double wisdomAttributeCounting;
+    protected Double wisdomAttributeCombiningFacts;
+    protected Double wisdomAttributePatternRecognition;
+    protected Double wisdomAttributeImagination;
 
-    private Double mentalAttributeSpeed;
-    private Double mentalAttributeReflex;
-    private Double mentalAttributeConcentration;
-    private Double mentalAttributeConfidence;
-    private Double mentalAttributeIntuition;
+    protected Double mentalAttributeSpeed;
+    protected Double mentalAttributeReflex;
+    protected Double mentalAttributeConcentration;
+    protected Double mentalAttributeConfidence;
+    protected Double mentalAttributeIntuition;
 
     @ManyToOne
     @JoinColumn(name = "profile_id", nullable = false, updatable = false)
-    private Profile profile;
+    protected Profile profile;
     @Column
     @Convert(converter = WisieHobbyConverter.class)
-    private Set<Category> hobbies;
+    protected Set<Category> hobbies;
     @ManyToOne
     @JoinColumn(name = "wisie_id", nullable = false, updatable = false)
-    private Wisie wisie;
+    protected Wisie wisie;
 
     public ProfileWisie(Profile profile, Wisie wisie) {
         this.profile = profile;
         this.wisie = wisie;
+    }
+
+    public ProfileWisie(ProfileWisie profileWisie) {
+        this.wisdomAttributeMemory = profileWisie.wisdomAttributeMemory;
+        this.wisdomAttributeLogic = profileWisie.wisdomAttributeLogic;
+        this.wisdomAttributePerceptivity = profileWisie.wisdomAttributePerceptivity;
+        this.wisdomAttributeCounting = profileWisie.wisdomAttributeCounting;
+        this.wisdomAttributeCombiningFacts = profileWisie.wisdomAttributeCombiningFacts;
+        this.wisdomAttributePatternRecognition = profileWisie.wisdomAttributePatternRecognition;
+        this.wisdomAttributeImagination = profileWisie.wisdomAttributeImagination;
+        this.mentalAttributeSpeed = profileWisie.mentalAttributeSpeed;
+        this.mentalAttributeReflex = profileWisie.mentalAttributeReflex;
+        this.mentalAttributeConcentration = profileWisie.mentalAttributeConcentration;
+        this.mentalAttributeConfidence = profileWisie.mentalAttributeConfidence;
+        this.mentalAttributeIntuition = profileWisie.mentalAttributeIntuition;
+        this.profile = profileWisie.profile;
+        this.hobbies = profileWisie.hobbies;
+        this.wisie = profileWisie.wisie;
     }
 
     @Override

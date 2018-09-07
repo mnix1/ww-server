@@ -1,18 +1,14 @@
 package com.ww.manager.rival.war;
 
+import com.ww.helper.TeamHelper;
 import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.state.*;
 import com.ww.manager.rival.war.state.*;
-import com.ww.model.constant.rival.RivalImportance;
-import com.ww.model.constant.wisie.HeroType;
 import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarContainer;
 import com.ww.model.container.rival.war.WarProfileContainer;
-import com.ww.model.dto.social.ProfileDTO;
-import com.ww.model.dto.social.RivalProfileDTO;
-import com.ww.model.dto.wisie.WarProfileWisieDTO;
 import com.ww.model.entity.social.Profile;
 import com.ww.model.entity.wisie.ProfileWisie;
 import com.ww.service.rival.war.WarService;
@@ -20,7 +16,6 @@ import com.ww.service.social.ProfileConnectionService;
 import com.ww.websocket.message.Message;
 import io.reactivex.disposables.Disposable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,13 +43,7 @@ public class WarManager extends RivalManager {
     }
 
     protected List<TeamMember> prepareTeamMembers(Profile profile, List<ProfileWisie> wisies) {
-        List<TeamMember> teamMembers = new ArrayList<>();
-        int index = 0;
-        teamMembers.add(new TeamMember(index++, HeroType.WISOR, profile, rivalContainer.getImportance() == RivalImportance.RANKING ? new RivalProfileDTO(profile, rivalContainer.getType()) : new ProfileDTO(profile)));
-        for (ProfileWisie wisie : wisies) {
-            teamMembers.add(new TeamMember(index++, HeroType.WISIE, wisie, new WarProfileWisieDTO(wisie)));
-        }
-        return teamMembers;
+        return TeamHelper.prepareTeamMembers(profile, wisies, rivalContainer.getImportance(), rivalContainer.getType());
     }
 
     public void disposeFlowable() {

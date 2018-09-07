@@ -2,6 +2,8 @@ package com.ww.controller.rival;
 
 import com.ww.model.constant.rival.campaign.CampaignDestination;
 import com.ww.model.constant.rival.campaign.CampaignType;
+import com.ww.model.dto.rival.campaign.CampaignDTO;
+import com.ww.model.dto.rival.campaign.ProfileCampaignDTO;
 import com.ww.service.SessionService;
 import com.ww.service.rival.campaign.CampaignService;
 import com.ww.service.rival.campaign.CampaignWarService;
@@ -45,7 +47,12 @@ public class CampaignController {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public Map list() {
+    public List<CampaignDTO> list() {
         return campaignService.list();
+    }
+
+    @RequestMapping(value = "/active", method = RequestMethod.GET)
+    public ProfileCampaignDTO active() {
+        return campaignService.active();
     }
 }

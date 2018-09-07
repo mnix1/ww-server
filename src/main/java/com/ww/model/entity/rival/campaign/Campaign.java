@@ -19,6 +19,7 @@ public class Campaign {
     private Long id;
     private CampaignType type;
     private CampaignDestination destination;
+    private Integer phases;
     private Long goldCost;
     private Long crystalCost;
     private Long wisdomCost;
@@ -29,9 +30,10 @@ public class Campaign {
     private Long elixirGain;
     private DifficultyLevel difficultyLevel;
 
-    public Campaign(CampaignType type, CampaignDestination destination, Long goldCost, Long crystalCost, Long wisdomCost, Long elixirCost, Long goldGain, Long crystalGain, Long wisdomGain, Long elixirGain) {
+    public Campaign(CampaignType type, CampaignDestination destination, Integer phases, Long goldCost, Long crystalCost, Long wisdomCost, Long elixirCost, Long goldGain, Long crystalGain, Long wisdomGain, Long elixirGain) {
         this.type = type;
         this.destination = destination;
+        this.phases = phases;
         this.goldCost = goldCost;
         this.crystalCost = crystalCost;
         this.wisdomCost = wisdomCost;

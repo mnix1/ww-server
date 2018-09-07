@@ -3,6 +3,7 @@ package com.ww.service.social;
 import com.ww.model.entity.social.Profile;
 import com.ww.repository.social.ProfileRepository;
 import com.ww.service.SessionService;
+import com.ww.service.wisie.WisieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.User;
@@ -102,11 +103,20 @@ public class ProfileService {
         return null;
     }
 
+    public Profile retrieveProfile(String authId) {
+        return profileRepository.findByAuthId(authId);
+    }
+
+    public Profile createProfile(String authId) {
+        Profile profile = new Profile(authId);
+        profileRepository.save(profile);
+        return profile;
+    }
+
     public Profile createOrRetrieveProfile(String authId) {
-        Profile profile = profileRepository.findByAuthId(authId);
+        Profile profile = retrieveProfile(authId);
         if (profile == null) {
-            profile = new Profile(authId);
-            profileRepository.save(profile);
+            profile = createProfile(authId);
         }
         return profile;
     }

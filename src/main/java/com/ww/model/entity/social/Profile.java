@@ -2,6 +2,7 @@ package com.ww.model.entity.social;
 
 import com.ww.helper.TagHelper;
 import com.ww.model.entity.book.ProfileBook;
+import com.ww.model.entity.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.wisie.ProfileWisie;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,6 +42,9 @@ public class Profile {
 
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
     private Set<ProfileBook> books = new HashSet<>();
+
+    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
+    private Set<ProfileCampaign> campaigns = new HashSet<>();
 
     public Profile(String authId) {
         this.tag = TagHelper.randomTag();
@@ -82,6 +86,22 @@ public class Profile {
         if (elixir != null) {
             this.elixir += elixir;
         }
+    }
+
+    public boolean hasEnoughResources(Long gold, Long crystal, Long wisdom, Long elixir) {
+        if (gold != null && this.gold < gold) {
+            return false;
+        }
+        if (crystal != null && this.crystal < crystal) {
+            return false;
+        }
+        if (wisdom != null && this.wisdom < wisdom) {
+            return false;
+        }
+        if (elixir != null && this.elixir < elixir) {
+            return false;
+        }
+        return true;
     }
 
     @Override

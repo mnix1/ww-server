@@ -2,8 +2,8 @@ package com.ww.service.wisie;
 
 import com.ww.model.constant.wisie.WisieType;
 import com.ww.model.dto.wisie.WisieDTO;
-import com.ww.model.entity.wisie.Wisie;
 import com.ww.model.entity.social.Profile;
+import com.ww.model.entity.wisie.Wisie;
 import com.ww.repository.wisie.WisieRepository;
 import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +42,7 @@ public class WisieService {
     }
 
     public boolean checkEnoughResourcesToExperiment(Profile profile) {
-        return profile.getCrystal() >= EXPERIMENT_CRYSTAL_COST
-                && profile.getElixir() >= EXPERIMENT_ELIXIR_COST
-                && profile.getWisdom() >= EXPERIMENT_WISDOM_COST;
+        return profile.hasEnoughResources(null, EXPERIMENT_CRYSTAL_COST, EXPERIMENT_WISDOM_COST, EXPERIMENT_ELIXIR_COST);
     }
 
     public Wisie randomWisieForProfile(Long profileId) {
@@ -58,6 +56,13 @@ public class WisieService {
             wisie = randomElement(allWisies);
         }
         return wisie;
+    }
+
+    public void initProfileWisies(Profile profile){
+        for (int i = 0; i < 4; i++) {
+            Wisie wisie = randomWisieForProfile(profile.getId());
+            profileWisieService.addWisie(profile, wisie);
+        }
     }
 
     public Wisie getWisie(WisieType type) {
