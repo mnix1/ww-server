@@ -10,16 +10,19 @@ import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarContainer;
 import com.ww.model.container.rival.war.WarProfileContainer;
 import com.ww.model.entity.social.Profile;
+import com.ww.model.entity.wisie.OwnedWisie;
 import com.ww.model.entity.wisie.ProfileWisie;
 import com.ww.service.rival.war.WarService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.websocket.message.Message;
 import io.reactivex.disposables.Disposable;
+import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@NoArgsConstructor
 public class WarManager extends RivalManager {
 
     public WarContainer warContainer;
@@ -42,7 +45,7 @@ public class WarManager extends RivalManager {
         this.warContainer = (WarContainer) this.rivalContainer;
     }
 
-    protected List<TeamMember> prepareTeamMembers(Profile profile, List<ProfileWisie> wisies) {
+    protected List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies) {
         return TeamHelper.prepareTeamMembers(profile, wisies, rivalContainer.getImportance(), rivalContainer.getType());
     }
 

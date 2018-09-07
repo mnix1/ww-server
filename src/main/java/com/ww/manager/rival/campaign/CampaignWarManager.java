@@ -2,13 +2,13 @@ package com.ww.manager.rival.campaign;
 
 import com.ww.manager.rival.campaign.state.CampaignWarStateChosenWhoAnswer;
 import com.ww.manager.rival.war.WarManager;
-import com.ww.model.constant.wisie.HeroType;
 import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.container.rival.campaign.CampaignWarContainer;
 import com.ww.model.container.rival.war.TeamMember;
-import com.ww.model.dto.wisie.WarProfileWisieDTO;
+import com.ww.model.container.rival.war.WarContainer;
+import com.ww.model.container.rival.war.WarProfileContainer;
+import com.ww.model.entity.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.social.Profile;
-import com.ww.model.entity.wisie.ProfileWisie;
 import com.ww.service.rival.campaign.CampaignWarService;
 import com.ww.service.social.ProfileConnectionService;
 
@@ -21,20 +21,25 @@ public class CampaignWarManager extends WarManager {
 
     public CampaignWarContainer campaignWarContainer;
 
-    public CampaignWarManager(RivalInitContainer container, CampaignWarService campaignWarService, ProfileConnectionService profileConnectionService) {
-        super(container, campaignWarService, profileConnectionService);
+    public CampaignWarManager(RivalInitContainer container, CampaignWarService campaignWarService, ProfileConnectionService profileConnectionService, ProfileCampaign profileCampaign) {
+        this.rivalService = campaignWarService;
+        this.profileConnectionService = profileConnectionService;
+        Profile creator = container.getCreatorProfile();
+        Long creatorId = creator.getId();
+        Profile opponent = container.getOpponentProfile();
+        Long opponentId = opponent.getId();
+        this.rivalContainer = new WarContainer();
+        this.rivalContainer.storeInformationFromInitContainer(container);
+        this.rivalContainer.addProfile(creatorId, new WarProfileContainer(creator, opponentId, prepareTeamMembers(creator, profileCampaign)));
+        this.rivalContainer.addProfile(opponentId, new WarProfileContainer(opponent, creatorId, prepareTeamMembers(opponent, profileCampaign)));
+        this.warContainer = (WarContainer) this.rivalContainer;
     }
 
-    protected List<TeamMember> prepareTeamMembers(Profile profile, List<ProfileWisie> wisies) {
-        if (!profile.getId().equals(BOT_PROFILE_ID)) {
-            return super.prepareTeamMembers(profile, wisies);
+    protected List<TeamMember> prepareTeamMembers(Profile profile, ProfileCampaign profileCampaign) {
+        if (profile.getId().equals(BOT_PROFILE_ID)) {
+            return super.prepareTeamMembers(profile, new ArrayList<>(profile.getWisies()));
         }
-        List<TeamMember> teamMembers = new ArrayList<>();
-        int index = 0;
-        for (ProfileWisie wisie : wisies) {
-            teamMembers.add(new TeamMember(index++, HeroType.WISIE, wisie, new WarProfileWisieDTO(wisie)));
-        }
-        return teamMembers;
+        return super.prepareTeamMembers(profileCampaign.getProfile(), profileCampaign.getWisies());
     }
 
     public synchronized void chosenWhoAnswer(Long profileId, Map<String, Object> content) {

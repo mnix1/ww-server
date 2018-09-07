@@ -50,15 +50,19 @@ public class CampaignService {
         return campaignRepository.findAll().stream().map(CampaignDTO::new).collect(Collectors.toList());
     }
 
-    public ProfileCampaignDTO active() {
-        ProfileCampaign profileCampaign = profileCampaignRepository.findOneByProfile_IdAndStatus(sessionService.getProfileId(), ProfileCampaignStatus.IN_PROGRESS);
+    public ProfileCampaignDTO activeDTO() {
+        ProfileCampaign profileCampaign = active();
         if (profileCampaign == null) {
             return null;
         }
         return new ProfileCampaignDTO(profileCampaign);
     }
 
-    public synchronized Map<String, Object> init(CampaignType type, CampaignDestination destination, Set<Long> ids) {
+    public ProfileCampaign active() {
+        return profileCampaignRepository.findOneByProfile_IdAndStatus(sessionService.getProfileId(), ProfileCampaignStatus.IN_PROGRESS);
+    }
+
+    public synchronized Map<String, Object> init(CampaignType type, CampaignDestination destination, List<Long> ids) {
         Map<String, Object> model = new HashMap<>();
         List<ProfileWisie> wisies = profileWisieService.findByIds(ids);
         if (wisies == null) {
@@ -78,7 +82,8 @@ public class CampaignService {
         }
         profile.changeResources(campaign.getGoldCost(), campaign.getCrystalCost(), campaign.getWisdomCost(), campaign.getElixirCost());
         ProfileCampaign profileCampaign = new ProfileCampaign(profile, campaign);
-        for (ProfileWisie wisie : wisies) {
+        for (Long id : ids) {
+            ProfileWisie wisie = wisies.stream().filter(profileWisie -> profileWisie.getId().equals(id)).findFirst().get();
             ProfileCampaignWisie campaignWisie = new ProfileCampaignWisie(profileCampaign, wisie);
             profileCampaign.getWisies().add(campaignWisie);
         }

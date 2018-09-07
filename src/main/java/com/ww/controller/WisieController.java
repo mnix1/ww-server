@@ -55,7 +55,7 @@ public class WisieController {
         if (!payload.containsKey("ids")) {
             throw new IllegalArgumentException();
         }
-        Set<Long> ids = ((List<Integer>) payload.get("ids")).stream().map(Integer::longValue).collect(Collectors.toSet());
+        List<Long> ids = ((List<Integer>) payload.get("ids")).stream().map(Integer::longValue).collect(Collectors.toList());
         return profileWisieService.teamSave(ids);
     }
 

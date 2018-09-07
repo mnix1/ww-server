@@ -42,7 +42,7 @@ public class CampaignController {
         }
         CampaignType type = CampaignType.valueOf((String) payload.get("type"));
         CampaignDestination destination = CampaignDestination.valueOf((String) payload.get("destination"));
-        Set<Long> ids = ((List<Integer>) payload.get("ids")).stream().map(Integer::longValue).collect(Collectors.toSet());
+        List<Long> ids = ((List<Integer>) payload.get("ids")).stream().map(Integer::longValue).collect(Collectors.toList());
         return campaignService.init(type, destination, ids);
     }
 
@@ -53,6 +53,6 @@ public class CampaignController {
 
     @RequestMapping(value = "/active", method = RequestMethod.GET)
     public ProfileCampaignDTO active() {
-        return campaignService.active();
+        return campaignService.activeDTO();
     }
 }

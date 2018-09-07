@@ -5,6 +5,7 @@ import com.ww.manager.rival.campaign.CampaignWarManager;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.wisie.WisieType;
 import com.ww.model.container.rival.RivalInitContainer;
+import com.ww.model.entity.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.social.Profile;
 import com.ww.model.entity.wisie.ProfileWisie;
 import com.ww.service.rival.task.TaskGenerateService;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import static com.ww.helper.ModelHelper.putErrorCode;
 import static com.ww.helper.ModelHelper.putSuccessCode;
 import static com.ww.manager.rival.campaign.CampaignWarManager.BOT_PROFILE_ID;
 import static com.ww.model.constant.rival.RivalType.CAMPAIGN_WAR;
@@ -47,6 +49,9 @@ public class CampaignWarService extends WarService {
 
     @Autowired
     protected WisieService wisieService;
+
+    @Autowired
+    protected CampaignService campaignService;
 
     @Override
     protected void addRewardFromWin(Profile winner) {
@@ -80,8 +85,12 @@ public class CampaignWarService extends WarService {
 
     public Map<String, Object> start() {
         Map<String, Object> model = new HashMap<>();
+        ProfileCampaign profileCampaign = campaignService.active();
+        if (profileCampaign == null) {
+            return putErrorCode(model);
+        }
         RivalInitContainer rival = new RivalInitContainer(CAMPAIGN_WAR, RivalImportance.FAST, profileService.getProfile(), prepareComputerProfile());
-        RivalManager rivalManager = createManager(rival);
+        RivalManager rivalManager = createManager(rival, profileCampaign);
         getProfileIdToRivalManagerMap().put(rival.getCreatorProfile().getId(), rivalManager);
         getProfileIdToRivalManagerMap().put(rival.getOpponentProfile().getId(), rivalManager);
         rivalManager.maybeStart(rival.getOpponentProfile().getId());
@@ -107,16 +116,8 @@ public class CampaignWarService extends WarService {
         return computerProfile;
     }
 
-    private RivalManager createManager(RivalInitContainer rival) {
-        return new CampaignWarManager(rival, this, profileConnectionService);
+    private RivalManager createManager(RivalInitContainer rival,  ProfileCampaign profileCampaign) {
+        return new CampaignWarManager(rival, this, profileConnectionService, profileCampaign);
     }
-
-    public List<ProfileWisie> getProfileWisies(Profile profile) {
-        if (profile.getId().equals(BOT_PROFILE_ID)) {
-            return new ArrayList<>(profile.getWisies());
-        }
-        return profileWisieService.listTeam(profile.getId());
-    }
-
 
 }

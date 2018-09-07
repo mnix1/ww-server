@@ -51,18 +51,18 @@ public class ProfileWisieService {
         profileWisieRepository.saveAll(team);
     }
 
-    public List<ProfileWisie> findByIds(Set<Long> ids) {
-        if (ids.size() != HERO_TEAM_COUNT) {
+    public List<ProfileWisie> findByIds(List<Long> ids) {
+        if (new HashSet<>(ids).size() != HERO_TEAM_COUNT) {
             return null;
         }
-        List<ProfileWisie> wisies = profileWisieRepository.findAllByProfile_IdAndIdIn(sessionService.getProfileId(), new ArrayList<>(ids));
+        List<ProfileWisie> wisies = profileWisieRepository.findAllByProfile_IdAndIdIn(sessionService.getProfileId(), ids);
         if (ids.size() != wisies.size()) {
             return null;
         }
         return wisies;
     }
 
-    public synchronized Map<String, Object> teamSave(Set<Long> ids) {
+    public synchronized Map<String, Object> teamSave(List<Long> ids) {
         Map<String, Object> model = new HashMap<>();
         List<ProfileWisie> wisies = findByIds(ids);
         if (wisies == null) {

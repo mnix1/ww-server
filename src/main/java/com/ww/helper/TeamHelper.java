@@ -9,6 +9,7 @@ import com.ww.model.dto.social.RivalProfileDTO;
 import com.ww.model.dto.wisie.WarProfileWisieDTO;
 import com.ww.model.entity.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.social.Profile;
+import com.ww.model.entity.wisie.OwnedWisie;
 import com.ww.model.entity.wisie.ProfileCampaignWisie;
 import com.ww.model.entity.wisie.ProfileWisie;
 
@@ -16,11 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TeamHelper {
-    public static List<TeamMember> prepareTeamMembers(Profile profile, List<ProfileWisie> wisies, RivalImportance importance, RivalType type) {
+    public static List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies, RivalImportance importance, RivalType type) {
         List<TeamMember> teamMembers = new ArrayList<>();
         int index = 0;
         teamMembers.add(new TeamMember(index++, HeroType.WISOR, profile, importance == RivalImportance.RANKING ? new RivalProfileDTO(profile, type) : new ProfileDTO(profile)));
-        for (ProfileWisie wisie : wisies) {
+        for (OwnedWisie wisie : wisies) {
             teamMembers.add(new TeamMember(index++, HeroType.WISIE, wisie, new WarProfileWisieDTO(wisie)));
         }
         return teamMembers;

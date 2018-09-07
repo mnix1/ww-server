@@ -11,7 +11,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Setter
@@ -32,7 +34,8 @@ public class ProfileCampaign {
     @JoinColumn(name = "profile_id", nullable = false, updatable = false)
     private Profile profile;
     @OneToMany(mappedBy = "profileCampaign", fetch = FetchType.LAZY)
-    private Set<ProfileCampaignWisie> wisies = new HashSet<>();
+    @OrderBy("ID ASC")
+    private List<ProfileCampaignWisie> wisies = new ArrayList<>();
 
     public ProfileCampaign(Profile profile, Campaign campaign) {
         this.profile = profile;

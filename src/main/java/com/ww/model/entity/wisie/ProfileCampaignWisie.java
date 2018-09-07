@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class ProfileCampaignWisie extends ProfileWisie {
+public class ProfileCampaignWisie extends OwnedWisie {
     @ManyToOne
     @JoinColumn(name = "profile_campaign_id", nullable = false, updatable = false)
     private ProfileCampaign profileCampaign;
