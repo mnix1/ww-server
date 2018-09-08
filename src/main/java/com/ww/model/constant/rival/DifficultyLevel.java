@@ -1,6 +1,7 @@
 package com.ww.model.constant.rival;
 
 import lombok.Getter;
+import org.apache.commons.lang3.builder.Diff;
 
 import java.util.Arrays;
 
@@ -28,6 +29,16 @@ public enum DifficultyLevel {
 
     public static DifficultyLevel random() {
         return randomElement(Arrays.asList(values()));
+    }
+
+    public static DifficultyLevel randomRangeOne(DifficultyLevel difficultyLevel) {
+        DifficultyLevel[] difficultyLevels = values();
+        for (int i = 0; i < difficultyLevels.length; i++) {
+            if (difficultyLevels[i] == difficultyLevel) {
+                return randomElement(Arrays.asList(difficultyLevels[i - 1], difficultyLevels[i], difficultyLevels[i + 1]));
+            }
+        }
+        return difficultyLevel;
     }
 
     public static int answersCount(int remainedDifficulty) {

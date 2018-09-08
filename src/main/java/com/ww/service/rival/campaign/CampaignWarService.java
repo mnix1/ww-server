@@ -25,10 +25,7 @@ import com.ww.websocket.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.ww.helper.ModelHelper.putErrorCode;
 import static com.ww.helper.ModelHelper.putSuccessCode;
@@ -133,7 +130,7 @@ public class CampaignWarService extends WarService {
         if (profileCampaign == null) {
             return putErrorCode(model);
         }
-        RivalInitContainer rival = new RivalInitContainer(CAMPAIGN_WAR, RivalImportance.FAST, profileService.getProfile(), prepareComputerProfile());
+        RivalInitContainer rival = new RivalInitContainer(CAMPAIGN_WAR, RivalImportance.FAST, profileService.getProfile(), prepareComputerProfile(profileCampaign));
         RivalManager rivalManager = createManager(rival, profileCampaign);
         getProfileIdToRivalManagerMap().put(rival.getCreatorProfile().getId(), rivalManager);
         getProfileIdToRivalManagerMap().put(rival.getOpponentProfile().getId(), rivalManager);
@@ -141,25 +138,29 @@ public class CampaignWarService extends WarService {
         return putSuccessCode(model);
     }
 
-    public Profile prepareComputerProfile() {
+    public Profile prepareComputerProfile(ProfileCampaign profileCampaign) {
         Profile computerProfile = new Profile();
         computerProfile.setId(BOT_PROFILE_ID);
-        computerProfile.setName("Wielki Chrabąszcz");
-        computerProfile.setWisorType("wisor18");
+        computerProfile.setName("");
+        computerProfile.setWisorType("robot");
         computerProfile.setTag("0");
         computerProfile.setTeamInitialized(true);
-        List<WisieType> wisieTypes = Arrays.asList(WisieType.BEAR, WisieType.CROCODILE, WisieType.CAT_TEACHER);
+        Set<WisieType> wisieTypes = new HashSet<>();
+        while (wisieTypes.size() < (Math.min(profileCampaign.getPhase() + 1, 5))) {
+            wisieTypes.add(WisieType.random());
+        }
         long profileWisieId = -1;
         for (WisieType wisieType : wisieTypes) {
             ProfileWisie profileWisie = new ProfileWisie(computerProfile, wisieService.getWisie(wisieType));
             profileWisie.setId(profileWisieId--);
             profileWisieService.initWisieAttributes(profileWisie);
             profileWisieService.initWisieHobbies(profileWisie);
+            int promo = 10 * profileCampaign.getPhase() * profileCampaign.getCampaign().getDifficultyLevel().getRating();
             for (MentalAttribute attribute : MentalAttribute.values()) {
-                profileWisie.setMentalAttributeValue(attribute, Math.pow(profileWisie.getMentalAttributeValue(attribute), 1.1) + 100);
+                profileWisie.setMentalAttributeValue(attribute, Math.pow(profileWisie.getMentalAttributeValue(attribute), 1.1) + promo);
             }
             for (WisdomAttribute attribute : WisdomAttribute.values()) {
-                profileWisie.setWisdomAttributeValue(attribute, Math.pow(profileWisie.getWisdomAttributeValue(attribute), 1.1)+ 100);
+                profileWisie.setWisdomAttributeValue(attribute, Math.pow(profileWisie.getWisdomAttributeValue(attribute), 1.1) + promo);
             }
             computerProfile.getWisies().add(profileWisie);
         }

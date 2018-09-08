@@ -1,7 +1,6 @@
 package com.ww.manager.rival.campaign.state;
 
 import com.ww.manager.rival.campaign.CampaignWarManager;
-import com.ww.manager.rival.war.WarManager;
 import com.ww.manager.rival.war.state.WarState;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
@@ -11,6 +10,7 @@ import com.ww.model.entity.wisie.OwnedWisie;
 
 import java.util.ArrayList;
 
+import static com.ww.model.constant.rival.DifficultyLevel.randomRangeOne;
 import static com.ww.model.constant.wisie.HeroType.isWisie;
 
 public class CampaignWarStateChoosingTaskProps extends WarState {
@@ -33,7 +33,7 @@ public class CampaignWarStateChoosingTaskProps extends WarState {
         if (isWisie(warProfileContainer.getActiveTeamMember().getType())) {
             OwnedWisie wisie = (OwnedWisie) warProfileContainer.getActiveTeamMember().getContent();
             category = new ArrayList<>(wisie.getHobbies()).get(0);
-            difficultyLevel = campaignWarManager.profileCampaign.getCampaign().getDifficultyLevel();
+            difficultyLevel = randomRangeOne(campaignWarManager.profileCampaign.getCampaign().getDifficultyLevel());
         }
         rivalManager.prepareTask((long) rivalContainer.getCurrentTaskIndex() + 1, category, difficultyLevel);
     }
