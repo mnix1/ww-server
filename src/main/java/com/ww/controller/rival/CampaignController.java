@@ -46,6 +46,11 @@ public class CampaignController {
         return campaignService.init(type, destination, ids);
     }
 
+    @RequestMapping(value = "/close", method = RequestMethod.POST)
+    public Map close(@RequestBody Map<String, Object> payload) {
+        return campaignService.close();
+    }
+
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public List<CampaignDTO> list() {
         return campaignService.list();

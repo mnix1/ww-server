@@ -1,7 +1,7 @@
 package com.ww.model.constant.rival.campaign;
 
 public enum ProfileCampaignStatus {
-    OPEN,
     IN_PROGRESS,
+    FINISHED,
     CLOSED;
 }

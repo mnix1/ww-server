@@ -3,10 +3,15 @@ package com.ww.service.rival.campaign;
 import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.campaign.CampaignWarManager;
 import com.ww.model.constant.rival.RivalImportance;
+import com.ww.model.constant.rival.campaign.ProfileCampaignStatus;
+import com.ww.model.constant.wisie.MentalAttribute;
+import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.constant.wisie.WisieType;
 import com.ww.model.container.rival.RivalInitContainer;
+import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.entity.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.social.Profile;
+import com.ww.model.entity.wisie.ProfileCampaignWisie;
 import com.ww.model.entity.wisie.ProfileWisie;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
@@ -20,7 +25,10 @@ import com.ww.websocket.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.ww.helper.ModelHelper.putErrorCode;
 import static com.ww.helper.ModelHelper.putSuccessCode;
@@ -54,11 +62,6 @@ public class CampaignWarService extends WarService {
     protected CampaignService campaignService;
 
     @Override
-    protected void addRewardFromWin(Profile winner) {
-//        rewardService.addRewardFromBattleWin(winner);
-    }
-
-    @Override
     protected ProfileConnectionService getProfileConnectionService() {
         return profileConnectionService;
     }
@@ -82,6 +85,47 @@ public class CampaignWarService extends WarService {
     public Message getMessageContent() {
         return Message.CAMPAIGN_WAR_CONTENT;
     }
+
+    @Override
+    public synchronized void disposeManager(RivalManager rivalManager) {
+        super.disposeManager(rivalManager);
+        CampaignWarManager campaignWarManager = (CampaignWarManager) rivalManager;
+        Long profileId = rivalManager.getRivalContainer().getCreatorProfile().getId();
+        ProfileCampaign profileCampaign = campaignService.active(profileId);
+        campaignService.setProfileCampaignWisies(profileCampaign);
+        if (profileCampaign.getProfile().equals(rivalManager.getRivalContainer().getWinner())) {
+            profileCampaign.setPhase(profileCampaign.getPhase() + 1);
+            if (profileCampaign.getPhase() >= profileCampaign.getCampaign().getPhases()) {
+                profileCampaign.setStatus(ProfileCampaignStatus.FINISHED);
+            }
+            List<TeamMember> teamMembers = campaignWarManager.warContainer.getRivalProfileContainer(profileId).getTeamMembers();
+            for (TeamMember teamMember : teamMembers) {
+                if (teamMember.isWisie()) {
+                    for (ProfileCampaignWisie wisie : profileCampaign.getWisies()) {
+                        if (wisie.equals(teamMember.getContent())) {
+                            wisie.setDisabled(!teamMember.isPresent());
+                        }
+                    }
+                } else {
+                    profileCampaign.setPresent(teamMember.isPresent());
+                }
+            }
+        } else {
+            profileCampaign.setStatus(ProfileCampaignStatus.FINISHED);
+            for (ProfileCampaignWisie wisie : profileCampaign.getWisies()) {
+                wisie.setDisabled(true);
+            }
+            profileCampaign.setPresent(false);
+        }
+        campaignService.save(profileCampaign);
+    }
+
+    @Override
+    protected void addRewardFromWin(Profile winner) {
+//        if(CampaignWarManager.isBotProfile(winner)){
+//        }
+    }
+
 
     public Map<String, Object> start() {
         Map<String, Object> model = new HashMap<>();
@@ -111,12 +155,18 @@ public class CampaignWarService extends WarService {
             profileWisie.setId(profileWisieId--);
             profileWisieService.initWisieAttributes(profileWisie);
             profileWisieService.initWisieHobbies(profileWisie);
+            for (MentalAttribute attribute : MentalAttribute.values()) {
+                profileWisie.setMentalAttributeValue(attribute, Math.pow(profileWisie.getMentalAttributeValue(attribute), 1.1) + 100);
+            }
+            for (WisdomAttribute attribute : WisdomAttribute.values()) {
+                profileWisie.setWisdomAttributeValue(attribute, Math.pow(profileWisie.getWisdomAttributeValue(attribute), 1.1)+ 100);
+            }
             computerProfile.getWisies().add(profileWisie);
         }
         return computerProfile;
     }
 
-    private RivalManager createManager(RivalInitContainer rival,  ProfileCampaign profileCampaign) {
+    private RivalManager createManager(RivalInitContainer rival, ProfileCampaign profileCampaign) {
         return new CampaignWarManager(rival, this, profileConnectionService, profileCampaign);
     }
 

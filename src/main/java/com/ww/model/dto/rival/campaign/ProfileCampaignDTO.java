@@ -4,6 +4,7 @@ import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.constant.rival.campaign.CampaignDestination;
 import com.ww.model.constant.rival.campaign.CampaignType;
+import com.ww.model.constant.rival.campaign.ProfileCampaignStatus;
 import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.dto.rival.TeamMemberDTO;
 import com.ww.model.entity.rival.campaign.ProfileCampaign;
@@ -26,6 +27,7 @@ public class ProfileCampaignDTO {
     private CampaignDestination destination;
     private List<TeamMemberDTO> team;
     private List<Integer> presentIndexes;
+    private ProfileCampaignStatus status;
 
     public ProfileCampaignDTO(ProfileCampaign profileCampaign) {
         this.id = profileCampaign.getId();
@@ -33,6 +35,7 @@ public class ProfileCampaignDTO {
         this.phases = profileCampaign.getCampaign().getPhases();
         this.type = profileCampaign.getCampaign().getType();
         this.destination = profileCampaign.getCampaign().getDestination();
+        this.status = profileCampaign.getStatus();
         initTeam(profileCampaign);
     }
 

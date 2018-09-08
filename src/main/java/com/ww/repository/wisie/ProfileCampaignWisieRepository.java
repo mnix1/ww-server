@@ -10,4 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface ProfileCampaignWisieRepository extends CrudRepository<ProfileCampaignWisie, Long> {
+    List<ProfileCampaignWisie> findAllByProfileCampaign_Id(Long profileCampaignId);
 }

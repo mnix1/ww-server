@@ -59,7 +59,20 @@ public class CampaignService {
     }
 
     public ProfileCampaign active() {
-        return profileCampaignRepository.findOneByProfile_IdAndStatus(sessionService.getProfileId(), ProfileCampaignStatus.IN_PROGRESS);
+        return active(sessionService.getProfileId());
+    }
+
+    public ProfileCampaign active(Long profileId) {
+        return profileCampaignRepository.findOneByProfile_IdAndStatusNot(profileId, ProfileCampaignStatus.CLOSED);
+    }
+
+    public void setProfileCampaignWisies(ProfileCampaign profileCampaign) {
+        profileCampaign.setWisies(profileCampaignWisieRepository.findAllByProfileCampaign_Id(profileCampaign.getId()));
+    }
+
+    public void save(ProfileCampaign profileCampaign) {
+        profileCampaignRepository.save(profileCampaign);
+        profileCampaignWisieRepository.saveAll(profileCampaign.getWisies());
     }
 
     public synchronized Map<String, Object> init(CampaignType type, CampaignDestination destination, List<Long> ids) {
@@ -89,6 +102,23 @@ public class CampaignService {
         }
         profileCampaignRepository.save(profileCampaign);
         profileCampaignWisieRepository.saveAll(profileCampaign.getWisies());
+        return putSuccessCode(model);
+    }
+
+    public synchronized Map<String, Object> close() {
+        Map<String, Object> model = new HashMap<>();
+        ProfileCampaign profileCampaign = active();
+        if (profileCampaign == null || profileCampaign.getStatus() != ProfileCampaignStatus.FINISHED) {
+            return putErrorCode(model);
+        }
+        profileCampaign.setStatus(ProfileCampaignStatus.CLOSED);
+        profileCampaignRepository.save(profileCampaign);
+        Campaign campaign = profileCampaign.getCampaign();
+        if (campaign.getPhases() <= profileCampaign.getPhase()) {
+            Profile profile = profileService.getProfile();
+            profile.changeResources(campaign.getGoldGain(), campaign.getCrystalGain(), campaign.getWisdomGain(), campaign.getElixirGain());
+            profileService.save(profile);
+        }
         return putSuccessCode(model);
     }
 

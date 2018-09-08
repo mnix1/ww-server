@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProfileCampaignRepository extends CrudRepository<ProfileCampaign, Long> {
-    ProfileCampaign findOneByProfile_IdAndStatus(Long profileId, ProfileCampaignStatus status);
+    ProfileCampaign findOneByProfile_IdAndStatusNot(Long profileId, ProfileCampaignStatus status);
 }
