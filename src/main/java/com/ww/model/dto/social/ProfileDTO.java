@@ -1,5 +1,6 @@
 package com.ww.model.dto.social;
 
+import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.entity.social.Profile;
 import lombok.Getter;
 
@@ -8,7 +9,7 @@ public class ProfileDTO {
 
     private String tag;
     private String name;
-    private String wisorType;
+    private WisorType wisorType;
 
     public ProfileDTO(Profile profile) {
         this.tag = profile.getTag();

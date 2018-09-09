@@ -1,9 +1,9 @@
 package com.ww.service.social;
 
+import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.entity.social.Profile;
 import com.ww.repository.social.ProfileRepository;
 import com.ww.service.SessionService;
-import com.ww.service.wisie.WisieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.User;
@@ -11,15 +11,12 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.ww.helper.ModelHelper.putCode;
-import static com.ww.helper.ModelHelper.putErrorCode;
 import static com.ww.helper.ModelHelper.putSuccessCode;
 
 @Service
@@ -53,21 +50,12 @@ public class ProfileService {
         return profileRepository.findByTag(tag);
     }
 
-    public Map<String, Object> changeWisor(String wisor) {
+    public Map<String, Object> changeWisor(WisorType wisor) {
         Map<String, Object> model = new HashMap<>();
-        if (wisor.length() > ("wisor" + WISOR_MAX_ID).length() || !wisor.contains("wisor")) {
-            return putErrorCode(model);
-        }
-        String idString = wisor.replace("wisor", "");
-        int id = Integer.parseInt(idString);
-        if (id < WISOR_MIN_ID || id > WISOR_MAX_ID) {
-            return putErrorCode(model);
-        }
         Profile profile = getProfile();
-        String newWisorType = "wisor" + id;
-        profile.setWisorType(newWisorType);
+        profile.setWisorType(wisor);
         save(profile);
-        model.put("wisorType", newWisorType);
+        model.put("wisorType", wisor);
         return putSuccessCode(model);
     }
 

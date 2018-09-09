@@ -1,5 +1,7 @@
 package com.ww.controller;
 
+import com.ww.model.constant.rival.campaign.CampaignType;
+import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.dto.book.ProfileBookDTO;
 import com.ww.model.dto.social.ProfileResourcesDTO;
 import com.ww.model.entity.social.Profile;
@@ -56,8 +58,8 @@ public class ProfileController {
         if (!payload.containsKey("wisor")) {
             throw new IllegalArgumentException();
         }
-        String wisor = (String) payload.get("wisor");
-        return profileService.changeWisor(wisor);
+        WisorType type = WisorType.valueOf((String) payload.get("wisor"));
+        return profileService.changeWisor(type);
     }
 
     @RequestMapping(value = "/changeName", method = RequestMethod.POST)

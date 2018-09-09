@@ -7,6 +7,7 @@ import com.ww.model.constant.rival.campaign.ProfileCampaignStatus;
 import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.constant.wisie.WisieType;
+import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.entity.rival.campaign.ProfileCampaign;
@@ -142,7 +143,7 @@ public class CampaignWarService extends WarService {
         Profile computerProfile = new Profile();
         computerProfile.setId(BOT_PROFILE_ID);
         computerProfile.setName("");
-        computerProfile.setWisorType("robot");
+        computerProfile.setWisorType(WisorType.random());
         computerProfile.setTag("0");
         computerProfile.setTeamInitialized(true);
         Set<WisieType> wisieTypes = new HashSet<>();

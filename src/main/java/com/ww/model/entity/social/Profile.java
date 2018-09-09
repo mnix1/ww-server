@@ -1,6 +1,7 @@
 package com.ww.model.entity.social;
 
 import com.ww.helper.TagHelper;
+import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.entity.book.ProfileBook;
 import com.ww.model.entity.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.wisie.ProfileWisie;
@@ -23,7 +24,7 @@ public class Profile {
     private String authId;
     private String tag;
     private String name;
-    private String wisorType;
+    private WisorType wisorType;
     private Long level;
     private Long experience;
     private Long gold;
@@ -56,7 +57,7 @@ public class Profile {
         this.crystal = 10L;
         this.wisdom = 0L;
         this.elixir = 0L;
-        this.wisorType = "robot";
+        this.wisorType = WisorType.random();
         this.teamInitialized = false;
         this.battleElo = 0L;
         this.warElo = 0L;
@@ -70,7 +71,7 @@ public class Profile {
         this.tag = tag;
         this.name = name;
         this.level = level;
-        this.wisorType = "robot";
+        this.wisorType = WisorType.random();
     }
 
     public void changeResources(Long gold, Long crystal, Long wisdom, Long elixir) {
