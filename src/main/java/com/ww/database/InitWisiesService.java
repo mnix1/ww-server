@@ -20,6 +20,7 @@ public class InitWisiesService {
 
     public void initWisies() {
         List<Wisie> wisies = new ArrayList<>();
+        wisies.add(new Wisie("Ali", "Alligator", WisieType.ALLIGATOR));
         wisies.add(new Wisie("Mrówkacz", "Ant", WisieType.ANT));
         wisies.add(new Wisie("Żubrowar", "Aurochs", WisieType.AUROCHS));
         wisies.add(new Wisie("Żądłolot", "Bee", WisieType.BEE));
@@ -30,6 +31,7 @@ public class InitWisiesService {
         wisies.add(new Wisie("Mruczka", "Kitty", WisieType.CAT_BLUE));
         wisies.add(new Wisie("Kituś", "Apple Cat", WisieType.CAT_PRESENTER));
         wisies.add(new Wisie("Kicia", "Cat Teacher", WisieType.CAT_TEACHER));
+        wisies.add(new Wisie("Piskacz", "Chick", WisieType.CHICK));
         wisies.add(new Wisie("Kroczek", "Crocodile", WisieType.CROCODILE));
         wisies.add(new Wisie("Bystruś", "Idea Dog", WisieType.DOG));
         wisies.add(new Wisie("Pulszek", "Fat Dog", WisieType.DOG_FAT));
@@ -40,30 +42,39 @@ public class InitWisiesService {
         wisies.add(new Wisie("Smakełło", "Red Dragon", WisieType.DRAGON_RED));
         wisies.add(new Wisie("Orłuś", "Eagle", WisieType.EAGLE));
         wisies.add(new Wisie("Trąbcia", "Elephant", WisieType.ELEPHANT));
+        wisies.add(new Wisie("Słoniu", "Elephant Child", WisieType.ELEPHANT_CHILD));
         wisies.add(new Wisie("Lisiczka", "Foxie", WisieType.FOX));
         wisies.add(new Wisie("Lizuś", "Fox", WisieType.FOX_MAN));
         wisies.add(new Wisie("Żabcia", "Frog", WisieType.FROG));
+        wisies.add(new Wisie("Rafcia", "Giraffe", WisieType.GIRAFFE));
         wisies.add(new Wisie("Goruś", "Gorilla", WisieType.GORILLA));
         wisies.add(new Wisie("Rumo", "Horse", WisieType.HORSE));
         wisies.add(new Wisie("Skoczka", "Kangaroo", WisieType.KANGAROO));
+        wisies.add(new Wisie("Kolo", "Koala", WisieType.KOALA));
         wisies.add(new Wisie("Pardzio", "Lampard", WisieType.LAMPARD));
         wisies.add(new Wisie("Bujnogrzyw", "Lion", WisieType.LION));
+        wisies.add(new Wisie("Mały", "Monkey", WisieType.MONKEY));
+        wisies.add(new Wisie("Ośmiornik", "Octopus", WisieType.OCTOPUS));
         wisies.add(new Wisie("Strusior", "Ostrich", WisieType.OSTRICH));
         wisies.add(new Wisie("Sowcia", "Owl", WisieType.OWL));
+        wisies.add(new Wisie("Mądruś", "Owl", WisieType.OWL_HAPPY));
         wisies.add(new Wisie("Pandziu", "Panda", WisieType.PANDA_EAT));
         wisies.add(new Wisie("Zgapka", "Parrot", WisieType.PARROT));
         wisies.add(new Wisie("Pinguś", "Penguin", WisieType.PENGUIN));
         wisies.add(new Wisie("Misiaczek", "Polar Bear", WisieType.POLAR_BEAR));
         wisies.add(new Wisie("Kicek", "Rabbit", WisieType.RABBIT));
         wisies.add(new Wisie("Szopuś", "Raccoon", WisieType.RACCOON));
+        wisies.add(new Wisie("Wędrek", "Raccoon Brown", WisieType.RACCOON_BROWN));
         wisies.add(new Wisie("Ząbek", "Shark", WisieType.SHARK));
         wisies.add(new Wisie("Wełnuś", "Sheep", WisieType.SHEEP));
         wisies.add(new Wisie("Jaduś", "Snake", WisieType.SNAKE));
+        wisies.add(new Wisie("Bociek", "Stork", WisieType.STORK));
         wisies.add(new Wisie("Wiewcia", "Squirrel", WisieType.SQUIRREL));
         wisies.add(new Wisie("Zdzigrys", "Tiger", WisieType.TIGER));
         wisies.add(new Wisie("Induś", "Turkey", WisieType.TURKEY));
         wisies.add(new Wisie("Skorupny", "Turtle", WisieType.TURTLE));
         wisies.add(new Wisie("Morsu", "Walrus", WisieType.WALRUS));
+        wisies.add(new Wisie("Robcio", "Worm", WisieType.WORM));
         wisies.add(new Wisie("Wilku", "Wolf", WisieType.WOLF));
         wisieRepository.saveAll(wisies);
     }
