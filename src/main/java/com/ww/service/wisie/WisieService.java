@@ -59,7 +59,7 @@ public class WisieService {
     }
 
     public void initProfileWisies(Profile profile){
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             Wisie wisie = randomWisieForProfile(profile.getId());
             profileWisieService.addWisie(profile, wisie);
         }
