@@ -12,17 +12,13 @@ public class ChallengePositionDTO {
 
     private Long position;
     private ProfileDTO profile;
-    private Integer score = 0;
-    private Long answerInterval;
+    private Integer score;
     private ChallengeProfileStatus status;
 
     public ChallengePositionDTO(ChallengeProfile challengeProfile) {
         this.profile = new ProfileDTO(challengeProfile.getProfile());
+        this.score = challengeProfile.getScore();
         this.status = challengeProfile.getStatus();
-    }
-
-    public void increaseScore() {
-        score++;
     }
 
 }

@@ -18,8 +18,7 @@ public class ChallengeProfile {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private ChallengeProfileStatus status = ChallengeProfileStatus.OPEN;
-    private Instant inProgressDate;
-    private Instant closeDate;
+    private Integer score = 0;
     @ManyToOne
     @JoinColumn(name = "challenge_id", nullable = false, updatable = false)
     private Challenge challenge;
@@ -31,12 +30,5 @@ public class ChallengeProfile {
         this.challenge = challenge;
         this.profile = profile;
         this.status = status;
-        if (status == ChallengeProfileStatus.IN_PROGRESS) {
-            this.inProgressDate = Instant.now();
-        }
-    }
-
-    public Long inProgressInterval() {
-        return closeDate.toEpochMilli() - inProgressDate.toEpochMilli();
     }
 }

@@ -80,10 +80,15 @@ public class WarService extends RivalService {
         return profileWisieService.listTeam(profile.getId());
     }
 
+    @Override
     public Question prepareQuestion(Category category, DifficultyLevel difficultyLevel) {
         Question question = super.prepareQuestion(category, difficultyLevel);
-        taskService.initTaskWisdomAtributes(question);
+        initTaskWisdomAttributes(question);
         return question;
+    }
+
+    public void initTaskWisdomAttributes( Question question){
+        taskService.initTaskWisdomAttributes(question);
     }
 
     public synchronized void chooseWhoAnswer(String sessionId, String content) {

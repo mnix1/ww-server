@@ -3,19 +3,14 @@ package com.ww.manager.rival.campaign;
 import com.ww.helper.TeamHelper;
 import com.ww.manager.rival.campaign.state.CampaignWarStateChoosingTaskProps;
 import com.ww.manager.rival.campaign.state.CampaignWarStateChosenWhoAnswer;
-import com.ww.manager.rival.state.StateChoosingTaskProps;
-import com.ww.manager.rival.state.StateChoosingTaskPropsTimeout;
 import com.ww.manager.rival.state.StateClose;
 import com.ww.manager.rival.war.WarManager;
-import com.ww.model.constant.rival.campaign.ProfileCampaignStatus;
 import com.ww.model.container.rival.RivalInitContainer;
-import com.ww.model.container.rival.campaign.CampaignWarContainer;
 import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarContainer;
 import com.ww.model.container.rival.war.WarProfileContainer;
 import com.ww.model.entity.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.social.Profile;
-import com.ww.model.entity.wisie.OwnedWisie;
 import com.ww.model.entity.wisie.ProfileCampaignWisie;
 import com.ww.service.rival.campaign.CampaignWarService;
 import com.ww.service.social.ProfileConnectionService;
@@ -40,11 +35,11 @@ public class CampaignWarManager extends WarManager {
         Long creatorId = creator.getId();
         Profile opponent = container.getOpponentProfile();
         Long opponentId = opponent.getId();
-        this.rivalContainer = new CampaignWarContainer();
+        this.rivalContainer = new WarContainer();
         this.rivalContainer.storeInformationFromInitContainer(container);
         this.rivalContainer.addProfile(creatorId, new WarProfileContainer(creator, opponentId, prepareTeamMembers(creator, profileCampaign)));
         this.rivalContainer.addProfile(opponentId, new WarProfileContainer(opponent, creatorId, prepareTeamMembers(opponent, profileCampaign)));
-        this.warContainer = (CampaignWarContainer) this.rivalContainer;
+        this.warContainer = (WarContainer) this.rivalContainer;
         this.profileCampaign = profileCampaign;
     }
 

@@ -62,6 +62,7 @@ public abstract class RivalManager {
     public void prepareTask(Long id, Category category, DifficultyLevel difficultyLevel) {
         Question question = rivalService.prepareQuestion(category, difficultyLevel);
         question.setId(id);
+        question.initAnswerIds();
         TaskDTO taskDTO = rivalService.prepareTaskDTO(question);
         rivalContainer.addTask(question, taskDTO);
     }

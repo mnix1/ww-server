@@ -10,11 +10,8 @@ import java.util.List;
 
 @Repository
 public interface ChallengeProfileRepository extends CrudRepository<ChallengeProfile, Long> {
-    List<ChallengeProfile> findAllByProfile_IdAndStatus(Long profileId, ChallengeProfileStatus status);
-
     List<ChallengeProfile> findAllByProfile_IdAndStatusAndChallenge_Status(Long profileId, ChallengeProfileStatus challengeProfileStatus, ChallengeStatus challengeStatus);
-
-    List<ChallengeProfile> findAllByProfile_Id(Long profileId);
-
     List<ChallengeProfile> findAllByProfile_IdAndChallenge_Status(Long profileId, ChallengeStatus challengeStatus);
+    ChallengeProfile findByProfile_IdAndChallenge_Id(Long profileId, Long challengeId);
+    List<ChallengeProfile> findAllByChallenge_Id(Long challengeId);
 }

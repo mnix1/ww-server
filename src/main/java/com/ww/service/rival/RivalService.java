@@ -131,9 +131,7 @@ public abstract class RivalService {
     }
 
     public Question prepareQuestion(Category category, DifficultyLevel difficultyLevel) {
-        Question question = getTaskGenerateService().generate(category, difficultyLevel);
-        question.initAnswerIds();
-        return question;
+        return getTaskGenerateService().generate(category, difficultyLevel);
     }
 
     public TaskDTO prepareTaskDTO(Question question) {

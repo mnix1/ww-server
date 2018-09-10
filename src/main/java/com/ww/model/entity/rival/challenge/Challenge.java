@@ -33,10 +33,4 @@ public class Challenge {
 
     @OneToMany(mappedBy = "challenge", fetch = FetchType.LAZY)
     private Set<ChallengeQuestion> questions;
-
-    @OneToMany(mappedBy = "challenge", fetch = FetchType.LAZY)
-    private Set<ChallengeAnswer> answers;
-
-
-
 }

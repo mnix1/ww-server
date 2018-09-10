@@ -67,7 +67,7 @@ public class TaskService {
         answerRepository.saveAll(answers);
     }
 
-    public void initTaskWisdomAtributes(Question question) {
+    public void initTaskWisdomAttributes(Question question) {
         question.getType().setWisdomAttributes(taskWisdomAttributeRepository.findAllByType(question.getType()));
     }
 

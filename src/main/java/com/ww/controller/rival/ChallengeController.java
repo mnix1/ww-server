@@ -33,38 +33,14 @@ public class ChallengeController {
         return challengeService.friendInit(tags);
     }
 
-//    @RequestMapping(value = "/startFast", method = RequestMethod.POST)
-//    public ChallengeTaskDTO startFast() {
-//        return challengeService.startFast();
-//    }
-
-//    @RequestMapping(value = "/startResponse", method = RequestMethod.POST)
-//    public ChallengeTaskDTO startResponse(@RequestBody Map<String, Object> payload) {
-//        if (!payload.containsKey("challengeId")) {
-//            throw new IllegalArgumentException();
-//        }
-//        Long challengeId = ((Integer) payload.get("challengeId")).longValue();
-//        return challengeService.startResponse(challengeId);
-//    }
-
-//    @RequestMapping(value = "/nextTask", method = RequestMethod.POST)
-//    public ChallengeTaskDTO nextTask(@RequestBody Map<String, Object> payload) {
-//        if (!payload.containsKey("challengeId")) {
-//            throw new IllegalArgumentException();
-//        }
-//        Long challengeId = ((Integer) payload.get("challengeId")).longValue();
-//        return challengeService.nextTask(challengeId);
-//    }
-//
-//    @RequestMapping(value = "/endTask", method = RequestMethod.POST)
-//    public Map endTask(@RequestBody Map<String, Object> payload) {
-//        if (!payload.containsKey("challengeId") || !payload.containsKey("answerId")) {
-//            throw new IllegalArgumentException();
-//        }
-//        Long challengeId = ((Integer) payload.get("challengeId")).longValue();
-//        Long answerId = ((Integer) payload.get("answerId")).longValue();
-//        return challengeService.endTask(challengeId, answerId);
-//    }
+    @RequestMapping(value = "/response", method = RequestMethod.POST)
+    public Map response(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("id")) {
+            throw new IllegalArgumentException();
+        }
+        Long challengeId = ((Integer) payload.get("id")).longValue();
+        return challengeService.response(challengeId);
+    }
 
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     public List<ChallengeInfoDTO> list(@RequestBody Map<String, Object> payload) {

@@ -1,9 +1,15 @@
 package com.ww.manager.rival.challenge;
 
 import com.ww.manager.rival.war.WarManager;
+import com.ww.model.constant.Category;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.container.rival.war.WarContainer;
 import com.ww.model.container.rival.war.WarProfileContainer;
+import com.ww.model.dto.rival.task.TaskDTO;
+import com.ww.model.entity.rival.challenge.ChallengeProfile;
+import com.ww.model.entity.rival.challenge.ChallengeQuestion;
+import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.social.Profile;
 import com.ww.model.entity.wisie.ProfileWisie;
 import com.ww.service.rival.ChallengeService;
@@ -13,7 +19,10 @@ import java.util.List;
 
 public class ChallengeManager extends WarManager {
 
-    public ChallengeManager(RivalInitContainer container, ChallengeService challengeService, ProfileConnectionService profileConnectionService) {
+    public ChallengeProfile challengeProfile;
+    public List<ChallengeQuestion> challengeQuestions;
+
+    public ChallengeManager(RivalInitContainer container, ChallengeService challengeService, ProfileConnectionService profileConnectionService, ChallengeProfile challengeProfile, List<ChallengeQuestion> challengeQuestions) {
         this.rivalService = challengeService;
         this.profileConnectionService = profileConnectionService;
         Profile creator = container.getCreatorProfile();
@@ -23,6 +32,26 @@ public class ChallengeManager extends WarManager {
         this.rivalContainer.storeInformationFromInitContainer(container);
         this.rivalContainer.addProfile(creatorId, new WarProfileContainer(creator, null, prepareTeamMembers(creator, creatorWisies)));
         this.warContainer = (WarContainer) this.rivalContainer;
+        this.challengeProfile = challengeProfile;
+        this.challengeQuestions = challengeQuestions;
+    }
+
+    @Override
+    public void prepareTask(Long id, Category category, DifficultyLevel difficultyLevel) {
+        ChallengeService challengeService = (ChallengeService) rivalService;
+        Question question;
+        int taskIndex = id.intValue() - 1;
+        if (challengeQuestions.size() > taskIndex) {
+            question = challengeQuestions.get(taskIndex).getQuestion();
+        } else {
+
+            question = challengeService.prepareQuestion(challengeProfile, taskIndex, category, difficultyLevel);
+        }
+        challengeService.initTaskWisdomAttributes(question);
+        question.setId(id);
+        question.initAnswerIds();
+        TaskDTO taskDTO = rivalService.prepareTaskDTO(question);
+        rivalContainer.addTask(question, taskDTO);
     }
 
 }
