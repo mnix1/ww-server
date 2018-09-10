@@ -56,4 +56,11 @@ public class ChallengeManager extends WarManager {
         rivalContainer.addTask(question, taskDTO);
     }
 
+    @Override
+    public Integer getAnsweringInterval() {
+        int taskIndex = Math.max(0, rivalContainer.getCurrentTaskIndex());
+        Integer interval = super.getAnsweringInterval() - taskIndex * 5000;
+        return Math.max(interval, 5000);
+    }
+
 }
