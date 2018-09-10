@@ -13,6 +13,7 @@ public enum Message {
     BATTLE_CONTENT,
     WAR_CONTENT,
     CAMPAIGN_WAR_CONTENT,
+    CHALLENGE_CONTENT,
     WAR_READY,
     REWARD,
 }

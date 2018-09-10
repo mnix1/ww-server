@@ -69,6 +69,9 @@ public class WarContainer extends RivalContainer {
 
     public String findChoosingTaskPropsTag() {
         List<RivalProfileContainer> rivalProfileContainers = new ArrayList<>(getProfileIdRivalProfileContainerMap().values());
+        if (rivalProfileContainers.size() < 2) {
+            return null;
+        }
         Integer presentIndexSize1 = ((WarProfileContainer) rivalProfileContainers.get(0)).countPresentMembers();
         Integer presentIndexSize2 = ((WarProfileContainer) rivalProfileContainers.get(1)).countPresentMembers();
         if (presentIndexSize1.equals(presentIndexSize2)) {
@@ -82,6 +85,9 @@ public class WarContainer extends RivalContainer {
 
     public Optional<Profile> findWinner() {
         List<RivalProfileContainer> rivalProfileContainers = new ArrayList<>(getProfileIdRivalProfileContainerMap().values());
+        if (rivalProfileContainers.size() < 2) {
+            return Optional.empty();
+        }
         Integer presentIndexSize1 = ((WarProfileContainer) rivalProfileContainers.get(0)).countPresentMembers();
         Integer presentIndexSize2 = ((WarProfileContainer) rivalProfileContainers.get(1)).countPresentMembers();
         if (presentIndexSize1.equals(presentIndexSize2)) {
@@ -103,23 +109,29 @@ public class WarContainer extends RivalContainer {
         model.put("activeIndex", warProfileContainer.getActiveIndex());
         model.put("presentIndexes", warProfileContainer.getPresentIndexes());
         model.put("team", prepareTeam(warProfileContainer.getTeamMembers()));
-        model.put("opponentPresentIndexes", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getPresentIndexes());
-        model.put("opponentActiveIndex", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getActiveIndex());
-        model.put("opponentTeam", prepareTeam(getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getTeamMembers()));
+        if (isOpponent()) {
+            model.put("opponentPresentIndexes", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getPresentIndexes());
+            model.put("opponentActiveIndex", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getActiveIndex());
+            model.put("opponentTeam", prepareTeam(getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getTeamMembers()));
+        }
     }
 
     public void fillModelPreparingNextTask(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         super.fillModelPreparingNextTask(model, rivalProfileContainer);
-        model.put("opponentActiveIndex", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getActiveIndex());
+        if (isOpponent()) {
+            model.put("opponentActiveIndex", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getActiveIndex());
+        }
     }
 
     public void fillModelAnswered(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         super.fillModelAnswered(model, rivalProfileContainer);
         WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
         model.put("wisieActions", null);
-        model.put("opponentWisieActions", null);
         model.put("presentIndexes", warProfileContainer.getPresentIndexes());
-        model.put("opponentPresentIndexes", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getPresentIndexes());
+        if (isOpponent()) {
+            model.put("opponentWisieActions", null);
+            model.put("opponentPresentIndexes", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getPresentIndexes());
+        }
     }
 
     public void fillModelAnswering(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
@@ -130,15 +142,19 @@ public class WarContainer extends RivalContainer {
     public void fillModelWisieAnswering(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
         model.put("activeIndex", warProfileContainer.getActiveIndex());
-        model.put("opponentActiveIndex", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getActiveIndex());
+        if (isOpponent()) {
+            model.put("opponentActiveIndex", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getActiveIndex());
+        }
         if (warProfileContainer.getActiveTeamMember().isWisie()) {
             List<WisieAnswerAction> wisieActions = getAnsweringWisieActions(warProfileContainer);
             if (wisieActions != null) {
                 model.put("wisieActions", wisieActions);
             }
-            List<WisieAnswerAction> opponentWisieActions = getAnsweringWisieActions(getRivalProfileContainer(rivalProfileContainer.getOpponentId()));
-            if (opponentWisieActions != null) {
-                model.put("opponentWisieActions", opponentWisieActions);
+            if (isOpponent()) {
+                List<WisieAnswerAction> opponentWisieActions = getAnsweringWisieActions(getRivalProfileContainer(rivalProfileContainer.getOpponentId()));
+                if (opponentWisieActions != null) {
+                    model.put("opponentWisieActions", opponentWisieActions);
+                }
             }
         }
     }
@@ -147,9 +163,11 @@ public class WarContainer extends RivalContainer {
         super.fillModelAnsweringTimeout(model, rivalProfileContainer);
         WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
         model.put("wisieActions", null);
-        model.put("opponentWisieActions", null);
         model.put("presentIndexes", warProfileContainer.getPresentIndexes());
-        model.put("opponentPresentIndexes", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getPresentIndexes());
+        if (isOpponent()) {
+            model.put("opponentWisieActions", null);
+            model.put("opponentPresentIndexes", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getPresentIndexes());
+        }
     }
 
     public void fillModelChoosingWhoAnswer(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {

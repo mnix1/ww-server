@@ -18,8 +18,12 @@ public class StateSurrender extends State {
     @Override
     protected void processVoid() {
         rivalContainer.setStatus(RivalStatus.CLOSED);
-        rivalContainer.setWinnerLooser(rivalContainer.getOpponentRivalProfileContainer(profileId).getProfile());
-        rivalContainer.setResigned(true);
+        if(rivalContainer.isOpponent()) {
+            rivalContainer.setWinnerLooser(rivalContainer.getOpponentRivalProfileContainer(profileId).getProfile());
+            rivalContainer.setResigned(true);
+        } else {
+            rivalContainer.setDraw(true);
+        }
         rivalManager.updateProfilesElo();
         rivalContainer.forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();

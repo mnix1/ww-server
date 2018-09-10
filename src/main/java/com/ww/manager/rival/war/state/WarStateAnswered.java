@@ -32,10 +32,14 @@ public class WarStateAnswered extends WarState {
             isAnswerCorrect = rivalContainer.findCurrentCorrectAnswerId().equals(markedAnswerId);
         }
         WarProfileContainer container = (WarProfileContainer) rivalContainer.getProfileIdRivalProfileContainerMap().get(profileId);
-        if (isAnswerCorrect) {
-            container = (WarProfileContainer) rivalContainer.getProfileIdRivalProfileContainerMap().get(container.getOpponentId());
+        if (rivalContainer.isOpponent()) {
+            if (isAnswerCorrect) {
+                container = (WarProfileContainer) rivalContainer.getProfileIdRivalProfileContainerMap().get(container.getOpponentId());
+            }
+            container.setActiveTeamMemberPresentToFalse();
+        } else if (!isAnswerCorrect) {
+            container.setActiveTeamMemberPresentToFalse();
         }
-        container.setActiveTeamMemberPresentToFalse();
         rivalContainer.forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
             rivalContainer.fillModelAnswered(model, rivalProfileContainer);

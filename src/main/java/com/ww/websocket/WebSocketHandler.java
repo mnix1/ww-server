@@ -2,6 +2,7 @@ package com.ww.websocket;
 
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.ProfileConnection;
+import com.ww.service.rival.ChallengeService;
 import com.ww.service.rival.RivalService;
 import com.ww.service.rival.battle.BattleService;
 import com.ww.service.rival.campaign.CampaignWarService;
@@ -37,9 +38,12 @@ public class WebSocketHandler extends TextWebSocketHandler {
     @Autowired
     CampaignWarService campaignWarService;
 
+    @Autowired
+    ChallengeService challengeService;
+
     @Override
     public void handleTransportError(WebSocketSession session, Throwable throwable) throws Exception {
-        logger.error("error occured at sender " + session, throwable);
+        logger.error("error occurred at sender " + session, throwable);
     }
 
     @Override
@@ -55,6 +59,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         battleService.sendActualRivalModelToNewProfileConnection(profileConnection);
         warService.sendActualRivalModelToNewProfileConnection(profileConnection);
         campaignWarService.sendActualRivalModelToNewProfileConnection(profileConnection);
+        challengeService.sendActualRivalModelToNewProfileConnection(profileConnection);
     }
 
     private static final String READY_FOR_START_SUFFIX = "_^_READY_FOR_START";
@@ -78,6 +83,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
         } else if (message.startsWith(RivalType.CAMPAIGN_WAR.name())) {
             rivalService = campaignWarService;
             rivalType = RivalType.CAMPAIGN_WAR;
+        }else if (message.startsWith(RivalType.CHALLENGE.name())) {
+            rivalService = challengeService;
+            rivalType = RivalType.CHALLENGE;
         }
         if (message.contains(READY_FOR_START_SUFFIX)) {
             rivalService.readyForStart(session.getId());

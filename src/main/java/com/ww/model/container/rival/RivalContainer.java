@@ -63,6 +63,10 @@ public abstract class RivalContainer {
         this.opponentProfile = container.getOpponentProfile();
     }
 
+    public boolean isOpponent(){
+        return opponentProfile != null;
+    }
+
     public void addProfile(Long id, RivalProfileContainer rivalProfileContainer) {
         profileIdRivalProfileContainerMap.put(id, rivalProfileContainer);
     }
@@ -80,7 +84,6 @@ public abstract class RivalContainer {
         this.winner = winner;
         this.looser = getOpponentRivalProfileContainer(winner.getId()).getProfile();
     }
-
 
     public boolean isRanking() {
         return importance == RivalImportance.RANKING;
@@ -142,7 +145,9 @@ public abstract class RivalContainer {
         model.put("importance", importance.name());
         model.put("type", type.name());
         model.put("profile", prepareProfile(rivalProfileContainer.getProfile()));
-        model.put("opponent", prepareProfile(rivalProfileContainer.getOpponentId()));
+        if (isOpponent()) {
+            model.put("opponent", prepareProfile(rivalProfileContainer.getOpponentId()));
+        }
     }
 
     public void fillModelIntro(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
@@ -218,7 +223,9 @@ public abstract class RivalContainer {
             return;
         }
         model.put("newProfile", prepareProfile(rivalProfileContainer.getProfile()));
-        model.put("newOpponent", prepareProfile(rivalProfileContainer.getOpponentId()));
+        if (isOpponent()) {
+            model.put("newOpponent", prepareProfile(rivalProfileContainer.getOpponentId()));
+        }
     }
 
     public void fillModel(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
