@@ -6,6 +6,7 @@ import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.container.rival.war.WarContainer;
 import com.ww.model.container.rival.war.WarProfileContainer;
+import com.ww.model.dto.rival.task.AnswerDTO;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.rival.challenge.ChallengeProfile;
 import com.ww.model.entity.rival.challenge.ChallengeQuestion;
@@ -15,6 +16,7 @@ import com.ww.model.entity.wisie.ProfileWisie;
 import com.ww.service.rival.ChallengeService;
 import com.ww.service.social.ProfileConnectionService;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class ChallengeManager extends WarManager {
@@ -44,13 +46,13 @@ public class ChallengeManager extends WarManager {
         if (challengeQuestions.size() > taskIndex) {
             question = challengeQuestions.get(taskIndex).getQuestion();
         } else {
-
             question = challengeService.prepareQuestion(challengeProfile, taskIndex, category, difficultyLevel);
         }
         challengeService.initTaskWisdomAttributes(question);
         question.setId(id);
-        question.initAnswerIds();
+        question.rewriteAnswerIds();
         TaskDTO taskDTO = rivalService.prepareTaskDTO(question);
+        taskDTO.getAnswers().sort(Comparator.comparing(AnswerDTO::getId));
         rivalContainer.addTask(question, taskDTO);
     }
 

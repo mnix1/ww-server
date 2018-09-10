@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.Set;
+import java.util.*;
 
 @Setter
 @Getter
@@ -57,6 +57,15 @@ public class Question {
     }
 
     public void initAnswerIds() {
+        long id = 0;
+        for (Answer answer : answers) {
+            answer.setId(id++);
+        }
+    }
+
+    public void rewriteAnswerIds() {
+        List<Answer> answers = new ArrayList<>(this.answers);
+        answers.sort(Comparator.comparing(Answer::getId));
         long id = 0;
         for (Answer answer : answers) {
             answer.setId(id++);
