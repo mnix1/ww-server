@@ -13,6 +13,8 @@ import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticat
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import static com.ww.config.security.Roles.ADMIN;
+
 @Configuration
 @EnableWebSecurity
 public class ProdSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -39,8 +41,9 @@ public class ProdSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/profile/profileTag").permitAll()
-                .antMatchers("/login").permitAll()
+                .antMatchers("/").permitAll()
+                .antMatchers("/login/**").permitAll()
+                .antMatchers("/static/**").permitAll()
                 .anyRequest().fullyAuthenticated()
                 .and()
                 .logout()

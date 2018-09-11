@@ -1,6 +1,5 @@
 package com.ww.controller;
 
-import com.ww.model.constant.rival.campaign.CampaignType;
 import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.dto.book.ProfileBookDTO;
 import com.ww.model.dto.social.ProfileResourcesDTO;
@@ -8,7 +7,6 @@ import com.ww.model.entity.social.Profile;
 import com.ww.service.SessionService;
 import com.ww.service.book.ProfileBookService;
 import com.ww.service.social.ProfileService;
-import com.ww.service.wisie.ProfileWisieService;
 import com.ww.service.wisie.WisieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

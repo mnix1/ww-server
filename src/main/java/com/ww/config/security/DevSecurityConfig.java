@@ -25,7 +25,7 @@ public class DevSecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().sameOrigin()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/h2**").hasRole(USER)
+                .antMatchers("/h2**").hasRole(ADMIN)
                 .anyRequest().fullyAuthenticated()
                 .and()
                 .logout()
