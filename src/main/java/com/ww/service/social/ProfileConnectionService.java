@@ -32,7 +32,7 @@ public class ProfileConnectionService {
     ProfileFriendRepository profileFriendRepository;
 
     public ProfileConnection newConnection(WebSocketSession session) {
-        Profile profile = profileService.createOrRetrieveProfile(profileService.getAuthId(session.getPrincipal()));
+        Profile profile = profileService.retrieveProfile(profileService.getAuthId(session.getPrincipal()));
         if (profileIdToProfileConnectionMap.containsKey(profile.getId())) {
             ProfileConnection profileConnection = profileIdToProfileConnectionMap.get(profile.getId());
             String oldSessionId = profileConnection.getSessionId();

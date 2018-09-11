@@ -1,5 +1,6 @@
 package com.ww.service.social;
 
+import com.ww.model.constant.Language;
 import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.entity.social.Profile;
 import com.ww.repository.social.ProfileRepository;
@@ -84,8 +85,7 @@ public class ProfileService {
         if (user instanceof OAuth2Authentication) {
             Map<String, String> details = (Map<String, String>) ((OAuth2Authentication) user).getUserAuthentication().getDetails();
             return details.get("sub");
-        }
-        if (user instanceof UsernamePasswordAuthenticationToken) {
+        } else if (user instanceof UsernamePasswordAuthenticationToken) {
             return ((User) ((UsernamePasswordAuthenticationToken) user).getPrincipal()).getUsername();
         }
         return null;
@@ -95,17 +95,16 @@ public class ProfileService {
         return profileRepository.findByAuthId(authId);
     }
 
-    public Profile createProfile(String authId) {
-        Profile profile = new Profile(authId);
-        profileRepository.save(profile);
-        return profile;
-    }
-
-    public Profile createOrRetrieveProfile(String authId) {
-        Profile profile = retrieveProfile(authId);
-        if (profile == null) {
-            profile = createProfile(authId);
+    public Profile createProfile(Principal user, String authId) {
+        Profile profile = null;
+        if (user instanceof OAuth2Authentication) {
+            Map<String, String> details = (Map<String, String>) ((OAuth2Authentication) user).getUserAuthentication().getDetails();
+            String name = details.get("name");
+            profile = new Profile(authId, name.substring(0, Math.min(name.length(), NAME_MAX_LENGTH)), Language.fromLocale(details.get("locale")));
+        } else if (user instanceof UsernamePasswordAuthenticationToken) {
+            profile = new Profile(authId, authId, Language.POLISH);
         }
+        profileRepository.save(profile);
         return profile;
     }
 

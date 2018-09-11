@@ -1,6 +1,7 @@
 package com.ww.model.entity.social;
 
 import com.ww.helper.TagHelper;
+import com.ww.model.constant.Language;
 import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.entity.book.ProfileBook;
 import com.ww.model.entity.rival.campaign.ProfileCampaign;
@@ -8,6 +9,7 @@ import com.ww.model.entity.wisie.ProfileWisie;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.codec.language.bm.Lang;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -25,6 +27,7 @@ public class Profile {
     private String tag;
     private String name;
     private WisorType wisorType;
+    private Language language;
     private Long level;
     private Long experience;
     private Long gold;
@@ -47,10 +50,11 @@ public class Profile {
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
     private Set<ProfileCampaign> campaigns = new HashSet<>();
 
-    public Profile(String authId) {
+    public Profile(String authId, String name, Language language) {
         this.tag = TagHelper.randomTag();
-        this.name = authId;
+        this.name = name;
         this.authId = authId;
+        this.language = language;
         this.level = 0L;
         this.experience = 0L;
         this.gold = 10L;

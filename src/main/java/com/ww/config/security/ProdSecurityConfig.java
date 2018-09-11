@@ -39,7 +39,8 @@ public class ProdSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/profile").permitAll()
+                .antMatchers("/profile/profileTag").permitAll()
+                .antMatchers("/login").permitAll()
                 .anyRequest().fullyAuthenticated()
                 .and()
                 .logout()
@@ -53,7 +54,7 @@ public class ProdSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private OAuth2ClientAuthenticationProcessingFilter filter() {
         OAuth2ClientAuthenticationProcessingFilter oAuth2Filter = new OAuth2ClientAuthenticationProcessingFilter(
-                "/google/login");
+                "/login/google");
         OAuth2RestTemplate oAuth2RestTemplate = new OAuth2RestTemplate(authorizationCodeResourceDetails,
                 oauth2ClientContext);
         oAuth2Filter.setRestTemplate(oAuth2RestTemplate);

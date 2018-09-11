@@ -5,6 +5,13 @@ public enum Language {
     ENGLISH,
     ALL;
 
+    public static Language fromLocale(String locale) {
+        if (locale.equals("pl")) {
+            return POLISH;
+        }
+        return ENGLISH;
+    }
+
     public static boolean addPolish(Language lang) {
         return lang == POLISH || lang == ALL;
     }

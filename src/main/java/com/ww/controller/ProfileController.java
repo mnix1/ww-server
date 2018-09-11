@@ -37,21 +37,6 @@ public class ProfileController {
     @Autowired
     SessionService sessionService;
 
-    @RequestMapping(value = "/profileTag", method = RequestMethod.GET)
-    public Map profileTag(Principal user) {
-        Map<String, Object> model = new HashMap<>();
-        String authId = profileService.getAuthId(user);
-        if (authId != null) {
-            Profile profile = profileService.retrieveProfile(authId);
-            if (profile == null) {
-                profile = profileService.createProfile(authId);
-                wisieService.initProfileWisies(profile);
-            }
-            sessionService.setProfileId(profile.getId());
-            model.put("profileTag", profile.getTag());
-        }
-        return model;
-    }
 
     @RequestMapping(value = "/changeWisor", method = RequestMethod.POST)
     public Map changeWisor(@RequestBody Map<String, Object> payload) {
@@ -72,8 +57,18 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
-    public ProfileResourcesDTO profile() {
-        return new ProfileResourcesDTO(profileService.getProfile());
+    public ProfileResourcesDTO profile(Principal user) {
+        String authId = profileService.getAuthId(user);
+        if (authId != null) {
+            Profile profile = profileService.retrieveProfile(authId);
+            if (profile == null) {
+                profile = profileService.createProfile(user, authId);
+                wisieService.initProfileWisies(profile);
+            }
+            sessionService.setProfileId(profile.getId());
+            return new ProfileResourcesDTO(profile);
+        }
+        return null;
     }
 
     @RequestMapping(value = "/listBook", method = RequestMethod.GET)
