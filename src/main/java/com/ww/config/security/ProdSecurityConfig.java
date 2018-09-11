@@ -1,9 +1,12 @@
 package com.ww.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.AuthoritiesExtractor;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -14,6 +17,7 @@ import org.springframework.security.oauth2.client.token.grant.code.Authorization
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import static com.ww.config.security.Roles.ADMIN;
+import static com.ww.config.security.Roles.USER;
 
 @Configuration
 @EnableWebSecurity
@@ -40,7 +44,11 @@ public class ProdSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .headers().frameOptions().sameOrigin()
+                .and()
                 .authorizeRequests()
+                .antMatchers("/**/*.map").hasAnyRole(ADMIN)
+                .antMatchers("/h2**").hasAnyRole(ADMIN)
                 .antMatchers("/").permitAll()
                 .antMatchers("/login/**").permitAll()
                 .antMatchers("/static/**").permitAll()
@@ -61,8 +69,9 @@ public class ProdSecurityConfig extends WebSecurityConfigurerAdapter {
         OAuth2RestTemplate oAuth2RestTemplate = new OAuth2RestTemplate(authorizationCodeResourceDetails,
                 oauth2ClientContext);
         oAuth2Filter.setRestTemplate(oAuth2RestTemplate);
-        oAuth2Filter.setTokenServices(new UserInfoTokenServices(resourceServerProperties.getUserInfoUri(),
-                resourceServerProperties.getClientId()));
+        UserInfoTokenServices tokenServices = new UserInfoTokenServices(resourceServerProperties.getUserInfoUri(), resourceServerProperties.getClientId());
+        tokenServices.setAuthoritiesExtractor(new CustomAuthoritiesExtractor());
+        oAuth2Filter.setTokenServices(tokenServices);
         return oAuth2Filter;
     }
 }
