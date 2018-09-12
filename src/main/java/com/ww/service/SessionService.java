@@ -5,9 +5,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
+
 @Service
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class SessionService {
+public class SessionService implements Serializable {
 
     private Session session = new Session();
 

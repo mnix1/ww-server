@@ -58,19 +58,19 @@ public class InitService {
     private InitCampaignsService initCampaignsService;
 
     public void init() {
-        if (bookRepository.findAll().size() == 0) {
-            initBooksService.initBooks();
-            initTaskTypesService.initTaskTypes();
-            initWisiesService.initWisies();
-            initCampaignsService.initCampaigns();
-            initProfiles();
-            initMusicTracks();
-            initClipartsService.initCliparts();
-            initGeographyCountries();
-            initChemistryElements();
-            memoryTaskHelperService.initShapes();
-            memoryTaskHelperService.initColors();
-        }
+//        if (bookRepository.findAll().size() == 0) {
+//            initBooksService.initBooks();
+//            initTaskTypesService.initTaskTypes();
+//            initWisiesService.initWisies();
+//            initCampaignsService.initCampaigns();
+//            initProfiles();
+//            initMusicTracks();
+//            initClipartsService.initCliparts();
+//            initGeographyCountries();
+//            initChemistryElements();
+//            memoryTaskHelperService.initShapes();
+//            memoryTaskHelperService.initColors();
+//        }
     }
 
     public void initProfiles() {

@@ -5,6 +5,7 @@ env: flex
 
 runtime_config:
   jdk: openjdk8
+  server: tomcat8 # Run on Tomcat8
 
 handlers:
 - url: /.*
@@ -12,6 +13,3 @@ handlers:
 
 manual_scaling:
   instances: 1
-
-health_check:
-  enable_health_check: False
