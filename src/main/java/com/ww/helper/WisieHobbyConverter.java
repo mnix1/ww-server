@@ -10,19 +10,19 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class WisieHobbyConverter implements AttributeConverter<Set<Category>, String> {
+public class WisieHobbyConverter implements AttributeConverter<HashSet<Category>, String> {
     @Override
-    public String convertToDatabaseColumn(Set<Category> attribute) {
+    public String convertToDatabaseColumn(HashSet<Category> attribute) {
         return attribute == null ? null : StringUtils.join(attribute, ",");
     }
 
     @Override
-    public Set<Category> convertToEntityAttribute(String dbData) {
+    public HashSet<Category> convertToEntityAttribute(String dbData) {
         if (StringUtils.isBlank(dbData))
             return new HashSet<>();
 
         try (Stream<String> stream = Arrays.stream(dbData.split(","))) {
-            return stream.map(Category::fromString).collect(Collectors.toSet());
+            return stream.map(Category::fromString).collect(Collectors.toCollection(HashSet::new));
         }
     }
 }

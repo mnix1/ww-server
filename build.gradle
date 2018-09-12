@@ -7,19 +7,12 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-		classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.0.0-rc3'
 	}
 }
-//
-//configurations {
-//	compile.exclude module: "spring-boot-starter-tomcat"
-//}
 
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
-apply plugin: 'war'                               // standard Web Archive plugin
-apply plugin: 'com.google.cloud.tools.appengine'  // App Engine tasks
 
 group = 'com.ww'
 version = '0.0.1-SNAPSHOT'
@@ -46,7 +39,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile("org.springframework.boot:spring-boot-starter-websocket")
 
-//	compile('org.springframework.boot:spring-boot-starter-jetty')
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter-sql-postgresql', version: '1.0.0.RELEASE'
 
 	compile 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.0.BUILD-SNAPSHOT'
 
@@ -54,18 +47,9 @@ dependencies {
 
 	compile group: 'commons-io', name: 'commons-io', version: '2.6'
 
-	runtime('org.springframework.boot:spring-boot-devtools')
-	runtime('com.h2database:h2')
+//	runtime('org.springframework.boot:spring-boot-devtools')
+//	runtime('com.h2database:h2')
 	compileOnly('org.projectlombok:lombok')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.security:spring-security-test')
-}
-
-appengine {
-	deploy {
-		promote=true
-		stopPreviousVersion = true
-		projectId='GCLOUD_CONFIG'
-		version = "GCLOUD_CONFIG"
-	}
 }

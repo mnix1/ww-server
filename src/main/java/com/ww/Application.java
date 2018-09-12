@@ -20,15 +20,10 @@ import java.util.concurrent.Executors;
 @EnableOAuth2Client
 //@EnableOAuth2Sso
 @EnableScheduling
-public class Application extends SpringBootServletInitializer implements WebApplicationInitializer {
+public class Application {
 
     @Autowired
     InitService initService;
-
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Application.class);
-    }
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

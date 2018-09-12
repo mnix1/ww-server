@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.HashSet;
 
 @Setter
 @Getter
@@ -42,7 +42,7 @@ public abstract class OwnedWisie {
 
     @Column
     @Convert(converter = WisieHobbyConverter.class)
-    protected Set<Category> hobbies;
+    protected HashSet<Category> hobbies;
     @ManyToOne
     @JoinColumn(name = "profile_id", nullable = false, updatable = false)
     protected Profile profile;
