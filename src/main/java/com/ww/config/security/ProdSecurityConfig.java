@@ -48,7 +48,7 @@ public class ProdSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/**/*.map", "/h2**").hasAnyRole(ADMIN)
-                .antMatchers("/", "/profile", "/play", "/shop", "/friend", "/wisies", "/login/**", "/static/**").permitAll()
+                .antMatchers("/", "/profile", "/play", "/war", "/battle","/practise", "/shop", "/friend", "/wisies", "/login/**", "/static/**").permitAll()
                 .anyRequest().fullyAuthenticated()
                 .and()
                 .logout()

@@ -49,8 +49,6 @@ public abstract class RivalManager {
         }
     }
 
-    protected abstract Message getMessageReadyFast();
-
     public Message getMessageContent(){
        return rivalService.getMessageContent();
     }
@@ -65,13 +63,6 @@ public abstract class RivalManager {
         question.initAnswerIds();
         TaskDTO taskDTO = rivalService.prepareTaskDTO(question);
         rivalContainer.addTask(question, taskDTO);
-    }
-
-    public synchronized void maybeStart(Long profileId) {
-        rivalContainer.profileReady(profileId);
-        if (rivalContainer.isReady() && rivalContainer.getStatus() == RivalStatus.OPEN) {
-            start();
-        }
     }
 
     public void updateProfilesElo() {
@@ -135,14 +126,6 @@ public abstract class RivalManager {
             logger.error("Error when sending message");
         }
     }
-
-    public void sendReadyFast() {
-        rivalContainer.getProfileIdRivalProfileContainerMap().values().stream().forEach(rivalProfileContainer -> {
-            Map<String, Object> model = new HashMap<>();
-            send(model, getMessageReadyFast(), rivalProfileContainer.getProfileId());
-        });
-    }
-
 
     public Integer getIntroInterval() {
         return 3500;

@@ -84,16 +84,18 @@ public class RivalFriendService {
     public Map acceptFriend() {
         Map<String, Object> model = new HashMap<>();
         RivalInitContainer rival = rivalInitContainers.stream().filter(rivalInitContainer -> rivalInitContainer.getOpponentProfile().getId().equals(sessionService.getProfileId())).findFirst().get();
+        this.sendAcceptInvite(rival);
         if (rival.getType() == RivalType.BATTLE) {
             BattleManager battleManager = new BattleManager(rival, battleService, profileConnectionService);
             battleService.getProfileIdToRivalManagerMap().put(rival.getCreatorProfile().getId(), battleManager);
             battleService.getProfileIdToRivalManagerMap().put(rival.getOpponentProfile().getId(), battleManager);
+            battleManager.start();
         } else if (rival.getType() == RivalType.WAR) {
             WarManager warManager = new WarManager(rival, warService, profileConnectionService);
             warService.getProfileIdToRivalManagerMap().put(rival.getCreatorProfile().getId(), warManager);
             warService.getProfileIdToRivalManagerMap().put(rival.getOpponentProfile().getId(), warManager);
+            warManager.start();
         }
-        this.sendAcceptInvite(rival);
         model.put("type", rival.getType().name());
         return model;
     }

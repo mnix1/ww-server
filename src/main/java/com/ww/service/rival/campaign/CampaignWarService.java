@@ -135,7 +135,7 @@ public class CampaignWarService extends WarService {
         RivalManager rivalManager = createManager(rival, profileCampaign);
         getProfileIdToRivalManagerMap().put(rival.getCreatorProfile().getId(), rivalManager);
         getProfileIdToRivalManagerMap().put(rival.getOpponentProfile().getId(), rivalManager);
-        rivalManager.maybeStart(rival.getOpponentProfile().getId());
+        rivalManager.start();
         return putSuccessCode(model);
     }
 

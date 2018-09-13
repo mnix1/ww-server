@@ -98,7 +98,7 @@ public abstract class RivalRandomOpponentService {
         RivalManager rivalManager = createManager(rival);
         getRivalService().getProfileIdToRivalManagerMap().put(rival.getCreatorProfile().getId(), rivalManager);
         getRivalService().getProfileIdToRivalManagerMap().put(rival.getOpponentProfile().getId(), rivalManager);
-        rivalManager.sendReadyFast();
+        rivalManager.start();
         maybeInitRival();
         return;
     }

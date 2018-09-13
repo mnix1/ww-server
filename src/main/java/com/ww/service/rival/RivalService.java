@@ -38,13 +38,6 @@ public abstract class RivalService {
         rivalManager.send(rivalManager.actualModel(profileConnection.getProfileId()), getMessageContent(), profileConnection.getProfileId());
     }
 
-    public synchronized void readyForStart(String sessionId) {
-        getProfileConnectionService().getProfileId(sessionId).ifPresent(profileId -> {
-            RivalManager rivalManager = profileIdToRivalManagerMap.get(profileId);
-            rivalManager.maybeStart(profileId);
-        });
-    }
-
     protected abstract void addRewardFromWin(Profile winner);
 
     public abstract Message getMessageContent();

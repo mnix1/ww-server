@@ -62,7 +62,6 @@ public class WebSocketHandler extends TextWebSocketHandler {
         challengeService.sendActualRivalModelToNewProfileConnection(profileConnection);
     }
 
-    private static final String READY_FOR_START_SUFFIX = "_^_READY_FOR_START";
     private static final String ANSWER_SUFFIX = "_^_ANSWER";
     private static final String CHOOSE_TASK_PROPS_SUFFIX = "_^_CHOOSE_TASK_PROPS";
     private static final String SURRENDER_SUFFIX = "_^_SURRENDER";
@@ -87,9 +86,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
             rivalService = challengeService;
             rivalType = RivalType.CHALLENGE;
         }
-        if (message.contains(READY_FOR_START_SUFFIX)) {
-            rivalService.readyForStart(session.getId());
-        } else if (message.contains(ANSWER_SUFFIX)) {
+        if (message.contains(ANSWER_SUFFIX)) {
             rivalService.answer(session.getId(), trimPrefixFromMessage(message, rivalType, ANSWER_SUFFIX));
         } else if (message.contains(CHOOSE_TASK_PROPS_SUFFIX)) {
             rivalService.chooseTaskProps(session.getId(), trimPrefixFromMessage(message, rivalType, CHOOSE_TASK_PROPS_SUFFIX));
