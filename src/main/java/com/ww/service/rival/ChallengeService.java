@@ -100,6 +100,7 @@ public class ChallengeService extends WarService {
         RivalInitContainer rival = new RivalInitContainer(CHALLENGE, RivalImportance.FAST, profile, null);
         RivalManager rivalManager = new ChallengeManager(rival, this, profileConnectionService, challengeProfile, challengeQuestions);
         getProfileIdToRivalManagerMap().put(rival.getCreatorProfile().getId(), rivalManager);
+        rivalManager.start();
         return putSuccessCode(model);
     }
 
