@@ -1,12 +1,8 @@
 package com.ww.database;
 
 import com.ww.helper.TagHelper;
-import com.ww.model.constant.rival.campaign.CampaignDestination;
-import com.ww.model.constant.rival.campaign.CampaignType;
-import com.ww.model.entity.rival.campaign.Campaign;
 import com.ww.model.entity.social.Profile;
 import com.ww.repository.book.BookRepository;
-import com.ww.repository.rival.campaign.CampaignRepository;
 import com.ww.repository.social.ProfileRepository;
 import com.ww.service.rival.task.country.CountryService;
 import com.ww.service.rival.task.element.ElementService;
@@ -58,19 +54,17 @@ public class InitService {
     private InitCampaignsService initCampaignsService;
 
     public void init() {
-        if (bookRepository.findAll().size() == 0) {
-            initBooksService.initBooks();
-            initTaskTypesService.initTaskTypes();
-            initWisiesService.initWisies();
-            initCampaignsService.initCampaigns();
-            initProfiles();
-            initMusicTracks();
-            initClipartsService.initCliparts();
-            initGeographyCountries();
-            initChemistryElements();
-            memoryTaskHelperService.initShapes();
-            memoryTaskHelperService.initColors();
-        }
+        initBooksService.initBooks();
+        initTaskTypesService.initTaskTypes();
+        initWisiesService.initWisies();
+        initCampaignsService.initCampaigns();
+        initProfiles();
+        initMusicTracks();
+        initClipartsService.initCliparts();
+        initGeographyCountries();
+        initChemistryElements();
+        memoryTaskHelperService.initShapes();
+        memoryTaskHelperService.initColors();
     }
 
     public void initProfiles() {

@@ -1,12 +1,10 @@
 package com.ww.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.AuthoritiesExtractor;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -17,10 +15,10 @@ import org.springframework.security.oauth2.client.token.grant.code.Authorization
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import static com.ww.config.security.Roles.ADMIN;
-import static com.ww.config.security.Roles.USER;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(jsr250Enabled = true)
 public class ProdSecurityConfig extends WebSecurityConfigurerAdapter {
     private OAuth2ClientContext oauth2ClientContext;
     private AuthorizationCodeResourceDetails authorizationCodeResourceDetails;
@@ -47,8 +45,8 @@ public class ProdSecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().sameOrigin()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/**/*.map", "/h2**").hasAnyRole(ADMIN)
-                .antMatchers("/", "/profile", "/play", "/war", "/challenge", "/battle","/practise", "/shop", "/friend", "/wisies", "/login/**", "/static/**").permitAll()
+                .antMatchers("/", "/actuator/health", "/profile", "/play", "/war", "/challenge", "/battle", "/practise", "/shop", "/friend", "/wisies", "/login/**", "/static/**").permitAll()
+                .antMatchers("/**/*.map", "/h2**", "/actuator/**", "/cache/**").hasAnyRole(ADMIN)
                 .anyRequest().fullyAuthenticated()
                 .and()
                 .logout()

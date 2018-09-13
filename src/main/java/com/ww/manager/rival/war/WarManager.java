@@ -57,10 +57,6 @@ public class WarManager extends RivalManager {
         }
     }
 
-    protected Message getMessageReadyFast() {
-        return Message.WAR_READY;
-    }
-
     public boolean isEnd() {
         for (RivalProfileContainer rivalProfileContainer : getRivalProfileContainers()) {
             WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;

@@ -30,10 +30,6 @@ public class BattleManager extends RivalManager {
         this.rivalContainer.addProfile(opponentId, new BattleProfileContainer(container.getOpponentProfile(), creatorId));
     }
 
-    protected Message getMessageReadyFast() {
-        return Message.BATTLE_READY;
-    }
-
     public boolean isEnd() {
         return rivalContainer.getCurrentTaskIndex() == TASK_COUNT - 1;
     }
