@@ -32,7 +32,7 @@ public class ShopController {
     }
 
     @RequestMapping(value = "/buyBook", method = RequestMethod.POST)
-    public Map startReadBook(@RequestBody Map<String, Object> payload) {
+    public Map buyBook(@RequestBody Map<String, Object> payload) {
         if (!payload.containsKey("id")) {
             throw new IllegalArgumentException();
         }

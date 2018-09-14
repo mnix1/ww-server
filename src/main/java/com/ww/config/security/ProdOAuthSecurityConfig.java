@@ -52,12 +52,13 @@ public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable();
         http
                 .authorizeRequests()
                 .antMatchers(ALL).permitAll()
                 .antMatchers(ONLY_ADMIN).hasAnyRole(ADMIN)
                 .antMatchers(ONLY_BOT).hasAnyRole(BOT)
-                .anyRequest().hasAnyRole(USER)
+                .anyRequest().fullyAuthenticated()
                 .and()
                 .logout()
                 .logoutSuccessUrl("/").permitAll()

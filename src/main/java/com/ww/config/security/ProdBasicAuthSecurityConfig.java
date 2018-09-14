@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static com.ww.config.security.ProdOAuthSecurityConfig.ALL;
 import static com.ww.config.security.ProdOAuthSecurityConfig.ONLY_ADMIN;
 import static com.ww.config.security.ProdOAuthSecurityConfig.ONLY_BOT;
 import static com.ww.config.security.Roles.ADMIN;
