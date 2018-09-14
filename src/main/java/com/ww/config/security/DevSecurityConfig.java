@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import static com.ww.config.security.ProdOAuthSecurityConfig.ALL;
+import static com.ww.config.security.ProdOAuthSecurityConfig.ONLY_ADMIN;
 import static com.ww.config.security.Roles.ADMIN;
 import static com.ww.config.security.Roles.USER;
 
@@ -25,13 +27,9 @@ public class DevSecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().sameOrigin()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/actuator/health", "/profile", "/play", "/war", "/challenge", "/battle", "/practise", "/shop", "/friend", "/wisies", "/login/**", "/static/**").permitAll()
-                .antMatchers("/**/*.map", "/h2**", "/cache**", "/log/**").hasAnyRole(ADMIN)
+                .antMatchers(ALL).permitAll()
+                .antMatchers(ONLY_ADMIN).hasAnyRole(ADMIN)
                 .anyRequest().fullyAuthenticated()
-                .and()
-                .logout()
-                .logoutSuccessUrl("/")
-                .permitAll()
                 .and()
                 .httpBasic()
                 .and()
@@ -64,6 +62,5 @@ public class DevSecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("tata").password("{noop}t").roles(USER)
                 .and()
                 .withUser("mama").password("{noop}t").roles(USER);
-
     }
 }

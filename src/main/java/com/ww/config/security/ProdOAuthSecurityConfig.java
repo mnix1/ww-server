@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,11 +17,20 @@ import org.springframework.security.oauth2.client.token.grant.code.Authorization
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import static com.ww.config.security.Roles.ADMIN;
+import static com.ww.config.security.Roles.BOT;
+import static com.ww.config.security.Roles.USER;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(jsr250Enabled = true)
-public class ProdSecurityConfig extends WebSecurityConfigurerAdapter {
+@Profile("prod")
+@Order(2)
+public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
+    public static final String[] ALL = new String[]{"/", "/profile", "/play", "/war", "/challenge", "/battle", "/practise",
+            "/shop", "/friend", "/wisies", "/login/**", "/static/**", "/actuator/health"};
+    public static final String[] ONLY_ADMIN = new String[]{"/**/*.map", "/h2/**", "/actuator/**", "/cache/**", "/log/**"};
+    public static final String[] ONLY_BOT = new String[]{"/bot/**"};
+
     private OAuth2ClientContext oauth2ClientContext;
     private AuthorizationCodeResourceDetails authorizationCodeResourceDetails;
     private ResourceServerProperties resourceServerProperties;
@@ -42,20 +53,16 @@ public class ProdSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .headers().frameOptions().sameOrigin()
-                .and()
                 .authorizeRequests()
-                .antMatchers("/", "/actuator/health", "/profile", "/play", "/war", "/challenge", "/battle", "/practise", "/shop", "/friend", "/wisies", "/login/**", "/static/**").permitAll()
-                .antMatchers("/**/*.map", "/h2**", "/actuator/**", "/cache/**", "/log/**").hasAnyRole(ADMIN)
-                .anyRequest().fullyAuthenticated()
+                .antMatchers(ALL).permitAll()
+                .antMatchers(ONLY_ADMIN).hasAnyRole(ADMIN)
+                .antMatchers(ONLY_BOT).hasAnyRole(BOT)
+                .anyRequest().hasAnyRole(USER)
                 .and()
                 .logout()
-                .logoutSuccessUrl("/")
-                .permitAll()
+                .logoutSuccessUrl("/").permitAll()
                 .and()
-                .addFilterAt(filter(), BasicAuthenticationFilter.class)
-                .csrf()
-                .disable();
+                .addFilterAt(filter(), BasicAuthenticationFilter.class);
     }
 
     private OAuth2ClientAuthenticationProcessingFilter filter() {
@@ -65,7 +72,7 @@ public class ProdSecurityConfig extends WebSecurityConfigurerAdapter {
                 oauth2ClientContext);
         oAuth2Filter.setRestTemplate(oAuth2RestTemplate);
         UserInfoTokenServices tokenServices = new UserInfoTokenServices(resourceServerProperties.getUserInfoUri(), resourceServerProperties.getClientId());
-        tokenServices.setAuthoritiesExtractor(new CustomAuthoritiesExtractor());
+//        tokenServices.setAuthoritiesExtractor(new CustomAuthoritiesExtractor());
         oAuth2Filter.setTokenServices(tokenServices);
         return oAuth2Filter;
     }
