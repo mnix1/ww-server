@@ -118,6 +118,8 @@ public class WarContainer extends RivalContainer {
 
     public void fillModelPreparingNextTask(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         super.fillModelPreparingNextTask(model, rivalProfileContainer);
+        WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
+        model.put("activeIndex", warProfileContainer.getActiveIndex());
         if (isOpponent()) {
             model.put("opponentActiveIndex", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getActiveIndex());
         }
@@ -141,10 +143,10 @@ public class WarContainer extends RivalContainer {
 
     public void fillModelWisieAnswering(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
         WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
-        model.put("activeIndex", warProfileContainer.getActiveIndex());
-        if (isOpponent()) {
-            model.put("opponentActiveIndex", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getActiveIndex());
-        }
+//        model.put("activeIndex", warProfileContainer.getActiveIndex());
+//        if (isOpponent()) {
+//            model.put("opponentActiveIndex", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getActiveIndex());
+//        }
         if (warProfileContainer.getActiveTeamMember().isWisie()) {
             List<WisieAnswerAction> wisieActions = getAnsweringWisieActions(warProfileContainer);
             if (wisieActions != null) {
