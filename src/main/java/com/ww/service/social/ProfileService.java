@@ -2,6 +2,7 @@ package com.ww.service.social;
 
 import com.ww.model.constant.Language;
 import com.ww.model.constant.wisie.WisorType;
+import com.ww.model.dto.social.ProfileResourcesDTO;
 import com.ww.model.entity.social.Profile;
 import com.ww.repository.social.ProfileRepository;
 import com.ww.service.SessionService;
