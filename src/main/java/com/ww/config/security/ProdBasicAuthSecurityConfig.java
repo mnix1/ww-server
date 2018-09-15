@@ -44,13 +44,20 @@ public class ProdBasicAuthSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        System.out.println(passwordEncoder().encode("!1botgrzesiu"));
         auth
                 .inMemoryAuthentication()
                 .passwordEncoder(passwordEncoder())
                 .withUser("admin1992").password("$2a$12$IZ.dAL3M92Q6XEk9K1YpY.878FBFZZb7qw.oFmXkre7aq8435Oa7u").roles(USER, ADMIN)
-                .and()
-                .withUser("grzesiu").password("$2a$12$FWkYznxIyRsDOUnhMAtNaep7mxUe1ggXlcAE/dnTXDDTjpeJoOYZW").roles(USER, BOT);
+                .and().withUser("grzesiu").password("$2a$12$FWkYznxIyRsDOUnhMAtNaep7mxUe1ggXlcAE/dnTXDDTjpeJoOYZW").roles(USER, BOT)
+                .and().withUser("speedy").password("$2a$12$jHEo72aiAEMLeHGjAyrOreHNVmaGjd9nvd50heR2RGqmeXG/zd89W").roles(USER, BOT)
+                .and().withUser("Razerox").password("$2a$12$r/Gze/VQwZyWvaORFXFnMebmR.JCggWCmgLwrr6906E.2EEjTtpmu").roles(USER, BOT)
+                .and().withUser("W4X").password("$2a$12$IFW3lKneTvdSpdIfBCTHJuhirJnkPPk3XSEQCDDhVZarDfFpkLOT6").roles(USER, BOT)
+                .and().withUser("pierdołła").password("$2a$12$WP3DTcZlbvuT3MDyQ.5A1uxhaz9HRUkvJ7DqsBalaoHGRZtbQc4Jm").roles(USER, BOT)
+                .and().withUser("Kanar").password("$2a$12$RT8mOMC49Ix5Y6OUv9EE1.VYg3jxKIHrUGq0NTiw2gXnkUJ769U0O").roles(USER, BOT)
+                .and().withUser("Best19").password("$2a$12$QQjb7ioHCwdEP7ny2FYjIOAO2B4wyrgqtX5UTbq7A.g/vhALLXL5G").roles(USER, BOT)
+                .and().withUser("xxULAxx").password("$2a$12$9lESyDHvv.pAFx4mDVrVuObnayLTdfhk1R9ymzHgeRkDX7DoI/97a").roles(USER, BOT)
+                .and().withUser("qq5").password("$2a$12$W5yVWWIpDgvRoBndMYpThus4NoYPQwwpd2PmB2SEd2/clug5VnNfW").roles(USER, BOT)
+                .and().withUser("radosny1982").password("$2a$12$lW68bmdBlWzJ87KeuLu1HetuB8kBc7A1w98CJ8valtBtx5vhOSDoW").roles(USER, BOT);
     }
 
     @Bean
