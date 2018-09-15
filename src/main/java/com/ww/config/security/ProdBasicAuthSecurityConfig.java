@@ -39,7 +39,8 @@ public class ProdBasicAuthSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(ONLY_BOT).hasAnyRole(BOT)
                 .anyRequest().fullyAuthenticated()
                 .and()
-                .httpBasic();
+                .httpBasic()
+                .and().csrf().disable();
     }
 
     @Override

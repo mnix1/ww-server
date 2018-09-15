@@ -68,10 +68,10 @@ public class InitService {
     }
 
     public void initProfiles() {
-        List<Profile> profiles = new ArrayList<>();
-        profiles.add(new Profile(TagHelper.randomTag(), "Kozioł23", 3L));
-        profiles.add(new Profile(TagHelper.randomTag(), "bocian", 10L));
-        profileRepository.saveAll(profiles);
+//        List<Profile> profiles = new ArrayList<>();
+//        profiles.add(new Profile(TagHelper.randomTag(), "Kozioł23", 3L));
+//        profiles.add(new Profile(TagHelper.randomTag(), "bocian", 10L));
+//        profileRepository.saveAll(profiles);
     }
 
     public void initMusicTracks() {
