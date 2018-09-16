@@ -12,8 +12,13 @@ import lombok.Setter;
 import org.apache.commons.codec.language.bm.Lang;
 
 import javax.persistence.*;
+import java.time.Instant;
+import java.time.temporal.TemporalUnit;
 import java.util.HashSet;
 import java.util.Set;
+
+import static com.ww.helper.RandomHelper.randomInteger;
+import static java.time.temporal.ChronoUnit.SECONDS;
 
 @Setter
 @Getter
@@ -36,7 +41,11 @@ public class Profile {
     private Long elixir;
     private Boolean teamInitialized;
     private Long battleElo;
+    private Long battlePreviousElo;
+    private Instant battleLastPlay;
     private Long warElo;
+    private Long warPreviousElo;
+    private Instant warLastPlay;
 
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
     private Set<ProfileFriend> friends = new HashSet<>();
@@ -64,18 +73,32 @@ public class Profile {
         this.wisorType = WisorType.random();
         this.teamInitialized = false;
         this.battleElo = 0L;
+        this.battleLastPlay = Instant.now();
+        this.battlePreviousElo = 0L;
         this.warElo = 0L;
+        this.warLastPlay = Instant.now();
+        this.warPreviousElo = 0L;
     }
 
     public Profile(Long id) {
         this.id = id;
     }
 
-    public Profile(String tag, String name, Long level) {
+    public Profile(String tag, String name) {
         this.tag = tag;
         this.name = name;
-        this.level = level;
+        this.language = Language.POLISH;
         this.wisorType = WisorType.random();
+        this.battlePreviousElo = (long) randomInteger(0, 4000);
+        this.battleElo = this.battlePreviousElo + (long) randomInteger(0, 30);
+        this.battleLastPlay = Instant.now().minus((long) randomInteger(1, 10000), SECONDS);
+        this.warPreviousElo = (long) randomInteger(0, 10);
+        this.warElo = this.warPreviousElo + (long) randomInteger(0, 30);
+        this.warLastPlay = Instant.now().minus((long) randomInteger(1, 10000), SECONDS);
+        this.gold = 10L;
+        this.crystal = 10L;
+        this.wisdom = 0L;
+        this.elixir = 0L;
     }
 
     public void changeResources(Long gold, Long crystal, Long wisdom, Long elixir) {

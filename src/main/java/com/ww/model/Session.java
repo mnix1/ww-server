@@ -9,4 +9,5 @@ import java.io.Serializable;
 @Setter
 public class Session implements Serializable {
     Long profileId;
+    String profileTag;
 }

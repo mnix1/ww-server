@@ -2,16 +2,20 @@ package com.ww.controller.rival;
 
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
+import com.ww.model.dto.social.ClassificationProfileDTO;
 import com.ww.service.SessionService;
 import com.ww.service.rival.RivalFriendService;
 import com.ww.service.rival.battle.BattleRandomOpponentService;
+import com.ww.service.rival.battle.BattleService;
 import com.ww.service.rival.war.WarRandomOpponentService;
+import com.ww.service.rival.war.WarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -28,7 +32,27 @@ public class RivalController {
     BattleRandomOpponentService battleRandomOpponentService;
 
     @Autowired
+    BattleService battleService;
+
+    @Autowired
+    WarService warService;
+
+    @Autowired
     WarRandomOpponentService warRandomOpponentService;
+
+    @RequestMapping(value = "/classification", method = RequestMethod.POST)
+    public List<ClassificationProfileDTO> classification(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("type")) {
+            throw new IllegalArgumentException();
+        }
+        RivalType type = RivalType.valueOf((String) payload.get("type"));
+        if (type == RivalType.BATTLE) {
+            return battleService.classification(type);
+        } else if (type == RivalType.WAR) {
+            return warService.classification(type);
+        }
+        throw new IllegalArgumentException();
+    }
 
     @RequestMapping(value = "/startRandomOpponent", method = RequestMethod.POST)
     public Map startRandomOpponent(@RequestBody Map<String, Object> payload) {

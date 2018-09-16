@@ -21,6 +21,7 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,8 +50,8 @@ public abstract class RivalManager {
         }
     }
 
-    public Message getMessageContent(){
-       return rivalService.getMessageContent();
+    public Message getMessageContent() {
+        return rivalService.getMessageContent();
     }
 
     public void prepareTask(Long id) {
@@ -65,13 +66,14 @@ public abstract class RivalManager {
         rivalContainer.addTask(question, taskDTO);
     }
 
-    public void updateProfilesElo() {
+    public synchronized void updateProfilesElo() {
         if (!rivalContainer.isRanking()) {
             return;
         }
         Profile winner = rivalContainer.getWinner();
         Profile creator = rivalContainer.getCreatorProfile();
         Profile opponent = rivalContainer.getOpponentProfile();
+        Instant lastPlay = Instant.now();
         Long creatorEloChange = 0L;
         Long opponentEloChange = 0L;
         if (rivalContainer.getType() == RivalType.BATTLE) {
@@ -82,6 +84,8 @@ public abstract class RivalManager {
                 creatorEloChange = prepareEloChange(creator.getBattleElo(), opponent.getBattleElo(), creator.equals(winner) ? WINNER : LOOSER);
                 opponentEloChange = prepareEloChange(opponent.getBattleElo(), creator.getBattleElo(), opponent.equals(winner) ? WINNER : LOOSER);
             }
+            creator.setBattleLastPlay(lastPlay);
+            opponent.setBattleLastPlay(lastPlay);
         } else if (rivalContainer.getType() == RivalType.WAR) {
             if (rivalContainer.getDraw()) {
                 creatorEloChange = prepareEloChange(creator.getWarElo(), opponent.getWarElo(), DRAW);
@@ -90,6 +94,8 @@ public abstract class RivalManager {
                 creatorEloChange = prepareEloChange(creator.getWarElo(), opponent.getWarElo(), creator.equals(winner) ? WINNER : LOOSER);
                 opponentEloChange = prepareEloChange(opponent.getWarElo(), creator.getWarElo(), opponent.equals(winner) ? WINNER : LOOSER);
             }
+            creator.setWarLastPlay(lastPlay);
+            opponent.setWarLastPlay(lastPlay);
         }
         updateElo(creator, creatorEloChange, rivalContainer.getType());
         rivalContainer.setCreatorEloChange(creatorEloChange);

@@ -4,10 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
+import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.ProfileConnection;
 import com.ww.model.container.rival.RivalContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.dto.rival.task.TaskDTO;
+import com.ww.model.dto.social.ClassificationProfileDTO;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.social.Profile;
 import com.ww.service.rival.task.TaskGenerateService;
@@ -17,11 +19,14 @@ import com.ww.service.social.ProfileService;
 import com.ww.websocket.message.Message;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public abstract class RivalService {
     protected final ConcurrentHashMap<Long, RivalManager> profileIdToRivalManagerMap = new ConcurrentHashMap<>();
@@ -49,6 +54,15 @@ public abstract class RivalService {
     protected abstract TaskRendererService getTaskRendererService();
 
     public abstract ProfileService getProfileService();
+
+    public List<ClassificationProfileDTO> classification(RivalType type) {
+        String profileTag = getProfileService().getProfileTag();
+        List<Profile> profiles = getProfileService().classification(type);
+        return IntStream.range(0, profiles.size())
+                .mapToObj(value -> new ClassificationProfileDTO(profiles.get(value), type, (long) value + 1))
+                .filter(value -> value.getPosition() <= 20 || value.getTag().equals(profileTag))
+                .collect(Collectors.toList());
+    }
 
     public synchronized void disposeManager(RivalManager rivalManager) {
         if (!rivalManager.isClosed()) {

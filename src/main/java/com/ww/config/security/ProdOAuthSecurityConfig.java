@@ -26,7 +26,7 @@ import static com.ww.config.security.Roles.USER;
 @Profile("prod")
 @Order(2)
 public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
-    public static final String[] ALL = new String[]{"/", "/profile", "/play", "/war", "/challenge", "/battle", "/practise",
+    public static final String[] ALL = new String[]{"/", "/profile", "/classification/war", "/classification/battle", "/play", "/war", "/challenge", "/battle", "/practise",
             "/shop", "/friend", "/wisies", "/login/**", "/static/**", "/actuator/health"};
     public static final String[] ONLY_ADMIN = new String[]{"/**/*.map", "/h2/**", "/actuator/**", "/cache/**", "/log/**"};
     public static final String[] ONLY_BOT = new String[]{"/bot/**", "/static/js/main.bot.js"};

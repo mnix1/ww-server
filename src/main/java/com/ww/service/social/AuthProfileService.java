@@ -30,6 +30,7 @@ public class AuthProfileService {
                 wisieService.initProfileWisies(profile);
             }
             sessionService.setProfileId(profile.getId());
+            sessionService.setProfileTag(profile.getTag());
             return new ProfileResourcesDTO(profile);
         }
         return null;

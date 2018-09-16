@@ -1,6 +1,7 @@
 package com.ww.service.social;
 
 import com.ww.model.constant.Language;
+import com.ww.model.constant.rival.RivalType;
 import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.dto.social.ProfileResourcesDTO;
 import com.ww.model.entity.social.Profile;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,11 +37,6 @@ public class ProfileService {
     @Autowired
     private SessionService sessionService;
 
-    public Profile getActiveProfile() {
-        //TODO add active check
-        return profileRepository.findFirstByIdNot(sessionService.getProfileId());
-    }
-
     public Profile getProfile() {
         return getProfile(sessionService.getProfileId());
     }
@@ -50,6 +47,10 @@ public class ProfileService {
 
     public Profile getProfile(String tag) {
         return profileRepository.findByTag(tag);
+    }
+
+    public String getProfileTag(){
+        return sessionService.getProfileTag();
     }
 
     public Map<String, Object> changeWisor(WisorType wisor) {
@@ -111,5 +112,14 @@ public class ProfileService {
 
     public void save(Profile profile) {
         profileRepository.save(profile);
+    }
+
+    public List<Profile> classification(RivalType type) {
+        if (type == RivalType.BATTLE) {
+            return profileRepository.findAllByOrderByBattleEloDescBattlePreviousEloDescBattleLastPlayDesc();
+        } else if (type == RivalType.WAR) {
+            return profileRepository.findAllByOrderByWarEloDescWarPreviousEloDescWarLastPlayDesc();
+        }
+        throw new IllegalArgumentException();
     }
 }

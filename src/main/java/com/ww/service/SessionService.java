@@ -17,8 +17,16 @@ public class SessionService implements Serializable {
         session.setProfileId(profileId);
     }
 
+    public void setProfileTag(String profileTag) {
+        session.setProfileTag(profileTag);
+    }
+
     public Long getProfileId() {
         return session.getProfileId();
+    }
+
+    public String getProfileTag() {
+        return session.getProfileTag();
     }
 
     public void checkForProfileId(Long profileId) throws IllegalAccessException {

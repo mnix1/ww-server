@@ -11,10 +11,13 @@ public interface ProfileRepository extends CrudRepository<Profile, Long> {
 
     Profile findByAuthId(String authId);
 
-    Profile findFirstByIdNot(Long id);
     Profile findByTag(String tag);
 
     List<Profile> findAllByIdNotIn(List<Long> ids);
-    List<Profile> findAllByIdIn(List<Long> ids);
+
     List<Profile> findAll();
+
+    List<Profile> findAllByOrderByBattleEloDescBattlePreviousEloDescBattleLastPlayDesc();
+
+    List<Profile> findAllByOrderByWarEloDescWarPreviousEloDescWarLastPlayDesc();
 }
