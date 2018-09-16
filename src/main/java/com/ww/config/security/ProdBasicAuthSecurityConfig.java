@@ -12,11 +12,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static com.ww.config.security.ProdOAuthSecurityConfig.ALL;
 import static com.ww.config.security.ProdOAuthSecurityConfig.ONLY_ADMIN;
-import static com.ww.config.security.ProdOAuthSecurityConfig.ONLY_BOT;
+import static com.ww.config.security.ProdOAuthSecurityConfig.ONLY_AUTO;
 import static com.ww.config.security.Roles.ADMIN;
-import static com.ww.config.security.Roles.BOT;
+import static com.ww.config.security.Roles.AUTO;
 import static com.ww.config.security.Roles.USER;
 
 @Configuration
@@ -32,11 +31,11 @@ public class ProdBasicAuthSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .requestMatchers()
                 .antMatchers(ONLY_ADMIN)
-                .antMatchers(ONLY_BOT)
+                .antMatchers(ONLY_AUTO)
                 .and()
                 .authorizeRequests()
                 .antMatchers(ONLY_ADMIN).hasAnyRole(ADMIN)
-                .antMatchers(ONLY_BOT).hasAnyRole(BOT)
+                .antMatchers(ONLY_AUTO).hasAnyRole(AUTO)
                 .anyRequest().fullyAuthenticated()
                 .and()
                 .httpBasic()
@@ -49,16 +48,16 @@ public class ProdBasicAuthSecurityConfig extends WebSecurityConfigurerAdapter {
                 .inMemoryAuthentication()
                 .passwordEncoder(passwordEncoder())
                 .withUser("admin1992").password("$2a$12$IZ.dAL3M92Q6XEk9K1YpY.878FBFZZb7qw.oFmXkre7aq8435Oa7u").roles(USER, ADMIN)
-                .and().withUser("grzesiu").password("$2a$12$FWkYznxIyRsDOUnhMAtNaep7mxUe1ggXlcAE/dnTXDDTjpeJoOYZW").roles(USER, BOT)
-                .and().withUser("speedy").password("$2a$12$jHEo72aiAEMLeHGjAyrOreHNVmaGjd9nvd50heR2RGqmeXG/zd89W").roles(USER, BOT)
-                .and().withUser("Razerox").password("$2a$12$r/Gze/VQwZyWvaORFXFnMebmR.JCggWCmgLwrr6906E.2EEjTtpmu").roles(USER, BOT)
-                .and().withUser("W4X").password("$2a$12$6hWQTbA82eM8Y/0b5YVJ6u/R7dXg2iSE6vXQ/WRa5.EOfZDKvXs0u").roles(USER, BOT)
-                .and().withUser("pierdołła").password("$2a$12$pTN8lgRsX3HvKBh3Et8oZuL2DoCZgeWJe.AK76P1hgaq/TDlj6hmW").roles(USER, BOT)
-                .and().withUser("Kanar").password("$2a$12$vpAvP5.zyxn.wVXrIHDis.A10tXCKOIHjE//0HlCjNpBFR3qXvGsO").roles(USER, BOT)
-                .and().withUser("Best19").password("$2a$12$YbnhHkeln6QJRAXJ9niF8Ox0ZEQxld6k4rEduzOd/huIcuBTNa8oW").roles(USER, BOT)
-                .and().withUser("xxULAxx").password("$2a$12$rW6uQC3/MjWluxmOPHWxgeqLUN75IShoqSPVvbs2B06lGTRSZYK7C").roles(USER, BOT)
-                .and().withUser("qq5").password("$2a$12$Qh8lR5x4gQKajG4W9jxxneF7wYL.ybSKLQ2kCXIxA16gA1aySMfCq").roles(USER, BOT)
-                .and().withUser("radosny1982").password("$2a$12$EpEeVEvYMsUDaL8Tw1.uvOAeQqFRJJ/b9CFKTurCWBThIheCL2SVC").roles(USER, BOT);
+                .and().withUser("grzesiu").password("$2a$12$FWkYznxIyRsDOUnhMAtNaep7mxUe1ggXlcAE/dnTXDDTjpeJoOYZW").roles(USER, AUTO)
+                .and().withUser("speedy").password("$2a$12$jHEo72aiAEMLeHGjAyrOreHNVmaGjd9nvd50heR2RGqmeXG/zd89W").roles(USER, AUTO)
+                .and().withUser("Razerox").password("$2a$12$r/Gze/VQwZyWvaORFXFnMebmR.JCggWCmgLwrr6906E.2EEjTtpmu").roles(USER, AUTO)
+                .and().withUser("W4X").password("$2a$12$6hWQTbA82eM8Y/0b5YVJ6u/R7dXg2iSE6vXQ/WRa5.EOfZDKvXs0u").roles(USER, AUTO)
+                .and().withUser("pierdołła").password("$2a$12$pTN8lgRsX3HvKBh3Et8oZuL2DoCZgeWJe.AK76P1hgaq/TDlj6hmW").roles(USER, AUTO)
+                .and().withUser("Kanar").password("$2a$12$vpAvP5.zyxn.wVXrIHDis.A10tXCKOIHjE//0HlCjNpBFR3qXvGsO").roles(USER, AUTO)
+                .and().withUser("Best19").password("$2a$12$YbnhHkeln6QJRAXJ9niF8Ox0ZEQxld6k4rEduzOd/huIcuBTNa8oW").roles(USER, AUTO)
+                .and().withUser("xxULAxx").password("$2a$12$rW6uQC3/MjWluxmOPHWxgeqLUN75IShoqSPVvbs2B06lGTRSZYK7C").roles(USER, AUTO)
+                .and().withUser("qq5").password("$2a$12$Qh8lR5x4gQKajG4W9jxxneF7wYL.ybSKLQ2kCXIxA16gA1aySMfCq").roles(USER, AUTO)
+                .and().withUser("radosny1982").password("$2a$12$EpEeVEvYMsUDaL8Tw1.uvOAeQqFRJJ/b9CFKTurCWBThIheCL2SVC").roles(USER, AUTO);
     }
 
     @Bean

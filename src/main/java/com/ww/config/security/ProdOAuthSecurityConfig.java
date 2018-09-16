@@ -17,8 +17,7 @@ import org.springframework.security.oauth2.client.token.grant.code.Authorization
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import static com.ww.config.security.Roles.ADMIN;
-import static com.ww.config.security.Roles.BOT;
-import static com.ww.config.security.Roles.USER;
+import static com.ww.config.security.Roles.AUTO;
 
 @Configuration
 @EnableWebSecurity
@@ -26,10 +25,11 @@ import static com.ww.config.security.Roles.USER;
 @Profile("prod")
 @Order(2)
 public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
-    public static final String[] ALL = new String[]{"/", "/profile", "/classification/war", "/classification/battle", "/play", "/war", "/challenge", "/battle", "/practise",
+    public static final String[] ALL = new String[]{"/", "/profile", "/classification/war", "/classification/battle", "/play",
+            "/war", "/warRanking", "/warFast", "/challenge", "/battle", "/battleRanking", "/battleFast", "/practise",
             "/shop", "/friend", "/wisies", "/login/**", "/static/**", "/actuator/health"};
     public static final String[] ONLY_ADMIN = new String[]{"/**/*.map", "/h2/**", "/actuator/**", "/cache/**", "/log/**"};
-    public static final String[] ONLY_BOT = new String[]{"/bot/**", "/main.auto.js", "/main.auto.css"};
+    public static final String[] ONLY_AUTO = new String[]{"/auto/**", "/main.auto.js", "/main.auto.css"};
 
     private OAuth2ClientContext oauth2ClientContext;
     private AuthorizationCodeResourceDetails authorizationCodeResourceDetails;
@@ -57,7 +57,7 @@ public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(ALL).permitAll()
                 .antMatchers(ONLY_ADMIN).hasAnyRole(ADMIN)
-                .antMatchers(ONLY_BOT).hasAnyRole(BOT)
+                .antMatchers(ONLY_AUTO).hasAnyRole(AUTO)
                 .anyRequest().fullyAuthenticated()
                 .and()
                 .logout()

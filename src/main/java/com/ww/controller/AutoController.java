@@ -9,6 +9,9 @@ import com.ww.service.rival.war.WarService;
 import com.ww.service.social.AuthProfileService;
 import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,9 +25,9 @@ import java.util.Map;
 
 import static com.ww.helper.ModelHelper.putSuccessCode;
 
-@RequestMapping(value = "/bot")
+@RequestMapping(value = "/auto")
 @Controller
-public class BotController {
+public class AutoController {
 
     @Autowired
     private WarService warService;
@@ -44,10 +47,10 @@ public class BotController {
         return "page.html";
     }
 
-    @ResponseBody
     @RequestMapping(value = "/auth", method = RequestMethod.GET)
-    public ProfileResourcesDTO auth(Principal user) {
-        return authProfileService.authProfile(user);
+    public String auth(Principal user) {
+        authProfileService.authProfile(user);
+        return "redirect:/auto/page/";
     }
 
     @ResponseBody
