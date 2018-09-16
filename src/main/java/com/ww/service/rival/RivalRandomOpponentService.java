@@ -36,16 +36,9 @@ public abstract class RivalRandomOpponentService {
 
     protected abstract RivalManager createManager(RivalInitContainer rival);
 
-    protected boolean checkIfCanPlay(Profile profile) {
-        return true;
-    }
-
     public Map start(RivalImportance importance) {
         Map<String, Object> model = new HashMap<>();
         Profile profile = getProfileService().getProfile();
-        if (!checkIfCanPlay(profile)) {
-            return putErrorCode(model);
-        }
         if (!waitingForRivalProfiles.containsKey(profile.getId())) {
             waitingForRivalProfiles.put(profile.getId(), new RivalSearchingOpponentContainer(importance, profile));
         }

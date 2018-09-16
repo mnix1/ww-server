@@ -12,7 +12,6 @@ public class FriendDTO extends ProfileDTO {
 
     private Long level;
     private Boolean isOnline;
-    private Boolean teamInitialized;
     private FriendStatus status;
 
     public FriendDTO(ProfileFriend profileFriend, Boolean isOnline) {
@@ -24,7 +23,6 @@ public class FriendDTO extends ProfileDTO {
         this.level = profile.getLevel();
         this.status = status;
         this.isOnline = isOnline;
-        this.teamInitialized = profile.getTeamInitialized();
     }
 
     @Override

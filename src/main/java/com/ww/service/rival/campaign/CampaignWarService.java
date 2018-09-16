@@ -145,7 +145,6 @@ public class CampaignWarService extends WarService {
         computerProfile.setName("");
         computerProfile.setWisorType(WisorType.random());
         computerProfile.setTag("0");
-        computerProfile.setTeamInitialized(true);
         Set<WisieType> wisieTypes = new HashSet<>();
         while (wisieTypes.size() < (Math.min(profileCampaign.getPhase() + 1, 5))) {
             wisieTypes.add(WisieType.random());

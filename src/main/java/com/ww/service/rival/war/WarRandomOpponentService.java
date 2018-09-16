@@ -55,8 +55,4 @@ public class WarRandomOpponentService extends RivalRandomOpponentService {
         return RivalType.WAR;
     }
 
-    protected boolean checkIfCanPlay(Profile profile) {
-        return profile.getTeamInitialized();
-    }
-
 }

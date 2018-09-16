@@ -17,7 +17,6 @@ public class ProfileResourcesDTO extends ProfileDTO {
     private Long battleElo;
     private Long warElo;
     private Language language;
-    private Boolean teamInitialized;
 
     public ProfileResourcesDTO(Profile profile) {
         super(profile);
@@ -30,6 +29,5 @@ public class ProfileResourcesDTO extends ProfileDTO {
         this.elixir = profile.getElixir();
         this.battleElo = profile.getBattleElo();
         this.warElo = profile.getWarElo();
-        this.teamInitialized = profile.getTeamInitialized();
     }
 }

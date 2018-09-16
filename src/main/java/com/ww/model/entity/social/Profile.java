@@ -39,7 +39,7 @@ public class Profile {
     private Long crystal;
     private Long wisdom;
     private Long elixir;
-    private Boolean teamInitialized;
+    private Boolean introductionCompleted;
     private Long battleElo;
     private Long battlePreviousElo;
     private Instant battleLastPlay;
@@ -71,7 +71,7 @@ public class Profile {
         this.wisdom = 0L;
         this.elixir = 0L;
         this.wisorType = WisorType.random();
-        this.teamInitialized = false;
+        this.introductionCompleted = false;
         this.battleElo = 0L;
         this.battleLastPlay = Instant.now();
         this.battlePreviousElo = 0L;

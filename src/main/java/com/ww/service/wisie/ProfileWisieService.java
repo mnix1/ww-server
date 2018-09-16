@@ -131,7 +131,6 @@ public class ProfileWisieService {
     public ProfileWisie addWisie(Profile profile, Wisie wisie) {
         ProfileWisie profileWisie = new ProfileWisie(profile, wisie);
         if (maybeAddWisieToTeam(profile, profileWisie)) {
-            profile.setTeamInitialized(true);
             profileService.save(profile);
         }
         initWisieAttributes(profileWisie);
@@ -142,9 +141,6 @@ public class ProfileWisieService {
 
     //if not full actually
     public boolean maybeAddWisieToTeam(Profile profile, ProfileWisie profileWisie) {
-        if (profile.getTeamInitialized()) {
-            return false;
-        }
         int actualTeamSize = listTeam(profile.getId()).size();
         if (actualTeamSize < HERO_TEAM_COUNT) {
             profileWisie.setInTeam(true);
