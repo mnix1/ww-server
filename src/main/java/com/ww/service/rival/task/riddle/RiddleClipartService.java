@@ -69,8 +69,9 @@ public class RiddleClipartService {
         List<Position> positions = new ArrayList<>(count);
         int marginHeight = (height / 2 - offsetHeight);
         int halfCount = (int) Math.ceil(count / (oneRow ? 1d : 2d));
+        int marginWidth = (width / halfCount / 2 - offsetHeight / 2);
         for (int i = 0; i < count; i++) {
-            int x = count == 1 ? width / 2 - offsetWidth / 2 : (i % halfCount) * (offsetWidth + (width - offsetWidth * halfCount) / halfCount);
+            int x = (int) (count == 1 ? width / 2 - offsetWidth / 2 : (i % halfCount) * (offsetWidth + marginWidth + (width - offsetWidth * halfCount) / (double) halfCount));
             int y = oneRow ? (height / 2 - offsetHeight / 2) : (i < halfCount ? marginHeight : height / 2 + marginHeight);
             positions.add(new Position(y, x));
         }
