@@ -5,10 +5,10 @@ import com.ww.model.constant.rival.RivalType;
 import com.ww.model.dto.social.ClassificationProfileDTO;
 import com.ww.service.SessionService;
 import com.ww.service.rival.RivalFriendService;
-import com.ww.service.rival.battle.BattleRandomOpponentService;
-import com.ww.service.rival.battle.BattleService;
-import com.ww.service.rival.war.WarRandomOpponentService;
-import com.ww.service.rival.war.WarService;
+import com.ww.service.rival.battle.RivalBattleRandomOpponentService;
+import com.ww.service.rival.battle.RivalBattleService;
+import com.ww.service.rival.war.RivalWarRandomOpponentService;
+import com.ww.service.rival.war.RivalWarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,16 +29,16 @@ public class RivalController {
     RivalFriendService rivalFriendService;
 
     @Autowired
-    BattleRandomOpponentService battleRandomOpponentService;
+    RivalBattleRandomOpponentService rivalBattleRandomOpponentService;
 
     @Autowired
-    BattleService battleService;
+    RivalBattleService rivalBattleService;
 
     @Autowired
-    WarService warService;
+    RivalWarService rivalWarService;
 
     @Autowired
-    WarRandomOpponentService warRandomOpponentService;
+    RivalWarRandomOpponentService rivalWarRandomOpponentService;
 
     @RequestMapping(value = "/classification", method = RequestMethod.POST)
     public List<ClassificationProfileDTO> classification(@RequestBody Map<String, Object> payload) {
@@ -47,9 +47,9 @@ public class RivalController {
         }
         RivalType type = RivalType.valueOf((String) payload.get("type"));
         if (type == RivalType.BATTLE) {
-            return battleService.classification(type);
+            return rivalBattleService.classification(type);
         } else if (type == RivalType.WAR) {
-            return warService.classification(type);
+            return rivalWarService.classification(type);
         }
         throw new IllegalArgumentException();
     }
@@ -62,9 +62,9 @@ public class RivalController {
         RivalType type = RivalType.valueOf((String) payload.get("type"));
         RivalImportance importance = RivalImportance.valueOf((String) payload.get("importance"));
         if (type == RivalType.BATTLE) {
-            return battleRandomOpponentService.start(importance);
+            return rivalBattleRandomOpponentService.start(importance);
         } else if (type == RivalType.WAR) {
-            return warRandomOpponentService.start(importance);
+            return rivalWarRandomOpponentService.start(importance);
         }
         throw new IllegalArgumentException();
     }
@@ -77,9 +77,9 @@ public class RivalController {
         RivalType type = RivalType.valueOf((String) payload.get("type"));
         RivalImportance importance = RivalImportance.valueOf((String) payload.get("importance"));
         if (type == RivalType.BATTLE) {
-            return battleRandomOpponentService.cancel(importance);
+            return rivalBattleRandomOpponentService.cancel(importance);
         } else if (type == RivalType.WAR) {
-            return warRandomOpponentService.cancel(importance);
+            return rivalWarRandomOpponentService.cancel(importance);
         }
         throw new IllegalArgumentException();
     }

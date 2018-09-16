@@ -2,11 +2,11 @@ package com.ww.websocket;
 
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.ProfileConnection;
-import com.ww.service.rival.ChallengeService;
+import com.ww.service.rival.RivalChallengeService;
 import com.ww.service.rival.RivalService;
-import com.ww.service.rival.battle.BattleService;
-import com.ww.service.rival.campaign.CampaignWarService;
-import com.ww.service.rival.war.WarService;
+import com.ww.service.rival.battle.RivalBattleService;
+import com.ww.service.rival.campaign.RivalCampaignWarService;
+import com.ww.service.rival.war.RivalWarService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
 import org.slf4j.Logger;
@@ -30,16 +30,16 @@ public class WebSocketHandler extends TextWebSocketHandler {
     ProfileConnectionService profileConnectionService;
 
     @Autowired
-    BattleService battleService;
+    RivalBattleService rivalBattleService;
 
     @Autowired
-    WarService warService;
+    RivalWarService rivalWarService;
 
     @Autowired
-    CampaignWarService campaignWarService;
+    RivalCampaignWarService rivalCampaignWarService;
 
     @Autowired
-    ChallengeService challengeService;
+    RivalChallengeService rivalChallengeService;
 
     @Override
     public void handleTransportError(WebSocketSession session, Throwable throwable) throws Exception {
@@ -56,10 +56,10 @@ public class WebSocketHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         logger.debug("Connected: sessionId: " + session.getId());
         ProfileConnection profileConnection = profileConnectionService.newConnection(session);
-        battleService.sendActualRivalModelToNewProfileConnection(profileConnection);
-        warService.sendActualRivalModelToNewProfileConnection(profileConnection);
-        campaignWarService.sendActualRivalModelToNewProfileConnection(profileConnection);
-        challengeService.sendActualRivalModelToNewProfileConnection(profileConnection);
+        rivalBattleService.sendActualRivalModelToNewProfileConnection(profileConnection);
+        rivalWarService.sendActualRivalModelToNewProfileConnection(profileConnection);
+        rivalCampaignWarService.sendActualRivalModelToNewProfileConnection(profileConnection);
+        rivalChallengeService.sendActualRivalModelToNewProfileConnection(profileConnection);
     }
 
     private static final String ANSWER_SUFFIX = "_^_ANSWER";
@@ -74,16 +74,16 @@ public class WebSocketHandler extends TextWebSocketHandler {
         RivalService rivalService = null;
         RivalType rivalType = null;
         if (message.startsWith(RivalType.BATTLE.name())) {
-            rivalService = battleService;
+            rivalService = rivalBattleService;
             rivalType = RivalType.BATTLE;
         } else if (message.startsWith(RivalType.WAR.name())) {
-            rivalService = warService;
+            rivalService = rivalWarService;
             rivalType = RivalType.WAR;
         } else if (message.startsWith(RivalType.CAMPAIGN_WAR.name())) {
-            rivalService = campaignWarService;
+            rivalService = rivalCampaignWarService;
             rivalType = RivalType.CAMPAIGN_WAR;
         }else if (message.startsWith(RivalType.CHALLENGE.name())) {
-            rivalService = challengeService;
+            rivalService = rivalChallengeService;
             rivalType = RivalType.CHALLENGE;
         }
         if (message.contains(ANSWER_SUFFIX)) {

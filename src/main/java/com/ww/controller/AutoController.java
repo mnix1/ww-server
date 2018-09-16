@@ -2,22 +2,16 @@ package com.ww.controller;
 
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.dto.social.ProfileDTO;
-import com.ww.model.dto.social.ProfileResourcesDTO;
-import com.ww.model.entity.social.Profile;
 import com.ww.service.SessionService;
-import com.ww.service.rival.war.WarService;
+import com.ww.service.rival.war.RivalWarService;
 import com.ww.service.social.AuthProfileService;
 import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -30,7 +24,7 @@ import static com.ww.helper.ModelHelper.putSuccessCode;
 public class AutoController {
 
     @Autowired
-    private WarService warService;
+    private RivalWarService rivalWarService;
 
     @Autowired
     private SessionService sessionService;
@@ -57,7 +51,7 @@ public class AutoController {
     @RequestMapping(value = "/correctAnswer", method = RequestMethod.GET)
     public Map<String, Object> correctAnswer() {
         Map<String, Object> model = new HashMap<>();
-        RivalManager rivalManager = warService.getProfileIdToRivalManagerMap().get(sessionService.getProfileId());
+        RivalManager rivalManager = rivalWarService.getProfileIdToRivalManagerMap().get(sessionService.getProfileId());
         model.put("id", rivalManager.getRivalContainer().findCurrentCorrectAnswerId());
         return putSuccessCode(model);
     }

@@ -4,7 +4,7 @@ import com.ww.model.constant.rival.challenge.ChallengeStatus;
 import com.ww.model.dto.rival.challenge.ChallengeInfoDTO;
 import com.ww.model.dto.rival.challenge.ChallengeSummaryDTO;
 import com.ww.service.SessionService;
-import com.ww.service.rival.ChallengeService;
+import com.ww.service.rival.RivalChallengeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +22,7 @@ public class ChallengeController {
     SessionService sessionService;
 
     @Autowired
-    ChallengeService challengeService;
+    RivalChallengeService rivalChallengeService;
 
     @RequestMapping(value = "/friendInit", method = RequestMethod.POST)
     public Map startFriend(@RequestBody Map<String, Object> payload) {
@@ -30,7 +30,7 @@ public class ChallengeController {
             throw new IllegalArgumentException();
         }
         List<String> tags = (List<String>) payload.get("tags");
-        return challengeService.friendInit(tags);
+        return rivalChallengeService.friendInit(tags);
     }
 
     @RequestMapping(value = "/response", method = RequestMethod.POST)
@@ -39,7 +39,7 @@ public class ChallengeController {
             throw new IllegalArgumentException();
         }
         Long challengeId = ((Integer) payload.get("id")).longValue();
-        return challengeService.response(challengeId);
+        return rivalChallengeService.response(challengeId);
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.POST)
@@ -51,7 +51,7 @@ public class ChallengeController {
             } catch (IllegalArgumentException e) {
             }
         }
-        return challengeService.list(status);
+        return rivalChallengeService.list(status);
     }
 
     @RequestMapping(value = "/summary", method = RequestMethod.POST)
@@ -60,6 +60,6 @@ public class ChallengeController {
             throw new IllegalArgumentException();
         }
         Long challengeId = ((Integer) payload.get("challengeId")).longValue();
-        return challengeService.summary(challengeId);
+        return rivalChallengeService.summary(challengeId);
     }
 }

@@ -12,8 +12,8 @@ import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.dto.social.FriendDTO;
 import com.ww.model.entity.social.Profile;
 import com.ww.service.SessionService;
-import com.ww.service.rival.battle.BattleService;
-import com.ww.service.rival.war.WarService;
+import com.ww.service.rival.battle.RivalBattleService;
+import com.ww.service.rival.war.RivalWarService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
 import com.ww.websocket.message.Message;
@@ -46,9 +46,10 @@ public class RivalFriendService {
     private ProfileConnectionService profileConnectionService;
 
     @Autowired
-    private BattleService battleService;
+    private RivalBattleService rivalBattleService;
+
     @Autowired
-    private WarService warService;
+    private RivalWarService rivalWarService;
 
     public Map startFriend(String tag, RivalType type) {
         Map<String, Object> model = new HashMap<>();
@@ -86,14 +87,14 @@ public class RivalFriendService {
         RivalInitContainer rival = rivalInitContainers.stream().filter(rivalInitContainer -> rivalInitContainer.getOpponentProfile().getId().equals(sessionService.getProfileId())).findFirst().get();
         this.sendAcceptInvite(rival);
         if (rival.getType() == RivalType.BATTLE) {
-            BattleManager battleManager = new BattleManager(rival, battleService, profileConnectionService);
-            battleService.getProfileIdToRivalManagerMap().put(rival.getCreatorProfile().getId(), battleManager);
-            battleService.getProfileIdToRivalManagerMap().put(rival.getOpponentProfile().getId(), battleManager);
+            BattleManager battleManager = new BattleManager(rival, rivalBattleService, profileConnectionService);
+            rivalBattleService.getProfileIdToRivalManagerMap().put(rival.getCreatorProfile().getId(), battleManager);
+            rivalBattleService.getProfileIdToRivalManagerMap().put(rival.getOpponentProfile().getId(), battleManager);
             battleManager.start();
         } else if (rival.getType() == RivalType.WAR) {
-            WarManager warManager = new WarManager(rival, warService, profileConnectionService);
-            warService.getProfileIdToRivalManagerMap().put(rival.getCreatorProfile().getId(), warManager);
-            warService.getProfileIdToRivalManagerMap().put(rival.getOpponentProfile().getId(), warManager);
+            WarManager warManager = new WarManager(rival, rivalWarService, profileConnectionService);
+            rivalWarService.getProfileIdToRivalManagerMap().put(rival.getCreatorProfile().getId(), warManager);
+            rivalWarService.getProfileIdToRivalManagerMap().put(rival.getOpponentProfile().getId(), warManager);
             warManager.start();
         }
         model.put("type", rival.getType().name());

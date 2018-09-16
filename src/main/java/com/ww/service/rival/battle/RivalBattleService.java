@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 
 @Service
-public class BattleService extends RivalService {
+public class RivalBattleService extends RivalService {
 
     @Autowired
     protected ProfileConnectionService profileConnectionService;

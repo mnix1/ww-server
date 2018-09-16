@@ -16,7 +16,7 @@ import com.ww.model.entity.wisie.ProfileCampaignWisie;
 import com.ww.model.entity.wisie.ProfileWisie;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
-import com.ww.service.rival.war.WarService;
+import com.ww.service.rival.war.RivalWarService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
 import com.ww.service.social.RewardService;
@@ -34,7 +34,7 @@ import static com.ww.manager.rival.campaign.CampaignWarManager.BOT_PROFILE_ID;
 import static com.ww.model.constant.rival.RivalType.CAMPAIGN_WAR;
 
 @Service
-public class CampaignWarService extends WarService {
+public class RivalCampaignWarService extends RivalWarService {
     @Autowired
     protected ProfileConnectionService profileConnectionService;
 

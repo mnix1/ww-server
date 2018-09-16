@@ -1,7 +1,7 @@
-package com.ww.service.rival.battle;
+package com.ww.service.rival.war;
 
-import com.ww.manager.rival.battle.BattleManager;
 import com.ww.manager.rival.RivalManager;
+import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.service.SessionService;
@@ -12,11 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BattleRandomOpponentService extends RivalRandomOpponentService {
+public class RivalWarRandomOpponentService extends RivalRandomOpponentService {
     @Autowired
     private SessionService sessionService;
+
     @Autowired
-    private BattleService battleService;
+    private RivalWarService rivalWarService;
 
     @Autowired
     private ProfileService profileService;
@@ -25,8 +26,8 @@ public class BattleRandomOpponentService extends RivalRandomOpponentService {
     private ProfileConnectionService profileConnectionService;
 
     @Override
-    protected BattleService getRivalService() {
-        return battleService;
+    protected RivalWarService getRivalService() {
+        return rivalWarService;
     }
 
     @Override
@@ -46,10 +47,11 @@ public class BattleRandomOpponentService extends RivalRandomOpponentService {
 
     @Override
     protected RivalManager createManager(RivalInitContainer rival) {
-        return new BattleManager(rival, battleService, profileConnectionService);
+        return new WarManager(rival, rivalWarService, profileConnectionService);
     }
 
     protected RivalType getRivalType() {
-        return RivalType.BATTLE;
+        return RivalType.WAR;
     }
+
 }

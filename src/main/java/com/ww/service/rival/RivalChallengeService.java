@@ -22,7 +22,7 @@ import com.ww.repository.rival.challenge.ChallengeProfileRepository;
 import com.ww.repository.rival.challenge.ChallengeQuestionRepository;
 import com.ww.repository.rival.challenge.ChallengeRepository;
 import com.ww.service.SessionService;
-import com.ww.service.rival.war.WarService;
+import com.ww.service.rival.war.RivalWarService;
 import com.ww.service.social.ProfileService;
 import com.ww.websocket.message.Message;
 import org.slf4j.Logger;
@@ -39,8 +39,8 @@ import static com.ww.helper.ModelHelper.putSuccessCode;
 import static com.ww.model.constant.rival.RivalType.CHALLENGE;
 
 @Service
-public class ChallengeService extends WarService {
-    private static final Logger logger = LoggerFactory.getLogger(ChallengeService.class);
+public class RivalChallengeService extends RivalWarService {
+    private static final Logger logger = LoggerFactory.getLogger(RivalChallengeService.class);
 
     @Autowired
     private ChallengeRepository challengeRepository;

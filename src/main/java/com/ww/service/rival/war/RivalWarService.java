@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class WarService extends RivalService {
+public class RivalWarService extends RivalService {
 
     @Autowired
     protected ProfileWisieService profileWisieService;

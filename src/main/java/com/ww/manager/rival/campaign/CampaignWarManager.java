@@ -12,7 +12,7 @@ import com.ww.model.container.rival.war.WarProfileContainer;
 import com.ww.model.entity.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.social.Profile;
 import com.ww.model.entity.wisie.ProfileCampaignWisie;
-import com.ww.service.rival.campaign.CampaignWarService;
+import com.ww.service.rival.campaign.RivalCampaignWarService;
 import com.ww.service.social.ProfileConnectionService;
 
 import java.util.ArrayList;
@@ -28,8 +28,8 @@ public class CampaignWarManager extends WarManager {
         return profile.getId().equals(BOT_PROFILE_ID);
     }
 
-    public CampaignWarManager(RivalInitContainer container, CampaignWarService campaignWarService, ProfileConnectionService profileConnectionService, ProfileCampaign profileCampaign) {
-        this.rivalService = campaignWarService;
+    public CampaignWarManager(RivalInitContainer container, RivalCampaignWarService rivalCampaignWarService, ProfileConnectionService profileConnectionService, ProfileCampaign profileCampaign) {
+        this.rivalService = rivalCampaignWarService;
         this.profileConnectionService = profileConnectionService;
         Profile creator = container.getCreatorProfile();
         Long creatorId = creator.getId();

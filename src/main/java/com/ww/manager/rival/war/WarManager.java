@@ -12,9 +12,8 @@ import com.ww.model.container.rival.war.WarProfileContainer;
 import com.ww.model.entity.social.Profile;
 import com.ww.model.entity.wisie.OwnedWisie;
 import com.ww.model.entity.wisie.ProfileWisie;
-import com.ww.service.rival.war.WarService;
+import com.ww.service.rival.war.RivalWarService;
 import com.ww.service.social.ProfileConnectionService;
-import com.ww.websocket.message.Message;
 import io.reactivex.disposables.Disposable;
 import lombok.NoArgsConstructor;
 
@@ -29,15 +28,15 @@ public class WarManager extends RivalManager {
 
     protected Disposable choosingWhoAnswerDisposable;
 
-    public WarManager(RivalInitContainer container, WarService warService, ProfileConnectionService profileConnectionService) {
-        this.rivalService = warService;
+    public WarManager(RivalInitContainer container, RivalWarService rivalWarService, ProfileConnectionService profileConnectionService) {
+        this.rivalService = rivalWarService;
         this.profileConnectionService = profileConnectionService;
         Profile creator = container.getCreatorProfile();
         Long creatorId = creator.getId();
-        List<ProfileWisie> creatorWisies = warService.getProfileWisies(creator);
+        List<ProfileWisie> creatorWisies = rivalWarService.getProfileWisies(creator);
         Profile opponent = container.getOpponentProfile();
         Long opponentId = opponent.getId();
-        List<ProfileWisie> opponentWisies = warService.getProfileWisies(opponent);
+        List<ProfileWisie> opponentWisies = rivalWarService.getProfileWisies(opponent);
         this.rivalContainer = new WarContainer();
         this.rivalContainer.storeInformationFromInitContainer(container);
         this.rivalContainer.addProfile(creatorId, new WarProfileContainer(creator, opponentId, prepareTeamMembers(creator, creatorWisies)));

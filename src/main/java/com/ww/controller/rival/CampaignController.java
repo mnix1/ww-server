@@ -6,7 +6,7 @@ import com.ww.model.dto.rival.campaign.CampaignDTO;
 import com.ww.model.dto.rival.campaign.ProfileCampaignDTO;
 import com.ww.service.SessionService;
 import com.ww.service.rival.campaign.CampaignService;
-import com.ww.service.rival.campaign.CampaignWarService;
+import com.ww.service.rival.campaign.RivalCampaignWarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -25,14 +24,14 @@ public class CampaignController {
     SessionService sessionService;
 
     @Autowired
-    CampaignWarService campaignWarService;
+    RivalCampaignWarService rivalCampaignWarService;
 
     @Autowired
     CampaignService campaignService;
 
     @RequestMapping(value = "/start", method = RequestMethod.POST)
     public Map start(@RequestBody Map<String, Object> payload) {
-        return campaignWarService.start();
+        return rivalCampaignWarService.start();
     }
 
     @RequestMapping(value = "/init", method = RequestMethod.POST)

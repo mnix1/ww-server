@@ -9,9 +9,8 @@ import com.ww.manager.rival.state.*;
 import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.container.rival.battle.BattleContainer;
 import com.ww.model.container.rival.battle.BattleProfileContainer;
-import com.ww.service.rival.battle.BattleService;
+import com.ww.service.rival.battle.RivalBattleService;
 import com.ww.service.social.ProfileConnectionService;
-import com.ww.websocket.message.Message;
 
 import java.util.Map;
 
@@ -19,8 +18,8 @@ public class BattleManager extends RivalManager {
 
     public static final Integer TASK_COUNT = 5;
 
-    public BattleManager(RivalInitContainer container, BattleService battleService, ProfileConnectionService profileConnectionService) {
-        this.rivalService = battleService;
+    public BattleManager(RivalInitContainer container, RivalBattleService rivalBattleService, ProfileConnectionService profileConnectionService) {
+        this.rivalService = rivalBattleService;
         this.profileConnectionService = profileConnectionService;
         Long creatorId = container.getCreatorProfile().getId();
         Long opponentId = container.getOpponentProfile().getId();
