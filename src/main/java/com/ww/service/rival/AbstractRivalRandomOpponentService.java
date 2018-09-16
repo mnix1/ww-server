@@ -16,10 +16,9 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import static com.ww.helper.ModelHelper.putErrorCode;
 import static com.ww.helper.ModelHelper.putSuccessCode;
 
-public abstract class RivalRandomOpponentService {
+public abstract class AbstractRivalRandomOpponentService {
     private final ConcurrentHashMap<Long, RivalSearchingOpponentContainer> waitingForRivalProfiles = new ConcurrentHashMap<>();
 
     private static final int RIVAL_INIT_JOB_RATE = 2000;
@@ -28,7 +27,7 @@ public abstract class RivalRandomOpponentService {
 
     protected abstract ProfileService getProfileService();
 
-    protected abstract RivalService getRivalService();
+    protected abstract AbstractRivalService getRivalService();
 
     protected abstract RivalType getRivalType();
 
@@ -89,8 +88,8 @@ public abstract class RivalRandomOpponentService {
         waitingForRivalProfiles.remove(opponent.getId());
         RivalInitContainer rival = new RivalInitContainer(getRivalType(), waitingContainer.getImportance(), profile, opponent);
         RivalManager rivalManager = createManager(rival);
-        getRivalService().getProfileIdToRivalManagerMap().put(rival.getCreatorProfile().getId(), rivalManager);
-        getRivalService().getProfileIdToRivalManagerMap().put(rival.getOpponentProfile().getId(), rivalManager);
+        getRivalService().getGlobalRivalService().put(rival.getCreatorProfile().getId(), rivalManager);
+        getRivalService().getGlobalRivalService().put(rival.getOpponentProfile().getId(), rivalManager);
         rivalManager.start();
         maybeInitRival();
         return;

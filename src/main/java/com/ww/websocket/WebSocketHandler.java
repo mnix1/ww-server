@@ -2,8 +2,9 @@ package com.ww.websocket;
 
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.ProfileConnection;
+import com.ww.service.rival.AbstractRivalService;
+import com.ww.service.rival.GlobalRivalService;
 import com.ww.service.rival.RivalChallengeService;
-import com.ww.service.rival.RivalService;
 import com.ww.service.rival.battle.RivalBattleService;
 import com.ww.service.rival.campaign.RivalCampaignWarService;
 import com.ww.service.rival.war.RivalWarService;
@@ -36,6 +37,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
     RivalWarService rivalWarService;
 
     @Autowired
+    GlobalRivalService globalRivalService;
+
+    @Autowired
     RivalCampaignWarService rivalCampaignWarService;
 
     @Autowired
@@ -56,10 +60,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         logger.debug("Connected: sessionId: " + session.getId());
         ProfileConnection profileConnection = profileConnectionService.newConnection(session);
-        rivalBattleService.sendActualRivalModelToNewProfileConnection(profileConnection);
-        rivalWarService.sendActualRivalModelToNewProfileConnection(profileConnection);
-        rivalCampaignWarService.sendActualRivalModelToNewProfileConnection(profileConnection);
-        rivalChallengeService.sendActualRivalModelToNewProfileConnection(profileConnection);
+        globalRivalService.sendActualRivalModelToNewProfileConnection(profileConnection);
     }
 
     private static final String ANSWER_SUFFIX = "_^_ANSWER";
@@ -71,29 +72,29 @@ public class WebSocketHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage jsonTextMessage) throws Exception {
         String message = jsonTextMessage.getPayload();
 //        logger.debug("Message received: " + jsonTextMessage.getPayload() + ", from sessionId: " + session.getId());
-        RivalService rivalService = null;
+        AbstractRivalService abstractRivalService = null;
         RivalType rivalType = null;
         if (message.startsWith(RivalType.BATTLE.name())) {
-            rivalService = rivalBattleService;
+            abstractRivalService = rivalBattleService;
             rivalType = RivalType.BATTLE;
         } else if (message.startsWith(RivalType.WAR.name())) {
-            rivalService = rivalWarService;
+            abstractRivalService = rivalWarService;
             rivalType = RivalType.WAR;
         } else if (message.startsWith(RivalType.CAMPAIGN_WAR.name())) {
-            rivalService = rivalCampaignWarService;
+            abstractRivalService = rivalCampaignWarService;
             rivalType = RivalType.CAMPAIGN_WAR;
-        }else if (message.startsWith(RivalType.CHALLENGE.name())) {
-            rivalService = rivalChallengeService;
+        } else if (message.startsWith(RivalType.CHALLENGE.name())) {
+            abstractRivalService = rivalChallengeService;
             rivalType = RivalType.CHALLENGE;
         }
         if (message.contains(ANSWER_SUFFIX)) {
-            rivalService.answer(session.getId(), trimPrefixFromMessage(message, rivalType, ANSWER_SUFFIX));
+            abstractRivalService.answer(session.getId(), trimPrefixFromMessage(message, rivalType, ANSWER_SUFFIX));
         } else if (message.contains(CHOOSE_TASK_PROPS_SUFFIX)) {
-            rivalService.chooseTaskProps(session.getId(), trimPrefixFromMessage(message, rivalType, CHOOSE_TASK_PROPS_SUFFIX));
+            abstractRivalService.chooseTaskProps(session.getId(), trimPrefixFromMessage(message, rivalType, CHOOSE_TASK_PROPS_SUFFIX));
         } else if (message.contains(SURRENDER_SUFFIX)) {
-            rivalService.surrender(session.getId());
+            abstractRivalService.surrender(session.getId());
         } else if (message.contains(CHOOSE_WHO_ANSWER_SUFFIX)) {
-            rivalService.chooseWhoAnswer(session.getId(), trimPrefixFromMessage(message, rivalType, CHOOSE_WHO_ANSWER_SUFFIX));
+            abstractRivalService.chooseWhoAnswer(session.getId(), trimPrefixFromMessage(message, rivalType, CHOOSE_WHO_ANSWER_SUFFIX));
         }
     }
 

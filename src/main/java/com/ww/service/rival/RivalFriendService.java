@@ -88,13 +88,13 @@ public class RivalFriendService {
         this.sendAcceptInvite(rival);
         if (rival.getType() == RivalType.BATTLE) {
             BattleManager battleManager = new BattleManager(rival, rivalBattleService, profileConnectionService);
-            rivalBattleService.getProfileIdToRivalManagerMap().put(rival.getCreatorProfile().getId(), battleManager);
-            rivalBattleService.getProfileIdToRivalManagerMap().put(rival.getOpponentProfile().getId(), battleManager);
+            rivalBattleService.getGlobalRivalService().put(rival.getCreatorProfile().getId(), battleManager);
+            rivalBattleService.getGlobalRivalService().put(rival.getOpponentProfile().getId(), battleManager);
             battleManager.start();
         } else if (rival.getType() == RivalType.WAR) {
             WarManager warManager = new WarManager(rival, rivalWarService, profileConnectionService);
-            rivalWarService.getProfileIdToRivalManagerMap().put(rival.getCreatorProfile().getId(), warManager);
-            rivalWarService.getProfileIdToRivalManagerMap().put(rival.getOpponentProfile().getId(), warManager);
+            rivalWarService.getGlobalRivalService().put(rival.getCreatorProfile().getId(), warManager);
+            rivalWarService.getGlobalRivalService().put(rival.getOpponentProfile().getId(), warManager);
             warManager.start();
         }
         model.put("type", rival.getType().name());

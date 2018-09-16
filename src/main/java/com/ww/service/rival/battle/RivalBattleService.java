@@ -1,7 +1,8 @@
 package com.ww.service.rival.battle;
 
 import com.ww.model.entity.social.Profile;
-import com.ww.service.rival.RivalService;
+import com.ww.service.rival.AbstractRivalService;
+import com.ww.service.rival.GlobalRivalService;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.social.ProfileConnectionService;
@@ -11,10 +12,8 @@ import com.ww.websocket.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-
 @Service
-public class RivalBattleService extends RivalService {
+public class RivalBattleService extends AbstractRivalService {
 
     @Autowired
     protected ProfileConnectionService profileConnectionService;
@@ -30,6 +29,14 @@ public class RivalBattleService extends RivalService {
 
     @Autowired
     protected ProfileService profileService;
+
+    @Autowired
+    protected GlobalRivalService globalRivalService;
+
+    @Override
+    public GlobalRivalService getGlobalRivalService() {
+        return globalRivalService;
+    }
 
     @Override
     protected void addRewardFromWin(Profile winner) {

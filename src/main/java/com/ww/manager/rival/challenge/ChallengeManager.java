@@ -25,7 +25,7 @@ public class ChallengeManager extends WarManager {
     public List<ChallengeQuestion> challengeQuestions;
 
     public ChallengeManager(RivalInitContainer container, RivalChallengeService rivalChallengeService, ProfileConnectionService profileConnectionService, ChallengeProfile challengeProfile, List<ChallengeQuestion> challengeQuestions) {
-        this.rivalService = rivalChallengeService;
+        this.abstractRivalService = rivalChallengeService;
         this.profileConnectionService = profileConnectionService;
         Profile creator = container.getCreatorProfile();
         Long creatorId = creator.getId();
@@ -40,7 +40,7 @@ public class ChallengeManager extends WarManager {
 
     @Override
     public void prepareTask(Long id, Category category, DifficultyLevel difficultyLevel) {
-        RivalChallengeService rivalChallengeService = (RivalChallengeService) rivalService;
+        RivalChallengeService rivalChallengeService = (RivalChallengeService) abstractRivalService;
         Question question;
         int taskIndex = id.intValue() - 1;
         if (challengeQuestions.size() > taskIndex) {
@@ -51,7 +51,7 @@ public class ChallengeManager extends WarManager {
         rivalChallengeService.initTaskWisdomAttributes(question);
         question.setId(id);
         question.rewriteAnswerIds();
-        TaskDTO taskDTO = rivalService.prepareTaskDTO(question);
+        TaskDTO taskDTO = abstractRivalService.prepareTaskDTO(question);
         taskDTO.getAnswers().sort(Comparator.comparing(AnswerDTO::getId));
         rivalContainer.addTask(question, taskDTO);
     }

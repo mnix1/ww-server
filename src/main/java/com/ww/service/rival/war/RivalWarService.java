@@ -6,7 +6,8 @@ import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.social.Profile;
 import com.ww.model.entity.wisie.ProfileWisie;
-import com.ww.service.rival.RivalService;
+import com.ww.service.rival.AbstractRivalService;
+import com.ww.service.rival.GlobalRivalService;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.rival.task.TaskService;
@@ -18,13 +19,12 @@ import com.ww.websocket.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class RivalWarService extends RivalService {
+public class RivalWarService extends AbstractRivalService {
 
     @Autowired
     protected ProfileWisieService profileWisieService;
@@ -46,6 +46,14 @@ public class RivalWarService extends RivalService {
 
     @Autowired
     protected ProfileService profileService;
+
+    @Autowired
+    protected GlobalRivalService globalRivalService;
+
+    @Override
+    public GlobalRivalService getGlobalRivalService() {
+        return globalRivalService;
+    }
 
     @Override
     protected void addRewardFromWin(Profile profile) {
@@ -97,7 +105,7 @@ public class RivalWarService extends RivalService {
         if (!profileId.isPresent()) {
             return;
         }
-        WarManager warManager = (WarManager) profileIdToRivalManagerMap.get(profileId.get());
+        WarManager warManager = (WarManager) getGlobalRivalService().get(profileId.get());
         if (!warManager.canChooseWhoAnswer()) {
             return;
         }

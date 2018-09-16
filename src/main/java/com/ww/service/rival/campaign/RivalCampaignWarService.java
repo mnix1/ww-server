@@ -133,8 +133,8 @@ public class RivalCampaignWarService extends RivalWarService {
         }
         RivalInitContainer rival = new RivalInitContainer(CAMPAIGN_WAR, RivalImportance.FAST, profileService.getProfile(), prepareComputerProfile(profileCampaign));
         RivalManager rivalManager = createManager(rival, profileCampaign);
-        getProfileIdToRivalManagerMap().put(rival.getCreatorProfile().getId(), rivalManager);
-        getProfileIdToRivalManagerMap().put(rival.getOpponentProfile().getId(), rivalManager);
+        getGlobalRivalService().put(rival.getCreatorProfile().getId(), rivalManager);
+        getGlobalRivalService().put(rival.getOpponentProfile().getId(), rivalManager);
         rivalManager.start();
         return putSuccessCode(model);
     }

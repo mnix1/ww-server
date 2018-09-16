@@ -12,7 +12,7 @@ import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.social.Profile;
-import com.ww.service.rival.RivalService;
+import com.ww.service.rival.AbstractRivalService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.websocket.message.Message;
 import com.ww.websocket.message.MessageDTO;
@@ -34,7 +34,7 @@ public abstract class RivalManager {
     protected static final Logger logger = LoggerFactory.getLogger(RivalManager.class);
 
     protected RivalContainer rivalContainer;
-    protected RivalService rivalService;
+    protected AbstractRivalService abstractRivalService;
     protected ProfileConnectionService profileConnectionService;
     protected Disposable answeringTimeoutDisposable;
     protected Disposable choosingTaskPropsDisposable;
@@ -51,7 +51,7 @@ public abstract class RivalManager {
     }
 
     public Message getMessageContent() {
-        return rivalService.getMessageContent();
+        return abstractRivalService.getMessageContent();
     }
 
     public void prepareTask(Long id) {
@@ -59,10 +59,10 @@ public abstract class RivalManager {
     }
 
     public void prepareTask(Long id, Category category, DifficultyLevel difficultyLevel) {
-        Question question = rivalService.prepareQuestion(category, difficultyLevel);
+        Question question = abstractRivalService.prepareQuestion(category, difficultyLevel);
         question.setId(id);
         question.initAnswerIds();
-        TaskDTO taskDTO = rivalService.prepareTaskDTO(question);
+        TaskDTO taskDTO = abstractRivalService.prepareTaskDTO(question);
         rivalContainer.addTask(question, taskDTO);
     }
 
@@ -101,8 +101,8 @@ public abstract class RivalManager {
         rivalContainer.setCreatorEloChange(creatorEloChange);
         updateElo(opponent, opponentEloChange, rivalContainer.getType());
         rivalContainer.setOpponentEloChange(opponentEloChange);
-        rivalService.getProfileService().save(creator);
-        rivalService.getProfileService().save(opponent);
+        abstractRivalService.getProfileService().save(creator);
+        abstractRivalService.getProfileService().save(opponent);
     }
 
     public abstract boolean isEnd();

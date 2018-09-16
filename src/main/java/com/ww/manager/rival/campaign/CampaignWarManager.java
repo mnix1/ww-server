@@ -29,7 +29,7 @@ public class CampaignWarManager extends WarManager {
     }
 
     public CampaignWarManager(RivalInitContainer container, RivalCampaignWarService rivalCampaignWarService, ProfileConnectionService profileConnectionService, ProfileCampaign profileCampaign) {
-        this.rivalService = rivalCampaignWarService;
+        this.abstractRivalService = rivalCampaignWarService;
         this.profileConnectionService = profileConnectionService;
         Profile creator = container.getCreatorProfile();
         Long creatorId = creator.getId();

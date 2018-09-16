@@ -31,6 +31,6 @@ public class StateSurrender extends State {
             rivalContainer.fillModelEloChanged(model, rivalProfileContainer);
             rivalManager.send(model, rivalManager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
-        rivalManager.getRivalService().disposeManager(rivalManager);
+        rivalManager.getAbstractRivalService().disposeManager(rivalManager);
     }
 }

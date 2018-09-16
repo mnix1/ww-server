@@ -5,7 +5,6 @@ import com.ww.manager.rival.RivalManager;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.RivalType;
-import com.ww.model.container.ProfileConnection;
 import com.ww.model.container.rival.RivalContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.dto.rival.task.TaskDTO;
@@ -19,30 +18,14 @@ import com.ww.service.social.ProfileService;
 import com.ww.websocket.message.Message;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public abstract class RivalService {
-    protected final ConcurrentHashMap<Long, RivalManager> profileIdToRivalManagerMap = new ConcurrentHashMap<>();
-
-    public ConcurrentHashMap<Long, RivalManager> getProfileIdToRivalManagerMap() {
-        return profileIdToRivalManagerMap;
-    }
-
-    public synchronized void sendActualRivalModelToNewProfileConnection(ProfileConnection profileConnection) {
-        if (!profileIdToRivalManagerMap.containsKey(profileConnection.getProfileId())) {
-            return;
-        }
-        RivalManager rivalManager = profileIdToRivalManagerMap.get(profileConnection.getProfileId());
-        rivalManager.send(rivalManager.actualModel(profileConnection.getProfileId()), getMessageContent(), profileConnection.getProfileId());
-    }
-
+public abstract class AbstractRivalService {
     protected abstract void addRewardFromWin(Profile winner);
 
     public abstract Message getMessageContent();
@@ -54,6 +37,8 @@ public abstract class RivalService {
     protected abstract TaskRendererService getTaskRendererService();
 
     public abstract ProfileService getProfileService();
+
+    public abstract GlobalRivalService getGlobalRivalService();
 
     public List<ClassificationProfileDTO> classification(RivalType type) {
         String profileTag = getProfileService().getProfileTag();
@@ -70,7 +55,7 @@ public abstract class RivalService {
         }
         List<RivalProfileContainer> rivalProfileContainers = rivalManager.getRivalProfileContainers();
         rivalProfileContainers.forEach(rivalProfileContainer -> {
-            profileIdToRivalManagerMap.remove(rivalProfileContainer.getProfileId());
+            getGlobalRivalService().remove(rivalProfileContainer.getProfileId());
         });
         RivalContainer rivalContainer = rivalManager.getRivalContainer();
         Boolean isDraw = rivalContainer.getDraw();
@@ -96,7 +81,7 @@ public abstract class RivalService {
         if (!profileId.isPresent()) {
             return;
         }
-        RivalManager rivalManager = profileIdToRivalManagerMap.get(profileId.get());
+        RivalManager rivalManager = getGlobalRivalService().get(profileId.get());
         if (!rivalManager.canAnswer()) {
             return;
         }
@@ -111,7 +96,7 @@ public abstract class RivalService {
         if (!profileId.isPresent()) {
             return;
         }
-        RivalManager rivalManager = profileIdToRivalManagerMap.get(profileId.get());
+        RivalManager rivalManager = getGlobalRivalService().get(profileId.get());
         if (!rivalManager.canChooseTaskProps()) {
             return;
         }
@@ -130,10 +115,10 @@ public abstract class RivalService {
             return;
         }
         Long profileId = optionalProfileId.get();
-        if (!profileIdToRivalManagerMap.containsKey(profileId)) {
+        if (!getGlobalRivalService().contains(profileId)) {
             return;
         }
-        RivalManager rivalManager = profileIdToRivalManagerMap.get(profileId);
+        RivalManager rivalManager = getGlobalRivalService().get(profileId);
         rivalManager.surrender(profileId);
     }
 

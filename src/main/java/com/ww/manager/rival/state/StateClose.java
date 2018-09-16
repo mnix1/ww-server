@@ -31,6 +31,6 @@ public class StateClose extends State {
             rivalContainer.fillModelClosed(model, rivalProfileContainer);
             rivalManager.send(model, rivalManager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
-        rivalManager.getRivalService().disposeManager(rivalManager);
+        rivalManager.getAbstractRivalService().disposeManager(rivalManager);
     }
 }

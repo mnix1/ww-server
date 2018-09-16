@@ -51,7 +51,7 @@ public class AutoController {
     @RequestMapping(value = "/correctAnswer", method = RequestMethod.GET)
     public Map<String, Object> correctAnswer() {
         Map<String, Object> model = new HashMap<>();
-        RivalManager rivalManager = rivalWarService.getProfileIdToRivalManagerMap().get(sessionService.getProfileId());
+        RivalManager rivalManager = rivalWarService.getGlobalRivalService().get(sessionService.getProfileId());
         model.put("id", rivalManager.getRivalContainer().findCurrentCorrectAnswerId());
         return putSuccessCode(model);
     }

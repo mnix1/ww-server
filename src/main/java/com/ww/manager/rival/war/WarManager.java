@@ -29,7 +29,7 @@ public class WarManager extends RivalManager {
     protected Disposable choosingWhoAnswerDisposable;
 
     public WarManager(RivalInitContainer container, RivalWarService rivalWarService, ProfileConnectionService profileConnectionService) {
-        this.rivalService = rivalWarService;
+        this.abstractRivalService = rivalWarService;
         this.profileConnectionService = profileConnectionService;
         Profile creator = container.getCreatorProfile();
         Long creatorId = creator.getId();
