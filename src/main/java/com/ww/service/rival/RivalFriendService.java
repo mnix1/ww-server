@@ -51,10 +51,16 @@ public class RivalFriendService {
     @Autowired
     private RivalWarService rivalWarService;
 
+    @Autowired
+    private GlobalRivalService globalRivalService;
+
     public Map startFriend(String tag, RivalType type) {
         Map<String, Object> model = new HashMap<>();
         cleanCreator();
         cleanOpponent();
+        if (globalRivalService.contains(sessionService.getProfileId())) {
+            return putErrorCode(model);
+        }
         if (rivalInitContainers.stream().anyMatch(e -> e.getOpponentProfile().getTag().equals(tag) || e.getCreatorProfile().getTag().equals(tag))) {
             return putErrorCode(model);
         }
@@ -84,6 +90,9 @@ public class RivalFriendService {
 
     public Map acceptFriend() {
         Map<String, Object> model = new HashMap<>();
+        if (globalRivalService.contains(sessionService.getProfileId())) {
+            return putErrorCode(model);
+        }
         RivalInitContainer rival = rivalInitContainers.stream().filter(rivalInitContainer -> rivalInitContainer.getOpponentProfile().getId().equals(sessionService.getProfileId())).findFirst().get();
         this.sendAcceptInvite(rival);
         if (rival.getType() == RivalType.BATTLE) {

@@ -5,6 +5,8 @@ import com.ww.model.container.ProfileConnection;
 import com.ww.model.entity.social.Profile;
 import com.ww.repository.social.ProfileFriendRepository;
 import com.ww.service.SessionService;
+import com.ww.service.rival.GlobalRivalService;
+import com.ww.service.rival.RivalRandomOpponentService;
 import com.ww.websocket.message.Message;
 import com.ww.websocket.message.MessageDTO;
 import org.slf4j.Logger;
@@ -23,13 +25,16 @@ public class ProfileConnectionService {
     private final ConcurrentHashMap<String, ProfileConnection> sessionIdToProfileConnectionMap = new ConcurrentHashMap<>();
 
     @Autowired
-    ProfileService profileService;
+    private ProfileService profileService;
 
     @Autowired
-    SessionService sessionService;
+    private SessionService sessionService;
 
     @Autowired
-    ProfileFriendRepository profileFriendRepository;
+    private ProfileFriendRepository profileFriendRepository;
+
+    @Autowired
+    private RivalRandomOpponentService rivalRandomOpponentService;
 
     public ProfileConnection newConnection(WebSocketSession session) {
         Profile profile = profileService.retrieveProfile(profileService.getAuthId(session.getPrincipal()));
@@ -52,6 +57,7 @@ public class ProfileConnectionService {
 
     public void deleteConnection(WebSocketSession session) {
         findBySessionId(session.getId()).ifPresent(profileConnection -> {
+            rivalRandomOpponentService.remove(profileConnection.getProfileId());
             sessionIdToProfileConnectionMap.remove(session.getId());
             profileIdToProfileConnectionMap.remove(profileConnection.getProfileId());
             logger.debug("ProfileConnection deleteConnection: sessionId: " + session.getId() + ", profileId: " + profileConnection.getProfileId());

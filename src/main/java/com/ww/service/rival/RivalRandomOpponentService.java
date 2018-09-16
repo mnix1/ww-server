@@ -1,6 +1,8 @@
 package com.ww.service.rival;
 
 import com.ww.manager.rival.RivalManager;
+import com.ww.manager.rival.battle.BattleManager;
+import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.ProfileConnection;
@@ -8,46 +10,57 @@ import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.container.rival.RivalSearchingOpponentContainer;
 import com.ww.model.entity.social.Profile;
 import com.ww.service.SessionService;
+import com.ww.service.rival.battle.RivalBattleService;
+import com.ww.service.rival.war.RivalWarService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import static com.ww.helper.ModelHelper.putErrorCode;
 import static com.ww.helper.ModelHelper.putSuccessCode;
 
-public abstract class AbstractRivalRandomOpponentService {
+@Service
+public class RivalRandomOpponentService {
     private final ConcurrentHashMap<Long, RivalSearchingOpponentContainer> waitingForRivalProfiles = new ConcurrentHashMap<>();
-
     private static final int RIVAL_INIT_JOB_RATE = 2000;
+    @Autowired
+    private SessionService sessionService;
+    @Autowired
+    private ProfileService profileService;
+    @Autowired
+    private ProfileConnectionService profileConnectionService;
+    @Autowired
+    private RivalWarService rivalWarService;
+    @Autowired
+    private RivalBattleService rivalBattleService;
+    @Autowired
+    private GlobalRivalService globalRivalService;
 
-    protected abstract SessionService getSessionService();
-
-    protected abstract ProfileService getProfileService();
-
-    protected abstract AbstractRivalService getRivalService();
-
-    protected abstract RivalType getRivalType();
-
-    protected abstract ProfileConnectionService getProfileConnectionService();
-
-    protected abstract RivalManager createManager(RivalInitContainer rival);
-
-    public Map start(RivalImportance importance) {
+    public Map start(RivalType type, RivalImportance importance) {
         Map<String, Object> model = new HashMap<>();
-        Profile profile = getProfileService().getProfile();
+        if (globalRivalService.contains(sessionService.getProfileId())) {
+            return putErrorCode(model);
+        }
+        Profile profile = profileService.getProfile();
         if (!waitingForRivalProfiles.containsKey(profile.getId())) {
-            waitingForRivalProfiles.put(profile.getId(), new RivalSearchingOpponentContainer(importance, profile));
+            waitingForRivalProfiles.put(profile.getId(), new RivalSearchingOpponentContainer(type, importance, profile));
         }
         return putSuccessCode(model);
     }
 
-    public Map cancel(RivalImportance importance) {
+    public Map cancel() {
         Map<String, Object> model = new HashMap<>();
-        waitingForRivalProfiles.remove(getSessionService().getProfileId());
+        remove(sessionService.getProfileId());
         return model;
+    }
+    public void remove(Long profileId) {
+        waitingForRivalProfiles.remove(profileId);
     }
 
     @Scheduled(fixedRate = RIVAL_INIT_JOB_RATE)
@@ -63,21 +76,23 @@ public abstract class AbstractRivalRandomOpponentService {
         Collection<RivalSearchingOpponentContainer> waitingContainers = waitingForRivalProfiles.values();
         RivalSearchingOpponentContainer waitingContainer = waitingContainers.stream().findFirst().get();
         Profile profile = waitingContainer.getProfile();
-        Optional<ProfileConnection> profileConnection = getProfileConnectionService().findByProfileId(profile.getId());
+        Optional<ProfileConnection> profileConnection = profileConnectionService.findByProfileId(profile.getId());
         if (!profileConnection.isPresent()) {
             waitingForRivalProfiles.remove(profile.getId());
             maybeInitRival();
             return;
         }
         List<Profile> availableOpponentProfiles = waitingContainers.stream()
-                .filter(container -> container.getImportance() == waitingContainer.getImportance() && !container.getProfile().equals(profile))
+                .filter(container -> container.getImportance() == waitingContainer.getImportance()
+                        && container.getType() == waitingContainer.getType()
+                        && !container.getProfile().equals(profile))
                 .map(RivalSearchingOpponentContainer::getProfile)
                 .collect(Collectors.toList());
         if (availableOpponentProfiles.size() < 1) {
             return;
         }
         Profile opponent = findOpponentForRival(availableOpponentProfiles, waitingContainer.getProfile());
-        Optional<ProfileConnection> opponentConnection = getProfileConnectionService().findByProfileId(opponent.getId());
+        Optional<ProfileConnection> opponentConnection = profileConnectionService.findByProfileId(opponent.getId());
         if (!opponentConnection.isPresent()) {
             waitingForRivalProfiles.remove(opponent.getId());
             maybeInitRival();
@@ -86,13 +101,30 @@ public abstract class AbstractRivalRandomOpponentService {
 //        logger.debug("Matched profiles {} and {}, now creating rival rivalManager", profile.getId(), opponent.getId());
         waitingForRivalProfiles.remove(profile.getId());
         waitingForRivalProfiles.remove(opponent.getId());
-        RivalInitContainer rival = new RivalInitContainer(getRivalType(), waitingContainer.getImportance(), profile, opponent);
+        RivalInitContainer rival = new RivalInitContainer(waitingContainer.getType(), waitingContainer.getImportance(), profile, opponent);
         RivalManager rivalManager = createManager(rival);
-        getRivalService().getGlobalRivalService().put(rival.getCreatorProfile().getId(), rivalManager);
-        getRivalService().getGlobalRivalService().put(rival.getOpponentProfile().getId(), rivalManager);
+        AbstractRivalService abstractRivalService = null;
+        if (waitingContainer.getType() == RivalType.WAR) {
+            abstractRivalService = rivalWarService;
+        } else if (waitingContainer.getType() == RivalType.BATTLE) {
+            abstractRivalService = rivalBattleService;
+        } else {
+            throw new IllegalArgumentException();
+        }
+        abstractRivalService.getGlobalRivalService().put(rival.getCreatorProfile().getId(), rivalManager);
+        abstractRivalService.getGlobalRivalService().put(rival.getOpponentProfile().getId(), rivalManager);
         rivalManager.start();
         maybeInitRival();
         return;
+    }
+
+    private RivalManager createManager(RivalInitContainer rival) {
+        if (rival.getType() == RivalType.WAR) {
+            return new WarManager(rival, rivalWarService, profileConnectionService);
+        } else if (rival.getType() == RivalType.BATTLE) {
+            return new BattleManager(rival, rivalBattleService, profileConnectionService);
+        }
+        throw new IllegalArgumentException();
     }
 
     private Profile findOpponentForRival(List<Profile> availableOpponentProfiles, Profile profile) {

@@ -11,10 +11,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RivalSearchingOpponentContainer {
+    private RivalType type;
     private RivalImportance importance;
     private Profile profile;
 
-    public RivalSearchingOpponentContainer(RivalImportance importance, Profile profile) {
+    public RivalSearchingOpponentContainer(RivalType type, RivalImportance importance, Profile profile) {
+        this.type = type;
         this.importance = importance;
         this.profile = profile;
     }
