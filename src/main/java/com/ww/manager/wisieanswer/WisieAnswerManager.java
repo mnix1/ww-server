@@ -41,7 +41,6 @@ public class WisieAnswerManager {
 
     private boolean inProgress = false;
 
-
     private List<WisieAnswerAction> actions = new ArrayList<>();
 
     private OwnedWisie wisie;
