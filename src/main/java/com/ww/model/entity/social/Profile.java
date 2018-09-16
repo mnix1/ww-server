@@ -40,6 +40,7 @@ public class Profile {
     private Long wisdom;
     private Long elixir;
     private Boolean introductionCompleted;
+    private Integer introductionStep;
     private Long battleElo;
     private Long battlePreviousElo;
     private Instant battleLastPlay;
@@ -72,6 +73,7 @@ public class Profile {
         this.elixir = 0L;
         this.wisorType = WisorType.random();
         this.introductionCompleted = false;
+        this.introductionStep = 0;
         this.battleElo = 0L;
         this.battleLastPlay = Instant.now();
         this.battlePreviousElo = 0L;
@@ -89,6 +91,7 @@ public class Profile {
         this.name = name;
         this.language = Language.POLISH;
         this.wisorType = WisorType.random();
+        this.introductionCompleted = true;
         this.battlePreviousElo = (long) randomInteger(0, 4000);
         this.battleElo = this.battlePreviousElo + (long) randomInteger(0, 30);
         this.battleLastPlay = Instant.now().minus((long) randomInteger(1, 10000), SECONDS);

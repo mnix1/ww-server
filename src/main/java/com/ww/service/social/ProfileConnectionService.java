@@ -7,18 +7,18 @@ import com.ww.repository.social.ProfileFriendRepository;
 import com.ww.service.SessionService;
 import com.ww.websocket.message.Message;
 import com.ww.websocket.message.MessageDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketSession;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
 public class ProfileConnectionService {
+    private static Logger logger = LoggerFactory.getLogger(ProfileConnectionService.class);
     private final ConcurrentHashMap<Long, ProfileConnection> profileIdToProfileConnectionMap = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, ProfileConnection> sessionIdToProfileConnectionMap = new ConcurrentHashMap<>();
 
@@ -45,6 +45,7 @@ public class ProfileConnectionService {
         ProfileConnection profileConnection = new ProfileConnection(profile.getId(), session);
         profileIdToProfileConnectionMap.put(profile.getId(), profileConnection);
         sessionIdToProfileConnectionMap.put(session.getId(), profileConnection);
+        logger.debug("ProfileConnection newConnection: sessionId: " + session.getId() + ", profileId: " + profile.getId());
         sendFriendConnectionChanged(profile, Message.FRIEND_SIGN_IN);
         return profileConnection;
     }
@@ -53,6 +54,7 @@ public class ProfileConnectionService {
         findBySessionId(session.getId()).ifPresent(profileConnection -> {
             sessionIdToProfileConnectionMap.remove(session.getId());
             profileIdToProfileConnectionMap.remove(profileConnection.getProfileId());
+            logger.debug("ProfileConnection deleteConnection: sessionId: " + session.getId() + ", profileId: " + profileConnection.getProfileId());
             sendFriendConnectionChanged(profileService.getProfile(profileConnection.getProfileId()), Message.FRIEND_SIGN_OUT);
         });
     }
