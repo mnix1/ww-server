@@ -25,7 +25,7 @@ public class StateEndRecognizingAnswers extends State {
             sumInterval /= manager.getHobbyFactor();
         }
         long interval = (long) (sumInterval * (3 - manager.getSpeedF1() - manager.getConcentrationF1()));
-        logger.debug(manager.getWisie().getWisie().getNamePolish() + ", " + manager.lastAction().name() + ", interval: " + interval);
+        logger.trace(manager.getWisie().getWisie().getNamePolish() + ", " + manager.lastAction().name() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

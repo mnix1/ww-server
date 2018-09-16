@@ -73,7 +73,7 @@ public class WisieAnswerManager {
         this.hobbyCount = wisie.getHobbies().size();
         this.hobbyFactor = 1 + 1d / hobbyCount;
         this.cacheAttributes();
-        logger.debug(getWisie().getWisie().getNamePolish() +
+        logger.trace(getWisie().getWisie().getNamePolish() +
                 ", difficulty=" + difficulty +
                 ", answerCount=" + answerCount +
                 ", wisdomSum=" + wisdomSum +

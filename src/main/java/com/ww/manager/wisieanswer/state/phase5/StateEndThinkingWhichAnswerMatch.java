@@ -25,7 +25,7 @@ public class StateEndThinkingWhichAnswerMatch extends State {
             sumInterval /= manager.getHobbyFactor();
         }
         long interval = (long) (sumInterval * (3 - manager.getWisdomSum() - manager.getIntuitionF1()));
-        logger.debug(manager.getWisie().getWisie().getNamePolish() + ", " + manager.lastAction().name() + ", interval: " + interval);
+        logger.trace(manager.getWisie().getWisie().getNamePolish() + ", " + manager.lastAction().name() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

@@ -21,7 +21,7 @@ public class StateCheckIfGiveRandomAnswer extends State {
         double hobbyPart = manager.isHobby() ? 0.1 : 0;
         double chance = 0.5 + diffPart + attrPart + hobbyPart;
         boolean willGiveRandomAnswer = chance > randomDouble();
-        logger.debug(manager.getWisie().getWisie().getNamePolish() + ", " + manager.lastAction().name() + ", chance: " + chance + ", willGiveRandomAnswer: " + willGiveRandomAnswer);
+        logger.trace(manager.getWisie().getWisie().getNamePolish() + ", " + manager.lastAction().name() + ", chance: " + chance + ", willGiveRandomAnswer: " + willGiveRandomAnswer);
         if (willGiveRandomAnswer) {
             return WisieAnswerAction.WILL_GIVE_RANDOM_ANSWER;
         }

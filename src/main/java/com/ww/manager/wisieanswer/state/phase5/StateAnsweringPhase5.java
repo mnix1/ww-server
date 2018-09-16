@@ -26,7 +26,7 @@ public class StateAnsweringPhase5 extends State {
         double hobbyPart = manager.isHobby() ? 0.1 : 0;
         double chance = 0.5 + diffPart + attrPart + hobbyPart;
         boolean correctAnswer = chance > randomDouble();
-        logger.debug(manager.getWisie().getWisie().getNamePolish() + ", " + manager.lastAction().name() + ", chance: " + chance + ", correctAnswer: " + correctAnswer);
+        logger.trace(manager.getWisie().getWisie().getNamePolish() + ", " + manager.lastAction().name() + ", chance: " + chance + ", correctAnswer: " + correctAnswer);
         Answer answer = correctAnswer
                 ? manager.getQuestion().getAnswers().stream().filter(Answer::getCorrect).findFirst().get()
                 : randomElement(new ArrayList<>(manager.getQuestion().getAnswers()));

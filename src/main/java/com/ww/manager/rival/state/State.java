@@ -24,7 +24,7 @@ public class State {
             return Flowable.empty();
         }
         Flowable f =  processFlowable();
-        logger.debug("Status: " + rivalContainer.getStatus().name());
+        logger.trace("Status: " + rivalContainer.getStatus().name());
         return f;
     }
 

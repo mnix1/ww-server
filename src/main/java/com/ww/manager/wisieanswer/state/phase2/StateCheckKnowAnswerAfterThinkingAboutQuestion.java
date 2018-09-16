@@ -21,7 +21,7 @@ public class StateCheckKnowAnswerAfterThinkingAboutQuestion extends State {
         double hobbyPart = manager.isHobby() ? 0.1 : 0;
         double chance = 0.5 + diffPart + attrPart + hobbyPart;
         boolean thinkKnowAnswer = chance > randomDouble();
-        logger.debug(manager.getWisie().getWisie().getNamePolish() + ", " + manager.lastAction().name() + ", chance: " + chance+ ", thinkKnowAnswer: " + thinkKnowAnswer);
+        logger.trace(manager.getWisie().getWisie().getNamePolish() + ", " + manager.lastAction().name() + ", chance: " + chance+ ", thinkKnowAnswer: " + thinkKnowAnswer);
         if (thinkKnowAnswer) {
             return WisieAnswerAction.THINK_KNOW_ANSWER;
         }

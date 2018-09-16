@@ -20,7 +20,7 @@ public class StateCheckNoConcentration extends State {
         double hobbyPart = manager.isHobby() ? 0.1 : 0;
         double chance = manager.getConcentrationF1() + hobbyPart;
         boolean lostConcentration = chance < randomDouble();
-        logger.debug(manager.getWisie().getWisie().getNamePolish() + ", " + manager.lastAction().name() + ", chance: " + chance + ", lostConcentration: " + lostConcentration);
+        logger.trace(manager.getWisie().getWisie().getNamePolish() + ", " + manager.lastAction().name() + ", chance: " + chance + ", lostConcentration: " + lostConcentration);
         if (lostConcentration) {
             return randomElement(WisieAnswerAction.getNoConcentrationActions());
         }
