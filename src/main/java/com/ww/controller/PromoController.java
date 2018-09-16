@@ -27,16 +27,10 @@ public class PromoController {
     ProfileService profileService;
 
     @Autowired
-    ProfileBookService profileBookService;
-
-    @Autowired
     ProfileWisieService profileWisieService;
 
     @Autowired
     WisieService wisieService;
-
-    @Autowired
-    SessionService sessionService;
 
     @RequestMapping(value = "/promo", method = RequestMethod.GET)
     public Map promo() {

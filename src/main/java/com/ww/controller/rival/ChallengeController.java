@@ -19,10 +19,7 @@ import java.util.Map;
 public class ChallengeController {
 
     @Autowired
-    SessionService sessionService;
-
-    @Autowired
-    RivalChallengeService rivalChallengeService;
+    private  RivalChallengeService rivalChallengeService;
 
     @RequestMapping(value = "/friendInit", method = RequestMethod.POST)
     public Map startFriend(@RequestBody Map<String, Object> payload) {

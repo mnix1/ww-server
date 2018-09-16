@@ -24,16 +24,10 @@ import java.util.stream.Collectors;
 public class WisieController {
 
     @Autowired
-    ProfileService profileService;
+    private WisieService wisieService;
 
     @Autowired
-    SessionService sessionService;
-
-    @Autowired
-    WisieService wisieService;
-
-    @Autowired
-    ProfileWisieService profileWisieService;
+    private  ProfileWisieService profileWisieService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public List<WisieDTO> list() {

@@ -27,7 +27,7 @@ public class GlobalRivalService {
     }
 
     public synchronized void sendActualRivalModelToNewProfileConnection(ProfileConnection profileConnection) {
-        if (!profileIdToRivalManagerMap.containsKey(profileConnection.getProfileId())) {
+        if (!contains(profileConnection.getProfileId())) {
             return;
         }
         RivalManager rivalManager = profileIdToRivalManagerMap.get(profileConnection.getProfileId());

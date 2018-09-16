@@ -30,8 +30,6 @@ public class RivalRandomOpponentService {
     private final ConcurrentHashMap<Long, RivalSearchingOpponentContainer> waitingForRivalProfiles = new ConcurrentHashMap<>();
     private static final int RIVAL_INIT_JOB_RATE = 2000;
     @Autowired
-    private SessionService sessionService;
-    @Autowired
     private ProfileService profileService;
     @Autowired
     private ProfileConnectionService profileConnectionService;
@@ -44,7 +42,7 @@ public class RivalRandomOpponentService {
 
     public Map start(RivalType type, RivalImportance importance) {
         Map<String, Object> model = new HashMap<>();
-        if (globalRivalService.contains(sessionService.getProfileId())) {
+        if (globalRivalService.contains(profileService.getProfileId())) {
             return putErrorCode(model);
         }
         Profile profile = profileService.getProfile();
@@ -56,7 +54,7 @@ public class RivalRandomOpponentService {
 
     public Map cancel() {
         Map<String, Object> model = new HashMap<>();
-        remove(sessionService.getProfileId());
+        remove(profileService.getProfileId());
         return model;
     }
     public void remove(Long profileId) {

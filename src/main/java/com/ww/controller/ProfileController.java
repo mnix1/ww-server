@@ -3,8 +3,6 @@ package com.ww.controller;
 import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.dto.book.ProfileBookDTO;
 import com.ww.model.dto.social.ProfileResourcesDTO;
-import com.ww.model.entity.social.Profile;
-import com.ww.service.SessionService;
 import com.ww.service.book.ProfileBookService;
 import com.ww.service.social.AuthProfileService;
 import com.ww.service.social.ProfileService;
@@ -34,10 +32,6 @@ public class ProfileController {
 
     @Autowired
     WisieService wisieService;
-
-    @Autowired
-    SessionService sessionService;
-
 
     @RequestMapping(value = "/changeWisor", method = RequestMethod.POST)
     public Map changeWisor(@RequestBody Map<String, Object> payload) {

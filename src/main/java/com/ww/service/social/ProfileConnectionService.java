@@ -28,9 +28,6 @@ public class ProfileConnectionService {
     private ProfileService profileService;
 
     @Autowired
-    private SessionService sessionService;
-
-    @Autowired
     private ProfileFriendRepository profileFriendRepository;
 
     @Autowired

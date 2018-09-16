@@ -43,9 +43,6 @@ public class CampaignService {
     @Autowired
     private ProfileService profileService;
 
-    @Autowired
-    private SessionService sessionService;
-
     public List<CampaignDTO> list() {
         return campaignRepository.findAll().stream().map(CampaignDTO::new).collect(Collectors.toList());
     }
@@ -59,7 +56,7 @@ public class CampaignService {
     }
 
     public ProfileCampaign active() {
-        return active(sessionService.getProfileId());
+        return active(profileService.getProfileId());
     }
 
     public ProfileCampaign active(Long profileId) {

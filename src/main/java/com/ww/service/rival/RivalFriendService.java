@@ -37,9 +37,6 @@ public class RivalFriendService {
     private final CopyOnWriteArrayList<RivalInitContainer> rivalInitContainers = new CopyOnWriteArrayList<RivalInitContainer>();
 
     @Autowired
-    private SessionService sessionService;
-
-    @Autowired
     private ProfileService profileService;
 
     @Autowired
@@ -58,7 +55,7 @@ public class RivalFriendService {
         Map<String, Object> model = new HashMap<>();
         cleanCreator();
         cleanOpponent();
-        if (globalRivalService.contains(sessionService.getProfileId())) {
+        if (globalRivalService.contains(profileService.getProfileId())) {
             return putErrorCode(model);
         }
         if (rivalInitContainers.stream().anyMatch(e -> e.getOpponentProfile().getTag().equals(tag) || e.getCreatorProfile().getTag().equals(tag))) {
@@ -73,16 +70,16 @@ public class RivalFriendService {
     }
 
     private void cleanCreator() {
-        rivalInitContainers.removeIf(rivalInitContainer -> rivalInitContainer.getCreatorProfile().getId().equals(sessionService.getProfileId()));
+        rivalInitContainers.removeIf(rivalInitContainer -> rivalInitContainer.getCreatorProfile().getId().equals(profileService.getProfileId()));
     }
 
     private void cleanOpponent() {
-        rivalInitContainers.removeIf(rivalInitContainer -> rivalInitContainer.getOpponentProfile().getId().equals(sessionService.getProfileId()));
+        rivalInitContainers.removeIf(rivalInitContainer -> rivalInitContainer.getOpponentProfile().getId().equals(profileService.getProfileId()));
     }
 
     public Map cancelFriend() {
         Map<String, Object> model = new HashMap<>();
-        rivalInitContainers.stream().filter(rivalInitContainer -> rivalInitContainer.getCreatorProfile().getId().equals(sessionService.getProfileId()))
+        rivalInitContainers.stream().filter(rivalInitContainer -> rivalInitContainer.getCreatorProfile().getId().equals(profileService.getProfileId()))
                 .forEach(this::sendCancelInvite);
         this.cleanCreator();
         return model;
@@ -90,10 +87,10 @@ public class RivalFriendService {
 
     public Map acceptFriend() {
         Map<String, Object> model = new HashMap<>();
-        if (globalRivalService.contains(sessionService.getProfileId())) {
+        if (globalRivalService.contains(profileService.getProfileId())) {
             return putErrorCode(model);
         }
-        RivalInitContainer rival = rivalInitContainers.stream().filter(rivalInitContainer -> rivalInitContainer.getOpponentProfile().getId().equals(sessionService.getProfileId())).findFirst().get();
+        RivalInitContainer rival = rivalInitContainers.stream().filter(rivalInitContainer -> rivalInitContainer.getOpponentProfile().getId().equals(profileService.getProfileId())).findFirst().get();
         this.sendAcceptInvite(rival);
         if (rival.getType() == RivalType.BATTLE) {
             BattleManager battleManager = new BattleManager(rival, rivalBattleService, profileConnectionService);
@@ -112,7 +109,7 @@ public class RivalFriendService {
 
     public Map rejectFriend() {
         Map<String, Object> model = new HashMap<>();
-        rivalInitContainers.stream().filter(rivalInitContainer -> rivalInitContainer.getOpponentProfile().getId().equals(sessionService.getProfileId()))
+        rivalInitContainers.stream().filter(rivalInitContainer -> rivalInitContainer.getOpponentProfile().getId().equals(profileService.getProfileId()))
                 .forEach(this::sendRejectInvite);
         this.cleanOpponent();
         return model;
@@ -123,7 +120,7 @@ public class RivalFriendService {
         Profile creatorProfile = profileService.getProfile();
         ProfileConnection opponentProfileConnection = profileConnectionService.findByProfileId(opponentProfile.getId()).orElseGet(null);
         if (opponentProfileConnection == null) {
-            logger.error("Not connected profile with tag: {}, sessionProfileId: {}", tag, sessionService.getProfileId());
+            logger.error("Not connected profile with tag: {}, sessionProfileId: {}", tag, profileService.getProfileId());
             return null;
         }
         RivalInitContainer battle = new RivalInitContainer(type, RivalImportance.FRIEND, creatorProfile, opponentProfile);

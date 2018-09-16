@@ -52,9 +52,6 @@ public class RivalChallengeService extends RivalWarService {
     private ChallengeQuestionRepository challengeQuestionRepository;
 
     @Autowired
-    private SessionService sessionService;
-
-    @Autowired
     private ProfileService profileService;
 
     @Override
@@ -65,7 +62,7 @@ public class RivalChallengeService extends RivalWarService {
     public Map<String, Object> friendInit(List<String> tags) {
         Map<String, Object> model = new HashMap<>();
         if (tags.isEmpty()) {
-            logger.error("Empty tags: {}", sessionService.getProfileId());
+            logger.error("Empty tags: {}", profileService.getProfileId());
             return putErrorCode(model);
         }
         Set<String> tagSet = new HashSet<>(tags);
@@ -76,7 +73,7 @@ public class RivalChallengeService extends RivalWarService {
                 .filter(e -> tagSet.contains(e.getTag()))
                 .collect(Collectors.toList());
         if (friends.isEmpty()) {
-            logger.error("Empty friends: {}", sessionService.getProfileId());
+            logger.error("Empty friends: {}", profileService.getProfileId());
             return putErrorCode(model); //error no one to fight
         }
         List<Profile> profiles = new ArrayList<>();
@@ -88,7 +85,7 @@ public class RivalChallengeService extends RivalWarService {
 
     public Map<String, Object> response(Long challengeId) {
         Map<String, Object> model = new HashMap<>();
-        ChallengeProfile challengeProfile = challengeProfileRepository.findByProfile_IdAndChallenge_Id(sessionService.getProfileId(), challengeId);
+        ChallengeProfile challengeProfile = challengeProfileRepository.findByProfile_IdAndChallenge_Id(profileService.getProfileId(), challengeId);
         if (challengeProfile == null || challengeProfile.getStatus() != ChallengeProfileStatus.OPEN) {
             return putErrorCode(model);
         }
@@ -159,13 +156,13 @@ public class RivalChallengeService extends RivalWarService {
 
     public List<ChallengeInfoDTO> list(ChallengeStatus status) {
         if (status == ChallengeStatus.CLOSED) {
-            List<ChallengeProfile> challengeProfiles = challengeProfileRepository.findAllByProfile_IdAndStatusAndChallenge_Status(sessionService.getProfileId(), ChallengeProfileStatus.CLOSED, ChallengeStatus.CLOSED);
+            List<ChallengeProfile> challengeProfiles = challengeProfileRepository.findAllByProfile_IdAndStatusAndChallenge_Status(profileService.getProfileId(), ChallengeProfileStatus.CLOSED, ChallengeStatus.CLOSED);
             return challengeProfiles.stream()
                     .map(challengeProfile -> new ChallengeInfoDTO(challengeProfile.getChallenge()))
                     .distinct()
                     .collect(Collectors.toList());
         }
-        List<ChallengeProfile> challengeProfiles = challengeProfileRepository.findAllByProfile_IdAndChallenge_Status(sessionService.getProfileId(), ChallengeStatus.IN_PROGRESS);
+        List<ChallengeProfile> challengeProfiles = challengeProfileRepository.findAllByProfile_IdAndChallenge_Status(profileService.getProfileId(), ChallengeStatus.IN_PROGRESS);
         return challengeProfiles.stream()
                 .map(challengeProfile -> new ChallengeInfoDTO(challengeProfile.getChallenge(), challengeProfile.getStatus() != ChallengeProfileStatus.CLOSED))
                 .distinct()
@@ -173,7 +170,7 @@ public class RivalChallengeService extends RivalWarService {
     }
 
     public ChallengeSummaryDTO summary(Long challengeId) {
-        return summary(challengeProfileRepository.findByProfile_IdAndChallenge_Id(sessionService.getProfileId(), challengeId));
+        return summary(challengeProfileRepository.findByProfile_IdAndChallenge_Id(profileService.getProfileId(), challengeId));
     }
 
     public ChallengeSummaryDTO summary(ChallengeProfile challengeProfile) {

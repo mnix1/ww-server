@@ -26,13 +26,9 @@ import static com.ww.service.book.BookService.BOOK_SHELF_COUNT;
 public class ProfileBookService {
 
     @Autowired
-    private SessionService sessionService;
-    @Autowired
     private ProfileService profileService;
     @Autowired
-    ProfileBookRepository profileBookRepository;
-    @Autowired
-    BookService bookService;
+    private ProfileBookRepository profileBookRepository;
 
     public List<ProfileBookDTO> listBook() {
         return profileService.getProfile().getBooks().stream()
@@ -47,7 +43,7 @@ public class ProfileBookService {
 
     public synchronized Map<String, Object> startReadBook(Long profileBookId) {
         Map<String, Object> model = new HashMap<>();
-        List<ProfileBook> profileBooks = profileBookRepository.findByProfile_Id(sessionService.getProfileId());
+        List<ProfileBook> profileBooks = profileBookRepository.findByProfile_Id(profileService.getProfileId());
         if (!checkIfProfileReadingBook(profileBooks)) {
             //reading another book
             return putCode(model, -2);
@@ -64,7 +60,7 @@ public class ProfileBookService {
 
     public synchronized Map<String, Object> stopReadBook(Long profileBookId) {
         Map<String, Object> model = new HashMap<>();
-        Optional<ProfileBook> optionalProfileBook = profileBookRepository.findByIdAndProfile_Id(profileBookId, sessionService.getProfileId());
+        Optional<ProfileBook> optionalProfileBook = profileBookRepository.findByIdAndProfile_Id(profileBookId, profileService.getProfileId());
         if (!optionalProfileBook.isPresent()) {
             return putErrorCode(model);
         }
@@ -78,7 +74,7 @@ public class ProfileBookService {
 
     public synchronized Map<String, Object> discardBook(Long profileBookId) {
         Map<String, Object> model = new HashMap<>();
-        Optional<ProfileBook> optionalProfileBook = profileBookRepository.findByIdAndProfile_Id(profileBookId, sessionService.getProfileId());
+        Optional<ProfileBook> optionalProfileBook = profileBookRepository.findByIdAndProfile_Id(profileBookId, profileService.getProfileId());
         if (!optionalProfileBook.isPresent()) {
             return putErrorCode(model);
         }
@@ -89,7 +85,7 @@ public class ProfileBookService {
 
     public synchronized Map<String, Object> claimRewardBook(Long profileBookId) {
         Map<String, Object> model = new HashMap<>();
-        Optional<ProfileBook> optionalProfileChest = profileBookRepository.findByIdAndProfile_Id(profileBookId, sessionService.getProfileId());
+        Optional<ProfileBook> optionalProfileChest = profileBookRepository.findByIdAndProfile_Id(profileBookId, profileService.getProfileId());
         if (!optionalProfileChest.isPresent()) {
             return putErrorCode(model);
         }
@@ -105,7 +101,7 @@ public class ProfileBookService {
 
     public synchronized Map<String, Object> speedUpBook(Long profileBookId) {
         Map<String, Object> model = new HashMap<>();
-        Optional<ProfileBook> optionalProfileChest = profileBookRepository.findByIdAndProfile_Id(profileBookId, sessionService.getProfileId());
+        Optional<ProfileBook> optionalProfileChest = profileBookRepository.findByIdAndProfile_Id(profileBookId, profileService.getProfileId());
         if (!optionalProfileChest.isPresent()) {
             return putErrorCode(model);
         }

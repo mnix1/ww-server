@@ -21,16 +21,13 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/campaign")
 public class CampaignController {
     @Autowired
-    SessionService sessionService;
+    private RivalCampaignWarService rivalCampaignWarService;
 
     @Autowired
-    RivalCampaignWarService rivalCampaignWarService;
-
-    @Autowired
-    CampaignService campaignService;
+    private CampaignService campaignService;
 
     @RequestMapping(value = "/start", method = RequestMethod.POST)
-    public Map start(@RequestBody Map<String, Object> payload) {
+    public Map start() {
         return rivalCampaignWarService.start();
     }
 

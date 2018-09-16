@@ -29,16 +29,13 @@ public class ProfileWisieService {
     public static final int HERO_TEAM_COUNT = 4;
 
     @Autowired
-    private SessionService sessionService;
-
-    @Autowired
     private ProfileService profileService;
 
     @Autowired
     private ProfileWisieRepository profileWisieRepository;
 
     public List<ProfileWisieDTO> list() {
-        return profileWisieRepository.findAllByProfile_Id(sessionService.getProfileId()).stream()
+        return profileWisieRepository.findAllByProfile_Id(profileService.getProfileId()).stream()
                 .map(ProfileWisieDTO::new)
                 .collect(Collectors.toList());
     }
@@ -55,7 +52,7 @@ public class ProfileWisieService {
         if (new HashSet<>(ids).size() != HERO_TEAM_COUNT) {
             return null;
         }
-        List<ProfileWisie> wisies = profileWisieRepository.findAllByProfile_IdAndIdIn(sessionService.getProfileId(), ids);
+        List<ProfileWisie> wisies = profileWisieRepository.findAllByProfile_IdAndIdIn(profileService.getProfileId(), ids);
         if (ids.size() != wisies.size()) {
             return null;
         }
@@ -68,7 +65,7 @@ public class ProfileWisieService {
         if (wisies == null) {
             return putErrorCode(model);
         }
-        List<ProfileWisie> actualInTeam = profileWisieRepository.findAllByProfile_IdAndInTeam(sessionService.getProfileId(), true);
+        List<ProfileWisie> actualInTeam = profileWisieRepository.findAllByProfile_IdAndInTeam(profileService.getProfileId(), true);
         for (ProfileWisie profileWisie : actualInTeam) {
             profileWisie.setInTeam(false);
         }

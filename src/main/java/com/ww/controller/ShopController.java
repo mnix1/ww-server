@@ -18,13 +18,7 @@ import java.util.Map;
 public class ShopController {
 
     @Autowired
-    ProfileService profileService;
-
-    @Autowired
-    SessionService sessionService;
-
-    @Autowired
-    ShopService shopService;
+    private ShopService shopService;
 
     @RequestMapping(value = "/listBook", method = RequestMethod.GET)
     public List<ShopBookDTO> listBook() {

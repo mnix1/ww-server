@@ -15,12 +15,6 @@ import java.util.Map;
 public class FriendController {
 
     @Autowired
-    ProfileService profileService;
-
-    @Autowired
-    SessionService sessionService;
-
-    @Autowired
     FriendService friendService;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)

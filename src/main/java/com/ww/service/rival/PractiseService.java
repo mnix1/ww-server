@@ -12,6 +12,7 @@ import com.ww.repository.rival.practise.PractiseRepository;
 import com.ww.service.SessionService;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.rival.task.TaskService;
+import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,7 @@ public class PractiseService {
     private TaskRendererService taskRendererService;
 
     @Autowired
-    private SessionService sessionService;
+    private ProfileService profileService;
 
     public PractiseDTO start(Category category, DifficultyLevel difficultyLevel) {
         Question question = taskService.generateQuestion(category, difficultyLevel);
@@ -44,7 +45,7 @@ public class PractiseService {
 
     private Practise create(Question question) {
         Practise practise = new Practise();
-        practise.setProfileId(sessionService.getProfileId());
+        practise.setProfileId(profileService.getProfileId());
         practise.setQuestion(question);
         practiseRepository.save(practise);
         return practise;
@@ -57,7 +58,7 @@ public class PractiseService {
         try {
             Date closeDate = new Date();
             Practise practise = practiseRepository.findById(practiseId).orElseThrow(() -> new Exception("Not found practise with id " + practiseId));
-            Boolean isPractiseForActualSessionProfile = sessionService.getProfileId().equals(practise.getProfileId());
+            Boolean isPractiseForActualSessionProfile = profileService.getProfileId().equals(practise.getProfileId());
             if (!isPractiseForActualSessionProfile || !practise.isOpen()) {
                 return null;
             }

@@ -17,13 +17,10 @@ import java.util.Map;
 public class DevelopmentController {
 
     @Autowired
-    SessionService sessionService;
+    private ProfileService profileService;
 
     @Autowired
-    ProfileService profileService;
-
-    @Autowired
-    FriendService friendService;
+    private FriendService friendService;
 
     @RequestMapping(value = "/initFriends", method = RequestMethod.GET)
     public Map initFriends() {

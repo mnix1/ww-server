@@ -26,8 +26,6 @@ import static com.ww.helper.ModelHelper.putSuccessCode;
 @Service
 public class ProfileService {
 
-    public static final int WISOR_MIN_ID = 1;
-    public static final int WISOR_MAX_ID = 48;
     public static final int NAME_MIN_LENGTH = 2;
     public static final int NAME_MAX_LENGTH = 20;
 
@@ -51,6 +49,10 @@ public class ProfileService {
 
     public String getProfileTag(){
         return sessionService.getProfileTag();
+    }
+
+    public Long getProfileId(){
+        return sessionService.getProfileId();
     }
 
     public Map<String, Object> changeWisor(WisorType wisor) {

@@ -14,10 +14,7 @@ import java.util.Map;
 @RequestMapping(value = "/practise")
 public class PractiseController {
     @Autowired
-    SessionService sessionService;
-
-    @Autowired
-    PractiseService practiseService;
+    private PractiseService practiseService;
 
     @RequestMapping(value = "/start", method = RequestMethod.POST)
     public Map start(@RequestBody Map<String, Object> payload) {

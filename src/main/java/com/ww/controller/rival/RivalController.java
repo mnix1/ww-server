@@ -22,19 +22,16 @@ import java.util.Map;
 public class RivalController {
 
     @Autowired
-    SessionService sessionService;
+    private RivalFriendService rivalFriendService;
 
     @Autowired
-    RivalFriendService rivalFriendService;
+    private RivalRandomOpponentService rivalRandomOpponentService;
 
     @Autowired
-    RivalRandomOpponentService rivalRandomOpponentService;
+    private  RivalBattleService rivalBattleService;
 
     @Autowired
-    RivalBattleService rivalBattleService;
-
-    @Autowired
-    RivalWarService rivalWarService;
+    private RivalWarService rivalWarService;
 
     @RequestMapping(value = "/classification", method = RequestMethod.POST)
     public List<ClassificationProfileDTO> classification(@RequestBody Map<String, Object> payload) {

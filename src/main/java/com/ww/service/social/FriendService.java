@@ -37,13 +37,10 @@ public class FriendService {
     private ProfileService profileService;
 
     @Autowired
-    private SessionService sessionService;
-
-    @Autowired
     private ProfileConnectionService profileConnectionService;
 
     public Map<String, Object> add(String tag) {
-        return add(sessionService.getProfileId(), tag);
+        return add(profileService.getProfileId(), tag);
     }
 
     public Map<String, Object> add(Long profileId, String tag) {
@@ -116,11 +113,11 @@ public class FriendService {
 
     public Map<String, Object> delete(String tag) {
         Map<String, Object> model = new HashMap<>();
-        ProfileFriend profileFriend = profileFriendRepository.findByProfile_IdAndFriendProfile_Tag(sessionService.getProfileId(), tag);
+        ProfileFriend profileFriend = profileFriendRepository.findByProfile_IdAndFriendProfile_Tag(profileService.getProfileId(), tag);
         if (profileFriend != null) {
             Long friendProfileId = profileFriend.getFriendProfile().getId();
             profileFriendRepository.delete(profileFriend);
-            profileFriend = profileFriendRepository.findByProfile_IdAndFriendProfile_Id(friendProfileId, sessionService.getProfileId());
+            profileFriend = profileFriendRepository.findByProfile_IdAndFriendProfile_Id(friendProfileId, profileService.getProfileId());
             if (profileFriend != null) {
                 profileFriendRepository.delete(profileFriend);
                 sendWebSocketFriendDelete(friendProfileId, profileFriend.getFriendProfile().getTag());
@@ -134,7 +131,7 @@ public class FriendService {
         Map<String, Object> model = new HashMap<>();
         List<Long> notSuggestIds = profileService.getProfile().getFriends().stream()
                 .map(e -> e.getFriendProfile().getId()).collect(Collectors.toList());
-        notSuggestIds.add(sessionService.getProfileId());
+        notSuggestIds.add(profileService.getProfileId());
         List<Profile> profiles = profileRepository.findAllByIdNotIn(notSuggestIds);
         Collections.shuffle(profiles);
         List<FriendDTO> possibleNewFriends = profiles
