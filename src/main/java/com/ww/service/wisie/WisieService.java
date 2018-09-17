@@ -1,8 +1,11 @@
 package com.ww.service.wisie;
 
+import com.ww.model.constant.wisie.MentalAttribute;
+import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.constant.wisie.WisieType;
 import com.ww.model.dto.wisie.WisieDTO;
 import com.ww.model.entity.social.Profile;
+import com.ww.model.entity.wisie.ProfileWisie;
 import com.ww.model.entity.wisie.Wisie;
 import com.ww.repository.wisie.WisieRepository;
 import com.ww.service.social.ProfileService;
@@ -58,11 +61,25 @@ public class WisieService {
         return wisie;
     }
 
-    public void initProfileWisies(Profile profile){
+    public void initProfileWisies(Profile profile) {
         for (int i = 0; i < 5; i++) {
             Wisie wisie = randomWisieForProfile(profile.getId());
-            profileWisieService.addWisie(profile, wisie);
+            ProfileWisie profileWisie = profileWisieService.addWisie(profile, wisie);
+            upgradeWisie(profileWisie, (3 - i) * 50);
         }
+    }
+
+    private void upgradeWisie(ProfileWisie wisie, double value) {
+        if (value <= 0) {
+            return;
+        }
+        for (WisdomAttribute attribute : WisdomAttribute.values()) {
+            wisie.setWisdomAttributeValue(attribute, wisie.getWisdomAttributeValue(attribute) + value);
+        }
+        for (MentalAttribute attribute : MentalAttribute.values()) {
+            wisie.setMentalAttributeValue(attribute, wisie.getMentalAttributeValue(attribute) + value);
+        }
+        profileWisieService.save(wisie);
     }
 
     public Wisie getWisie(WisieType type) {

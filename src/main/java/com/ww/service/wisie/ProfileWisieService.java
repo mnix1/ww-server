@@ -48,6 +48,10 @@ public class ProfileWisieService {
         profileWisieRepository.saveAll(team);
     }
 
+    public synchronized void save(ProfileWisie wisie) {
+        profileWisieRepository.save(wisie);
+    }
+
     public List<ProfileWisie> findByIds(List<Long> ids) {
         if (new HashSet<>(ids).size() != HERO_TEAM_COUNT) {
             return null;
