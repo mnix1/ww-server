@@ -9,6 +9,7 @@ import com.ww.model.container.rival.RivalContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.dto.social.ClassificationProfileDTO;
+import com.ww.model.entity.rival.Rival;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.social.Profile;
 import com.ww.service.rival.task.TaskGenerateService;
@@ -60,9 +61,11 @@ public abstract class AbstractRivalService {
         RivalContainer rivalContainer = rivalManager.getRivalContainer();
         Boolean isDraw = rivalContainer.getDraw();
         Profile winner = rivalContainer.getWinner();
+        Rival rival = new Rival(rivalContainer.getType(), rivalContainer.getImportance(), rivalContainer.getCreatorProfile(), rivalContainer.getOpponentProfile(), isDraw, winner);
         if (!isDraw) {
             addRewardFromWin(winner);
         }
+        getGlobalRivalService().save(rival);
         // TODO STORE RESULT
     }
 
