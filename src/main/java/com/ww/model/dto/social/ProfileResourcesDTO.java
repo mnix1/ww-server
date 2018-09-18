@@ -17,7 +17,7 @@ public class ProfileResourcesDTO extends ProfileDTO {
     private Long warElo;
     private Language language;
     private Boolean introductionCompleted;
-    private Integer introductionStep;
+    private Integer introductionStepIndex;
 
     public ProfileResourcesDTO(Profile profile) {
         super(profile);
@@ -31,6 +31,6 @@ public class ProfileResourcesDTO extends ProfileDTO {
         this.battleElo = profile.getBattleElo();
         this.warElo = profile.getWarElo();
         this.introductionCompleted = profile.getIntroductionCompleted();
-        this.introductionStep = profile.getIntroductionStep();
+        this.introductionStepIndex = profile.getIntroductionStepIndex();
     }
 }

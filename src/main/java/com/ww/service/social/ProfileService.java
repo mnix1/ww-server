@@ -20,8 +20,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.ww.helper.ModelHelper.putCode;
-import static com.ww.helper.ModelHelper.putSuccessCode;
+import static com.ww.helper.ModelHelper.*;
 
 @Service
 public class ProfileService {
@@ -47,12 +46,24 @@ public class ProfileService {
         return profileRepository.findByTag(tag);
     }
 
-    public String getProfileTag(){
+    public String getProfileTag() {
         return sessionService.getProfileTag();
     }
 
-    public Long getProfileId(){
+    public Long getProfileId() {
         return sessionService.getProfileId();
+    }
+
+    public Map<String, Object> changeIntroStepIndex(Integer stepIndex) {
+        Map<String, Object> model = new HashMap<>();
+        Profile profile = getProfile();
+        if (stepIndex <= profile.getIntroductionStepIndex()) {
+            return putErrorCode(model);
+        }
+        profile.setIntroductionStepIndex(stepIndex);
+        save(profile);
+        model.put("profile", new ProfileResourcesDTO(profile));
+        return putSuccessCode(model);
     }
 
     public Map<String, Object> changeWisor(WisorType wisor) {

@@ -9,11 +9,9 @@ import com.ww.model.entity.wisie.ProfileWisie;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.codec.language.bm.Lang;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.time.temporal.TemporalUnit;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,7 +38,7 @@ public class Profile {
     private Long wisdom;
     private Long elixir;
     private Boolean introductionCompleted;
-    private Integer introductionStep;
+    private Integer introductionStepIndex;
     private Long battleElo;
     private Long battlePreviousElo;
     private Instant battleLastPlay;
@@ -73,7 +71,7 @@ public class Profile {
         this.elixir = 0L;
         this.wisorType = WisorType.random();
         this.introductionCompleted = false;
-        this.introductionStep = 0;
+        this.introductionStepIndex = 0;
         this.battleElo = 0L;
         this.battleLastPlay = Instant.now();
         this.battlePreviousElo = 0L;
