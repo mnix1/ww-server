@@ -5,8 +5,6 @@ import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.entity.wisie.Wisie;
 import com.ww.model.entity.wisie.ProfileWisie;
 import com.ww.model.entity.social.Profile;
-import com.ww.service.SessionService;
-import com.ww.service.book.ProfileBookService;
 import com.ww.service.wisie.WisieService;
 import com.ww.service.wisie.ProfileWisieService;
 import com.ww.service.social.ProfileService;
@@ -76,7 +74,7 @@ public class PromoController {
                 wisie.setMentalAttributeValue(attribute, Math.pow(wisie.getMentalAttributeValue(attribute), 1.1) + 100);
             }
         }
-        profileWisieService.saveTeam(team);
+        profileWisieService.save(team);
         return model;
     }
 
@@ -90,7 +88,7 @@ public class PromoController {
                 wisie.setWisdomAttributeValue(attribute, Math.pow(wisie.getWisdomAttributeValue(attribute), 1.1)+ 100);
             }
         }
-        profileWisieService.saveTeam(team);
+        profileWisieService.save(team);
         return model;
     }
 

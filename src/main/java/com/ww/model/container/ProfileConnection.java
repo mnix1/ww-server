@@ -1,6 +1,5 @@
 package com.ww.model.container;
 
-import com.ww.service.social.FriendService;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -13,7 +12,7 @@ import java.io.IOException;
 @Getter
 @Setter
 public class ProfileConnection {
-    private static final Logger logger = LoggerFactory.getLogger(FriendService.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProfileConnection.class);
 
     private Long profileId;
 

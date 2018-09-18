@@ -61,29 +61,12 @@ public class WisieService {
         return wisie;
     }
 
-    public void initProfileWisies(Profile profile) {
-        for (int i = 0; i < 5; i++) {
-            Wisie wisie = randomWisieForProfile(profile.getId());
-            ProfileWisie profileWisie = profileWisieService.addWisie(profile, wisie);
-            upgradeWisie(profileWisie, (3 - i) * 50);
-        }
-    }
-
-    private void upgradeWisie(ProfileWisie wisie, double value) {
-        if (value <= 0) {
-            return;
-        }
-        for (WisdomAttribute attribute : WisdomAttribute.values()) {
-            wisie.setWisdomAttributeValue(attribute, wisie.getWisdomAttributeValue(attribute) + value);
-        }
-        for (MentalAttribute attribute : MentalAttribute.values()) {
-            wisie.setMentalAttributeValue(attribute, wisie.getMentalAttributeValue(attribute) + value);
-        }
-        profileWisieService.save(wisie);
-    }
-
     public Wisie getWisie(WisieType type) {
         return wisieRepository.findByType(type);
+    }
+
+    public List<Wisie> getWisies(List<WisieType> types) {
+        return wisieRepository.findByTypeIn(types);
     }
 
     public synchronized Map<String, Object> experiment() {

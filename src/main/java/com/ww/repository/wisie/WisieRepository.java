@@ -14,4 +14,5 @@ public interface WisieRepository extends CrudRepository<Wisie, Long> {
     List<Wisie> findAll();
 
     Wisie findByType(WisieType type);
+    List<Wisie> findByTypeIn(List<WisieType> types);
 }

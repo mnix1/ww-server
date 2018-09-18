@@ -3,7 +3,6 @@ package com.ww.service.social;
 import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.constant.wisie.WisorType;
-import com.ww.model.dto.social.ProfileResourcesDTO;
 import com.ww.model.entity.social.Profile;
 import com.ww.repository.social.ProfileRepository;
 import com.ww.service.SessionService;
@@ -20,7 +19,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.ww.helper.ModelHelper.*;
+import static com.ww.helper.ModelHelper.putCode;
+import static com.ww.helper.ModelHelper.putSuccessCode;
 
 @Service
 public class ProfileService {
@@ -52,18 +52,6 @@ public class ProfileService {
 
     public Long getProfileId() {
         return sessionService.getProfileId();
-    }
-
-    public Map<String, Object> changeIntroStepIndex(Integer stepIndex) {
-        Map<String, Object> model = new HashMap<>();
-        Profile profile = getProfile();
-        if (stepIndex <= profile.getIntroductionStepIndex()) {
-            return putErrorCode(model);
-        }
-        profile.setIntroductionStepIndex(stepIndex);
-        save(profile);
-        model.put("profile", new ProfileResourcesDTO(profile));
-        return putSuccessCode(model);
     }
 
     public Map<String, Object> changeWisor(WisorType wisor) {

@@ -10,7 +10,6 @@ import com.ww.model.entity.social.Profile;
 import com.ww.model.entity.wisie.ProfileWisie;
 import com.ww.model.entity.wisie.Wisie;
 import com.ww.repository.wisie.ProfileWisieRepository;
-import com.ww.service.SessionService;
 import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,8 +43,8 @@ public class ProfileWisieService {
         return profileWisieRepository.findAllByProfile_IdAndInTeam(profileId, true);
     }
 
-    public synchronized void saveTeam(List<ProfileWisie> team) {
-        profileWisieRepository.saveAll(team);
+    public synchronized void save(List<ProfileWisie> wisies) {
+        profileWisieRepository.saveAll(wisies);
     }
 
     public synchronized void save(ProfileWisie wisie) {
@@ -113,6 +112,19 @@ public class ProfileWisieService {
         return putSuccessCode(model);
     }
 
+    public void upgradeWisie(ProfileWisie wisie, double value) {
+        if (value <= 0) {
+            return;
+        }
+        for (WisdomAttribute attribute : WisdomAttribute.values()) {
+            wisie.setWisdomAttributeValue(attribute, wisie.getWisdomAttributeValue(attribute) + value);
+        }
+        for (MentalAttribute attribute : MentalAttribute.values()) {
+            wisie.setMentalAttributeValue(attribute, wisie.getMentalAttributeValue(attribute) + value);
+        }
+        save(wisie);
+    }
+
     private double calculateWisieAttributeChange(ProfileWisie profileWisie, WisdomAttribute wisdomAttribute, MentalAttribute mentalAttribute) {
         double value = 0;
         if (wisdomAttribute != null) {
@@ -130,23 +142,16 @@ public class ProfileWisieService {
     }
 
     public ProfileWisie addWisie(Profile profile, Wisie wisie) {
-        ProfileWisie profileWisie = new ProfileWisie(profile, wisie);
-        if (maybeAddWisieToTeam(profile, profileWisie)) {
-            profileService.save(profile);
-        }
-        initWisieAttributes(profileWisie);
+        ProfileWisie profileWisie = createWisie(profile, wisie);
         initWisieHobbies(profileWisie);
-        profileWisieRepository.save(profileWisie);
+        save(profileWisie);
         return profileWisie;
     }
 
-    //if not full actually
-    public boolean maybeAddWisieToTeam(Profile profile, ProfileWisie profileWisie) {
-        int actualTeamSize = listTeam(profile.getId()).size();
-        if (actualTeamSize < HERO_TEAM_COUNT) {
-            profileWisie.setInTeam(true);
-        }
-        return actualTeamSize + 1 == HERO_TEAM_COUNT;
+    public ProfileWisie createWisie(Profile profile, Wisie wisie) {
+        ProfileWisie profileWisie = new ProfileWisie(profile, wisie);
+        initWisieAttributes(profileWisie);
+        return profileWisie;
     }
 
     public void initWisieAttributes(ProfileWisie wisie) {
@@ -166,6 +171,10 @@ public class ProfileWisieService {
     }
 
     public void initWisieHobbies(ProfileWisie wisie) {
-        wisie.setHobbies(new HashSet<>(Arrays.asList(Category.random())));
+        initWisieHobbies(wisie, Arrays.asList(Category.random()));
+    }
+
+    public void initWisieHobbies(ProfileWisie wisie, List<Category> hobbies) {
+        wisie.setHobbies(new HashSet<>(hobbies));
     }
 }

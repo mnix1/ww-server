@@ -19,6 +19,10 @@ public enum Category {
     TIME,
     MEMORY;
 
+    public static List<Category> list(){
+        return Arrays.asList(values());
+    }
+
     public static Category random() {
         List<Category> possible = Arrays.asList(values()).stream()
                 .filter(category -> category != RANDOM)
