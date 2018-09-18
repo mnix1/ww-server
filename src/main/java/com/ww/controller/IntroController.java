@@ -26,12 +26,4 @@ public class IntroController {
         return profileService.changeIntroStepIndex(stepIndex);
     }
 
-    @RequestMapping(value = "/zeroStepIndex", method = RequestMethod.GET)
-    public Map zeroStepIndex() {
-        Profile profile = profileService.getProfile();
-        profile.setIntroductionStepIndex(0);
-        profileService.save(profile);
-        return null;
-    }
-
 }

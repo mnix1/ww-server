@@ -1,9 +1,10 @@
 package com.ww.controller;
 
 import com.ww.model.entity.social.Profile;
-import com.ww.service.SessionService;
+import com.ww.repository.wisie.ProfileWisieRepository;
 import com.ww.service.social.FriendService;
 import com.ww.service.social.ProfileService;
+import com.ww.service.wisie.ProfileWisieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,7 +21,13 @@ public class DevelopmentController {
     private ProfileService profileService;
 
     @Autowired
+    private ProfileWisieService profileWisieService;
+
+    @Autowired
     private FriendService friendService;
+
+    @Autowired
+    private ProfileWisieRepository profileWisieRepository;
 
     @RequestMapping(value = "/initFriends", method = RequestMethod.GET)
     public Map initFriends() {
@@ -35,5 +42,23 @@ public class DevelopmentController {
         friendService.add(3L, profile.getTag());
         friendService.add(4L, profile.getTag());
         return model;
+    }
+
+    @RequestMapping(value = "/zeroStepIndex", method = RequestMethod.GET)
+    public Map zeroStepIndex() {
+        Profile profile = profileService.getProfile();
+        profile.setIntroductionStepIndex(0);
+        profileService.save(profile);
+        return null;
+    }
+
+    @RequestMapping(value = "/cleanProfile", method = RequestMethod.GET)
+    public Map cleanProfile() {
+        Profile profile = profileService.getProfile();
+        Profile newProfile = new Profile(profile.getAuthId(), profile.getName(), profile.getLanguage());
+        newProfile.setId(profile.getId());
+        profileWisieRepository.deleteAll(profile.getWisies());
+        profileService.save(newProfile);
+        return null;
     }
 }

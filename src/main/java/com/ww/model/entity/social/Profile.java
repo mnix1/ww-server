@@ -66,9 +66,9 @@ public class Profile {
         this.level = 0L;
         this.experience = 0L;
         this.gold = 10L;
-        this.crystal = 10L;
-        this.wisdom = 0L;
-        this.elixir = 0L;
+        this.crystal = 110L;
+        this.wisdom = 110L;
+        this.elixir = 110L;
         this.wisorType = WisorType.random();
         this.introductionCompleted = false;
         this.introductionStepIndex = 0;
@@ -97,9 +97,9 @@ public class Profile {
         this.warElo = this.warPreviousElo + (long) randomInteger(0, 30);
         this.warLastPlay = Instant.now().minus((long) randomInteger(1, 10000), SECONDS);
         this.gold = 10L;
-        this.crystal = 10L;
-        this.wisdom = 0L;
-        this.elixir = 0L;
+        this.crystal = 110L;
+        this.wisdom = 110L;
+        this.elixir = 110L;
     }
 
     public void changeResources(Long gold, Long crystal, Long wisdom, Long elixir) {

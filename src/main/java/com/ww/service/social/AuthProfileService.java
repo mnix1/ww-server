@@ -27,7 +27,7 @@ public class AuthProfileService {
             Profile profile = profileService.retrieveProfile(authId);
             if (profile == null) {
                 profile = profileService.createProfile(user, authId);
-                wisieService.initProfileWisies(profile);
+//                wisieService.initProfileWisies(profile);
             }
             sessionService.setProfileId(profile.getId());
             sessionService.setProfileTag(profile.getTag());
