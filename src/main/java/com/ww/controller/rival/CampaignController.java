@@ -43,7 +43,7 @@ public class CampaignController {
     }
 
     @RequestMapping(value = "/close", method = RequestMethod.POST)
-    public Map close(@RequestBody Map<String, Object> payload) {
+    public Map close() {
         return campaignService.close();
     }
 

@@ -1,5 +1,6 @@
 package com.ww.repository.book;
 
+import com.ww.model.constant.book.BookType;
 import com.ww.model.entity.book.Book;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.repository.CrudRepository;
@@ -15,4 +16,5 @@ public interface BookRepository extends CrudRepository<Book, Long> {
     @Cacheable("allBooks")
     List<Book> findAll();
     Optional<Book> findOneById(Long id);
+    Optional<Book> findOneByType(BookType type);
 }

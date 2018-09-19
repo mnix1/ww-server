@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import static com.ww.config.security.ProdOAuthSecurityConfig.ALL;
 import static com.ww.config.security.ProdOAuthSecurityConfig.ONLY_ADMIN;
 import static com.ww.config.security.Roles.ADMIN;
+import static com.ww.config.security.Roles.AUTO;
 import static com.ww.config.security.Roles.USER;
 
 @Configuration
@@ -41,9 +42,9 @@ public class DevSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .inMemoryAuthentication()
-                .withUser("dev").password("{noop}1").roles(USER, ADMIN)
+                .withUser("dev").password("{noop}1").roles(USER, ADMIN, AUTO)
                 .and()
-                .withUser("adam").password("{noop}t").roles(USER, ADMIN)
+                .withUser("adam").password("{noop}t").roles(USER, ADMIN, AUTO)
                 .and()
                 .withUser("iza").password("{noop}t").roles(USER)
                 .and()

@@ -20,7 +20,7 @@ public class InitCampaignsService {
 
     public void initCampaigns() {
         List<Campaign> campaigns = new ArrayList<>();
-        campaigns.add(new Campaign(CampaignType.SPACE_EXPEDITION, CampaignDestination.EASY, 6, 0L, 0L, 0L, 0L, 0L, 5L, 10L, 1L));
+        campaigns.add(new Campaign(CampaignType.SPACE_EXPEDITION, CampaignDestination.EASY, 1, 0L, 0L, 0L, 0L, 0L, 5L, 10L, 1L));
         campaigns.add(new Campaign(CampaignType.SPACE_EXPEDITION, CampaignDestination.NORMAL, 6, 0L, 0L, 10L, 0L, 0L, 10L, 20L, 2L));
         campaigns.add(new Campaign(CampaignType.SPACE_EXPEDITION, CampaignDestination.HARD, 6, 0L, 0L, 20L, 0L, 0L, 20L, 40L, 4L));
         campaigns.add(new Campaign(CampaignType.UNDERWATER_WORLD, CampaignDestination.EASY, 6, 0L, 0L, 0L, 0L, 10L, 0L, 5L, 1L));

@@ -1,5 +1,6 @@
 package com.ww.model.entity.rival.campaign;
 
+import com.ww.model.constant.book.BookType;
 import com.ww.model.constant.rival.campaign.ProfileCampaignStatus;
 import com.ww.model.constant.rival.challenge.ChallengeProfileStatus;
 import com.ww.model.entity.rival.challenge.Challenge;
@@ -28,6 +29,7 @@ public class ProfileCampaign {
     private ProfileCampaignStatus status = ProfileCampaignStatus.IN_PROGRESS;
     private Integer phase = 0;
     private Boolean present = true;
+    private BookType bookGain;
     private Instant openDate = Instant.now();
     private Instant closeDate;
     @ManyToOne
@@ -40,8 +42,9 @@ public class ProfileCampaign {
     @OrderBy("ID ASC")
     private List<ProfileCampaignWisie> wisies = new ArrayList<>();
 
-    public ProfileCampaign(Profile profile, Campaign campaign) {
+    public ProfileCampaign(Profile profile, Campaign campaign, BookType bookGain) {
         this.profile = profile;
         this.campaign = campaign;
+        this.bookGain = bookGain;
     }
 }

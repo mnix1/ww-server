@@ -1,10 +1,12 @@
 package com.ww.service.rival.campaign;
 
+import com.ww.model.constant.book.BookType;
 import com.ww.model.constant.rival.campaign.CampaignDestination;
 import com.ww.model.constant.rival.campaign.CampaignType;
 import com.ww.model.constant.rival.campaign.ProfileCampaignStatus;
 import com.ww.model.dto.rival.campaign.CampaignDTO;
 import com.ww.model.dto.rival.campaign.ProfileCampaignDTO;
+import com.ww.model.entity.book.Book;
 import com.ww.model.entity.rival.campaign.Campaign;
 import com.ww.model.entity.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.social.Profile;
@@ -13,18 +15,23 @@ import com.ww.model.entity.wisie.ProfileWisie;
 import com.ww.repository.rival.campaign.CampaignRepository;
 import com.ww.repository.rival.campaign.ProfileCampaignRepository;
 import com.ww.repository.wisie.ProfileCampaignWisieRepository;
-import com.ww.service.SessionService;
+import com.ww.service.book.BookService;
+import com.ww.service.book.ProfileBookService;
 import com.ww.service.social.ProfileService;
 import com.ww.service.wisie.ProfileWisieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.ww.helper.ModelHelper.putErrorCode;
 import static com.ww.helper.ModelHelper.putSuccessCode;
+import static com.ww.helper.RandomHelper.randomElement;
 
 @Service
 public class CampaignService {
@@ -43,6 +50,12 @@ public class CampaignService {
 
     @Autowired
     private ProfileService profileService;
+
+    @Autowired
+    private BookService bookService;
+
+    @Autowired
+    private ProfileBookService profileBookService;
 
     public List<CampaignDTO> list() {
         return campaignRepository.findAll().stream().map(CampaignDTO::new).collect(Collectors.toList());
@@ -92,7 +105,7 @@ public class CampaignService {
             return putErrorCode(model);
         }
         profile.changeResources(campaign.getGoldCost(), campaign.getCrystalCost(), campaign.getWisdomCost(), campaign.getElixirCost());
-        ProfileCampaign profileCampaign = new ProfileCampaign(profile, campaign);
+        ProfileCampaign profileCampaign = new ProfileCampaign(profile, campaign, getBookGainForCampaign(campaign));
         for (Long id : ids) {
             ProfileWisie wisie = wisies.stream().filter(profileWisie -> profileWisie.getId().equals(id)).findFirst().get();
             ProfileCampaignWisie campaignWisie = new ProfileCampaignWisie(profileCampaign, wisie);
@@ -101,6 +114,15 @@ public class CampaignService {
         profileCampaignRepository.save(profileCampaign);
         profileCampaignWisieRepository.saveAll(profileCampaign.getWisies());
         return putSuccessCode(model);
+    }
+
+    public BookType getBookGainForCampaign(Campaign campaign) {
+        int campaignRating = campaign.getDifficultyLevel().getRating();
+        List<BookType> bookTypes = bookService.findAll().stream()
+                .filter(book -> book.getLevel() >= campaignRating)
+                .map(Book::getType)
+                .collect(Collectors.toList());
+        return randomElement(bookTypes);
     }
 
     public synchronized Map<String, Object> close() {
@@ -115,6 +137,9 @@ public class CampaignService {
         Campaign campaign = profileCampaign.getCampaign();
         if (campaign.getPhases() <= profileCampaign.getPhase()) {
             Profile profile = profileService.getProfile();
+            if (!profileBookService.isProfileBookShelfFull(profile.getId())) {
+                profileBookService.giveBook(profile, profileCampaign.getBookGain());
+            }
             profile.changeResources(campaign.getGoldGain(), campaign.getCrystalGain(), campaign.getWisdomGain(), campaign.getElixirGain());
             profileService.save(profile);
         }

@@ -1,5 +1,6 @@
 package com.ww.model.dto.rival.campaign;
 
+import com.ww.model.constant.book.BookType;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.constant.rival.campaign.CampaignDestination;
@@ -28,6 +29,7 @@ public class ProfileCampaignDTO {
     private List<TeamMemberDTO> team;
     private List<Integer> presentIndexes;
     private ProfileCampaignStatus status;
+    private BookType bookGain;
 
     public ProfileCampaignDTO(ProfileCampaign profileCampaign) {
         this.id = profileCampaign.getId();
@@ -36,12 +38,15 @@ public class ProfileCampaignDTO {
         this.type = profileCampaign.getCampaign().getType();
         this.destination = profileCampaign.getCampaign().getDestination();
         this.status = profileCampaign.getStatus();
+        if (this.status == ProfileCampaignStatus.FINISHED) {
+            this.bookGain = profileCampaign.getBookGain();
+        }
         initTeam(profileCampaign);
     }
 
     private void initTeam(ProfileCampaign profileCampaign) {
         List<TeamMember> teamMembers = prepareTeamMembers(profileCampaign.getProfile(), new ArrayList(profileCampaign.getWisies()), RivalImportance.FAST, RivalType.CAMPAIGN_WAR);
-        this.team =  teamMembers.stream()
+        this.team = teamMembers.stream()
                 .map(TeamMemberDTO::new)
                 .collect(Collectors.toList());
         this.presentIndexes = preparePresentIndexes(profileCampaign, teamMembers);

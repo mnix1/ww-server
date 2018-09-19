@@ -1,11 +1,11 @@
 package com.ww.service.book;
 
+import com.ww.model.constant.book.BookType;
 import com.ww.model.dto.book.ProfileBookDTO;
 import com.ww.model.entity.book.Book;
 import com.ww.model.entity.book.ProfileBook;
 import com.ww.model.entity.social.Profile;
 import com.ww.repository.book.ProfileBookRepository;
-import com.ww.service.SessionService;
 import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.ww.helper.ModelHelper.putCode;
-import static com.ww.helper.ModelHelper.putErrorCode;
-import static com.ww.helper.ModelHelper.putSuccessCode;
+import static com.ww.helper.ModelHelper.*;
 import static com.ww.service.book.BookService.BOOK_SHELF_COUNT;
 
 @Service
@@ -29,6 +27,8 @@ public class ProfileBookService {
     private ProfileService profileService;
     @Autowired
     private ProfileBookRepository profileBookRepository;
+    @Autowired
+    private BookService bookService;
 
     public List<ProfileBookDTO> listBook() {
         return profileService.getProfile().getBooks().stream()
@@ -139,6 +139,9 @@ public class ProfileBookService {
         profileBookRepository.save(profileBook);
     }
 
+    public void giveBook(Profile profile, BookType bookType) {
+        giveBook(profile, bookService.findBookByType(bookType));
+    }
 
     public boolean isProfileBookShelfFull(Long profileId) {
         return profileBookRepository.countByProfile_Id(profileId) >= BOOK_SHELF_COUNT;
