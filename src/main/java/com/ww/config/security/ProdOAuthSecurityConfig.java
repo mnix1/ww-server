@@ -29,7 +29,7 @@ public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
             "/war", "/warRanking", "/warFast", "/challenge", "/battle", "/battleRanking", "/battleFast", "/practise", "/campaign","/campaignWar",
             "/shop", "/friend", "/wisies", "/settings", "/login/**", "/static/**", "/actuator/health"};
     public static final String[] ONLY_ADMIN = new String[]{"/**/*.map", "/h2/**", "/actuator/**", "/cache/**", "/log/**"};
-    public static final String[] ONLY_AUTO = new String[]{"/auto/**", "/main.auto.js", "/main.auto.css"};
+    public static final String[] ONLY_AUTO = new String[]{"/auto/**", "/staticAuto/**"};
 
     private OAuth2ClientContext oauth2ClientContext;
     private AuthorizationCodeResourceDetails authorizationCodeResourceDetails;
