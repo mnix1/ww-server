@@ -86,7 +86,7 @@ public class RivalWarService extends AbstractRivalService {
     }
 
     public List<ProfileWisie> getProfileWisies(Profile profile) {
-        return profileWisieService.listTeam(profile.getId());
+        return profileWisieService.findAllInTeam(profile.getId());
     }
 
     @Override

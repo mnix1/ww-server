@@ -4,6 +4,7 @@ import com.ww.model.constant.wisie.WisieType;
 import com.ww.model.dto.social.ProfileResourcesDTO;
 import com.ww.model.dto.wisie.WisieDTO;
 import com.ww.model.entity.social.Profile;
+import com.ww.model.entity.wisie.ProfileWisie;
 import com.ww.model.entity.wisie.Wisie;
 import com.ww.repository.wisie.WisieRepository;
 import com.ww.service.social.ProfileService;
@@ -23,10 +24,6 @@ import static com.ww.helper.RandomHelper.randomElement;
 @Service
 public class WisieService {
 
-    public static Long EXPERIMENT_CRYSTAL_COST = 100L;
-    public static Long EXPERIMENT_ELIXIR_COST = 100L;
-    public static Long EXPERIMENT_WISDOM_COST = 100L;
-
     @Autowired
     private WisieRepository wisieRepository;
 
@@ -40,10 +37,6 @@ public class WisieService {
         return wisieRepository.findAll().stream()
                 .map(WisieDTO::new)
                 .collect(Collectors.toList());
-    }
-
-    public boolean checkEnoughResourcesToExperiment(Profile profile) {
-        return profile.hasEnoughResources(null, EXPERIMENT_CRYSTAL_COST, EXPERIMENT_WISDOM_COST, EXPERIMENT_ELIXIR_COST);
     }
 
     public Wisie randomWisieForProfile(Long profileId) {
@@ -72,7 +65,12 @@ public class WisieService {
         if (profile == null) {
             profile = profileService.getProfile();
         }
-        if (!checkEnoughResourcesToExperiment(profile)) {
+        List<ProfileWisie> profileWisies = profileWisieService.findAll(profile.getId());
+        Long experimentCostImpact = profileWisieCountExperimentCostImpact(profileWisies);
+        Long crystalCost = 30 + experimentCostImpact;
+        Long wisdomCost = 20 + experimentCostImpact;
+        Long elixirCost = 10 + experimentCostImpact;
+        if (!profile.hasEnoughResources(null, crystalCost, wisdomCost, elixirCost)) {
             //no resources
             return putCode(model, -3);
         }
@@ -83,10 +81,17 @@ public class WisieService {
         }
         model.put("wisieType", wisie.getType());
         profileWisieService.addWisie(profile, wisie);
-        profile.changeResources(null, -EXPERIMENT_CRYSTAL_COST, -EXPERIMENT_WISDOM_COST, -EXPERIMENT_ELIXIR_COST);
+        profile.changeResources(null, -crystalCost, -wisdomCost, -elixirCost);
         profileService.save(profile);
         model.put("profile", new ProfileResourcesDTO(profile));
         return putSuccessCode(model);
+    }
+
+    private Long profileWisieCountExperimentCostImpact(List<ProfileWisie> profileWisies) {
+        if (profileWisies.size() <= 5) {
+            return 0L;
+        }
+        return (profileWisies.size() - 5) * 10L;
     }
 
 }

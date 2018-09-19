@@ -1,7 +1,5 @@
 package com.ww.database;
 
-import com.ww.helper.TagHelper;
-import com.ww.model.entity.social.Profile;
 import com.ww.repository.book.BookRepository;
 import com.ww.repository.social.ProfileRepository;
 import com.ww.service.rival.task.country.CountryService;
@@ -11,9 +9,6 @@ import com.ww.service.rival.task.memory.MemoryTaskHelperService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @NoArgsConstructor
@@ -36,9 +31,6 @@ public class InitService {
     private ProfileRepository profileRepository;
 
     @Autowired
-    private BookRepository bookRepository;
-
-    @Autowired
     private InitWisiesService initWisiesService;
 
     @Autowired
@@ -54,17 +46,19 @@ public class InitService {
     private InitCampaignsService initCampaignsService;
 
     public void init() {
-        initBooksService.initBooks();
-        initTaskTypesService.initTaskTypes();
-        initWisiesService.initWisies();
-        initCampaignsService.initCampaigns();
-        initProfiles();
-        initMusicTracks();
-        initClipartsService.initCliparts();
-        initGeographyCountries();
-        initChemistryElements();
-        memoryTaskHelperService.initShapes();
-        memoryTaskHelperService.initColors();
+        if (profileRepository.findAll().size() == 0) {
+            initBooksService.initBooks();
+            initTaskTypesService.initTaskTypes();
+            initWisiesService.initWisies();
+            initCampaignsService.initCampaigns();
+            initProfiles();
+            initMusicTracks();
+            initClipartsService.initCliparts();
+            initGeographyCountries();
+            initChemistryElements();
+            memoryTaskHelperService.initShapes();
+            memoryTaskHelperService.initColors();
+        }
     }
 
     public void initProfiles() {

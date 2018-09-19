@@ -39,11 +39,15 @@ public class ProfileWisieService {
                 .collect(Collectors.toList());
     }
 
-    public List<ProfileWisie> listTeam(Long profileId) {
+    public List<ProfileWisie> findAll(Long profileId) {
+        return profileWisieRepository.findAllByProfile_Id(profileId);
+    }
+
+    public List<ProfileWisie> findAllInTeam(Long profileId) {
         return profileWisieRepository.findAllByProfile_IdAndInTeam(profileId, true);
     }
 
-    public List<ProfileWisie> listNotTeam(Long profileId) {
+    public List<ProfileWisie> findAllNotInTeam(Long profileId) {
         return profileWisieRepository.findAllByProfile_IdAndInTeam(profileId, false);
     }
 
@@ -139,10 +143,6 @@ public class ProfileWisieService {
         double f = WisieHelper.f1(value);
         double k = 1 - f;
         return value * Math.pow(k, 6) + k;
-    }
-
-    public List<ProfileWisie> findAll(Long profileId) {
-        return profileWisieRepository.findAllByProfile_Id(profileId);
     }
 
     public ProfileWisie addWisie(Profile profile, Wisie wisie) {

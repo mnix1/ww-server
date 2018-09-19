@@ -14,7 +14,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -65,12 +64,12 @@ public class AuthProfileService {
         wisieService.experiment(profile);
         List<WisieType> wisieTypes = WisieType.list();
         Collections.shuffle(wisieTypes);
-        List<ProfileWisie> profileWisies = profileWisieService.listNotTeam(profile.getId());
+        List<ProfileWisie> profileWisies = profileWisieService.findAllNotInTeam(profile.getId());
         ProfileWisie fromExperiment = profileWisies.get(0);
         profile.setWisies(new HashSet<>(profileWisies));
         List<String> wisieStringTypes = wisieTypes.subList(0, PICK_WISIES_COUNT).stream().map(Enum::name).collect(Collectors.toList());
         introService.pickWisies(profile, wisieStringTypes);
-        profileWisies = profileWisieService.listNotTeam(profile.getId());
+        profileWisies = profileWisieService.findAllNotInTeam(profile.getId());
         profileWisies.stream().filter(profileWisie -> !profileWisie.getId().equals(fromExperiment.getId()))
                 .limit(PICK_WISIES_COUNT)
                 .forEach(profileWisie -> profileWisie.setInTeam(true));

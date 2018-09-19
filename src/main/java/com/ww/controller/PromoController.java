@@ -68,7 +68,7 @@ public class PromoController {
     public Map superTeamMental() {
         Map<String, Object> model = new HashMap<>();
         Profile profile = profileService.getProfile();
-        List<ProfileWisie> team = profileWisieService.listTeam(profile.getId());
+        List<ProfileWisie> team = profileWisieService.findAllInTeam(profile.getId());
         for (ProfileWisie wisie : team) {
             for (MentalAttribute attribute : MentalAttribute.values()) {
                 wisie.setMentalAttributeValue(attribute, Math.pow(wisie.getMentalAttributeValue(attribute), 1.1) + 100);
@@ -82,7 +82,7 @@ public class PromoController {
     public Map superTeamWisdom() {
         Map<String, Object> model = new HashMap<>();
         Profile profile = profileService.getProfile();
-        List<ProfileWisie> team = profileWisieService.listTeam(profile.getId());
+        List<ProfileWisie> team = profileWisieService.findAllInTeam(profile.getId());
         for (ProfileWisie wisie : team) {
             for (WisdomAttribute attribute : WisdomAttribute.values()) {
                 wisie.setWisdomAttributeValue(attribute, Math.pow(wisie.getWisdomAttributeValue(attribute), 1.1)+ 100);
