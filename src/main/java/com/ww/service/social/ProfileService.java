@@ -71,7 +71,7 @@ public class ProfileService {
         if (name.length() > NAME_MAX_LENGTH || name.length() < NAME_MIN_LENGTH) {
             return putCode(model, -2);
         }
-        Pattern pattern = Pattern.compile("^(\\w+\\s)*\\w+$");
+        Pattern pattern = Pattern.compile("^[\\p{IsAlphabetic}\\d _]+$");
         Matcher matcher = pattern.matcher(name);
         if (!matcher.matches()) {
             return putCode(model, -3);
