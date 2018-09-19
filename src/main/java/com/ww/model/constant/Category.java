@@ -14,26 +14,25 @@ public enum Category {
     ELEMENT,
     RIDDLE,
     COLOR,
-//    HISTORY,
+    //    HISTORY,
     COUNTRY,
     TIME,
     MEMORY;
 
-    public static List<Category> list(){
-        return Arrays.asList(values());
+    public static List<Category> list() {
+        return Arrays.asList(values()).stream()
+                .filter(category -> category != RANDOM)
+                .collect(Collectors.toList());
     }
 
     public static Category random() {
-        List<Category> possible = Arrays.asList(values()).stream()
-                .filter(category -> category != RANDOM)
-                .collect(Collectors.toList());
-        return randomElement(possible);
+        return randomElement(list());
     }
 
-    public static Category fromString(String name){
+    public static Category fromString(String name) {
         try {
             return Category.valueOf(name);
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return random();
         }
     }
