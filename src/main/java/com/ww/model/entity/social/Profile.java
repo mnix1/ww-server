@@ -84,24 +84,6 @@ public class Profile {
         this.id = id;
     }
 
-    public Profile(String tag, String name) {
-        this.tag = tag;
-        this.name = name;
-        this.language = Language.POLISH;
-        this.wisorType = WisorType.random();
-        this.introductionCompleted = true;
-        this.battlePreviousElo = (long) randomInteger(0, 4000);
-        this.battleElo = this.battlePreviousElo + (long) randomInteger(0, 30);
-        this.battleLastPlay = Instant.now().minus((long) randomInteger(1, 10000), SECONDS);
-        this.warPreviousElo = (long) randomInteger(0, 10);
-        this.warElo = this.warPreviousElo + (long) randomInteger(0, 30);
-        this.warLastPlay = Instant.now().minus((long) randomInteger(1, 10000), SECONDS);
-        this.gold = 10L;
-        this.crystal = 110L;
-        this.wisdom = 110L;
-        this.elixir = 110L;
-    }
-
     public void changeResources(Long gold, Long crystal, Long wisdom, Long elixir) {
         if (gold != null) {
             this.gold += gold;

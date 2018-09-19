@@ -1,11 +1,8 @@
 package com.ww.service.wisie;
 
-import com.ww.model.constant.wisie.MentalAttribute;
-import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.constant.wisie.WisieType;
 import com.ww.model.dto.wisie.WisieDTO;
 import com.ww.model.entity.social.Profile;
-import com.ww.model.entity.wisie.ProfileWisie;
 import com.ww.model.entity.wisie.Wisie;
 import com.ww.repository.wisie.WisieRepository;
 import com.ww.service.social.ProfileService;
@@ -69,9 +66,11 @@ public class WisieService {
         return wisieRepository.findByTypeIn(types);
     }
 
-    public synchronized Map<String, Object> experiment() {
+    public synchronized Map<String, Object> experiment(Profile profile) {
         Map<String, Object> model = new HashMap<>();
-        Profile profile = profileService.getProfile();
+        if (profile == null) {
+            profile = profileService.getProfile();
+        }
         if (!checkEnoughResourcesToExperiment(profile)) {
             //no resources
             return putCode(model, -3);

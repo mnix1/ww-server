@@ -36,7 +36,7 @@ public class WisieController {
 
     @RequestMapping(value = "/experiment", method = RequestMethod.GET)
     public Map<String, Object> experiment() {
-        return wisieService.experiment();
+        return wisieService.experiment(null);
     }
 
     @RequestMapping(value = "/listProfileWisie", method = RequestMethod.GET)

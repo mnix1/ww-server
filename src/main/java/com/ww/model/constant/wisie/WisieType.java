@@ -1,7 +1,5 @@
 package com.ww.model.constant.wisie;
 
-import com.ww.model.constant.Category;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -66,8 +64,11 @@ public enum WisieType {
     WOLF;
 
     public static WisieType random() {
-        List<WisieType> possible = Arrays.asList(values());
-        return randomElement(possible);
+        return randomElement(list());
+    }
+
+    public static List<WisieType> list() {
+        return Arrays.asList(values());
     }
 
     public static WisieType fromString(String name){

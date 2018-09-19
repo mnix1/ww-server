@@ -37,7 +37,7 @@ public class IntroController {
             throw new IllegalArgumentException();
         }
         List<String> wisieTypes = (List<String>) payload.get("wisieTypes");
-        return introService.pickWisies(wisieTypes);
+        return introService.pickWisies(null, wisieTypes);
     }
 
 }

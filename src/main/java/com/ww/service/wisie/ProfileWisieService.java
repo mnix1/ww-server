@@ -43,6 +43,10 @@ public class ProfileWisieService {
         return profileWisieRepository.findAllByProfile_IdAndInTeam(profileId, true);
     }
 
+    public List<ProfileWisie> listNotTeam(Long profileId) {
+        return profileWisieRepository.findAllByProfile_IdAndInTeam(profileId, false);
+    }
+
     public synchronized void save(List<ProfileWisie> wisies) {
         profileWisieRepository.saveAll(wisies);
     }

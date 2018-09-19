@@ -57,7 +57,7 @@ public class IntroService {
         return putSuccessCode(model);
     }
 
-    public synchronized Map<String, Object> pickWisies(List<String> wisieStringTypes) {
+    public synchronized Map<String, Object> pickWisies(Profile profile, List<String> wisieStringTypes) {
         Map<String, Object> model = new HashMap<>();
         if (wisieStringTypes.size() != PICK_WISIES_COUNT) {
             return putErrorCode(model);
@@ -66,7 +66,9 @@ public class IntroService {
         if (wisieTypes.size() != PICK_WISIES_COUNT) {
             return putErrorCode(model);
         }
-        Profile profile = profileService.getProfile();
+        if (profile == null) {
+            profile = profileService.getProfile();
+        }
         if (!profile.getIntroductionStepIndex().equals(PICK_WISIES_INTRODUCTION_STEP_INDEX)
                 || profile.getWisies().size() != PROFILE_WISIES_COUNT) {
             logger.error("Hacker trying to get extra wisies, profileId: {}", profile.getId());
