@@ -1,6 +1,7 @@
 package com.ww.service.wisie;
 
 import com.ww.model.constant.wisie.WisieType;
+import com.ww.model.dto.social.ProfileResourcesDTO;
 import com.ww.model.dto.wisie.WisieDTO;
 import com.ww.model.entity.social.Profile;
 import com.ww.model.entity.wisie.Wisie;
@@ -84,6 +85,7 @@ public class WisieService {
         profileWisieService.addWisie(profile, wisie);
         profile.changeResources(null, -EXPERIMENT_CRYSTAL_COST, -EXPERIMENT_WISDOM_COST, -EXPERIMENT_ELIXIR_COST);
         profileService.save(profile);
+        model.put("profile", new ProfileResourcesDTO(profile));
         return putSuccessCode(model);
     }
 
