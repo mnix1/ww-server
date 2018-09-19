@@ -48,6 +48,15 @@ public class IntroService {
         return putSuccessCode(model);
     }
 
+    public Map<String, Object> complete() {
+        Map<String, Object> model = new HashMap<>();
+        Profile profile = profileService.getProfile();
+        profile.setIntroductionCompleted(true);
+        profileService.save(profile);
+        model.put("profile", new ProfileResourcesDTO(profile));
+        return putSuccessCode(model);
+    }
+
     public synchronized Map<String, Object> pickWisies(List<String> wisieStringTypes) {
         Map<String, Object> model = new HashMap<>();
         if (wisieStringTypes.size() != PICK_WISIES_COUNT) {
