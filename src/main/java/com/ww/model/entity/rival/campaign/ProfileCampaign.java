@@ -2,11 +2,8 @@ package com.ww.model.entity.rival.campaign;
 
 import com.ww.model.constant.book.BookType;
 import com.ww.model.constant.rival.campaign.ProfileCampaignStatus;
-import com.ww.model.constant.rival.challenge.ChallengeProfileStatus;
-import com.ww.model.entity.rival.challenge.Challenge;
 import com.ww.model.entity.social.Profile;
 import com.ww.model.entity.wisie.ProfileCampaignWisie;
-import com.ww.model.entity.wisie.ProfileWisie;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,9 +11,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Setter
 @Getter
@@ -29,6 +24,10 @@ public class ProfileCampaign {
     private ProfileCampaignStatus status = ProfileCampaignStatus.IN_PROGRESS;
     private Integer phase = 0;
     private Boolean present = true;
+    private Long goldGain;
+    private Long crystalGain;
+    private Long wisdomGain;
+    private Long elixirGain;
     private BookType bookGain;
     private Instant openDate = Instant.now();
     private Instant closeDate;
@@ -42,9 +41,22 @@ public class ProfileCampaign {
     @OrderBy("ID ASC")
     private List<ProfileCampaignWisie> wisies = new ArrayList<>();
 
-    public ProfileCampaign(Profile profile, Campaign campaign, BookType bookGain) {
+    public ProfileCampaign(Profile profile, Campaign campaign) {
         this.profile = profile;
         this.campaign = campaign;
-        this.bookGain = bookGain;
+    }
+
+    public void updateResourceGains() {
+        if (phase >= campaign.getPhases()) {
+            goldGain = campaign.getGoldGain();
+            crystalGain = campaign.getCrystalGain();
+            wisdomGain = campaign.getWisdomGain();
+            elixirGain = campaign.getElixirGain();
+        } else if (phase >= campaign.getPhases() / 2) {
+            goldGain = campaign.getGoldGain() / 2;
+            crystalGain = campaign.getCrystalGain() / 2;
+            wisdomGain = campaign.getWisdomGain() / 2;
+            elixirGain = campaign.getElixirGain() / 2;
+        }
     }
 }

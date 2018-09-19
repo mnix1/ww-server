@@ -29,6 +29,10 @@ public class ProfileCampaignDTO {
     private List<TeamMemberDTO> team;
     private List<Integer> presentIndexes;
     private ProfileCampaignStatus status;
+    private Long goldGain;
+    private Long crystalGain;
+    private Long wisdomGain;
+    private Long elixirGain;
     private BookType bookGain;
 
     public ProfileCampaignDTO(ProfileCampaign profileCampaign) {
@@ -39,6 +43,10 @@ public class ProfileCampaignDTO {
         this.destination = profileCampaign.getCampaign().getDestination();
         this.status = profileCampaign.getStatus();
         if (this.status == ProfileCampaignStatus.FINISHED) {
+            this.goldGain = profileCampaign.getGoldGain();
+            this.crystalGain = profileCampaign.getCrystalGain();
+            this.wisdomGain = profileCampaign.getWisdomGain();
+            this.elixirGain = profileCampaign.getElixirGain();
             this.bookGain = profileCampaign.getBookGain();
         }
         initTeam(profileCampaign);

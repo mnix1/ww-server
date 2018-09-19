@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.ww.helper.ModelHelper.putCode;
 import static com.ww.helper.ModelHelper.putErrorCode;
 import static com.ww.helper.ModelHelper.putSuccessCode;
 import static com.ww.helper.RandomHelper.randomElement;
@@ -105,7 +106,7 @@ public class CampaignService {
             return putErrorCode(model);
         }
         profile.changeResources(campaign.getGoldCost(), campaign.getCrystalCost(), campaign.getWisdomCost(), campaign.getElixirCost());
-        ProfileCampaign profileCampaign = new ProfileCampaign(profile, campaign, getBookGainForCampaign(campaign));
+        ProfileCampaign profileCampaign = new ProfileCampaign(profile, campaign);
         for (Long id : ids) {
             ProfileWisie wisie = wisies.stream().filter(profileWisie -> profileWisie.getId().equals(id)).findFirst().get();
             ProfileCampaignWisie campaignWisie = new ProfileCampaignWisie(profileCampaign, wisie);
@@ -131,18 +132,19 @@ public class CampaignService {
         if (profileCampaign == null || profileCampaign.getStatus() != ProfileCampaignStatus.FINISHED) {
             return putErrorCode(model);
         }
+        Profile profile = profileService.getProfile();
+        if (profileCampaign.getBookGain() != null
+                && profileBookService.isProfileBookShelfFull(profile.getId())) {
+            return putCode(model, -2);
+        }
         profileCampaign.setStatus(ProfileCampaignStatus.CLOSED);
         profileCampaign.setCloseDate(Instant.now());
         profileCampaignRepository.save(profileCampaign);
-        Campaign campaign = profileCampaign.getCampaign();
-        if (campaign.getPhases() <= profileCampaign.getPhase()) {
-            Profile profile = profileService.getProfile();
-            if (!profileBookService.isProfileBookShelfFull(profile.getId())) {
-                profileBookService.giveBook(profile, profileCampaign.getBookGain());
-            }
-            profile.changeResources(campaign.getGoldGain(), campaign.getCrystalGain(), campaign.getWisdomGain(), campaign.getElixirGain());
-            profileService.save(profile);
+        if (profileCampaign.getBookGain() != null) {
+            profileBookService.giveBook(profile, profileCampaign.getBookGain());
         }
+        profile.changeResources(profileCampaign.getGoldGain(), profileCampaign.getCrystalGain(), profileCampaign.getWisdomGain(), profileCampaign.getElixirGain());
+        profileService.save(profile);
         return putSuccessCode(model);
     }
 

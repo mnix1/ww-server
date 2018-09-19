@@ -95,6 +95,8 @@ public class RivalCampaignWarService extends RivalWarService {
             profileCampaign.setPhase(profileCampaign.getPhase() + 1);
             if (profileCampaign.getPhase() >= profileCampaign.getCampaign().getPhases()) {
                 profileCampaign.setStatus(ProfileCampaignStatus.FINISHED);
+                profileCampaign.updateResourceGains();
+                profileCampaign.setBookGain(campaignService.getBookGainForCampaign(profileCampaign.getCampaign()));
             }
             List<TeamMember> teamMembers = campaignWarManager.warContainer.getRivalProfileContainer(profileId).getTeamMembers();
             for (TeamMember teamMember : teamMembers) {
@@ -110,6 +112,7 @@ public class RivalCampaignWarService extends RivalWarService {
             }
         } else {
             profileCampaign.setStatus(ProfileCampaignStatus.FINISHED);
+            profileCampaign.updateResourceGains();
             for (ProfileCampaignWisie wisie : profileCampaign.getWisies()) {
                 wisie.setDisabled(true);
             }
