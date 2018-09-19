@@ -59,4 +59,8 @@ public class ProfileCampaignDTO {
                 .collect(Collectors.toList());
         this.presentIndexes = preparePresentIndexes(profileCampaign, teamMembers);
     }
+
+    public Boolean getRewardNotEmpty(){
+        return goldGain != null || crystalGain != null || wisdomGain != null || elixirGain != null || bookGain != null;
+    }
 }
