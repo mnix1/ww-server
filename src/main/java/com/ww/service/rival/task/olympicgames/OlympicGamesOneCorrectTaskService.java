@@ -68,7 +68,7 @@ public class OlympicGamesOneCorrectTaskService {
             question.setTextContentPolish("Gdzie odbyły się " + correctOlympicMedal.getTypeLang(Language.POLISH) + " w " + correctOlympicMedal.getYear() + " roku?");
             question.setTextContentEnglish("Where the " + correctOlympicMedal.getTypeLang(Language.ENGLISH) + " took place in " + correctOlympicMedal.getYear() + "?");
         } else if (typeValue == OlympicGamesTaskType.YEAR_FROM_WHERE) {
-            question.setTextContentPolish("W którym roku " + correctOlympicMedal.getTypeLang(Language.POLISH) + " zostały przeprowadzone w " + correctOlympicMedal.getCityPolish() + "?");
+            question.setTextContentPolish("W którym roku " + correctOlympicMedal.getTypeLang(Language.POLISH) + " zostały przeprowadzone w mieście " + correctOlympicMedal.getCityPolish() + "?");
             question.setTextContentEnglish("In which year the " + correctOlympicMedal.getTypeLang(Language.ENGLISH) + " were held in " + correctOlympicMedal.getCity() + "?");
         }
         return question;
