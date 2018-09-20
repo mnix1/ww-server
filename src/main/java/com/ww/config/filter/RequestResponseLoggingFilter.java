@@ -27,7 +27,8 @@ import static com.ww.helper.RandomHelper.randomInteger;
 //        HttpServletRequest req = (HttpServletRequest) request;
 //        HttpServletResponse res = (HttpServletResponse) response;
 //        try {
-//            Thread.sleep(randomInteger(1000, 3000));
+////            Thread.sleep(randomInteger(1000, 2000));
+//            Thread.sleep(randomInteger(30, 100));
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
