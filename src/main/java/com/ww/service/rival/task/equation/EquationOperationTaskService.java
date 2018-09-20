@@ -32,13 +32,13 @@ public class EquationOperationTaskService {
     private int[] prepareNumbers(EquationTaskType typeValue, int difficulty) {
         int[] numbers = null;
         if (typeValue == EquationTaskType.ADDITION) {
-            int count = difficultyCalibration(difficulty) + 2;
-            int bound = 9 + difficultyCalibration(difficulty) * 5;
+            int count = difficultyCalibration(difficulty) / 3 + 2;
+            int bound = 9 + difficultyCalibration(difficulty) * 3;
             numbers = randomIntegers(count, -bound, bound);
         }
         if (typeValue == EquationTaskType.MULTIPLICATION) {
-            int count = difficultyCalibration(difficulty) / 2 + 2;
-            int bound = 9 + difficultyCalibration(difficulty) * 2;
+            int count = difficultyCalibration(difficulty) / 3 + 2;
+            int bound = 6 + difficultyCalibration(difficulty);
             numbers = randomIntegers(count, -bound, bound);
         }
         if (typeValue == EquationTaskType.MODULO) {

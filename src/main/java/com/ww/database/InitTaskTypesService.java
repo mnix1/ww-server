@@ -109,7 +109,7 @@ public class InitTaskTypesService {
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.05),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.15)
         ))));
-        taskTypes.add(new TaskType(Category.EQUATION, EquationTaskType.FIND_X.name(), TaskRenderer.TEXT_EQUATION, TaskRenderer.EQUATION, 6, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.EQUATION, EquationTaskType.FIND_X.name(), TaskRenderer.TEXT_EQUATION, TaskRenderer.EQUATION, 2, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.95),
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.05)
         ))));
