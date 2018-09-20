@@ -29,6 +29,35 @@ public class InitTaskTypesService {
 
     public void initTaskTypes() {
         List<TaskType> taskTypes = new ArrayList<>();
+        initOlympicGames(taskTypes);
+        initLyrics(taskTypes);
+        initMemory(taskTypes);
+        initNumber(taskTypes);
+        initEquation(taskTypes);
+        initCountry(taskTypes);
+        initElement(taskTypes);
+        initRiddle(taskTypes);
+        initColor(taskTypes);
+        initTime(taskTypes);
+        List<TaskWisdomAttribute> wisdomAttributes = new ArrayList<>();
+        for (TaskType taskType : taskTypes) {
+            taskType.getWisdomAttributes().forEach(wisdomAttribute -> {
+                wisdomAttribute.setType(taskType);
+                wisdomAttributes.add(wisdomAttribute);
+            });
+        }
+        taskTypeRepository.saveAll(taskTypes);
+        taskWisdomAttributeRepository.saveAll(wisdomAttributes);
+    }
+
+    private void initOlympicGames(List<TaskType> taskTypes) {
+        taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.WHERE_FROM_YEAR.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.7),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.3)
+        ))));
+    }
+
+    private void initLyrics(List<TaskType> taskTypes) {
         taskTypes.add(new TaskType(Category.LYRICS, LyricsTaskTypeValue.NEXT_LINE.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 4, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.3),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.3),
@@ -43,7 +72,9 @@ public class InitTaskTypesService {
                 new TaskWisdomAttribute(WisdomAttribute.PATTERN_RECOGNITION, 0.4),
                 new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.2)
         ))));
+    }
 
+    private void initMemory(List<TaskType> taskTypes) {
         taskTypes.add(new TaskType(Category.MEMORY, MemoryTaskType.BACKGROUND_COLOR_FROM_FIGURE_KEY.name(), TaskRenderer.TEXT_ANIMATION, TaskRenderer.TEXT, 5, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.6),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.15),
@@ -72,7 +103,9 @@ public class InitTaskTypesService {
                 new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.15),
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.1)
         ))));
+    }
 
+    private void initNumber(List<TaskType> taskTypes) {
         taskTypes.add(new TaskType(Category.NUMBER, NumberTaskType.MAX.name(), TaskRenderer.TEXT, TaskRenderer.EQUATION, 4, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.55),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.45)
@@ -93,7 +126,9 @@ public class InitTaskTypesService {
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.94),
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.06)
         ))));
+    }
 
+    private void initEquation(List<TaskType> taskTypes) {
         taskTypes.add(new TaskType(Category.EQUATION, EquationTaskType.ADDITION.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.9),
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.1)
@@ -113,7 +148,9 @@ public class InitTaskTypesService {
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.95),
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.05)
         ))));
+    }
 
+    private void initCountry(List<TaskType> taskTypes) {
         taskTypes.add(new TaskType(Category.COUNTRY, CountryTaskType.COUNTRY_NAME_FROM_ALPHA_2.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 0, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.35),
                 new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.4),
@@ -180,7 +217,9 @@ public class InitTaskTypesService {
                 new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.6)
         ))));
+    }
 
+    private void initElement(List<TaskType> taskTypes) {
         taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.MAX_ATOMIC_MASS.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 5, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.6),
                 new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
@@ -226,7 +265,9 @@ public class InitTaskTypesService {
                 new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.15),
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.25)
         ))));
+    }
 
+    private void initRiddle(List<TaskType> taskTypes) {
         taskTypes.add(new TaskType(Category.RIDDLE, RiddleTaskType.MISSING_CLIPART.name(), TaskRenderer.TEXT_IMAGE_PNG, TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.09),
                 new TaskWisdomAttribute(WisdomAttribute.PATTERN_RECOGNITION, 0.41),
@@ -247,7 +288,9 @@ public class InitTaskTypesService {
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.59),
                 new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.2)
         ))));
+    }
 
+    private void initColor(List<TaskType> taskTypes) {
         taskTypes.add(new TaskType(Category.COLOR, ColorTaskType.COLOR_MIXING.name(), TaskRenderer.TEXT_HTML, TaskRenderer.HTML, 4, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.PATTERN_RECOGNITION, 0.1),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1),
@@ -283,7 +326,9 @@ public class InitTaskTypesService {
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.35),
                 new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.6)
         ))));
+    }
 
+    private void initTime(List<TaskType> taskTypes) {
         taskTypes.add(new TaskType(Category.TIME, TimeTaskType.CLOCK_ADD.name(), TaskRenderer.TEXT_DATE, TaskRenderer.DATE, 1, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.45),
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.3),
@@ -294,16 +339,6 @@ public class InitTaskTypesService {
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.4),
                 new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.35)
         ))));
-
-        List<TaskWisdomAttribute> wisdomAttributes = new ArrayList<>();
-        for (TaskType taskType : taskTypes) {
-            taskType.getWisdomAttributes().forEach(wisdomAttribute -> {
-                wisdomAttribute.setType(taskType);
-                wisdomAttributes.add(wisdomAttribute);
-            });
-        }
-        taskTypeRepository.saveAll(taskTypes);
-        taskWisdomAttributeRepository.saveAll(wisdomAttributes);
     }
 
 

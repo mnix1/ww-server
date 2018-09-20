@@ -13,6 +13,7 @@ import com.ww.service.rival.task.country.CountryTaskService;
 import com.ww.service.rival.task.equation.EquationTaskService;
 import com.ww.service.rival.task.memory.MemoryTaskService;
 import com.ww.service.rival.task.lyrics.LyricsTaskService;
+import com.ww.service.rival.task.olympicgames.OlympicGamesTaskService;
 import com.ww.service.rival.task.riddle.RiddleTaskService;
 import com.ww.service.rival.task.time.TimeTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,9 @@ public class TaskGenerateService {
     TimeTaskService timeTaskService;
 
     @Autowired
+    OlympicGamesTaskService olympicGamesTaskService;
+
+    @Autowired
     TaskTypeRepository taskTypeRepository;
 
     public Question generate(Category category, DifficultyLevel difficultyLevel) {
@@ -86,6 +90,9 @@ public class TaskGenerateService {
         }
         if (category == Category.TIME) {
             return timeTaskService.generate(taskType, difficultyLevel);
+        }
+        if (category == Category.OLYMPIC_GAMES) {
+            return olympicGamesTaskService.generate(taskType, difficultyLevel);
         }
         return null;
     }

@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 public class ElementTaskService {
 
     @Autowired
-    ElementOneCorrectTaskService elementOneCorrectTaskService;
+    private ElementOneCorrectTaskService elementOneCorrectTaskService;
 
     @Autowired
-    ElementMatchAnswerTaskService elementMatchAnswerTaskService;
+    private ElementMatchAnswerTaskService elementMatchAnswerTaskService;
 
     public Question generate(TaskType type, DifficultyLevel difficultyLevel) {
         ElementTaskType typeValue = ElementTaskType.valueOf(type.getValue());

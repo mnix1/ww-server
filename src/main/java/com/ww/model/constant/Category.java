@@ -17,6 +17,7 @@ public enum Category {
     //    HISTORY,
     COUNTRY,
     TIME,
+    OLYMPIC_GAMES,
     MEMORY;
 
     public static List<Category> list() {
