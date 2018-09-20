@@ -1,7 +1,7 @@
 package com.ww.service.rival.task.number;
 
-import com.ww.model.constant.rival.task.NumberType;
 import com.ww.model.constant.rival.DifficultyLevel;
+import com.ww.model.constant.rival.task.NumberType;
 import com.ww.model.constant.rival.task.type.NumberTaskType;
 import com.ww.model.container.NumberObject;
 import com.ww.model.entity.rival.task.Answer;
@@ -25,7 +25,7 @@ public class NumberMatchAnswerTaskService {
 
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, NumberTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = Math.max(3, DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty));
         List<NumberObject> numberObjects = prepareNumbers(answersCount, remainedDifficulty);
         Question question = prepareQuestion(type, difficultyLevel, typeValue);
         List<Answer> answers = prepareAnswers(typeValue, numberObjects);
@@ -35,14 +35,15 @@ public class NumberMatchAnswerTaskService {
 
     private List<NumberType> difficultyRelatedNumberTypes(int count, int difficulty) {
         List<NumberType> types = new ArrayList<>(count);
+        int difficultyCalibration = difficultyCalibration(difficulty);
         for (int i = 0; i < count; i++) {
-            if (difficulty > 40) {
+            if (difficultyCalibration < 2) {
+                types.add(NumberType.INTEGER);
+                types.add(NumberType.DECIMAL);
+            } else {
                 types.add(NumberType.FRACTION);
-            }
-            if (difficulty > 20) {
                 types.add(NumberType.DECIMAL);
             }
-            types.add(NumberType.INTEGER);
         }
         return types;
     }
@@ -75,18 +76,21 @@ public class NumberMatchAnswerTaskService {
     }
 
     private NumberObject generateRandomFraction(int difficulty) {
-        int upBound = 9 + difficultyCalibration(difficulty) * 11;
-        int downBound = difficultyCalibration(difficulty) < 3 ? 1 : -upBound;
+        int upBound = 17 + difficultyCalibration(difficulty) * 3;
+        int downBound = 1;
         int numerator = randomInteger(downBound, upBound);
-        int denominator = randomInteger(2, upBound);
+        int denominator = numerator;
+        while (denominator == numerator) {
+            denominator = randomInteger(2, upBound);
+        }
         String stringValue = numerator + "/" + denominator;
         double value = numerator * 1.0 / denominator;
         return new NumberObject(value, stringValue);
     }
 
     private NumberObject generateRandomDecimal(int difficulty) {
-        int upBound = 9 + difficultyCalibration(difficulty) * 11;
-        int downBound = difficultyCalibration(difficulty) < 3 ? 1 : -upBound;
+        double upBound = 9 - difficultyCalibration(difficulty);
+        double downBound = 0.01;
         double number = randomDouble(downBound, upBound);
         BigDecimal bigDecimal = new BigDecimal(number);
         bigDecimal = bigDecimal.setScale(2, RoundingMode.HALF_UP);
@@ -98,8 +102,8 @@ public class NumberMatchAnswerTaskService {
     }
 
     private NumberObject generateRandomInteger(int difficulty) {
-        int upBound = 9 + difficultyCalibration(difficulty) * 11;
-        int downBound = difficultyCalibration(difficulty) < 3 ? 1 : -upBound;
+        int upBound = 9 + difficultyCalibration(difficulty);
+        int downBound = 1;
         int number = randomInteger(downBound, upBound);
         return new NumberObject((double) number, number + "");
     }

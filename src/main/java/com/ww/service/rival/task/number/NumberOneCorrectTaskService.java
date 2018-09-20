@@ -50,7 +50,11 @@ public class NumberOneCorrectTaskService {
             numbersSet.add(numbers[0]);
             int index = 1;
             while (index < answersCount) {
-                int number = numbers[0] + randomInteger(-numbers[0] + 1, 30);
+                int offset = randomInteger(-numbers[0] + 1, 30);
+                if (offset % 2 != 0) {
+                    offset += 1;
+                }
+                int number = numbers[0] + offset;
                 if (!PrimeHelper.isPrime(number) && !numbersSet.contains(number)) {
                     numbersSet.add(number);
                     numbers[index++] = number;
