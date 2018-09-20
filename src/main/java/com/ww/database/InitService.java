@@ -6,6 +6,7 @@ import com.ww.service.rival.task.country.CountryService;
 import com.ww.service.rival.task.element.ElementService;
 import com.ww.service.rival.task.lyrics.TrackService;
 import com.ww.service.rival.task.memory.MemoryTaskHelperService;
+import com.ww.service.rival.task.olympicgames.OlympicMedalService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,9 @@ public class InitService {
 
     @Autowired
     private ElementService elementService;
+
+    @Autowired
+    private OlympicMedalService olympicMedalService;
 
     @Autowired
     private MemoryTaskHelperService memoryTaskHelperService;
@@ -56,6 +60,7 @@ public class InitService {
             initClipartsService.initCliparts();
             initGeographyCountries();
             initChemistryElements();
+            initOlympicMedals();
             memoryTaskHelperService.initShapes();
             memoryTaskHelperService.initColors();
         }
@@ -86,6 +91,10 @@ public class InitService {
 
     public void initChemistryElements() {
         elementService.loadResource();
+    }
+
+    public void initOlympicMedals() {
+        olympicMedalService.loadResources();
     }
 
 
