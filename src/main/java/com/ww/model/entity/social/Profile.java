@@ -66,9 +66,9 @@ public class Profile {
         this.level = 0L;
         this.experience = 0L;
         this.gold = 10L;
-        this.crystal = 110L;
-        this.wisdom = 110L;
-        this.elixir = 110L;
+        this.crystal = 40L;
+        this.wisdom = 30L;
+        this.elixir = 20L;
         this.wisorType = WisorType.random();
         this.introductionCompleted = false;
         this.introductionStepIndex = 0;

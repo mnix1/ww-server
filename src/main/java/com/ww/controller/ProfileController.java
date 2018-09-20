@@ -56,6 +56,11 @@ public class ProfileController {
         return authProfileService.authProfile(user);
     }
 
+    @RequestMapping(value = "/testSignIn", method = RequestMethod.GET)
+    public Boolean testSignIn() {
+        return true;
+    }
+
     @RequestMapping(value = "/listBook", method = RequestMethod.GET)
     public List<ProfileBookDTO> listBook() {
         return profileBookService.listBook();
