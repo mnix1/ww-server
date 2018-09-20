@@ -11,7 +11,6 @@ import com.ww.model.container.ProfileConnection;
 import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.dto.social.FriendDTO;
 import com.ww.model.entity.social.Profile;
-import com.ww.service.SessionService;
 import com.ww.service.rival.battle.RivalBattleService;
 import com.ww.service.rival.war.RivalWarService;
 import com.ww.service.social.ProfileConnectionService;
@@ -65,7 +64,7 @@ public class RivalFriendService {
             return putErrorCode(model);
         }
         Profile opponentProfile = profileService.getProfile(tag);
-        if (rivalRandomOpponentService.contains(opponentProfile.getId())) {
+        if (rivalRandomOpponentService.contains(opponentProfile.getId()) || globalRivalService.contains(opponentProfile.getId())) {
             return putErrorCode(model);
         }
         RivalInitContainer rivalInitContainer = prepareContainer(opponentProfile, type);
