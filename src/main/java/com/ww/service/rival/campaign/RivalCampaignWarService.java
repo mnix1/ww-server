@@ -123,8 +123,6 @@ public class RivalCampaignWarService extends RivalWarService {
 
     @Override
     protected void addRewardFromWin(Profile winner) {
-//        if(CampaignWarManager.isBotProfile(winner)){
-//        }
     }
 
 

@@ -52,6 +52,10 @@ public class RivalRandomOpponentService {
         return putSuccessCode(model);
     }
 
+    public boolean contains(Long profileId){
+        return waitingForRivalProfiles.containsKey(profileId);
+    }
+
     public Map cancel() {
         Map<String, Object> model = new HashMap<>();
         remove(profileService.getProfileId());

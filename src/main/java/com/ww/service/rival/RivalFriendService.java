@@ -49,6 +49,9 @@ public class RivalFriendService {
     private RivalWarService rivalWarService;
 
     @Autowired
+    private RivalRandomOpponentService rivalRandomOpponentService;
+
+    @Autowired
     private GlobalRivalService globalRivalService;
 
     public Map startFriend(String tag, RivalType type) {
@@ -61,7 +64,11 @@ public class RivalFriendService {
         if (rivalInitContainers.stream().anyMatch(e -> e.getOpponentProfile().getTag().equals(tag) || e.getCreatorProfile().getTag().equals(tag))) {
             return putErrorCode(model);
         }
-        RivalInitContainer rivalInitContainer = prepareContainer(tag, type);
+        Profile opponentProfile = profileService.getProfile(tag);
+        if (rivalRandomOpponentService.contains(opponentProfile.getId())) {
+            return putErrorCode(model);
+        }
+        RivalInitContainer rivalInitContainer = prepareContainer(opponentProfile, type);
         if (rivalInitContainer == null) {
             return putErrorCode(model);
         }
@@ -115,12 +122,11 @@ public class RivalFriendService {
         return model;
     }
 
-    private RivalInitContainer prepareContainer(String tag, RivalType type) {
-        Profile opponentProfile = profileService.getProfile(tag);
+    private RivalInitContainer prepareContainer(Profile opponentProfile, RivalType type) {
         Profile creatorProfile = profileService.getProfile();
         ProfileConnection opponentProfileConnection = profileConnectionService.findByProfileId(opponentProfile.getId()).orElseGet(null);
         if (opponentProfileConnection == null) {
-            logger.error("Not connected profile with tag: {}, sessionProfileId: {}", tag, profileService.getProfileId());
+            logger.error("Not connected profile with tag: {}, sessionProfileId: {}", opponentProfile.getTag(), profileService.getProfileId());
             return null;
         }
         RivalInitContainer battle = new RivalInitContainer(type, RivalImportance.FRIEND, creatorProfile, opponentProfile);

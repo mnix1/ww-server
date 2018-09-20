@@ -26,7 +26,7 @@ import static com.ww.config.security.Roles.AUTO;
 @Order(2)
 public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String[] ALL = new String[]{"/", "/profile", "/classification/war", "/classification/battle", "/play",
-            "/war", "/warRanking", "/warFast", "/challenge", "/battle", "/battleRanking", "/battleFast", "/practise", "/campaign","/campaignWar",
+            "/war", "/warRanking", "/warFast", "/challenge", "/battle", "/battleRanking", "/battleFast", "/training", "/campaign","/campaignWar",
             "/shop", "/friend", "/wisies", "/settings", "/login/**", "/static/**", "/actuator/health"};
     public static final String[] ONLY_ADMIN = new String[]{"/**/*.map", "/h2/**", "/actuator/**", "/cache/**", "/log/**"};
     public static final String[] ONLY_AUTO = new String[]{"/auto/**", "/staticAuto/**"};
