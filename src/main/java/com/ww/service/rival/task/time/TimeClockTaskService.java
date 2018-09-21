@@ -41,14 +41,14 @@ public class TimeClockTaskService {
         Set<Interval> intervals = new HashSet<>(count);
         int calibration = difficultyCalibration(difficulty);
         while (intervals.size() < count) {
-            Interval interval = Interval.randomInterval(calibration * 2, (calibration + 5)* 6 , (calibration + 5)* 6 );
+            Interval interval = Interval.randomInterval(calibration * 2, (calibration + 5) * 6, (calibration + 5) * 6);
             intervals.add(interval);
         }
         return new ArrayList<>(intervals);
     }
 
     private Instant prepareDate(TimeTaskType typeValue, Instant date, Interval interval) {
-        if (typeValue == TimeTaskType.CLOCK_ADD) {
+        if (typeValue == TimeTaskType.ANALOG_CLOCK_ADD || typeValue == TimeTaskType.DIGITAL_CLOCK_ADD) {
             if (interval.getHours() > 0) {
                 date = date.plus(interval.getHours(), HOURS);
             }
@@ -59,7 +59,7 @@ public class TimeClockTaskService {
                 date = date.plus(interval.getSeconds(), SECONDS);
             }
         }
-        if (typeValue == TimeTaskType.CLOCK_SUBTRACT) {
+        if (typeValue == TimeTaskType.ANALOG_CLOCK_SUBTRACT || typeValue == TimeTaskType.DIGITAL_CLOCK_SUBTRACT) {
             if (interval.getHours() > 0) {
                 date = date.minus(interval.getHours(), HOURS);
             }
@@ -76,11 +76,11 @@ public class TimeClockTaskService {
     private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, TimeTaskType typeValue, Instant date, Interval correctInterval) {
         Question question = new Question(type, difficultyLevel);
         question.setDateContent(date);
-        if (typeValue == TimeTaskType.CLOCK_ADD) {
+        if (typeValue == TimeTaskType.ANALOG_CLOCK_ADD || typeValue == TimeTaskType.DIGITAL_CLOCK_ADD) {
             question.setTextContentPolish("Która godzina będzie na zegarze po dodaniu " + correctInterval + "?");
             question.setTextContentEnglish("What is missing in the picture?");
         }
-        if (typeValue == TimeTaskType.CLOCK_SUBTRACT) {
+        if (typeValue == TimeTaskType.ANALOG_CLOCK_SUBTRACT || typeValue == TimeTaskType.DIGITAL_CLOCK_SUBTRACT) {
             question.setTextContentPolish("Która godzina będzie na zegarze po odjęciu " + correctInterval + "?");
             question.setTextContentEnglish("What is missing in the picture?");
         }
@@ -102,8 +102,10 @@ public class TimeClockTaskService {
     }
 
     private void fillAnswerContent(TimeTaskType typeValue, Answer answer, Instant date) {
-        if (typeValue == TimeTaskType.CLOCK_ADD
-                || typeValue == TimeTaskType.CLOCK_SUBTRACT) {
+        if (typeValue == TimeTaskType.ANALOG_CLOCK_ADD
+                || typeValue == TimeTaskType.ANALOG_CLOCK_SUBTRACT
+                || typeValue == TimeTaskType.DIGITAL_CLOCK_ADD
+                || typeValue == TimeTaskType.DIGITAL_CLOCK_SUBTRACT) {
             answer.setDateContent(date);
         }
     }

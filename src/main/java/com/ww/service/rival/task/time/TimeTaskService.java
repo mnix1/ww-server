@@ -14,8 +14,11 @@ public class TimeTaskService {
 
     public Question generate(TaskType type, DifficultyLevel difficultyLevel) {
         TimeTaskType typeValue = TimeTaskType.valueOf(type.getValue());
-        if (typeValue == TimeTaskType.CLOCK_ADD
-                || typeValue == TimeTaskType.CLOCK_SUBTRACT) {
+        if (typeValue == TimeTaskType.ANALOG_CLOCK_ADD
+                || typeValue == TimeTaskType.ANALOG_CLOCK_SUBTRACT
+                || typeValue == TimeTaskType.DIGITAL_CLOCK_ADD
+                || typeValue == TimeTaskType.DIGITAL_CLOCK_SUBTRACT
+                ) {
             return timeClockTaskService.generate(type, difficultyLevel, typeValue);
         }
 

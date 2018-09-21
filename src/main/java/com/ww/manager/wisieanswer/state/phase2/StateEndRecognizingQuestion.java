@@ -27,18 +27,20 @@ public class StateEndRecognizingQuestion extends State {
         TaskRenderer taskRenderer = manager.getQuestion().getType().getQuestionRenderer();
         if (taskRenderer == TaskRenderer.TEXT) {
             otherInterval = 0;
-        } else if (taskRenderer == TaskRenderer.TEXT_ANIMATION) {
-            otherInterval = manager.getDifficulty() * 500;
-        } else if (taskRenderer == TaskRenderer.TEXT_EQUATION) {
-            otherInterval = manager.getDifficulty() * 500;
-        } else if (taskRenderer == TaskRenderer.TEXT_IMAGE_SVG) {
-            otherInterval = manager.getDifficulty() * 500;
-        } else if (taskRenderer == TaskRenderer.TEXT_IMAGE_PNG) {
-            otherInterval = manager.getDifficulty() * 500;
-        } else if (taskRenderer == TaskRenderer.IMAGE_PNG_TEXT_IMAGE_PNG) {
-            otherInterval = manager.getDifficulty() * 500;
-        } else if (taskRenderer == TaskRenderer.TEXT_DATE) {
-            otherInterval = manager.getDifficulty() * 500;
+//        } else if (taskRenderer == TaskRenderer.TEXT_ANIMATION) {
+//            otherInterval = manager.getDifficulty() * 500;
+//        } else if (taskRenderer == TaskRenderer.TEXT_EQUATION) {
+//            otherInterval = manager.getDifficulty() * 500;
+//        } else if (taskRenderer == TaskRenderer.TEXT_IMAGE_SVG) {
+//            otherInterval = manager.getDifficulty() * 500;
+//        } else if (taskRenderer == TaskRenderer.TEXT_IMAGE_PNG) {
+//            otherInterval = manager.getDifficulty() * 500;
+//        } else if (taskRenderer == TaskRenderer.IMAGE_PNG_TEXT_IMAGE_PNG) {
+//            otherInterval = manager.getDifficulty() * 500;
+//        } else if (taskRenderer == TaskRenderer.TEXT_ANALOG_CLOCK) {
+//            otherInterval = manager.getDifficulty() * 500;
+//        } else if (taskRenderer == TaskRenderer.TEXT_DIGITAL_CLOCK) {
+//            otherInterval = manager.getDifficulty() * 500;
         } else {
             otherInterval = manager.getDifficulty() * 500;
         }

@@ -5,8 +5,10 @@ import java.util.Arrays;
 import static com.ww.helper.RandomHelper.randomElement;
 
 public enum TimeTaskType {
-    CLOCK_ADD,
-    CLOCK_SUBTRACT
+    DIGITAL_CLOCK_ADD,
+    DIGITAL_CLOCK_SUBTRACT,
+    ANALOG_CLOCK_ADD,
+    ANALOG_CLOCK_SUBTRACT
     ;
 
     public static TimeTaskType random() {
