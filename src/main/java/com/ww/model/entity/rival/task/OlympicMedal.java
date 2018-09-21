@@ -42,24 +42,20 @@ public class OlympicMedal {
     public OlympicMedal(List<String> params, OlympicGamesType type, JsonNode mapping) {
         ObjectNode cityMapping = (ObjectNode) mapping.get("city");
         ObjectNode sportMapping = (ObjectNode) mapping.get("sport");
-        try {
-            this.type = type;
-            this.year = Integer.parseInt(params.get(0));
-            this.city = params.get(1);
-            this.cityPolish = cityMapping.get(this.city).asText();
-            this.sport = params.get(2);
-            this.sportPolish = sportMapping.get(this.sport).asText();
-            this.discipline = params.get(3);
-            this.athlete = params.get(4);
-            this.country = params.get(5);
-            this.gender = params.get(6);
-            this.event = params.get(7);
-            this.medal = OlympicGamesMedal.fromString(params.get(8));
-            this.onlyTeamSport = initTeamFromSport();
-            this.team = initTeam();
-        } catch (Exception e){
-            int a= 0;
-        }
+        this.type = type;
+        this.year = Integer.parseInt(params.get(0));
+        this.city = params.get(1);
+        this.cityPolish = cityMapping.get(this.city).asText();
+        this.sport = params.get(2);
+        this.sportPolish = sportMapping.get(this.sport).asText();
+        this.discipline = params.get(3);
+        this.athlete = params.get(4);
+        this.country = params.get(5);
+        this.gender = params.get(6);
+        this.event = params.get(7);
+        this.medal = OlympicGamesMedal.fromString(params.get(8));
+        this.onlyTeamSport = initTeamFromSport();
+        this.team = initTeam();
     }
 
     private Boolean initTeam() {
