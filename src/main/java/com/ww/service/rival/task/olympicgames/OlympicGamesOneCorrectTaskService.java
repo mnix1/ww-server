@@ -29,7 +29,7 @@ public class OlympicGamesOneCorrectTaskService {
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, OlympicGamesTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
         int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
-        List<OlympicMedal> olympicMedals = prepareObjects(typeValue, remainedDifficulty, answersCount);
+        List<OlympicMedal> olympicMedals = prepareObjects(typeValue, answersCount);
         OlympicMedal correctOlympicMedal = olympicMedals.get(0);
         List<OlympicMedal> wrongOlympicMedals = olympicMedals.subList(1, olympicMedals.size());
         Question question = prepareQuestion(type, difficultyLevel, typeValue, correctOlympicMedal);
@@ -68,7 +68,12 @@ public class OlympicGamesOneCorrectTaskService {
             String beginPolish = cOM.getGender() == Gender.MEN ? "Reprezentanci którego kraju zdobyli " : "Reprezentantki którego kraju zdobyły ";
             question.setTextContentPolish(beginPolish + cOM.getMedal().getNamePolish() + " medal na IO w " + cOM.getYear() + " roku w sporcie \"" + cOM.getSportPolish().toLowerCase() + "\"?");
             question.setTextContentEnglish("The representatives of which country won the " + cOM.getMedal().getNameEnglish() + " medal at Olympic Games in " + cOM.getYear() + " in " + cOM.getSport() + "?");
-
+        } else if (typeValue == OlympicGamesTaskType.COUNTRY_FROM_ATHLETE) {
+            question.setTextContentPolish("Dla jakiego państwa medal na IO " + cOM.getWonPolish() + " " + cOM.getAthlete() + "?");
+            question.setTextContentEnglish("For which country the medal on the Olympic Games won " + cOM.getAthlete() + "?");
+        } else if (typeValue == OlympicGamesTaskType.ATHLETE_FROM_COUNTRY) {
+            question.setTextContentPolish("Kto reprezentował na IO kraj " + cOM.getCountryPolish() + "?");
+            question.setTextContentEnglish("At the Olympic Games, the " + cOM.getIocCountryCode() + " country was represented by:");
         }
 
         return question;
@@ -96,15 +101,18 @@ public class OlympicGamesOneCorrectTaskService {
             answer.setTextContent(object.getYear() + "");
         } else if (typeValue == OlympicGamesTaskType.ATHLETE_FROM_MEDAL_YEAR
                 || typeValue == OlympicGamesTaskType.ATHLETE_FROM_MEDAL_CITY
+                || typeValue == OlympicGamesTaskType.ATHLETE_FROM_COUNTRY
                 || typeValue == OlympicGamesTaskType.ATHLETE_FROM_MEDAL_YEAR_SPORT
                 || typeValue == OlympicGamesTaskType.ATHLETE_FROM_MEDAL_CITY_SPORT) {
             answer.setTextContent(object.getAthlete());
-        } else if (typeValue == OlympicGamesTaskType.COUNTRY_FROM_MEDAL_YEAR_FOR_POPULAR_ONLY_TEAM_SPORT) {
-            answer.setTextContent(object.getCountry());
+        } else if (typeValue == OlympicGamesTaskType.COUNTRY_FROM_MEDAL_YEAR_FOR_POPULAR_ONLY_TEAM_SPORT
+                || typeValue == OlympicGamesTaskType.COUNTRY_FROM_ATHLETE) {
+            answer.setTextContentPolish(object.getCountryPolish());
+            answer.setTextContentEnglish(object.getCountryEnglish());
         }
     }
 
-    private List<OlympicMedal> prepareObjects(OlympicGamesTaskType typeValue, int difficulty, int answersCount) {
+    private List<OlympicMedal> prepareObjects(OlympicGamesTaskType typeValue, int answersCount) {
         if (typeValue == OlympicGamesTaskType.CITY_FROM_YEAR
                 || typeValue == OlympicGamesTaskType.YEAR_FROM_CITY) {
             return cityYearPrepareObjects(answersCount);
@@ -117,7 +125,11 @@ public class OlympicGamesOneCorrectTaskService {
                 || typeValue == OlympicGamesTaskType.CITY_FROM_ATHLETE) {
             return yearCityFromAthletePrepareObjects(answersCount);
         } else if (typeValue == OlympicGamesTaskType.COUNTRY_FROM_MEDAL_YEAR_FOR_POPULAR_ONLY_TEAM_SPORT) {
-            return countryPrepareObjects(answersCount);
+            return countryPopularTeamSportPrepareObjects(answersCount);
+        } else if (typeValue == OlympicGamesTaskType.COUNTRY_FROM_ATHLETE) {
+            return countryAthletePrepareObjects(answersCount);
+        } else if (typeValue == OlympicGamesTaskType.ATHLETE_FROM_COUNTRY) {
+            return athleteCountryPrepareObjects(answersCount);
         }
         throw new IllegalArgumentException();
     }
@@ -147,6 +159,18 @@ public class OlympicGamesOneCorrectTaskService {
                         && (olympicMedal.getYear().equals(correctOlympicMedal.getYear())
                         || olympicMedal.getCity().equals(correctOlympicMedal.getCity())))
                 .collect(Collectors.toList());
+        return athletePrepareObjectsHelper(allOlympicMedals, allCorrectOlympicMedals, answersCount, correctOlympicMedal);
+    }
+
+    private List<OlympicMedal> athleteCountryPrepareObjects(int answersCount) {
+        List<OlympicMedal> allOlympicMedals = olympicMedalRepository.findAllByTeamAndCountryMapped(false, true);
+        OlympicMedal correctOlympicMedal = randomElement(allOlympicMedals);
+        List<OlympicMedal> allCorrectOlympicMedals = olympicMedalRepository.findAllByIocCountryCode(correctOlympicMedal.getIocCountryCode());
+        return athletePrepareObjectsHelper(allOlympicMedals, allCorrectOlympicMedals, answersCount, correctOlympicMedal);
+    }
+
+
+    private List<OlympicMedal> athletePrepareObjectsHelper(List<OlympicMedal> allOlympicMedals, List<OlympicMedal> allCorrectOlympicMedals, int answersCount, OlympicMedal correctOlympicMedal) {
         Set<String> correctAthletes = allCorrectOlympicMedals.stream().map(OlympicMedal::getAthlete).collect(Collectors.toSet());
         Set<String> usedAthletes = new HashSet<>();
         List<OlympicMedal> pickedOlympicMedals = new ArrayList<>(answersCount);
@@ -185,25 +209,36 @@ public class OlympicGamesOneCorrectTaskService {
         return pickedOlympicMedals;
     }
 
-    private List<OlympicMedal> countryPrepareObjects(int answersCount){
-        List<OlympicMedal> allOlympicMedals = olympicMedalRepository.findAllByPopularTeamSport(true);
+    private List<OlympicMedal> countryPopularTeamSportPrepareObjects(int answersCount) {
+        List<OlympicMedal> allOlympicMedals = olympicMedalRepository.findAllByPopularTeamSportAndCountryMapped(true, true);
         OlympicMedal correctOlympicMedal = randomElement(allOlympicMedals);
         List<OlympicMedal> allCorrectOlympicMedals = allOlympicMedals.stream()
                 .filter(olympicMedal -> olympicMedal.getMedal() == correctOlympicMedal.getMedal()
                         && (olympicMedal.getYear().equals(correctOlympicMedal.getYear())
                         || olympicMedal.getCity().equals(correctOlympicMedal.getCity())))
                 .collect(Collectors.toList());
-        Set<String> correctCountries= allCorrectOlympicMedals.stream().map(OlympicMedal::getCountry).collect(Collectors.toSet());
+        return countryPrepareObjectsHelper(allOlympicMedals, allCorrectOlympicMedals, answersCount, correctOlympicMedal);
+    }
+
+    private List<OlympicMedal> countryAthletePrepareObjects(int answersCount) {
+        List<OlympicMedal> allOlympicMedals = olympicMedalRepository.findAllByTeamAndCountryMapped(false, true);
+        OlympicMedal correctOlympicMedal = randomElement(allOlympicMedals);
+        List<OlympicMedal> allCorrectOlympicMedals = olympicMedalRepository.findAllByAthlete(correctOlympicMedal.getAthlete());
+        return countryPrepareObjectsHelper(allOlympicMedals, allCorrectOlympicMedals, answersCount, correctOlympicMedal);
+    }
+
+    private List<OlympicMedal> countryPrepareObjectsHelper(List<OlympicMedal> allOlympicMedals, List<OlympicMedal> allCorrectOlympicMedals, int answersCount, OlympicMedal correctOlympicMedal) {
+        Set<String> correctCountries = allCorrectOlympicMedals.stream().map(OlympicMedal::getIocCountryCode).collect(Collectors.toSet());
         Set<String> usedCountries = new HashSet<>();
         List<OlympicMedal> pickedOlympicMedals = new ArrayList<>(answersCount);
         pickedOlympicMedals.add(correctOlympicMedal);
         while (pickedOlympicMedals.size() < answersCount) {
             OlympicMedal olympicMedal = randomElement(allOlympicMedals);
-            if (usedCountries.contains(olympicMedal.getCountry()) || correctCountries.contains(olympicMedal.getCountry())) {
+            if (usedCountries.contains(olympicMedal.getIocCountryCode()) || correctCountries.contains(olympicMedal.getIocCountryCode())) {
                 continue;
             }
             pickedOlympicMedals.add(olympicMedal);
-            usedCountries.add(olympicMedal.getCountry());
+            usedCountries.add(olympicMedal.getIocCountryCode());
         }
         return pickedOlympicMedals;
     }

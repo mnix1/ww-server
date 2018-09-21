@@ -6,6 +6,8 @@ import static com.ww.helper.RandomHelper.randomElement;
 
 public enum OlympicGamesTaskType {
     COUNTRY_FROM_MEDAL_YEAR_FOR_POPULAR_ONLY_TEAM_SPORT,
+    COUNTRY_FROM_ATHLETE,
+    ATHLETE_FROM_COUNTRY,
     YEAR_FROM_ATHLETE,
     CITY_FROM_ATHLETE,
     ATHLETE_FROM_MEDAL_YEAR,

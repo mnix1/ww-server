@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.List;
+import java.util.Map;
 
 import static com.ww.model.constant.Gender.MEN;
 
@@ -35,7 +36,10 @@ public class OlympicMedal {
     private String sportPolish;
     private String discipline;
     private String athlete;
-    private String country;
+    private String iocCountryCode;
+    private Boolean countryMapped = false;
+    private String countryEnglish;
+    private String countryPolish;
     private Gender gender;
     private String event;
     private OlympicGamesMedal medal;
@@ -43,7 +47,7 @@ public class OlympicMedal {
     private Boolean onlyTeamSport;
     private Boolean team;
 
-    public OlympicMedal(List<String> params, OlympicGamesType type, JsonNode mapping) {
+    public OlympicMedal(List<String> params, OlympicGamesType type, JsonNode mapping, Map<String, Country> countryMapping) {
         ObjectNode cityMapping = (ObjectNode) mapping.get("city");
         ObjectNode sportMapping = (ObjectNode) mapping.get("sport");
         this.type = type;
@@ -54,7 +58,13 @@ public class OlympicMedal {
         this.sportPolish = sportMapping.get(this.sport).asText();
         this.discipline = params.get(3);
         this.athlete = swapAthleteName(params.get(4));
-        this.country = params.get(5);
+        this.iocCountryCode = params.get(5);
+        if (countryMapping.containsKey(iocCountryCode)) {
+            Country country = countryMapping.get(iocCountryCode);
+            this.countryMapped = true;
+            this.countryEnglish = country.getNameEnglish();
+            this.countryPolish = country.getNamePolish();
+        }
         this.gender = Gender.fromString(params.get(6));
         this.event = params.get(7);
         this.medal = OlympicGamesMedal.fromString(params.get(8));
@@ -95,9 +105,7 @@ public class OlympicMedal {
     @Override
     public String toString() {
         return "{" +
-                year +
-                ", " + city +
-                ", " + medal.getNamePolish() +
+                countryPolish +
                 ", " + athlete +
                 '}';
     }
