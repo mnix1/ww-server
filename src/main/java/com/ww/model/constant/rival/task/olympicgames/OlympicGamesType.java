@@ -1,4 +1,4 @@
-package com.ww.model.constant.rival.task;
+package com.ww.model.constant.rival.task.olympicgames;
 
 import lombok.Getter;
 

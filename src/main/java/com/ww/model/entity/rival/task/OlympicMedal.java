@@ -2,9 +2,10 @@ package com.ww.model.entity.rival.task;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.ww.model.constant.Gender;
 import com.ww.model.constant.Language;
-import com.ww.model.constant.rival.task.OlympicGamesMedal;
-import com.ww.model.constant.rival.task.OlympicGamesType;
+import com.ww.model.constant.rival.task.olympicgames.OlympicGamesMedal;
+import com.ww.model.constant.rival.task.olympicgames.OlympicGamesType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +15,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.List;
+
+import static com.ww.model.constant.Gender.MEN;
 
 @Setter
 @Getter
@@ -33,9 +36,10 @@ public class OlympicMedal {
     private String discipline;
     private String athlete;
     private String country;
-    private String gender;
+    private Gender gender;
     private String event;
     private OlympicGamesMedal medal;
+    private Boolean popularTeamSport;
     private Boolean onlyTeamSport;
     private Boolean team;
 
@@ -51,9 +55,10 @@ public class OlympicMedal {
         this.discipline = params.get(3);
         this.athlete = swapAthleteName(params.get(4));
         this.country = params.get(5);
-        this.gender = params.get(6);
+        this.gender = Gender.fromString(params.get(6));
         this.event = params.get(7);
         this.medal = OlympicGamesMedal.fromString(params.get(8));
+        this.popularTeamSport = initPopularTeamSport();
         this.onlyTeamSport = initTeamFromSport();
         this.team = initTeam();
     }
@@ -81,7 +86,7 @@ public class OlympicMedal {
     }
 
     public String getWonPolish() {
-        if (gender.equals("Men")) {
+        if (gender == MEN) {
             return "zdobył";
         }
         return "zdobyła";
@@ -101,22 +106,26 @@ public class OlympicMedal {
         return onlyTeamSport || initTeamFromEvent() || initTeamFromMixed();
     }
 
-    private Boolean initTeamFromSport() {
+    private Boolean initPopularTeamSport() {
         return sport.contains("Baseball")
                 || sport.contains("Ice Hockey")
-                || sport.contains("Softball")
-                || sport.contains("Hockey")
-                || sport.contains("Curling")
                 || sport.contains("Handball")
-                || sport.contains("Lacrosse")
                 || sport.contains("Volleyball")
-                || sport.contains("Polo")
                 || sport.contains("Rugby")
+                || sport.contains("Softball")
                 || sport.contains("Basketball")
                 || sport.contains("Tug of War")
-                || sport.contains("Cricket")
-                || discipline.contains("Water Polo")
                 || sport.contains("Football");
+    }
+
+    private Boolean initTeamFromSport() {
+        return popularTeamSport
+                || sport.contains("Hockey")
+                || sport.contains("Curling")
+                || sport.contains("Lacrosse")
+                || sport.contains("Polo")
+                || sport.contains("Cricket")
+                || discipline.contains("Water Polo");
     }
 
     private Boolean initTeamFromMixed() {

@@ -1,5 +1,6 @@
 package com.ww.service.rival.task.olympicgames;
 
+import com.ww.model.constant.Gender;
 import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.OlympicGamesTaskType;
@@ -37,18 +38,86 @@ public class OlympicGamesOneCorrectTaskService {
         return question;
     }
 
+    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, OlympicGamesTaskType typeValue, OlympicMedal cOM) {
+        Question question = new Question(type, difficultyLevel);
+        if (typeValue == OlympicGamesTaskType.CITY_FROM_YEAR) {
+            question.setTextContentPolish("Gdzie odbyły się " + cOM.getTypeLang(Language.POLISH) + " w " + cOM.getYear() + " roku?");
+            question.setTextContentEnglish("Where the " + cOM.getTypeLang(Language.ENGLISH) + " took place in " + cOM.getYear() + "?");
+        } else if (typeValue == OlympicGamesTaskType.YEAR_FROM_CITY) {
+            question.setTextContentPolish("W którym roku " + cOM.getTypeLang(Language.POLISH) + " zostały przeprowadzone w mieście " + cOM.getCityPolish() + "?");
+            question.setTextContentEnglish("In which year the " + cOM.getTypeLang(Language.ENGLISH) + " were held in " + cOM.getCity() + "?");
+        } else if (typeValue == OlympicGamesTaskType.ATHLETE_FROM_MEDAL_YEAR) {
+            question.setTextContentPolish("Kto otrzymał " + cOM.getMedalLang(Language.POLISH) + " medal na IO w " + cOM.getYear() + " roku?");
+            question.setTextContentEnglish("Who received the " + cOM.getMedalLang(Language.ENGLISH) + " medal at Olympic Games in " + cOM.getYear() + "?");
+        } else if (typeValue == OlympicGamesTaskType.ATHLETE_FROM_MEDAL_CITY) {
+            question.setTextContentPolish("Kto wygrał " + cOM.getMedalLang(Language.POLISH) + " medal na IO w mieście " + cOM.getCityPolish() + "?");
+            question.setTextContentEnglish("Who received the " + cOM.getMedalLang(Language.ENGLISH) + " medal at Olympic Games in " + cOM.getCity() + "?");
+        } else if (typeValue == OlympicGamesTaskType.ATHLETE_FROM_MEDAL_YEAR_SPORT) {
+            question.setTextContentPolish("Kto otrzymał " + cOM.getMedalLang(Language.POLISH) + " medal na IO w " + cOM.getYear() + " roku w sporcie \"" + cOM.getSportPolish().toLowerCase() + "\"?");
+            question.setTextContentEnglish("Who received the " + cOM.getMedalLang(Language.ENGLISH) + " medal at Olympic Games in " + cOM.getCity() + " in " + cOM.getSport().toLowerCase() + "?");
+        } else if (typeValue == OlympicGamesTaskType.ATHLETE_FROM_MEDAL_CITY_SPORT) {
+            question.setTextContentPolish("Kto zdobył " + cOM.getMedalLang(Language.POLISH) + " medal na IO w mieście " + cOM.getCityPolish() + " w sporcie \"" + cOM.getSportPolish().toLowerCase() + "\"?");
+            question.setTextContentEnglish("Who won the " + cOM.getMedalLang(Language.ENGLISH) + " medal at Olympic Games in " + cOM.getCity() + " in " + cOM.getSport().toLowerCase() + "?");
+        } else if (typeValue == OlympicGamesTaskType.YEAR_FROM_ATHLETE) {
+            question.setTextContentPolish("W którym roku odbyły się " + cOM.getTypeLang(Language.POLISH) + " w których medal " + cOM.getWonPolish() + " " + cOM.getAthlete() + "?");
+            question.setTextContentEnglish("In which year the " + cOM.getTypeLang(Language.ENGLISH) + " were held in which " + cOM.getAthlete() + " won the medal?");
+        } else if (typeValue == OlympicGamesTaskType.CITY_FROM_ATHLETE) {
+            question.setTextContentPolish("Gdzie odbyły się " + cOM.getTypeLang(Language.POLISH) + " w których medal " + cOM.getWonPolish() + " " + cOM.getAthlete() + "?");
+            question.setTextContentEnglish("Where the " + cOM.getTypeLang(Language.ENGLISH) + " took place in which " + cOM.getAthlete() + " won the medal?");
+        } else if (typeValue == OlympicGamesTaskType.COUNTRY_FROM_MEDAL_YEAR_FOR_POPULAR_ONLY_TEAM_SPORT) {
+            String beginPolish = cOM.getGender() == Gender.MEN ? "Reprezentanci którego kraju zdobyli " : "Reprezentantki którego kraju zdobyły ";
+            question.setTextContentPolish(beginPolish + cOM.getMedal().getNamePolish() + " medal na IO w " + cOM.getYear() + " roku w sporcie \"" + cOM.getSportPolish().toLowerCase() + "\"?");
+            question.setTextContentEnglish("The representatives of which country won the " + cOM.getMedal().getNameEnglish() + " medal at Olympic Games in " + cOM.getYear() + " in " + cOM.getSport() + "?");
+
+        }
+
+        return question;
+    }
+
+    private List<Answer> prepareAnswers(OlympicGamesTaskType typeValue, OlympicMedal correctOlympicMedal, List<OlympicMedal> wrongOlympicMedals) {
+        List<Answer> answers = wrongOlympicMedals.stream().map(wrongOlympicMedal -> {
+            Answer wrongAnswer = new Answer(false);
+            fillAnswerContent(typeValue, wrongAnswer, wrongOlympicMedal);
+            return wrongAnswer;
+        }).collect(Collectors.toList());
+        Answer correctAnswer = new Answer(true);
+        fillAnswerContent(typeValue, correctAnswer, correctOlympicMedal);
+        answers.add(correctAnswer);
+        return answers;
+    }
+
+    private void fillAnswerContent(OlympicGamesTaskType typeValue, Answer answer, OlympicMedal object) {
+        if (typeValue == OlympicGamesTaskType.CITY_FROM_YEAR
+                || typeValue == OlympicGamesTaskType.CITY_FROM_ATHLETE) {
+            answer.setTextContentPolish(object.getCityPolish());
+            answer.setTextContentEnglish(object.getCity());
+        } else if (typeValue == OlympicGamesTaskType.YEAR_FROM_CITY
+                || typeValue == OlympicGamesTaskType.YEAR_FROM_ATHLETE) {
+            answer.setTextContent(object.getYear() + "");
+        } else if (typeValue == OlympicGamesTaskType.ATHLETE_FROM_MEDAL_YEAR
+                || typeValue == OlympicGamesTaskType.ATHLETE_FROM_MEDAL_CITY
+                || typeValue == OlympicGamesTaskType.ATHLETE_FROM_MEDAL_YEAR_SPORT
+                || typeValue == OlympicGamesTaskType.ATHLETE_FROM_MEDAL_CITY_SPORT) {
+            answer.setTextContent(object.getAthlete());
+        } else if (typeValue == OlympicGamesTaskType.COUNTRY_FROM_MEDAL_YEAR_FOR_POPULAR_ONLY_TEAM_SPORT) {
+            answer.setTextContent(object.getCountry());
+        }
+    }
+
     private List<OlympicMedal> prepareObjects(OlympicGamesTaskType typeValue, int difficulty, int answersCount) {
         if (typeValue == OlympicGamesTaskType.CITY_FROM_YEAR
                 || typeValue == OlympicGamesTaskType.YEAR_FROM_CITY) {
             return cityYearPrepareObjects(answersCount);
-        } else if (typeValue == OlympicGamesTaskType.WHICH_ATHLETE_FROM_MEDAL_YEAR
-                || typeValue == OlympicGamesTaskType.WHICH_ATHLETE_FROM_MEDAL_CITY
-                || typeValue == OlympicGamesTaskType.WHICH_ATHLETE_FROM_MEDAL_YEAR_SPORT
-                || typeValue == OlympicGamesTaskType.WHICH_ATHLETE_FROM_MEDAL_CITY_SPORT) {
-            return whichAthletePrepareObjects(answersCount);
+        } else if (typeValue == OlympicGamesTaskType.ATHLETE_FROM_MEDAL_YEAR
+                || typeValue == OlympicGamesTaskType.ATHLETE_FROM_MEDAL_CITY
+                || typeValue == OlympicGamesTaskType.ATHLETE_FROM_MEDAL_YEAR_SPORT
+                || typeValue == OlympicGamesTaskType.ATHLETE_FROM_MEDAL_CITY_SPORT) {
+            return athletePrepareObjects(answersCount);
         } else if (typeValue == OlympicGamesTaskType.YEAR_FROM_ATHLETE
                 || typeValue == OlympicGamesTaskType.CITY_FROM_ATHLETE) {
             return yearCityFromAthletePrepareObjects(answersCount);
+        } else if (typeValue == OlympicGamesTaskType.COUNTRY_FROM_MEDAL_YEAR_FOR_POPULAR_ONLY_TEAM_SPORT) {
+            return countryPrepareObjects(answersCount);
         }
         throw new IllegalArgumentException();
     }
@@ -70,7 +139,7 @@ public class OlympicGamesOneCorrectTaskService {
         return pickedOlympicMedals;
     }
 
-    private List<OlympicMedal> whichAthletePrepareObjects(int answersCount) {
+    private List<OlympicMedal> athletePrepareObjects(int answersCount) {
         List<OlympicMedal> allOlympicMedals = olympicMedalRepository.findAllByTeam(false);
         OlympicMedal correctOlympicMedal = randomElement(allOlympicMedals);
         List<OlympicMedal> allCorrectOlympicMedals = allOlympicMedals.stream()
@@ -116,61 +185,27 @@ public class OlympicGamesOneCorrectTaskService {
         return pickedOlympicMedals;
     }
 
-    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, OlympicGamesTaskType typeValue, OlympicMedal correctOlympicMedal) {
-        Question question = new Question(type, difficultyLevel);
-        if (typeValue == OlympicGamesTaskType.CITY_FROM_YEAR) {
-            question.setTextContentPolish("Gdzie odbyły się " + correctOlympicMedal.getTypeLang(Language.POLISH) + " w " + correctOlympicMedal.getYear() + " roku?");
-            question.setTextContentEnglish("Where the " + correctOlympicMedal.getTypeLang(Language.ENGLISH) + " took place in " + correctOlympicMedal.getYear() + "?");
-        } else if (typeValue == OlympicGamesTaskType.YEAR_FROM_CITY) {
-            question.setTextContentPolish("W którym roku " + correctOlympicMedal.getTypeLang(Language.POLISH) + " zostały przeprowadzone w mieście " + correctOlympicMedal.getCityPolish() + "?");
-            question.setTextContentEnglish("In which year the " + correctOlympicMedal.getTypeLang(Language.ENGLISH) + " were held in " + correctOlympicMedal.getCity() + "?");
-        } else if (typeValue == OlympicGamesTaskType.WHICH_ATHLETE_FROM_MEDAL_YEAR) {
-            question.setTextContentPolish("Kto otrzymał " + correctOlympicMedal.getMedalLang(Language.POLISH) + " medal na IO w " + correctOlympicMedal.getYear() + " roku?");
-            question.setTextContentEnglish("Who received the " + correctOlympicMedal.getMedalLang(Language.ENGLISH) + " medal at Olympic Games in " + correctOlympicMedal.getYear() + "?");
-        } else if (typeValue == OlympicGamesTaskType.WHICH_ATHLETE_FROM_MEDAL_CITY) {
-            question.setTextContentPolish("Kto wygrał " + correctOlympicMedal.getMedalLang(Language.POLISH) + " medal na IO w mieście " + correctOlympicMedal.getCityPolish() + "?");
-            question.setTextContentEnglish("Who received the " + correctOlympicMedal.getMedalLang(Language.ENGLISH) + " medal at Olympic Games in " + correctOlympicMedal.getCity() + "?");
-        } else if (typeValue == OlympicGamesTaskType.WHICH_ATHLETE_FROM_MEDAL_YEAR_SPORT) {
-            question.setTextContentPolish("Kto otrzymał " + correctOlympicMedal.getMedalLang(Language.POLISH) + " medal na IO w " + correctOlympicMedal.getYear() + " roku w sporcie \"" + correctOlympicMedal.getSportPolish().toLowerCase() + "\"?");
-            question.setTextContentEnglish("Who received the " + correctOlympicMedal.getMedalLang(Language.ENGLISH) + " medal at Olympic Games in " + correctOlympicMedal.getCity() + " in " + correctOlympicMedal.getSport().toLowerCase() + "?");
-        } else if (typeValue == OlympicGamesTaskType.WHICH_ATHLETE_FROM_MEDAL_CITY_SPORT) {
-            question.setTextContentPolish("Kto zdobył " + correctOlympicMedal.getMedalLang(Language.POLISH) + " medal na IO w mieście " + correctOlympicMedal.getCityPolish() + " w sporcie \"" + correctOlympicMedal.getSportPolish().toLowerCase() + "\"?");
-            question.setTextContentEnglish("Who won the " + correctOlympicMedal.getMedalLang(Language.ENGLISH) + " medal at Olympic Games in " + correctOlympicMedal.getCity() + " in " + correctOlympicMedal.getSport().toLowerCase() + "?");
-        } else if (typeValue == OlympicGamesTaskType.YEAR_FROM_ATHLETE) {
-            question.setTextContentPolish("W którym roku odbyły się " + correctOlympicMedal.getTypeLang(Language.POLISH) + " w których medal " + correctOlympicMedal.getWonPolish() + " " + correctOlympicMedal.getAthlete() + "?");
-        } else if (typeValue == OlympicGamesTaskType.CITY_FROM_ATHLETE) {
-            question.setTextContentPolish("Gdzie odbyły się " + correctOlympicMedal.getTypeLang(Language.POLISH) + " w których medal " + correctOlympicMedal.getWonPolish() + " " + correctOlympicMedal.getAthlete() + "?");
+    private List<OlympicMedal> countryPrepareObjects(int answersCount){
+        List<OlympicMedal> allOlympicMedals = olympicMedalRepository.findAllByPopularTeamSport(true);
+        OlympicMedal correctOlympicMedal = randomElement(allOlympicMedals);
+        List<OlympicMedal> allCorrectOlympicMedals = allOlympicMedals.stream()
+                .filter(olympicMedal -> olympicMedal.getMedal() == correctOlympicMedal.getMedal()
+                        && (olympicMedal.getYear().equals(correctOlympicMedal.getYear())
+                        || olympicMedal.getCity().equals(correctOlympicMedal.getCity())))
+                .collect(Collectors.toList());
+        Set<String> correctCountries= allCorrectOlympicMedals.stream().map(OlympicMedal::getCountry).collect(Collectors.toSet());
+        Set<String> usedCountries = new HashSet<>();
+        List<OlympicMedal> pickedOlympicMedals = new ArrayList<>(answersCount);
+        pickedOlympicMedals.add(correctOlympicMedal);
+        while (pickedOlympicMedals.size() < answersCount) {
+            OlympicMedal olympicMedal = randomElement(allOlympicMedals);
+            if (usedCountries.contains(olympicMedal.getCountry()) || correctCountries.contains(olympicMedal.getCountry())) {
+                continue;
+            }
+            pickedOlympicMedals.add(olympicMedal);
+            usedCountries.add(olympicMedal.getCountry());
         }
-
-        return question;
-    }
-
-    private List<Answer> prepareAnswers(OlympicGamesTaskType typeValue, OlympicMedal correctOlympicMedal, List<OlympicMedal> wrongOlympicMedals) {
-        List<Answer> answers = wrongOlympicMedals.stream().map(wrongOlympicMedal -> {
-            Answer wrongAnswer = new Answer(false);
-            fillAnswerContent(typeValue, wrongAnswer, wrongOlympicMedal);
-            return wrongAnswer;
-        }).collect(Collectors.toList());
-        Answer correctAnswer = new Answer(true);
-        fillAnswerContent(typeValue, correctAnswer, correctOlympicMedal);
-        answers.add(correctAnswer);
-        return answers;
-    }
-
-    private void fillAnswerContent(OlympicGamesTaskType typeValue, Answer answer, OlympicMedal object) {
-        if (typeValue == OlympicGamesTaskType.CITY_FROM_YEAR
-                || typeValue == OlympicGamesTaskType.CITY_FROM_ATHLETE) {
-            answer.setTextContentPolish(object.getCityPolish());
-            answer.setTextContentEnglish(object.getCity());
-        } else if (typeValue == OlympicGamesTaskType.YEAR_FROM_CITY
-                || typeValue == OlympicGamesTaskType.YEAR_FROM_ATHLETE) {
-            answer.setTextContent(object.getYear() + "");
-        } else if (typeValue == OlympicGamesTaskType.WHICH_ATHLETE_FROM_MEDAL_YEAR
-                || typeValue == OlympicGamesTaskType.WHICH_ATHLETE_FROM_MEDAL_CITY
-                || typeValue == OlympicGamesTaskType.WHICH_ATHLETE_FROM_MEDAL_YEAR_SPORT
-                || typeValue == OlympicGamesTaskType.WHICH_ATHLETE_FROM_MEDAL_CITY_SPORT) {
-            answer.setTextContent(object.getAthlete());
-        }
+        return pickedOlympicMedals;
     }
 
 }

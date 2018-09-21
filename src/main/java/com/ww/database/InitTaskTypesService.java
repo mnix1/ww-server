@@ -60,33 +60,37 @@ public class InitTaskTypesService {
 //                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.2),
 //                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.13)
 //        ))));
-//        taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.WHICH_ATHLETE_FROM_MEDAL_YEAR.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 17, new HashSet<>(Arrays.asList(
+//        taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.ATHLETE_FROM_MEDAL_YEAR.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 17, new HashSet<>(Arrays.asList(
 //                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.9),
 //                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.05),
 //                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.05)
 //        ))));
-//        taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.WHICH_ATHLETE_FROM_MEDAL_CITY.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 17, new HashSet<>(Arrays.asList(
+//        taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.ATHLETE_FROM_MEDAL_CITY.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 17, new HashSet<>(Arrays.asList(
 //                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.9),
 //                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.05),
 //                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.05)
 //        ))));
-//        taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.WHICH_ATHLETE_FROM_MEDAL_YEAR_SPORT.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 16, new HashSet<>(Arrays.asList(
+//        taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.ATHLETE_FROM_MEDAL_YEAR_SPORT.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 16, new HashSet<>(Arrays.asList(
 //                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.8),
 //                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.15),
 //                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.05)
 //        ))));
-//        taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.WHICH_ATHLETE_FROM_MEDAL_CITY_SPORT.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 16, new HashSet<>(Arrays.asList(
+//        taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.ATHLETE_FROM_MEDAL_CITY_SPORT.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 16, new HashSet<>(Arrays.asList(
 //                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.8),
 //                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.15),
 //                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.05)
 //        ))));
-        taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.YEAR_FROM_ATHLETE.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 15, new HashSet<>(Arrays.asList(
-                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.7),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.25)
-        ))));
-        taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.CITY_FROM_ATHLETE.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 15, new HashSet<>(Arrays.asList(
-                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.7),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.25)
+//        taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.YEAR_FROM_ATHLETE.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 13, new HashSet<>(Arrays.asList(
+//                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.7),
+//                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.3)
+//        ))));
+//        taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.CITY_FROM_ATHLETE.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 13, new HashSet<>(Arrays.asList(
+//                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.7),
+//                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.3)
+//        ))));
+        taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.COUNTRY_FROM_MEDAL_YEAR_FOR_POPULAR_ONLY_TEAM_SPORT.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 10, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.6),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.4)
         ))));
     }
 

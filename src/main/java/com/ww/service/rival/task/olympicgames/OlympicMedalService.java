@@ -2,7 +2,7 @@ package com.ww.service.rival.task.olympicgames;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jackson.JsonLoader;
-import com.ww.model.constant.rival.task.OlympicGamesType;
+import com.ww.model.constant.rival.task.olympicgames.OlympicGamesType;
 import com.ww.model.entity.rival.task.OlympicMedal;
 import com.ww.repository.rival.task.category.OlympicMedalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class OlympicMedalService {
