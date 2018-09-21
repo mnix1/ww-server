@@ -4127,7 +4127,7 @@ Year,City,Sport,Discipline,Athlete,Country,Gender,Event,Medal
 1924,Paris,Aquatics,Diving,"BECKER-PINKSTON, Elizabeth",USA,Women,10M Platform,Silver
 1924,Paris,Aquatics,Diving,"PINKSTON, Clarence",USA,Men,3M Springboard,Bronze
 1924,Paris,Aquatics,Diving,"WHITE, Albert",USA,Men,3M Springboard,Gold
-1924,Paris,Aquatics,Diving,"DESJARDINS, Ulise Joseph ""Peter""",USA,Men,3M Springboard,Silver
+1924,Paris,Aquatics,Diving,"DESJARDINS, Ulise Joseph 'Peter'",USA,Men,3M Springboard,Silver
 1924,Paris,Aquatics,Diving,"FLETCHER, Caroline",USA,Women,3M Springboard,Bronze
 1924,Paris,Aquatics,Diving,"BECKER-PINKSTON, Elizabeth",USA,Women,3M Springboard,Gold
 1924,Paris,Aquatics,Diving,"RIGGIN, Aileen",USA,Women,3M Springboard,Silver
@@ -5004,13 +5004,13 @@ Year,City,Sport,Discipline,Athlete,Country,Gender,Event,Medal
 1924,Paris,Wrestling,Wrestling Gre-R,"WESTERGREN, Carl",SWE,Men,75 - 82.5KG (Light-Heavyweight),Gold
 1924,Paris,Wrestling,Wrestling Gre-R,"SVENSSON, Rudolf",SWE,Men,75 - 82.5KG (Light-Heavyweight),Silver
 1928,Amsterdam,Aquatics,Diving,"GALITZEN, Michael Riley",USA,Men,10M Platform,Bronze
-1928,Amsterdam,Aquatics,Diving,"DESJARDINS, Ulise Joseph ""Peter""",USA,Men,10M Platform,Gold
+1928,Amsterdam,Aquatics,Diving,"DESJARDINS, Ulise Joseph 'Peter'",USA,Men,10M Platform,Gold
 1928,Amsterdam,Aquatics,Diving,"SIMAIKA, Farid",EGY,Men,10M Platform,Silver
 1928,Amsterdam,Aquatics,Diving,"SJÖQVIST, Laura",SWE,Women,10M Platform,Bronze
 1928,Amsterdam,Aquatics,Diving,"BECKER-PINKSTON, Elizabeth",USA,Women,10M Platform,Gold
 1928,Amsterdam,Aquatics,Diving,"COLEMAN, Georgia V.",USA,Women,10M Platform,Silver
 1928,Amsterdam,Aquatics,Diving,"SIMAIKA, Farid",EGY,Men,3M Springboard,Bronze
-1928,Amsterdam,Aquatics,Diving,"DESJARDINS, Ulise Joseph ""Peter""",USA,Men,3M Springboard,Gold
+1928,Amsterdam,Aquatics,Diving,"DESJARDINS, Ulise Joseph 'Peter'",USA,Men,3M Springboard,Gold
 1928,Amsterdam,Aquatics,Diving,"GALITZEN, Michael Riley",USA,Men,3M Springboard,Silver
 1928,Amsterdam,Aquatics,Diving,"COLEMAN, Georgia V.",USA,Women,3M Springboard,Bronze
 1928,Amsterdam,Aquatics,Diving,"MEANY, Helen",USA,Women,3M Springboard,Gold
@@ -5132,7 +5132,7 @@ Year,City,Sport,Discipline,Athlete,Country,Gender,Event,Medal
 1928,Amsterdam,Athletics,Athletics,"HOLDMANN, Anny",GER,Women,4X100M Relay,Bronze
 1928,Amsterdam,Athletics,Athletics,"JUNKER, Helene",GER,Women,4X100M Relay,Bronze
 1928,Amsterdam,Athletics,Athletics,"KELLNER, Rose",GER,Women,4X100M Relay,Bronze
-1928,Amsterdam,Athletics,Athletics,"SCHMIDT, Helene ""Leni""",GER,Women,4X100M Relay,Bronze
+1928,Amsterdam,Athletics,Athletics,"SCHMIDT, Helene 'Leni'",GER,Women,4X100M Relay,Bronze
 1928,Amsterdam,Athletics,Athletics,"COOK, Myrtle Alice",CAN,Women,4X100M Relay,Gold
 1928,Amsterdam,Athletics,Athletics,"ROSENFELD, Fanny",CAN,Women,4X100M Relay,Gold
 1928,Amsterdam,Athletics,Athletics,"SMITH, Ethel M.",CAN,Women,4X100M Relay,Gold
@@ -5160,7 +5160,7 @@ Year,City,Sport,Discipline,Athlete,Country,Gender,Event,Medal
 1928,Amsterdam,Athletics,Athletics,"LOWE, Douglas Gordon",GBR,Men,800M,Gold
 1928,Amsterdam,Athletics,Athletics,"BYLEHN, Erik",SWE,Men,800M,Silver
 1928,Amsterdam,Athletics,Athletics,"GENTZEL, Inga K.",SWE,Women,800M,Bronze
-1928,Amsterdam,Athletics,Athletics,"RADKE, Karoline ""Lina""",GER,Women,800M,Gold
+1928,Amsterdam,Athletics,Athletics,"RADKE, Karoline 'Lina'",GER,Women,800M,Gold
 1928,Amsterdam,Athletics,Athletics,"HITOMI, Kinue",JPN,Women,800M,Silver
 1928,Amsterdam,Athletics,Athletics,"DOHERTY, John Kenneth",USA,Men,Decathlon,Bronze
 1928,Amsterdam,Athletics,Athletics,"YRJÖLÄ, Paavo Ilmari",FIN,Men,Decathlon,Gold
@@ -8406,7 +8406,7 @@ Year,City,Sport,Discipline,Athlete,Country,Gender,Event,Medal
 1952,Helsinki,Equestrian,Dressage,"FISCHER, Gustav",SUI,Men,Team,Silver
 1952,Helsinki,Equestrian,Dressage,"TRACHSEL, Gottfried",SUI,Men,Team,Silver
 1952,Helsinki,Equestrian,Dressage,"VON NAGEL, Ida",GER,Women,Team,Bronze
-1952,Helsinki,Equestrian,Eventing,"BÜSING, Wilhelm ""Willy""",GER,Men,Individual,Bronze
+1952,Helsinki,Equestrian,Eventing,"BÜSING, Wilhelm 'Willy'",GER,Men,Individual,Bronze
 1952,Helsinki,Equestrian,Eventing,"VON BLIXEN FINECKE JR., Hans",SWE,Men,Individual,Gold
 1952,Helsinki,Equestrian,Eventing,"LEFRANT, Guy Robert Marie",FRA,Men,Individual,Silver
 1952,Helsinki,Equestrian,Eventing,"HOUGH, Charles Gordon Jr.",USA,Men,Team,Bronze
@@ -8415,7 +8415,7 @@ Year,City,Sport,Discipline,Athlete,Country,Gender,Event,Medal
 1952,Helsinki,Equestrian,Eventing,"FRÖLEN, Folke",SWE,Men,Team,Gold
 1952,Helsinki,Equestrian,Eventing,"STAHRE, Olof",SWE,Men,Team,Gold
 1952,Helsinki,Equestrian,Eventing,"VON BLIXEN FINECKE JR., Hans",SWE,Men,Team,Gold
-1952,Helsinki,Equestrian,Eventing,"BÜSING, Wilhelm ""Willy""",GER,Men,Team,Silver
+1952,Helsinki,Equestrian,Eventing,"BÜSING, Wilhelm 'Willy'",GER,Men,Team,Silver
 1952,Helsinki,Equestrian,Eventing,"ROTHE, Otto",GER,Men,Team,Silver
 1952,Helsinki,Equestrian,Eventing,"WAGNER, Klaus",GER,Men,Team,Silver
 1952,Helsinki,Equestrian,Jumping,"THIEDEMANN, Fritz",GER,Men,Individual,Bronze
@@ -8496,7 +8496,7 @@ Year,City,Sport,Discipline,Athlete,Country,Gender,Event,Medal
 1952,Helsinki,Fencing,Fencing,"PELLINI, Giorgio",ITA,Men,Sabre Team,Silver
 1952,Helsinki,Fencing,Fencing,"PINTON, Vincenzo",ITA,Men,Sabre Team,Silver
 1952,Helsinki,Fencing,Fencing,"RACCA, Mauro",ITA,Men,Sabre Team,Silver
-1952,Helsinki,Football,Football,"AHLUND, Olof ""Olle""",SWE,Men,Football,Bronze
+1952,Helsinki,Football,Football,"AHLUND, Olof 'Olle'",SWE,Men,Football,Bronze
 1952,Helsinki,Football,Football,"BENGTSSON, Sylve",SWE,Men,Football,Bronze
 1952,Helsinki,Football,Football,"BRODD, Yngve",SWE,Men,Football,Bronze
 1952,Helsinki,Football,Football,"GUSTAVSSON, Bengt",SWE,Men,Football,Bronze
@@ -10821,7 +10821,7 @@ Year,City,Sport,Discipline,Athlete,Country,Gender,Event,Medal
 1964,Tokyo,Athletics,Athletics,"CLARKE, Ronald",AUS,Men,10000M,Bronze
 1964,Tokyo,Athletics,Athletics,"MILLS, William",USA,Men,10000M,Gold
 1964,Tokyo,Athletics,Athletics,"GAMMOUDI, Mohamed",TUN,Men,10000M,Silver
-1964,Tokyo,Athletics,Athletics,"JEROME, Henry Winston ""Harry""",CAN,Men,100M,Bronze
+1964,Tokyo,Athletics,Athletics,"JEROME, Henry Winston 'Harry'",CAN,Men,100M,Bronze
 1964,Tokyo,Athletics,Athletics,"HAYES, Robert",USA,Men,100M,Gold
 1964,Tokyo,Athletics,Athletics,"FIGUEROLA CAMUE, Enrique",CUB,Men,100M,Silver
 1964,Tokyo,Athletics,Athletics,"KLOBUKOWSKA, Ewa",POL,Women,100M,Bronze
@@ -17002,7 +17002,7 @@ Year,City,Sport,Discipline,Athlete,Country,Gender,Event,Medal
 1984,Los Angeles,Basketball,Basketball,"CURRY, Denise Marie",USA,Women,Basketball,Gold
 1984,Los Angeles,Basketball,Basketball,"DONOVAN, Anne Theresa",USA,Women,Basketball,Gold
 1984,Los Angeles,Basketball,Basketball,"EDWARDS, Teresa",USA,Women,Basketball,Gold
-1984,Los Angeles,Basketball,Basketball,"HENRY, Ludi ""Lea""",USA,Women,Basketball,Gold
+1984,Los Angeles,Basketball,Basketball,"HENRY, Ludi 'Lea'",USA,Women,Basketball,Gold
 1984,Los Angeles,Basketball,Basketball,"LAWRENCE, Janice Faye",USA,Women,Basketball,Gold
 1984,Los Angeles,Basketball,Basketball,"MCGEE, Pamela Denise",USA,Women,Basketball,Gold
 1984,Los Angeles,Basketball,Basketball,"MENKEN-SCHAUDT, Carol Jean",USA,Women,Basketball,Gold
@@ -23036,7 +23036,7 @@ Year,City,Sport,Discipline,Athlete,Country,Gender,Event,Medal
 1996,Atlanta,Volleyball,Volleyball,"ZORZI, Andrea",ITA,Men,Volleyball,Silver
 1996,Atlanta,Volleyball,Volleyball,"ALVARES, Ana Margarita",BRA,Women,Volleyball,Bronze
 1996,Atlanta,Volleyball,Volleyball,"BARROS, Leila",BRA,Women,Volleyball,Bronze
-1996,Atlanta,Volleyball,Volleyball,"BODZIAK, Ericleia ""Filo""",BRA,Women,Volleyball,Bronze
+1996,Atlanta,Volleyball,Volleyball,"BODZIAK, Ericleia 'Filo'",BRA,Women,Volleyball,Bronze
 1996,Atlanta,Volleyball,Volleyball,"CALDEIRA, Hilma Aparecida",BRA,Women,Volleyball,Bronze
 1996,Atlanta,Volleyball,Volleyball,"CONNELLY, Ana Paula",BRA,Women,Volleyball,Bronze
 1996,Atlanta,Volleyball,Volleyball,"CUNHA, Marcia Regina",BRA,Women,Volleyball,Bronze
@@ -29602,9 +29602,9 @@ Year,City,Sport,Discipline,Athlete,Country,Gender,Event,Medal
 2012,London,Athletics,Athletics,"MAKHLOUFI, Taoufik",ALG,Men,1500M,Gold
 2012,London,Athletics,Athletics,"MANZANO, Leonel",USA,Men,1500M,Silver
 2012,London,Athletics,Athletics,"IGUIDER, Abdalaati",MAR,Men,1500M,Bronze
-2012,London,Athletics,Athletics,Pending,,Women,1500M,Gold
-2012,London,Athletics,Athletics,"BULUT, Gamze",TUR,Women,1500M,Silver
-2012,London,Athletics,Athletics,"JAMAL, Maryam Yusuf",BRN,Women,1500M,Bronze
+2012,London,Athletics,Athletics,"JAMAL, Maryam Yusuf",BRN,Women,1500M,Gold
+2012,London,Athletics,Athletics,"TOMASHOVA, Tatyana",RUS,Women,1500M,Silver
+2012,London,Athletics,Athletics,"AREGAWI, Abeba",ETH,Women,1500M,Bronze
 2012,London,Athletics,Athletics,"BOLT, Usain",JAM,Men,200M,Gold
 2012,London,Athletics,Athletics,"BLAKE, Yohan",JAM,Men,200M,Silver
 2012,London,Athletics,Athletics,"WEIR, Warren",JAM,Men,200M,Bronze
@@ -31071,7 +31071,6 @@ Year,City,Sport,Discipline,Athlete,Country,Gender,Event,Medal
 2012,London,Weightlifting,Weightlifting,"KIM, Un Guk",PRK,Men,62KG,Gold
 2012,London,Weightlifting,Weightlifting,"FIGUEROA MOSQUERA, Oscar Albeiro",COL,Men,62KG,Silver
 2012,London,Weightlifting,Weightlifting,"IRAWAN, Eko Yuli",INA,Men,62KG,Bronze
-2012,London,Weightlifting,Weightlifting,Pending,,Women,63KG,Gold
 2012,London,Weightlifting,Weightlifting,"TSARUKAEVA, Svetlana",RUS,Women,63KG,Silver
 2012,London,Weightlifting,Weightlifting,"GIRARD, Christine",CAN,Women,63KG,Bronze
 2012,London,Weightlifting,Weightlifting,"LIN, Qingfeng",CHN,Men,69KG,Gold
@@ -31090,8 +31089,8 @@ Year,City,Sport,Discipline,Athlete,Country,Gender,Event,Medal
 2012,London,Weightlifting,Weightlifting,"ROSTAMI, Kianoush",IRI,Men,85KG,Silver
 2012,London,Weightlifting,Weightlifting,"ABDELAZIM, Tarek Yehia Fouad",EGY,Men,85KG,Bronze
 2012,London,Weightlifting,Weightlifting,"MOHAMMADPOURKARKARAGH, Saeid",IRI,Men,94KG,Gold
-2012,London,Weightlifting,Weightlifting,Pending,,Men,94KG,Silver
-2012,London,Weightlifting,Weightlifting,"KIM, Minjae",KOR,Men,94KG,Bronze
+2012,London,Weightlifting,Weightlifting,"KIM, Minjae",KOR,Men,94KG,Silver
+2012,London,Weightlifting,Weightlifting,"ZIELINSKI, Tomasz",POL,Men,94KG,Bronze
 2012,London,Wrestling,Wrestling Freestyle,"TAYMAZOV, Artur",UZB,Men,Wf 120KG,Gold
 2012,London,Wrestling,Wrestling Freestyle,"MODZMANASHVILI, Davit",GEO,Men,Wf 120KG,Silver
 2012,London,Wrestling,Wrestling Freestyle,"GHASEMI, Komeil",IRI,Men,Wf 120KG,Bronze
@@ -31109,7 +31108,7 @@ Year,City,Sport,Discipline,Athlete,Country,Gender,Event,Medal
 2012,London,Wrestling,Wrestling Freestyle,"RATKEVICH, Yuliya",AZE,Women,Wf 55 KG,Bronze
 2012,London,Wrestling,Wrestling Freestyle,"RENTERIA CASTILLO, Jackeline",COL,Women,Wf 55 KG,Bronze
 2012,London,Wrestling,Wrestling Freestyle,"ASGAROV, Toghrul",AZE,Men,Wf 60 KG,Gold
-2012,London,Wrestling,Wrestling Freestyle,"KUDUKHOV, Besik",,Men,Wf 60 KG,Silver
+2012,London,Wrestling,Wrestling Freestyle,"KUDUKHOV, Besik",RUS,Men,Wf 60 KG,Silver
 2012,London,Wrestling,Wrestling Freestyle,"DUTT, Yogeshwar",IND,Men,Wf 60 KG,Bronze
 2012,London,Wrestling,Wrestling Freestyle,"SCOTT, Coleman",USA,Men,Wf 60 KG,Bronze
 2012,London,Wrestling,Wrestling Freestyle,"ICHO, Kaori",JPN,Women,Wf 63 KG,Gold

@@ -24,18 +24,11 @@ import java.util.List;
 @Service
 public class OlympicGamesTaskService {
 
-//    @Autowired
-//    private OlympicGamesMatchAnswerTaskService olympicGamesMatchAnswerTaskService;
-
     @Autowired
     private OlympicGamesOneCorrectTaskService olympicGamesOneCorrectTaskService;
 
     public Question generate(TaskType type, DifficultyLevel difficultyLevel) {
         OlympicGamesTaskType typeValue = OlympicGamesTaskType.valueOf(type.getValue());
-//        if (typeValue == OlympicGamesTaskType.MAX_COUNTRY
-//                ) {
-//            return olympicGamesMatchAnswerTaskService.generate(type, difficultyLevel, typeValue);
-//        }
         return olympicGamesOneCorrectTaskService.generate(type, difficultyLevel, typeValue);
     }
 }

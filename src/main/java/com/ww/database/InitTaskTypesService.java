@@ -60,6 +60,16 @@ public class InitTaskTypesService {
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.2),
                 new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.13)
         ))));
+        taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.WHICH_ATHLETE_FROM_YEAR.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 16, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.9),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.05),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.05)
+        ))));
+        taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.WHICH_ATHLETE_FROM_CITY.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 16, new HashSet<>(Arrays.asList(
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.9),
+                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.05),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.05)
+        ))));
     }
 
     private void initLyrics(List<TaskType> taskTypes) {

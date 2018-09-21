@@ -14,7 +14,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OlympicMedalService {
@@ -46,12 +48,25 @@ public class OlympicMedalService {
             String line = br.readLine();
             String cvsSplitChar = ",";
             while ((line = br.readLine()) != null) {
-                String[] row = line
-                        .replace("\"", "")
-                        .replace("\"", "")
-                        .replace(", ", " ")
-                        .split(cvsSplitChar);
-                olympicMedals.add(new OlympicMedal(row, type, mapping));
+                List<String> params = new ArrayList<>();
+                String[] row = line.split("\"");
+                if (row.length == 0) {
+                    continue;
+                }
+                for (String rowPart : row) {
+                    if (params.size() == 0) {
+                        params.addAll(Arrays.asList(rowPart.split(cvsSplitChar)));
+                    } else if (params.size() == 4) {
+                        params.add(rowPart);
+                    } else {
+                        params.addAll(Arrays.asList(rowPart.replace(", ", " ").split(cvsSplitChar)));
+                    }
+                }
+                params = params.stream().filter(s -> !s.equals("")).collect(Collectors.toList());
+                OlympicMedal olympicMedal = new OlympicMedal(params, type, mapping);
+                if (olympicMedal.getYear() > 1904) {
+                    olympicMedals.add(olympicMedal);
+                }
             }
             olympicMedalRepository.saveAll(olympicMedals);
         } catch (IOException e) {
