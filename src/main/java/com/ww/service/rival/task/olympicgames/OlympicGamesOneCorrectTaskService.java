@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.ww.helper.RandomHelper.randomElement;
@@ -38,45 +38,81 @@ public class OlympicGamesOneCorrectTaskService {
     }
 
     private List<OlympicMedal> prepareObjects(OlympicGamesTaskType typeValue, int difficulty, int answersCount) {
-        List<OlympicMedal> allOlympicMedals = new ArrayList<>(olympicMedalRepository.findAll());
-        Collections.shuffle(allOlympicMedals);
         if (typeValue == OlympicGamesTaskType.CITY_FROM_YEAR
                 || typeValue == OlympicGamesTaskType.YEAR_FROM_CITY) {
-            return cityYearPrepareObjects(allOlympicMedals, answersCount);
+            return cityYearPrepareObjects(answersCount);
         } else if (typeValue == OlympicGamesTaskType.WHICH_ATHLETE_FROM_MEDAL_YEAR
                 || typeValue == OlympicGamesTaskType.WHICH_ATHLETE_FROM_MEDAL_CITY
-                || typeValue == OlympicGamesTaskType.YEAR_FROM_ATHLETE
-                || typeValue == OlympicGamesTaskType.CITY_FROM_ATHLETE
                 || typeValue == OlympicGamesTaskType.WHICH_ATHLETE_FROM_MEDAL_YEAR_SPORT
                 || typeValue == OlympicGamesTaskType.WHICH_ATHLETE_FROM_MEDAL_CITY_SPORT) {
-            return athletePrepareObjects(allOlympicMedals, answersCount);
+            return whichAthletePrepareObjects(answersCount);
+        } else if (typeValue == OlympicGamesTaskType.YEAR_FROM_ATHLETE
+                || typeValue == OlympicGamesTaskType.CITY_FROM_ATHLETE) {
+            return yearCityFromAthletePrepareObjects(answersCount);
         }
         throw new IllegalArgumentException();
     }
 
-    private List<OlympicMedal> cityYearPrepareObjects(List<OlympicMedal> allOlympicMedals, int answersCount) {
-        OlympicMedal correctOlympicMedal = randomElement(allOlympicMedals);
-        List<OlympicMedal> pickedOlympicMedals = allOlympicMedals.stream()
-                .filter(olympicMedal -> !olympicMedal.getTeam()
-                        && !olympicMedal.getYear().equals(correctOlympicMedal.getYear())
-                        && !olympicMedal.getCity().equals(correctOlympicMedal.getCity()))
-                .limit(answersCount - 1)
-                .collect(Collectors.toList());
-        pickedOlympicMedals.add(0, correctOlympicMedal);
+    private List<OlympicMedal> cityYearPrepareObjects(int answersCount) {
+        List<OlympicMedal> allOlympicMedals = olympicMedalRepository.findAllByTeam(false);
+        Set<Integer> years = new HashSet<>();
+        Set<String> cities = new HashSet<>();
+        List<OlympicMedal> pickedOlympicMedals = new ArrayList<>(answersCount);
+        while (pickedOlympicMedals.size() < answersCount) {
+            OlympicMedal olympicMedal = randomElement(allOlympicMedals);
+            if (years.contains(olympicMedal.getYear()) || cities.contains(olympicMedal.getCity())) {
+                continue;
+            }
+            pickedOlympicMedals.add(olympicMedal);
+            years.add(olympicMedal.getYear());
+            cities.add(olympicMedal.getCity());
+        }
         return pickedOlympicMedals;
     }
 
-    private List<OlympicMedal> athletePrepareObjects(List<OlympicMedal> allOlympicMedals, int answersCount) {
+    private List<OlympicMedal> whichAthletePrepareObjects(int answersCount) {
+        List<OlympicMedal> allOlympicMedals = olympicMedalRepository.findAllByTeam(false);
         OlympicMedal correctOlympicMedal = randomElement(allOlympicMedals);
-        List<OlympicMedal> pickedOlympicMedals = allOlympicMedals.stream()
-                .filter(olympicMedal -> !olympicMedal.getTeam()
-                        && !olympicMedal.getYear().equals(correctOlympicMedal.getYear())
-                        && !olympicMedal.getCity().equals(correctOlympicMedal.getCity())
-                        && !olympicMedal.getAthlete().equals(correctOlympicMedal.getAthlete())
-                        && !olympicMedal.getSport().equals(correctOlympicMedal.getSport()))
-                .limit(answersCount - 1)
+        List<OlympicMedal> allCorrectOlympicMedals = allOlympicMedals.stream()
+                .filter(olympicMedal -> olympicMedal.getMedal() == correctOlympicMedal.getMedal()
+                        && (olympicMedal.getYear().equals(correctOlympicMedal.getYear())
+                        || olympicMedal.getCity().equals(correctOlympicMedal.getCity())))
                 .collect(Collectors.toList());
-        pickedOlympicMedals.add(0, correctOlympicMedal);
+        Set<String> correctAthletes = allCorrectOlympicMedals.stream().map(OlympicMedal::getAthlete).collect(Collectors.toSet());
+        Set<String> usedAthletes = new HashSet<>();
+        List<OlympicMedal> pickedOlympicMedals = new ArrayList<>(answersCount);
+        pickedOlympicMedals.add(correctOlympicMedal);
+        while (pickedOlympicMedals.size() < answersCount) {
+            OlympicMedal olympicMedal = randomElement(allOlympicMedals);
+            if (usedAthletes.contains(olympicMedal.getAthlete()) || correctAthletes.contains(olympicMedal.getAthlete())) {
+                continue;
+            }
+            pickedOlympicMedals.add(olympicMedal);
+            usedAthletes.add(olympicMedal.getAthlete());
+        }
+        return pickedOlympicMedals;
+    }
+
+    private List<OlympicMedal> yearCityFromAthletePrepareObjects(int answersCount) {
+        List<OlympicMedal> allOlympicMedals = olympicMedalRepository.findAllByTeam(false);
+        OlympicMedal correctOlympicMedal = randomElement(allOlympicMedals);
+        List<OlympicMedal> allCorrectOlympicMedals = olympicMedalRepository.findAllByAthlete(correctOlympicMedal.getAthlete());
+        Set<Integer> correctYears = allCorrectOlympicMedals.stream().map(OlympicMedal::getYear).collect(Collectors.toSet());
+        Set<String> correctCities = allCorrectOlympicMedals.stream().map(OlympicMedal::getCity).collect(Collectors.toSet());
+        Set<Integer> usedYears = new HashSet<>();
+        Set<String> usedCities = new HashSet<>();
+        List<OlympicMedal> pickedOlympicMedals = new ArrayList<>(answersCount);
+        pickedOlympicMedals.add(correctOlympicMedal);
+        while (pickedOlympicMedals.size() < answersCount) {
+            OlympicMedal olympicMedal = randomElement(allOlympicMedals);
+            if (usedYears.contains(olympicMedal.getYear()) || correctYears.contains(olympicMedal.getYear())
+                    || usedCities.contains(olympicMedal.getCity()) || correctCities.contains(olympicMedal.getCity())) {
+                continue;
+            }
+            pickedOlympicMedals.add(olympicMedal);
+            usedYears.add(olympicMedal.getYear());
+            usedCities.add(olympicMedal.getCity());
+        }
         return pickedOlympicMedals;
     }
 
@@ -95,15 +131,15 @@ public class OlympicGamesOneCorrectTaskService {
             question.setTextContentPolish("Kto wygrał " + correctOlympicMedal.getMedalLang(Language.POLISH) + " medal na IO w mieście " + correctOlympicMedal.getCityPolish() + "?");
             question.setTextContentEnglish("Who received the " + correctOlympicMedal.getMedalLang(Language.ENGLISH) + " medal at Olympic Games in " + correctOlympicMedal.getCity() + "?");
         } else if (typeValue == OlympicGamesTaskType.WHICH_ATHLETE_FROM_MEDAL_YEAR_SPORT) {
-            question.setTextContentPolish("Kto otrzymał " + correctOlympicMedal.getMedalLang(Language.POLISH) + " medal na IO w " + correctOlympicMedal.getYear() + " roku w sporcie " + correctOlympicMedal.getSportPolish().toLowerCase() + "?");
+            question.setTextContentPolish("Kto otrzymał " + correctOlympicMedal.getMedalLang(Language.POLISH) + " medal na IO w " + correctOlympicMedal.getYear() + " roku w sporcie \"" + correctOlympicMedal.getSportPolish().toLowerCase() + "\"?");
             question.setTextContentEnglish("Who received the " + correctOlympicMedal.getMedalLang(Language.ENGLISH) + " medal at Olympic Games in " + correctOlympicMedal.getCity() + " in " + correctOlympicMedal.getSport().toLowerCase() + "?");
         } else if (typeValue == OlympicGamesTaskType.WHICH_ATHLETE_FROM_MEDAL_CITY_SPORT) {
-            question.setTextContentPolish("Kto zdobył " + correctOlympicMedal.getMedalLang(Language.POLISH) + " medal na IO w mieście " + correctOlympicMedal.getCityPolish() + " w sporcie " + correctOlympicMedal.getSportPolish().toLowerCase() + "?");
+            question.setTextContentPolish("Kto zdobył " + correctOlympicMedal.getMedalLang(Language.POLISH) + " medal na IO w mieście " + correctOlympicMedal.getCityPolish() + " w sporcie \"" + correctOlympicMedal.getSportPolish().toLowerCase() + "\"?");
             question.setTextContentEnglish("Who won the " + correctOlympicMedal.getMedalLang(Language.ENGLISH) + " medal at Olympic Games in " + correctOlympicMedal.getCity() + " in " + correctOlympicMedal.getSport().toLowerCase() + "?");
         } else if (typeValue == OlympicGamesTaskType.YEAR_FROM_ATHLETE) {
-            question.setTextContentPolish("W którym roku odbyły się " + correctOlympicMedal.getMedalLang(Language.POLISH) + " w których medal zdobył(a) " + correctOlympicMedal.getAthlete() + "?");
-        }else if (typeValue == OlympicGamesTaskType.CITY_FROM_ATHLETE) {
-            question.setTextContentPolish("Gdzie odbyły się " + correctOlympicMedal.getTypeLang(Language.POLISH) + " w których medal zdobył(a) " + correctOlympicMedal.getAthlete() + "?");
+            question.setTextContentPolish("W którym roku odbyły się " + correctOlympicMedal.getTypeLang(Language.POLISH) + " w których medal " + correctOlympicMedal.getWonPolish() + " " + correctOlympicMedal.getAthlete() + "?");
+        } else if (typeValue == OlympicGamesTaskType.CITY_FROM_ATHLETE) {
+            question.setTextContentPolish("Gdzie odbyły się " + correctOlympicMedal.getTypeLang(Language.POLISH) + " w których medal " + correctOlympicMedal.getWonPolish() + " " + correctOlympicMedal.getAthlete() + "?");
         }
 
         return question;

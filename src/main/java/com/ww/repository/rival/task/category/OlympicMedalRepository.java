@@ -15,4 +15,6 @@ public interface OlympicMedalRepository extends CrudRepository<OlympicMedal, Lon
     List<OlympicMedal> findAll();
     @Cacheable("olympicMedalsByTeam")
     List<OlympicMedal> findAllByTeam(Boolean team);
+
+    List<OlympicMedal> findAllByAthlete(String athlete);
 }

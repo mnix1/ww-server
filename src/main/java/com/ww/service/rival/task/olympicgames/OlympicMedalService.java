@@ -46,25 +46,13 @@ public class OlympicMedalService {
             BufferedReader br = new BufferedReader(new FileReader(file));
             List<OlympicMedal> olympicMedals = new ArrayList<>();
             String line = br.readLine();
-            String cvsSplitChar = ",";
+            String cvsSplitChar = ";";
             while ((line = br.readLine()) != null) {
-                List<String> params = new ArrayList<>();
-                String[] row = line.split("\"");
-                if (row.length == 0) {
-                    continue;
-                }
-                for (String rowPart : row) {
-                    if (params.size() == 0) {
-                        params.addAll(Arrays.asList(rowPart.split(cvsSplitChar)));
-                    } else if (params.size() == 4) {
-                        params.add(rowPart);
-                    } else {
-                        params.addAll(Arrays.asList(rowPart.replace(", ", " ").split(cvsSplitChar)));
-                    }
-                }
-                params = params.stream().filter(s -> !s.equals("")).collect(Collectors.toList());
+                String[] row = line.split(cvsSplitChar);
+                List<String> params = Arrays.asList(row);
                 OlympicMedal olympicMedal = new OlympicMedal(params, type, mapping);
-                if (olympicMedal.getYear() > 1904) {
+                if (olympicMedal.getYear() > 1904
+                        && !olympicMedal.getSport().equals("Equestrian")) {
                     olympicMedals.add(olympicMedal);
                 }
             }

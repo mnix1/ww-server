@@ -49,13 +49,52 @@ public class OlympicMedal {
         this.sport = params.get(2);
         this.sportPolish = sportMapping.get(this.sport).asText();
         this.discipline = params.get(3);
-        this.athlete = params.get(4);
+        this.athlete = swapAthleteName(params.get(4));
         this.country = params.get(5);
         this.gender = params.get(6);
         this.event = params.get(7);
         this.medal = OlympicGamesMedal.fromString(params.get(8));
         this.onlyTeamSport = initTeamFromSport();
         this.team = initTeam();
+    }
+
+    public String getTypeLang(Language language) {
+        if (language == Language.POLISH) {
+            return type.getNamePolish();
+        }
+        return type.getNameEnglish();
+    }
+
+    public String getMedalLang(Language language) {
+        if (language == Language.POLISH) {
+            return medal.getNamePolish();
+        }
+        return medal.getNameEnglish();
+    }
+
+    public String swapAthleteName(String name) {
+        int index = name.indexOf(", ");
+        if (index == -1) {
+            return name;
+        }
+        return name.substring(index + 2) + " " + name.substring(0, index);
+    }
+
+    public String getWonPolish() {
+        if (gender.equals("Men")) {
+            return "zdobył";
+        }
+        return "zdobyła";
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                year +
+                ", " + city +
+                ", " + medal.getNamePolish() +
+                ", " + athlete +
+                '}';
     }
 
     private Boolean initTeam() {
@@ -76,7 +115,7 @@ public class OlympicMedal {
                 || sport.contains("Basketball")
                 || sport.contains("Tug of War")
                 || sport.contains("Cricket")
-                || discipline.contains("Water polo")
+                || discipline.contains("Water Polo")
                 || sport.contains("Football");
     }
 
@@ -111,6 +150,7 @@ public class OlympicMedal {
                 || event.startsWith("K-2")
                 || event.contains(" Tandem")
                 || event.contains("Quadruple")
+                || event.startsWith("Dragon")
                 || event.startsWith("Military Patrol")
                 || event.startsWith("Lightweight 4")
                 || event.startsWith("Eight")
@@ -120,23 +160,5 @@ public class OlympicMedal {
                 || event.contains("Four")
                 || event.contains("Two-")
                 || event.contains(" Two ");
-    }
-
-    public String getTypeLang(Language language) {
-        if (language == Language.POLISH) {
-            return type.getNamePolish();
-        }
-        return type.getNameEnglish();
-    }
-
-    public String getMedalLang(Language language) {
-        if (language == Language.POLISH) {
-            return medal.getNamePolish();
-        }
-        return medal.getNameEnglish();
-    }
-
-    public String countryGroupingKey() {
-        return year + city + sport + discipline + event + country + type;
     }
 }
