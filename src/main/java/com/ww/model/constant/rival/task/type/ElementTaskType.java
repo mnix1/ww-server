@@ -22,4 +22,8 @@ public enum ElementTaskType {
     public static boolean aboutAtomicMass(ElementTaskType type) {
         return type == MAX_ATOMIC_MASS || type == MIN_ATOMIC_MASS;
     }
+
+    public static boolean aboutShellCount(ElementTaskType type) {
+        return type == NAME_FROM_SHELL_COUNT || type == SYMBOL_FROM_SHELL_COUNT || type == NUMBER_FROM_SHELL_COUNT;
+    }
 }

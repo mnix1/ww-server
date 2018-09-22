@@ -30,18 +30,18 @@ public class NumberOneCorrectTaskService {
     private int[] prepareNumbers(NumberTaskType typeValue, int difficulty, int answersCount) {
         int[] numbers = null;
         if (typeValue == NumberTaskType.GCD) {
-            int gcd = randomInteger(2, difficultyCalibration(difficulty) / 2 + 9);
-            int count = difficultyCalibration(difficulty) / 2 + 2;
-            int bound = 9 + difficultyCalibration(difficulty) * 5;
+            int gcd = randomInteger(2 + difficultyCalibration(difficulty) / 3, difficultyCalibration(difficulty) + 9);
+            int count = Math.min(3, difficultyCalibration(difficulty) / 2 + 2);
+            int bound = 9 + difficultyCalibration(difficulty);
             numbers = randomDistinctIntegers(count, 2, bound);
             for (int i = 0; i < numbers.length; i++) {
                 numbers[i] = gcd * numbers[i];
             }
         }
         if (typeValue == NumberTaskType.LCM) {
-            int count = difficultyCalibration(difficulty) / 2 + 2;
+            int count = Math.min(3, difficultyCalibration(difficulty) / 2 + 2);
             int bound = 9 + difficultyCalibration(difficulty) * 2;
-            numbers = randomDistinctIntegers(count, 1, bound);
+            numbers = randomDistinctIntegers(count, 2 + difficultyCalibration(difficulty), bound);
         }
         if (typeValue == NumberTaskType.PRIME) {
             numbers = new int[answersCount];

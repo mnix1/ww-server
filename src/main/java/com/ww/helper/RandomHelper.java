@@ -1,9 +1,7 @@
 package com.ww.helper;
 
 import java.security.SecureRandom;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class RandomHelper {
@@ -46,8 +44,10 @@ public class RandomHelper {
             int number = randomInteger(from, to);
             numbers.add(number);
         }
+        List<Integer> list = new ArrayList<>(numbers);
+        Collections.shuffle(list);
         int[] array = new int[count];
-        Integer[] a = numbers.toArray(new Integer[count]);
+        Integer[] a = list.toArray(new Integer[count]);
         for (int i = 0; i < count; i++) {
             array[i] = a[i];
         }

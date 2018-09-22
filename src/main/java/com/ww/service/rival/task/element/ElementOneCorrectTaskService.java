@@ -13,8 +13,10 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.ww.helper.RandomHelper.randomElement;
+import static com.ww.model.constant.rival.task.type.ElementTaskType.aboutShellCount;
 
 @Service
 public class ElementOneCorrectTaskService {
@@ -76,7 +78,6 @@ public class ElementOneCorrectTaskService {
     private List<Answer> prepareAnswers(ElementTaskType typeValue, Element correctElement, List<Element> allElements, int answersCount) {
         Answer correctAnswer = new Answer(true);
         fillAnswerContent(typeValue, correctAnswer, correctElement);
-
         List<Answer> wrongAnswers = new ArrayList<>();
         List<String> answerContents = new ArrayList<>();
         answerContents.add(correctAnswer.getTextContentEnglish());
@@ -85,6 +86,9 @@ public class ElementOneCorrectTaskService {
             Answer wrongAnswer = new Answer(false);
             fillAnswerContent(typeValue, wrongAnswer, wrongElement);
             if (!answerContents.contains(wrongAnswer.getTextContentEnglish())) {
+                if (aboutShellCount(typeValue) && correctElement.getShellCount().equals(wrongElement.getShellCount())) {
+                    continue;
+                }
                 wrongAnswers.add(wrongAnswer);
                 answerContents.add(wrongAnswer.getTextContentEnglish());
             }

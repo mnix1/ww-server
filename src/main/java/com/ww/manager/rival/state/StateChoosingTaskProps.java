@@ -30,7 +30,7 @@ public class StateChoosingTaskProps extends State {
         } else {
             rivalContainer.setChosenCategory(Category.RANDOM);
             rivalContainer.setIsChosenCategory(false);
-            rivalContainer.setChosenDifficulty(DifficultyLevel.EXTREMELY_EASY);
+            rivalContainer.setChosenDifficulty(DifficultyLevel.NORMAL);
             rivalContainer.setIsChosenDifficulty(false);
             interval = rivalManager.getChoosingTaskPropsInterval();
         }

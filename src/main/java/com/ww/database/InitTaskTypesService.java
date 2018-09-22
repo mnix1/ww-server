@@ -153,30 +153,30 @@ public class InitTaskTypesService {
     }
 
     private void initNumber(List<TaskType> taskTypes) {
-        taskTypes.add(new TaskType(Category.NUMBER, NumberTaskType.MAX.name(), TaskRenderer.TEXT, TaskRenderer.EQUATION, 4, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.NUMBER, NumberTaskType.MAX.name(), TaskRenderer.TEXT, TaskRenderer.EQUATION, 2, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.55),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.45)
         ))));
-        taskTypes.add(new TaskType(Category.NUMBER, NumberTaskType.MIN.name(), TaskRenderer.TEXT, TaskRenderer.EQUATION, 4, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.NUMBER, NumberTaskType.MIN.name(), TaskRenderer.TEXT, TaskRenderer.EQUATION, 2, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.5),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.5)
         ))));
-        taskTypes.add(new TaskType(Category.NUMBER, NumberTaskType.GCD.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 6, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.NUMBER, NumberTaskType.GCD.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 4, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.7),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.3)
         ))));
-        taskTypes.add(new TaskType(Category.NUMBER, NumberTaskType.LCM.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 5, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.NUMBER, NumberTaskType.LCM.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 10, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.74),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.26)
         ))));
-        taskTypes.add(new TaskType(Category.NUMBER, NumberTaskType.PRIME.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 10, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.NUMBER, NumberTaskType.PRIME.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 5, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.94),
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.06)
         ))));
     }
 
     private void initEquation(List<TaskType> taskTypes) {
-        taskTypes.add(new TaskType(Category.EQUATION, EquationTaskType.ADDITION.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.EQUATION, EquationTaskType.ADDITION.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 0, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.9),
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.1)
         ))));
@@ -191,7 +191,7 @@ public class InitTaskTypesService {
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.05),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.15)
         ))));
-        taskTypes.add(new TaskType(Category.EQUATION, EquationTaskType.FIND_X.name(), TaskRenderer.TEXT_EQUATION, TaskRenderer.EQUATION, 2, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.EQUATION, EquationTaskType.FIND_X.name(), TaskRenderer.TEXT_EQUATION, TaskRenderer.EQUATION, 10, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.95),
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.05)
         ))));
@@ -267,12 +267,12 @@ public class InitTaskTypesService {
     }
 
     private void initElement(List<TaskType> taskTypes) {
-        taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.MAX_ATOMIC_MASS.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 5, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.MAX_ATOMIC_MASS.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 4, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.6),
                 new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.2)
         ))));
-        taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.MIN_ATOMIC_MASS.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 5, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.MIN_ATOMIC_MASS.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 4, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.6),
                 new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.2)
@@ -287,27 +287,27 @@ public class InitTaskTypesService {
                 new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.1),
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.8)
         ))));
-        taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.NAME_FROM_SHELL_COUNT.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 10, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.NAME_FROM_SHELL_COUNT.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 14, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.3),
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.4),
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.3)
         ))));
-        taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.SYMBOL_FROM_SHELL_COUNT.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 10, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.SYMBOL_FROM_SHELL_COUNT.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 14, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.4),
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.3),
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.3)
         ))));
-        taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.NUMBER_FROM_SHELL_COUNT.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.NUMBER_FROM_SHELL_COUNT.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 8, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.1),
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.7),
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.2)
         ))));
-        taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.NAME_FROM_NUMBER.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 10, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.NAME_FROM_NUMBER.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 13, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.5),
                 new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.3)
         ))));
-        taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.SYMBOL_FROM_NUMBER.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 10, new HashSet<>(Arrays.asList(
+        taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.SYMBOL_FROM_NUMBER.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 13, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.6),
                 new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.15),
                 new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.25)
