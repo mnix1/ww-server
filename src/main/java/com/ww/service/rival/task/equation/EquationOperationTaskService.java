@@ -13,8 +13,9 @@ import java.util.List;
 
 import static com.ww.helper.AnswerHelper.difficultyCalibration;
 import static com.ww.helper.AnswerHelper.numbersToString;
+import static com.ww.helper.RandomHelper.randomDistinctIntegers;
+import static com.ww.helper.RandomHelper.randomDouble;
 import static com.ww.helper.RandomHelper.randomInteger;
-import static com.ww.helper.RandomHelper.randomIntegers;
 
 @Service
 public class EquationOperationTaskService {
@@ -22,34 +23,36 @@ public class EquationOperationTaskService {
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, EquationTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
         int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
-        int[] numbers = prepareNumbers(typeValue, remainedDifficulty);
+        int calibration = difficultyCalibration(remainedDifficulty);
+        int[] numbers = prepareNumbers(typeValue, calibration);
         Question question = prepareQuestion(type, difficultyLevel, typeValue, numbers);
         List<Answer> answers = prepareAnswers(typeValue, numbers, answersCount);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
 
-    private int[] prepareNumbers(EquationTaskType typeValue, int difficulty) {
+    private int[] prepareNumbers(EquationTaskType typeValue, int calibration) {
         int[] numbers = null;
         if (typeValue == EquationTaskType.ADDITION) {
-            int count = difficultyCalibration(difficulty) / 3 + 2;
-            int bound = 9 + difficultyCalibration(difficulty) * 3;
-            numbers = randomIntegers(count, -bound, bound);
-        }
-        if (typeValue == EquationTaskType.MULTIPLICATION) {
-            int count = difficultyCalibration(difficulty) / 3 + 2;
-            int bound = 6 + difficultyCalibration(difficulty);
-            numbers = randomIntegers(count, -bound, bound);
-        }
-        if (typeValue == EquationTaskType.MODULO) {
+            int count = calibration / 4 + 2;
+            int upperBound = 9 + calibration * 10;
+            int downBound = 1 + calibration * 3;
+            numbers = randomDistinctIntegers(count, downBound, upperBound);
+        } else if (typeValue == EquationTaskType.MULTIPLICATION) {
+            int count = calibration / 4 + 2;
+            int upperBound = 7 + calibration;
+            int downBound = 1 + calibration / 3;
+            numbers = randomDistinctIntegers(count, downBound, upperBound);
+        } else if (typeValue == EquationTaskType.MODULO) {
             numbers = new int[2];
-            int max = Math.max(5, difficultyCalibration(difficulty) * 49);
+            int max = Math.max(5, calibration * 49);
             numbers[0] = randomInteger(4, max);
             numbers[1] = randomInteger(1, numbers[0] - 1);
+            return numbers;
         }
         for (int i = 0; i < numbers.length; i++) {
-            if (numbers[i] == 0) {
-                numbers[i] = randomInteger(1, 10);
+            if (randomDouble() > 0.5) {
+                numbers[i] = -numbers[i];
             }
         }
         return numbers;

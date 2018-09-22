@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import static com.ww.helper.AnswerHelper.difficultyCalibration;
+import static com.ww.helper.RandomHelper.randomDouble;
 import static com.ww.helper.RandomHelper.randomInteger;
 
 @Service
@@ -30,12 +31,12 @@ public class EquationSolveTaskService {
     }
 
     private EquationObject prepareEquationType1(int calibration) {
-        int bound = calibration * 10 + 40;
+        int bound = calibration * 20 + 20;
         int value = randomInteger(-bound, bound);
         EquationObject eq = new EquationObject(value);
-        int multiplier = randomInteger(-calibration, calibration * 2 + 2);
-        if (multiplier == 0) {
-            multiplier = randomInteger(1, calibration * 2 + 2);
+        int multiplier = randomInteger(calibration + 1, calibration * 2 + 4);
+        if (randomDouble() > 0.6) {
+            multiplier = randomInteger(-calibration * 2 - 4, -calibration - 1);
         }
         eq.appendLeftSide(Math.abs(multiplier) > 1 ? multiplier + "*x" : "x");
         eq.addLeftSide(-value * multiplier);
@@ -44,15 +45,12 @@ public class EquationSolveTaskService {
     }
 
     private EquationObject prepareEquationType2(int calibration) {
-        int bound = calibration * 10 + 40;
+        int bound = calibration * 10 + 10;
         int value = randomInteger(-bound, bound);
         EquationObject eq = new EquationObject(value);
-        int multiplier = randomInteger(-calibration * 2 - 6, calibration * 2 + 6);
-        if (Math.abs(multiplier) < 2) {
-            multiplier = randomInteger(2, calibration * 2 + 6);
-        }
+        int multiplier = randomInteger(calibration + 1, calibration + 4);
         int leftConstant = randomInteger(2, calibration * 2 + 5);
-        int leftMultiplier = randomInteger(2, calibration + 6);
+        int leftMultiplier = randomInteger(calibration + 2, calibration + 4);
         int rightMultiplier = multiplier - leftMultiplier;
         eq.appendLeftSide(leftMultiplier + "*x");
         eq.addLeftSide(leftConstant * multiplier);
