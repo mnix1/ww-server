@@ -33,17 +33,9 @@ public class ProfileConnectionService {
     @Autowired
     private RivalRandomOpponentService rivalRandomOpponentService;
 
-    public ProfileConnection newConnection(WebSocketSession session) {
+    public synchronized ProfileConnection newConnection(WebSocketSession session) {
         Profile profile = profileService.retrieveProfile(profileService.getAuthId(session.getPrincipal()));
-        if (profileIdToProfileConnectionMap.containsKey(profile.getId())) {
-            ProfileConnection profileConnection = profileIdToProfileConnectionMap.get(profile.getId());
-            String oldSessionId = profileConnection.getSessionId();
-            if (sessionIdToProfileConnectionMap.containsKey(oldSessionId)) {
-                sessionIdToProfileConnectionMap.remove(oldSessionId);
-            }
-            profileConnection.close();
-            profileIdToProfileConnectionMap.remove(profile.getId());
-        }
+        deleteConnection(profile.getId());
         ProfileConnection profileConnection = new ProfileConnection(profile.getId(), session);
         profileIdToProfileConnectionMap.put(profile.getId(), profileConnection);
         sessionIdToProfileConnectionMap.put(session.getId(), profileConnection);
@@ -53,13 +45,20 @@ public class ProfileConnectionService {
     }
 
     public void deleteConnection(WebSocketSession session) {
-        findBySessionId(session.getId()).ifPresent(profileConnection -> {
-            rivalRandomOpponentService.remove(profileConnection.getProfileId());
-            sessionIdToProfileConnectionMap.remove(session.getId());
-            profileIdToProfileConnectionMap.remove(profileConnection.getProfileId());
-            logger.debug("ProfileConnection deleteConnection: sessionId: " + session.getId() + ", profileId: " + profileConnection.getProfileId());
-            sendFriendConnectionChanged(profileService.getProfile(profileConnection.getProfileId()), Message.FRIEND_SIGN_OUT);
-        });
+        findBySessionId(session.getId()).ifPresent(this::deleteConnection);
+    }
+
+    public void deleteConnection(Long profileId) {
+        findByProfileId(profileId).ifPresent(this::deleteConnection);
+    }
+
+    public synchronized void deleteConnection(ProfileConnection profileConnection) {
+        rivalRandomOpponentService.remove(profileConnection.getProfileId());
+        sessionIdToProfileConnectionMap.remove(profileConnection.getSessionId());
+        profileIdToProfileConnectionMap.remove(profileConnection.getProfileId());
+        logger.debug("ProfileConnection deleteConnection: sessionId: " + profileConnection.getSessionId() + ", profileId: " + profileConnection.getProfileId());
+        profileConnection.close();
+        sendFriendConnectionChanged(profileService.getProfile(profileConnection.getProfileId()), Message.FRIEND_SIGN_OUT);
     }
 
     public Optional<ProfileConnection> findBySessionId(String sessionId) {

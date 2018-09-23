@@ -67,7 +67,8 @@ public class AuthProfileService {
         List<ProfileWisie> profileWisies = profileWisieService.findAllNotInTeam(profile.getId());
         ProfileWisie fromExperiment = profileWisies.get(0);
         profile.setWisies(new HashSet<>(profileWisies));
-        List<String> wisieStringTypes = wisieTypes.subList(0, PICK_WISIES_COUNT).stream().map(Enum::name).collect(Collectors.toList());
+        List<String> wisieStringTypes = wisieTypes.stream().filter(type -> fromExperiment.getWisie().getType() != type)
+                .limit(PICK_WISIES_COUNT).map(Enum::name).collect(Collectors.toList());
         introService.pickWisies(profile, wisieStringTypes);
         profileWisies = profileWisieService.findAllNotInTeam(profile.getId());
         profileWisies.stream().filter(profileWisie -> !profileWisie.getId().equals(fromExperiment.getId()))
