@@ -16,6 +16,7 @@ import static com.ww.helper.AnswerHelper.difficultyCalibration;
 import static com.ww.helper.AnswerHelper.isValueDistanceEnough;
 import static com.ww.helper.ColorHelper.colorToInt;
 import static com.ww.helper.ColorHelper.randomColor;
+import static com.ww.helper.ColorHelper.randomGoodColor;
 import static com.ww.helper.RandomHelper.randomDistinctIntegers;
 import static com.ww.helper.RandomHelper.randomInteger;
 import static com.ww.service.rival.task.color.ColorTaskService.prepareAnswers;
@@ -25,8 +26,8 @@ public class ColorMixingTaskService {
 
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, ColorTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
-        int colorsToMixCount =  difficultyCalibration(remainedDifficulty) / 4 + 2;
+        int answersCount = DifficultyLevel.answersCount(remainedDifficulty);
+        int colorsToMixCount = 2;
         Color correctColor = prepareCorrectColor();
         List<Color> colorsToMix = prepareMixColors(colorsToMixCount, correctColor);
         List<Color> wrongColors = prepareWrongColors(answersCount - 1, correctColor);
@@ -37,7 +38,7 @@ public class ColorMixingTaskService {
     }
 
     private Color prepareCorrectColor() {
-        return randomColor(80, 255);
+        return randomGoodColor();
     }
 
     private List<Color> prepareMixColors(int count, Color correctColor) {
@@ -45,15 +46,13 @@ public class ColorMixingTaskService {
         int totalR = correctColor.getRed();
         int totalG = correctColor.getGreen();
         int totalB = correctColor.getBlue();
-        for (int i = 0; i < count - 1; i++) {
-            int r = randomInteger(0, totalR / count);
-            int g = randomInteger(0, totalG / (count * 2));
-            int b = randomInteger(0, totalB);
-            colors.add(new Color(r, g, b));
-            totalR -= r;
-            totalG -= g;
-            totalB -= b;
-        }
+        int r = randomInteger(0, totalR);
+        int g = randomInteger(Math.max(0, totalG - r), totalG);
+        int b = randomInteger(Math.max(0, totalB - g), totalB);
+        colors.add(new Color(r, g, b));
+        totalR -= r;
+        totalG -= g;
+        totalB -= b;
         colors.add(new Color(totalR, totalG, totalB));
         Collections.shuffle(colors);
         return colors;

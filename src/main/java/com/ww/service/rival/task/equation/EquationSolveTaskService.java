@@ -21,7 +21,7 @@ public class EquationSolveTaskService {
 
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, EquationTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = DifficultyLevel.answersCount(remainedDifficulty);
         int calibration = difficultyCalibration(remainedDifficulty);
         EquationObject equationObject = calibration > 2 ? prepareEquationType2(calibration) : prepareEquationType1(calibration);
         Question question = prepareQuestion(type, difficultyLevel, typeValue, equationObject);

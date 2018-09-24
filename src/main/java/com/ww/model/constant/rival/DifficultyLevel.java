@@ -45,38 +45,22 @@ public enum DifficultyLevel {
         if (remainedDifficulty < 0) {
             return 2;
         }
-        if (remainedDifficulty < 13) {
+        if (remainedDifficulty < 16) {
             return 3;
         }
-        if (remainedDifficulty < 25) {
+        if (remainedDifficulty < 33) {
             return 4;
         }
-        if (remainedDifficulty < 38) {
+        if (remainedDifficulty < 50) {
             return 5;
         }
-        if (remainedDifficulty < 50) {
+        if (remainedDifficulty < 66) {
             return 6;
         }
-        if (remainedDifficulty < 63) {
+        if (remainedDifficulty < 83) {
             return 7;
         }
         return 8;
-    }
-
-    public static int answersCount(DifficultyLevel difficultyLevel, int remainedDifficulty) {
-        return answersCount(remainedDifficulty);
-    }
-
-    public static DifficultyLevel fromLevel(Integer level) {
-        if (level == null) {
-            return random();
-        }
-        for (DifficultyLevel difficultyLevel : values()) {
-            if (difficultyLevel.getLevel() == level) {
-                return difficultyLevel;
-            }
-        }
-        return random();
     }
 
     public static DifficultyLevel fromString(String name) {

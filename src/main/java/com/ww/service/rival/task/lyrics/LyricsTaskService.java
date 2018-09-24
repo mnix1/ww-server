@@ -33,7 +33,7 @@ public class LyricsTaskService {
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, Language lang) {
         LyricsTaskTypeValue typeValue = LyricsTaskTypeValue.valueOf(type.getValue());
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = DifficultyLevel.answersCount(remainedDifficulty);
         List<Track> tracks = trackRepository.findAllByLang(lang);
         Track track = randomElement(tracks);
         List<List<String>> verses = trackVerseLineContent(track.getContent());

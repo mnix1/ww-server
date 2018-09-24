@@ -26,7 +26,7 @@ public class ElementMatchAnswerTaskService {
 
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, ElementTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = DifficultyLevel.answersCount(remainedDifficulty);
         List<Element> elements = prepareElements(typeValue, answersCount);
         Question question = prepareQuestion(type, difficultyLevel, typeValue);
         List<Answer> answers = prepareAnswers(typeValue, elements);

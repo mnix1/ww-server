@@ -20,7 +20,7 @@ public class ColorMatchAnswerTaskService {
 
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, ColorTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = DifficultyLevel.answersCount(remainedDifficulty);
         Color correctColor = prepareCorrectColor();
         List<Color> wrongColors = prepareWrongColors(typeValue, answersCount - 1, correctColor);
         Question question = prepareQuestion(type, difficultyLevel, typeValue);

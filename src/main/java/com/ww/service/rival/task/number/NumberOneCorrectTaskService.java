@@ -19,7 +19,7 @@ public class NumberOneCorrectTaskService {
 
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, NumberTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = DifficultyLevel.answersCount(remainedDifficulty);
         int[] numbers = prepareNumbers(typeValue, remainedDifficulty, answersCount);
         Question question = prepareQuestion(type, difficultyLevel, typeValue, numbers);
         List<Answer> answers = prepareAnswers(typeValue, numbers, answersCount);

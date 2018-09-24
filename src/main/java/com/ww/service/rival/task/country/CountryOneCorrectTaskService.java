@@ -24,7 +24,7 @@ public class CountryOneCorrectTaskService {
 
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, CountryTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = DifficultyLevel.answersCount(remainedDifficulty);
         List<Country> allCountries = countryRepository.findAll();
         Country correctCountry = randomElement(allCountries);
         Question question = prepareQuestion(type, difficultyLevel, typeValue, correctCountry);

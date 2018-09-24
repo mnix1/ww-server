@@ -22,7 +22,7 @@ public class EquationOperationTaskService {
 
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, EquationTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = DifficultyLevel.answersCount(remainedDifficulty);
         int calibration = difficultyCalibration(remainedDifficulty);
         int[] numbers = prepareNumbers(typeValue, calibration);
         Question question = prepareQuestion(type, difficultyLevel, typeValue, numbers);

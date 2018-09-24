@@ -25,7 +25,7 @@ public class RiddleDifferenceTaskService {
 
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, RiddleTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = DifficultyLevel.answersCount(remainedDifficulty);
         List<Clipart> cliparts = prepareCliparts(answersCount);
         Clipart correctClipart = cliparts.get(0);
         List<Clipart> questionClipartsLeft = prepareQuestionClipartsLeft(typeValue, cliparts, answersCount);

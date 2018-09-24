@@ -25,7 +25,7 @@ public class NumberMatchAnswerTaskService {
 
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, NumberTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = Math.max(3, DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty));
+        int answersCount = Math.max(3, DifficultyLevel.answersCount(remainedDifficulty));
         List<NumberObject> numberObjects = prepareNumbers(answersCount, remainedDifficulty);
         Question question = prepareQuestion(type, difficultyLevel, typeValue);
         List<Answer> answers = prepareAnswers(typeValue, numberObjects);

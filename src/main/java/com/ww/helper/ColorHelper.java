@@ -1,6 +1,9 @@
 package com.ww.helper;
 
 import java.awt.Color;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static com.ww.helper.RandomHelper.randomInteger;
 
@@ -12,6 +15,17 @@ public class ColorHelper {
 
     public static Color randomColor(int min, int max) {
         return randomColor(min, max, min, max, min, max);
+    }
+
+    public static Color randomGoodColor() {
+        int part1 = randomInteger(0, 255);
+        int part2 = randomInteger(255 - part1, 255);
+        int minPart3 = Math.abs(part1 - part2);
+        int maxPart3 = Math.max(part1, part2);
+        int part3 = randomInteger(minPart3, maxPart3);
+        List<Integer> parts = Arrays.asList(part1, part2, part3);
+        Collections.shuffle(parts);
+        return new Color(parts.get(0), parts.get(1), parts.get(2));
     }
 
     public static Color randomColor(int minR, int maxR, int minG, int maxG, int minB, int maxB) {

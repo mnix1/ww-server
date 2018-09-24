@@ -26,7 +26,7 @@ public class CountryMatchAnswerTaskService {
 
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, CountryTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = DifficultyLevel.answersCount(remainedDifficulty);
         List<Country> countries = prepareCountries(typeValue, answersCount);
         Question question = prepareQuestion(type, difficultyLevel, typeValue);
         List<Answer> answers = prepareAnswers(typeValue, countries);

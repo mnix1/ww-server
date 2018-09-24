@@ -28,7 +28,7 @@ public class OlympicGamesOneCorrectTaskService {
 
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, OlympicGamesTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty);
+        int answersCount = DifficultyLevel.answersCount(remainedDifficulty);
         List<OlympicMedal> olympicMedals = prepareObjects(typeValue, answersCount);
         OlympicMedal correctOlympicMedal = olympicMedals.get(0);
         List<OlympicMedal> wrongOlympicMedals = olympicMedals.subList(1, olympicMedals.size());

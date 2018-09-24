@@ -39,7 +39,7 @@ public class MemoryTaskService {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
         int animationObjectsCount = Math.min(Math.max(DifficultyLevel.answersCount(remainedDifficulty) / 2, 2), 5);
         remainedDifficulty -= remainedDifficulty / 2;
-        int answersCount = Math.max(DifficultyLevel.answersCount(difficultyLevel, remainedDifficulty), animationObjectsCount);
+        int answersCount = Math.max(DifficultyLevel.answersCount(remainedDifficulty), animationObjectsCount);
         List<MemoryObject> allObjects = prepareObjects(answersCount);
         MemoryObject correctObject = randomElement(allObjects);
         List<MemoryObject> wrongObjects = new ArrayList<>(answersCount - 1);
