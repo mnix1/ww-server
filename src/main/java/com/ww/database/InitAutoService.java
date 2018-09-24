@@ -23,7 +23,7 @@ public class InitAutoService {
     @Autowired
     private AutoRepository autoRepository;
 
-    public void init() {
+    public void initAutos() {
         List<Auto> autos = new ArrayList<>();
         autos.add(new Auto("admin1992", "$2a$12$IZ.dAL3M92Q6XEk9K1YpY.878FBFZZb7qw.oFmXkre7aq8435Oa7u", true));
 

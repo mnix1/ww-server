@@ -54,7 +54,7 @@ public class ProdBasicAuthSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(username -> {
-            Optional<Auto> optionalAuto = autoRepository.findFirstByUser(username);
+            Optional<Auto> optionalAuto = autoRepository.findFirstByUsername(username);
             if (!optionalAuto.isPresent()) {
                 throw new UsernameNotFoundException("not found");
             }
@@ -66,7 +66,7 @@ public class ProdBasicAuthSecurityConfig extends WebSecurityConfigurerAdapter {
             if (auto.getAuto()) {
                 roles += ",ROLE_" + AUTO;
             }
-            return new User(username, auto.getPass(), AuthorityUtils.commaSeparatedStringToAuthorityList(roles));
+            return new User(username, auto.getPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList(roles));
         });
     }
 

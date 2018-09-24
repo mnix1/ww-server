@@ -42,7 +42,7 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-websocket")
 	compile("org.springframework.boot:spring-boot-starter-thymeleaf")
 
-//	compile group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter-sql-postgresql', version: '1.0.0.RELEASE'
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter-sql-postgresql', version: '1.0.0.RELEASE'
 
 	compile 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.0.BUILD-SNAPSHOT'
 
@@ -50,8 +50,8 @@ dependencies {
 
 	compile group: 'commons-io', name: 'commons-io', version: '2.6'
 
-	runtime('org.springframework.boot:spring-boot-devtools')
-	runtime('com.h2database:h2')
+//	runtime('org.springframework.boot:spring-boot-devtools')
+//	runtime('com.h2database:h2')
 	compileOnly('org.projectlombok:lombok')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.security:spring-security-test')

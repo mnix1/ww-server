@@ -1,6 +1,5 @@
 package com.ww.database;
 
-import com.ww.repository.book.BookRepository;
 import com.ww.repository.social.ProfileRepository;
 import com.ww.service.rival.task.country.CountryService;
 import com.ww.service.rival.task.element.ElementService;
@@ -8,6 +7,8 @@ import com.ww.service.rival.task.lyrics.TrackService;
 import com.ww.service.rival.task.memory.MemoryTaskHelperService;
 import com.ww.service.rival.task.olympicgames.OlympicMedalService;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 @NoArgsConstructor
 @Service
 public class InitService {
+    private static final Logger logger = LoggerFactory.getLogger(InitService.class);
 
     @Autowired
     private TrackService trackService;
@@ -53,20 +55,34 @@ public class InitService {
 
     public void init() {
         if (profileRepository.findAll().size() == 0) {
+            logger.debug("INITIALIZING initBooks");
             initBooksService.initBooks();
+            logger.debug("INITIALIZING initTaskTypes");
             initTaskTypesService.initTaskTypes();
+            logger.debug("INITIALIZING initWisies");
             initWisiesService.initWisies();
+            logger.debug("INITIALIZING initCampaigns");
             initCampaignsService.initCampaigns();
+            logger.debug("INITIALIZING initProfiles");
             initProfiles();
+            logger.debug("INITIALIZING initMusicTracks");
             initMusicTracks();
+            logger.debug("INITIALIZING initCliparts");
             initClipartsService.initCliparts();
+            logger.debug("INITIALIZING initGeographyCountries");
             initGeographyCountries();
+            logger.debug("INITIALIZING initChemistryElements");
             initChemistryElements();
+            logger.debug("INITIALIZING initOlympicMedals");
             initOlympicMedals();
+            logger.debug("INITIALIZING initShapes");
             memoryTaskHelperService.initShapes();
+            logger.debug("INITIALIZING initColors");
             memoryTaskHelperService.initColors();
-            initAutoService.init();
+            logger.debug("INITIALIZING initAutos");
+            initAutoService.initAutos();
         }
+        logger.debug("ALL INITIALIZED");
     }
 
     public void initProfiles() {

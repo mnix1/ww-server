@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface AutoRepository extends CrudRepository<Auto, Long> {
-    Optional<Auto> findFirstByUser(String user);
+    Optional<Auto> findFirstByUsername(String user);
 }

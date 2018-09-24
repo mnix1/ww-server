@@ -17,19 +17,19 @@ public class Auto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String user;
-    private String pass;
+    private String username;
+    private String password;
     private Boolean admin = false;
     private Boolean auto = false;
 
-    public Auto(String user, String pass, Boolean admin) {
-        this.user = user;
-        this.pass = pass;
+    public Auto(String username, String password, Boolean admin) {
+        this.username = username;
+        this.password = password;
         this.admin = admin;
     }
-    public Auto(String user, String pass) {
-        this.user = user;
-        this.pass = pass;
+    public Auto(String username, String password) {
+        this.username = username;
+        this.password = password;
         this.auto = true;
     }
 }

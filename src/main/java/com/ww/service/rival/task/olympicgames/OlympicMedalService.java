@@ -2,11 +2,14 @@ package com.ww.service.rival.task.olympicgames;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jackson.JsonLoader;
+import com.ww.database.InitService;
 import com.ww.model.constant.rival.task.olympicgames.OlympicGamesType;
 import com.ww.model.entity.rival.task.Country;
 import com.ww.model.entity.rival.task.OlympicMedal;
 import com.ww.repository.rival.task.category.CountryRepository;
 import com.ww.repository.rival.task.category.OlympicMedalRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -23,6 +26,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class OlympicMedalService {
+    private static final Logger logger = LoggerFactory.getLogger(OlympicMedalService.class);
 
     @Autowired
     private OlympicMedalRepository olympicMedalRepository;
@@ -54,6 +58,7 @@ public class OlympicMedalService {
             List<OlympicMedal> olympicMedals = new ArrayList<>();
             String line = br.readLine();
             String cvsSplitChar = ";";
+            int index = 0;
             while ((line = br.readLine()) != null) {
                 String[] row = line.split(cvsSplitChar);
                 List<String> params = Arrays.asList(row);
@@ -62,6 +67,13 @@ public class OlympicMedalService {
                         && !olympicMedal.getSport().equals("Equestrian")) {
                     olympicMedals.add(olympicMedal);
                 }
+                if (olympicMedals.size() > 1000) {
+                    logger.debug("SENDING 1000 MEDALS");
+                    olympicMedalRepository.saveAll(olympicMedals);
+                    logger.debug("SENT 1000 MEDALS, TOTAL: " + index);
+                    olympicMedals = new ArrayList<>();
+                }
+                index++;
             }
             olympicMedalRepository.saveAll(olympicMedals);
         } catch (IOException e) {
