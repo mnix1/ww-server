@@ -1,5 +1,7 @@
 package com.ww.helper;
 
+import com.ww.model.container.ColorObject;
+
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,6 +13,10 @@ public class ColorHelper {
 
     public static String colorToHex(Color color) {
         return "#" + Integer.toHexString(color.getRGB()).substring(2);
+    }
+
+    public static Color randomColor() {
+        return randomColor(0, 255);
     }
 
     public static Color randomColor(int min, int max) {
@@ -41,6 +47,18 @@ public class ColorHelper {
 
     public static int colorToSumInt(Color c) {
         return c.getRed() + c.getGreen() + c.getBlue();
+    }
+
+    public static boolean similarColors(ColorObject c1, ColorObject c2, double offset) {
+        c1.calculatePercentComponents();
+        c2.calculatePercentComponents();
+        return Math.abs(c1.getRedPercentComponent() - c2.getRedPercentComponent()) < offset
+                && Math.abs(c1.getGreenPercentComponent() - c2.getGreenPercentComponent()) < offset
+                && Math.abs(c1.getBluePercentComponent() - c2.getBluePercentComponent()) < offset;
+    }
+
+    public static double percentComponent(int component, int sum) {
+        return 1.0 * component / sum;
     }
 
 }

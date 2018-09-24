@@ -2,6 +2,7 @@ package com.ww.service.rival.task.color;
 
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.ColorTaskType;
+import com.ww.model.container.ColorObject;
 import com.ww.model.entity.rival.task.Answer;
 import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.TaskType;
@@ -21,22 +22,22 @@ public class ColorMatchAnswerTaskService {
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, ColorTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
         int answersCount = DifficultyLevel.answersCount(remainedDifficulty);
-        Color correctColor = prepareCorrectColor();
-        List<Color> wrongColors = prepareWrongColors(typeValue, answersCount - 1, correctColor);
+        ColorObject correctColor = prepareCorrectColor();
+        List<ColorObject> wrongColors = prepareWrongColors(typeValue, answersCount - 1, correctColor);
         Question question = prepareQuestion(type, difficultyLevel, typeValue);
         List<Answer> answers = prepareAnswers(correctColor, wrongColors);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
 
-    private Color prepareCorrectColor() {
-        return randomColor(40, 210);
+    private ColorObject prepareCorrectColor() {
+        return new ColorObject(randomColor(40, 210));
     }
 
-    private List<Color> prepareWrongColors(ColorTaskType typeValue, int count, Color correctColor) {
-        List<Color> wrongColors = new ArrayList<>(count);
-        int correctColorSum = colorToSumInt(correctColor);
-        int correctComp = findComponent(typeValue, correctColor);
+    private List<ColorObject> prepareWrongColors(ColorTaskType typeValue, int count, ColorObject correctColor) {
+        List<ColorObject> wrongColors = new ArrayList<>(count);
+        int correctColorSum = colorToSumInt(correctColor.getColor());
+        int correctComp = findComponent(typeValue, correctColor.getColor());
         double correctPercentComp = 1.0 * correctComp / correctColorSum;
         while (wrongColors.size() < count) {
             Color wrongColor = null;
@@ -58,11 +59,11 @@ public class ColorMatchAnswerTaskService {
             double wrongPercentComp = 1.0 * wrongComp / wrongColorSum;
             if (ColorTaskType.aboutLowest(typeValue)) {
                 if (wrongPercentComp > correctPercentComp + 0.05) {
-                    wrongColors.add(wrongColor);
+                    wrongColors.add(new ColorObject(wrongColor));
                 }
             } else {
                 if (wrongPercentComp < correctPercentComp - 0.05) {
-                    wrongColors.add(wrongColor);
+                    wrongColors.add(new ColorObject(wrongColor));
                 }
             }
         }
