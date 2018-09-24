@@ -52,12 +52,16 @@ public class ColorHelper {
     public static boolean similarColors(ColorObject c1, ColorObject c2, double offset) {
         c1.calculatePercentComponents();
         c2.calculatePercentComponents();
-        return Math.abs(c1.getRedPercentComponent() - c2.getRedPercentComponent()) < offset
-                && Math.abs(c1.getGreenPercentComponent() - c2.getGreenPercentComponent()) < offset
-                && Math.abs(c1.getBluePercentComponent() - c2.getBluePercentComponent()) < offset;
+        double absRedDiff = Math.abs(c1.getRedPercentComponent() - c2.getRedPercentComponent());
+        double absGreenDiff = Math.abs(c1.getGreenPercentComponent() - c2.getGreenPercentComponent());
+        double absBlueDiff = Math.abs(c1.getBluePercentComponent() - c2.getBluePercentComponent());
+        return absRedDiff < offset && absGreenDiff < offset && absBlueDiff < offset;
     }
 
     public static double percentComponent(int component, int sum) {
+        if (sum == 0) {
+            return 0.33;
+        }
         return 1.0 * component / sum;
     }
 

@@ -100,7 +100,10 @@ public class TaskGenerateService {
     private TaskType findProperTaskType(Category category, DifficultyLevel difficultyLevel) {
         List<TaskType> possibleTaskTypes = taskTypeRepository.findAllByCategory(category)
                 .stream()
-                .filter(taskType -> difficultyLevel.getLevel() - taskType.getDifficulty() > -25)
+                .filter(taskType -> {
+                    int remainedDifficulty = difficultyLevel.getLevel() - taskType.getDifficulty();
+                    return remainedDifficulty >= -30 && remainedDifficulty < 130;
+                })
                 .collect(Collectors.toList());
         if (possibleTaskTypes.isEmpty()) {
             throw new IllegalStateException("Not existing task type!!!");

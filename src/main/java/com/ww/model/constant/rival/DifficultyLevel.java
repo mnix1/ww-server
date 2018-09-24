@@ -42,22 +42,22 @@ public enum DifficultyLevel {
     }
 
     public static int answersCount(int remainedDifficulty) {
-        if (remainedDifficulty < 0) {
+        if (remainedDifficulty <= 0) {
             return 2;
         }
-        if (remainedDifficulty < 16) {
+        if (remainedDifficulty <= 16) {
             return 3;
         }
-        if (remainedDifficulty < 33) {
+        if (remainedDifficulty <= 33) {
             return 4;
         }
-        if (remainedDifficulty < 50) {
+        if (remainedDifficulty <= 50) {
             return 5;
         }
-        if (remainedDifficulty < 66) {
+        if (remainedDifficulty <= 66) {
             return 6;
         }
-        if (remainedDifficulty < 83) {
+        if (remainedDifficulty <= 83) {
             return 7;
         }
         return 8;

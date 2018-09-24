@@ -1,5 +1,6 @@
 package com.ww.service.rival.task.color;
 
+import com.ww.helper.ColorHelper;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.ColorTaskType;
 import com.ww.model.container.ColorObject;
@@ -8,12 +9,13 @@ import com.ww.model.entity.rival.task.Question;
 import com.ww.model.entity.rival.task.TaskType;
 import org.springframework.stereotype.Service;
 
-import java.awt.Color;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import static com.ww.helper.AnswerHelper.difficultyCalibration;
-import static com.ww.helper.AnswerHelper.isValueDistanceEnough;
-import static com.ww.helper.ColorHelper.*;
+import static com.ww.helper.ColorHelper.similarColors;
+import static com.ww.model.constant.rival.task.type.ColorTaskType.aboutLowest;
 import static com.ww.service.rival.task.color.ColorTaskService.prepareAnswers;
 
 @Service
@@ -21,67 +23,83 @@ public class ColorMatchAnswerTaskService {
 
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, ColorTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = DifficultyLevel.answersCount(remainedDifficulty);
-        ColorObject correctColor = prepareCorrectColor();
-        List<ColorObject> wrongColors = prepareWrongColors(typeValue, answersCount - 1, correctColor);
+        int answersCount = Math.min(6, DifficultyLevel.answersCount(remainedDifficulty));
+        List<ColorObject> colors = prepareColors(typeValue, answersCount);
+        ColorObject correctColor = findCorrectColor(typeValue, colors);
+        List<ColorObject> wrongColors = colors.stream().filter(colorObject -> colorObject != correctColor).collect(Collectors.toList());
         Question question = prepareQuestion(type, difficultyLevel, typeValue);
         List<Answer> answers = prepareAnswers(correctColor, wrongColors);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
 
-    private ColorObject prepareCorrectColor() {
-        return new ColorObject(randomColor(40, 210));
-    }
-
-    private List<ColorObject> prepareWrongColors(ColorTaskType typeValue, int count, ColorObject correctColor) {
-        List<ColorObject> wrongColors = new ArrayList<>(count);
-        int correctColorSum = colorToSumInt(correctColor.getColor());
-        int correctComp = findComponent(typeValue, correctColor.getColor());
-        double correctPercentComp = 1.0 * correctComp / correctColorSum;
-        while (wrongColors.size() < count) {
-            Color wrongColor = null;
-            if (typeValue == ColorTaskType.BIGGEST_R) {
-                wrongColor = randomColor(0, correctComp - 1, 0, 255, 0, 255);
-            } else if (typeValue == ColorTaskType.BIGGEST_G) {
-                wrongColor = randomColor(0, 255, 0, correctComp - 1, 0, 255);
-            } else if (typeValue == ColorTaskType.BIGGEST_B) {
-                wrongColor = randomColor(0, 255, 0, 255, 0, correctComp - 1);
-            } else if (typeValue == ColorTaskType.LOWEST_R) {
-                wrongColor = randomColor(correctComp + 1, 255, 0, 255, 0, 255);
-            } else if (typeValue == ColorTaskType.LOWEST_G) {
-                wrongColor = randomColor(0, 255, correctComp + 1, 255, 0, 255);
-            } else if (typeValue == ColorTaskType.LOWEST_B) {
-                wrongColor = randomColor(0, 255, 0, 255, correctComp + 1, 255);
-            }
-            int wrongColorSum = colorToSumInt(wrongColor);
-            int wrongComp = findComponent(typeValue, wrongColor);
-            double wrongPercentComp = 1.0 * wrongComp / wrongColorSum;
-            if (ColorTaskType.aboutLowest(typeValue)) {
-                if (wrongPercentComp > correctPercentComp + 0.05) {
-                    wrongColors.add(new ColorObject(wrongColor));
-                }
-            } else {
-                if (wrongPercentComp < correctPercentComp - 0.05) {
-                    wrongColors.add(new ColorObject(wrongColor));
-                }
+    private ColorObject findCorrectColor(ColorTaskType typeValue, List<ColorObject> colors) {
+        boolean aboutLowers = aboutLowest(typeValue);
+        ColorObject correct = null;
+        double component = 0;
+        for (ColorObject color : colors) {
+            double possibleComponent = findComponent(typeValue, color);
+            if (correct == null
+                    || (aboutLowers && possibleComponent < component)
+                    || (!aboutLowers && possibleComponent > component)) {
+                correct = color;
+                component = possibleComponent;
             }
         }
-        return wrongColors;
+        return correct;
     }
 
-    private int findComponent(ColorTaskType typeValue, Color color) {
+    private List<ColorObject> prepareColors(ColorTaskType typeValue, int count) {
+        List<ColorObject> colors = new ArrayList<>(count);
+        List<Double> components = new ArrayList<>(count);
+        int index = 0;
+        double offset = .3;
+        while (colors.size() < count) {
+            if (index++ > 100) {
+                offset -= 0.001;
+            }
+            if (offset < 0.1) {
+                return prepareColors(typeValue, count);
+            }
+            ColorObject possibleColor = new ColorObject(ColorHelper.randomColor());
+            boolean accepted = true;
+            for (ColorObject color : colors) {
+                if (similarColors(color, possibleColor, offset)) {
+                    accepted = false;
+                    break;
+                }
+            }
+            if (!accepted) {
+                continue;
+            }
+            accepted = true;
+            double possibleComponent = findComponent(typeValue, possibleColor);
+            for (double component : components) {
+                if (Math.abs(component - possibleComponent) < .1) {
+                    accepted = false;
+                }
+            }
+            if (!accepted) {
+                continue;
+            }
+            colors.add(possibleColor);
+            components.add(possibleComponent);
+        }
+        return colors;
+    }
+
+    private double findComponent(ColorTaskType typeValue, ColorObject color) {
         if (typeValue == ColorTaskType.BIGGEST_R
                 || typeValue == ColorTaskType.LOWEST_R) {
-            return color.getRed();
+            return color.getRedPercentComponent();
         }
         if (typeValue == ColorTaskType.BIGGEST_G
                 || typeValue == ColorTaskType.LOWEST_G) {
-            return color.getGreen();
+            return color.getGreenPercentComponent();
         }
         if (typeValue == ColorTaskType.BIGGEST_B
                 || typeValue == ColorTaskType.LOWEST_B) {
-            return color.getBlue();
+            return color.getBluePercentComponent();
         }
         throw new IllegalArgumentException("No typeValue handled");
     }

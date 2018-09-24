@@ -30,7 +30,7 @@ public class TaskType {
         this.value = value;
         this.questionRenderer = questionRenderer;
         this.answerRenderer = answerRenderer;
-        this.difficulty = difficulty * 5;
+        this.difficulty = difficulty * 10;
         this.wisdomAttributes = wisdomAttributes;
     }
 }

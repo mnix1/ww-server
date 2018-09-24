@@ -33,10 +33,10 @@ public class ColorTaskService {
 
     public static List<Answer> prepareAnswers(ColorObject correctColor, List<ColorObject> wrongColors) {
         Answer correctAnswer = new Answer(true);
-        fillAnswerContent(correctAnswer, correctColor.getColor());
+        fillAnswerContent(correctAnswer, correctColor);
         List<Answer> wrongAnswers = wrongColors.stream().map(color -> {
             Answer answer = new Answer(false);
-            fillAnswerContent(answer, color.getColor());
+            fillAnswerContent(answer, color);
             return answer;
         }).collect(Collectors.toList());
         List<Answer> answers = new ArrayList<>();
@@ -45,16 +45,16 @@ public class ColorTaskService {
         return answers;
     }
 
-    public static void fillAnswerContent(Answer answer, Color color) {
+    public static void fillAnswerContent(Answer answer, ColorObject color) {
         answer.setHtmlContent(colorToHtml(color));
     }
 
-
-    public static String colorToHtml(Color color) {
-        return "<div class=\"color\" style=\"background:" + colorToHex(color) + "\"></div>";
-    }
     public static String colorToHtml(ColorObject color) {
-        return colorToHtml(color.getColor());
+        return "<div class=\"color\" style=\"background:" + colorToHex(color.getColor()) + "\"></div>";
+//        return "<div class=\"color\" style=\"background:" + colorToHex(color.getColor()) + "\"><div>"
+//                + color.getRedPercentComponent() + "</div><div>"
+//                + color.getGreenPercentComponent() + "</div><div>"
+//                + color.getBluePercentComponent() + "</div></div>";
     }
 
 }
