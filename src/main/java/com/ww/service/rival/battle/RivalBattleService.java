@@ -1,6 +1,6 @@
 package com.ww.service.rival.battle;
 
-import com.ww.model.entity.social.Profile;
+import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.rival.AbstractRivalService;
 import com.ww.service.rival.GlobalRivalService;
 import com.ww.service.rival.task.TaskGenerateService;

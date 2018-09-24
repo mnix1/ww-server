@@ -1,6 +1,6 @@
 package com.ww.helper;
 
-import com.ww.model.entity.rival.task.Question;
+import com.ww.model.entity.outside.rival.task.Question;
 
 import java.util.List;
 

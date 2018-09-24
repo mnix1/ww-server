@@ -1,7 +1,7 @@
 package com.ww.controller;
 
-import com.ww.model.entity.social.Profile;
-import com.ww.repository.wisie.ProfileWisieRepository;
+import com.ww.model.entity.outside.social.Profile;
+import com.ww.repository.outside.wisie.ProfileWisieRepository;
 import com.ww.service.social.FriendService;
 import com.ww.service.social.ProfileService;
 import com.ww.service.wisie.ProfileWisieService;

@@ -9,9 +9,9 @@ import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarContainer;
 import com.ww.model.container.rival.war.WarProfileContainer;
-import com.ww.model.entity.rival.campaign.ProfileCampaign;
-import com.ww.model.entity.social.Profile;
-import com.ww.model.entity.wisie.ProfileCampaignWisie;
+import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
+import com.ww.model.entity.outside.social.Profile;
+import com.ww.model.entity.outside.wisie.ProfileCampaignWisie;
 import com.ww.service.rival.campaign.RivalCampaignWarService;
 import com.ww.service.social.ProfileConnectionService;
 

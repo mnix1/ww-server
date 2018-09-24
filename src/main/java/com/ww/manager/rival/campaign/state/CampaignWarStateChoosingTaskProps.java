@@ -6,7 +6,7 @@ import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.container.rival.war.WarProfileContainer;
-import com.ww.model.entity.wisie.OwnedWisie;
+import com.ww.model.entity.outside.wisie.OwnedWisie;
 
 import java.util.ArrayList;
 

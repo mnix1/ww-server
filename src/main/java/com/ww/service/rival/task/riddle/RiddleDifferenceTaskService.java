@@ -2,11 +2,11 @@ package com.ww.service.rival.task.riddle;
 
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.RiddleTaskType;
-import com.ww.model.entity.rival.task.Answer;
-import com.ww.model.entity.rival.task.Clipart;
-import com.ww.model.entity.rival.task.Question;
-import com.ww.model.entity.rival.task.TaskType;
-import com.ww.repository.rival.task.category.ClipartRepository;
+import com.ww.model.entity.outside.rival.task.Answer;
+import com.ww.model.entity.inside.task.Clipart;
+import com.ww.model.entity.outside.rival.task.Question;
+import com.ww.model.entity.outside.rival.task.TaskType;
+import com.ww.repository.inside.category.ClipartRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

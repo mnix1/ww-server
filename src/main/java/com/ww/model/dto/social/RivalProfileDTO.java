@@ -1,7 +1,7 @@
 package com.ww.model.dto.social;
 
 import com.ww.model.constant.rival.RivalType;
-import com.ww.model.entity.social.Profile;
+import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 
 @Getter

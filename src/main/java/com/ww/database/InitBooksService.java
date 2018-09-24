@@ -1,8 +1,8 @@
 package com.ww.database;
 
 import com.ww.model.constant.book.BookType;
-import com.ww.model.entity.book.Book;
-import com.ww.repository.book.BookRepository;
+import com.ww.model.entity.outside.book.Book;
+import com.ww.repository.outside.book.BookRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

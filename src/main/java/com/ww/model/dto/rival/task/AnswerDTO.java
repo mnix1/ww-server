@@ -1,6 +1,6 @@
 package com.ww.model.dto.rival.task;
 
-import com.ww.model.entity.rival.task.Answer;
+import com.ww.model.entity.outside.rival.task.Answer;
 import lombok.Getter;
 
 import java.time.Instant;

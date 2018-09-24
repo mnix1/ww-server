@@ -10,7 +10,7 @@ import com.ww.model.constant.social.FriendStatus;
 import com.ww.model.container.ProfileConnection;
 import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.dto.social.FriendDTO;
-import com.ww.model.entity.social.Profile;
+import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.rival.battle.RivalBattleService;
 import com.ww.service.rival.war.RivalWarService;
 import com.ww.service.social.ProfileConnectionService;

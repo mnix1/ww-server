@@ -1,8 +1,8 @@
 package com.ww.model.container;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.ww.model.entity.rival.task.MemoryShape;
-import com.ww.model.entity.rival.task.Color;
+import com.ww.model.entity.inside.task.MemoryShape;
+import com.ww.model.entity.inside.task.Color;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

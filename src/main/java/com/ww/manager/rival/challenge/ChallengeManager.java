@@ -8,11 +8,11 @@ import com.ww.model.container.rival.war.WarContainer;
 import com.ww.model.container.rival.war.WarProfileContainer;
 import com.ww.model.dto.rival.task.AnswerDTO;
 import com.ww.model.dto.rival.task.TaskDTO;
-import com.ww.model.entity.rival.challenge.ChallengeProfile;
-import com.ww.model.entity.rival.challenge.ChallengeQuestion;
-import com.ww.model.entity.rival.task.Question;
-import com.ww.model.entity.social.Profile;
-import com.ww.model.entity.wisie.ProfileWisie;
+import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
+import com.ww.model.entity.outside.rival.challenge.ChallengeQuestion;
+import com.ww.model.entity.outside.rival.task.Question;
+import com.ww.model.entity.outside.social.Profile;
+import com.ww.model.entity.outside.wisie.ProfileWisie;
 import com.ww.service.rival.RivalChallengeService;
 import com.ww.service.social.ProfileConnectionService;
 

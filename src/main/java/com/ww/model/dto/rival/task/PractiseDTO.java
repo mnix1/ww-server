@@ -1,6 +1,6 @@
 package com.ww.model.dto.rival.task;
 
-import com.ww.model.entity.rival.practise.Practise;
+import com.ww.model.entity.outside.rival.practise.Practise;
 import lombok.Getter;
 
 @Getter

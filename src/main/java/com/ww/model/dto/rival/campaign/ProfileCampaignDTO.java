@@ -8,7 +8,7 @@ import com.ww.model.constant.rival.campaign.CampaignType;
 import com.ww.model.constant.rival.campaign.ProfileCampaignStatus;
 import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.dto.rival.TeamMemberDTO;
-import com.ww.model.entity.rival.campaign.ProfileCampaign;
+import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
 import lombok.Getter;
 
 import java.util.ArrayList;

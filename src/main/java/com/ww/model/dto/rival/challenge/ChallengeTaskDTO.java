@@ -1,7 +1,7 @@
 package com.ww.model.dto.rival.challenge;
 
 import com.ww.model.dto.rival.task.TaskDTO;
-import com.ww.model.entity.rival.challenge.Challenge;
+import com.ww.model.entity.outside.rival.challenge.Challenge;
 import lombok.Getter;
 
 @Getter

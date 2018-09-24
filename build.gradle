@@ -50,8 +50,8 @@ dependencies {
 
 	compile group: 'commons-io', name: 'commons-io', version: '2.6'
 
-//	runtime('org.springframework.boot:spring-boot-devtools')
-//	runtime('com.h2database:h2')
+	runtime('org.springframework.boot:spring-boot-devtools')
+	runtime('com.h2database:h2')
 	compileOnly('org.projectlombok:lombok')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.security:spring-security-test')

@@ -3,7 +3,7 @@ package com.ww.manager.wisieanswer.state.phase5;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.State;
 import com.ww.model.constant.wisie.WisieAnswerAction;
-import com.ww.model.entity.rival.task.Answer;
+import com.ww.model.entity.outside.rival.task.Answer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

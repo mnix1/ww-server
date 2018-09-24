@@ -2,12 +2,11 @@ package com.ww.service.rival.task.olympicgames;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jackson.JsonLoader;
-import com.ww.database.InitService;
 import com.ww.model.constant.rival.task.olympicgames.OlympicGamesType;
-import com.ww.model.entity.rival.task.Country;
-import com.ww.model.entity.rival.task.OlympicMedal;
-import com.ww.repository.rival.task.category.CountryRepository;
-import com.ww.repository.rival.task.category.OlympicMedalRepository;
+import com.ww.model.entity.inside.task.Country;
+import com.ww.model.entity.inside.task.OlympicMedal;
+import com.ww.repository.inside.category.CountryRepository;
+import com.ww.repository.inside.category.OlympicMedalRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,8 @@
 package com.ww.model.dto.book;
 
 import com.ww.model.constant.book.BookType;
-import com.ww.model.entity.book.Book;
-import com.ww.model.entity.book.ProfileBook;
+import com.ww.model.entity.outside.book.Book;
+import com.ww.model.entity.outside.book.ProfileBook;
 import lombok.Getter;
 
 @Getter

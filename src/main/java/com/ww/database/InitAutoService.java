@@ -1,19 +1,13 @@
 package com.ww.database;
 
-import com.ww.model.entity.social.Auto;
-import com.ww.repository.social.AutoRepository;
+import com.ww.model.entity.outside.social.Auto;
+import com.ww.repository.outside.social.AutoRepository;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import static com.ww.helper.NameHelper.generateName;
 
 
 @NoArgsConstructor

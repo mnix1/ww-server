@@ -2,10 +2,10 @@ package com.ww.service.book;
 
 import com.ww.model.constant.book.BookType;
 import com.ww.model.dto.book.ProfileBookDTO;
-import com.ww.model.entity.book.Book;
-import com.ww.model.entity.book.ProfileBook;
-import com.ww.model.entity.social.Profile;
-import com.ww.repository.book.ProfileBookRepository;
+import com.ww.model.entity.outside.book.Book;
+import com.ww.model.entity.outside.book.ProfileBook;
+import com.ww.model.entity.outside.social.Profile;
+import com.ww.repository.outside.book.ProfileBookRepository;
 import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

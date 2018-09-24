@@ -1,15 +1,13 @@
 package com.ww.service.social;
 
-import com.ww.config.security.Roles;
 import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.constant.wisie.WisorType;
-import com.ww.model.entity.social.Profile;
-import com.ww.repository.social.ProfileRepository;
+import com.ww.model.entity.outside.social.Profile;
+import com.ww.repository.outside.social.ProfileRepository;
 import com.ww.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;

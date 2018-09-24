@@ -2,8 +2,8 @@ package com.ww.database;
 
 import com.ww.model.constant.rival.campaign.CampaignDestination;
 import com.ww.model.constant.rival.campaign.CampaignType;
-import com.ww.model.entity.rival.campaign.Campaign;
-import com.ww.repository.rival.campaign.CampaignRepository;
+import com.ww.model.entity.outside.rival.campaign.Campaign;
+import com.ww.repository.outside.rival.campaign.CampaignRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

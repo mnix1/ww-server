@@ -2,11 +2,10 @@ package com.ww.service.social;
 
 import com.ww.model.constant.social.FriendStatus;
 import com.ww.model.dto.social.FriendDTO;
-import com.ww.model.entity.social.Profile;
-import com.ww.model.entity.social.ProfileFriend;
-import com.ww.repository.social.ProfileFriendRepository;
-import com.ww.repository.social.ProfileRepository;
-import com.ww.service.SessionService;
+import com.ww.model.entity.outside.social.Profile;
+import com.ww.model.entity.outside.social.ProfileFriend;
+import com.ww.repository.outside.social.ProfileFriendRepository;
+import com.ww.repository.outside.social.ProfileRepository;
 import com.ww.websocket.message.Message;
 import com.ww.websocket.message.MessageDTO;
 import org.slf4j.Logger;

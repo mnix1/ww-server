@@ -1,7 +1,7 @@
 package com.ww.config.security;
 
-import com.ww.model.entity.social.Auto;
-import com.ww.repository.social.AutoRepository;
+import com.ww.model.entity.outside.social.Auto;
+import com.ww.repository.outside.social.AutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

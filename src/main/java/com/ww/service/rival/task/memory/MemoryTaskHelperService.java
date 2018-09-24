@@ -1,9 +1,9 @@
 package com.ww.service.rival.task.memory;
 
-import com.ww.model.entity.rival.task.Color;
-import com.ww.model.entity.rival.task.MemoryShape;
-import com.ww.repository.rival.task.category.ColorRepository;
-import com.ww.repository.rival.task.category.MemoryShapeRepository;
+import com.ww.model.entity.inside.task.Color;
+import com.ww.model.entity.inside.task.MemoryShape;
+import com.ww.repository.inside.category.ColorRepository;
+import com.ww.repository.inside.category.MemoryShapeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

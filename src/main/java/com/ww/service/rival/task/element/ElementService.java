@@ -2,8 +2,8 @@ package com.ww.service.rival.task.element;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jackson.JsonLoader;
-import com.ww.model.entity.rival.task.Element;
-import com.ww.repository.rival.task.category.ElementRepository;
+import com.ww.model.entity.inside.task.Element;
+import com.ww.repository.inside.category.ElementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;

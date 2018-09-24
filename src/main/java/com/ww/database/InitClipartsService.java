@@ -1,7 +1,7 @@
 package com.ww.database;
 
-import com.ww.model.entity.rival.task.Clipart;
-import com.ww.repository.rival.task.category.ClipartRepository;
+import com.ww.model.entity.inside.task.Clipart;
+import com.ww.repository.inside.category.ClipartRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

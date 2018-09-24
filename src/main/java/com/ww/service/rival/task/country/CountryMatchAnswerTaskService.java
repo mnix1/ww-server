@@ -2,11 +2,11 @@ package com.ww.service.rival.task.country;
 
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.CountryTaskType;
-import com.ww.model.entity.rival.task.Answer;
-import com.ww.model.entity.rival.task.Country;
-import com.ww.model.entity.rival.task.Question;
-import com.ww.model.entity.rival.task.TaskType;
-import com.ww.repository.rival.task.category.CountryRepository;
+import com.ww.model.entity.outside.rival.task.Answer;
+import com.ww.model.entity.inside.task.Country;
+import com.ww.model.entity.outside.rival.task.Question;
+import com.ww.model.entity.outside.rival.task.TaskType;
+import com.ww.repository.inside.category.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

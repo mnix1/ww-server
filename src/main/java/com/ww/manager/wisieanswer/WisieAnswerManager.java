@@ -20,17 +20,15 @@ import com.ww.manager.wisieanswer.state.phase5.StateThinkKnowAnswer;
 import com.ww.manager.wisieanswer.state.phase6.*;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import com.ww.model.container.rival.war.WarContainer;
-import com.ww.model.entity.wisie.OwnedWisie;
-import com.ww.model.entity.wisie.ProfileWisie;
-import com.ww.model.entity.rival.task.Question;
-import com.ww.model.entity.rival.task.TaskWisdomAttribute;
+import com.ww.model.entity.outside.wisie.OwnedWisie;
+import com.ww.model.entity.outside.wisie.ProfileWisie;
+import com.ww.model.entity.outside.rival.task.Question;
+import com.ww.model.entity.outside.rival.task.TaskWisdomAttribute;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 

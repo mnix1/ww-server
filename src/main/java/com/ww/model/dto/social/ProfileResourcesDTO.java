@@ -1,7 +1,7 @@
 package com.ww.model.dto.social;
 
 import com.ww.model.constant.Language;
-import com.ww.model.entity.social.Profile;
+import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 
 @Getter

@@ -2,10 +2,8 @@ package com.ww.service.social;
 
 import com.ww.model.constant.social.FriendStatus;
 import com.ww.model.container.ProfileConnection;
-import com.ww.model.entity.social.Profile;
-import com.ww.repository.social.ProfileFriendRepository;
-import com.ww.service.SessionService;
-import com.ww.service.rival.GlobalRivalService;
+import com.ww.model.entity.outside.social.Profile;
+import com.ww.repository.outside.social.ProfileFriendRepository;
 import com.ww.service.rival.RivalRandomOpponentService;
 import com.ww.websocket.message.Message;
 import com.ww.websocket.message.MessageDTO;

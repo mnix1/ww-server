@@ -1,7 +1,7 @@
 package com.ww.model.container.rival.war;
 
 import com.ww.model.container.rival.RivalProfileContainer;
-import com.ww.model.entity.social.Profile;
+import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -7,8 +7,8 @@ import com.ww.model.constant.wisie.WisieAnswerAction;
 import com.ww.model.container.rival.RivalContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.dto.rival.TeamMemberDTO;
-import com.ww.model.entity.social.Profile;
-import com.ww.model.entity.wisie.OwnedWisie;
+import com.ww.model.entity.outside.social.Profile;
+import com.ww.model.entity.outside.wisie.OwnedWisie;
 import lombok.Getter;
 import lombok.Setter;
 

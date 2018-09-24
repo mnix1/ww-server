@@ -1,7 +1,7 @@
 package com.ww.model.dto.wisie;
 
 import com.ww.model.constant.wisie.WisieType;
-import com.ww.model.entity.wisie.Wisie;
+import com.ww.model.entity.outside.wisie.Wisie;
 import lombok.Getter;
 
 @Getter

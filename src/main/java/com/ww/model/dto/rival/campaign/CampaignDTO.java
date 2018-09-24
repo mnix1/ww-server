@@ -2,7 +2,7 @@ package com.ww.model.dto.rival.campaign;
 
 import com.ww.model.constant.rival.campaign.CampaignDestination;
 import com.ww.model.constant.rival.campaign.CampaignType;
-import com.ww.model.entity.rival.campaign.Campaign;
+import com.ww.model.entity.outside.rival.campaign.Campaign;
 import lombok.Getter;
 
 @Getter

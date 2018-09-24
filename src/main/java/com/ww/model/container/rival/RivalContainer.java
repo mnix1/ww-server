@@ -4,9 +4,9 @@ import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.*;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.dto.social.RivalProfileDTO;
-import com.ww.model.entity.rival.task.Answer;
-import com.ww.model.entity.rival.task.Question;
-import com.ww.model.entity.social.Profile;
+import com.ww.model.entity.outside.rival.task.Answer;
+import com.ww.model.entity.outside.rival.task.Question;
+import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 import lombok.Setter;
 

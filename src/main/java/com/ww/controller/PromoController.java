@@ -2,9 +2,9 @@ package com.ww.controller;
 
 import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
-import com.ww.model.entity.wisie.Wisie;
-import com.ww.model.entity.wisie.ProfileWisie;
-import com.ww.model.entity.social.Profile;
+import com.ww.model.entity.outside.wisie.Wisie;
+import com.ww.model.entity.outside.wisie.ProfileWisie;
+import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.wisie.WisieService;
 import com.ww.service.wisie.ProfileWisieService;
 import com.ww.service.social.ProfileService;

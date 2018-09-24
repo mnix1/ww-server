@@ -1,10 +1,9 @@
 package com.ww.model.container.rival.battle;
 
 import com.ww.manager.rival.battle.BattleManager;
-import com.ww.manager.rival.RivalManager;
 import com.ww.model.container.rival.RivalContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
-import com.ww.model.entity.social.Profile;
+import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 import lombok.Setter;
 

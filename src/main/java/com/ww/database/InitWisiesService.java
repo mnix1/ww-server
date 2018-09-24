@@ -1,8 +1,8 @@
 package com.ww.database;
 
 import com.ww.model.constant.wisie.WisieType;
-import com.ww.model.entity.wisie.Wisie;
-import com.ww.repository.wisie.WisieRepository;
+import com.ww.model.entity.outside.wisie.Wisie;
+import com.ww.repository.outside.wisie.WisieRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -2,8 +2,8 @@ package com.ww.model.dto.wisie;
 
 import com.ww.model.constant.Category;
 import com.ww.model.constant.wisie.WisieType;
-import com.ww.model.entity.wisie.OwnedWisie;
-import com.ww.model.entity.wisie.ProfileWisie;
+import com.ww.model.entity.outside.wisie.OwnedWisie;
+import com.ww.model.entity.outside.wisie.ProfileWisie;
 import lombok.Getter;
 
 import java.util.Set;

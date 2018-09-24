@@ -1,9 +1,9 @@
 package com.ww.service.shop;
 
 import com.ww.model.dto.book.ShopBookDTO;
-import com.ww.model.entity.book.Book;
-import com.ww.model.entity.social.Profile;
-import com.ww.repository.book.BookRepository;
+import com.ww.model.entity.outside.book.Book;
+import com.ww.model.entity.outside.social.Profile;
+import com.ww.repository.outside.book.BookRepository;
 import com.ww.service.book.ProfileBookService;
 import com.ww.service.social.ProfileService;
 import com.ww.service.social.RewardService;
@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 import static com.ww.helper.ModelHelper.putCode;
 import static com.ww.helper.ModelHelper.putErrorCode;
 import static com.ww.helper.ModelHelper.putSuccessCode;
-import static com.ww.service.book.BookService.BOOK_SHELF_COUNT;
 
 @Service
 public class ShopService {

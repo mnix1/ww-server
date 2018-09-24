@@ -2,8 +2,8 @@ package com.ww.service.rival;
 
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.container.ProfileConnection;
-import com.ww.model.entity.rival.Rival;
-import com.ww.repository.rival.RivalRepository;
+import com.ww.model.entity.outside.rival.Rival;
+import com.ww.repository.outside.rival.RivalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

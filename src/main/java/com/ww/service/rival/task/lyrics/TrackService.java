@@ -2,8 +2,8 @@ package com.ww.service.rival.task.lyrics;
 
 import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.task.TrackSource;
-import com.ww.model.entity.rival.task.Track;
-import com.ww.repository.rival.task.category.TrackRepository;
+import com.ww.model.entity.inside.task.Track;
+import com.ww.repository.inside.category.TrackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

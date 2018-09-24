@@ -2,7 +2,7 @@ package com.ww.manager.rival.state;
 
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.constant.rival.RivalStatus;
-import com.ww.model.entity.social.Profile;
+import com.ww.model.entity.outside.social.Profile;
 
 import java.util.HashMap;
 import java.util.Map;

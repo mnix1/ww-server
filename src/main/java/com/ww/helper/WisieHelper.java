@@ -2,8 +2,8 @@ package com.ww.helper;
 
 import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
-import com.ww.model.entity.wisie.OwnedWisie;
-import com.ww.model.entity.wisie.ProfileWisie;
+import com.ww.model.entity.outside.wisie.OwnedWisie;
+import com.ww.model.entity.outside.wisie.ProfileWisie;
 
 import static com.ww.helper.NumberHelper.smartRound;
 

@@ -1,6 +1,6 @@
 package com.ww.database;
 
-import com.ww.repository.social.ProfileRepository;
+import com.ww.repository.outside.social.ProfileRepository;
 import com.ww.service.rival.task.country.CountryService;
 import com.ww.service.rival.task.element.ElementService;
 import com.ww.service.rival.task.lyrics.TrackService;

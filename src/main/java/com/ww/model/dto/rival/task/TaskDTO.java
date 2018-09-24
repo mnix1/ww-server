@@ -3,7 +3,7 @@ package com.ww.model.dto.rival.task;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.TaskRenderer;
-import com.ww.model.entity.rival.task.Question;
+import com.ww.model.entity.outside.rival.task.Question;
 import lombok.Getter;
 import lombok.Setter;
 
