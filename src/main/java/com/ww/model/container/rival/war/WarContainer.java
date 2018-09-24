@@ -27,13 +27,13 @@ public class WarContainer extends RivalContainer {
 
     public void updateWisieAnswerManagers(RivalManager rivalManager) {
         wisieAnswerManagers = new ArrayList<>();
-        forEachProfile(rivalProfileContainer -> {
+        for (RivalProfileContainer rivalProfileContainer : profileIdRivalProfileContainerMap.values()) {
             WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
             TeamMember teamMember = warProfileContainer.getActiveTeamMember();
             if (teamMember.isWisie()) {
                 wisieAnswerManagers.add(new WisieAnswerManager((OwnedWisie) teamMember.getContent(), rivalManager));
             }
-        });
+        }
     }
 
     private List<WisieAnswerAction> getAnsweringWisieActions(WarProfileContainer warProfileContainer) {

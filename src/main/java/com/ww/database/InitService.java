@@ -48,6 +48,8 @@ public class InitService {
 
     @Autowired
     private InitCampaignsService initCampaignsService;
+    @Autowired
+    private InitAutoService initAutoService;
 
     public void init() {
         if (profileRepository.findAll().size() == 0) {
@@ -63,6 +65,7 @@ public class InitService {
             initOlympicMedals();
             memoryTaskHelperService.initShapes();
             memoryTaskHelperService.initColors();
+            initAutoService.init();
         }
     }
 
