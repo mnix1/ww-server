@@ -1,4 +1,4 @@
-package com.ww.model.entity.outside.social;
+package com.ww.model.entity.inside.social;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

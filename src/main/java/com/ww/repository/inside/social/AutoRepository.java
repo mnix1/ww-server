@@ -1,6 +1,6 @@
-package com.ww.repository.outside.social;
+package com.ww.repository.inside.social;
 
-import com.ww.model.entity.outside.social.Auto;
+import com.ww.model.entity.inside.social.Auto;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

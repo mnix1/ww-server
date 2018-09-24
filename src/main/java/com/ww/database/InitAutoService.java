@@ -1,7 +1,7 @@
 package com.ww.database;
 
-import com.ww.model.entity.outside.social.Auto;
-import com.ww.repository.outside.social.AutoRepository;
+import com.ww.model.entity.inside.social.Auto;
+import com.ww.repository.inside.social.AutoRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
