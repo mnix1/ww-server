@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.ww.helper.WisieHelper.f1;
 
@@ -41,7 +42,7 @@ public class WisieAnswerManager {
 
     private boolean inProgress = false;
 
-    private List<WisieAnswerAction> actions = new ArrayList<>();
+    private CopyOnWriteArrayList<WisieAnswerAction> actions = new CopyOnWriteArrayList<>();
 
     private OwnedWisie wisie;
     private WarManager warManager;

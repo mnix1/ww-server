@@ -1,11 +1,7 @@
 package com.ww.model.container.rival;
 
 import com.ww.model.constant.Category;
-import com.ww.model.constant.rival.RivalImportance;
-import com.ww.model.constant.rival.RivalProfileStatus;
-import com.ww.model.constant.rival.RivalStatus;
-import com.ww.model.constant.rival.RivalType;
-import com.ww.model.constant.rival.DifficultyLevel;
+import com.ww.model.constant.rival.*;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.dto.social.RivalProfileDTO;
 import com.ww.model.entity.rival.task.Answer;
@@ -15,7 +11,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -33,8 +32,8 @@ public abstract class RivalContainer {
     protected final Map<Long, RivalProfileContainer> profileIdRivalProfileContainerMap = new HashMap<>();
     protected int currentTaskIndex = -1;
 
-    protected List<Question> questions = new ArrayList<>();
-    protected List<TaskDTO> taskDTOs = new ArrayList<>();
+    protected CopyOnWriteArrayList<Question> questions = new CopyOnWriteArrayList<>();
+    protected CopyOnWriteArrayList<TaskDTO> taskDTOs = new CopyOnWriteArrayList<>();
 
     protected Instant nextTaskDate;
     protected Instant endChoosingTaskPropsDate;
@@ -63,7 +62,7 @@ public abstract class RivalContainer {
         this.opponentProfile = container.getOpponentProfile();
     }
 
-    public boolean isOpponent(){
+    public boolean isOpponent() {
         return opponentProfile != null;
     }
 
@@ -90,6 +89,9 @@ public abstract class RivalContainer {
     }
 
     public Long findCorrectAnswerId(int taskIndex) {
+        if (taskIndex >= questions.size()) {
+            throw new IllegalArgumentException("taskIndex outside of questions");
+        }
         return questions.get(taskIndex).getAnswers().stream().filter(Answer::getCorrect).findFirst().get().getId();
     }
 

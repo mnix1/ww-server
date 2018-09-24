@@ -106,7 +106,7 @@ public class RivalWarService extends AbstractRivalService {
             return;
         }
         WarManager warManager = (WarManager) getGlobalRivalService().get(profileId.get());
-        if (!warManager.canChooseWhoAnswer()) {
+        if (warManager == null || !warManager.canChooseWhoAnswer()) {
             return;
         }
         Map<String, Object> contentMap = handleInput(content);
