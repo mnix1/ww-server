@@ -32,7 +32,10 @@ public class EquationSolveTaskService {
 
     private EquationObject prepareEquationType1(int calibration) {
         int bound = calibration * 20 + 20;
-        int value = randomInteger(-bound, bound);
+        int value = randomInteger(-bound, -1);
+        if (randomDouble() > 0.6) {
+            value = randomInteger(1, bound);
+        }
         EquationObject eq = new EquationObject(value);
         int multiplier = randomInteger(calibration + 1, calibration * 2 + 4);
         if (randomDouble() > 0.6) {
@@ -46,7 +49,10 @@ public class EquationSolveTaskService {
 
     private EquationObject prepareEquationType2(int calibration) {
         int bound = calibration * 10 + 10;
-        int value = randomInteger(-bound, bound);
+        int value = randomInteger(-bound, -1);
+        if (randomDouble() > 0.6) {
+            value = randomInteger(1, bound);
+        }
         EquationObject eq = new EquationObject(value);
         int multiplier = randomInteger(calibration + 1, calibration + 4);
         int leftConstant = randomInteger(2, calibration * 2 + 5);
