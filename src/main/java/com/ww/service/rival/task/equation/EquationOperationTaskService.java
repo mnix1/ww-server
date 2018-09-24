@@ -45,7 +45,7 @@ public class EquationOperationTaskService {
             numbers = randomDistinctIntegers(count, downBound, upperBound);
         } else if (typeValue == EquationTaskType.MODULO) {
             numbers = new int[2];
-            int max = Math.max(5, calibration * 49);
+            int max = (calibration + 1) * 49;
             numbers[0] = randomInteger(4, max);
             numbers[1] = randomInteger(1, numbers[0] - 1);
             return numbers;
