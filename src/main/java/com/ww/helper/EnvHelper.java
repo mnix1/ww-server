@@ -10,8 +10,10 @@ public class EnvHelper {
     public static final String DB_UAT = "dbUat";//h2,cloud schema dev
     public static final String DB_DEV = "dbDev";//only h2
 
-    public static final String SIGN_PROD = "logProd";//with oauth
-    public static final String SIGN_DEV = "logDev";//only basic
+    public static final String LOCAL = "local";//run local (dbuser is owner, can create schema)
+
+    public static final String SIGN_PROD = "signProd";//with oauth
+    public static final String SIGN_DEV = "signDev";//only basic
 
     private static final String DB_PROD_SCHEMA = "prod";
     private static final String DB_UAT_SCHEMA = "dev";
@@ -33,12 +35,9 @@ public class EnvHelper {
 
     public static String outsideCreateSchemaDb(Environment env) {
         List<String> profiles = Arrays.asList(env.getActiveProfiles());
-        if (profiles.contains(DB_UAT)) {
+        if (profiles.contains(DB_UAT) && profiles.contains(LOCAL)) {
             return "create";
         }
-        if (profiles.contains(DB_PROD)) {
-            return "none";
-        }
-        throw new IllegalArgumentException("Wrong arg (no schema for dbDev)");
+        return "none";
     }
 }
