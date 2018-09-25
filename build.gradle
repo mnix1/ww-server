@@ -17,7 +17,7 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'docker'
 
 group = 'gcr.io/wisiemania-2018'
-project.version = '1.0.10'
+project.version = '1.0.112'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -42,7 +42,10 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-websocket")
 	compile("org.springframework.boot:spring-boot-starter-thymeleaf")
 
-	compile group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter-sql-postgresql', version: '1.0.0.RELEASE'
+//	compile group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter-sql-postgresql', version: '1.0.0.RELEASE'
+
+	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
+
 
 	compile 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.0.BUILD-SNAPSHOT'
 
@@ -69,5 +72,5 @@ task buildDocker(type: Docker, dependsOn: copyJar) {
 	addFile("ww-server-${project.version}.jar","ww-server/")
 	workingDir("/ww-server")
 	runCommand("unzip -q ww-server-${project.version}.jar")
-	entryPoint(["java","-Xms128m","-Xmx1024m","-cp", "/ww-server-config:.","org.springframework.boot.loader.JarLauncher"])
+	entryPoint(["java","-Xms256m","-Xmx2048m","-cp", "/ww-server-config:.","org.springframework.boot.loader.JarLauncher"])
 }

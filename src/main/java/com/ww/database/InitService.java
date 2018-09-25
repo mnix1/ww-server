@@ -54,34 +54,36 @@ public class InitService {
     private InitAutoService initAutoService;
 
     public void init() {
-        if (profileRepository.findAll().size() == 0) {
-            logger.debug("INITIALIZING initBooks");
-            initBooksService.initBooks();
-            logger.debug("INITIALIZING initTaskTypes");
-            initTaskTypesService.initTaskTypes();
-            logger.debug("INITIALIZING initWisies");
-            initWisiesService.initWisies();
-            logger.debug("INITIALIZING initCampaigns");
-            initCampaignsService.initCampaigns();
-            logger.debug("INITIALIZING initProfiles");
-            initProfiles();
-            logger.debug("INITIALIZING initMusicTracks");
-            initMusicTracks();
-            logger.debug("INITIALIZING initCliparts");
-            initClipartsService.initCliparts();
-            logger.debug("INITIALIZING initGeographyCountries");
-            initGeographyCountries();
-            logger.debug("INITIALIZING initChemistryElements");
-            initChemistryElements();
-            logger.debug("INITIALIZING initOlympicMedals");
-            initOlympicMedals();
-            logger.debug("INITIALIZING initShapes");
-            memoryTaskHelperService.initShapes();
-            logger.debug("INITIALIZING initColors");
-            memoryTaskHelperService.initColors();
-            logger.debug("INITIALIZING initAutos");
-            initAutoService.initAutos();
-        }
+//        if (profileRepository.findAll().size() == 0) {
+//            logger.debug("INITIALIZING initBooks");
+//            initBooksService.initBooks();
+//            logger.debug("INITIALIZING initTaskTypes");
+//            initTaskTypesService.initTaskTypes();
+//            logger.debug("INITIALIZING initWisies");
+//            initWisiesService.initWisies();
+//            logger.debug("INITIALIZING initCampaigns");
+//            initCampaignsService.initCampaigns();
+//            logger.debug("INITIALIZING initProfiles");
+//            initProfiles();
+//        }
+
+        logger.debug("INITIALIZING initMusicTracks");
+        initMusicTracks();
+        logger.debug("INITIALIZING initCliparts");
+        initClipartsService.initCliparts();
+        logger.debug("INITIALIZING initGeographyCountries");
+        initGeographyCountries();
+        logger.debug("INITIALIZING initChemistryElements");
+        initChemistryElements();
+        logger.debug("INITIALIZING initOlympicMedals");
+        initOlympicMedals();
+        logger.debug("INITIALIZING initShapes");
+        memoryTaskHelperService.initShapes();
+        logger.debug("INITIALIZING initColors");
+        memoryTaskHelperService.initColors();
+        logger.debug("INITIALIZING initAutos");
+        initAutoService.initAutos();
+
         logger.debug("ALL INITIALIZED");
     }
 

@@ -36,7 +36,7 @@ public class InsideDataSourceConfig {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
         HashMap<String, Object> properties = new HashMap<>();
-        properties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+        properties.put("hibernate.hbm2ddl.auto", env.getProperty("inside.schema"));
         properties.put("hibernate.dialect", env.getProperty("inside.dialect"));
         properties.put("hibernate.temp.use_jdbc_metadata_defaults", env.getProperty("hibernate.temp.use_jdbc_metadata_defaults"));
         properties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));

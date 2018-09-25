@@ -57,7 +57,7 @@ public class OlympicMedalService {
             List<OlympicMedal> olympicMedals = new ArrayList<>();
             String line = br.readLine();
             String cvsSplitChar = ";";
-            int index = 0;
+//            int index = 0;
             while ((line = br.readLine()) != null) {
                 String[] row = line.split(cvsSplitChar);
                 List<String> params = Arrays.asList(row);
@@ -67,12 +67,12 @@ public class OlympicMedalService {
                     olympicMedals.add(olympicMedal);
                 }
                 if (olympicMedals.size() > 1000) {
-                    logger.debug("SENDING 1000 MEDALS");
+//                    logger.debug("SENDING 1000 MEDALS");
                     olympicMedalRepository.saveAll(olympicMedals);
-                    logger.debug("SENT 1000 MEDALS, TOTAL: " + index);
+//                    logger.debug("SENT 1000 MEDALS, TOTAL: " + index);
                     olympicMedals = new ArrayList<>();
                 }
-                index++;
+//                index++;
             }
             olympicMedalRepository.saveAll(olympicMedals);
         } catch (IOException e) {
