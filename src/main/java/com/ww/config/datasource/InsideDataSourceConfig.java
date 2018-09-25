@@ -1,9 +1,11 @@
 package com.ww.config.datasource;
 
 import com.google.common.base.Preconditions;
+import com.ww.helper.EnvHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -24,6 +26,7 @@ import java.util.HashMap;
         transactionManagerRef = "insideTransactionManager",
         basePackages = {"com.ww.repository.inside.category", "com.ww.repository.inside.social"}
 )
+@Profile({EnvHelper.DB_PROD, EnvHelper.DB_UAT})
 public class InsideDataSourceConfig {
     @Autowired
     private Environment env;
@@ -36,7 +39,7 @@ public class InsideDataSourceConfig {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
         HashMap<String, Object> properties = new HashMap<>();
-        properties.put("hibernate.hbm2ddl.auto", env.getProperty("inside.schema"));
+        properties.put("hibernate.hbm2ddl.auto", env.getProperty("inside.create"));
         properties.put("hibernate.dialect", env.getProperty("inside.dialect"));
         properties.put("hibernate.temp.use_jdbc_metadata_defaults", env.getProperty("hibernate.temp.use_jdbc_metadata_defaults"));
         properties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));

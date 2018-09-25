@@ -1,5 +1,6 @@
 package com.ww.config.security;
 
+import com.ww.helper.EnvHelper;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -19,7 +20,7 @@ import static com.ww.config.security.Roles.USER;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(jsr250Enabled = true)
-@Profile("dev")
+@Profile(EnvHelper.SIGN_DEV)
 @Order(SecurityProperties.IGNORED_ORDER)
 public class DevSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override

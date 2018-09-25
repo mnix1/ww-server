@@ -1,5 +1,6 @@
 package com.ww.config.security;
 
+import com.ww.helper.EnvHelper;
 import com.ww.model.entity.inside.social.Auto;
 import com.ww.repository.inside.social.AutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ import static com.ww.config.security.Roles.*;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(jsr250Enabled = true)
-@Profile("prod")
+@Profile(EnvHelper.SIGN_PROD)
 @Order(1)
 public class ProdBasicAuthSecurityConfig extends WebSecurityConfigurerAdapter {
 

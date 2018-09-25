@@ -37,7 +37,7 @@ public class ProfileConnectionService {
         ProfileConnection profileConnection = new ProfileConnection(profile.getId(), session);
         profileIdToProfileConnectionMap.put(profile.getId(), profileConnection);
         sessionIdToProfileConnectionMap.put(session.getId(), profileConnection);
-        logger.debug("ProfileConnection newConnection: sessionId: " + session.getId() + ", profileId: " + profile.getId());
+        logger.debug("ProfileConnection newConnection: profileId: " + profile.getId() + ", sessionId: " + session.getId());
         sendFriendConnectionChanged(profile, Message.FRIEND_SIGN_IN);
         return profileConnection;
     }
@@ -54,7 +54,7 @@ public class ProfileConnectionService {
         rivalRandomOpponentService.remove(profileConnection.getProfileId());
         sessionIdToProfileConnectionMap.remove(profileConnection.getSessionId());
         profileIdToProfileConnectionMap.remove(profileConnection.getProfileId());
-        logger.debug("ProfileConnection deleteConnection: sessionId: " + profileConnection.getSessionId() + ", profileId: " + profileConnection.getProfileId());
+        logger.debug("ProfileConnection deleteConnection: profileId: " + profileConnection.getProfileId() + ", sessionId: " + profileConnection.getSessionId());
         profileConnection.close();
         sendFriendConnectionChanged(profileService.getProfile(profileConnection.getProfileId()), Message.FRIEND_SIGN_OUT);
     }

@@ -1,5 +1,6 @@
 package com.ww.config.security;
 
+import com.ww.helper.EnvHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
@@ -22,7 +23,7 @@ import static com.ww.config.security.Roles.AUTO;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(jsr250Enabled = true)
-@Profile("prod")
+@Profile(EnvHelper.SIGN_PROD)
 @Order(2)
 public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String[] ALL = new String[]{"/", "/profile", "/classification/war", "/classification/battle", "/play",

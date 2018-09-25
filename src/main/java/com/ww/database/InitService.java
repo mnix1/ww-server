@@ -1,6 +1,5 @@
 package com.ww.database;
 
-import com.ww.repository.outside.social.ProfileRepository;
 import com.ww.service.rival.task.country.CountryService;
 import com.ww.service.rival.task.element.ElementService;
 import com.ww.service.rival.task.lyrics.TrackService;
@@ -10,7 +9,10 @@ import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+
+import static com.ww.helper.EnvHelper.initOutsideDb;
 
 
 @NoArgsConstructor
@@ -34,9 +36,6 @@ public class InitService {
     private MemoryTaskHelperService memoryTaskHelperService;
 
     @Autowired
-    private ProfileRepository profileRepository;
-
-    @Autowired
     private InitWisiesService initWisiesService;
 
     @Autowired
@@ -53,19 +52,24 @@ public class InitService {
     @Autowired
     private InitAutoService initAutoService;
 
+    @Autowired
+    private Environment environment;
+
+    public void initOutside() {
+        if (initOutsideDb(environment)) {
+            logger.debug("INITIALIZING initBooks");
+            initBooksService.initBooks();
+            logger.debug("INITIALIZING initTaskTypes");
+            initTaskTypesService.initTaskTypes();
+            logger.debug("INITIALIZING initWisies");
+            initWisiesService.initWisies();
+            logger.debug("INITIALIZING initCampaigns");
+            initCampaignsService.initCampaigns();
+        }
+    }
+
     public void init() {
-//        if (profileRepository.findAll().size() == 0) {
-//            logger.debug("INITIALIZING initBooks");
-//            initBooksService.initBooks();
-//            logger.debug("INITIALIZING initTaskTypes");
-//            initTaskTypesService.initTaskTypes();
-//            logger.debug("INITIALIZING initWisies");
-//            initWisiesService.initWisies();
-//            logger.debug("INITIALIZING initCampaigns");
-//            initCampaignsService.initCampaigns();
-//            logger.debug("INITIALIZING initProfiles");
-//            initProfiles();
-//        }
+        initOutside();
 
         logger.debug("INITIALIZING initMusicTracks");
         initMusicTracks();
@@ -85,16 +89,6 @@ public class InitService {
         initAutoService.initAutos();
 
         logger.debug("ALL INITIALIZED");
-    }
-
-    public void initProfiles() {
-//        List<Profile> profiles = new ArrayList<>();
-//        profiles.add(new Profile(TagHelper.randomTag(), "Kozioł23"));
-//        profiles.add(new Profile(TagHelper.randomTag(), "bocian"));
-//        for (int i = 0; i < 100; i++) {
-//            profiles.add(new Profile(TagHelper.randomTag(), "test" + i));
-//        }
-//        profileRepository.saveAll(profiles);
     }
 
     public void initMusicTracks() {
