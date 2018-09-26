@@ -29,8 +29,8 @@ import static com.ww.helper.EnvHelper.sslForce;
 @Order(2)
 public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String[] ALL = new String[]{"/", "/profile", "/classification/war", "/classification/battle", "/play",
-            "/war", "/warRanking", "/warFast", "/challenge", "/battle", "/battleRanking", "/battleFast", "/training", "/campaign","/campaignWar",
-            "/shop", "/friend", "/wisies", "/settings", "/login/**", "/static/**", "/actuator/health"};
+            "/war", "/warRanking", "/warFast", "/challenge", "/battle", "/battleRanking", "/battleFast", "/training", "/campaign", "/campaignWar",
+            "/shop", "/friend", "/wisies", "/settings", "/login/**", "/static/**", "/health/**", "/health"};
     public static final String[] ONLY_ADMIN = new String[]{"/**/*.map", "/h2/**", "/actuator/**", "/cache/**", "/log/**"};
     public static final String[] ONLY_AUTO = new String[]{"/auto/**", "/staticAuto/**"};
 
@@ -59,9 +59,6 @@ public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-        if(sslForce(env)){
-            http.requiresChannel().anyRequest().requiresSecure();
-        }
         http
                 .authorizeRequests()
                 .antMatchers(ALL).permitAll()
@@ -73,6 +70,9 @@ public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/").permitAll()
                 .and()
                 .addFilterAt(filter(), BasicAuthenticationFilter.class);
+        if (sslForce(env)) {
+            http.requiresChannel().antMatchers("/health/**", "/health").requiresInsecure().anyRequest().requiresSecure();
+        }
     }
 
     private OAuth2ClientAuthenticationProcessingFilter filter() {
