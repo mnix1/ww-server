@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoT
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,6 +20,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import static com.ww.config.security.Roles.ADMIN;
 import static com.ww.config.security.Roles.AUTO;
+import static com.ww.helper.EnvHelper.sslForce;
 
 @Configuration
 @EnableWebSecurity
@@ -31,6 +33,9 @@ public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
             "/shop", "/friend", "/wisies", "/settings", "/login/**", "/static/**", "/actuator/health"};
     public static final String[] ONLY_ADMIN = new String[]{"/**/*.map", "/h2/**", "/actuator/**", "/cache/**", "/log/**"};
     public static final String[] ONLY_AUTO = new String[]{"/auto/**", "/staticAuto/**"};
+
+    @Autowired
+    private Environment env;
 
     private OAuth2ClientContext oauth2ClientContext;
     private AuthorizationCodeResourceDetails authorizationCodeResourceDetails;
@@ -54,6 +59,9 @@ public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
+        if(sslForce(env)){
+            http.requiresChannel().anyRequest().requiresSecure();
+        }
         http
                 .authorizeRequests()
                 .antMatchers(ALL).permitAll()

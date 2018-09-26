@@ -18,6 +18,8 @@ public class EnvHelper {
     private static final String DB_PROD_SCHEMA = "prod";
     private static final String DB_UAT_SCHEMA = "dev";
 
+    private static final String SSL_FORCE = "sslForce";
+
     public static boolean initOutsideDb(Environment env) {
         return !Arrays.asList(env.getActiveProfiles()).contains(DB_PROD);
     }
@@ -39,5 +41,13 @@ public class EnvHelper {
             return "create";
         }
         return "none";
+    }
+
+    public static boolean sslForce(Environment env) {
+        List<String> profiles = Arrays.asList(env.getActiveProfiles());
+        if (profiles.contains(SSL_FORCE)) {
+            return true;
+        }
+        return false;
     }
 }
