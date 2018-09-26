@@ -80,11 +80,11 @@ public class MemoryTaskService {
     private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, MemoryTaskType typeValue, MemoryObject correctObject) {
         Question question = new Question(type, difficultyLevel);
         if (typeValue == MemoryTaskType.BACKGROUND_COLOR_FROM_FIGURE_KEY) {
-            question.setTextContentPolish("Jaki kolor miał objekt " + correctObject.getKey() + "?");
+            question.setTextContentPolish("Jaki kolor miał obiekt " + correctObject.getKey() + "?");
             question.setTextContentEnglish("What was the color of the object " + correctObject.getKey() + "?");
         }
         if (typeValue == MemoryTaskType.SHAPE_FROM_FIGURE_KEY) {
-            question.setTextContentPolish("Jaki kształt miał objekt " + correctObject.getKey() + "?");
+            question.setTextContentPolish("Jaki kształt miał obiekt " + correctObject.getKey() + "?");
             question.setTextContentEnglish("What was the font color of the object " + correctObject.getKey() + "?");
         }
         if (typeValue == MemoryTaskType.FIGURE_KEY_FROM_BACKGROUND_COLOR || typeValue == MemoryTaskType.SHAPE_FROM_BACKGROUND_COLOR) {
