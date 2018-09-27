@@ -160,7 +160,7 @@ public abstract class RivalManager {
     }
 
     public Integer getRandomChooseTaskPropsInterval() {
-        return 6000;
+        return 4000;
     }
 
     public boolean canAnswer() {

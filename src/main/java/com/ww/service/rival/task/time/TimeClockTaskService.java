@@ -25,6 +25,9 @@ public class TimeClockTaskService {
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, TimeTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
         int answersCount = DifficultyLevel.answersCount(remainedDifficulty);
+        if (typeValue == TimeTaskType.ANALOG_CLOCK_ADD || typeValue == TimeTaskType.ANALOG_CLOCK_SUBTRACT) {
+            answersCount = Math.min(6, answersCount);
+        }
         Instant questionDate = Instant.now().minusSeconds(randomInteger(100, 1000000));
         List<Interval> intervals = prepareIntervals(answersCount, remainedDifficulty);
         Interval correctInterval = intervals.get(0);
