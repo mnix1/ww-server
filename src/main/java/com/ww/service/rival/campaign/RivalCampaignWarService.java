@@ -93,9 +93,9 @@ public class RivalCampaignWarService extends RivalWarService {
         campaignService.setProfileCampaignWisies(profileCampaign);
         if (profileCampaign.getProfile().equals(rivalManager.getRivalContainer().getWinner())) {
             profileCampaign.setPhase(profileCampaign.getPhase() + 1);
+            profileCampaign.updateResourceGains();
             if (profileCampaign.getPhase() >= profileCampaign.getCampaign().getPhases()) {
                 profileCampaign.setStatus(ProfileCampaignStatus.FINISHED);
-                profileCampaign.updateResourceGains();
                 profileCampaign.setBookGain(campaignService.getBookGainForCampaign(profileCampaign.getCampaign()));
             }
             List<TeamMember> teamMembers = campaignWarManager.warContainer.getRivalProfileContainer(profileId).getTeamMembers();
@@ -112,7 +112,6 @@ public class RivalCampaignWarService extends RivalWarService {
             }
         } else {
             profileCampaign.setStatus(ProfileCampaignStatus.FINISHED);
-            profileCampaign.updateResourceGains();
             for (ProfileCampaignWisie wisie : profileCampaign.getWisies()) {
                 wisie.setDisabled(true);
             }

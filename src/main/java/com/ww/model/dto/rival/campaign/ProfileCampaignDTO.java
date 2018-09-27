@@ -42,13 +42,11 @@ public class ProfileCampaignDTO {
         this.type = profileCampaign.getCampaign().getType();
         this.destination = profileCampaign.getCampaign().getDestination();
         this.status = profileCampaign.getStatus();
-        if (this.status == ProfileCampaignStatus.FINISHED) {
-            this.goldGain = profileCampaign.getGoldGain();
-            this.crystalGain = profileCampaign.getCrystalGain();
-            this.wisdomGain = profileCampaign.getWisdomGain();
-            this.elixirGain = profileCampaign.getElixirGain();
-            this.bookGain = profileCampaign.getBookGain();
-        }
+        this.goldGain = profileCampaign.getGoldGain();
+        this.crystalGain = profileCampaign.getCrystalGain();
+        this.wisdomGain = profileCampaign.getWisdomGain();
+        this.elixirGain = profileCampaign.getElixirGain();
+        this.bookGain = profileCampaign.getBookGain();
         initTeam(profileCampaign);
     }
 
@@ -60,7 +58,7 @@ public class ProfileCampaignDTO {
         this.presentIndexes = preparePresentIndexes(profileCampaign, teamMembers);
     }
 
-    public Boolean getRewardNotEmpty(){
+    public Boolean getRewardNotEmpty() {
         return goldGain != null || crystalGain != null || wisdomGain != null || elixirGain != null || bookGain != null;
     }
 }

@@ -10,7 +10,8 @@ public class EnvHelper {
     public static final String DB_UAT = "dbUat";//h2,cloud schema dev
     public static final String DB_DEV = "dbDev";//only h2
 
-    public static final String LOCAL = "local";//run local (dbuser is owner, can create schema)
+    public static final String CREATE_SCHEMA = "createSchema";//can create schema (only local)
+    public static final String INIT_DB = "initDb";//init outside db
 
     public static final String SIGN_PROD = "signProd";//with oauth
     public static final String SIGN_DEV = "signDev";//only basic
@@ -21,7 +22,7 @@ public class EnvHelper {
     private static final String SSL_FORCE = "sslForce";
 
     public static boolean initOutsideDb(Environment env) {
-        return !Arrays.asList(env.getActiveProfiles()).contains(DB_PROD);
+        return Arrays.asList(env.getActiveProfiles()).contains(INIT_DB);
     }
 
     public static String outsideDbSchema(Environment env) {
@@ -37,7 +38,7 @@ public class EnvHelper {
 
     public static String outsideCreateSchemaDb(Environment env) {
         List<String> profiles = Arrays.asList(env.getActiveProfiles());
-        if (profiles.contains(DB_UAT) && profiles.contains(LOCAL)) {
+        if (profiles.contains(CREATE_SCHEMA)) {
             return "create";
         }
         return "none";

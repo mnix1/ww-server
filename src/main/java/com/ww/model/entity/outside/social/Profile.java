@@ -114,6 +114,9 @@ public class Profile {
 
     @Override
     public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
         return id.equals(((Profile) obj).id);
     }
 }
