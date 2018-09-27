@@ -143,6 +143,7 @@ public abstract class RivalManager {
 
     public Integer getAnsweringInterval() {
         return 45000;
+//        return 45000000;
     }
 
     public Integer getAnsweringTimeoutInterval() {
@@ -160,7 +161,7 @@ public abstract class RivalManager {
     }
 
     public Integer getRandomChooseTaskPropsInterval() {
-        return 4000;
+        return 2500;
     }
 
     public boolean canAnswer() {
