@@ -13,7 +13,7 @@ import static com.ww.helper.RandomHelper.randomElement;
 @Service
 public class BookService {
 
-    public static int BOOK_SHELF_COUNT = 4;
+    public static int BOOK_SHELF_COUNT = 10;
 
     @Autowired
     private BookRepository bookRepository;
