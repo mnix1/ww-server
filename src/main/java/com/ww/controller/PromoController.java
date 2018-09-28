@@ -2,6 +2,7 @@ package com.ww.controller;
 
 import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
+import com.ww.model.container.Resources;
 import com.ww.model.entity.outside.wisie.Wisie;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
 import com.ww.model.entity.outside.social.Profile;
@@ -35,10 +36,10 @@ public class PromoController {
         Map<String, Object> model = new HashMap<>();
         Profile profile = profileService.getProfile();
         for (int i = 0; i < 1; i++) {
-            Wisie wisie = wisieService.randomWisieForProfile(profile.getId());
+            Wisie wisie = profileWisieService.randomWisieForProfile(profile.getId());
             profileWisieService.addWisie(profile, wisie);
         }
-        profile.changeResources(100L, 100L, 100L, 100L);
+        profile.addResources(new Resources(100L, 100L, 100L, 100L));
         profileService.save(profile);
         return model;
     }
@@ -48,10 +49,10 @@ public class PromoController {
         Map<String, Object> model = new HashMap<>();
         Profile profile = profileService.getProfile();
         for (int i = 0; i < 4; i++) {
-            Wisie wisie = wisieService.randomWisieForProfile(profile.getId());
+            Wisie wisie = profileWisieService.randomWisieForProfile(profile.getId());
             profileWisieService.addWisie(profile, wisie);
         }
-        profile.changeResources(1000L, 1000L, 1000L, 1000L);
+        profile.addResources(new Resources(1000L, 1000L, 1000L, 1000L));
         profileService.save(profile);
         return model;
     }

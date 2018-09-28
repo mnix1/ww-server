@@ -6,6 +6,7 @@ import com.ww.model.dto.social.ProfileResourcesDTO;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
 import com.ww.model.entity.outside.wisie.Wisie;
+import com.ww.service.wisie.ProfileWisieEvolutionService;
 import com.ww.service.wisie.ProfileWisieService;
 import com.ww.service.wisie.WisieService;
 import org.slf4j.Logger;
@@ -32,6 +33,9 @@ public class IntroService {
 
     @Autowired
     private ProfileWisieService profileWisieService;
+
+    @Autowired
+    private ProfileWisieEvolutionService profileWisieEvolutionService;
 
     @Autowired
     private WisieService wisieService;
@@ -89,7 +93,7 @@ public class IntroService {
         for (int i = 0; i < PICK_WISIES_COUNT; i++) {
             ProfileWisie profileWisie = profileWisieService.createWisie(profile, wisies.get(i));
             profileWisieService.initWisieHobbies(profileWisie, Arrays.asList(categories.get(i)));
-            profileWisieService.upgradeWisie(profileWisie, ((PICK_WISIES_COUNT - 1) - i) * 50);
+            profileWisieEvolutionService.upgradeAttribute(profileWisie, ((PICK_WISIES_COUNT - 1) - i) * 50);
             profileWisies.add(profileWisie);
         }
         profile.setIntroductionStepIndex(profile.getIntroductionStepIndex() + 1);

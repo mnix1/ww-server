@@ -32,9 +32,6 @@ public class AuthProfileService {
     private ProfileService profileService;
 
     @Autowired
-    private WisieService wisieService;
-
-    @Autowired
     private ProfileWisieService profileWisieService;
 
     @Autowired
@@ -61,7 +58,7 @@ public class AuthProfileService {
 
     public void completeIntroductionForAuto(Profile profile) {
         profile.setIntroductionStepIndex(PICK_WISIES_INTRODUCTION_STEP_INDEX);
-        wisieService.experiment(profile);
+        profileWisieService.experiment(profile);
         List<WisieType> wisieTypes = WisieType.list();
         Collections.shuffle(wisieTypes);
         List<ProfileWisie> profileWisies = profileWisieService.findAllNotInTeam(profile.getId());

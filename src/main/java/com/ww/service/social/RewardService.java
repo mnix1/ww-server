@@ -3,6 +3,7 @@ package com.ww.service.social;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.manager.rival.battle.BattleManager;
+import com.ww.model.container.Resources;
 import com.ww.model.container.RewardObject;
 import com.ww.model.entity.outside.book.Book;
 import com.ww.model.entity.outside.social.Profile;
@@ -37,7 +38,7 @@ public class RewardService {
         RewardObject rewardObject = new RewardObject();
         rewardObject.setGoldGain(1L);
         Profile profile = profileService.getProfile(winner.getId());
-        profile.changeResources(1L, null, null, null);
+        profile.addResources(new Resources(1L));
         profileService.save(profile);
         if (!profileBookService.isProfileBookShelfFull(profile.getId())) {
             Book book = giveBook(profile);
@@ -52,7 +53,7 @@ public class RewardService {
         RewardObject rewardObject = new RewardObject();
         rewardObject.setGoldGain(2L);
         Profile profile = profileService.getProfile(winner.getId());
-        profile.changeResources(2L, null, null, null);
+        profile.addResources(new Resources(2L));
         profileService.save(profile);
         if (!profileBookService.isProfileBookShelfFull(profile.getId())) {
             Book book = giveBook(profile);

@@ -1,9 +1,7 @@
 package com.ww.service.wisie;
 
-import com.ww.helper.WisieHelper;
 import com.ww.model.constant.Category;
-import com.ww.model.constant.wisie.MentalAttribute;
-import com.ww.model.constant.wisie.WisdomAttribute;
+import com.ww.model.container.Resources;
 import com.ww.model.dto.social.ProfileResourcesDTO;
 import com.ww.model.dto.wisie.ProfileWisieDTO;
 import com.ww.model.entity.outside.social.Profile;
@@ -17,10 +15,11 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.ww.helper.ModelHelper.putCode;
 import static com.ww.helper.ModelHelper.putErrorCode;
 import static com.ww.helper.ModelHelper.putSuccessCode;
-import static com.ww.helper.NumberHelper.smartRound;
 import static com.ww.helper.RandomHelper.randomDouble;
+import static com.ww.helper.RandomHelper.randomElement;
 
 @Service
 public class ProfileWisieService {
@@ -33,6 +32,9 @@ public class ProfileWisieService {
     @Autowired
     private ProfileWisieRepository profileWisieRepository;
 
+    @Autowired
+    private WisieService wisieService;
+
     public List<ProfileWisieDTO> list() {
         return profileWisieRepository.findAllByProfile_Id(profileService.getProfileId()).stream()
                 .map(ProfileWisieDTO::new)
@@ -41,6 +43,10 @@ public class ProfileWisieService {
 
     public List<ProfileWisie> findAll(Long profileId) {
         return profileWisieRepository.findAllByProfile_Id(profileId);
+    }
+
+    public Optional<ProfileWisie> findByIdAndProfileId(Long profileWisieId, Long profileId) {
+        return profileWisieRepository.findByIdAndProfile_Id(profileWisieId, profileId);
     }
 
     public List<ProfileWisie> findAllInTeam(Long profileId) {
@@ -90,59 +96,56 @@ public class ProfileWisieService {
         return putSuccessCode(model);
     }
 
-    public synchronized Map<String, Object> upgradeWisie(Long profileWisieId, WisdomAttribute wisdomAttribute, MentalAttribute mentalAttribute) {
+    public synchronized Map<String, Object> experiment(Profile profile) {
         Map<String, Object> model = new HashMap<>();
-        Profile profile = profileService.getProfile();
-        Long wisdom = profile.getWisdom();
-        if (wisdomAttribute != null && wisdom >= WisdomAttribute.UPGRADE_COST) {
-            profile.changeResources(null, null, -WisdomAttribute.UPGRADE_COST, null);
-        } else if (mentalAttribute != null && wisdom >= MentalAttribute.UPGRADE_COST) {
-            profile.changeResources(null, null, -MentalAttribute.UPGRADE_COST, null);
-        } else {
-            return putErrorCode(model);
+        if (profile == null) {
+            profile = profileService.getProfile();
         }
-        Optional<ProfileWisie> optionalProfileWisie = profileWisieRepository.findByIdAndProfile_Id(profileWisieId, profile.getId());
-        if (!optionalProfileWisie.isPresent()) {
-            return putErrorCode(model);
+        List<ProfileWisie> profileWisies = findAll(profile.getId());
+        Resources experimentCostResources = experimentCostResources(profileWisies);
+        if (!profile.hasEnoughResources(experimentCostResources)) {
+            //no resources
+            return putCode(model, -3);
         }
-        ProfileWisie profileWisie = optionalProfileWisie.get();
-        double attributeChange = calculateWisieAttributeChange(profileWisie, wisdomAttribute, mentalAttribute);
-        if (wisdomAttribute != null) {
-            profileWisie.upgradeWisdomAttribute(wisdomAttribute, attributeChange);
-        } else if (mentalAttribute != null) {
-            profileWisie.upgradeMentalAttribute(mentalAttribute, attributeChange);
+        Wisie wisie = randomWisieForProfile(profile.getId());
+        if (wisie == null) {
+            //all discovered
+            return putCode(model, -2);
         }
+        model.put("wisieType", wisie.getType());
+        addWisie(profile, wisie);
+        profile.subtractResources(experimentCostResources);
         profileService.save(profile);
-        profileWisieRepository.save(profileWisie);
-        model.put("attributeChange", smartRound(attributeChange));
-        model.put("profileWisie", new ProfileWisieDTO(profileWisie));
         model.put("profile", new ProfileResourcesDTO(profile));
         return putSuccessCode(model);
     }
 
-    public void upgradeWisie(ProfileWisie wisie, double value) {
-        if (value <= 0) {
-            return;
+    public Wisie randomWisieForProfile(Long profileId) {
+        List<Wisie> allWisies = wisieService.list();
+        Set<Long> profileWisiesIds = findAll(profileId).stream().map(profileWisie -> profileWisie.getWisie().getId()).collect(Collectors.toSet());
+        if (allWisies.size() == profileWisiesIds.size()) {
+            return null;
         }
-        for (WisdomAttribute attribute : WisdomAttribute.values()) {
-            wisie.setWisdomAttributeValue(attribute, wisie.getWisdomAttributeValue(attribute) + value);
+        Wisie wisie = randomElement(allWisies);
+        while (profileWisiesIds.contains(wisie.getId())) {
+            wisie = randomElement(allWisies);
         }
-        for (MentalAttribute attribute : MentalAttribute.values()) {
-            wisie.setMentalAttributeValue(attribute, wisie.getMentalAttributeValue(attribute) + value);
-        }
-        save(wisie);
+        return wisie;
     }
 
-    private double calculateWisieAttributeChange(ProfileWisie profileWisie, WisdomAttribute wisdomAttribute, MentalAttribute mentalAttribute) {
-        double value = 0;
-        if (wisdomAttribute != null) {
-            value = profileWisie.getWisdomAttributeValue(wisdomAttribute);
-        } else if (mentalAttribute != null) {
-            value = profileWisie.getMentalAttributeValue(mentalAttribute);
+    private Resources experimentCostResources(List<ProfileWisie> profileWisies) {
+        Long experimentCostImpact = profileWisieCountExperimentCostImpact(profileWisies);
+        Long crystalCost = 30 + experimentCostImpact;
+        Long wisdomCost = 20 + experimentCostImpact;
+        Long elixirCost = 10 + experimentCostImpact;
+        return new Resources(null, crystalCost, wisdomCost, elixirCost);
+    }
+
+    private Long profileWisieCountExperimentCostImpact(List<ProfileWisie> profileWisies) {
+        if (profileWisies.size() <= 5) {
+            return 0L;
         }
-        double f = WisieHelper.f1(value);
-        double k = 1 - f;
-        return value * Math.pow(k, 6) + k;
+        return (profileWisies.size() - 5) * 10L;
     }
 
     public ProfileWisie addWisie(Profile profile, Wisie wisie) {

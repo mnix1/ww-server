@@ -1,6 +1,7 @@
 package com.ww.service.book;
 
 import com.ww.model.constant.book.BookType;
+import com.ww.model.container.Resources;
 import com.ww.model.dto.book.ProfileBookDTO;
 import com.ww.model.entity.outside.book.Book;
 import com.ww.model.entity.outside.book.ProfileBook;
@@ -112,10 +113,12 @@ public class ProfileBookService {
         Profile profile = profileService.getProfile();
 //        long crystalCost = (long) Math.floor((profileBook.timeToRead() - 1) / 1000d / 3600d);
         long crystalCost = (long) Math.ceil((profileBook.timeToRead() - 1) / 1000d / 3600d);
-        if (profile.getCrystal() < crystalCost) {
+        Resources costResources = new Resources(null, crystalCost, null, null);
+        if (!profile.hasEnoughResources(costResources)) {
+//        if (profile.getCrystal() < crystalCost) {
             return putCode(model, -2);
         }
-        profile.changeResources(null, -crystalCost, null, null);
+        profile.subtractResources(costResources);
         profileService.save(profile);
         profileBook.setCloseDate(Instant.now());
         addRewardFromBook(profileBook);
@@ -125,8 +128,7 @@ public class ProfileBookService {
 
     public void addRewardFromBook(ProfileBook profileBook) {
         Profile profile = profileBook.getProfile();
-        Book b = profileBook.getBook();
-        profile.changeResources(null, b.getCrystalGain(), b.getWisdomGain(), b.getElixirGain());
+        profile.addResources(profileBook.getBook().getGainResources());
         profileService.save(profile);
     }
 

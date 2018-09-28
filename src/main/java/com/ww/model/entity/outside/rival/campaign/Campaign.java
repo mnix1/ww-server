@@ -3,6 +3,7 @@ package com.ww.model.entity.outside.rival.campaign;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.campaign.CampaignDestination;
 import com.ww.model.constant.rival.campaign.CampaignType;
+import com.ww.model.container.Resources;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -49,5 +50,9 @@ public class Campaign {
         } else if (destination == CampaignDestination.HARD) {
             this.difficultyLevel = DifficultyLevel.VERY_HARD;
         }
+    }
+
+    public Resources getCostResources() {
+        return new Resources(goldCost, getCrystalCost(), getWisdomCost(), getElixirCost());
     }
 }

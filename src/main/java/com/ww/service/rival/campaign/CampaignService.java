@@ -99,13 +99,13 @@ public class CampaignService {
         }
         Profile profile = profileService.getProfile();
         Campaign campaign = optionalCampaign.get();
-        if (!profile.hasEnoughResources(campaign.getGoldCost(), campaign.getCrystalCost(), campaign.getWisdomCost(), campaign.getElixirCost())) {
+        if (!profile.hasEnoughResources(campaign.getCostResources())) {
             return putErrorCode(model);
         }
         if (active() != null) {
             return putErrorCode(model);
         }
-        profile.changeResources(campaign.getGoldCost(), campaign.getCrystalCost(), campaign.getWisdomCost(), campaign.getElixirCost());
+        profile.subtractResources(campaign.getCostResources());
         ProfileCampaign profileCampaign = new ProfileCampaign(profile, campaign);
         for (Long id : ids) {
             ProfileWisie wisie = wisies.stream().filter(profileWisie -> profileWisie.getId().equals(id)).findFirst().get();
@@ -143,7 +143,7 @@ public class CampaignService {
         if (profileCampaign.getBookGain() != null) {
             profileBookService.giveBook(profile, profileCampaign.getBookGain());
         }
-        profile.changeResources(profileCampaign.getGoldGain(), profileCampaign.getCrystalGain(), profileCampaign.getWisdomGain(), profileCampaign.getElixirGain());
+        profile.addResources(profileCampaign.getGainResources());
         profileService.save(profile);
         return putSuccessCode(model);
     }

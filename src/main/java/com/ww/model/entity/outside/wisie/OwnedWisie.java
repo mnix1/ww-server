@@ -20,6 +20,8 @@ import java.util.HashSet;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class OwnedWisie {
+    public static final int MAX_HOBBY_COUNT = 3;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected Long id;

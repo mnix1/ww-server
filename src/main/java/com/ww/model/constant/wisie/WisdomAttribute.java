@@ -1,5 +1,7 @@
 package com.ww.model.constant.wisie;
 
+import com.ww.model.container.Resources;
+
 public enum WisdomAttribute {
     MEMORY,
     LOGIC,
@@ -18,7 +20,7 @@ public enum WisdomAttribute {
         }
     }
 
-    public static Long UPGRADE_COST = 1L;
+    public static Resources UPGRADE_COST = new Resources(null, null,1L);
 
     public static int COUNT = 7;
 }

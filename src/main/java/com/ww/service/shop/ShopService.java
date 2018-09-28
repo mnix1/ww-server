@@ -46,20 +46,13 @@ public class ShopService {
         }
         Book book = optionalBook.get();
         Profile profile = profileService.getProfile();
-        boolean isEnoughResources = false;
-        if (book.getCanBuyByCrystal() && profile.getCrystal() >= book.getCrystalCost()) {
-            profile.changeResources(null, -book.getCrystalCost(), null, null);
-            isEnoughResources = true;
-        } else if (book.getCanBuyByGold() && profile.getGold() >= book.getGoldCost()) {
-            profile.changeResources(-book.getGoldCost(), null, null, null);
-            isEnoughResources = true;
-        }
-        if (!isEnoughResources) {
+        if (!profile.hasEnoughResources(book.getCostResources())) {
             return putCode(model, -3);//no resources
         }
         if (profileBookService.isProfileBookShelfFull(profile.getId())) {
             return putCode(model, -2);//no space at shelf
         }
+        profile.subtractResources(book.getCostResources());
         profileService.save(profile);
         profileBookService.giveBook(profile, book);
         model.put("bookType", book.getType());

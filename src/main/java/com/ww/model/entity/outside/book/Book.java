@@ -2,6 +2,7 @@ package com.ww.model.entity.outside.book;
 
 
 import com.ww.model.constant.book.BookType;
+import com.ww.model.container.Resources;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,8 +26,8 @@ public class Book {
     private Integer level;
 
     private Long crystalGain;
-    private Long elixirGain;
     private Long wisdomGain;
+    private Long elixirGain;
 
     private Boolean canBuyByGold;
     private Boolean canBuyByCrystal;
@@ -34,18 +35,32 @@ public class Book {
     private Long goldCost;
     private Long crystalCost;
 
-    public Book(BookType type, int readTimeHours, Integer level, Long crystalGain, Long elixirGain, Long wisdomGain, Boolean canBuyByGold, Boolean canBuyByCrystal, Long goldCost, Long crystalCost) {
+    public Book(BookType type, int readTimeHours, Integer level, Long crystalGain, Long wisdomGain, Long elixirGain, Boolean canBuyByGold, Boolean canBuyByCrystal, Long goldCost, Long crystalCost) {
         this.type = type;
         this.readTime = ((long) readTimeHours) * 1000 * 3600;
 //        this.readTime = ((long) readTimeHours) * 1000 * 900;
         this.level = level;
         this.crystalGain = crystalGain;
-        this.elixirGain = elixirGain;
         this.wisdomGain = wisdomGain;
+        this.elixirGain = elixirGain;
         this.canBuyByGold = canBuyByGold;
         this.canBuyByCrystal = canBuyByCrystal;
         this.goldCost = goldCost;
         this.crystalCost = crystalCost;
+    }
+
+    public Resources getGainResources() {
+        return new Resources(null, crystalGain, wisdomGain, elixirGain);
+    }
+
+    public Resources getCostResources() {
+        if (canBuyByCrystal) {
+            return new Resources(null, crystalCost, null, null);
+        }
+        if (canBuyByGold) {
+            return new Resources(goldCost, null, null, null);
+        }
+        throw new IllegalArgumentException("no cost resources");
     }
 
     @Override

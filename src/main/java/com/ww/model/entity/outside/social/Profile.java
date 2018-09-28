@@ -3,6 +3,7 @@ package com.ww.model.entity.outside.social;
 import com.ww.helper.TagHelper;
 import com.ww.model.constant.Language;
 import com.ww.model.constant.wisie.WisorType;
+import com.ww.model.container.Resources;
 import com.ww.model.entity.outside.book.ProfileBook;
 import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
@@ -96,20 +97,27 @@ public class Profile {
         }
     }
 
-    public boolean hasEnoughResources(Long gold, Long crystal, Long wisdom, Long elixir) {
-        if (gold != null && this.gold < gold) {
-            return false;
-        }
-        if (crystal != null && this.crystal < crystal) {
-            return false;
-        }
-        if (wisdom != null && this.wisdom < wisdom) {
-            return false;
-        }
-        if (elixir != null && this.elixir < elixir) {
-            return false;
-        }
-        return true;
+    public boolean hasEnoughResources(Resources resources) {
+        return getResources().hasNotLessThan(resources);
+    }
+
+    public Resources getResources() {
+        return new Resources(gold, crystal, wisdom, elixir);
+    }
+
+    public void setResources(Resources resources) {
+        this.gold = resources.getGold();
+        this.crystal = resources.getCrystal();
+        this.wisdom = resources.getWisdom();
+        this.elixir = resources.getElixir();
+    }
+
+    public void addResources(Resources resources) {
+        setResources(getResources().add(resources));
+    }
+
+    public void subtractResources(Resources resources) {
+        setResources(getResources().subtract(resources));
     }
 
     @Override

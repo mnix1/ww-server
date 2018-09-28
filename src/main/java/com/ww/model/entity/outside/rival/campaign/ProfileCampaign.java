@@ -2,6 +2,7 @@ package com.ww.model.entity.outside.rival.campaign;
 
 import com.ww.model.constant.book.BookType;
 import com.ww.model.constant.rival.campaign.ProfileCampaignStatus;
+import com.ww.model.container.Resources;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileCampaignWisie;
 import lombok.Getter;
@@ -58,5 +59,9 @@ public class ProfileCampaign {
             wisdomGain = campaign.getWisdomGain() / 2;
             elixirGain = campaign.getElixirGain() / 2;
         }
+    }
+
+    public Resources getGainResources(){
+        return new Resources(goldGain, crystalGain, wisdomGain, elixirGain);
     }
 }

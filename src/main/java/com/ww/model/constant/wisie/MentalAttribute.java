@@ -1,5 +1,7 @@
 package com.ww.model.constant.wisie;
 
+import com.ww.model.container.Resources;
+
 public enum MentalAttribute {
     SPEED,
     REFLEX,
@@ -15,7 +17,7 @@ public enum MentalAttribute {
         }
     }
 
-    public static Long UPGRADE_COST = 2L;
+    public static Resources UPGRADE_COST = new Resources(null, null,2L);
 
     public static int COUNT = 5;
 }
