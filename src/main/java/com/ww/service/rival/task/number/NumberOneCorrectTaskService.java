@@ -40,7 +40,7 @@ public class NumberOneCorrectTaskService {
         }
         if (typeValue == NumberTaskType.LCM) {
             int count = Math.min(3, difficultyCalibration(difficulty) / 2 + 2);
-            int bound = 9 + difficultyCalibration(difficulty) * 2;
+            int bound = 20 + difficultyCalibration(difficulty) * 2;
             numbers = randomDistinctIntegers(count, 2 + difficultyCalibration(difficulty), bound);
         }
         if (typeValue == NumberTaskType.PRIME) {
