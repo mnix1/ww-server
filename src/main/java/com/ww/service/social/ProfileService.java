@@ -94,6 +94,10 @@ public class ProfileService {
         return null;
     }
 
+    public void storeInSession(Profile profile){
+        sessionService.storeProfile(profile);
+    }
+
     public Profile retrieveProfile(String authId) {
         return profileRepository.findByAuthId(authId);
     }

@@ -3,7 +3,6 @@ package com.ww.controller.rival;
 import com.ww.model.constant.rival.challenge.ChallengeStatus;
 import com.ww.model.dto.rival.challenge.ChallengeInfoDTO;
 import com.ww.model.dto.rival.challenge.ChallengeSummaryDTO;
-import com.ww.service.SessionService;
 import com.ww.service.rival.RivalChallengeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;

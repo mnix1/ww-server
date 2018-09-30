@@ -2,10 +2,11 @@ package com.ww.controller;
 
 import com.ww.model.dto.social.FriendDTO;
 import com.ww.service.social.FriendService;
-import com.ww.service.social.ProfileService;
-import com.ww.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;

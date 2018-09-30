@@ -2,7 +2,6 @@ package com.ww.controller;
 
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.dto.social.ProfileDTO;
-import com.ww.service.SessionService;
 import com.ww.service.rival.war.RivalWarService;
 import com.ww.service.social.AuthProfileService;
 import com.ww.service.social.ProfileService;

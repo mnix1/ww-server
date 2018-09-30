@@ -4,7 +4,6 @@ import com.ww.model.constant.rival.campaign.CampaignDestination;
 import com.ww.model.constant.rival.campaign.CampaignType;
 import com.ww.model.dto.rival.campaign.CampaignDTO;
 import com.ww.model.dto.rival.campaign.ProfileCampaignDTO;
-import com.ww.service.SessionService;
 import com.ww.service.rival.campaign.CampaignService;
 import com.ww.service.rival.campaign.RivalCampaignWarService;
 import org.springframework.beans.factory.annotation.Autowired;

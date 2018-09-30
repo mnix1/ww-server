@@ -3,7 +3,6 @@ package com.ww.controller.rival;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.dto.social.ClassificationProfileDTO;
-import com.ww.service.SessionService;
 import com.ww.service.rival.RivalFriendService;
 import com.ww.service.rival.RivalRandomOpponentService;
 import com.ww.service.rival.battle.RivalBattleService;

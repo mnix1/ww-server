@@ -1,9 +1,7 @@
 package com.ww.controller;
 
 import com.ww.model.dto.book.ShopBookDTO;
-import com.ww.service.SessionService;
 import com.ww.service.shop.ShopService;
-import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -5,9 +5,7 @@ import com.ww.model.constant.wisie.WisieType;
 import com.ww.model.dto.social.ProfileResourcesDTO;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
-import com.ww.service.SessionService;
 import com.ww.service.wisie.ProfileWisieService;
-import com.ww.service.wisie.WisieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,9 +24,6 @@ import static com.ww.service.social.IntroService.PICK_WISIES_INTRODUCTION_STEP_I
 public class AuthProfileService {
 
     @Autowired
-    private SessionService sessionService;
-
-    @Autowired
     private ProfileService profileService;
 
     @Autowired
@@ -43,13 +38,14 @@ public class AuthProfileService {
             Profile profile = profileService.retrieveProfile(authId);
             if (profile == null) {
                 profile = profileService.createProfile(user, authId);
+                profileService.storeInSession(profile);
                 if (user instanceof UsernamePasswordAuthenticationToken
                         && ((UsernamePasswordAuthenticationToken) user).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_" + Roles.AUTO))) {
                     completeIntroductionForAuto(profile);
                 }
+            } else {
+                profileService.storeInSession(profile);
             }
-            sessionService.setProfileId(profile.getId());
-            sessionService.setProfileTag(profile.getTag());
             return new ProfileResourcesDTO(profile);
         }
         return null;
