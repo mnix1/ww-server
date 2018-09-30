@@ -124,7 +124,6 @@ public class RivalCampaignWarService extends RivalWarService {
     protected void addRewardFromWin(Profile winner) {
     }
 
-
     public Map<String, Object> start() {
         Map<String, Object> model = new HashMap<>();
         ProfileCampaign profileCampaign = campaignService.active();

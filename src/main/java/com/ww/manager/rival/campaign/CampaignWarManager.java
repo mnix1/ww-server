@@ -1,11 +1,10 @@
 package com.ww.manager.rival.campaign;
 
 import com.ww.helper.TeamHelper;
-import com.ww.manager.rival.campaign.state.CampaignWarStateChoosingTaskProps;
 import com.ww.manager.rival.campaign.state.CampaignWarStateChosenWhoAnswer;
-import com.ww.manager.rival.state.StateClose;
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.container.rival.RivalInitContainer;
+import com.ww.model.container.rival.campaign.CampaignWarContainer;
 import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarContainer;
 import com.ww.model.container.rival.war.WarProfileContainer;
@@ -35,7 +34,7 @@ public class CampaignWarManager extends WarManager {
         Long creatorId = creator.getId();
         Profile opponent = container.getOpponentProfile();
         Long opponentId = opponent.getId();
-        this.rivalContainer = new WarContainer();
+        this.rivalContainer = new CampaignWarContainer();
         this.rivalContainer.storeInformationFromInitContainer(container);
         this.rivalContainer.addProfile(creatorId, new WarProfileContainer(creator, opponentId, prepareTeamMembers(creator, profileCampaign)));
         this.rivalContainer.addProfile(opponentId, new WarProfileContainer(opponent, creatorId, prepareTeamMembers(opponent, profileCampaign)));
@@ -65,15 +64,6 @@ public class CampaignWarManager extends WarManager {
             }
         }
         return teamMembers;
-    }
-
-    public synchronized void phase2() {
-        if (isEnd()) {
-            new StateClose(this).startVoid();
-        } else {
-            new CampaignWarStateChoosingTaskProps(this).startVoid();
-            phase3();
-        }
     }
 
     public synchronized void chosenWhoAnswer(Long profileId, Map<String, Object> content) {
