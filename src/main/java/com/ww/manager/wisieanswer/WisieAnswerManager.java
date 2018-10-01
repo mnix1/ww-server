@@ -255,7 +255,7 @@ public class WisieAnswerManager {
         actions.add(action);
         warContainer.forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            warContainer.fillModelWisieAnswering(model, rivalProfileContainer);
+            warManager.getModelFactory().fillModelWisieAnswering(model, rivalProfileContainer);
             warManager.send(model, warManager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
     }

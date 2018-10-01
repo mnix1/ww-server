@@ -29,7 +29,7 @@ public class WarStateAnsweringTimeout extends WarState {
         rivalContainer.setStatus(RivalStatus.ANSWERING_TIMEOUT);
         rivalContainer.forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            rivalContainer.fillModelAnsweringTimeout(model, rivalProfileContainer);
+            warManager.getModelFactory().fillModelAnsweringTimeout(model, rivalProfileContainer);
             warManager.send(model, warManager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
         return Flowable.intervalRange(0L, 1L, warManager.getAnsweringTimeoutInterval(), warManager.getAnsweringTimeoutInterval(), TimeUnit.MILLISECONDS);

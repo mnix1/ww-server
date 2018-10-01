@@ -8,6 +8,7 @@ import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.container.rival.RivalContainer;
+import com.ww.model.container.rival.RivalModelFactory;
 import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.task.Question;
@@ -38,6 +39,8 @@ public abstract class RivalManager {
     protected AbstractRivalService abstractRivalService;
     protected ProfileConnectionService profileConnectionService;
     protected Disposable activeFlowable;
+
+    public abstract RivalModelFactory getModelFactory();
 
     public void disposeFlowable() {
         if (activeFlowable != null) {
@@ -132,7 +135,7 @@ public abstract class RivalManager {
     public synchronized Map<String, Object> actualModel(Long profileId) {
         Map<String, Object> model = new HashMap<>();
         RivalProfileContainer rivalProfileContainer = rivalContainer.getProfileIdRivalProfileContainerMap().get(profileId);
-        rivalContainer.fillModel(model, rivalProfileContainer);
+        getModelFactory().fillModel(model, rivalProfileContainer);
         return model;
     }
 

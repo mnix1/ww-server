@@ -32,7 +32,7 @@ public class WarStateChoosingWhoAnswer extends WarState {
         warContainer.setEndChoosingWhoAnswerDate(Instant.now().plus(interval, ChronoUnit.MILLIS));
         warContainer.forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            warContainer.fillModelChoosingWhoAnswer(model, rivalProfileContainer);
+            warManager.getModelFactory().fillModelChoosingWhoAnswer(model, rivalProfileContainer);
             rivalManager.send(model, rivalManager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);

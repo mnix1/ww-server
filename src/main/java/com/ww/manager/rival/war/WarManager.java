@@ -4,16 +4,19 @@ import com.ww.helper.TeamHelper;
 import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.state.*;
 import com.ww.manager.rival.war.state.*;
+import com.ww.model.container.rival.RivalModelFactory;
 import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.container.rival.init.RivalTwoPlayerInitContainer;
 import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarContainer;
+import com.ww.model.container.rival.war.WarModelFactory;
 import com.ww.model.container.rival.war.WarProfileContainer;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.OwnedWisie;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
 import com.ww.service.rival.war.RivalWarService;
 import com.ww.service.social.ProfileConnectionService;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
@@ -24,9 +27,11 @@ import static com.ww.service.rival.global.RivalMessageService.CHOOSE_WHO_ANSWER;
 import static com.ww.service.rival.global.RivalMessageService.HINT;
 
 @NoArgsConstructor
+@Getter
 public class WarManager extends RivalManager {
 
     public WarContainer warContainer;
+    public WarModelFactory modelFactory;
 
     public WarManager(RivalTwoPlayerInitContainer container, RivalWarService rivalWarService, ProfileConnectionService profileConnectionService) {
         this.abstractRivalService = rivalWarService;

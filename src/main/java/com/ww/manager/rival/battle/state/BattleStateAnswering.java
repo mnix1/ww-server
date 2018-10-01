@@ -23,7 +23,7 @@ public class BattleStateAnswering extends State {
         rivalContainer.setStatus(RivalStatus.ANSWERING);
         rivalContainer.forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            rivalContainer.fillModelAnswering(model, rivalProfileContainer);
+            rivalManager.getModelFactory().fillModelAnswering(model, rivalProfileContainer);
             rivalManager.send(model, rivalManager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
         return Flowable.intervalRange(0L, 1L, rivalManager.getAnsweringInterval(), rivalManager.getAnsweringInterval(), TimeUnit.MILLISECONDS);

@@ -2,7 +2,6 @@ package com.ww.model.container.rival.war;
 
 import com.ww.manager.rival.RivalManager;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
-import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import com.ww.model.container.rival.RivalContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
@@ -15,7 +14,6 @@ import lombok.Setter;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -36,7 +34,7 @@ public class WarContainer extends RivalContainer {
         }
     }
 
-    private List<WisieAnswerAction> getAnsweringWisieActions(WarProfileContainer warProfileContainer) {
+    public List<WisieAnswerAction> getAnsweringWisieActions(WarProfileContainer warProfileContainer) {
         TeamMember teamMember = warProfileContainer.getActiveTeamMember();
         if (!teamMember.isWisie()) {
             return null;
@@ -72,7 +70,7 @@ public class WarContainer extends RivalContainer {
         return null;
     }
 
-    private List<TeamMemberDTO> prepareTeam(List<TeamMember> teamMembers) {
+    public List<TeamMemberDTO> prepareTeam(List<TeamMember> teamMembers) {
         return teamMembers.stream().map(TeamMemberDTO::new).collect(Collectors.toList());
     }
 
@@ -110,85 +108,5 @@ public class WarContainer extends RivalContainer {
 
     public WarProfileContainer getRivalProfileContainer(Long id) {
         return (WarProfileContainer) super.getRivalProfileContainer(id);
-    }
-
-    public void fillModelBasic(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
-        super.fillModelBasic(model, rivalProfileContainer);
-        WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
-        model.put("activeIndex", warProfileContainer.getActiveIndex());
-        model.put("presentIndexes", warProfileContainer.getPresentIndexes());
-        model.put("team", prepareTeam(warProfileContainer.getTeamMembers()));
-        if (isOpponent()) {
-            model.put("opponentPresentIndexes", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getPresentIndexes());
-            model.put("opponentActiveIndex", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getActiveIndex());
-            model.put("opponentTeam", prepareTeam(getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getTeamMembers()));
-        }
-    }
-
-    public void fillModelPreparingNextTask(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
-        super.fillModelPreparingNextTask(model, rivalProfileContainer);
-        WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
-        model.put("activeIndex", warProfileContainer.getActiveIndex());
-        model.put("wisieActions", null);
-        if (isOpponent()) {
-            model.put("opponentActiveIndex", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getActiveIndex());
-            model.put("opponentWisieActions", null);
-        }
-    }
-
-    public void fillModelAnswered(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
-        super.fillModelAnswered(model, rivalProfileContainer);
-        WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
-        model.put("presentIndexes", warProfileContainer.getPresentIndexes());
-        if (isOpponent()) {
-            model.put("opponentPresentIndexes", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getPresentIndexes());
-        }
-    }
-
-    public void fillModelAnswering(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
-        super.fillModelAnswering(model, rivalProfileContainer);
-        fillModelWisieAnswering(model, rivalProfileContainer);
-    }
-
-    public void fillModelWisieAnswering(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
-        WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
-        if (warProfileContainer.getActiveTeamMember().isWisie()) {
-            List<WisieAnswerAction> wisieActions = getAnsweringWisieActions(warProfileContainer);
-            if (wisieActions != null) {
-                model.put("wisieActions", wisieActions);
-            }
-            if (isOpponent()) {
-                List<WisieAnswerAction> opponentWisieActions = getAnsweringWisieActions(getRivalProfileContainer(rivalProfileContainer.getOpponentId()));
-                if (opponentWisieActions != null) {
-                    model.put("opponentWisieActions", opponentWisieActions);
-                }
-            }
-        }
-    }
-
-    public void fillModelAnsweringTimeout(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
-        super.fillModelAnsweringTimeout(model, rivalProfileContainer);
-        WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
-        model.put("presentIndexes", warProfileContainer.getPresentIndexes());
-        if (isOpponent()) {
-            model.put("opponentPresentIndexes", getRivalProfileContainer(rivalProfileContainer.getOpponentId()).getPresentIndexes());
-        }
-    }
-
-    public void fillModelChoosingWhoAnswer(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
-        WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
-        model.put("status", status);
-        model.put("choosingWhoAnswerInterval", Math.max(endChoosingWhoAnswerDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
-        model.put("activeIndex", warProfileContainer.getActiveIndex());
-        model.put("presentIndexes", warProfileContainer.getPresentIndexes());
-        model.put("isChosenActiveIndex", warProfileContainer.isChosenActiveIndex());
-        model.put("task", taskDTOs.get(currentTaskIndex).toTaskMeta());
-    }
-
-    public void fillModel(Map<String, Object> model, RivalProfileContainer rivalProfileContainer) {
-        super.fillModel(model, rivalProfileContainer);
-        if (status == RivalStatus.CHOOSING_WHO_ANSWER) {
-            fillModelChoosingWhoAnswer(model, rivalProfileContainer);
-        }
     }
 }

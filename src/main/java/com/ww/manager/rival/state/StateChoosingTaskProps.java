@@ -37,7 +37,7 @@ public class StateChoosingTaskProps extends State {
         rivalContainer.setEndChoosingTaskPropsDate(Instant.now().plus(interval, ChronoUnit.MILLIS));
         rivalContainer.forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            rivalContainer.fillModelChoosingTaskProps(model, rivalProfileContainer);
+            rivalManager.getModelFactory().fillModelChoosingTaskProps(model, rivalProfileContainer);
             rivalManager.send(model, rivalManager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);

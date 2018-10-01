@@ -25,7 +25,7 @@ public class WarStateAnswering extends WarState {
 
         rivalContainer.forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            rivalContainer.fillModelAnswering(model, rivalProfileContainer);
+            rivalManager.getModelFactory().fillModelAnswering(model, rivalProfileContainer);
             warManager.send(model, warManager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
         warContainer.startWisieAnswerManager();

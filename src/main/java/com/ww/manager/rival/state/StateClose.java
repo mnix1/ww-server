@@ -27,8 +27,8 @@ public class StateClose extends State {
         rivalManager.updateProfilesElo();
         rivalContainer.forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            rivalContainer.fillModelEloChanged(model, rivalProfileContainer);
-            rivalContainer.fillModelClosed(model, rivalProfileContainer);
+            rivalManager.getModelFactory().fillModelEloChanged(model, rivalProfileContainer);
+            rivalManager.getModelFactory().fillModelClosed(model, rivalProfileContainer);
             rivalManager.send(model, rivalManager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
         rivalManager.getAbstractRivalService().disposeManager(rivalManager);

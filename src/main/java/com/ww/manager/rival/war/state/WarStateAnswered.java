@@ -42,7 +42,7 @@ public class WarStateAnswered extends WarState {
         }
         rivalContainer.forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            rivalContainer.fillModelAnswered(model, rivalProfileContainer);
+            rivalManager.getModelFactory().fillModelAnswered(model, rivalProfileContainer);
             warManager.send(model, warManager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
         return Flowable.intervalRange(0L, 1L, warManager.getShowingAnswerInterval(), warManager.getShowingAnswerInterval(), TimeUnit.MILLISECONDS);

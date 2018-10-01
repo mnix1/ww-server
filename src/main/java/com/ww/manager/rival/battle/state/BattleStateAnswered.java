@@ -35,7 +35,7 @@ public class BattleStateAnswered extends State {
         container.setScore(isAnswerCorrect ? container.getScore() + rivalContainer.getCurrentTaskPoints() : container.getScore() - rivalContainer.getCurrentTaskPoints());
         rivalContainer.forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            rivalContainer.fillModelAnswered(model, rivalProfileContainer);
+            rivalManager.getModelFactory().fillModelAnswered(model, rivalProfileContainer);
             rivalManager.send(model, rivalManager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
         return Flowable.intervalRange(0L, 1L, rivalManager.getShowingAnswerInterval(), rivalManager.getShowingAnswerInterval(), TimeUnit.MILLISECONDS);

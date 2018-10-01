@@ -19,7 +19,7 @@ public class StateIntro extends State {
         rivalContainer.setStatus(RivalStatus.INTRO);
         rivalContainer.forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            rivalContainer.fillModelIntro(model, rivalProfileContainer);
+            rivalManager.getModelFactory().fillModelIntro(model, rivalProfileContainer);
             rivalManager.send(model, rivalManager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
         return Flowable.intervalRange(0L, 1L, rivalManager.getIntroInterval(), rivalManager.getIntroInterval(), TimeUnit.MILLISECONDS);

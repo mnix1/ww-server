@@ -6,18 +6,24 @@ import com.ww.manager.rival.battle.state.BattleStateAnswering;
 import com.ww.manager.rival.battle.state.BattleStateAnsweringTimeout;
 import com.ww.manager.rival.state.StateChoosingTaskProps;
 import com.ww.manager.rival.state.*;
+import com.ww.model.container.rival.battle.BattleModelFactory;
 import com.ww.model.container.rival.init.RivalInitContainer;
 import com.ww.model.container.rival.battle.BattleContainer;
 import com.ww.model.container.rival.battle.BattleProfileContainer;
 import com.ww.model.container.rival.init.RivalTwoPlayerInitContainer;
+import com.ww.model.container.rival.war.WarModelFactory;
 import com.ww.service.rival.battle.RivalBattleService;
 import com.ww.service.social.ProfileConnectionService;
+import lombok.Getter;
 
 import java.util.Map;
 
+@Getter
 public class BattleManager extends RivalManager {
 
     public static final Integer TASK_COUNT = 5;
+
+    public BattleModelFactory modelFactory;
 
     public BattleManager(RivalTwoPlayerInitContainer container, RivalBattleService rivalBattleService, ProfileConnectionService profileConnectionService) {
         this.abstractRivalService = rivalBattleService;
@@ -28,6 +34,7 @@ public class BattleManager extends RivalManager {
         this.rivalContainer.storeInformationFromInitContainer(container);
         this.rivalContainer.addProfile(creatorId, new BattleProfileContainer(container.getCreatorProfile(), opponentId));
         this.rivalContainer.addProfile(opponentId, new BattleProfileContainer(container.getOpponentProfile(), creatorId));
+        this.modelFactory = new BattleModelFactory((BattleContainer) this.rivalContainer);
     }
 
     public boolean isEnd() {
