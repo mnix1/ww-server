@@ -1,4 +1,4 @@
-package com.ww.service.rival;
+package com.ww.service.rival.practise;
 
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.practise.PractiseResult;
@@ -54,30 +54,25 @@ public class PractiseService {
         if (practiseId == null || answerId == null) {
             return null;
         }
-        try {
-            Date closeDate = new Date();
-            Practise practise = practiseRepository.findById(practiseId).orElseThrow(() -> new Exception("Not found practise with id " + practiseId));
-            Boolean isPractiseForActualSessionProfile = profileService.getProfileId().equals(practise.getProfileId());
-            if (!isPractiseForActualSessionProfile || !practise.isOpen()) {
-                return null;
-            }
-            Question question = practise.getQuestion();
-            Boolean answerForQuestion = question.getAnswers().stream().map(answer -> answer.getId()).collect(Collectors.toList()).contains(answerId);
-            if (!answerForQuestion) {
-                updatePractiseResult(practise, false, closeDate);
-                return null;
-            }
-            Answer correctAnswer = taskService.findCorrectAnswer(question);
-            boolean result = correctAnswer.getId().equals(answerId);
-            updatePractiseResult(practise, result, closeDate);
-            Map<String,Object> model = new HashMap<>();
-            model.put("correctAnswerId", correctAnswer.getId());
-            model.put("answerInterval", practise.inProgressInterval());
-            return model;
-        } catch (Exception e) {
-            //log
+        Date closeDate = new Date();
+        Practise practise = practiseRepository.findById(practiseId).orElseThrow(() -> new IllegalArgumentException("Not found practise with id " + practiseId));
+        Boolean isPractiseForActualSessionProfile = profileService.getProfileId().equals(practise.getProfileId());
+        if (!isPractiseForActualSessionProfile || !practise.isOpen()) {
+            return null;
         }
-        return null;
+        Question question = practise.getQuestion();
+        Boolean answerForQuestion = question.getAnswers().stream().map(answer -> answer.getId()).collect(Collectors.toList()).contains(answerId);
+        if (!answerForQuestion) {
+            updatePractiseResult(practise, false, closeDate);
+            return null;
+        }
+        Answer correctAnswer = taskService.findCorrectAnswer(question);
+        boolean result = correctAnswer.getId().equals(answerId);
+        updatePractiseResult(practise, result, closeDate);
+        Map<String, Object> model = new HashMap<>();
+        model.put("correctAnswerId", correctAnswer.getId());
+        model.put("answerInterval", practise.inProgressInterval());
+        return model;
     }
 
     public void updatePractiseResult(Practise practise, Boolean result, Date closeDate) {

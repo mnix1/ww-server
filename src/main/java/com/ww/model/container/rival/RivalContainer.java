@@ -115,12 +115,6 @@ public abstract class RivalContainer {
         currentTaskIndex++;
     }
 
-    public boolean isReady() {
-        return profileIdRivalProfileContainerMap.values().stream()
-                .filter(rivalProfileContainer -> rivalProfileContainer.getStatus() != RivalProfileStatus.READY)
-                .collect(Collectors.toList()).size() == 0;
-    }
-
     public RivalProfileDTO prepareProfile(Long profileId) {
         return prepareProfile(getRivalProfileContainer(profileId).getProfile());
     }

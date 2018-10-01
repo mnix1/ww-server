@@ -21,6 +21,7 @@ import com.ww.service.social.ProfileService;
 import com.ww.service.wisie.ProfileWisieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -87,7 +88,8 @@ public class CampaignService {
         profileCampaignWisieRepository.saveAll(profileCampaign.getWisies());
     }
 
-    public synchronized Map<String, Object> init(CampaignType type, CampaignDestination destination, List<Long> ids) {
+    @Transactional
+    public Map<String, Object> init(CampaignType type, CampaignDestination destination, List<Long> ids) {
         Map<String, Object> model = new HashMap<>();
         List<ProfileWisie> wisies = profileWisieService.findByIds(ids);
         if (wisies == null) {

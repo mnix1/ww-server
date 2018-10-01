@@ -2,7 +2,7 @@ package com.ww.service.rival.battle;
 
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.rival.AbstractRivalService;
-import com.ww.service.rival.GlobalRivalService;
+import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.social.ProfileConnectionService;
@@ -31,11 +31,11 @@ public class RivalBattleService extends AbstractRivalService {
     protected ProfileService profileService;
 
     @Autowired
-    protected GlobalRivalService globalRivalService;
+    protected RivalGlobalService rivalGlobalService;
 
     @Override
-    public GlobalRivalService getGlobalRivalService() {
-        return globalRivalService;
+    public RivalGlobalService getRivalGlobalService() {
+        return rivalGlobalService;
     }
 
     @Override

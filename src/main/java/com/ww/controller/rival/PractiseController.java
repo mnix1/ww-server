@@ -2,7 +2,7 @@ package com.ww.controller.rival;
 
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
-import com.ww.service.rival.PractiseService;
+import com.ww.service.rival.practise.PractiseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

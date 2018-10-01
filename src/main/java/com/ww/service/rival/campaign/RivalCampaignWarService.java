@@ -85,7 +85,7 @@ public class RivalCampaignWarService extends RivalWarService {
     }
 
     @Override
-    public synchronized void disposeManager(RivalManager rivalManager) {
+    public void disposeManager(RivalManager rivalManager) {
         super.disposeManager(rivalManager);
         CampaignWarManager campaignWarManager = (CampaignWarManager) rivalManager;
         Long profileId = rivalManager.getRivalContainer().getCreatorProfile().getId();
@@ -132,8 +132,8 @@ public class RivalCampaignWarService extends RivalWarService {
         }
         RivalInitContainer rival = new RivalInitContainer(CAMPAIGN_WAR, RivalImportance.FAST, profileService.getProfile(), prepareComputerProfile(profileCampaign));
         RivalManager rivalManager = createManager(rival, profileCampaign);
-        getGlobalRivalService().put(rival.getCreatorProfile().getId(), rivalManager);
-        getGlobalRivalService().put(rival.getOpponentProfile().getId(), rivalManager);
+        getRivalGlobalService().put(rival.getCreatorProfile().getId(), rivalManager);
+        getRivalGlobalService().put(rival.getOpponentProfile().getId(), rivalManager);
         rivalManager.start();
         return putSuccessCode(model);
     }

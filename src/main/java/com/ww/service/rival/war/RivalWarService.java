@@ -1,6 +1,5 @@
 package com.ww.service.rival.war;
 
-import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
@@ -8,7 +7,7 @@ import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
 import com.ww.service.rival.AbstractRivalService;
-import com.ww.service.rival.GlobalRivalService;
+import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.rival.task.TaskService;
@@ -49,11 +48,11 @@ public class RivalWarService extends AbstractRivalService {
     protected ProfileService profileService;
 
     @Autowired
-    protected GlobalRivalService globalRivalService;
+    protected RivalGlobalService rivalGlobalService;
 
     @Override
-    public GlobalRivalService getGlobalRivalService() {
-        return globalRivalService;
+    public RivalGlobalService getRivalGlobalService() {
+        return rivalGlobalService;
     }
 
     @Override
@@ -106,7 +105,7 @@ public class RivalWarService extends AbstractRivalService {
         if (!profileId.isPresent()) {
             return;
         }
-        WarManager warManager = (WarManager) getGlobalRivalService().get(profileId.get());
+        WarManager warManager = (WarManager) getRivalGlobalService().get(profileId.get());
         if (warManager == null || !warManager.canChooseWhoAnswer()) {
             return;
         }
@@ -121,7 +120,7 @@ public class RivalWarService extends AbstractRivalService {
         if (!profileId.isPresent()) {
             return;
         }
-        WarManager warManager = (WarManager) getGlobalRivalService().get(profileId.get());
+        WarManager warManager = (WarManager) getRivalGlobalService().get(profileId.get());
         if (!warManager.canAnswer()) {
             return;
         }

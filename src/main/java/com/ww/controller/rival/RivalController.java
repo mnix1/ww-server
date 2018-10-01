@@ -3,10 +3,9 @@ package com.ww.controller.rival;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.dto.social.ClassificationProfileDTO;
-import com.ww.service.rival.RivalFriendService;
-import com.ww.service.rival.RivalRandomOpponentService;
-import com.ww.service.rival.battle.RivalBattleService;
-import com.ww.service.rival.war.RivalWarService;
+import com.ww.service.rival.global.RivalClassificationService;
+import com.ww.service.rival.init.RivalInitFriendService;
+import com.ww.service.rival.init.RivalInitRandomOpponentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,16 +20,13 @@ import java.util.Map;
 public class RivalController {
 
     @Autowired
-    private RivalFriendService rivalFriendService;
+    private RivalInitFriendService rivalInitFriendService;
 
     @Autowired
-    private RivalRandomOpponentService rivalRandomOpponentService;
+    private RivalInitRandomOpponentService rivalInitRandomOpponentService;
 
     @Autowired
-    private  RivalBattleService rivalBattleService;
-
-    @Autowired
-    private RivalWarService rivalWarService;
+    private RivalClassificationService rivalClassificationService;
 
     @RequestMapping(value = "/classification", method = RequestMethod.POST)
     public List<ClassificationProfileDTO> classification(@RequestBody Map<String, Object> payload) {
@@ -38,12 +34,7 @@ public class RivalController {
             throw new IllegalArgumentException();
         }
         RivalType type = RivalType.valueOf((String) payload.get("type"));
-        if (type == RivalType.BATTLE) {
-            return rivalBattleService.classification(type);
-        } else if (type == RivalType.WAR) {
-            return rivalWarService.classification(type);
-        }
-        throw new IllegalArgumentException();
+        return rivalClassificationService.classification(type);
     }
 
     @RequestMapping(value = "/startRandomOpponent", method = RequestMethod.POST)
@@ -53,12 +44,12 @@ public class RivalController {
         }
         RivalType type = RivalType.valueOf((String) payload.get("type"));
         RivalImportance importance = RivalImportance.valueOf((String) payload.get("importance"));
-        return rivalRandomOpponentService.start(type, importance);
+        return rivalInitRandomOpponentService.start(type, importance);
     }
 
     @RequestMapping(value = "/cancelRandomOpponent", method = RequestMethod.POST)
     public Map cancelRandomOpponent() {
-        return rivalRandomOpponentService.cancel();
+        return rivalInitRandomOpponentService.cancel();
     }
 
     @RequestMapping(value = "/startFriend", method = RequestMethod.POST)
@@ -67,21 +58,21 @@ public class RivalController {
             throw new IllegalArgumentException();
         }
         RivalType type = RivalType.valueOf((String) payload.get("type"));
-        return rivalFriendService.startFriend((String) payload.get("tag"), type);
+        return rivalInitFriendService.startFriend((String) payload.get("tag"), type);
     }
 
     @RequestMapping(value = "/cancelFriend", method = RequestMethod.POST)
     public Map cancel() {
-        return rivalFriendService.cancelFriend();
+        return rivalInitFriendService.cancelFriend();
     }
 
     @RequestMapping(value = "/acceptFriend", method = RequestMethod.POST)
     public Map accept() {
-        return rivalFriendService.acceptFriend();
+        return rivalInitFriendService.acceptFriend();
     }
 
     @RequestMapping(value = "/rejectFriend", method = RequestMethod.POST)
     public Map reject() {
-        return rivalFriendService.rejectFriend();
+        return rivalInitFriendService.rejectFriend();
     }
 }

@@ -1,4 +1,4 @@
-package com.ww.service.rival;
+package com.ww.service.rival.global;
 
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.container.ProfileConnection;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
-public class GlobalRivalService {
+public class RivalGlobalService {
     private final ConcurrentHashMap<Long, RivalManager> profileIdToRivalManagerMap = new ConcurrentHashMap<>();
 
     @Autowired

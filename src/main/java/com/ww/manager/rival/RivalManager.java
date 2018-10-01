@@ -45,6 +45,10 @@ public abstract class RivalManager {
         }
     }
 
+    public void processMessage(Long profileId, String message){
+
+    }
+
     public Message getMessageContent() {
         return abstractRivalService.getMessageContent();
     }

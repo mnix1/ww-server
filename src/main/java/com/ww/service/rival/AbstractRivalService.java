@@ -4,14 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
-import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.rival.RivalContainer;
-import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.dto.rival.task.TaskDTO;
-import com.ww.model.dto.social.ClassificationProfileDTO;
 import com.ww.model.entity.outside.rival.Rival;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
+import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.social.ProfileConnectionService;
@@ -20,11 +18,8 @@ import com.ww.websocket.message.Message;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public abstract class AbstractRivalService {
     protected abstract void addRewardFromWin(Profile winner);
@@ -39,23 +34,14 @@ public abstract class AbstractRivalService {
 
     public abstract ProfileService getProfileService();
 
-    public abstract GlobalRivalService getGlobalRivalService();
-
-    public List<ClassificationProfileDTO> classification(RivalType type) {
-        String profileTag = getProfileService().getProfileTag();
-        List<Profile> profiles = getProfileService().classification(type);
-        return IntStream.range(0, profiles.size())
-                .mapToObj(value -> new ClassificationProfileDTO(profiles.get(value), type, (long) value + 1))
-                .filter(value -> value.getPosition() <= 20 || value.getTag().equals(profileTag))
-                .collect(Collectors.toList());
-    }
+    public abstract RivalGlobalService getRivalGlobalService();
 
     public synchronized void disposeManager(RivalManager rivalManager) {
         if (!rivalManager.isClosed()) {
             return;
         }
         rivalManager.getRivalProfileContainers().forEach(rivalProfileContainer -> {
-            getGlobalRivalService().remove(rivalProfileContainer.getProfileId());
+            getRivalGlobalService().remove(rivalProfileContainer.getProfileId());
         });
         RivalContainer rivalContainer = rivalManager.getRivalContainer();
         Boolean isDraw = rivalContainer.getDraw();
@@ -64,7 +50,7 @@ public abstract class AbstractRivalService {
         if (!isDraw) {
             addRewardFromWin(winner);
         }
-        getGlobalRivalService().save(rival);
+        getRivalGlobalService().save(rival);
         // TODO STORE RESULT
     }
 
@@ -83,7 +69,7 @@ public abstract class AbstractRivalService {
         if (!profileId.isPresent()) {
             return;
         }
-        RivalManager rivalManager = getGlobalRivalService().get(profileId.get());
+        RivalManager rivalManager = getRivalGlobalService().get(profileId.get());
         if (!rivalManager.canAnswer()) {
             return;
         }
@@ -101,7 +87,7 @@ public abstract class AbstractRivalService {
         if (!profileId.isPresent()) {
             return;
         }
-        RivalManager rivalManager = getGlobalRivalService().get(profileId.get());
+        RivalManager rivalManager = getRivalGlobalService().get(profileId.get());
         if (!rivalManager.canChooseTaskProps()) {
             return;
         }
@@ -120,10 +106,10 @@ public abstract class AbstractRivalService {
             return;
         }
         Long profileId = optionalProfileId.get();
-        if (!getGlobalRivalService().contains(profileId)) {
+        if (!getRivalGlobalService().contains(profileId)) {
             return;
         }
-        RivalManager rivalManager = getGlobalRivalService().get(profileId);
+        RivalManager rivalManager = getRivalGlobalService().get(profileId);
         rivalManager.surrender(profileId);
     }
 

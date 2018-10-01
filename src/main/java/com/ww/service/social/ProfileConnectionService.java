@@ -4,7 +4,7 @@ import com.ww.model.constant.social.FriendStatus;
 import com.ww.model.container.ProfileConnection;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.repository.outside.social.ProfileFriendRepository;
-import com.ww.service.rival.RivalRandomOpponentService;
+import com.ww.service.rival.init.RivalInitRandomOpponentService;
 import com.ww.websocket.message.Message;
 import com.ww.websocket.message.MessageDTO;
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ public class ProfileConnectionService {
     private ProfileFriendRepository profileFriendRepository;
 
     @Autowired
-    private RivalRandomOpponentService rivalRandomOpponentService;
+    private RivalInitRandomOpponentService rivalInitRandomOpponentService;
 
     public synchronized ProfileConnection newConnection(WebSocketSession session) {
         Profile profile = profileService.retrieveProfile(profileService.getAuthId(session.getPrincipal()));
@@ -46,7 +46,7 @@ public class ProfileConnectionService {
     }
 
     public synchronized void deleteConnection(ProfileConnection profileConnection) {
-        rivalRandomOpponentService.remove(profileConnection.getProfileId());
+        rivalInitRandomOpponentService.remove(profileConnection.getProfileId());
         sessionIdToProfileConnectionMap.remove(profileConnection.getSessionId());
         profileIdToProfileConnectionMap.remove(profileConnection.getProfileId());
         logger.debug("ProfileConnection deleteConnection: profileId: " + profileConnection.getProfileId() + ", sessionId: " + profileConnection.getSessionId());

@@ -1,4 +1,4 @@
-package com.ww.service.rival;
+package com.ww.service.rival.init;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +12,7 @@ import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.dto.social.FriendDTO;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.rival.battle.RivalBattleService;
+import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.rival.war.RivalWarService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
@@ -30,8 +31,8 @@ import static com.ww.helper.ModelHelper.putErrorCode;
 import static com.ww.helper.ModelHelper.putSuccessCode;
 
 @Service
-public class RivalFriendService {
-    private static final Logger logger = LoggerFactory.getLogger(RivalFriendService.class);
+public class RivalInitFriendService {
+    private static final Logger logger = LoggerFactory.getLogger(RivalInitFriendService.class);
 
     private final CopyOnWriteArrayList<RivalInitContainer> rivalInitContainers = new CopyOnWriteArrayList<RivalInitContainer>();
 
@@ -48,23 +49,23 @@ public class RivalFriendService {
     private RivalWarService rivalWarService;
 
     @Autowired
-    private RivalRandomOpponentService rivalRandomOpponentService;
+    private RivalInitRandomOpponentService rivalInitRandomOpponentService;
 
     @Autowired
-    private GlobalRivalService globalRivalService;
+    private RivalGlobalService rivalGlobalService;
 
     public Map startFriend(String tag, RivalType type) {
         Map<String, Object> model = new HashMap<>();
         cleanCreator();
         cleanOpponent();
-        if (globalRivalService.contains(profileService.getProfileId())) {
+        if (rivalGlobalService.contains(profileService.getProfileId())) {
             return putErrorCode(model);
         }
         if (rivalInitContainers.stream().anyMatch(e -> e.getOpponentProfile().getTag().equals(tag) || e.getCreatorProfile().getTag().equals(tag))) {
             return putErrorCode(model);
         }
         Profile opponentProfile = profileService.getProfile(tag);
-        if (rivalRandomOpponentService.contains(opponentProfile.getId()) || globalRivalService.contains(opponentProfile.getId())) {
+        if (rivalInitRandomOpponentService.contains(opponentProfile.getId()) || rivalGlobalService.contains(opponentProfile.getId())) {
             return putErrorCode(model);
         }
         RivalInitContainer rivalInitContainer = prepareContainer(opponentProfile, type);
@@ -93,20 +94,20 @@ public class RivalFriendService {
 
     public Map acceptFriend() {
         Map<String, Object> model = new HashMap<>();
-        if (globalRivalService.contains(profileService.getProfileId())) {
+        if (rivalGlobalService.contains(profileService.getProfileId())) {
             return putErrorCode(model);
         }
         RivalInitContainer rival = rivalInitContainers.stream().filter(rivalInitContainer -> rivalInitContainer.getOpponentProfile().getId().equals(profileService.getProfileId())).findFirst().get();
         this.sendAcceptInvite(rival);
         if (rival.getType() == RivalType.BATTLE) {
             BattleManager battleManager = new BattleManager(rival, rivalBattleService, profileConnectionService);
-            rivalBattleService.getGlobalRivalService().put(rival.getCreatorProfile().getId(), battleManager);
-            rivalBattleService.getGlobalRivalService().put(rival.getOpponentProfile().getId(), battleManager);
+            rivalBattleService.getRivalGlobalService().put(rival.getCreatorProfile().getId(), battleManager);
+            rivalBattleService.getRivalGlobalService().put(rival.getOpponentProfile().getId(), battleManager);
             battleManager.start();
         } else if (rival.getType() == RivalType.WAR) {
             WarManager warManager = new WarManager(rival, rivalWarService, profileConnectionService);
-            rivalWarService.getGlobalRivalService().put(rival.getCreatorProfile().getId(), warManager);
-            rivalWarService.getGlobalRivalService().put(rival.getOpponentProfile().getId(), warManager);
+            rivalWarService.getRivalGlobalService().put(rival.getCreatorProfile().getId(), warManager);
+            rivalWarService.getRivalGlobalService().put(rival.getOpponentProfile().getId(), warManager);
             warManager.start();
         }
         model.put("type", rival.getType().name());

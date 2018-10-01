@@ -95,7 +95,7 @@ public class RivalChallengeService extends RivalWarService {
         sortChallengeQuestions(challengeQuestions);
         RivalInitContainer rival = new RivalInitContainer(CHALLENGE, RivalImportance.FAST, profile, null);
         RivalManager rivalManager = new ChallengeManager(rival, this, profileConnectionService, challengeProfile, challengeQuestions);
-        getGlobalRivalService().put(rival.getCreatorProfile().getId(), rivalManager);
+        getRivalGlobalService().put(rival.getCreatorProfile().getId(), rivalManager);
         rivalManager.start();
         return putSuccessCode(model);
     }

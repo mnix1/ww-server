@@ -1,4 +1,4 @@
-package com.ww.service.rival;
+package com.ww.service.rival.init;
 
 import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.battle.BattleManager;
@@ -9,7 +9,9 @@ import com.ww.model.container.ProfileConnection;
 import com.ww.model.container.rival.RivalInitContainer;
 import com.ww.model.container.rival.RivalSearchingOpponentContainer;
 import com.ww.model.entity.outside.social.Profile;
+import com.ww.service.rival.AbstractRivalService;
 import com.ww.service.rival.battle.RivalBattleService;
+import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.rival.war.RivalWarService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
@@ -25,9 +27,10 @@ import static com.ww.helper.ModelHelper.putErrorCode;
 import static com.ww.helper.ModelHelper.putSuccessCode;
 
 @Service
-public class RivalRandomOpponentService {
+public class RivalInitRandomOpponentService {
     private final ConcurrentHashMap<Long, RivalSearchingOpponentContainer> waitingForRivalProfiles = new ConcurrentHashMap<>();
     private static final int RIVAL_INIT_JOB_RATE = 2000;
+
     @Autowired
     private ProfileService profileService;
     @Autowired
@@ -37,11 +40,11 @@ public class RivalRandomOpponentService {
     @Autowired
     private RivalBattleService rivalBattleService;
     @Autowired
-    private GlobalRivalService globalRivalService;
+    private RivalGlobalService rivalGlobalService;
 
     public Map start(RivalType type, RivalImportance importance) {
         Map<String, Object> model = new HashMap<>();
-        if (globalRivalService.contains(profileService.getProfileId())) {
+        if (rivalGlobalService.contains(profileService.getProfileId())) {
             return putErrorCode(model);
         }
         Profile profile = profileService.getProfile();
@@ -112,8 +115,8 @@ public class RivalRandomOpponentService {
         } else {
             throw new IllegalArgumentException();
         }
-        abstractRivalService.getGlobalRivalService().put(rival.getCreatorProfile().getId(), rivalManager);
-        abstractRivalService.getGlobalRivalService().put(rival.getOpponentProfile().getId(), rivalManager);
+        abstractRivalService.getRivalGlobalService().put(rival.getCreatorProfile().getId(), rivalManager);
+        abstractRivalService.getRivalGlobalService().put(rival.getOpponentProfile().getId(), rivalManager);
         rivalManager.start();
         maybeInitRival();
         return;
