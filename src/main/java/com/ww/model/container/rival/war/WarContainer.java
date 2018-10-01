@@ -63,6 +63,15 @@ public class WarContainer extends RivalContainer {
         }
     }
 
+    public WisieAnswerManager getWisieAnswerManager(Long profileId) {
+        for (WisieAnswerManager manager : wisieAnswerManagers) {
+            if (manager.getWisie().getProfile().getId().equals(profileId)) {
+                return manager;
+            }
+        }
+        return null;
+    }
+
     private List<TeamMemberDTO> prepareTeam(List<TeamMember> teamMembers) {
         return teamMembers.stream().map(TeamMemberDTO::new).collect(Collectors.toList());
     }

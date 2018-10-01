@@ -49,7 +49,6 @@ public class CampaignWarManager extends WarManager {
         return prepareTeamMembers(profileCampaign, profileCampaign.getWisies());
     }
 
-
     protected List<TeamMember> prepareTeamMembers(ProfileCampaign profileCampaign, List<ProfileCampaignWisie> wisies) {
         List<TeamMember> teamMembers = TeamHelper.prepareTeamMembers(profileCampaign.getProfile(), wisies, rivalContainer.getImportance(), rivalContainer.getType());
         for (TeamMember teamMember : teamMembers) {

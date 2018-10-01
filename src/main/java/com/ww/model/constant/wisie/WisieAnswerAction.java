@@ -6,6 +6,11 @@ import java.util.List;
 public enum WisieAnswerAction {
     NONE,
 
+    HINT_RECEIVED,
+    THINKING_IF_USE_HINT,
+    WILL_USE_HINT,
+    WONT_USE_HINT,
+
     WAITING_FOR_QUESTION,
     RECOGNIZING_QUESTION,
     THINKING,

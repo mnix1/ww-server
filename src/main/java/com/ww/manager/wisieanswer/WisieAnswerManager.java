@@ -3,7 +3,7 @@ package com.ww.manager.wisieanswer;
 import com.ww.helper.AnswerHelper;
 import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.war.WarManager;
-import com.ww.manager.wisieanswer.state.phase3.StateAnsweringPhase3;
+import com.ww.manager.wisieanswer.state.hint.*;
 import com.ww.manager.wisieanswer.state.multiphase.StateCheckNoConcentration;
 import com.ww.manager.wisieanswer.state.multiphase.StateLostConcentration;
 import com.ww.manager.wisieanswer.state.phase1.StateStartRecognizingQuestion;
@@ -20,10 +20,10 @@ import com.ww.manager.wisieanswer.state.phase5.StateThinkKnowAnswer;
 import com.ww.manager.wisieanswer.state.phase6.*;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import com.ww.model.container.rival.war.WarContainer;
-import com.ww.model.entity.outside.wisie.OwnedWisie;
-import com.ww.model.entity.outside.wisie.ProfileWisie;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskWisdomAttribute;
+import com.ww.model.entity.outside.wisie.OwnedWisie;
+import io.reactivex.disposables.Disposable;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,6 +61,12 @@ public class WisieAnswerManager {
     private int hobbyCount;
     private double hobbyFactor;
 
+    private boolean receivedHint = false;
+    private Long hintAnswerId;
+    private boolean hintCorrect;
+
+    protected Disposable activeFlowable;
+
     public WisieAnswerManager(OwnedWisie wisie, RivalManager rivalManager) {
         this.wisie = wisie;
         this.warManager = (WarManager) rivalManager;
@@ -72,7 +78,7 @@ public class WisieAnswerManager {
         this.hobbyCount = wisie.getHobbies().size();
         this.hobbyFactor = 1 + 1d / hobbyCount;
         this.cacheAttributes();
-        logger.trace(getWisie().getWisie().getNamePolish() +
+        logger.trace(toString() +
                 ", difficulty=" + difficulty +
                 ", answerCount=" + answerCount +
                 ", wisdomSum=" + wisdomSum +
@@ -84,6 +90,19 @@ public class WisieAnswerManager {
                 ", isHobby=" + isHobby +
                 ", hobbyCount=" + hobbyCount +
                 ", hobbyFactor=" + hobbyFactor);
+    }
+
+
+    public void disposeFlowable() {
+        if (activeFlowable != null) {
+            activeFlowable.dispose();
+            activeFlowable = null;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return getWisie().getId() + ", profileId=" + getWisie().getProfile().getId() + ", wisieName=" + getWisie().getWisie().getNamePolish() + ", lastAction=" + lastAction().name();
     }
 
     private void cacheAttributes() {
@@ -111,26 +130,26 @@ public class WisieAnswerManager {
     public void stop() {
         if (inProgress) {
             inProgress = false;
+            disposeFlowable();
         }
     }
 
     public void phase1() {
-        new StateStartRecognizingQuestion(this).startFlowable().subscribe(aLong1 -> {
+        activeFlowable = new StateStartRecognizingQuestion(this).startFlowable().subscribe(aLong1 -> {
             WisieAnswerAction aa1 = new StateCheckNoConcentration(this).startWisieAnswerAction();
             if (WisieAnswerAction.isNoConcentration(aa1)) {
-                new StateLostConcentration(this, aa1).startFlowable().subscribe(aLong2 -> {
+                activeFlowable = new StateLostConcentration(this, aa1).startFlowable().subscribe(aLong2 -> {
                     phase2();
                 });
             } else {
                 phase2();
             }
         });
-
     }
 
     public void phase2() {
-        new StateEndRecognizingQuestion(this).startFlowable().subscribe(aLong2 -> {
-            new StateStartThinkingAboutQuestion(this).startFlowable().subscribe(aLong3 -> {
+        activeFlowable = new StateEndRecognizingQuestion(this).startFlowable().subscribe(aLong2 -> {
+            activeFlowable = new StateStartThinkingAboutQuestion(this).startFlowable().subscribe(aLong3 -> {
                 WisieAnswerAction aa2 = new StateCheckKnowAnswerAfterThinkingAboutQuestion(this).startWisieAnswerAction();
                 if (aa2 == WisieAnswerAction.THINK_KNOW_ANSWER) {
                     phase3();
@@ -142,15 +161,15 @@ public class WisieAnswerManager {
     }
 
     public void phase3() {
-        new StateStartLookingForAnswer(this).startFlowable().subscribe(aLong4 -> {
-            new StateEndLookingForAnswer(this).startFlowable().subscribe(aLong5 -> {
+        activeFlowable = new StateStartLookingForAnswer(this).startFlowable().subscribe(aLong4 -> {
+            activeFlowable = new StateEndLookingForAnswer(this).startFlowable().subscribe(aLong5 -> {
                 WisieAnswerAction aa2 = new StateCheckFoundAnswerLookingFor(this).startWisieAnswerAction();
                 if (aa2 == WisieAnswerAction.FOUND_ANSWER_LOOKING_FOR) {
-                    new StateFoundAnswerLookingFor(this).startFlowable().subscribe(aLong6 -> {
+                    activeFlowable = new StateFoundAnswerLookingFor(this).startFlowable().subscribe(aLong6 -> {
                         new StateAnsweringPhase3(this).startVoid();
                     });
                 } else if (aa2 == WisieAnswerAction.NO_FOUND_ANSWER_LOOKING_FOR) {
-                    new StateNoFoundAnswerLookingFor(this).startFlowable().subscribe(aLong7 -> {
+                    activeFlowable = new StateNoFoundAnswerLookingFor(this).startFlowable().subscribe(aLong7 -> {
                         phase5();
                     });
                 }
@@ -159,8 +178,8 @@ public class WisieAnswerManager {
     }
 
     public void phase4() {
-        new StateStartRecognizingAnswers(this).startFlowable().subscribe(aLong5 -> {
-            new StateEndRecognizingAnswers(this).startFlowable().subscribe(aLong6 -> {
+        activeFlowable = new StateStartRecognizingAnswers(this).startFlowable().subscribe(aLong5 -> {
+            activeFlowable = new StateEndRecognizingAnswers(this).startFlowable().subscribe(aLong6 -> {
                 WisieAnswerAction aa3 = new StateCheckNoConcentration(this).startWisieAnswerAction();
                 if (WisieAnswerAction.isNoConcentration(aa3)) {
                     new StateLostConcentration(this, aa3).startFlowable().subscribe(aLong7 -> {
@@ -174,10 +193,10 @@ public class WisieAnswerManager {
     }
 
     public void phase5() {
-        new StateEndThinkingWhichAnswerMatch(this).startFlowable().subscribe(aLong8 -> {
+        activeFlowable = new StateEndThinkingWhichAnswerMatch(this).startFlowable().subscribe(aLong8 -> {
             WisieAnswerAction aa4 = new StateCheckKnowAnswerAfterThinkingWhichMatch(this).startWisieAnswerAction();
             if (aa4 == WisieAnswerAction.THINK_KNOW_ANSWER) {
-                new StateThinkKnowAnswer(this).startFlowable().subscribe(aLong9 -> {
+                activeFlowable = new StateThinkKnowAnswer(this).startFlowable().subscribe(aLong9 -> {
                     new StateAnsweringPhase5(this).startVoid();
                 });
             } else if (aa4 == WisieAnswerAction.NOT_SURE_OF_ANSWER) {
@@ -187,8 +206,8 @@ public class WisieAnswerManager {
     }
 
     public void phase6() {
-        new StateNotSureOfAnswer(this).startFlowable().subscribe(aLong10 -> {
-            new StateEndThinkingIfGiveRandomAnswer(this).startFlowable().subscribe(aLong11 -> {
+        activeFlowable = new StateNotSureOfAnswer(this).startFlowable().subscribe(aLong10 -> {
+            activeFlowable = new StateEndThinkingIfGiveRandomAnswer(this).startFlowable().subscribe(aLong11 -> {
                 WisieAnswerAction aa5 = new StateCheckIfGiveRandomAnswer(this).startWisieAnswerAction();
                 if (aa5 == WisieAnswerAction.WILL_GIVE_RANDOM_ANSWER) {
                     new StateAnsweringPhase6(this).startVoid();
@@ -199,7 +218,36 @@ public class WisieAnswerManager {
         });
     }
 
+    public void phaseHint() {
+        activeFlowable = new StateHintReceived(this).startFlowable().subscribe(aLong10 -> {
+            activeFlowable = new StateEndThinkingIfUseHint(this).startFlowable().subscribe(aLong11 -> {
+                WisieAnswerAction aa5 = new StateCheckIfUseHint(this).startWisieAnswerAction();
+                activeFlowable = new StateDecidedIfUseHint(this, aa5).startFlowable().subscribe(aLong12 -> {
+                    if (aa5 == WisieAnswerAction.WILL_USE_HINT) {
+                        new StateAnsweringUseHint(this).startVoid();
+                    } else if (aa5 == WisieAnswerAction.WONT_USE_HINT) {
+                        new StateAnsweringNoUseHint(this).startVoid();
+                    }
+                });
+            });
+        });
+    }
+
+    public void hint(Long answerId, Boolean isCorrect) {
+        if (receivedHint || !inProgress) {
+            return;
+        }
+        disposeFlowable();
+        receivedHint = true;
+        this.hintAnswerId = answerId;
+        this.hintCorrect = isCorrect;
+        phaseHint();
+    }
+
     public WisieAnswerAction lastAction() {
+        if (actions.isEmpty()) {
+            return WisieAnswerAction.NONE;
+        }
         return actions.get(actions.size() - 1);
     }
 
@@ -210,7 +258,6 @@ public class WisieAnswerManager {
             warContainer.fillModelWisieAnswering(model, rivalProfileContainer);
             warManager.send(model, warManager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
-
     }
 
 }

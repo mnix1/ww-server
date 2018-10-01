@@ -1,4 +1,4 @@
-package com.ww.manager.wisieanswer.state.phase6;
+package com.ww.manager.wisieanswer.state.hint;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.State;
@@ -11,15 +11,15 @@ import java.util.concurrent.TimeUnit;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 
-public class StateNotSureOfAnswer extends State {
-    protected static final Logger logger = LoggerFactory.getLogger(StateNotSureOfAnswer.class);
+public class StateHintReceived extends State {
+    protected static final Logger logger = LoggerFactory.getLogger(StateHintReceived.class);
 
-    public StateNotSureOfAnswer(WisieAnswerManager manager) {
+    public StateHintReceived(WisieAnswerManager manager) {
         super(manager);
     }
 
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(WisieAnswerAction.NOT_SURE_OF_ANSWER);
+        manager.addAndSendAction(WisieAnswerAction.HINT_RECEIVED);
         long interval = (long) (randomDouble(2 - manager.getReflexF1() - manager.getConfidenceF1(), 4 - 2 * manager.getReflexF1() - 2 * manager.getConfidenceF1()) * 1000);
         logger.trace(manager.toString() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);

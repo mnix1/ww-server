@@ -115,10 +115,6 @@ public abstract class RivalContainer {
         currentTaskIndex++;
     }
 
-    public void profileReady(Long profileId) {
-        getRivalProfileContainer(profileId).setStatus(RivalProfileStatus.READY);
-    }
-
     public boolean isReady() {
         return profileIdRivalProfileContainerMap.values().stream()
                 .filter(rivalProfileContainer -> rivalProfileContainer.getStatus() != RivalProfileStatus.READY)

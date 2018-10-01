@@ -41,7 +41,7 @@ public class BattleManager extends RivalManager {
 
     public synchronized void phase1() {
         new StatePreparingNextTask(this).startFlowable().subscribe(aLong2 -> {
-            answeringTimeoutDisposable = new BattleStateAnswering(this).startFlowable().subscribe(aLong3 -> {
+            activeFlowable = new BattleStateAnswering(this).startFlowable().subscribe(aLong3 -> {
                 new BattleStateAnsweringTimeout(this).startFlowable().subscribe(aLong4 -> {
                     phase2();
                 });
@@ -53,7 +53,7 @@ public class BattleManager extends RivalManager {
         if (isEnd()) {
             new StateClose(this).startVoid();
         } else {
-            choosingTaskPropsDisposable = new StateChoosingTaskProps(this).startFlowable().subscribe(aLong5 -> {
+            activeFlowable = new StateChoosingTaskProps(this).startFlowable().subscribe(aLong5 -> {
                 boolean randomChooseTaskProps = rivalContainer.randomChooseTaskProps();
                 if (randomChooseTaskProps) {
                     phase1();

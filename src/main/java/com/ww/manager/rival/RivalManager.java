@@ -36,17 +36,12 @@ public abstract class RivalManager {
     protected RivalContainer rivalContainer;
     protected AbstractRivalService abstractRivalService;
     protected ProfileConnectionService profileConnectionService;
-    protected Disposable answeringTimeoutDisposable;
-    protected Disposable choosingTaskPropsDisposable;
+    protected Disposable activeFlowable;
 
     public void disposeFlowable() {
-        if (answeringTimeoutDisposable != null) {
-            answeringTimeoutDisposable.dispose();
-            answeringTimeoutDisposable = null;
-        }
-        if (choosingTaskPropsDisposable != null) {
-            choosingTaskPropsDisposable.dispose();
-            choosingTaskPropsDisposable = null;
+        if (activeFlowable != null) {
+            activeFlowable.dispose();
+            activeFlowable = null;
         }
     }
 
@@ -143,7 +138,6 @@ public abstract class RivalManager {
 
     public Integer getAnsweringInterval() {
         return 45000;
-//        return 45000000;
     }
 
     public Integer getAnsweringTimeoutInterval() {
@@ -152,12 +146,10 @@ public abstract class RivalManager {
 
     public Integer getShowingAnswerInterval() {
         return 8000;
-//        return 800000;
     }
 
     public Integer getChoosingTaskPropsInterval() {
         return 14000;
-//        return 10004000;
     }
 
     public Integer getRandomChooseTaskPropsInterval() {

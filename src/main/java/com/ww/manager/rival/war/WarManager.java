@@ -26,8 +26,6 @@ public class WarManager extends RivalManager {
 
     public WarContainer warContainer;
 
-    protected Disposable choosingWhoAnswerDisposable;
-
     public WarManager(RivalInitContainer container, RivalWarService rivalWarService, ProfileConnectionService profileConnectionService) {
         this.abstractRivalService = rivalWarService;
         this.profileConnectionService = profileConnectionService;
@@ -48,14 +46,6 @@ public class WarManager extends RivalManager {
         return TeamHelper.prepareTeamMembers(profile, wisies, rivalContainer.getImportance(), rivalContainer.getType());
     }
 
-    public void disposeFlowable() {
-        super.disposeFlowable();
-        if (choosingWhoAnswerDisposable != null) {
-            choosingWhoAnswerDisposable.dispose();
-            choosingWhoAnswerDisposable = null;
-        }
-    }
-
     public boolean isEnd() {
         for (RivalProfileContainer rivalProfileContainer : getRivalProfileContainers()) {
             WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
@@ -74,7 +64,7 @@ public class WarManager extends RivalManager {
 
     public synchronized void phase1() {
         new StatePreparingNextTask(this).startFlowable().subscribe(aLong2 -> {
-            answeringTimeoutDisposable = new WarStateAnswering(this).startFlowable().subscribe(aLong3 -> {
+            activeFlowable = new WarStateAnswering(this).startFlowable().subscribe(aLong3 -> {
                 new WarStateAnsweringTimeout(this).startFlowable().subscribe(aLong4 -> {
                     phase2();
                 });
@@ -86,7 +76,7 @@ public class WarManager extends RivalManager {
         if (isEnd()) {
             new StateClose(this).startVoid();
         } else {
-            choosingTaskPropsDisposable = new StateChoosingTaskProps(this).startFlowable().subscribe(aLong5 -> {
+            activeFlowable = new StateChoosingTaskProps(this).startFlowable().subscribe(aLong5 -> {
                 boolean randomChooseTaskProps = rivalContainer.randomChooseTaskProps();
                 if (randomChooseTaskProps) {
                     phase3();
@@ -99,7 +89,7 @@ public class WarManager extends RivalManager {
     }
 
     public synchronized void phase3() {
-        choosingWhoAnswerDisposable = new WarStateChoosingWhoAnswer(this).startFlowable().subscribe(aLong2 -> {
+        activeFlowable = new WarStateChoosingWhoAnswer(this).startFlowable().subscribe(aLong2 -> {
             phase1();
         });
     }
@@ -115,6 +105,10 @@ public class WarManager extends RivalManager {
         new WarStateAnswered(this, profileId, content).startFlowable().subscribe(aLong -> {
             phase2();
         });
+    }
+
+    public synchronized void hint(Long profileId, Map<String, Object> content) {
+        new WarStateHinted(this, profileId, content).startVoid();
     }
 
     public synchronized void chosenTaskProps(Long profileId, Map<String, Object> content) {

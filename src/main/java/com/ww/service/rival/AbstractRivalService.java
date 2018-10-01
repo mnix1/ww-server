@@ -54,8 +54,7 @@ public abstract class AbstractRivalService {
         if (!rivalManager.isClosed()) {
             return;
         }
-        List<RivalProfileContainer> rivalProfileContainers = rivalManager.getRivalProfileContainers();
-        rivalProfileContainers.forEach(rivalProfileContainer -> {
+        rivalManager.getRivalProfileContainers().forEach(rivalProfileContainer -> {
             getGlobalRivalService().remove(rivalProfileContainer.getProfileId());
         });
         RivalContainer rivalContainer = rivalManager.getRivalContainer();
@@ -92,6 +91,9 @@ public abstract class AbstractRivalService {
         if (contentMap != null) {
             rivalManager.answer(profileId.get(), contentMap);
         }
+    }
+
+    public synchronized void hint(String sessionId, String content) {
     }
 
     public synchronized void chooseTaskProps(String sessionId, String content) {

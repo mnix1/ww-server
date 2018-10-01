@@ -67,11 +67,12 @@ public class WebSocketHandler extends TextWebSocketHandler {
     private static final String CHOOSE_TASK_PROPS_SUFFIX = "_^_CHOOSE_TASK_PROPS";
     private static final String SURRENDER_SUFFIX = "_^_SURRENDER";
     private static final String CHOOSE_WHO_ANSWER_SUFFIX = "_^_CHOOSE_WHO_ANSWER";
+    private static final String HINT_SUFFIX = "_^_HINT";
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage jsonTextMessage) throws Exception {
         String message = jsonTextMessage.getPayload();
-//        logger.debug("Message received: " + jsonTextMessage.getPayload() + ", from sessionId: " + session.getId());
+        logger.trace("Message received: " + jsonTextMessage.getPayload() + ", from sessionId: " + session.getId());
         AbstractRivalService abstractRivalService = null;
         RivalType rivalType = null;
         if (message.startsWith(RivalType.BATTLE.name())) {
@@ -95,6 +96,8 @@ public class WebSocketHandler extends TextWebSocketHandler {
             abstractRivalService.surrender(session.getId());
         } else if (message.contains(CHOOSE_WHO_ANSWER_SUFFIX)) {
             abstractRivalService.chooseWhoAnswer(session.getId(), trimPrefixFromMessage(message, rivalType, CHOOSE_WHO_ANSWER_SUFFIX));
+        } else if (message.contains(HINT_SUFFIX)) {
+            abstractRivalService.hint(session.getId(), trimPrefixFromMessage(message, rivalType, HINT_SUFFIX));
         }
     }
 

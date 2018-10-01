@@ -1,5 +1,6 @@
 package com.ww.service.rival.war;
 
+import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
@@ -112,6 +113,21 @@ public class RivalWarService extends AbstractRivalService {
         Map<String, Object> contentMap = handleInput(content);
         if (contentMap != null) {
             warManager.chosenWhoAnswer(profileId.get(), contentMap);
+        }
+    }
+
+    public synchronized void hint(String sessionId, String content) {
+        Optional<Long> profileId = getProfileConnectionService().getProfileId(sessionId);
+        if (!profileId.isPresent()) {
+            return;
+        }
+        WarManager warManager = (WarManager) getGlobalRivalService().get(profileId.get());
+        if (!warManager.canAnswer()) {
+            return;
+        }
+        Map<String, Object> contentMap = handleInput(content);
+        if (contentMap != null) {
+            warManager.hint(profileId.get(), contentMap);
         }
     }
 }
