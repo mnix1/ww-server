@@ -23,21 +23,21 @@ public class BattleStateAnswered extends State {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        rivalContainer.setStatus(RivalStatus.ANSWERED);
-        rivalContainer.setAnsweredProfileId(profileId);
+        manager.getContainer().setStatus(RivalStatus.ANSWERED);
+        manager.getContainer().setAnsweredProfileId(profileId);
         Boolean isAnswerCorrect = false;
         if (content.containsKey("answerId")) {
             Long markedAnswerId = ((Integer) content.get("answerId")).longValue();
-            rivalContainer.setMarkedAnswerId(markedAnswerId);
-            isAnswerCorrect = rivalContainer.findCurrentCorrectAnswerId().equals(markedAnswerId);
+            manager.getContainer().setMarkedAnswerId(markedAnswerId);
+            isAnswerCorrect = manager.getContainer().findCurrentCorrectAnswerId().equals(markedAnswerId);
         }
-        BattleProfileContainer container = (BattleProfileContainer) rivalContainer.getProfileContainers().get(profileId);
-        container.setScore(isAnswerCorrect ? container.getScore() + rivalContainer.getCurrentTaskPoints() : container.getScore() - rivalContainer.getCurrentTaskPoints());
-        rivalContainer.forEachProfile(rivalProfileContainer -> {
+        BattleProfileContainer container = (BattleProfileContainer) manager.getContainer().profileContainer(profileId);
+        container.setScore(isAnswerCorrect ? container.getScore() + manager.getContainer().getCurrentTaskPoints() : container.getScore() - manager.getContainer().getCurrentTaskPoints());
+        manager.getContainer().forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            rivalManager.getModelFactory().fillModelAnswered(model, rivalProfileContainer);
-            rivalManager.send(model, rivalManager.getMessageContent(), rivalProfileContainer.getProfileId());
+            manager.getModelFactory().fillModelAnswered(model, rivalProfileContainer);
+            manager.send(model, manager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
-        return Flowable.intervalRange(0L, 1L, rivalManager.getShowingAnswerInterval(), rivalManager.getShowingAnswerInterval(), TimeUnit.MILLISECONDS);
+        return Flowable.intervalRange(0L, 1L, manager.getInterval().getShowingAnswerInterval(), manager.getInterval().getShowingAnswerInterval(), TimeUnit.MILLISECONDS);
     }
 }

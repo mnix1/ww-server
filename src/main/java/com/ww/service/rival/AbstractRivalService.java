@@ -43,7 +43,7 @@ public abstract class AbstractRivalService {
         rivalManager.getRivalProfileContainers().forEach(rivalProfileContainer -> {
             getRivalGlobalService().remove(rivalProfileContainer.getProfileId());
         });
-        RivalContainer rivalContainer = rivalManager.getRivalContainer();
+        RivalContainer rivalContainer = rivalManager.getContainer();
         Boolean isDraw = rivalContainer.getDraw();
         Profile winner = rivalContainer.getWinner();
         Rival rival = new Rival(rivalContainer.getType(), rivalContainer.getImportance(), rivalContainer.getCreatorProfile(), rivalContainer.getOpponentProfile(), isDraw, winner);

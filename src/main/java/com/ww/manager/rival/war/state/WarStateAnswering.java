@@ -18,17 +18,17 @@ public class WarStateAnswering extends WarState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        rivalContainer.setEndAnsweringDate(Instant.now().plus(warManager.getAnsweringInterval(), ChronoUnit.MILLIS));
-        rivalContainer.setStatus(RivalStatus.ANSWERING);
+        manager.getContainer().setEndAnsweringDate(Instant.now().plus(manager.getInterval().getAnsweringInterval(), ChronoUnit.MILLIS));
+        manager.getContainer().setStatus(RivalStatus.ANSWERING);
 
-        warContainer.updateWisieAnswerManagers(warManager);
+        manager.getContainer().updateWisieAnswerManagers(manager);
 
-        rivalContainer.forEachProfile(rivalProfileContainer -> {
+        manager.getContainer().forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            rivalManager.getModelFactory().fillModelAnswering(model, rivalProfileContainer);
-            warManager.send(model, warManager.getMessageContent(), rivalProfileContainer.getProfileId());
+            manager.getModelFactory().fillModelAnswering(model, rivalProfileContainer);
+            manager.send(model, manager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
-        warContainer.startWisieAnswerManager();
-        return Flowable.intervalRange(0L, 1L, warManager.getAnsweringInterval(), warManager.getAnsweringInterval(), TimeUnit.MILLISECONDS);
+        manager.getContainer().startWisieAnswerManager();
+        return Flowable.intervalRange(0L, 1L, manager.getInterval().getAnsweringInterval(), manager.getInterval().getAnsweringInterval(), TimeUnit.MILLISECONDS);
     }
 }

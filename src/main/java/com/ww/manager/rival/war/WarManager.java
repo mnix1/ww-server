@@ -4,13 +4,9 @@ import com.ww.helper.TeamHelper;
 import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.state.*;
 import com.ww.manager.rival.war.state.*;
-import com.ww.model.container.rival.RivalModelFactory;
 import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.container.rival.init.RivalTwoPlayerInitContainer;
-import com.ww.model.container.rival.war.TeamMember;
-import com.ww.model.container.rival.war.WarContainer;
-import com.ww.model.container.rival.war.WarModelFactory;
-import com.ww.model.container.rival.war.WarProfileContainer;
+import com.ww.model.container.rival.war.*;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.OwnedWisie;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
@@ -30,8 +26,9 @@ import static com.ww.service.rival.global.RivalMessageService.HINT;
 @Getter
 public class WarManager extends RivalManager {
 
-    public WarContainer warContainer;
+    public WarContainer container;
     public WarModelFactory modelFactory;
+    public WarInterval interval;
 
     public WarManager(RivalTwoPlayerInitContainer container, RivalWarService rivalWarService, ProfileConnectionService profileConnectionService) {
         this.abstractRivalService = rivalWarService;
@@ -42,12 +39,12 @@ public class WarManager extends RivalManager {
         Profile opponent = container.getOpponentProfile();
         Long opponentId = opponent.getId();
         List<ProfileWisie> opponentWisies = rivalWarService.getProfileWisies(opponent);
-        this.rivalContainer = new WarContainer();
-        this.rivalContainer.storeInformationFromInitContainer(container);
-        this.rivalContainer.addProfile(creatorId, new WarProfileContainer(creator, prepareTeamMembers(creator, creatorWisies)));
-        this.rivalContainer.addProfile(opponentId, new WarProfileContainer(opponent, prepareTeamMembers(opponent, opponentWisies)));
-        this.warContainer = (WarContainer) this.rivalContainer;
-        this.modelFactory = new WarModelFactory(warContainer);
+        this.container = new WarContainer();
+        this.container.storeInformationFromInitContainer(container);
+        this.container.addProfile(creatorId, new WarProfileContainer(creator, prepareTeamMembers(creator, creatorWisies)));
+        this.container.addProfile(opponentId, new WarProfileContainer(opponent, prepareTeamMembers(opponent, opponentWisies)));
+        this.modelFactory = new WarModelFactory(this.container);
+        this.interval = new WarInterval();
     }
 
     public boolean processMessage(Long profileId, Map<String, Object> content) {
@@ -67,7 +64,7 @@ public class WarManager extends RivalManager {
     }
 
     protected List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies) {
-        return TeamHelper.prepareTeamMembers(profile, wisies, rivalContainer.getImportance(), rivalContainer.getType());
+        return TeamHelper.prepareTeamMembers(profile, wisies, container.getImportance(), container.getType());
     }
 
     public boolean isEnd() {
@@ -101,7 +98,7 @@ public class WarManager extends RivalManager {
             new StateClose(this).startVoid();
         } else {
             activeFlowable = new StateChoosingTaskProps(this).startFlowable().subscribe(aLong5 -> {
-                boolean randomChooseTaskProps = rivalContainer.randomChooseTaskProps();
+                boolean randomChooseTaskProps = container.randomChooseTaskProps();
                 if (randomChooseTaskProps) {
                     phase3();
                 } else {
@@ -150,18 +147,7 @@ public class WarManager extends RivalManager {
     }
 
     public synchronized void surrender(Long profileId) {
-        warContainer.stopWisieAnswerManager();
+        container.stopWisieAnswerManager();
         super.surrender(profileId);
     }
-
-
-    public Integer getIntroInterval() {
-        return 5500;
-//        return 1050000;
-    }
-
-    public Integer getChoosingWhoAnswerInterval() {
-        return 10000;
-    }
-
 }

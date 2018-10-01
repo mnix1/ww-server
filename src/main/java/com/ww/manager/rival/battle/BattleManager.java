@@ -4,14 +4,12 @@ import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.battle.state.BattleStateAnswered;
 import com.ww.manager.rival.battle.state.BattleStateAnswering;
 import com.ww.manager.rival.battle.state.BattleStateAnsweringTimeout;
-import com.ww.manager.rival.state.StateChoosingTaskProps;
 import com.ww.manager.rival.state.*;
-import com.ww.model.container.rival.battle.BattleModelFactory;
-import com.ww.model.container.rival.init.RivalInitContainer;
+import com.ww.model.container.rival.RivalInterval;
 import com.ww.model.container.rival.battle.BattleContainer;
+import com.ww.model.container.rival.battle.BattleModelFactory;
 import com.ww.model.container.rival.battle.BattleProfileContainer;
 import com.ww.model.container.rival.init.RivalTwoPlayerInitContainer;
-import com.ww.model.container.rival.war.WarModelFactory;
 import com.ww.service.rival.battle.RivalBattleService;
 import com.ww.service.social.ProfileConnectionService;
 import lombok.Getter;
@@ -23,22 +21,26 @@ public class BattleManager extends RivalManager {
 
     public static final Integer TASK_COUNT = 5;
 
+    public BattleContainer container;
     public BattleModelFactory modelFactory;
+    public RivalInterval interval;
 
     public BattleManager(RivalTwoPlayerInitContainer container, RivalBattleService rivalBattleService, ProfileConnectionService profileConnectionService) {
         this.abstractRivalService = rivalBattleService;
         this.profileConnectionService = profileConnectionService;
         Long creatorId = container.getCreatorProfile().getId();
         Long opponentId = container.getOpponentProfile().getId();
-        this.rivalContainer = new BattleContainer();
-        this.rivalContainer.storeInformationFromInitContainer(container);
-        this.rivalContainer.addProfile(creatorId, new BattleProfileContainer(container.getCreatorProfile()));
-        this.rivalContainer.addProfile(opponentId, new BattleProfileContainer(container.getOpponentProfile()));
-        this.modelFactory = new BattleModelFactory((BattleContainer) this.rivalContainer);
+        this.container = new BattleContainer();
+        this.container.storeInformationFromInitContainer(container);
+        this.container.addProfile(creatorId, new BattleProfileContainer(container.getCreatorProfile()));
+        this.container.addProfile(opponentId, new BattleProfileContainer(container.getOpponentProfile()));
+        this.modelFactory = new BattleModelFactory(this.container);
+        this.modelFactory = new BattleModelFactory(this.container);
+        this.interval = new RivalInterval();
     }
 
     public boolean isEnd() {
-        return rivalContainer.getCurrentTaskIndex() == TASK_COUNT - 1;
+        return container.getCurrentTaskIndex() == TASK_COUNT - 1;
     }
 
     public synchronized void start() {
@@ -62,7 +64,7 @@ public class BattleManager extends RivalManager {
             new StateClose(this).startVoid();
         } else {
             activeFlowable = new StateChoosingTaskProps(this).startFlowable().subscribe(aLong5 -> {
-                boolean randomChooseTaskProps = rivalContainer.randomChooseTaskProps();
+                boolean randomChooseTaskProps = container.randomChooseTaskProps();
                 if (randomChooseTaskProps) {
                     phase1();
                 } else {

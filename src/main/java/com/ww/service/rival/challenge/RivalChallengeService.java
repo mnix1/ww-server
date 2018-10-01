@@ -8,8 +8,6 @@ import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.challenge.ChallengeProfileStatus;
 import com.ww.model.constant.rival.challenge.ChallengeStatus;
 import com.ww.model.container.rival.init.RivalChallengeInitContainer;
-import com.ww.model.container.rival.init.RivalInitContainer;
-import com.ww.model.container.rival.init.RivalOnePlayerInitContainer;
 import com.ww.model.entity.outside.rival.challenge.Challenge;
 import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
 import com.ww.model.entity.outside.rival.challenge.ChallengeQuestion;
@@ -85,7 +83,7 @@ public class RivalChallengeService extends RivalWarService {
         ChallengeManager challengeManager = (ChallengeManager) rivalManager;
         ChallengeProfile challengeProfile = challengeManager.challengeProfile;
         challengeProfile.setStatus(ChallengeProfileStatus.CLOSED);
-        challengeProfile.setScore(Math.max(0, rivalManager.getRivalContainer().getCurrentTaskIndex()));
+        challengeProfile.setScore(Math.max(0, rivalManager.getContainer().getCurrentTaskIndex()));
         challengeProfileRepository.save(challengeProfile);
         maybeCloseChallenge(challengeProfile.getChallenge(), Instant.now());
     }

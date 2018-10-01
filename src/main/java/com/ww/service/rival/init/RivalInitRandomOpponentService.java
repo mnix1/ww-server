@@ -100,7 +100,7 @@ public class RivalInitRandomOpponentService {
             maybeInitRival();
             return;
         }
-        logger.trace("Matched profiles {} and {}, now creating rival rivalManager", profile.getId(), opponent.getId());
+        logger.trace("Matched profiles {} and {}, now creating rival manager", profile.getId(), opponent.getId());
         waitingForRivalProfiles.remove(profile.getId());
         waitingForRivalProfiles.remove(opponent.getId());
         RivalTwoPlayerInitContainer rival = new RivalTwoPlayerInitContainer(waitingContainer.getType(), waitingContainer.getImportance(), profile, opponent);

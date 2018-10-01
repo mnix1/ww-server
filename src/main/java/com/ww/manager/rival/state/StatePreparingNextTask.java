@@ -18,13 +18,13 @@ public class StatePreparingNextTask extends State {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        rivalContainer.setNextTaskDate(Instant.now().plus(rivalManager.getPreparingNextTaskInterval(), ChronoUnit.MILLIS));
-        rivalContainer.setStatus(RivalStatus.PREPARING_NEXT_TASK);
-        rivalContainer.forEachProfile(rivalProfileContainer -> {
+        manager.getContainer().setNextTaskDate(Instant.now().plus(manager.getInterval().getPreparingNextTaskInterval(), ChronoUnit.MILLIS));
+        manager.getContainer().setStatus(RivalStatus.PREPARING_NEXT_TASK);
+        manager.getContainer().forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            rivalManager.getModelFactory().fillModelPreparingNextTask(model, rivalProfileContainer);
-            rivalManager.send(model, rivalManager.getMessageContent(), rivalProfileContainer.getProfileId());
+            manager.getModelFactory().fillModelPreparingNextTask(model, rivalProfileContainer);
+            manager.send(model, manager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
-        return Flowable.intervalRange(0L, 1L, rivalManager.getPreparingNextTaskInterval(), rivalManager.getPreparingNextTaskInterval(), TimeUnit.MILLISECONDS);
+        return Flowable.intervalRange(0L, 1L, manager.getInterval().getPreparingNextTaskInterval(), manager.getInterval().getPreparingNextTaskInterval(), TimeUnit.MILLISECONDS);
     }
 }

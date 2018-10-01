@@ -22,29 +22,29 @@ public class WarStateAnswered extends WarState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        rivalContainer.setStatus(RivalStatus.ANSWERED);
-        warManager.warContainer.stopWisieAnswerManager();
-        rivalContainer.setAnsweredProfileId(profileId);
+        manager.getContainer().setStatus(RivalStatus.ANSWERED);
+        manager.getContainer().stopWisieAnswerManager();
+        manager.getContainer().setAnsweredProfileId(profileId);
         Boolean isAnswerCorrect = false;
         if (content.containsKey("answerId")) {
             Long markedAnswerId = ((Integer) content.get("answerId")).longValue();
-            rivalContainer.setMarkedAnswerId(markedAnswerId);
-            isAnswerCorrect = rivalContainer.findCurrentCorrectAnswerId().equals(markedAnswerId);
+            manager.getContainer().setMarkedAnswerId(markedAnswerId);
+            isAnswerCorrect = manager.getContainer().findCurrentCorrectAnswerId().equals(markedAnswerId);
         }
-        WarProfileContainer profileContainer = (WarProfileContainer) rivalContainer.profileContainer(profileId);
-        if (rivalContainer.isOpponent()) {
+        WarProfileContainer profileContainer = manager.getContainer().profileContainer(profileId);
+        if (manager.getContainer().isOpponent()) {
             if (isAnswerCorrect) {
-                profileContainer = (WarProfileContainer) rivalContainer.opponentProfileContainer(profileContainer.getProfileId());
+                profileContainer = manager.getContainer().opponentProfileContainer(profileContainer.getProfileId());
             }
             profileContainer.setActiveTeamMemberPresentToFalse();
         } else if (!isAnswerCorrect) {
             profileContainer.setActiveTeamMemberPresentToFalse();
         }
-        rivalContainer.forEachProfile(rivalProfileContainer -> {
+        manager.getContainer().forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            rivalManager.getModelFactory().fillModelAnswered(model, rivalProfileContainer);
-            warManager.send(model, warManager.getMessageContent(), rivalProfileContainer.getProfileId());
+            manager.getModelFactory().fillModelAnswered(model, rivalProfileContainer);
+            manager.send(model, manager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
-        return Flowable.intervalRange(0L, 1L, warManager.getShowingAnswerInterval(), warManager.getShowingAnswerInterval(), TimeUnit.MILLISECONDS);
+        return Flowable.intervalRange(0L, 1L, manager.getInterval().getShowingAnswerInterval(), manager.getInterval().getShowingAnswerInterval(), TimeUnit.MILLISECONDS);
     }
 }

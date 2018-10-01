@@ -20,20 +20,20 @@ public class WarStateChoosingWhoAnswer extends WarState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        rivalContainer.setStatus(RivalStatus.CHOOSING_WHO_ANSWER);
+        this.manager.getContainer().setStatus(RivalStatus.CHOOSING_WHO_ANSWER);
 
-        for (RivalProfileContainer rivalProfileContainer : warManager.getRivalProfileContainers()) {
+        for (RivalProfileContainer rivalProfileContainer : manager.getRivalProfileContainers()) {
             WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
             warProfileContainer.setActiveIndex(warProfileContainer.getPresentIndexes().get(0));
             warProfileContainer.setChosenActiveIndex(false);
         }
 
-        int interval = warManager.getChoosingWhoAnswerInterval();
-        warContainer.setEndChoosingWhoAnswerDate(Instant.now().plus(interval, ChronoUnit.MILLIS));
-        warContainer.forEachProfile(rivalProfileContainer -> {
+        int interval = manager.getInterval().getChoosingWhoAnswerInterval();
+        manager.getContainer().setEndChoosingWhoAnswerDate(Instant.now().plus(interval, ChronoUnit.MILLIS));
+        manager.getContainer().forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            warManager.getModelFactory().fillModelChoosingWhoAnswer(model, rivalProfileContainer);
-            rivalManager.send(model, rivalManager.getMessageContent(), rivalProfileContainer.getProfileId());
+            manager.getModelFactory().fillModelChoosingWhoAnswer(model, rivalProfileContainer);
+            this.manager.send(model, this.manager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

@@ -19,14 +19,14 @@ public class WarStateHinted extends WarState {
 
     @Override
     protected void processVoid() {
-        WarProfileContainer container = (WarProfileContainer) rivalContainer.getProfileContainers().get(profileId);
-        WisieAnswerManager wisieAnswerManager = warManager.warContainer.getWisieAnswerManager(profileId);
+        WarProfileContainer container = manager.getContainer().profileContainer(profileId);
+        WisieAnswerManager wisieAnswerManager = manager.getContainer().getWisieAnswerManager(profileId);
         if (container.getHints() <= 0 || !content.containsKey("answerId") || wisieAnswerManager == null) {
             return;
         }
         container.decreaseHints();
         Long markedAnswerId = ((Integer) content.get("answerId")).longValue();
-        Boolean isAnswerCorrect = rivalContainer.findCurrentCorrectAnswerId().equals(markedAnswerId);
+        Boolean isAnswerCorrect = manager.getContainer().findCurrentCorrectAnswerId().equals(markedAnswerId);
         wisieAnswerManager.hint(markedAnswerId, isAnswerCorrect);
     }
 }

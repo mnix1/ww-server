@@ -20,25 +20,25 @@ public class StateChoosingTaskProps extends State {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        rivalContainer.setStatus(RivalStatus.CHOOSING_TASK_PROPS);
-        rivalContainer.increaseCurrentTaskIndex();
-        boolean randomChooseTaskProps = rivalContainer.randomChooseTaskProps();
+        manager.getContainer().setStatus(RivalStatus.CHOOSING_TASK_PROPS);
+        manager.getContainer().increaseCurrentTaskIndex();
+        boolean randomChooseTaskProps = manager.getContainer().randomChooseTaskProps();
         int interval;
         if (randomChooseTaskProps) {
-            rivalManager.prepareTask((long) rivalContainer.getCurrentTaskIndex() + 1);
-            interval = rivalManager.getRandomChooseTaskPropsInterval();
+            manager.prepareTask((long) manager.getContainer().getCurrentTaskIndex() + 1);
+            interval = manager.getInterval().getRandomChooseTaskPropsInterval();
         } else {
-            rivalContainer.setChosenCategory(Category.RANDOM);
-            rivalContainer.setIsChosenCategory(false);
-            rivalContainer.setChosenDifficulty(DifficultyLevel.NORMAL);
-            rivalContainer.setIsChosenDifficulty(false);
-            interval = rivalManager.getChoosingTaskPropsInterval();
+            manager.getContainer().setChosenCategory(Category.RANDOM);
+            manager.getContainer().setIsChosenCategory(false);
+            manager.getContainer().setChosenDifficulty(DifficultyLevel.NORMAL);
+            manager.getContainer().setIsChosenDifficulty(false);
+            interval = manager.getInterval().getChoosingTaskPropsInterval();
         }
-        rivalContainer.setEndChoosingTaskPropsDate(Instant.now().plus(interval, ChronoUnit.MILLIS));
-        rivalContainer.forEachProfile(rivalProfileContainer -> {
+        manager.getContainer().setEndChoosingTaskPropsDate(Instant.now().plus(interval, ChronoUnit.MILLIS));
+        manager.getContainer().forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            rivalManager.getModelFactory().fillModelChoosingTaskProps(model, rivalProfileContainer);
-            rivalManager.send(model, rivalManager.getMessageContent(), rivalProfileContainer.getProfileId());
+            manager.getModelFactory().fillModelChoosingTaskProps(model, rivalProfileContainer);
+            manager.send(model, manager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

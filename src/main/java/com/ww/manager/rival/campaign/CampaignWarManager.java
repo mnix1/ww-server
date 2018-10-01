@@ -4,13 +4,8 @@ import com.ww.helper.TeamHelper;
 import com.ww.manager.rival.campaign.state.CampaignWarStateChosenWhoAnswer;
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.container.rival.init.RivalCampaignWarInitContainer;
-import com.ww.model.container.rival.init.RivalInitContainer;
 import com.ww.model.container.rival.campaign.CampaignWarContainer;
-import com.ww.model.container.rival.init.RivalTwoPlayerInitContainer;
-import com.ww.model.container.rival.war.TeamMember;
-import com.ww.model.container.rival.war.WarContainer;
-import com.ww.model.container.rival.war.WarModelFactory;
-import com.ww.model.container.rival.war.WarProfileContainer;
+import com.ww.model.container.rival.war.*;
 import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileCampaignWisie;
@@ -38,12 +33,12 @@ public class CampaignWarManager extends WarManager {
         Profile opponent = container.getOpponentProfile();
         Long opponentId = opponent.getId();
         this.profileCampaign = container.getProfileCampaign();
-        this.rivalContainer = new CampaignWarContainer();
-        this.rivalContainer.storeInformationFromInitContainer(container);
-        this.rivalContainer.addProfile(creatorId, new WarProfileContainer(creator, prepareTeamMembers(creator, profileCampaign)));
-        this.rivalContainer.addProfile(opponentId, new WarProfileContainer(opponent, prepareTeamMembers(opponent, profileCampaign)));
-        this.warContainer = (WarContainer) this.rivalContainer;
-        this.modelFactory = new WarModelFactory(warContainer);
+        this.container = new CampaignWarContainer();
+        this.container.storeInformationFromInitContainer(container);
+        this.container.addProfile(creatorId, new WarProfileContainer(creator, prepareTeamMembers(creator, profileCampaign)));
+        this.container.addProfile(opponentId, new WarProfileContainer(opponent, prepareTeamMembers(opponent, profileCampaign)));
+        this.modelFactory = new WarModelFactory(this.container);
+        this.interval = new WarInterval();
     }
 
     protected List<TeamMember> prepareTeamMembers(Profile profile, ProfileCampaign profileCampaign) {
@@ -54,7 +49,7 @@ public class CampaignWarManager extends WarManager {
     }
 
     protected List<TeamMember> prepareTeamMembers(ProfileCampaign profileCampaign, List<ProfileCampaignWisie> wisies) {
-        List<TeamMember> teamMembers = TeamHelper.prepareTeamMembers(profileCampaign.getProfile(), wisies, rivalContainer.getImportance(), rivalContainer.getType());
+        List<TeamMember> teamMembers = TeamHelper.prepareTeamMembers(profileCampaign.getProfile(), wisies, container.getImportance(), container.getType());
         for (TeamMember teamMember : teamMembers) {
             if (teamMember.isWisie()) {
                 for (ProfileCampaignWisie wisie : wisies) {

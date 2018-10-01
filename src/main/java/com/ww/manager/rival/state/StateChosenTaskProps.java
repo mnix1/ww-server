@@ -23,7 +23,7 @@ public class StateChosenTaskProps extends State {
 
     @Override
     protected Boolean processBoolean() {
-        if (!rivalContainer.profileContainer(profileId).getProfile().getTag().equals(rivalContainer.findChoosingTaskPropsTag())) {
+        if (!manager.getContainer().profileContainer(profileId).getProfile().getTag().equals(manager.getContainer().findChoosingTaskPropsTag())) {
             logger.error("Not choosing profile tried to choose task props, profileId: {}", profileId);
             return false;
         }
@@ -39,19 +39,19 @@ public class StateChosenTaskProps extends State {
         } catch (Exception e) {
             logger.error("Wrong content on stateChosenTaskProps for profileId: {}", profileId);
         }
-        if (!rivalContainer.getIsChosenDifficulty() && difficultyLevel != null) {
-            rivalContainer.setIsChosenDifficulty(true);
-            rivalContainer.setChosenDifficulty(difficultyLevel);
+        if (!manager.getContainer().getIsChosenDifficulty() && difficultyLevel != null) {
+            manager.getContainer().setIsChosenDifficulty(true);
+            manager.getContainer().setChosenDifficulty(difficultyLevel);
         }
-        if (!rivalContainer.getIsChosenCategory() && category != null) {
-            rivalContainer.setIsChosenCategory(true);
-            rivalContainer.setChosenCategory(category);
+        if (!manager.getContainer().getIsChosenCategory() && category != null) {
+            manager.getContainer().setIsChosenCategory(true);
+            manager.getContainer().setChosenCategory(category);
         }
-        if (!rivalContainer.getIsChosenDifficulty() || !rivalContainer.getIsChosenCategory()) {
+        if (!manager.getContainer().getIsChosenDifficulty() || !manager.getContainer().getIsChosenCategory()) {
             return false;
         }
-        rivalContainer.setStatus(RivalStatus.CHOSEN_TASK_PROPS);
-        rivalManager.prepareTask((long) rivalContainer.getCurrentTaskIndex() + 1, rivalContainer.getChosenCategory(), rivalContainer.getChosenDifficulty());
+        manager.getContainer().setStatus(RivalStatus.CHOSEN_TASK_PROPS);
+        manager.prepareTask((long) manager.getContainer().getCurrentTaskIndex() + 1, manager.getContainer().getChosenCategory(), manager.getContainer().getChosenDifficulty());
         return true;
     }
 }

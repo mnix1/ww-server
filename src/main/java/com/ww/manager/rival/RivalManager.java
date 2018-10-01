@@ -8,6 +8,7 @@ import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.container.rival.RivalContainer;
+import com.ww.model.container.rival.RivalInterval;
 import com.ww.model.container.rival.RivalModelFactory;
 import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.dto.rival.task.TaskDTO;
@@ -35,12 +36,13 @@ import static com.ww.service.rival.global.RivalMessageService.*;
 public abstract class RivalManager {
     protected static final Logger logger = LoggerFactory.getLogger(RivalManager.class);
 
-    protected RivalContainer rivalContainer;
     protected AbstractRivalService abstractRivalService;
     protected ProfileConnectionService profileConnectionService;
     protected Disposable activeFlowable;
 
     public abstract RivalModelFactory getModelFactory();
+    public abstract RivalContainer getContainer();
+    public abstract RivalInterval getInterval();
 
     public void disposeFlowable() {
         if (activeFlowable != null) {
@@ -78,21 +80,21 @@ public abstract class RivalManager {
         question.setId(id);
         question.initAnswerIds();
         TaskDTO taskDTO = abstractRivalService.prepareTaskDTO(question);
-        rivalContainer.addTask(question, taskDTO);
+        getContainer().addTask(question, taskDTO);
     }
 
     public synchronized void updateProfilesElo() {
-        if (!rivalContainer.isRanking()) {
+        if (!getContainer().isRanking()) {
             return;
         }
-        Profile winner = rivalContainer.getWinner();
-        Profile creator = rivalContainer.getCreatorProfile();
-        Profile opponent = rivalContainer.getOpponentProfile();
+        Profile winner = getContainer().getWinner();
+        Profile creator = getContainer().getCreatorProfile();
+        Profile opponent = getContainer().getOpponentProfile();
         Instant lastPlay = Instant.now();
         Long creatorEloChange = 0L;
         Long opponentEloChange = 0L;
-        if (rivalContainer.getType() == RivalType.BATTLE) {
-            if (rivalContainer.getDraw()) {
+        if (getContainer().getType() == RivalType.BATTLE) {
+            if (getContainer().getDraw()) {
                 creatorEloChange = prepareEloChange(creator.getBattleElo(), opponent.getBattleElo(), DRAW);
                 opponentEloChange = prepareEloChange(opponent.getBattleElo(), creator.getBattleElo(), DRAW);
             } else {
@@ -101,8 +103,8 @@ public abstract class RivalManager {
             }
             creator.setBattleLastPlay(lastPlay);
             opponent.setBattleLastPlay(lastPlay);
-        } else if (rivalContainer.getType() == RivalType.WAR) {
-            if (rivalContainer.getDraw()) {
+        } else if (getContainer().getType() == RivalType.WAR) {
+            if (getContainer().getDraw()) {
                 creatorEloChange = prepareEloChange(creator.getWarElo(), opponent.getWarElo(), DRAW);
                 opponentEloChange = prepareEloChange(opponent.getWarElo(), creator.getWarElo(), DRAW);
             } else {
@@ -112,10 +114,10 @@ public abstract class RivalManager {
             creator.setWarLastPlay(lastPlay);
             opponent.setWarLastPlay(lastPlay);
         }
-        updateElo(creator, creatorEloChange, rivalContainer.getType());
-        rivalContainer.setCreatorEloChange(creatorEloChange);
-        updateElo(opponent, opponentEloChange, rivalContainer.getType());
-        rivalContainer.setOpponentEloChange(opponentEloChange);
+        updateElo(creator, creatorEloChange, getContainer().getType());
+        getContainer().setCreatorEloChange(creatorEloChange);
+        updateElo(opponent, opponentEloChange, getContainer().getType());
+        getContainer().setOpponentEloChange(opponentEloChange);
         abstractRivalService.getProfileService().save(creator);
         abstractRivalService.getProfileService().save(opponent);
     }
@@ -134,7 +136,7 @@ public abstract class RivalManager {
 
     public synchronized Map<String, Object> actualModel(Long profileId) {
         Map<String, Object> model = new HashMap<>();
-        RivalProfileContainer rivalProfileContainer = rivalContainer.getProfileContainers().get(profileId);
+        RivalProfileContainer rivalProfileContainer = getContainer().getProfileContainers().get(profileId);
         getModelFactory().fillModel(model, rivalProfileContainer);
         return model;
     }
@@ -148,52 +150,24 @@ public abstract class RivalManager {
         }
     }
 
-    public Integer getIntroInterval() {
-        return 3500;
-    }
-
-    public Integer getPreparingNextTaskInterval() {
-        return 2000;
-    }
-
-    public Integer getAnsweringInterval() {
-        return 45000;
-    }
-
-    public Integer getAnsweringTimeoutInterval() {
-        return 8000;
-    }
-
-    public Integer getShowingAnswerInterval() {
-        return 8000;
-    }
-
-    public Integer getChoosingTaskPropsInterval() {
-        return 14000;
-    }
-
-    public Integer getRandomChooseTaskPropsInterval() {
-        return 2500;
-    }
-
     public boolean canAnswer() {
-        return rivalContainer.getStatus() == RivalStatus.ANSWERING;
+        return getContainer().getStatus() == RivalStatus.ANSWERING;
     }
 
     public boolean canChooseTaskProps() {
-        return rivalContainer.getStatus() == RivalStatus.CHOOSING_TASK_PROPS;
+        return getContainer().getStatus() == RivalStatus.CHOOSING_TASK_PROPS;
     }
 
     public boolean canChooseWhoAnswer() {
-        return rivalContainer.getStatus() == RivalStatus.CHOOSING_WHO_ANSWER;
+        return getContainer().getStatus() == RivalStatus.CHOOSING_WHO_ANSWER;
     }
 
     public boolean isClosed() {
-        return rivalContainer.getStatus() == RivalStatus.CLOSED;
+        return getContainer().getStatus() == RivalStatus.CLOSED;
     }
 
     public List<RivalProfileContainer> getRivalProfileContainers() {
-        return new ArrayList<>(this.rivalContainer.getProfileContainers().values());
+        return new ArrayList<>(this.getContainer().getProfileContainers().values());
     }
 
 }

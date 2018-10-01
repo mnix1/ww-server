@@ -1,7 +1,6 @@
 package com.ww.manager.rival.state;
 
 import com.ww.manager.rival.RivalManager;
-import com.ww.model.container.rival.RivalContainer;
 import io.reactivex.Flowable;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
@@ -11,20 +10,18 @@ import org.slf4j.LoggerFactory;
 public class State {
     protected static final Logger logger = LoggerFactory.getLogger(StateChosenTaskProps.class);
 
-    protected RivalManager rivalManager;
-    protected RivalContainer rivalContainer;
+    protected RivalManager manager;
 
-    public State(RivalManager rivalManager) {
-        this.rivalManager = rivalManager;
-        this.rivalContainer = rivalManager.getRivalContainer();
+    public State(RivalManager manager) {
+        this.manager = manager;
     }
 
     public Flowable<Long> startFlowable() {
-        if (this.rivalManager.isClosed()) {
+        if (manager.isClosed()) {
             return Flowable.empty();
         }
         Flowable f =  processFlowable();
-        logger.trace("Status: " + rivalContainer.getStatus().name());
+        logger.trace("Status: " + manager.getContainer().getStatus().name());
         return f;
     }
 
@@ -33,7 +30,7 @@ public class State {
     }
 
     public void startVoid() {
-        if (this.rivalManager.isClosed()) {
+        if (manager.isClosed()) {
             return;
         }
         processVoid();
@@ -43,7 +40,7 @@ public class State {
     }
 
     public Boolean startBoolean() {
-        if (this.rivalManager.isClosed()) {
+        if (manager.isClosed()) {
             return null;
         }
         return processBoolean();

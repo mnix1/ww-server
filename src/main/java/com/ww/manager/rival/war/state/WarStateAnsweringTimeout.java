@@ -18,20 +18,20 @@ public class WarStateAnsweringTimeout extends WarState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        if (rivalContainer.getStatus() != RivalStatus.ANSWERING) {
+        if (manager.getContainer().getStatus() != RivalStatus.ANSWERING) {
             return Flowable.empty();
         }
-        warContainer.stopWisieAnswerManager();
-        for (RivalProfileContainer rivalProfileContainer : warManager.getRivalProfileContainers()) {
+        manager.getContainer().stopWisieAnswerManager();
+        for (RivalProfileContainer rivalProfileContainer : manager.getRivalProfileContainers()) {
             WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
             warProfileContainer.setActiveTeamMemberPresentToFalse();
         }
-        rivalContainer.setStatus(RivalStatus.ANSWERING_TIMEOUT);
-        rivalContainer.forEachProfile(rivalProfileContainer -> {
+        manager.getContainer().setStatus(RivalStatus.ANSWERING_TIMEOUT);
+        manager.getContainer().forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            warManager.getModelFactory().fillModelAnsweringTimeout(model, rivalProfileContainer);
-            warManager.send(model, warManager.getMessageContent(), rivalProfileContainer.getProfileId());
+            manager.getModelFactory().fillModelAnsweringTimeout(model, rivalProfileContainer);
+            manager.send(model, manager.getMessageContent(), rivalProfileContainer.getProfileId());
         });
-        return Flowable.intervalRange(0L, 1L, warManager.getAnsweringTimeoutInterval(), warManager.getAnsweringTimeoutInterval(), TimeUnit.MILLISECONDS);
+        return Flowable.intervalRange(0L, 1L, manager.getInterval().getAnsweringTimeoutInterval(), manager.getInterval().getAnsweringTimeoutInterval(), TimeUnit.MILLISECONDS);
     }
 }

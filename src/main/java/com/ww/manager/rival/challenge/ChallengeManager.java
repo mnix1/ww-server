@@ -3,9 +3,8 @@ package com.ww.manager.rival.challenge;
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
+import com.ww.model.container.rival.challenge.ChallengeInterval;
 import com.ww.model.container.rival.init.RivalChallengeInitContainer;
-import com.ww.model.container.rival.init.RivalInitContainer;
-import com.ww.model.container.rival.init.RivalOnePlayerInitContainer;
 import com.ww.model.container.rival.war.WarContainer;
 import com.ww.model.container.rival.war.WarModelFactory;
 import com.ww.model.container.rival.war.WarProfileContainer;
@@ -26,6 +25,7 @@ public class ChallengeManager extends WarManager {
 
     public ChallengeProfile challengeProfile;
     public List<ChallengeQuestion> challengeQuestions;
+    public ChallengeInterval interval;
 
     public ChallengeManager(RivalChallengeInitContainer container, RivalChallengeService rivalChallengeService, ProfileConnectionService profileConnectionService) {
         this.abstractRivalService = rivalChallengeService;
@@ -33,13 +33,13 @@ public class ChallengeManager extends WarManager {
         Profile creator = container.getCreatorProfile();
         Long creatorId = creator.getId();
         List<ProfileWisie> creatorWisies = rivalChallengeService.getProfileWisies(creator);
-        this.rivalContainer = new WarContainer();
-        this.rivalContainer.storeInformationFromInitContainer(container);
-        this.rivalContainer.addProfile(creatorId, new WarProfileContainer(creator, prepareTeamMembers(creator, creatorWisies)));
-        this.warContainer = (WarContainer) this.rivalContainer;
+        this.container = new WarContainer();
+        this.container.storeInformationFromInitContainer(container);
+        this.container.addProfile(creatorId, new WarProfileContainer(creator, prepareTeamMembers(creator, creatorWisies)));
         this.challengeProfile = container.getChallengeProfile();
         this.challengeQuestions = container.getChallengeQuestions();
-        this.modelFactory = new WarModelFactory(warContainer);
+        this.modelFactory = new WarModelFactory(this.container);
+        this.interval = new ChallengeInterval(this.container);
     }
 
     @Override
@@ -57,14 +57,6 @@ public class ChallengeManager extends WarManager {
         question.rewriteAnswerIds();
         TaskDTO taskDTO = abstractRivalService.prepareTaskDTO(question);
         taskDTO.getAnswers().sort(Comparator.comparing(AnswerDTO::getId));
-        rivalContainer.addTask(question, taskDTO);
+        container.addTask(question, taskDTO);
     }
-
-    @Override
-    public Integer getAnsweringInterval() {
-        int taskIndex = Math.max(0, rivalContainer.getCurrentTaskIndex());
-        Integer interval = super.getAnsweringInterval() - taskIndex * 5000;
-        return Math.max(interval, 5000);
-    }
-
 }

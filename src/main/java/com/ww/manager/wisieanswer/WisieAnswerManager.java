@@ -70,7 +70,7 @@ public class WisieAnswerManager {
     public WisieAnswerManager(OwnedWisie wisie, RivalManager rivalManager) {
         this.wisie = wisie;
         this.warManager = (WarManager) rivalManager;
-        this.warContainer = (WarContainer) this.warManager.getRivalContainer();
+        this.warContainer = (WarContainer) this.warManager.getContainer();
         this.question = warContainer.getQuestions().get(warContainer.getCurrentTaskIndex());
         this.difficulty = AnswerHelper.difficultyCalibration(question) + 1;
         this.answerCount = question.getAnswers().size();

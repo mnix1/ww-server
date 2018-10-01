@@ -19,13 +19,13 @@ public class BattleStateAnswering extends State {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        rivalContainer.setEndAnsweringDate(Instant.now().plus(rivalManager.getAnsweringInterval(), ChronoUnit.MILLIS));
-        rivalContainer.setStatus(RivalStatus.ANSWERING);
-        rivalContainer.forEachProfile(rivalProfileContainer -> {
+        manager.getContainer().setEndAnsweringDate(Instant.now().plus(manager.getInterval().getAnsweringInterval(), ChronoUnit.MILLIS));
+        manager.getContainer().setStatus(RivalStatus.ANSWERING);
+        manager.getContainer().forEachProfile(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            rivalManager.getModelFactory().fillModelAnswering(model, rivalProfileContainer);
-            rivalManager.send(model, rivalManager.getMessageContent(), rivalProfileContainer.getProfileId());
+            manager.getModelFactory().fillModelAnswering(model, profileContainer);
+            manager.send(model, manager.getMessageContent(), profileContainer.getProfileId());
         });
-        return Flowable.intervalRange(0L, 1L, rivalManager.getAnsweringInterval(), rivalManager.getAnsweringInterval(), TimeUnit.MILLISECONDS);
+        return Flowable.intervalRange(0L, 1L, manager.getInterval().getAnsweringInterval(), manager.getInterval().getAnsweringInterval(), TimeUnit.MILLISECONDS);
     }
 }

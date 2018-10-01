@@ -19,7 +19,7 @@ public class CampaignWarStateChosenWhoAnswer extends WarStateChosenWhoAnswer {
     }
 
     protected boolean allPlayersChoosen() {
-        for (RivalProfileContainer rivalProfileContainer : warManager.getRivalProfileContainers()) {
+        for (RivalProfileContainer rivalProfileContainer : manager.getRivalProfileContainers()) {
             WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
             if (!warProfileContainer.isChosenActiveIndex() && !warProfileContainer.getProfileId().equals(BOT_PROFILE_ID)) {
                 return false;

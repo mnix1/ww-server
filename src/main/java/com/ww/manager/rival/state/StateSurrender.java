@@ -17,20 +17,20 @@ public class StateSurrender extends State {
 
     @Override
     protected void processVoid() {
-        rivalContainer.setStatus(RivalStatus.CLOSED);
-        if(rivalContainer.isOpponent()) {
-            rivalContainer.setWinnerLooser(rivalContainer.opponentProfileContainer(profileId).getProfile());
-            rivalContainer.setResigned(true);
+        manager.getContainer().setStatus(RivalStatus.CLOSED);
+        if(manager.getContainer().isOpponent()) {
+            manager.getContainer().setWinnerLooser(manager.getContainer().opponentProfileContainer(profileId).getProfile());
+            manager.getContainer().setResigned(true);
         } else {
-            rivalContainer.setDraw(true);
+            manager.getContainer().setDraw(true);
         }
-        rivalManager.updateProfilesElo();
-        rivalContainer.forEachProfile(rivalProfileContainer -> {
+        manager.updateProfilesElo();
+        manager.getContainer().forEachProfile(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            rivalManager.getModelFactory().fillModelClosed(model, rivalProfileContainer);
-            rivalManager.getModelFactory().fillModelEloChanged(model, rivalProfileContainer);
-            rivalManager.send(model, rivalManager.getMessageContent(), rivalProfileContainer.getProfileId());
+            manager.getModelFactory().fillModelClosed(model, profileContainer);
+            manager.getModelFactory().fillModelEloChanged(model, profileContainer);
+            manager.send(model, manager.getMessageContent(), profileContainer.getProfileId());
         });
-        rivalManager.getAbstractRivalService().disposeManager(rivalManager);
+        manager.getAbstractRivalService().disposeManager(manager);
     }
 }
