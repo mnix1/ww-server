@@ -34,19 +34,14 @@ public class ProfileConnectionService {
     public synchronized ProfileConnection newConnection(WebSocketSession session) {
         Profile profile = profileService.retrieveProfile(profileService.getAuthId(session.getPrincipal()));
         deleteConnection(profile.getId());
-        ProfileConnection profileConnection = new ProfileConnection(profile.getId(), session);
+        ProfileConnection profileConnection = new ProfileConnection(profile.getId(), profile.getTag(), session);
         profileIdToProfileConnectionMap.put(profile.getId(), profileConnection);
         sessionIdToProfileConnectionMap.put(session.getId(), profileConnection);
         logger.debug("ProfileConnection newConnection: profileId: " + profile.getId() + ", sessionId: " + session.getId());
-        sendFriendConnectionChanged(profile, Message.FRIEND_SIGN_IN);
         return profileConnection;
     }
 
-    public void deleteConnection(WebSocketSession session) {
-        findBySessionId(session.getId()).ifPresent(this::deleteConnection);
-    }
-
-    public void deleteConnection(Long profileId) {
+    private synchronized void deleteConnection(Long profileId) {
         findByProfileId(profileId).ifPresent(this::deleteConnection);
     }
 
@@ -56,42 +51,38 @@ public class ProfileConnectionService {
         profileIdToProfileConnectionMap.remove(profileConnection.getProfileId());
         logger.debug("ProfileConnection deleteConnection: profileId: " + profileConnection.getProfileId() + ", sessionId: " + profileConnection.getSessionId());
         profileConnection.close();
-        sendFriendConnectionChanged(profileService.getProfile(profileConnection.getProfileId()), Message.FRIEND_SIGN_OUT);
     }
 
     public Optional<ProfileConnection> findBySessionId(String sessionId) {
-        ProfileConnection profileConnection = null;
         if (sessionIdToProfileConnectionMap.containsKey(sessionId)) {
-            profileConnection = sessionIdToProfileConnectionMap.get(sessionId);
+            return Optional.ofNullable(sessionIdToProfileConnectionMap.get(sessionId));
         }
-        return Optional.ofNullable(profileConnection);
+        return Optional.empty();
     }
 
     public Optional<ProfileConnection> findByProfileId(Long profileId) {
-        ProfileConnection profileConnection = null;
         if (profileIdToProfileConnectionMap.containsKey(profileId)) {
-            profileConnection = profileIdToProfileConnectionMap.get(profileId);
+            return Optional.ofNullable(profileIdToProfileConnectionMap.get(profileId));
         }
-        return Optional.ofNullable(profileConnection);
+        return Optional.empty();
     }
 
     public Optional<Long> getProfileId(String sessionId) {
-        Long profileId = null;
         if (sessionIdToProfileConnectionMap.containsKey(sessionId)) {
             ProfileConnection profileConnection = sessionIdToProfileConnectionMap.get(sessionId);
-            profileId = profileConnection.getProfileId();
+            return Optional.ofNullable(profileConnection.getProfileId());
         }
-        return Optional.ofNullable(profileId);
+        return Optional.empty();
     }
 
     public boolean sendMessage(Long profileId, String msg) {
         return findByProfileId(profileId).map(profileConnection -> profileConnection.sendMessage(msg)).orElse(false);
     }
 
-    public void sendFriendConnectionChanged(Profile profile, Message message) {
-        profileFriendRepository.findByProfile_IdAndStatus(profile.getId(), FriendStatus.ACCEPTED).stream()
+    public void sendFriendConnectionChanged(String profileTag, Message message) {
+        profileFriendRepository.findByProfile_TagAndStatus(profileTag, FriendStatus.ACCEPTED)
                 .forEach(profileFriend ->
-                        sendMessage(profileFriend.getFriendProfile().getId(), new MessageDTO(message, profile.getTag()).toString())
+                        sendMessage(profileFriend.getFriendProfile().getId(), new MessageDTO(message, profileTag).toString())
                 );
     }
 }

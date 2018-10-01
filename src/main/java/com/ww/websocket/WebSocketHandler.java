@@ -10,6 +10,7 @@ import com.ww.service.rival.campaign.RivalCampaignWarService;
 import com.ww.service.rival.war.RivalWarService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
+import com.ww.websocket.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,10 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.util.Optional;
+
 @Component
 public class WebSocketHandler extends TextWebSocketHandler {
-
     private static Logger logger = LoggerFactory.getLogger(WebSocketHandler.class);
 
     @Autowired
@@ -46,20 +48,27 @@ public class WebSocketHandler extends TextWebSocketHandler {
     RivalChallengeService rivalChallengeService;
 
     @Override
-    public void handleTransportError(WebSocketSession session, Throwable throwable) throws Exception {
-        logger.error("error occurred at sender " + session, throwable);
+    public void handleTransportError(WebSocketSession session, Throwable throwable) {
+        logger.error("Error occurred at sender " + session, throwable);
     }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         logger.debug(String.format("Session %s closed because of %s", session.getId(), status.getReason()));
-        profileConnectionService.deleteConnection(session);
+        Optional<ProfileConnection> optionalProfileConnection = profileConnectionService.findBySessionId(session.getId());
+        if (!optionalProfileConnection.isPresent()) {
+            return;
+        }
+        ProfileConnection profileConnection = optionalProfileConnection.get();
+        profileConnectionService.deleteConnection(profileConnection);
+        profileConnectionService.sendFriendConnectionChanged(profileConnection.getProfileTag(), Message.FRIEND_SIGN_OUT);
     }
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+    public void afterConnectionEstablished(WebSocketSession session) {
         logger.debug("Connected: sessionId: " + session.getId());
         ProfileConnection profileConnection = profileConnectionService.newConnection(session);
+        profileConnectionService.sendFriendConnectionChanged(profileConnection.getProfileTag(), Message.FRIEND_SIGN_IN);
         globalRivalService.sendActualRivalModelToNewProfileConnection(profileConnection);
     }
 
@@ -70,7 +79,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     private static final String HINT_SUFFIX = "_^_HINT";
 
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage jsonTextMessage) throws Exception {
+    protected void handleTextMessage(WebSocketSession session, TextMessage jsonTextMessage) {
         String message = jsonTextMessage.getPayload();
         logger.trace("Message received: " + jsonTextMessage.getPayload() + ", from sessionId: " + session.getId());
         AbstractRivalService abstractRivalService = null;

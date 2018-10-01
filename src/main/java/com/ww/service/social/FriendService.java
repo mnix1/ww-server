@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -42,6 +43,7 @@ public class FriendService {
         return add(profileService.getProfileId(), tag);
     }
 
+    @Transactional
     public Map<String, Object> add(Long profileId, String tag) {
         Map<String, Object> model = new HashMap<>();
         tag = prepareTag(tag);
@@ -110,6 +112,7 @@ public class FriendService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public Map<String, Object> delete(String tag) {
         Map<String, Object> model = new HashMap<>();
         ProfileFriend profileFriend = profileFriendRepository.findByProfile_IdAndFriendProfile_Tag(profileService.getProfileId(), tag);
@@ -124,7 +127,6 @@ public class FriendService {
         }
         return putSuccessCode(model);
     }
-
 
     public Map<String, Object> suggest() {
         Map<String, Object> model = new HashMap<>();

@@ -10,6 +10,7 @@ import com.ww.repository.outside.book.ProfileBookRepository;
 import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -42,7 +43,8 @@ public class ProfileBookService {
         return profileBooks.stream().noneMatch(profileBook -> profileBook.isInProgress() && !profileBook.canClaimReward());
     }
 
-    public synchronized Map<String, Object> startReadBook(Long profileBookId) {
+    @Transactional
+    public Map<String, Object> startReadBook(Long profileBookId) {
         Map<String, Object> model = new HashMap<>();
         List<ProfileBook> profileBooks = profileBookRepository.findByProfile_Id(profileService.getProfileId());
         if (!checkIfProfileReadingBook(profileBooks)) {
@@ -59,7 +61,8 @@ public class ProfileBookService {
         return putSuccessCode(model);
     }
 
-    public synchronized Map<String, Object> stopReadBook(Long profileBookId) {
+    @Transactional
+    public Map<String, Object> stopReadBook(Long profileBookId) {
         Map<String, Object> model = new HashMap<>();
         Optional<ProfileBook> optionalProfileBook = profileBookRepository.findByIdAndProfile_Id(profileBookId, profileService.getProfileId());
         if (!optionalProfileBook.isPresent()) {
@@ -73,7 +76,8 @@ public class ProfileBookService {
         return putSuccessCode(model);
     }
 
-    public synchronized Map<String, Object> discardBook(Long profileBookId) {
+    @Transactional
+    public Map<String, Object> discardBook(Long profileBookId) {
         Map<String, Object> model = new HashMap<>();
         Optional<ProfileBook> optionalProfileBook = profileBookRepository.findByIdAndProfile_Id(profileBookId, profileService.getProfileId());
         if (!optionalProfileBook.isPresent()) {
@@ -84,7 +88,8 @@ public class ProfileBookService {
         return putSuccessCode(model);
     }
 
-    public synchronized Map<String, Object> claimRewardBook(Long profileBookId) {
+    @Transactional
+    public Map<String, Object> claimRewardBook(Long profileBookId) {
         Map<String, Object> model = new HashMap<>();
         Optional<ProfileBook> optionalProfileChest = profileBookRepository.findByIdAndProfile_Id(profileBookId, profileService.getProfileId());
         if (!optionalProfileChest.isPresent()) {
@@ -100,7 +105,8 @@ public class ProfileBookService {
         return putSuccessCode(model);
     }
 
-    public synchronized Map<String, Object> speedUpBook(Long profileBookId) {
+    @Transactional
+    public Map<String, Object> speedUpBook(Long profileBookId) {
         Map<String, Object> model = new HashMap<>();
         Optional<ProfileBook> optionalProfileChest = profileBookRepository.findByIdAndProfile_Id(profileBookId, profileService.getProfileId());
         if (!optionalProfileChest.isPresent()) {
@@ -111,11 +117,9 @@ public class ProfileBookService {
             return putErrorCode(model);
         }
         Profile profile = profileService.getProfile();
-//        long crystalCost = (long) Math.floor((profileBook.timeToRead() - 1) / 1000d / 3600d);
         long crystalCost = (long) Math.ceil((profileBook.timeToRead() - 1) / 1000d / 3600d);
         Resources costResources = new Resources(null, crystalCost, null, null);
         if (!profile.hasEnoughResources(costResources)) {
-//        if (profile.getCrystal() < crystalCost) {
             return putCode(model, -2);
         }
         profile.subtractResources(costResources);

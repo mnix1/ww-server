@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -40,6 +41,7 @@ public class IntroService {
     @Autowired
     private WisieService wisieService;
 
+    @Transactional
     public Map<String, Object> changeIntroStepIndex(Integer stepIndex) {
         Map<String, Object> model = new HashMap<>();
         Profile profile = profileService.getProfile();
@@ -52,6 +54,7 @@ public class IntroService {
         return putSuccessCode(model);
     }
 
+    @Transactional
     public Map<String, Object> complete() {
         Map<String, Object> model = new HashMap<>();
         Profile profile = profileService.getProfile();
@@ -61,7 +64,8 @@ public class IntroService {
         return putSuccessCode(model);
     }
 
-    public synchronized Map<String, Object> pickWisies(Profile profile, List<String> wisieStringTypes) {
+    @Transactional
+    public Map<String, Object> pickWisies(Profile profile, List<String> wisieStringTypes) {
         Map<String, Object> model = new HashMap<>();
         if (wisieStringTypes.size() != PICK_WISIES_COUNT) {
             return putErrorCode(model);

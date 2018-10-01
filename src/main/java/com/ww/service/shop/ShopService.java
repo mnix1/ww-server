@@ -9,6 +9,7 @@ import com.ww.service.social.ProfileService;
 import com.ww.service.social.RewardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +39,8 @@ public class ShopService {
         return bookRepository.findAllByCanBuyByCrystalOrCanBuyByGold(true, true).stream().map(ShopBookDTO::new).collect(Collectors.toList());
     }
 
-    public synchronized Map<String, Object> buyBook(Long id) {
+    @Transactional
+    public Map<String, Object> buyBook(Long id) {
         Map<String, Object> model = new HashMap<>();
         Optional<Book> optionalBook = bookRepository.findOneById(id);
         if (!optionalBook.isPresent()) {

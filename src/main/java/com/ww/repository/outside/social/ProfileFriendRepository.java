@@ -12,5 +12,5 @@ public interface ProfileFriendRepository extends CrudRepository<ProfileFriend, L
 
     ProfileFriend findByProfile_IdAndFriendProfile_Tag(Long profileId, String friendProfileTag);
     ProfileFriend findByProfile_IdAndFriendProfile_Id(Long profileId, Long friendProfileId);
-    List<ProfileFriend> findByProfile_IdAndStatus(Long profileId, FriendStatus status);
+    List<ProfileFriend> findByProfile_TagAndStatus(String profileTag, FriendStatus status);
 }

@@ -15,13 +15,13 @@ public class ProfileConnection {
     private static final Logger logger = LoggerFactory.getLogger(ProfileConnection.class);
 
     private Long profileId;
+    private String profileTag;
 
     private WebSocketSession webSocketSession;
 
-    private boolean isReady;
-
-    public ProfileConnection(Long profileId, WebSocketSession webSocketSession) {
+    public ProfileConnection(Long profileId, String profileTag, WebSocketSession webSocketSession) {
         this.profileId = profileId;
+        this.profileTag = profileTag;
         this.webSocketSession = webSocketSession;
     }
 
@@ -29,7 +29,7 @@ public class ProfileConnection {
         return webSocketSession.getId();
     }
 
-    public void close(){
+    public void close() {
         try {
             webSocketSession.close();
         } catch (IOException e) {
@@ -38,11 +38,11 @@ public class ProfileConnection {
 
     public boolean sendMessage(String msg) {
         try {
-//            logger.debug("Send message {} to {}", msg, profileId);
+            logger.trace("Send message to {}: {}", profileId, msg);
             webSocketSession.sendMessage(new TextMessage(msg));
             return true;
         } catch (Exception e) {
-            logger.error("Error on websocket sending {} to {}", msg, profileId);
+            logger.error("Error on websocket sending to {}: {}", profileId, msg);
             return false;
         }
     }
