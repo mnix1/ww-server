@@ -2,6 +2,7 @@ package com.ww.model.container.rival;
 
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.*;
+import com.ww.model.container.rival.init.RivalInitContainer;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.dto.social.RivalProfileDTO;
 import com.ww.model.entity.outside.rival.task.Answer;
@@ -16,7 +17,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter

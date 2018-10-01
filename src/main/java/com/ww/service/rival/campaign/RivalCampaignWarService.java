@@ -8,12 +8,14 @@ import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.constant.wisie.WisieType;
 import com.ww.model.constant.wisie.WisorType;
-import com.ww.model.container.rival.RivalInitContainer;
+import com.ww.model.container.rival.init.RivalInitContainer;
+import com.ww.model.container.rival.init.RivalTwoPlayerInitContainer;
 import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileCampaignWisie;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
+import com.ww.service.rival.init.RivalRunService;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.rival.war.RivalWarService;
@@ -58,6 +60,9 @@ public class RivalCampaignWarService extends RivalWarService {
 
     @Autowired
     protected CampaignService campaignService;
+
+    @Autowired
+    protected RivalRunService rivalRunService;
 
     @Override
     protected ProfileConnectionService getProfileConnectionService() {
@@ -130,11 +135,8 @@ public class RivalCampaignWarService extends RivalWarService {
         if (profileCampaign == null) {
             return putErrorCode(model);
         }
-        RivalInitContainer rival = new RivalInitContainer(CAMPAIGN_WAR, RivalImportance.FAST, profileService.getProfile(), prepareComputerProfile(profileCampaign));
-        RivalManager rivalManager = createManager(rival, profileCampaign);
-        getRivalGlobalService().put(rival.getCreatorProfile().getId(), rivalManager);
-        getRivalGlobalService().put(rival.getOpponentProfile().getId(), rivalManager);
-        rivalManager.start();
+        RivalTwoPlayerInitContainer rival = new RivalTwoPlayerInitContainer(CAMPAIGN_WAR, RivalImportance.FAST, profileService.getProfile(), prepareComputerProfile(profileCampaign));
+        rivalRunService.run(rival);
         return putSuccessCode(model);
     }
 

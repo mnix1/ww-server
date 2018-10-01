@@ -4,7 +4,7 @@ import com.ww.helper.TeamHelper;
 import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.state.*;
 import com.ww.manager.rival.war.state.*;
-import com.ww.model.container.rival.RivalInitContainer;
+import com.ww.model.container.rival.init.RivalInitContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarContainer;
@@ -14,7 +14,6 @@ import com.ww.model.entity.outside.wisie.OwnedWisie;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
 import com.ww.service.rival.war.RivalWarService;
 import com.ww.service.social.ProfileConnectionService;
-import io.reactivex.disposables.Disposable;
 import lombok.NoArgsConstructor;
 
 import java.util.HashMap;

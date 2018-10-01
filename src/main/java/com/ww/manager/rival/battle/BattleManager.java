@@ -6,7 +6,7 @@ import com.ww.manager.rival.battle.state.BattleStateAnswering;
 import com.ww.manager.rival.battle.state.BattleStateAnsweringTimeout;
 import com.ww.manager.rival.state.StateChoosingTaskProps;
 import com.ww.manager.rival.state.*;
-import com.ww.model.container.rival.RivalInitContainer;
+import com.ww.model.container.rival.init.RivalInitContainer;
 import com.ww.model.container.rival.battle.BattleContainer;
 import com.ww.model.container.rival.battle.BattleProfileContainer;
 import com.ww.service.rival.battle.RivalBattleService;

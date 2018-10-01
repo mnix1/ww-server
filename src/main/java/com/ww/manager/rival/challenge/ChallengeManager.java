@@ -3,7 +3,7 @@ package com.ww.manager.rival.challenge;
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
-import com.ww.model.container.rival.RivalInitContainer;
+import com.ww.model.container.rival.init.RivalInitContainer;
 import com.ww.model.container.rival.war.WarContainer;
 import com.ww.model.container.rival.war.WarProfileContainer;
 import com.ww.model.dto.rival.task.AnswerDTO;

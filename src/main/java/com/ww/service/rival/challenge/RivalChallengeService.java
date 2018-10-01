@@ -7,7 +7,8 @@ import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.challenge.ChallengeProfileStatus;
 import com.ww.model.constant.rival.challenge.ChallengeStatus;
-import com.ww.model.container.rival.RivalInitContainer;
+import com.ww.model.container.rival.init.RivalInitContainer;
+import com.ww.model.container.rival.init.RivalOnePlayerInitContainer;
 import com.ww.model.entity.outside.rival.challenge.Challenge;
 import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
 import com.ww.model.entity.outside.rival.challenge.ChallengeQuestion;
@@ -16,6 +17,7 @@ import com.ww.model.entity.outside.social.Profile;
 import com.ww.repository.outside.rival.challenge.ChallengeProfileRepository;
 import com.ww.repository.outside.rival.challenge.ChallengeQuestionRepository;
 import com.ww.repository.outside.rival.challenge.ChallengeRepository;
+import com.ww.service.rival.init.RivalRunService;
 import com.ww.service.rival.war.RivalWarService;
 import com.ww.websocket.message.Message;
 import org.slf4j.Logger;
@@ -43,13 +45,14 @@ public class RivalChallengeService extends RivalWarService {
     @Autowired
     private ChallengeQuestionRepository challengeQuestionRepository;
 
+    @Autowired
+    protected RivalRunService rivalRunService;
+
     public void init(ChallengeProfile challengeProfile){
         List<ChallengeQuestion> challengeQuestions = new ArrayList<>(challengeProfile.getChallenge().getQuestions());
         sortChallengeQuestions(challengeQuestions);
-        RivalInitContainer rival = new RivalInitContainer(CHALLENGE, RivalImportance.FAST, challengeProfile.getProfile(), null);
-        RivalManager rivalManager = new ChallengeManager(rival, this, profileConnectionService, challengeProfile, challengeQuestions);
-        getRivalGlobalService().put(rival.getCreatorProfile().getId(), rivalManager);
-        rivalManager.start();
+        RivalOnePlayerInitContainer rival = new RivalOnePlayerInitContainer(CHALLENGE, RivalImportance.FAST, challengeProfile.getProfile());
+        rivalRunService.run(rival);
     }
 
     @Override

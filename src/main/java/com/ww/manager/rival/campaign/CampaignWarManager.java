@@ -3,7 +3,7 @@ package com.ww.manager.rival.campaign;
 import com.ww.helper.TeamHelper;
 import com.ww.manager.rival.campaign.state.CampaignWarStateChosenWhoAnswer;
 import com.ww.manager.rival.war.WarManager;
-import com.ww.model.container.rival.RivalInitContainer;
+import com.ww.model.container.rival.init.RivalInitContainer;
 import com.ww.model.container.rival.campaign.CampaignWarContainer;
 import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarContainer;
