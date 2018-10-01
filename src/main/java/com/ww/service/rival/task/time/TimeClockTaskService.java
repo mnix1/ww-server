@@ -2,7 +2,7 @@ package com.ww.service.rival.task.time;
 
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.TimeTaskType;
-import com.ww.model.container.Interval;
+import com.ww.model.container.rival.task.Interval;
 import com.ww.model.entity.outside.rival.task.Answer;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskType;

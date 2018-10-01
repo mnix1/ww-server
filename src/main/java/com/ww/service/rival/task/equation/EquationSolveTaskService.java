@@ -2,7 +2,7 @@ package com.ww.service.rival.task.equation;
 
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.EquationTaskType;
-import com.ww.model.container.EquationObject;
+import com.ww.model.container.rival.task.EquationObject;
 import com.ww.model.entity.outside.rival.task.Answer;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskType;

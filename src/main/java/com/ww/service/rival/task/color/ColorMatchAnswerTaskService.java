@@ -3,7 +3,7 @@ package com.ww.service.rival.task.color;
 import com.ww.helper.ColorHelper;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.ColorTaskType;
-import com.ww.model.container.ColorObject;
+import com.ww.model.container.rival.task.ColorObject;
 import com.ww.model.entity.outside.rival.task.Answer;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskType;

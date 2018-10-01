@@ -3,20 +3,16 @@ package com.ww.service.rival.global;
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.ProfileConnection;
-import com.ww.model.entity.outside.rival.Rival;
-import com.ww.repository.outside.rival.RivalRepository;
-import com.ww.service.rival.RivalChallengeService;
+import com.ww.service.rival.challenge.RivalChallengeService;
 import com.ww.service.rival.campaign.RivalCampaignWarService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
-import com.ww.websocket.WebSocketHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class RivalMessageService {
@@ -29,16 +25,13 @@ public class RivalMessageService {
     private ProfileConnectionService profileConnectionService;
 
     @Autowired
-    private RivalMessageService rivalMessageService;
+    private RivalGlobalService rivalGlobalService;
 
     @Autowired
-    RivalGlobalService rivalGlobalService;
+    private RivalCampaignWarService rivalCampaignWarService;
 
     @Autowired
-    RivalCampaignWarService rivalCampaignWarService;
-
-    @Autowired
-    RivalChallengeService rivalChallengeService;
+    private RivalChallengeService rivalChallengeService;
 
     public void handleMessage(String sessionId, String message){
         logger.trace("Message received sessionId: {}, content: {}", sessionId,message );

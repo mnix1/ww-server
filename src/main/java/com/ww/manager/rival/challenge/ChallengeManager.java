@@ -13,7 +13,7 @@ import com.ww.model.entity.outside.rival.challenge.ChallengeQuestion;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
-import com.ww.service.rival.RivalChallengeService;
+import com.ww.service.rival.challenge.RivalChallengeService;
 import com.ww.service.social.ProfileConnectionService;
 
 import java.util.Comparator;

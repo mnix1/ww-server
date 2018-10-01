@@ -3,7 +3,7 @@ package com.ww.service.rival.task.number;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.NumberType;
 import com.ww.model.constant.rival.task.type.NumberTaskType;
-import com.ww.model.container.NumberObject;
+import com.ww.model.container.rival.task.NumberObject;
 import com.ww.model.entity.outside.rival.task.Answer;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskType;

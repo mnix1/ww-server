@@ -3,7 +3,9 @@ package com.ww.controller.rival;
 import com.ww.model.constant.rival.challenge.ChallengeStatus;
 import com.ww.model.dto.rival.challenge.ChallengeInfoDTO;
 import com.ww.model.dto.rival.challenge.ChallengeSummaryDTO;
-import com.ww.service.rival.RivalChallengeService;
+import com.ww.model.entity.outside.rival.challenge.Challenge;
+import com.ww.service.rival.challenge.ChallengeService;
+import com.ww.service.rival.challenge.RivalChallengeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +20,7 @@ import java.util.Map;
 public class ChallengeController {
 
     @Autowired
-    private  RivalChallengeService rivalChallengeService;
+    private ChallengeService challengeService;
 
     @RequestMapping(value = "/friendInit", method = RequestMethod.POST)
     public Map startFriend(@RequestBody Map<String, Object> payload) {
@@ -26,7 +28,7 @@ public class ChallengeController {
             throw new IllegalArgumentException();
         }
         List<String> tags = (List<String>) payload.get("tags");
-        return rivalChallengeService.friendInit(tags);
+        return challengeService.friendInit(tags);
     }
 
     @RequestMapping(value = "/response", method = RequestMethod.POST)
@@ -35,7 +37,7 @@ public class ChallengeController {
             throw new IllegalArgumentException();
         }
         Long challengeId = ((Integer) payload.get("id")).longValue();
-        return rivalChallengeService.response(challengeId);
+        return challengeService.response(challengeId);
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.POST)
@@ -47,7 +49,7 @@ public class ChallengeController {
             } catch (IllegalArgumentException e) {
             }
         }
-        return rivalChallengeService.list(status);
+        return challengeService.list(status);
     }
 
     @RequestMapping(value = "/summary", method = RequestMethod.POST)
@@ -56,6 +58,6 @@ public class ChallengeController {
             throw new IllegalArgumentException();
         }
         Long challengeId = ((Integer) payload.get("challengeId")).longValue();
-        return rivalChallengeService.summary(challengeId);
+        return challengeService.summary(challengeId);
     }
 }

@@ -1,4 +1,4 @@
-package com.ww.model.container;
+package com.ww.model.container.rival.task;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.ww.model.entity.inside.task.MemoryShape;

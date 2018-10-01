@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.MemoryTaskType;
-import com.ww.model.container.MemoryObject;
+import com.ww.model.container.rival.task.MemoryObject;
 import com.ww.model.entity.inside.task.Color;
 import com.ww.model.entity.inside.task.MemoryShape;
 import com.ww.model.entity.outside.rival.task.*;

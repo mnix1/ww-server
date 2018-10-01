@@ -1,6 +1,6 @@
 package com.ww.service.rival.task.riddle;
 
-import com.ww.model.container.Position;
+import com.ww.model.container.rival.task.Position;
 import org.apache.commons.lang3.StringUtils;
 import org.imgscalr.Scalr;
 import org.springframework.stereotype.Service;

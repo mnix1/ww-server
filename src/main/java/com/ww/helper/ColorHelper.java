@@ -1,6 +1,6 @@
 package com.ww.helper;
 
-import com.ww.model.container.ColorObject;
+import com.ww.model.container.rival.task.ColorObject;
 
 import java.awt.Color;
 import java.util.Arrays;
