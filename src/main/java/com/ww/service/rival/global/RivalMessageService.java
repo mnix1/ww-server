@@ -1,5 +1,6 @@
 package com.ww.service.rival.global;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.ProfileConnection;
@@ -12,14 +13,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class RivalMessageService {
     private static Logger logger = LoggerFactory.getLogger(RivalMessageService.class);
 
-    @Autowired
-    private ProfileService profileService;
+    public static final String ANSWER = "ANSWER";
+    public static final String CHOOSE_TASK_PROPS = "CHOOSE_TASK_PROPS";
+    public static final String SURRENDER = "SURRENDER";
+    public static final String CHOOSE_WHO_ANSWER = "CHOOSE_WHO_ANSWER";
+    public static final String HINT = "HINT";
 
     @Autowired
     private ProfileConnectionService profileConnectionService;
@@ -27,20 +34,24 @@ public class RivalMessageService {
     @Autowired
     private RivalGlobalService rivalGlobalService;
 
-    @Autowired
-    private RivalCampaignWarService rivalCampaignWarService;
+    public synchronized Map<String, Object> handleInput(String content) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(content, HashMap.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new HashMap<>();
+    }
 
-    @Autowired
-    private RivalChallengeService rivalChallengeService;
-
-    public void handleMessage(String sessionId, String message){
-        logger.trace("Message received sessionId: {}, content: {}", sessionId,message );
+    public void handleMessage(String sessionId, String message) {
+        logger.trace("Message received sessionId: {}, content: {}", sessionId, message);
         Optional<ProfileConnection> optionalProfileConnection = profileConnectionService.findBySessionId(sessionId);
         if (!optionalProfileConnection.isPresent() || !rivalGlobalService.contains(optionalProfileConnection.get().getProfileId())) {
             return;
         }
         RivalManager rivalManager = rivalGlobalService.get(optionalProfileConnection.get().getProfileId());
-        rivalManager.processMessage(optionalProfileConnection.get().getProfileId(), message);
+        rivalManager.processMessage(optionalProfileConnection.get().getProfileId(), handleInput(message));
 
 //        AbstractRivalService abstractRivalService = null;
 //        RivalType rivalType = null;
@@ -57,24 +68,18 @@ public class RivalMessageService {
 //            abstractRivalService = rivalChallengeService;
 //            rivalType = RivalType.CHALLENGE;
 //        }
-//        if (message.contains(ANSWER_SUFFIX)) {
-//            abstractRivalService.answer(session.getId(), trimPrefixFromMessage(message, rivalType, ANSWER_SUFFIX));
-//        } else if (message.contains(CHOOSE_TASK_PROPS_SUFFIX)) {
-//            abstractRivalService.chooseTaskProps(session.getId(), trimPrefixFromMessage(message, rivalType, CHOOSE_TASK_PROPS_SUFFIX));
-//        } else if (message.contains(SURRENDER_SUFFIX)) {
+//        if (message.contains(ANSWER)) {
+//            abstractRivalService.answer(session.getId(), trimPrefixFromMessage(message, rivalType, ANSWER));
+//        } else if (message.contains(CHOOSE_TASK_PROPS)) {
+//            abstractRivalService.chooseTaskProps(session.getId(), trimPrefixFromMessage(message, rivalType, CHOOSE_TASK_PROPS));
+//        } else if (message.contains(SURRENDER)) {
 //            abstractRivalService.surrender(session.getId());
-//        } else if (message.contains(CHOOSE_WHO_ANSWER_SUFFIX)) {
-//            abstractRivalService.chooseWhoAnswer(session.getId(), trimPrefixFromMessage(message, rivalType, CHOOSE_WHO_ANSWER_SUFFIX));
-//        } else if (message.contains(HINT_SUFFIX)) {
-//            abstractRivalService.hint(session.getId(), trimPrefixFromMessage(message, rivalType, HINT_SUFFIX));
+//        } else if (message.contains(CHOOSE_WHO_ANSWER)) {
+//            abstractRivalService.chooseWhoAnswer(session.getId(), trimPrefixFromMessage(message, rivalType, CHOOSE_WHO_ANSWER));
+//        } else if (message.contains(HINT)) {
+//            abstractRivalService.hint(session.getId(), trimPrefixFromMessage(message, rivalType, HINT));
 //        }
     }
-
-    private static final String ANSWER_SUFFIX = "_^_ANSWER";
-    private static final String CHOOSE_TASK_PROPS_SUFFIX = "_^_CHOOSE_TASK_PROPS";
-    private static final String SURRENDER_SUFFIX = "_^_SURRENDER";
-    private static final String CHOOSE_WHO_ANSWER_SUFFIX = "_^_CHOOSE_WHO_ANSWER";
-    private static final String HINT_SUFFIX = "_^_HINT";
 
     private String trimPrefixFromMessage(String message, RivalType rivalType, String messageSuffix) {
         return message.substring(rivalType.name().length() + messageSuffix.length());

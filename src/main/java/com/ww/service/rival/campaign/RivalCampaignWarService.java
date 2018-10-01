@@ -8,6 +8,7 @@ import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.constant.wisie.WisieType;
 import com.ww.model.constant.wisie.WisorType;
+import com.ww.model.container.rival.init.RivalCampaignWarInitContainer;
 import com.ww.model.container.rival.init.RivalInitContainer;
 import com.ww.model.container.rival.init.RivalTwoPlayerInitContainer;
 import com.ww.model.container.rival.war.TeamMember;
@@ -135,7 +136,7 @@ public class RivalCampaignWarService extends RivalWarService {
         if (profileCampaign == null) {
             return putErrorCode(model);
         }
-        RivalTwoPlayerInitContainer rival = new RivalTwoPlayerInitContainer(CAMPAIGN_WAR, RivalImportance.FAST, profileService.getProfile(), prepareComputerProfile(profileCampaign));
+        RivalCampaignWarInitContainer rival = new RivalCampaignWarInitContainer(CAMPAIGN_WAR, RivalImportance.FAST, profileService.getProfile(), prepareComputerProfile(profileCampaign), profileCampaign);
         rivalRunService.run(rival);
         return putSuccessCode(model);
     }
@@ -166,10 +167,6 @@ public class RivalCampaignWarService extends RivalWarService {
             computerProfile.getWisies().add(profileWisie);
         }
         return computerProfile;
-    }
-
-    private RivalManager createManager(RivalInitContainer rival, ProfileCampaign profileCampaign) {
-        return new CampaignWarManager(rival, this, profileConnectionService, profileCampaign);
     }
 
 }

@@ -3,8 +3,10 @@ package com.ww.manager.rival.campaign;
 import com.ww.helper.TeamHelper;
 import com.ww.manager.rival.campaign.state.CampaignWarStateChosenWhoAnswer;
 import com.ww.manager.rival.war.WarManager;
+import com.ww.model.container.rival.init.RivalCampaignWarInitContainer;
 import com.ww.model.container.rival.init.RivalInitContainer;
 import com.ww.model.container.rival.campaign.CampaignWarContainer;
+import com.ww.model.container.rival.init.RivalTwoPlayerInitContainer;
 import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarContainer;
 import com.ww.model.container.rival.war.WarProfileContainer;
@@ -27,19 +29,19 @@ public class CampaignWarManager extends WarManager {
         return profile.getId().equals(BOT_PROFILE_ID);
     }
 
-    public CampaignWarManager(RivalInitContainer container, RivalCampaignWarService rivalCampaignWarService, ProfileConnectionService profileConnectionService, ProfileCampaign profileCampaign) {
+    public CampaignWarManager(RivalCampaignWarInitContainer container, RivalCampaignWarService rivalCampaignWarService, ProfileConnectionService profileConnectionService) {
         this.abstractRivalService = rivalCampaignWarService;
         this.profileConnectionService = profileConnectionService;
         Profile creator = container.getCreatorProfile();
         Long creatorId = creator.getId();
         Profile opponent = container.getOpponentProfile();
         Long opponentId = opponent.getId();
+        this.profileCampaign = container.getProfileCampaign();
         this.rivalContainer = new CampaignWarContainer();
         this.rivalContainer.storeInformationFromInitContainer(container);
         this.rivalContainer.addProfile(creatorId, new WarProfileContainer(creator, opponentId, prepareTeamMembers(creator, profileCampaign)));
         this.rivalContainer.addProfile(opponentId, new WarProfileContainer(opponent, creatorId, prepareTeamMembers(opponent, profileCampaign)));
         this.warContainer = (WarContainer) this.rivalContainer;
-        this.profileCampaign = profileCampaign;
     }
 
     protected List<TeamMember> prepareTeamMembers(Profile profile, ProfileCampaign profileCampaign) {

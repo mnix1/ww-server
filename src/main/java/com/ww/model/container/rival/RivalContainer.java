@@ -1,8 +1,13 @@
 package com.ww.model.container.rival;
 
 import com.ww.model.constant.Category;
-import com.ww.model.constant.rival.*;
+import com.ww.model.constant.rival.DifficultyLevel;
+import com.ww.model.constant.rival.RivalImportance;
+import com.ww.model.constant.rival.RivalStatus;
+import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.rival.init.RivalInitContainer;
+import com.ww.model.container.rival.init.RivalOnePlayerInitContainer;
+import com.ww.model.container.rival.init.RivalTwoPlayerInitContainer;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.dto.social.RivalProfileDTO;
 import com.ww.model.entity.outside.rival.task.Answer;
@@ -58,8 +63,14 @@ public abstract class RivalContainer {
     public void storeInformationFromInitContainer(RivalInitContainer container) {
         this.type = container.getType();
         this.importance = container.getImportance();
-        this.creatorProfile = container.getCreatorProfile();
-        this.opponentProfile = container.getOpponentProfile();
+        if (container instanceof RivalTwoPlayerInitContainer) {
+            RivalTwoPlayerInitContainer c = (RivalTwoPlayerInitContainer) container;
+            this.creatorProfile = c.getCreatorProfile();
+            this.opponentProfile = c.getOpponentProfile();
+        } else if (container instanceof RivalOnePlayerInitContainer) {
+            RivalOnePlayerInitContainer c = (RivalOnePlayerInitContainer) container;
+            this.creatorProfile = c.getCreatorProfile();
+        }
     }
 
     public boolean isOpponent() {

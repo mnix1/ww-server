@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.ww.helper.EloHelper.*;
+import static com.ww.service.rival.global.RivalMessageService.*;
 
 @Getter
 public abstract class RivalManager {
@@ -45,8 +46,20 @@ public abstract class RivalManager {
         }
     }
 
-    public void processMessage(Long profileId, String message){
-
+    public boolean processMessage(Long profileId, Map<String, Object> content) {
+        String id = (String) content.get("id");
+        if (id.equals(ANSWER)) {
+            answer(profileId, content);
+            return true;
+        } else if (id.equals(CHOOSE_TASK_PROPS)) {
+            chosenTaskProps(profileId, content);
+            return true;
+        } else if (id.equals(SURRENDER)) {
+            surrender(profileId);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public Message getMessageContent() {

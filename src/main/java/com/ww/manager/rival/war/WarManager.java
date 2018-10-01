@@ -4,8 +4,8 @@ import com.ww.helper.TeamHelper;
 import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.state.*;
 import com.ww.manager.rival.war.state.*;
-import com.ww.model.container.rival.init.RivalInitContainer;
 import com.ww.model.container.rival.RivalProfileContainer;
+import com.ww.model.container.rival.init.RivalTwoPlayerInitContainer;
 import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarContainer;
 import com.ww.model.container.rival.war.WarProfileContainer;
@@ -20,12 +20,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.ww.service.rival.global.RivalMessageService.CHOOSE_WHO_ANSWER;
+import static com.ww.service.rival.global.RivalMessageService.HINT;
+
 @NoArgsConstructor
 public class WarManager extends RivalManager {
 
     public WarContainer warContainer;
 
-    public WarManager(RivalInitContainer container, RivalWarService rivalWarService, ProfileConnectionService profileConnectionService) {
+    public WarManager(RivalTwoPlayerInitContainer container, RivalWarService rivalWarService, ProfileConnectionService profileConnectionService) {
         this.abstractRivalService = rivalWarService;
         this.profileConnectionService = profileConnectionService;
         Profile creator = container.getCreatorProfile();
@@ -39,6 +42,22 @@ public class WarManager extends RivalManager {
         this.rivalContainer.addProfile(creatorId, new WarProfileContainer(creator, opponentId, prepareTeamMembers(creator, creatorWisies)));
         this.rivalContainer.addProfile(opponentId, new WarProfileContainer(opponent, creatorId, prepareTeamMembers(opponent, opponentWisies)));
         this.warContainer = (WarContainer) this.rivalContainer;
+    }
+
+    public boolean processMessage(Long profileId, Map<String, Object> content) {
+        if (super.processMessage(profileId, content)) {
+            return true;
+        }
+        String id = (String) content.get("id");
+        if (id.equals(CHOOSE_WHO_ANSWER)) {
+            chosenWhoAnswer(profileId, content);
+            return true;
+        } else if (id.equals(HINT)) {
+            hint(profileId, content);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     protected List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies) {

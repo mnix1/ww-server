@@ -7,6 +7,7 @@ import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.challenge.ChallengeProfileStatus;
 import com.ww.model.constant.rival.challenge.ChallengeStatus;
+import com.ww.model.container.rival.init.RivalChallengeInitContainer;
 import com.ww.model.container.rival.init.RivalInitContainer;
 import com.ww.model.container.rival.init.RivalOnePlayerInitContainer;
 import com.ww.model.entity.outside.rival.challenge.Challenge;
@@ -48,10 +49,10 @@ public class RivalChallengeService extends RivalWarService {
     @Autowired
     protected RivalRunService rivalRunService;
 
-    public void init(ChallengeProfile challengeProfile){
+    public void init(ChallengeProfile challengeProfile) {
         List<ChallengeQuestion> challengeQuestions = new ArrayList<>(challengeProfile.getChallenge().getQuestions());
         sortChallengeQuestions(challengeQuestions);
-        RivalOnePlayerInitContainer rival = new RivalOnePlayerInitContainer(CHALLENGE, RivalImportance.FAST, challengeProfile.getProfile());
+        RivalChallengeInitContainer rival = new RivalChallengeInitContainer(CHALLENGE, RivalImportance.FAST, challengeProfile.getProfile(), challengeProfile, challengeQuestions);
         rivalRunService.run(rival);
     }
 

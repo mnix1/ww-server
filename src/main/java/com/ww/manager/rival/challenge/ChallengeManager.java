@@ -3,7 +3,9 @@ package com.ww.manager.rival.challenge;
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
+import com.ww.model.container.rival.init.RivalChallengeInitContainer;
 import com.ww.model.container.rival.init.RivalInitContainer;
+import com.ww.model.container.rival.init.RivalOnePlayerInitContainer;
 import com.ww.model.container.rival.war.WarContainer;
 import com.ww.model.container.rival.war.WarProfileContainer;
 import com.ww.model.dto.rival.task.AnswerDTO;
@@ -24,7 +26,7 @@ public class ChallengeManager extends WarManager {
     public ChallengeProfile challengeProfile;
     public List<ChallengeQuestion> challengeQuestions;
 
-    public ChallengeManager(RivalInitContainer container, RivalChallengeService rivalChallengeService, ProfileConnectionService profileConnectionService, ChallengeProfile challengeProfile, List<ChallengeQuestion> challengeQuestions) {
+    public ChallengeManager(RivalChallengeInitContainer container, RivalChallengeService rivalChallengeService, ProfileConnectionService profileConnectionService) {
         this.abstractRivalService = rivalChallengeService;
         this.profileConnectionService = profileConnectionService;
         Profile creator = container.getCreatorProfile();
@@ -34,8 +36,8 @@ public class ChallengeManager extends WarManager {
         this.rivalContainer.storeInformationFromInitContainer(container);
         this.rivalContainer.addProfile(creatorId, new WarProfileContainer(creator, null, prepareTeamMembers(creator, creatorWisies)));
         this.warContainer = (WarContainer) this.rivalContainer;
-        this.challengeProfile = challengeProfile;
-        this.challengeQuestions = challengeQuestions;
+        this.challengeProfile = container.getChallengeProfile();
+        this.challengeQuestions = container.getChallengeQuestions();
     }
 
     @Override
