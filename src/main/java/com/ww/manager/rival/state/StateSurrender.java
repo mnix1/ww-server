@@ -19,13 +19,13 @@ public class StateSurrender extends State {
     protected void processVoid() {
         manager.getContainer().setStatus(RivalStatus.CLOSED);
         if(manager.getContainer().isOpponent()) {
-            manager.getContainer().setWinnerLooser(manager.getContainer().opponentProfileContainer(profileId).getProfile());
+            manager.getContainer().setWinnerLooser(manager.getContainer().getTeamsContainer().opponentProfileContainer(profileId).getProfile());
             manager.getContainer().setResigned(true);
         } else {
             manager.getContainer().setDraw(true);
         }
         manager.updateProfilesElo();
-        manager.getContainer().forEachProfile(profileContainer -> {
+        manager.getContainer().getTeamsContainer().forEachProfile(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelClosed(model, profileContainer);
             manager.getModelFactory().fillModelEloChanged(model, profileContainer);

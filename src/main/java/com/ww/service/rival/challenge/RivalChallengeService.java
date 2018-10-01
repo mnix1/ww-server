@@ -78,12 +78,12 @@ public class RivalChallengeService extends RivalWarService {
     }
 
     @Override
-    public synchronized void disposeManager(RivalManager rivalManager) {
-        super.disposeManager(rivalManager);
-        ChallengeManager challengeManager = (ChallengeManager) rivalManager;
+    public synchronized void disposeManager(RivalManager manager) {
+        super.disposeManager(manager);
+        ChallengeManager challengeManager = (ChallengeManager) manager;
         ChallengeProfile challengeProfile = challengeManager.challengeProfile;
         challengeProfile.setStatus(ChallengeProfileStatus.CLOSED);
-        challengeProfile.setScore(Math.max(0, rivalManager.getContainer().getCurrentTaskIndex()));
+        challengeProfile.setScore(Math.max(0, manager.getContainer().getCurrentTaskIndex()));
         challengeProfileRepository.save(challengeProfile);
         maybeCloseChallenge(challengeProfile.getChallenge(), Instant.now());
     }

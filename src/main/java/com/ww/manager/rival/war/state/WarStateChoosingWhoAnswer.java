@@ -22,18 +22,18 @@ public class WarStateChoosingWhoAnswer extends WarState {
     protected Flowable<Long> processFlowable() {
         this.manager.getContainer().setStatus(RivalStatus.CHOOSING_WHO_ANSWER);
 
-        for (RivalProfileContainer rivalProfileContainer : manager.getRivalProfileContainers()) {
-            WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
+        for (RivalProfileContainer profileContainer : manager.getContainer().getTeamsContainer().getProfileContainers()) {
+            WarProfileContainer warProfileContainer = (WarProfileContainer) profileContainer;
             warProfileContainer.setActiveIndex(warProfileContainer.getPresentIndexes().get(0));
             warProfileContainer.setChosenActiveIndex(false);
         }
 
         int interval = manager.getInterval().getChoosingWhoAnswerInterval();
         manager.getContainer().setEndChoosingWhoAnswerDate(Instant.now().plus(interval, ChronoUnit.MILLIS));
-        manager.getContainer().forEachProfile(rivalProfileContainer -> {
+        manager.getContainer().getTeamsContainer().forEachProfile(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            manager.getModelFactory().fillModelChoosingWhoAnswer(model, rivalProfileContainer);
-            this.manager.send(model, this.manager.getMessageContent(), rivalProfileContainer.getProfileId());
+            manager.getModelFactory().fillModelChoosingWhoAnswer(model, profileContainer);
+            this.manager.send(model, this.manager.getMessageContent(), profileContainer.getProfileId());
         });
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

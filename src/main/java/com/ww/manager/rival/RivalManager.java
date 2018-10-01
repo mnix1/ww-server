@@ -4,9 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.manager.rival.state.StateSurrender;
 import com.ww.model.constant.Category;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.constant.rival.RivalType;
-import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.container.rival.RivalContainer;
 import com.ww.model.container.rival.RivalInterval;
 import com.ww.model.container.rival.RivalModelFactory;
@@ -24,9 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static com.ww.helper.EloHelper.*;
@@ -41,7 +39,9 @@ public abstract class RivalManager {
     protected Disposable activeFlowable;
 
     public abstract RivalModelFactory getModelFactory();
+
     public abstract RivalContainer getContainer();
+
     public abstract RivalInterval getInterval();
 
     public void disposeFlowable() {
@@ -136,8 +136,8 @@ public abstract class RivalManager {
 
     public synchronized Map<String, Object> actualModel(Long profileId) {
         Map<String, Object> model = new HashMap<>();
-        RivalProfileContainer rivalProfileContainer = getContainer().getProfileContainers().get(profileId);
-        getModelFactory().fillModel(model, rivalProfileContainer);
+        RivalProfileContainer profileContainer = getContainer().getTeamsContainer().profileContainer(profileId);
+        getModelFactory().fillModel(model, profileContainer);
         return model;
     }
 
@@ -164,10 +164,6 @@ public abstract class RivalManager {
 
     public boolean isClosed() {
         return getContainer().getStatus() == RivalStatus.CLOSED;
-    }
-
-    public List<RivalProfileContainer> getRivalProfileContainers() {
-        return new ArrayList<>(this.getContainer().getProfileContainers().values());
     }
 
 }

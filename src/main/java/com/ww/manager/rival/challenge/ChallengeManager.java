@@ -8,6 +8,7 @@ import com.ww.model.container.rival.init.RivalChallengeInitContainer;
 import com.ww.model.container.rival.war.WarContainer;
 import com.ww.model.container.rival.war.WarModelFactory;
 import com.ww.model.container.rival.war.WarProfileContainer;
+import com.ww.model.container.rival.war.WarTeamsContainer;
 import com.ww.model.dto.rival.task.AnswerDTO;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
@@ -25,7 +26,6 @@ public class ChallengeManager extends WarManager {
 
     public ChallengeProfile challengeProfile;
     public List<ChallengeQuestion> challengeQuestions;
-    public ChallengeInterval interval;
 
     public ChallengeManager(RivalChallengeInitContainer container, RivalChallengeService rivalChallengeService, ProfileConnectionService profileConnectionService) {
         this.abstractRivalService = rivalChallengeService;
@@ -33,9 +33,8 @@ public class ChallengeManager extends WarManager {
         Profile creator = container.getCreatorProfile();
         Long creatorId = creator.getId();
         List<ProfileWisie> creatorWisies = rivalChallengeService.getProfileWisies(creator);
-        this.container = new WarContainer();
-        this.container.storeInformationFromInitContainer(container);
-        this.container.addProfile(creatorId, new WarProfileContainer(creator, prepareTeamMembers(creator, creatorWisies)));
+        this.container = new WarContainer(container, new WarTeamsContainer());
+        this.container.getTeamsContainer().addProfile(creatorId, new WarProfileContainer(creator, prepareTeamMembers(creator, creatorWisies)));
         this.challengeProfile = container.getChallengeProfile();
         this.challengeQuestions = container.getChallengeQuestions();
         this.modelFactory = new WarModelFactory(this.container);

@@ -19,7 +19,6 @@ import com.ww.manager.wisieanswer.state.phase5.StateEndThinkingWhichAnswerMatch;
 import com.ww.manager.wisieanswer.state.phase5.StateThinkKnowAnswer;
 import com.ww.manager.wisieanswer.state.phase6.*;
 import com.ww.model.constant.wisie.WisieAnswerAction;
-import com.ww.model.container.rival.war.WarContainer;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskWisdomAttribute;
 import com.ww.model.entity.outside.wisie.OwnedWisie;
@@ -43,8 +42,7 @@ public class WisieAnswerManager {
     private CopyOnWriteArrayList<WisieAnswerAction> actions = new CopyOnWriteArrayList<>();
 
     private OwnedWisie wisie;
-    private WarManager warManager;
-    private WarContainer warContainer;
+    private WarManager manager;
     private Question question;
 
     private int difficulty;
@@ -67,11 +65,10 @@ public class WisieAnswerManager {
 
     protected Disposable activeFlowable;
 
-    public WisieAnswerManager(OwnedWisie wisie, RivalManager rivalManager) {
+    public WisieAnswerManager(OwnedWisie wisie, WarManager manager) {
         this.wisie = wisie;
-        this.warManager = (WarManager) rivalManager;
-        this.warContainer = (WarContainer) this.warManager.getContainer();
-        this.question = warContainer.getQuestions().get(warContainer.getCurrentTaskIndex());
+        this.manager = manager;
+        this.question = manager.getContainer().getQuestions().get(manager.getContainer().getCurrentTaskIndex());
         this.difficulty = AnswerHelper.difficultyCalibration(question) + 1;
         this.answerCount = question.getAnswers().size();
         this.isHobby = wisie.getHobbies().contains(question.getType().getCategory());
@@ -253,10 +250,10 @@ public class WisieAnswerManager {
 
     public void addAndSendAction(WisieAnswerAction action) {
         actions.add(action);
-        warContainer.forEachProfile(rivalProfileContainer -> {
+        manager.getContainer().getTeamsContainer().forEachProfile(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            warManager.getModelFactory().fillModelWisieAnswering(model, rivalProfileContainer);
-            warManager.send(model, warManager.getMessageContent(), rivalProfileContainer.getProfileId());
+            manager.getModelFactory().fillModelWisieAnswering(model, profileContainer);
+            manager.send(model, manager.getMessageContent(), profileContainer.getProfileId());
         });
     }
 

@@ -23,10 +23,10 @@ public class WarStateAnswering extends WarState {
 
         manager.getContainer().updateWisieAnswerManagers(manager);
 
-        manager.getContainer().forEachProfile(rivalProfileContainer -> {
+        manager.getContainer().getTeamsContainer().forEachProfile(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            manager.getModelFactory().fillModelAnswering(model, rivalProfileContainer);
-            manager.send(model, manager.getMessageContent(), rivalProfileContainer.getProfileId());
+            manager.getModelFactory().fillModelAnswering(model, profileContainer);
+            manager.send(model, manager.getMessageContent(), profileContainer.getProfileId());
         });
         manager.getContainer().startWisieAnswerManager();
         return Flowable.intervalRange(0L, 1L, manager.getInterval().getAnsweringInterval(), manager.getInterval().getAnsweringInterval(), TimeUnit.MILLISECONDS);

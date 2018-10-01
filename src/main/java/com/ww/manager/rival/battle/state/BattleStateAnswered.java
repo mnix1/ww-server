@@ -31,12 +31,12 @@ public class BattleStateAnswered extends State {
             manager.getContainer().setMarkedAnswerId(markedAnswerId);
             isAnswerCorrect = manager.getContainer().findCurrentCorrectAnswerId().equals(markedAnswerId);
         }
-        BattleProfileContainer container = (BattleProfileContainer) manager.getContainer().profileContainer(profileId);
+        BattleProfileContainer container = (BattleProfileContainer) manager.getContainer().getTeamsContainer().profileContainer(profileId);
         container.setScore(isAnswerCorrect ? container.getScore() + manager.getContainer().getCurrentTaskPoints() : container.getScore() - manager.getContainer().getCurrentTaskPoints());
-        manager.getContainer().forEachProfile(rivalProfileContainer -> {
+        manager.getContainer().getTeamsContainer().forEachProfile(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            manager.getModelFactory().fillModelAnswered(model, rivalProfileContainer);
-            manager.send(model, manager.getMessageContent(), rivalProfileContainer.getProfileId());
+            manager.getModelFactory().fillModelAnswered(model, profileContainer);
+            manager.send(model, manager.getMessageContent(), profileContainer.getProfileId());
         });
         return Flowable.intervalRange(0L, 1L, manager.getInterval().getShowingAnswerInterval(), manager.getInterval().getShowingAnswerInterval(), TimeUnit.MILLISECONDS);
     }

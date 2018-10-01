@@ -21,10 +21,10 @@ public class BattleStateAnsweringTimeout extends State {
             return Flowable.empty();
         }
         manager.getContainer().setStatus(RivalStatus.ANSWERING_TIMEOUT);
-        manager.getContainer().forEachProfile(rivalProfileContainer -> {
+        manager.getContainer().getTeamsContainer().forEachProfile(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            manager.getModelFactory().fillModelAnsweringTimeout(model, rivalProfileContainer);
-            manager.send(model, manager.getMessageContent(), rivalProfileContainer.getProfileId());
+            manager.getModelFactory().fillModelAnsweringTimeout(model, profileContainer);
+            manager.send(model, manager.getMessageContent(), profileContainer.getProfileId());
         });
         return Flowable.intervalRange(0L, 1L, manager.getInterval().getAnsweringTimeoutInterval(), manager.getInterval().getAnsweringTimeoutInterval(), TimeUnit.MILLISECONDS);
     }

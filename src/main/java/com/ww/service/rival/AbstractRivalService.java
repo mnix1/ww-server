@@ -5,6 +5,7 @@ import com.ww.manager.rival.RivalManager;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.container.rival.RivalContainer;
+import com.ww.model.container.rival.RivalProfileContainer;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.Rival;
 import com.ww.model.entity.outside.rival.task.Question;
@@ -36,14 +37,14 @@ public abstract class AbstractRivalService {
 
     public abstract RivalGlobalService getRivalGlobalService();
 
-    public synchronized void disposeManager(RivalManager rivalManager) {
-        if (!rivalManager.isClosed()) {
+    public synchronized void disposeManager(RivalManager manager) {
+        if (!manager.isClosed()) {
             return;
         }
-        rivalManager.getRivalProfileContainers().forEach(rivalProfileContainer -> {
-            getRivalGlobalService().remove(rivalProfileContainer.getProfileId());
-        });
-        RivalContainer rivalContainer = rivalManager.getContainer();
+        for (RivalProfileContainer profileContainer : manager.getContainer().getTeamsContainer().getProfileContainers()) {
+            getRivalGlobalService().remove(profileContainer.getProfileId());
+        }
+        RivalContainer rivalContainer = manager.getContainer();
         Boolean isDraw = rivalContainer.getDraw();
         Profile winner = rivalContainer.getWinner();
         Rival rival = new Rival(rivalContainer.getType(), rivalContainer.getImportance(), rivalContainer.getCreatorProfile(), rivalContainer.getOpponentProfile(), isDraw, winner);

@@ -31,19 +31,19 @@ public class WarStateAnswered extends WarState {
             manager.getContainer().setMarkedAnswerId(markedAnswerId);
             isAnswerCorrect = manager.getContainer().findCurrentCorrectAnswerId().equals(markedAnswerId);
         }
-        WarProfileContainer profileContainer = manager.getContainer().profileContainer(profileId);
+        WarProfileContainer profileContainer = manager.getContainer().getTeamsContainer().profileContainer(profileId);
         if (manager.getContainer().isOpponent()) {
             if (isAnswerCorrect) {
-                profileContainer = manager.getContainer().opponentProfileContainer(profileContainer.getProfileId());
+                profileContainer = manager.getContainer().getTeamsContainer().opponentProfileContainer(profileContainer.getProfileId());
             }
             profileContainer.setActiveTeamMemberPresentToFalse();
         } else if (!isAnswerCorrect) {
             profileContainer.setActiveTeamMemberPresentToFalse();
         }
-        manager.getContainer().forEachProfile(rivalProfileContainer -> {
+        manager.getContainer().getTeamsContainer().forEachProfile(pC -> {
             Map<String, Object> model = new HashMap<>();
-            manager.getModelFactory().fillModelAnswered(model, rivalProfileContainer);
-            manager.send(model, manager.getMessageContent(), rivalProfileContainer.getProfileId());
+            manager.getModelFactory().fillModelAnswered(model, pC);
+            manager.send(model, manager.getMessageContent(), pC.getProfileId());
         });
         return Flowable.intervalRange(0L, 1L, manager.getInterval().getShowingAnswerInterval(), manager.getInterval().getShowingAnswerInterval(), TimeUnit.MILLISECONDS);
     }

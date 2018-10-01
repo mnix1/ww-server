@@ -1,10 +1,7 @@
 package com.ww.model.container.rival;
 
 import com.ww.model.constant.Category;
-import com.ww.model.constant.rival.DifficultyLevel;
-import com.ww.model.constant.rival.RivalImportance;
-import com.ww.model.constant.rival.RivalStatus;
-import com.ww.model.constant.rival.RivalType;
+import com.ww.model.constant.rival.*;
 import com.ww.model.container.rival.init.RivalInitContainer;
 import com.ww.model.container.rival.init.RivalOnePlayerInitContainer;
 import com.ww.model.container.rival.init.RivalTwoPlayerInitContainer;
@@ -16,11 +13,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Consumer;
 
 @Getter
 @Setter
@@ -33,8 +27,6 @@ public abstract class RivalContainer {
     protected Long creatorEloChange;
     protected Long opponentEloChange;
 
-    protected final Map<Long, RivalProfileContainer> profileContainers = new HashMap<>();
-    protected final Map<Long, Long> opponents = new HashMap<>();
     protected int currentTaskIndex = -1;
 
     protected CopyOnWriteArrayList<Question> questions = new CopyOnWriteArrayList<>();
@@ -60,16 +52,18 @@ public abstract class RivalContainer {
 
     protected RivalStatus status = RivalStatus.OPEN;
 
-    public void storeInformationFromInitContainer(RivalInitContainer container) {
+    public abstract RivalTeamsContainer getTeamsContainer();
+
+    protected RivalContainer(RivalInitContainer container, RivalTeamsContainer teamsContainer) {
         this.type = container.getType();
         this.importance = container.getImportance();
-        if (container instanceof RivalTwoPlayerInitContainer) {
+        if (container.getPlayer() == RivalPlayer.TWO) {
             RivalTwoPlayerInitContainer c = (RivalTwoPlayerInitContainer) container;
             this.creatorProfile = c.getCreatorProfile();
             this.opponentProfile = c.getOpponentProfile();
-            opponents.put(this.creatorProfile.getId(), this.opponentProfile.getId());
-            opponents.put(this.opponentProfile.getId(), this.creatorProfile.getId());
-        } else if (container instanceof RivalOnePlayerInitContainer) {
+            teamsContainer.getOpponents().put(creatorProfile.getId(), opponentProfile.getId());
+            teamsContainer.getOpponents().put(opponentProfile.getId(), creatorProfile.getId());
+        } else if (container.getPlayer() == RivalPlayer.ONE) {
             RivalOnePlayerInitContainer c = (RivalOnePlayerInitContainer) container;
             this.creatorProfile = c.getCreatorProfile();
         }
@@ -79,22 +73,10 @@ public abstract class RivalContainer {
         return opponentProfile != null;
     }
 
-    public void addProfile(Long id, RivalProfileContainer rivalProfileContainer) {
-        profileContainers.put(id, rivalProfileContainer);
-    }
-
-    public RivalProfileContainer profileContainer(Long id) {
-        return profileContainers.get(id);
-    }
-
-    public RivalProfileContainer opponentProfileContainer(Long id) {
-        return profileContainers.get(opponents.get(id));
-    }
-
     public void setWinnerLooser(Profile winner) {
         this.draw = false;
         this.winner = winner;
-        this.looser = opponentProfileContainer(winner.getId()).getProfile();
+        this.looser = getTeamsContainer().opponentProfileContainer(winner.getId()).getProfile();
     }
 
     public boolean isRanking() {
@@ -132,8 +114,8 @@ public abstract class RivalContainer {
         questions.add(question);
         taskDTOs.add(taskDTO);
     }
-
-    public void forEachProfile(Consumer<? super RivalProfileContainer> action) {
-        profileContainers.values().parallelStream().forEach(action);
-    }
+//
+//    public void forEachProfile(Consumer<? super RivalProfileContainer> action) {
+//        profileContainers.values().parallelStream().forEach(action);
+//    }
 }

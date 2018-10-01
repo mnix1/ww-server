@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RivalProfileContainer {
+public abstract class RivalProfileContainer {
     private Profile profile;
 
     public RivalProfileContainer(Profile profile) {

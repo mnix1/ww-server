@@ -19,7 +19,7 @@ public class WarStateHinted extends WarState {
 
     @Override
     protected void processVoid() {
-        WarProfileContainer container = manager.getContainer().profileContainer(profileId);
+        WarProfileContainer container = manager.getContainer().getTeamsContainer().profileContainer(profileId);
         WisieAnswerManager wisieAnswerManager = manager.getContainer().getWisieAnswerManager(profileId);
         if (container.getHints() <= 0 || !content.containsKey("answerId") || wisieAnswerManager == null) {
             return;

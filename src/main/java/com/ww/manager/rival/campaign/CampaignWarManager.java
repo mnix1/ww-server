@@ -33,10 +33,9 @@ public class CampaignWarManager extends WarManager {
         Profile opponent = container.getOpponentProfile();
         Long opponentId = opponent.getId();
         this.profileCampaign = container.getProfileCampaign();
-        this.container = new CampaignWarContainer();
-        this.container.storeInformationFromInitContainer(container);
-        this.container.addProfile(creatorId, new WarProfileContainer(creator, prepareTeamMembers(creator, profileCampaign)));
-        this.container.addProfile(opponentId, new WarProfileContainer(opponent, prepareTeamMembers(opponent, profileCampaign)));
+        this.container = new CampaignWarContainer(container, new WarTeamsContainer());
+        this.container.getTeamsContainer().addProfile(creatorId, new WarProfileContainer(creator, prepareTeamMembers(creator, profileCampaign)));
+        this.container.getTeamsContainer().addProfile(opponentId, new WarProfileContainer(opponent, prepareTeamMembers(opponent, profileCampaign)));
         this.modelFactory = new WarModelFactory(this.container);
         this.interval = new WarInterval();
     }

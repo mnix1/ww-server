@@ -28,9 +28,9 @@ public class WarModelFactory extends RivalModelFactory {
         model.put("presentIndexes", warProfileContainer.getPresentIndexes());
         model.put("team", container.prepareTeam(warProfileContainer.getTeamMembers()));
         if (container.isOpponent()) {
-            model.put("opponentPresentIndexes", container.opponentProfileContainer(profileContainer.getProfileId()).getPresentIndexes());
-            model.put("opponentActiveIndex", container.opponentProfileContainer(profileContainer.getProfileId()).getActiveIndex());
-            model.put("opponentTeam", container.prepareTeam(container.opponentProfileContainer(profileContainer.getProfileId()).getTeamMembers()));
+            model.put("opponentPresentIndexes", container.getTeamsContainer().opponentProfileContainer(profileContainer.getProfileId()).getPresentIndexes());
+            model.put("opponentActiveIndex", container.getTeamsContainer().opponentProfileContainer(profileContainer.getProfileId()).getActiveIndex());
+            model.put("opponentTeam", container.prepareTeam(container.getTeamsContainer().opponentProfileContainer(profileContainer.getProfileId()).getTeamMembers()));
         }
     }
 
@@ -40,7 +40,7 @@ public class WarModelFactory extends RivalModelFactory {
         model.put("activeIndex", warProfileContainer.getActiveIndex());
         model.put("wisieActions", null);
         if (container.isOpponent()) {
-            model.put("opponentActiveIndex", container.opponentProfileContainer(profileContainer.getProfileId()).getActiveIndex());
+            model.put("opponentActiveIndex", container.getTeamsContainer().opponentProfileContainer(profileContainer.getProfileId()).getActiveIndex());
             model.put("opponentWisieActions", null);
         }
     }
@@ -50,7 +50,7 @@ public class WarModelFactory extends RivalModelFactory {
         WarProfileContainer warProfileContainer = (WarProfileContainer) profileContainer;
         model.put("presentIndexes", warProfileContainer.getPresentIndexes());
         if (container.isOpponent()) {
-            model.put("opponentPresentIndexes", container.opponentProfileContainer(profileContainer.getProfileId()).getPresentIndexes());
+            model.put("opponentPresentIndexes", container.getTeamsContainer().opponentProfileContainer(profileContainer.getProfileId()).getPresentIndexes());
         }
     }
 
@@ -67,7 +67,7 @@ public class WarModelFactory extends RivalModelFactory {
                 model.put("wisieActions", wisieActions);
             }
             if (container.isOpponent()) {
-                List<WisieAnswerAction> opponentWisieActions = container.getAnsweringWisieActions(container.opponentProfileContainer(profileContainer.getProfileId()));
+                List<WisieAnswerAction> opponentWisieActions = container.getAnsweringWisieActions(container.getTeamsContainer().opponentProfileContainer(profileContainer.getProfileId()));
                 if (opponentWisieActions != null) {
                     model.put("opponentWisieActions", opponentWisieActions);
                 }
@@ -80,14 +80,14 @@ public class WarModelFactory extends RivalModelFactory {
         WarProfileContainer warProfileContainer = (WarProfileContainer) profileContainer;
         model.put("presentIndexes", warProfileContainer.getPresentIndexes());
         if (container.isOpponent()) {
-            model.put("opponentPresentIndexes", container.opponentProfileContainer(profileContainer.getProfileId()).getPresentIndexes());
+            model.put("opponentPresentIndexes", container.getTeamsContainer().opponentProfileContainer(profileContainer.getProfileId()).getPresentIndexes());
         }
     }
 
     public void fillModelChoosingWhoAnswer(Map<String, Object> model, RivalProfileContainer profileContainer) {
         WarProfileContainer warProfileContainer = (WarProfileContainer) profileContainer;
         model.put("status", container.getStatus());
-        model.put("choosingWhoAnswerInterval", Math.max(container.endChoosingWhoAnswerDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
+        model.put("choosingWhoAnswerInterval", Math.max(container.getEndChoosingWhoAnswerDate().toEpochMilli() - Instant.now().toEpochMilli(), 0L));
         model.put("activeIndex", warProfileContainer.getActiveIndex());
         model.put("presentIndexes", warProfileContainer.getPresentIndexes());
         model.put("isChosenActiveIndex", warProfileContainer.isChosenActiveIndex());

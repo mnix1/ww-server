@@ -23,14 +23,14 @@ public class BattleModelFactory extends RivalModelFactory {
         BattleProfileContainer battleProfileContainer = (BattleProfileContainer) profileContainer;
         model.put("taskCount", BattleManager.TASK_COUNT);
         model.put("score", battleProfileContainer.getScore());
-        model.put("opponentScore", ((BattleProfileContainer) container.opponentProfileContainer(profileContainer.getProfileId())).getScore());
+        model.put("opponentScore", container.getTeamsContainer().opponentProfileContainer(profileContainer.getProfileId()).getScore());
     }
 
     public void fillModelAnswered(Map<String, Object> model, RivalProfileContainer profileContainer) {
         super.fillModelAnswered(model, profileContainer);
         BattleProfileContainer battleProfileContainer = (BattleProfileContainer) profileContainer;
         model.put("newScore", battleProfileContainer.getScore());
-        model.put("newOpponentScore", ((BattleProfileContainer) container.opponentProfileContainer(profileContainer.getProfileId())).getScore());
+        model.put("newOpponentScore", container.getTeamsContainer().opponentProfileContainer(profileContainer.getProfileId()).getScore());
     }
 
 
@@ -38,13 +38,13 @@ public class BattleModelFactory extends RivalModelFactory {
         super.fillModelChoosingTaskProps(model, profileContainer);
         BattleProfileContainer battleProfileContainer = (BattleProfileContainer) profileContainer;
         model.put("score", battleProfileContainer.getScore());
-        model.put("opponentScore", ((BattleProfileContainer) container.opponentProfileContainer(profileContainer.getProfileId())).getScore());
+        model.put("opponentScore", container.getTeamsContainer().opponentProfileContainer(profileContainer.getProfileId()).getScore());
     }
 
     public void fillModelClosed(Map<String, Object> model, RivalProfileContainer profileContainer) {
         super.fillModelClosed(model, profileContainer);
         BattleProfileContainer battleProfileContainer = (BattleProfileContainer) profileContainer;
         model.put("score", battleProfileContainer.getScore());
-        model.put("opponentScore", ((BattleProfileContainer) container.opponentProfileContainer(profileContainer.getProfileId())).getScore());
+        model.put("opponentScore", container.getTeamsContainer().opponentProfileContainer(profileContainer.getProfileId()).getScore());
     }
 }

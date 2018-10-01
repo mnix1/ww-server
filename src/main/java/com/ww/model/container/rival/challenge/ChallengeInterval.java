@@ -1,11 +1,11 @@
 package com.ww.model.container.rival.challenge;
 
 import com.ww.model.container.rival.RivalContainer;
-import com.ww.model.container.rival.RivalInterval;
+import com.ww.model.container.rival.war.WarInterval;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class ChallengeInterval extends RivalInterval {
+public class ChallengeInterval extends WarInterval {
     private RivalContainer container;
 
     public Integer getAnsweringInterval() {

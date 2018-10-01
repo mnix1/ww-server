@@ -89,20 +89,20 @@ public class RivalCampaignWarService extends RivalWarService {
     }
 
     @Override
-    public void disposeManager(RivalManager rivalManager) {
-        super.disposeManager(rivalManager);
-        CampaignWarManager campaignWarManager = (CampaignWarManager) rivalManager;
-        Long profileId = rivalManager.getContainer().getCreatorProfile().getId();
+    public void disposeManager(RivalManager manager) {
+        super.disposeManager(manager);
+        CampaignWarManager campaignWarManager = (CampaignWarManager) manager;
+        Long profileId = manager.getContainer().getCreatorProfile().getId();
         ProfileCampaign profileCampaign = campaignService.active(profileId);
         campaignService.setProfileCampaignWisies(profileCampaign);
-        if (profileCampaign.getProfile().equals(rivalManager.getContainer().getWinner())) {
+        if (profileCampaign.getProfile().equals(manager.getContainer().getWinner())) {
             profileCampaign.setPhase(profileCampaign.getPhase() + 1);
             profileCampaign.updateResourceGains();
             if (profileCampaign.getPhase() >= profileCampaign.getCampaign().getPhases()) {
                 profileCampaign.setStatus(ProfileCampaignStatus.FINISHED);
                 profileCampaign.setBookGain(campaignService.getBookGainForCampaign(profileCampaign.getCampaign()));
             }
-            List<TeamMember> teamMembers = campaignWarManager.container.profileContainer(profileId).getTeamMembers();
+            List<TeamMember> teamMembers = campaignWarManager.container.getTeamsContainer().profileContainer(profileId).getTeamMembers();
             for (TeamMember teamMember : teamMembers) {
                 if (teamMember.isWisie()) {
                     for (ProfileCampaignWisie wisie : profileCampaign.getWisies()) {

@@ -34,15 +34,12 @@ public class WarManager extends RivalManager {
         this.abstractRivalService = rivalWarService;
         this.profileConnectionService = profileConnectionService;
         Profile creator = container.getCreatorProfile();
-        Long creatorId = creator.getId();
         List<ProfileWisie> creatorWisies = rivalWarService.getProfileWisies(creator);
         Profile opponent = container.getOpponentProfile();
-        Long opponentId = opponent.getId();
         List<ProfileWisie> opponentWisies = rivalWarService.getProfileWisies(opponent);
-        this.container = new WarContainer();
-        this.container.storeInformationFromInitContainer(container);
-        this.container.addProfile(creatorId, new WarProfileContainer(creator, prepareTeamMembers(creator, creatorWisies)));
-        this.container.addProfile(opponentId, new WarProfileContainer(opponent, prepareTeamMembers(opponent, opponentWisies)));
+        this.container = new WarContainer(container, new WarTeamsContainer());
+        this.container.getTeamsContainer().addProfile(creator.getId(), new WarProfileContainer(creator, prepareTeamMembers(creator, creatorWisies)));
+        this.container.getTeamsContainer().addProfile(opponent.getId(), new WarProfileContainer(opponent, prepareTeamMembers(opponent, opponentWisies)));
         this.modelFactory = new WarModelFactory(this.container);
         this.interval = new WarInterval();
     }
@@ -68,8 +65,7 @@ public class WarManager extends RivalManager {
     }
 
     public boolean isEnd() {
-        for (RivalProfileContainer rivalProfileContainer : getRivalProfileContainers()) {
-            WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
+        for (WarProfileContainer warProfileContainer : getContainer().getTeamsContainer().getProfileContainers()) {
             if (!warProfileContainer.isAnyPresentMember()) {
                 return true;
             }
