@@ -23,7 +23,7 @@ public class StateChosenTaskProps extends State {
 
     @Override
     protected Boolean processBoolean() {
-        if (!rivalContainer.getRivalProfileContainer(profileId).getProfile().getTag().equals(rivalContainer.findChoosingTaskPropsTag())) {
+        if (!rivalContainer.profileContainer(profileId).getProfile().getTag().equals(rivalContainer.findChoosingTaskPropsTag())) {
             logger.error("Not choosing profile tried to choose task props, profileId: {}", profileId);
             return false;
         }

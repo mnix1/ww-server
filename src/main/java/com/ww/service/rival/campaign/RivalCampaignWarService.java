@@ -9,8 +9,6 @@ import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.constant.wisie.WisieType;
 import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.container.rival.init.RivalCampaignWarInitContainer;
-import com.ww.model.container.rival.init.RivalInitContainer;
-import com.ww.model.container.rival.init.RivalTwoPlayerInitContainer;
 import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.outside.social.Profile;
@@ -104,7 +102,7 @@ public class RivalCampaignWarService extends RivalWarService {
                 profileCampaign.setStatus(ProfileCampaignStatus.FINISHED);
                 profileCampaign.setBookGain(campaignService.getBookGainForCampaign(profileCampaign.getCampaign()));
             }
-            List<TeamMember> teamMembers = campaignWarManager.warContainer.getRivalProfileContainer(profileId).getTeamMembers();
+            List<TeamMember> teamMembers = campaignWarManager.warContainer.profileContainer(profileId).getTeamMembers();
             for (TeamMember teamMember : teamMembers) {
                 if (teamMember.isWisie()) {
                     for (ProfileCampaignWisie wisie : profileCampaign.getWisies()) {

@@ -9,6 +9,7 @@ import com.ww.model.container.rival.campaign.CampaignWarContainer;
 import com.ww.model.container.rival.init.RivalTwoPlayerInitContainer;
 import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarContainer;
+import com.ww.model.container.rival.war.WarModelFactory;
 import com.ww.model.container.rival.war.WarProfileContainer;
 import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.outside.social.Profile;
@@ -39,9 +40,10 @@ public class CampaignWarManager extends WarManager {
         this.profileCampaign = container.getProfileCampaign();
         this.rivalContainer = new CampaignWarContainer();
         this.rivalContainer.storeInformationFromInitContainer(container);
-        this.rivalContainer.addProfile(creatorId, new WarProfileContainer(creator, opponentId, prepareTeamMembers(creator, profileCampaign)));
-        this.rivalContainer.addProfile(opponentId, new WarProfileContainer(opponent, creatorId, prepareTeamMembers(opponent, profileCampaign)));
+        this.rivalContainer.addProfile(creatorId, new WarProfileContainer(creator, prepareTeamMembers(creator, profileCampaign)));
+        this.rivalContainer.addProfile(opponentId, new WarProfileContainer(opponent, prepareTeamMembers(opponent, profileCampaign)));
         this.warContainer = (WarContainer) this.rivalContainer;
+        this.modelFactory = new WarModelFactory(warContainer);
     }
 
     protected List<TeamMember> prepareTeamMembers(Profile profile, ProfileCampaign profileCampaign) {

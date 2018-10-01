@@ -16,8 +16,8 @@ public class WarProfileContainer extends RivalProfileContainer {
     private boolean isChosenActiveIndex;
     private int hints;
 
-    public WarProfileContainer(Profile profile, Long opponentId, List<TeamMember> teamMembers) {
-        super(profile, opponentId);
+    public WarProfileContainer(Profile profile, List<TeamMember> teamMembers) {
+        super(profile);
         this.teamMembers = teamMembers;
         this.activeIndex = 0;
         this.hints = 1;

@@ -134,7 +134,7 @@ public abstract class RivalManager {
 
     public synchronized Map<String, Object> actualModel(Long profileId) {
         Map<String, Object> model = new HashMap<>();
-        RivalProfileContainer rivalProfileContainer = rivalContainer.getProfileIdRivalProfileContainerMap().get(profileId);
+        RivalProfileContainer rivalProfileContainer = rivalContainer.getProfileContainers().get(profileId);
         getModelFactory().fillModel(model, rivalProfileContainer);
         return model;
     }
@@ -193,7 +193,7 @@ public abstract class RivalManager {
     }
 
     public List<RivalProfileContainer> getRivalProfileContainers() {
-        return new ArrayList<>(this.rivalContainer.getProfileIdRivalProfileContainerMap().values());
+        return new ArrayList<>(this.rivalContainer.getProfileContainers().values());
     }
 
 }

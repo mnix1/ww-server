@@ -8,11 +8,9 @@ import lombok.Setter;
 @Setter
 public class RivalProfileContainer {
     private Profile profile;
-    private Long opponentId;
 
-    public RivalProfileContainer(Profile profile, Long opponentId) {
+    public RivalProfileContainer(Profile profile) {
         this.profile = profile;
-        this.opponentId = opponentId;
     }
 
     public Long getProfileId(){

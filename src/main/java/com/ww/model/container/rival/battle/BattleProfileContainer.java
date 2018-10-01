@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class BattleProfileContainer extends RivalProfileContainer {
     private Integer score = 0;
-    public BattleProfileContainer(Profile profile, Long opponentId) {
-        super(profile, opponentId);
+    public BattleProfileContainer(Profile profile) {
+        super(profile);
     }
 }

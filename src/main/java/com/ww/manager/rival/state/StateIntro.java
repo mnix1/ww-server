@@ -17,10 +17,10 @@ public class StateIntro extends State {
     @Override
     protected Flowable<Long> processFlowable() {
         rivalContainer.setStatus(RivalStatus.INTRO);
-        rivalContainer.forEachProfile(rivalProfileContainer -> {
+        rivalContainer.forEachProfile(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
-            rivalManager.getModelFactory().fillModelIntro(model, rivalProfileContainer);
-            rivalManager.send(model, rivalManager.getMessageContent(), rivalProfileContainer.getProfileId());
+            rivalManager.getModelFactory().fillModelIntro(model, profileContainer);
+            rivalManager.send(model, rivalManager.getMessageContent(), profileContainer.getProfileId());
         });
         return Flowable.intervalRange(0L, 1L, rivalManager.getIntroInterval(), rivalManager.getIntroInterval(), TimeUnit.MILLISECONDS);
     }

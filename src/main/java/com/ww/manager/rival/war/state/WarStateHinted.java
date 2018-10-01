@@ -2,13 +2,9 @@ package com.ww.manager.rival.war.state;
 
 import com.ww.manager.rival.war.WarManager;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
-import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.container.rival.war.WarProfileContainer;
-import io.reactivex.Flowable;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class WarStateHinted extends WarState {
 
@@ -23,7 +19,7 @@ public class WarStateHinted extends WarState {
 
     @Override
     protected void processVoid() {
-        WarProfileContainer container = (WarProfileContainer) rivalContainer.getProfileIdRivalProfileContainerMap().get(profileId);
+        WarProfileContainer container = (WarProfileContainer) rivalContainer.getProfileContainers().get(profileId);
         WisieAnswerManager wisieAnswerManager = warManager.warContainer.getWisieAnswerManager(profileId);
         if (container.getHints() <= 0 || !content.containsKey("answerId") || wisieAnswerManager == null) {
             return;

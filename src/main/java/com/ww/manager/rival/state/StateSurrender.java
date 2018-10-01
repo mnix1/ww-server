@@ -19,7 +19,7 @@ public class StateSurrender extends State {
     protected void processVoid() {
         rivalContainer.setStatus(RivalStatus.CLOSED);
         if(rivalContainer.isOpponent()) {
-            rivalContainer.setWinnerLooser(rivalContainer.getOpponentRivalProfileContainer(profileId).getProfile());
+            rivalContainer.setWinnerLooser(rivalContainer.opponentProfileContainer(profileId).getProfile());
             rivalContainer.setResigned(true);
         } else {
             rivalContainer.setDraw(true);

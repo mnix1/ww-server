@@ -44,9 +44,10 @@ public class WarManager extends RivalManager {
         List<ProfileWisie> opponentWisies = rivalWarService.getProfileWisies(opponent);
         this.rivalContainer = new WarContainer();
         this.rivalContainer.storeInformationFromInitContainer(container);
-        this.rivalContainer.addProfile(creatorId, new WarProfileContainer(creator, opponentId, prepareTeamMembers(creator, creatorWisies)));
-        this.rivalContainer.addProfile(opponentId, new WarProfileContainer(opponent, creatorId, prepareTeamMembers(opponent, opponentWisies)));
+        this.rivalContainer.addProfile(creatorId, new WarProfileContainer(creator, prepareTeamMembers(creator, creatorWisies)));
+        this.rivalContainer.addProfile(opponentId, new WarProfileContainer(opponent, prepareTeamMembers(opponent, opponentWisies)));
         this.warContainer = (WarContainer) this.rivalContainer;
+        this.modelFactory = new WarModelFactory(warContainer);
     }
 
     public boolean processMessage(Long profileId, Map<String, Object> content) {

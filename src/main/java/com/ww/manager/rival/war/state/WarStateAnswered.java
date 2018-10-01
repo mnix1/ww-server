@@ -31,14 +31,14 @@ public class WarStateAnswered extends WarState {
             rivalContainer.setMarkedAnswerId(markedAnswerId);
             isAnswerCorrect = rivalContainer.findCurrentCorrectAnswerId().equals(markedAnswerId);
         }
-        WarProfileContainer container = (WarProfileContainer) rivalContainer.getProfileIdRivalProfileContainerMap().get(profileId);
+        WarProfileContainer profileContainer = (WarProfileContainer) rivalContainer.profileContainer(profileId);
         if (rivalContainer.isOpponent()) {
             if (isAnswerCorrect) {
-                container = (WarProfileContainer) rivalContainer.getProfileIdRivalProfileContainerMap().get(container.getOpponentId());
+                profileContainer = (WarProfileContainer) rivalContainer.opponentProfileContainer(profileContainer.getProfileId());
             }
-            container.setActiveTeamMemberPresentToFalse();
+            profileContainer.setActiveTeamMemberPresentToFalse();
         } else if (!isAnswerCorrect) {
-            container.setActiveTeamMemberPresentToFalse();
+            profileContainer.setActiveTeamMemberPresentToFalse();
         }
         rivalContainer.forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();

@@ -31,7 +31,7 @@ public class BattleStateAnswered extends State {
             rivalContainer.setMarkedAnswerId(markedAnswerId);
             isAnswerCorrect = rivalContainer.findCurrentCorrectAnswerId().equals(markedAnswerId);
         }
-        BattleProfileContainer container = (BattleProfileContainer) rivalContainer.getProfileIdRivalProfileContainerMap().get(profileId);
+        BattleProfileContainer container = (BattleProfileContainer) rivalContainer.getProfileContainers().get(profileId);
         container.setScore(isAnswerCorrect ? container.getScore() + rivalContainer.getCurrentTaskPoints() : container.getScore() - rivalContainer.getCurrentTaskPoints());
         rivalContainer.forEachProfile(rivalProfileContainer -> {
             Map<String, Object> model = new HashMap<>();

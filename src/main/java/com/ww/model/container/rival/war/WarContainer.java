@@ -23,9 +23,13 @@ public class WarContainer extends RivalContainer {
     List<WisieAnswerManager> wisieAnswerManagers = new ArrayList<>();
     protected Instant endChoosingWhoAnswerDate;
 
+    public WarProfileContainer opponentProfileContainer(Long id) {
+        return (WarProfileContainer) profileContainers.get(opponents.get(id));
+    }
+
     public void updateWisieAnswerManagers(RivalManager rivalManager) {
         wisieAnswerManagers = new ArrayList<>();
-        for (RivalProfileContainer rivalProfileContainer : profileIdRivalProfileContainerMap.values()) {
+        for (RivalProfileContainer rivalProfileContainer : profileContainers.values()) {
             WarProfileContainer warProfileContainer = (WarProfileContainer) rivalProfileContainer;
             TeamMember teamMember = warProfileContainer.getActiveTeamMember();
             if (teamMember.isWisie()) {
@@ -75,7 +79,7 @@ public class WarContainer extends RivalContainer {
     }
 
     public String findChoosingTaskPropsTag() {
-        List<RivalProfileContainer> rivalProfileContainers = new ArrayList<>(getProfileIdRivalProfileContainerMap().values());
+        List<RivalProfileContainer> rivalProfileContainers = new ArrayList<>(getProfileContainers().values());
         if (rivalProfileContainers.size() < 2) {
             return null;
         }
@@ -91,7 +95,7 @@ public class WarContainer extends RivalContainer {
     }
 
     public Optional<Profile> findWinner() {
-        List<RivalProfileContainer> rivalProfileContainers = new ArrayList<>(getProfileIdRivalProfileContainerMap().values());
+        List<RivalProfileContainer> rivalProfileContainers = new ArrayList<>(getProfileContainers().values());
         if (rivalProfileContainers.size() < 2) {
             return Optional.empty();
         }
@@ -106,7 +110,7 @@ public class WarContainer extends RivalContainer {
         return Optional.of(rivalProfileContainers.get(0).getProfile());
     }
 
-    public WarProfileContainer getRivalProfileContainer(Long id) {
-        return (WarProfileContainer) super.getRivalProfileContainer(id);
+    public WarProfileContainer profileContainer(Long id) {
+        return (WarProfileContainer) super.profileContainer(id);
     }
 }

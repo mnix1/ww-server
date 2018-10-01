@@ -32,8 +32,8 @@ public class BattleManager extends RivalManager {
         Long opponentId = container.getOpponentProfile().getId();
         this.rivalContainer = new BattleContainer();
         this.rivalContainer.storeInformationFromInitContainer(container);
-        this.rivalContainer.addProfile(creatorId, new BattleProfileContainer(container.getCreatorProfile(), opponentId));
-        this.rivalContainer.addProfile(opponentId, new BattleProfileContainer(container.getOpponentProfile(), creatorId));
+        this.rivalContainer.addProfile(creatorId, new BattleProfileContainer(container.getCreatorProfile()));
+        this.rivalContainer.addProfile(opponentId, new BattleProfileContainer(container.getOpponentProfile()));
         this.modelFactory = new BattleModelFactory((BattleContainer) this.rivalContainer);
     }
 

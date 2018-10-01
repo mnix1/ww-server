@@ -7,6 +7,7 @@ import com.ww.model.container.rival.init.RivalChallengeInitContainer;
 import com.ww.model.container.rival.init.RivalInitContainer;
 import com.ww.model.container.rival.init.RivalOnePlayerInitContainer;
 import com.ww.model.container.rival.war.WarContainer;
+import com.ww.model.container.rival.war.WarModelFactory;
 import com.ww.model.container.rival.war.WarProfileContainer;
 import com.ww.model.dto.rival.task.AnswerDTO;
 import com.ww.model.dto.rival.task.TaskDTO;
@@ -34,10 +35,11 @@ public class ChallengeManager extends WarManager {
         List<ProfileWisie> creatorWisies = rivalChallengeService.getProfileWisies(creator);
         this.rivalContainer = new WarContainer();
         this.rivalContainer.storeInformationFromInitContainer(container);
-        this.rivalContainer.addProfile(creatorId, new WarProfileContainer(creator, null, prepareTeamMembers(creator, creatorWisies)));
+        this.rivalContainer.addProfile(creatorId, new WarProfileContainer(creator, prepareTeamMembers(creator, creatorWisies)));
         this.warContainer = (WarContainer) this.rivalContainer;
         this.challengeProfile = container.getChallengeProfile();
         this.challengeQuestions = container.getChallengeQuestions();
+        this.modelFactory = new WarModelFactory(warContainer);
     }
 
     @Override

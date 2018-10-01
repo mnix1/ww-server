@@ -9,7 +9,6 @@ import com.ww.model.container.rival.init.RivalInitContainer;
 import com.ww.model.container.rival.init.RivalOnePlayerInitContainer;
 import com.ww.model.container.rival.init.RivalTwoPlayerInitContainer;
 import com.ww.model.dto.rival.task.TaskDTO;
-import com.ww.model.dto.social.RivalProfileDTO;
 import com.ww.model.entity.outside.rival.task.Answer;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
@@ -34,7 +33,8 @@ public abstract class RivalContainer {
     protected Long creatorEloChange;
     protected Long opponentEloChange;
 
-    protected final Map<Long, RivalProfileContainer> profileIdRivalProfileContainerMap = new HashMap<>();
+    protected final Map<Long, RivalProfileContainer> profileContainers = new HashMap<>();
+    protected final Map<Long, Long> opponents = new HashMap<>();
     protected int currentTaskIndex = -1;
 
     protected CopyOnWriteArrayList<Question> questions = new CopyOnWriteArrayList<>();
@@ -67,6 +67,8 @@ public abstract class RivalContainer {
             RivalTwoPlayerInitContainer c = (RivalTwoPlayerInitContainer) container;
             this.creatorProfile = c.getCreatorProfile();
             this.opponentProfile = c.getOpponentProfile();
+            opponents.put(this.creatorProfile.getId(), this.opponentProfile.getId());
+            opponents.put(this.opponentProfile.getId(), this.creatorProfile.getId());
         } else if (container instanceof RivalOnePlayerInitContainer) {
             RivalOnePlayerInitContainer c = (RivalOnePlayerInitContainer) container;
             this.creatorProfile = c.getCreatorProfile();
@@ -78,21 +80,21 @@ public abstract class RivalContainer {
     }
 
     public void addProfile(Long id, RivalProfileContainer rivalProfileContainer) {
-        profileIdRivalProfileContainerMap.put(id, rivalProfileContainer);
+        profileContainers.put(id, rivalProfileContainer);
     }
 
-    public RivalProfileContainer getRivalProfileContainer(Long id) {
-        return profileIdRivalProfileContainerMap.get(id);
+    public RivalProfileContainer profileContainer(Long id) {
+        return profileContainers.get(id);
     }
 
-    public RivalProfileContainer getOpponentRivalProfileContainer(Long id) {
-        return getRivalProfileContainer(getRivalProfileContainer(id).getOpponentId());
+    public RivalProfileContainer opponentProfileContainer(Long id) {
+        return profileContainers.get(opponents.get(id));
     }
 
     public void setWinnerLooser(Profile winner) {
         this.draw = false;
         this.winner = winner;
-        this.looser = getOpponentRivalProfileContainer(winner.getId()).getProfile();
+        this.looser = opponentProfileContainer(winner.getId()).getProfile();
     }
 
     public boolean isRanking() {
@@ -132,6 +134,6 @@ public abstract class RivalContainer {
     }
 
     public void forEachProfile(Consumer<? super RivalProfileContainer> action) {
-        profileIdRivalProfileContainerMap.values().parallelStream().forEach(action);
+        profileContainers.values().parallelStream().forEach(action);
     }
 }

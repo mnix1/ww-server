@@ -15,7 +15,7 @@ import java.util.Optional;
 public class BattleContainer extends RivalContainer {
 
     public String findChoosingTaskPropsTag() {
-        List<RivalProfileContainer> rivalProfileContainers = new ArrayList<>(getProfileIdRivalProfileContainerMap().values());
+        List<RivalProfileContainer> rivalProfileContainers = new ArrayList<>(getProfileContainers().values());
         Integer p1Score =  ((BattleProfileContainer)rivalProfileContainers.get(0)).getScore();
         Integer p2Score =  ((BattleProfileContainer)rivalProfileContainers.get(1)).getScore();
         if (p1Score.equals(p2Score)) {
@@ -28,7 +28,7 @@ public class BattleContainer extends RivalContainer {
     }
 
     public Optional<Profile> findWinner() {
-        List<RivalProfileContainer> rivalProfileContainers = new ArrayList<>(getProfileIdRivalProfileContainerMap().values());
+        List<RivalProfileContainer> rivalProfileContainers = new ArrayList<>(getProfileContainers().values());
         Integer p1Score = ((BattleProfileContainer)rivalProfileContainers.get(0)).getScore();
         Integer p2Score = ((BattleProfileContainer) rivalProfileContainers.get(1)).getScore();
         if (p1Score.equals(p2Score)) {
