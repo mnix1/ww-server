@@ -4,7 +4,7 @@ import com.ww.helper.TeamHelper;
 import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.state.*;
 import com.ww.manager.rival.war.state.*;
-import com.ww.model.container.rival.RivalProfileContainer;
+import com.ww.model.container.rival.battle.BattleFlow;
 import com.ww.model.container.rival.init.RivalTwoPlayerInitContainer;
 import com.ww.model.container.rival.war.*;
 import com.ww.model.entity.outside.social.Profile;
@@ -29,6 +29,7 @@ public class WarManager extends RivalManager {
     public WarContainer container;
     public WarModelFactory modelFactory;
     public WarInterval interval;
+    public WarFlow flow;
 
     public WarManager(RivalTwoPlayerInitContainer container, RivalWarService rivalWarService, ProfileConnectionService profileConnectionService) {
         this.abstractRivalService = rivalWarService;
@@ -42,6 +43,7 @@ public class WarManager extends RivalManager {
         this.container.getTeamsContainer().addProfile(opponent.getId(), new WarProfileContainer(opponent, prepareTeamMembers(opponent, opponentWisies)));
         this.modelFactory = new WarModelFactory(this.container);
         this.interval = new WarInterval();
+        this.flow = new WarFlow(this);
     }
 
     public boolean processMessage(Long profileId, Map<String, Object> content) {
@@ -50,14 +52,13 @@ public class WarManager extends RivalManager {
         }
         String id = (String) content.get("id");
         if (id.equals(CHOOSE_WHO_ANSWER)) {
-            chosenWhoAnswer(profileId, content);
-            return true;
+            flow.chosenWhoAnswer(profileId, content);
         } else if (id.equals(HINT)) {
-            hint(profileId, content);
-            return true;
+            flow.hint(profileId, content);
         } else {
             return false;
         }
+        return true;
     }
 
     protected List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies) {
@@ -71,79 +72,5 @@ public class WarManager extends RivalManager {
             }
         }
         return false;
-    }
-
-    public synchronized void start() {
-        new StateIntro(this).startFlowable().subscribe(aLong1 -> {
-            phase2();
-        });
-    }
-
-    public synchronized void phase1() {
-        new StatePreparingNextTask(this).startFlowable().subscribe(aLong2 -> {
-            activeFlowable = new WarStateAnswering(this).startFlowable().subscribe(aLong3 -> {
-                new WarStateAnsweringTimeout(this).startFlowable().subscribe(aLong4 -> {
-                    phase2();
-                });
-            });
-        });
-    }
-
-    public synchronized void phase2() {
-        if (isEnd()) {
-            new StateClose(this).startVoid();
-        } else {
-            activeFlowable = new StateChoosingTaskProps(this).startFlowable().subscribe(aLong5 -> {
-                boolean randomChooseTaskProps = container.randomChooseTaskProps();
-                if (randomChooseTaskProps) {
-                    phase3();
-                } else {
-                    new StateChoosingTaskPropsTimeout(this).startVoid();
-                    phase3();
-                }
-            });
-        }
-    }
-
-    public synchronized void phase3() {
-        activeFlowable = new WarStateChoosingWhoAnswer(this).startFlowable().subscribe(aLong2 -> {
-            phase1();
-        });
-    }
-
-    public synchronized void wisieAnswered(Long profileId, Long answerId) {
-        Map<String, Object> content = new HashMap<>();
-        content.put("answerId", answerId.intValue());
-        answer(profileId, content);
-    }
-
-    public synchronized void answer(Long profileId, Map<String, Object> content) {
-        disposeFlowable();
-        new WarStateAnswered(this, profileId, content).startFlowable().subscribe(aLong -> {
-            phase2();
-        });
-    }
-
-    public synchronized void hint(Long profileId, Map<String, Object> content) {
-        new WarStateHinted(this, profileId, content).startVoid();
-    }
-
-    public synchronized void chosenTaskProps(Long profileId, Map<String, Object> content) {
-        if (new StateChosenTaskProps(this, profileId, content).startBoolean()) {
-            disposeFlowable();
-            phase3();
-        }
-    }
-
-    public synchronized void chosenWhoAnswer(Long profileId, Map<String, Object> content) {
-        if (new WarStateChosenWhoAnswer(this, profileId, content).startBoolean()) {
-            disposeFlowable();
-            phase1();
-        }
-    }
-
-    public synchronized void surrender(Long profileId) {
-        container.stopWisieAnswerManager();
-        super.surrender(profileId);
     }
 }

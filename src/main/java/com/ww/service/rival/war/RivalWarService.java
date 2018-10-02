@@ -1,6 +1,5 @@
 package com.ww.service.rival.war;
 
-import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.entity.outside.rival.task.Question;
@@ -20,8 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class RivalWarService extends AbstractRivalService {
@@ -98,35 +95,5 @@ public class RivalWarService extends AbstractRivalService {
 
     public void initTaskWisdomAttributes(Question question) {
         taskService.initTaskWisdomAttributes(question);
-    }
-
-    public synchronized void chooseWhoAnswer(String sessionId, String content) {
-        Optional<Long> profileId = getProfileConnectionService().getProfileId(sessionId);
-        if (!profileId.isPresent()) {
-            return;
-        }
-        WarManager warManager = (WarManager) getRivalGlobalService().get(profileId.get());
-        if (warManager == null || !warManager.canChooseWhoAnswer()) {
-            return;
-        }
-        Map<String, Object> contentMap = handleInput(content);
-        if (contentMap != null) {
-            warManager.chosenWhoAnswer(profileId.get(), contentMap);
-        }
-    }
-
-    public synchronized void hint(String sessionId, String content) {
-        Optional<Long> profileId = getProfileConnectionService().getProfileId(sessionId);
-        if (!profileId.isPresent()) {
-            return;
-        }
-        WarManager warManager = (WarManager) getRivalGlobalService().get(profileId.get());
-        if (!warManager.canAnswer()) {
-            return;
-        }
-        Map<String, Object> contentMap = handleInput(content);
-        if (contentMap != null) {
-            warManager.hint(profileId.get(), contentMap);
-        }
     }
 }

@@ -36,7 +36,6 @@ public abstract class RivalManager {
 
     protected AbstractRivalService abstractRivalService;
     protected ProfileConnectionService profileConnectionService;
-    protected Disposable activeFlowable;
 
     public abstract RivalModelFactory getModelFactory();
 
@@ -44,27 +43,20 @@ public abstract class RivalManager {
 
     public abstract RivalInterval getInterval();
 
-    public void disposeFlowable() {
-        if (activeFlowable != null) {
-            activeFlowable.dispose();
-            activeFlowable = null;
-        }
-    }
+    public abstract RivalFlow getFlow();
 
     public boolean processMessage(Long profileId, Map<String, Object> content) {
         String id = (String) content.get("id");
         if (id.equals(ANSWER)) {
-            answer(profileId, content);
-            return true;
+            getFlow().answer(profileId, content);
         } else if (id.equals(CHOOSE_TASK_PROPS)) {
-            chosenTaskProps(profileId, content);
-            return true;
+            getFlow().chosenTaskProps(profileId, content);
         } else if (id.equals(SURRENDER)) {
-            surrender(profileId);
-            return true;
+            getFlow().surrender(profileId);
         } else {
             return false;
         }
+        return true;
     }
 
     public Message getMessageContent() {
@@ -123,16 +115,6 @@ public abstract class RivalManager {
     }
 
     public abstract boolean isEnd();
-
-    public abstract void start();
-
-    public abstract void answer(Long profileId, Map<String, Object> content);
-
-    public abstract void chosenTaskProps(Long profileId, Map<String, Object> content);
-
-    public synchronized void surrender(Long profileId) {
-        new StateSurrender(this, profileId).startVoid();
-    }
 
     public synchronized Map<String, Object> actualModel(Long profileId) {
         Map<String, Object> model = new HashMap<>();

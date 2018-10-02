@@ -31,6 +31,6 @@ public class StateAnsweringNoUseHint extends State {
         Answer answer = correctAnswer
                 ? manager.getQuestion().getAnswers().stream().filter(Answer::getCorrect).findFirst().get()
                 : randomElement(new ArrayList<>(manager.getQuestion().getAnswers().stream().filter(a -> !a.getId().equals(manager.getHintAnswerId())).collect(Collectors.toList())));
-        manager.getManager().wisieAnswered(manager.getWisie().getProfile().getId(), answer.getId());
+        manager.getManager().getFlow().wisieAnswered(manager.getWisie().getProfile().getId(), answer.getId());
     }
 }

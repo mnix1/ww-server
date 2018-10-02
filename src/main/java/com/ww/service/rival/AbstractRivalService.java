@@ -1,6 +1,5 @@
 package com.ww.service.rival;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
@@ -16,11 +15,6 @@ import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
 import com.ww.websocket.message.Message;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 public abstract class AbstractRivalService {
     protected abstract void addRewardFromWin(Profile winner);
@@ -53,65 +47,6 @@ public abstract class AbstractRivalService {
         }
         getRivalGlobalService().save(rival);
         // TODO STORE RESULT
-    }
-
-    public synchronized Map<String, Object> handleInput(String content) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.readValue(content, HashMap.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public synchronized void answer(String sessionId, String content) {
-        Optional<Long> profileId = getProfileConnectionService().getProfileId(sessionId);
-        if (!profileId.isPresent()) {
-            return;
-        }
-        RivalManager rivalManager = getRivalGlobalService().get(profileId.get());
-        if (!rivalManager.canAnswer()) {
-            return;
-        }
-        Map<String, Object> contentMap = handleInput(content);
-        if (contentMap != null) {
-            rivalManager.answer(profileId.get(), contentMap);
-        }
-    }
-
-    public synchronized void hint(String sessionId, String content) {
-    }
-
-    public synchronized void chooseTaskProps(String sessionId, String content) {
-        Optional<Long> profileId = getProfileConnectionService().getProfileId(sessionId);
-        if (!profileId.isPresent()) {
-            return;
-        }
-        RivalManager rivalManager = getRivalGlobalService().get(profileId.get());
-        if (!rivalManager.canChooseTaskProps()) {
-            return;
-        }
-        Map<String, Object> contentMap = handleInput(content);
-        if (contentMap != null) {
-            rivalManager.chosenTaskProps(profileId.get(), contentMap);
-        }
-    }
-
-    public synchronized void chooseWhoAnswer(String sessionId, String content) {
-    }
-
-    public synchronized void surrender(String sessionId) {
-        Optional<Long> optionalProfileId = getProfileConnectionService().getProfileId(sessionId);
-        if (!optionalProfileId.isPresent()) {
-            return;
-        }
-        Long profileId = optionalProfileId.get();
-        if (!getRivalGlobalService().contains(profileId)) {
-            return;
-        }
-        RivalManager rivalManager = getRivalGlobalService().get(profileId);
-        rivalManager.surrender(profileId);
     }
 
     public Question prepareQuestion(Category category, DifficultyLevel difficultyLevel) {

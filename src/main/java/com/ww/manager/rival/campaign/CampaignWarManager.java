@@ -1,10 +1,10 @@
 package com.ww.manager.rival.campaign;
 
 import com.ww.helper.TeamHelper;
-import com.ww.manager.rival.campaign.state.CampaignWarStateChosenWhoAnswer;
 import com.ww.manager.rival.war.WarManager;
-import com.ww.model.container.rival.init.RivalCampaignWarInitContainer;
 import com.ww.model.container.rival.campaign.CampaignWarContainer;
+import com.ww.model.container.rival.campaign.CampaignWarFlow;
+import com.ww.model.container.rival.init.RivalCampaignWarInitContainer;
 import com.ww.model.container.rival.war.*;
 import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.outside.social.Profile;
@@ -14,7 +14,6 @@ import com.ww.service.social.ProfileConnectionService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class CampaignWarManager extends WarManager {
     public static final Long BOT_PROFILE_ID = -1L;
@@ -38,6 +37,7 @@ public class CampaignWarManager extends WarManager {
         this.container.getTeamsContainer().addProfile(opponentId, new WarProfileContainer(opponent, prepareTeamMembers(opponent, profileCampaign)));
         this.modelFactory = new WarModelFactory(this.container);
         this.interval = new WarInterval();
+        this.flow = new CampaignWarFlow(this);
     }
 
     protected List<TeamMember> prepareTeamMembers(Profile profile, ProfileCampaign profileCampaign) {
@@ -61,13 +61,6 @@ public class CampaignWarManager extends WarManager {
             }
         }
         return teamMembers;
-    }
-
-    public synchronized void chosenWhoAnswer(Long profileId, Map<String, Object> content) {
-        if (new CampaignWarStateChosenWhoAnswer(this, profileId, content).startBoolean()) {
-            disposeFlowable();
-            phase1();
-        }
     }
 
 }

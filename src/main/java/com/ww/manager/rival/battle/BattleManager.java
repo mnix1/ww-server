@@ -1,21 +1,12 @@
 package com.ww.manager.rival.battle;
 
 import com.ww.manager.rival.RivalManager;
-import com.ww.manager.rival.battle.state.BattleStateAnswered;
-import com.ww.manager.rival.battle.state.BattleStateAnswering;
-import com.ww.manager.rival.battle.state.BattleStateAnsweringTimeout;
-import com.ww.manager.rival.state.*;
 import com.ww.model.container.rival.RivalInterval;
-import com.ww.model.container.rival.battle.BattleContainer;
-import com.ww.model.container.rival.battle.BattleModelFactory;
-import com.ww.model.container.rival.battle.BattleProfileContainer;
-import com.ww.model.container.rival.battle.BattleTeamsContainer;
+import com.ww.model.container.rival.battle.*;
 import com.ww.model.container.rival.init.RivalTwoPlayerInitContainer;
 import com.ww.service.rival.battle.RivalBattleService;
 import com.ww.service.social.ProfileConnectionService;
 import lombok.Getter;
-
-import java.util.Map;
 
 @Getter
 public class BattleManager extends RivalManager {
@@ -25,68 +16,20 @@ public class BattleManager extends RivalManager {
     public BattleContainer container;
     public BattleModelFactory modelFactory;
     public RivalInterval interval;
+    public BattleFlow flow;
 
     public BattleManager(RivalTwoPlayerInitContainer container, RivalBattleService rivalBattleService, ProfileConnectionService profileConnectionService) {
         this.abstractRivalService = rivalBattleService;
         this.profileConnectionService = profileConnectionService;
-        Long creatorId = container.getCreatorProfile().getId();
-        Long opponentId = container.getOpponentProfile().getId();
         this.container = new BattleContainer(container, new BattleTeamsContainer());
-        this.container.getTeamsContainer().addProfile(creatorId, new BattleProfileContainer(container.getCreatorProfile()));
-        this.container.getTeamsContainer().addProfile(opponentId, new BattleProfileContainer(container.getOpponentProfile()));
-        this.modelFactory = new BattleModelFactory(this.container);
+        this.container.getTeamsContainer().addProfile(container.getCreatorProfile().getId(), new BattleProfileContainer(container.getCreatorProfile()));
+        this.container.getTeamsContainer().addProfile(container.getOpponentProfile().getId(), new BattleProfileContainer(container.getOpponentProfile()));
         this.modelFactory = new BattleModelFactory(this.container);
         this.interval = new RivalInterval();
+        this.flow = new BattleFlow(this);
     }
 
     public boolean isEnd() {
         return container.getCurrentTaskIndex() == TASK_COUNT - 1;
     }
-
-    public synchronized void start() {
-        new StateIntro(this).startFlowable().subscribe(aLong1 -> {
-            phase2();
-        });
-    }
-
-    public synchronized void phase1() {
-        new StatePreparingNextTask(this).startFlowable().subscribe(aLong2 -> {
-            activeFlowable = new BattleStateAnswering(this).startFlowable().subscribe(aLong3 -> {
-                new BattleStateAnsweringTimeout(this).startFlowable().subscribe(aLong4 -> {
-                    phase2();
-                });
-            });
-        });
-    }
-
-    public synchronized void phase2() {
-        if (isEnd()) {
-            new StateClose(this).startVoid();
-        } else {
-            activeFlowable = new StateChoosingTaskProps(this).startFlowable().subscribe(aLong5 -> {
-                boolean randomChooseTaskProps = container.randomChooseTaskProps();
-                if (randomChooseTaskProps) {
-                    phase1();
-                } else {
-                    new StateChoosingTaskPropsTimeout(this).startVoid();
-                    phase1();
-                }
-            });
-        }
-    }
-
-    public synchronized void answer(Long profileId, Map<String, Object> content) {
-        disposeFlowable();
-        new BattleStateAnswered(this, profileId, content).startFlowable().subscribe(aLong -> {
-            phase2();
-        });
-    }
-
-    public synchronized void chosenTaskProps(Long profileId, Map<String, Object> content) {
-        if (new StateChosenTaskProps(this, profileId, content).startBoolean()) {
-            disposeFlowable();
-            phase1();
-        }
-    }
-
 }

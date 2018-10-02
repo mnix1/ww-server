@@ -5,10 +5,7 @@ import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.container.rival.challenge.ChallengeInterval;
 import com.ww.model.container.rival.init.RivalChallengeInitContainer;
-import com.ww.model.container.rival.war.WarContainer;
-import com.ww.model.container.rival.war.WarModelFactory;
-import com.ww.model.container.rival.war.WarProfileContainer;
-import com.ww.model.container.rival.war.WarTeamsContainer;
+import com.ww.model.container.rival.war.*;
 import com.ww.model.dto.rival.task.AnswerDTO;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
@@ -39,6 +36,7 @@ public class ChallengeManager extends WarManager {
         this.challengeQuestions = container.getChallengeQuestions();
         this.modelFactory = new WarModelFactory(this.container);
         this.interval = new ChallengeInterval(this.container);
+        this.flow = new WarFlow(this);
     }
 
     @Override

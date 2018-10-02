@@ -24,6 +24,6 @@ public class StateAnsweringPhase6 extends State {
         manager.addAndSendAction(WisieAnswerAction.ANSWERED);
         Answer answer = randomElement(new ArrayList<>(manager.getQuestion().getAnswers()));
         logger.trace(manager.toString() + ", correctAnswer: " + answer.getCorrect());
-        manager.getManager().wisieAnswered(manager.getWisie().getProfile().getId(), answer.getId());
+        manager.getManager().getFlow().wisieAnswered(manager.getWisie().getProfile().getId(), answer.getId());
     }
 }

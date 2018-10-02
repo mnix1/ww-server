@@ -43,7 +43,7 @@ public class RivalRunService {
                 rivalGlobalService.put(profile.getId(), rivalManager);
             }
         });
-        rivalManager.start();
+        rivalManager.getFlow().start();
     }
 
     RivalManager createManager(RivalInitContainer initContainer) {
