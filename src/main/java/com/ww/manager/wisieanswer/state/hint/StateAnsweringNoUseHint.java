@@ -17,7 +17,7 @@ public class StateAnsweringNoUseHint extends State {
     protected static final Logger logger = LoggerFactory.getLogger(StateAnsweringNoUseHint.class);
 
     public StateAnsweringNoUseHint(WisieAnswerManager manager) {
-        super(manager);
+        super(manager,STATE_TYPE_VOID);
     }
 
     protected void processVoid() {

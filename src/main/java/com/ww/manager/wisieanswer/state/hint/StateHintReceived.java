@@ -15,7 +15,7 @@ public class StateHintReceived extends State {
     protected static final Logger logger = LoggerFactory.getLogger(StateHintReceived.class);
 
     public StateHintReceived(WisieAnswerManager manager) {
-        super(manager);
+        super(manager, STATE_TYPE_FLOWABLE);
     }
 
     protected Flowable<Long> processFlowable() {

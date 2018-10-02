@@ -17,7 +17,7 @@ public class StateEndRecognizingQuestion extends State {
     private static final long ONE_CHAR_READING_SPEED = 40;//ms
 
     public StateEndRecognizingQuestion(WisieAnswerManager manager) {
-        super(manager);
+        super(manager, STATE_TYPE_FLOWABLE);
     }
 
     protected Flowable<Long> processFlowable() {

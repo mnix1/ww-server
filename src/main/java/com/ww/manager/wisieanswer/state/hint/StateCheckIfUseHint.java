@@ -12,7 +12,7 @@ public class StateCheckIfUseHint extends State {
     protected static final Logger logger = LoggerFactory.getLogger(StateCheckIfUseHint.class);
 
     public StateCheckIfUseHint(WisieAnswerManager manager) {
-        super(manager);
+        super(manager, STATE_TYPE_DECISION);
     }
 
     protected WisieAnswerAction processWisieAnswerAction() {

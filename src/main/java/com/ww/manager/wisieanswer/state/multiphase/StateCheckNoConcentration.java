@@ -13,7 +13,7 @@ public class StateCheckNoConcentration extends State {
     protected static final Logger logger = LoggerFactory.getLogger(StateCheckNoConcentration.class);
 
     public StateCheckNoConcentration(WisieAnswerManager manager) {
-        super(manager);
+        super(manager,STATE_TYPE_DECISION);
     }
 
     protected WisieAnswerAction processWisieAnswerAction() {

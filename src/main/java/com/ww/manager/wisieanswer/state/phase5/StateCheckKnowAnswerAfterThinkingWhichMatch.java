@@ -12,7 +12,7 @@ public class StateCheckKnowAnswerAfterThinkingWhichMatch extends State {
     protected static final Logger logger = LoggerFactory.getLogger(StateCheckKnowAnswerAfterThinkingWhichMatch.class);
 
     public StateCheckKnowAnswerAfterThinkingWhichMatch(WisieAnswerManager manager) {
-        super(manager);
+        super(manager, STATE_TYPE_DECISION);
     }
 
     protected WisieAnswerAction processWisieAnswerAction() {
@@ -21,7 +21,7 @@ public class StateCheckKnowAnswerAfterThinkingWhichMatch extends State {
         double hobbyPart = manager.isHobby() ? 0.1 : 0;
         double chance = 0.5 + diffPart + attrPart + hobbyPart;
         boolean thinkKnowAnswer = chance > randomDouble();
-        logger.trace(manager.toString() + ", chance: " + chance+ ", thinkKnowAnswer: " + thinkKnowAnswer);
+        logger.trace(manager.toString() + ", chance: " + chance + ", thinkKnowAnswer: " + thinkKnowAnswer);
         if (thinkKnowAnswer) {
             return WisieAnswerAction.THINK_KNOW_ANSWER;
         }

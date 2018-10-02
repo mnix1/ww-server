@@ -1,4 +1,4 @@
-package com.ww.manager.wisieanswer.state.phase1;
+package com.ww.manager.wisieanswer.state.waterpistol;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.State;
@@ -11,16 +11,17 @@ import java.util.concurrent.TimeUnit;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 
-public class StateStartRecognizingQuestion extends State {
-    protected static final Logger logger = LoggerFactory.getLogger(StateStartRecognizingQuestion.class);
+public class StateCleaning extends State {
+    protected static final Logger logger = LoggerFactory.getLogger(StateCleaning.class);
 
-    public StateStartRecognizingQuestion(WisieAnswerManager manager) {
+    public StateCleaning(WisieAnswerManager manager) {
         super(manager, STATE_TYPE_FLOWABLE);
     }
 
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(WisieAnswerAction.WAITING_FOR_QUESTION);
-        long interval = (long) (randomDouble(1 - manager.getReflexF1(), 3 - 2 * manager.getReflexF1() - manager.getConcentrationF1()) * 1000);
+        manager.addAndSendAction(WisieAnswerAction.CLEANING);
+        long interval = (long) (randomDouble(4 - manager.getSpeedF1() - manager.getReflexF1() - manager.getConcentrationF1() - manager.getConfidenceF1(),
+                6 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1() - manager.getConcentrationF1() - manager.getConfidenceF1()) * 1000);
         logger.trace(manager.toString() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

@@ -22,7 +22,7 @@ public class WarStateLifebuoyUsed extends WarState {
     @Override
     protected void processVoid() {
         WarProfileContainer container = manager.getContainer().getTeamsContainer().profileContainer(profileId);
-        if (container.getHints() <= 0 || !content.containsKey("index")) {
+        if (container.getLifebuoys() <= 0 || !content.containsKey("index")) {
             return;
         }
         container.decreaseLifebuoys();

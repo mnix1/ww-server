@@ -18,7 +18,7 @@ public class StateLostConcentration extends State {
     private WisieAnswerAction noConcentrationAction;
 
     public StateLostConcentration(WisieAnswerManager manager, WisieAnswerAction noConcentrationAction) {
-        super(manager);
+        super(manager, STATE_TYPE_FLOWABLE);
         this.noConcentrationAction = noConcentrationAction;
     }
 

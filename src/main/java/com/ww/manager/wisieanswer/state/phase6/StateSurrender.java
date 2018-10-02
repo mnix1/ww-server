@@ -12,7 +12,7 @@ public class StateSurrender extends State {
     protected static final Logger logger = LoggerFactory.getLogger(StateSurrender.class);
 
     public StateSurrender(WisieAnswerManager manager) {
-        super(manager);
+        super(manager, STATE_TYPE_VOID);
     }
 
     protected void processVoid() {

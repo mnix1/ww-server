@@ -1,28 +1,11 @@
 package com.ww.manager.wisieanswer;
 
 import com.ww.helper.AnswerHelper;
-import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.war.WarManager;
-import com.ww.manager.wisieanswer.state.hint.*;
-import com.ww.manager.wisieanswer.state.multiphase.StateCheckNoConcentration;
-import com.ww.manager.wisieanswer.state.multiphase.StateLostConcentration;
-import com.ww.manager.wisieanswer.state.phase1.StateStartRecognizingQuestion;
-import com.ww.manager.wisieanswer.state.phase2.StateCheckKnowAnswerAfterThinkingAboutQuestion;
-import com.ww.manager.wisieanswer.state.phase2.StateEndRecognizingQuestion;
-import com.ww.manager.wisieanswer.state.phase2.StateStartThinkingAboutQuestion;
-import com.ww.manager.wisieanswer.state.phase3.*;
-import com.ww.manager.wisieanswer.state.phase4.StateEndRecognizingAnswers;
-import com.ww.manager.wisieanswer.state.phase4.StateStartRecognizingAnswers;
-import com.ww.manager.wisieanswer.state.phase5.StateAnsweringPhase5;
-import com.ww.manager.wisieanswer.state.phase5.StateCheckKnowAnswerAfterThinkingWhichMatch;
-import com.ww.manager.wisieanswer.state.phase5.StateEndThinkingWhichAnswerMatch;
-import com.ww.manager.wisieanswer.state.phase5.StateThinkKnowAnswer;
-import com.ww.manager.wisieanswer.state.phase6.*;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskWisdomAttribute;
 import com.ww.model.entity.outside.wisie.OwnedWisie;
-import io.reactivex.disposables.Disposable;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -40,8 +23,6 @@ public class WisieAnswerManager {
     protected static final Logger logger = LoggerFactory.getLogger(WisieAnswerManager.class);
 
     private CopyOnWriteArrayList<WisieAnswerAction> actions = new CopyOnWriteArrayList<>();
-
-    private boolean inProgress = false;
 
     private OwnedWisie wisie;
     private WarManager manager;

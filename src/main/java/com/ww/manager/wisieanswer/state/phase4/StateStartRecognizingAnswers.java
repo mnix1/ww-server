@@ -15,7 +15,7 @@ public class StateStartRecognizingAnswers extends State {
     protected static final Logger logger = LoggerFactory.getLogger(StateStartRecognizingAnswers.class);
 
     public StateStartRecognizingAnswers(WisieAnswerManager manager) {
-        super(manager);
+        super(manager, STATE_TYPE_FLOWABLE);
     }
 
     protected Flowable<Long> processFlowable() {

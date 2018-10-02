@@ -10,7 +10,7 @@ public class StateAnsweringUseHint extends State {
     protected static final Logger logger = LoggerFactory.getLogger(StateAnsweringUseHint.class);
 
     public StateAnsweringUseHint(WisieAnswerManager manager) {
-        super(manager);
+        super(manager, STATE_TYPE_VOID);
     }
 
     protected void processVoid() {

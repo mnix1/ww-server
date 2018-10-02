@@ -16,7 +16,7 @@ public class StateAnsweringPhase3 extends State {
     protected static final Logger logger = LoggerFactory.getLogger(StateAnsweringPhase3.class);
 
     public StateAnsweringPhase3(WisieAnswerManager manager) {
-        super(manager);
+        super(manager,STATE_TYPE_VOID);
     }
 
     protected void processVoid() {

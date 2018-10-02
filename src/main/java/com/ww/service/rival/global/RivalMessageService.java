@@ -28,7 +28,7 @@ public class RivalMessageService {
     public static final String CHOOSE_WHO_ANSWER = "CHOOSE_WHO_ANSWER";
     public static final String HINT = "HINT";
     public static final String WATER_PISTOL = "WATER_PISTOL";
-    public static final String LIFEBUOYS = "LIFEBUOYS";
+    public static final String LIFEBUOY = "LIFEBUOY";
 
     @Autowired
     private ProfileConnectionService profileConnectionService;

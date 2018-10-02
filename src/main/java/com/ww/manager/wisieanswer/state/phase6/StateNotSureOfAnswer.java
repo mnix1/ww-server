@@ -15,7 +15,7 @@ public class StateNotSureOfAnswer extends State {
     protected static final Logger logger = LoggerFactory.getLogger(StateNotSureOfAnswer.class);
 
     public StateNotSureOfAnswer(WisieAnswerManager manager) {
-        super(manager);
+        super(manager, STATE_TYPE_FLOWABLE);
     }
 
     protected Flowable<Long> processFlowable() {

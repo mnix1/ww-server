@@ -15,7 +15,7 @@ public class StateStartThinkingAboutQuestion extends State {
     protected static final Logger logger = LoggerFactory.getLogger(StateStartThinkingAboutQuestion.class);
 
     public StateStartThinkingAboutQuestion(WisieAnswerManager manager) {
-        super(manager);
+        super(manager, STATE_TYPE_FLOWABLE);
     }
 
     protected Flowable<Long> processFlowable() {

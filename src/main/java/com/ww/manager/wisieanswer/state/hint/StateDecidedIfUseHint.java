@@ -16,7 +16,7 @@ public class StateDecidedIfUseHint extends State {
     private WisieAnswerAction wisieAnswerAction;
 
     public StateDecidedIfUseHint(WisieAnswerManager manager, WisieAnswerAction wisieAnswerAction) {
-        super(manager);
+        super(manager, STATE_TYPE_FLOWABLE);
         this.wisieAnswerAction = wisieAnswerAction;
     }
 

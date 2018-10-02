@@ -15,7 +15,7 @@ public class StateEndThinkingWhichAnswerMatch extends State {
     protected static final Logger logger = LoggerFactory.getLogger(StateEndThinkingWhichAnswerMatch.class);
 
     public StateEndThinkingWhichAnswerMatch(WisieAnswerManager manager) {
-        super(manager);
+        super(manager, STATE_TYPE_FLOWABLE);
     }
 
     protected Flowable<Long> processFlowable(){

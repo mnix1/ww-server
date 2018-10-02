@@ -12,7 +12,7 @@ public class StateCheckKnowAnswerAfterThinkingAboutQuestion extends State {
     protected static final Logger logger = LoggerFactory.getLogger(StateCheckKnowAnswerAfterThinkingAboutQuestion.class);
 
     public StateCheckKnowAnswerAfterThinkingAboutQuestion(WisieAnswerManager manager) {
-        super(manager);
+        super(manager, STATE_TYPE_DECISION);
     }
 
     protected WisieAnswerAction processWisieAnswerAction() {

@@ -12,7 +12,7 @@ public class StateCheckIfGiveRandomAnswer extends State {
     protected static final Logger logger = LoggerFactory.getLogger(StateCheckIfGiveRandomAnswer.class);
 
     public StateCheckIfGiveRandomAnswer(WisieAnswerManager manager) {
-        super(manager);
+        super(manager,STATE_TYPE_DECISION);
     }
 
     protected WisieAnswerAction processWisieAnswerAction() {

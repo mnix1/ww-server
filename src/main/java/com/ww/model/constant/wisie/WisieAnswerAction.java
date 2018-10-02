@@ -11,6 +11,9 @@ public enum WisieAnswerAction {
     WILL_USE_HINT,
     WONT_USE_HINT,
 
+    WATER_PISTOL_USED_ON_IT,
+    CLEANING,
+
     WAITING_FOR_QUESTION,
     RECOGNIZING_QUESTION,
     THINKING,

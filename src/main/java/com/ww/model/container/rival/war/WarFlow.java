@@ -33,7 +33,7 @@ public class WarFlow extends RivalFlow {
             hint(profileId, content);
         } else if (id.equals(WATER_PISTOL) && status == RivalStatus.ANSWERING) {
             waterPistol(profileId);
-        } else if (id.equals(LIFEBUOYS) && status == RivalStatus.CHOOSING_WHO_ANSWER) {
+        } else if (id.equals(LIFEBUOY) && status == RivalStatus.CHOOSING_WHO_ANSWER) {
             lifebuoy(profileId, content);
         } else {
             return false;

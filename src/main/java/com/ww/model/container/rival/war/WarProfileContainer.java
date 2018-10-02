@@ -23,9 +23,9 @@ public class WarProfileContainer extends RivalProfileContainer {
         super(profile);
         this.teamMembers = teamMembers;
         this.activeIndex = 0;
-        this.hints = 1;
-        this.waterPistols = 1;
-        this.lifebuoys = 1;
+        this.hints = 10;
+        this.waterPistols = 10;
+        this.lifebuoys = 10;
     }
 
     public void setActiveTeamMemberPresentToFalse() {

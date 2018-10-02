@@ -15,7 +15,7 @@ public class StateFoundAnswerLookingFor extends State {
     protected static final Logger logger = LoggerFactory.getLogger(StateFoundAnswerLookingFor.class);
 
     public StateFoundAnswerLookingFor(WisieAnswerManager manager) {
-        super(manager);
+        super(manager, STATE_TYPE_FLOWABLE);
     }
 
     protected Flowable<Long> processFlowable() {
