@@ -19,7 +19,7 @@ public class StateNotSureOfAnswer extends State {
     }
 
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(WisieAnswerAction.NOT_SURE_OF_ANSWER);
+        manager.addAndSendAction(WisieAnswerAction.DOESNT_KNOW_ANSWER);
         long interval = (long) (randomDouble(2 - manager.getReflexF1() - manager.getConfidenceF1(), 4 - 2 * manager.getReflexF1() - 2 * manager.getConfidenceF1()) * 1000);
         logger.trace(manager.toString() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);

@@ -14,7 +14,7 @@ import com.ww.manager.wisieanswer.state.phase4.StateStartRecognizingAnswers;
 import com.ww.manager.wisieanswer.state.phase5.StateAnsweringPhase5;
 import com.ww.manager.wisieanswer.state.phase5.StateCheckKnowAnswerAfterThinkingWhichMatch;
 import com.ww.manager.wisieanswer.state.phase5.StateEndThinkingWhichAnswerMatch;
-import com.ww.manager.wisieanswer.state.phase5.StateThinkKnowAnswer;
+import com.ww.manager.wisieanswer.state.phase5.StateNowKnowAnswer;
 import com.ww.manager.wisieanswer.state.phase6.*;
 import com.ww.manager.wisieanswer.state.waterpistol.StateCleaning;
 import com.ww.manager.wisieanswer.state.waterpistol.StateWaterPistolUsedOnIt;
@@ -116,11 +116,11 @@ public class WisieAnswerFlow {
         state = new StateEndThinkingWhichAnswerMatch(manager).addOnFlowableEndListener(aLong8 -> {
             synchronized (this) {
                 WisieAnswerAction aa4 = new StateCheckKnowAnswerAfterThinkingWhichMatch(manager).startWisieAnswerAction();
-                if (aa4 == WisieAnswerAction.THINK_KNOW_ANSWER) {
-                    state = new StateThinkKnowAnswer(manager).addOnFlowableEndListener(aLong9 -> {
+                if (aa4 == WisieAnswerAction.NOW_KNOW_ANSWER) {
+                    state = new StateNowKnowAnswer(manager).addOnFlowableEndListener(aLong9 -> {
                         new StateAnsweringPhase5(manager).startVoid();
                     }).startFlowable();
-                } else if (aa4 == WisieAnswerAction.NOT_SURE_OF_ANSWER) {
+                } else if (aa4 == WisieAnswerAction.DOESNT_KNOW_ANSWER) {
                     phase6();
                 }
             }

@@ -11,15 +11,15 @@ import java.util.concurrent.TimeUnit;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 
-public class StateThinkKnowAnswer extends State {
-    protected static final Logger logger = LoggerFactory.getLogger(StateThinkKnowAnswer.class);
+public class StateNowKnowAnswer extends State {
+    protected static final Logger logger = LoggerFactory.getLogger(StateNowKnowAnswer.class);
 
-    public StateThinkKnowAnswer(WisieAnswerManager manager) {
+    public StateNowKnowAnswer(WisieAnswerManager manager) {
         super(manager, STATE_TYPE_FLOWABLE);
     }
 
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(WisieAnswerAction.THINK_KNOW_ANSWER);
+        manager.addAndSendAction(WisieAnswerAction.NOW_KNOW_ANSWER);
         long interval = (long) ((3 - manager.getReflexF1() - manager.getSpeedF1() - manager.getConcentrationF1()) * 1000);
         logger.trace(manager.toString() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);

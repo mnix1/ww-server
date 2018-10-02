@@ -23,8 +23,8 @@ public class StateCheckKnowAnswerAfterThinkingWhichMatch extends State {
         boolean thinkKnowAnswer = chance > randomDouble();
         logger.trace(manager.toString() + ", chance: " + chance + ", thinkKnowAnswer: " + thinkKnowAnswer);
         if (thinkKnowAnswer) {
-            return WisieAnswerAction.THINK_KNOW_ANSWER;
+            return WisieAnswerAction.NOW_KNOW_ANSWER;
         }
-        return WisieAnswerAction.NOT_SURE_OF_ANSWER;
+        return WisieAnswerAction.DOESNT_KNOW_ANSWER;
     }
 }
