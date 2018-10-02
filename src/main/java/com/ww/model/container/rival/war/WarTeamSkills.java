@@ -26,15 +26,15 @@ public class WarTeamSkills {
         this.lifebuoys = base;
     }
 
-    public void decreaseHints() {
+    public void useHint() {
         hints--;
     }
 
-    public void decreaseWaterPistols() {
+    public void useWaterPistol() {
         waterPistols--;
     }
 
-    public void decreaseLifebuoys() {
+    public void useLifebuoy() {
         lifebuoys--;
     }
 

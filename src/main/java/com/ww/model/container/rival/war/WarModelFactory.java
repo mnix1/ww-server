@@ -15,61 +15,61 @@ import java.util.Map;
 @Setter
 public class WarModelFactory extends RivalModelFactory {
 
-    protected WarModel container;
+    protected WarModel model;
 
-    public WarModelFactory(WarModel container) {
-        this.container = container;
+    public WarModelFactory(WarModel model) {
+        this.model = model;
     }
 
-    public void fillModelBasic(Map<String, Object> model, RivalTeam profileContainer) {
-        super.fillModelBasic(model, profileContainer);
-        WarTeam warProfileContainer = (WarTeam) profileContainer;
-        model.put("activeIndex", warProfileContainer.getActiveIndex());
-        model.put("presentIndexes", warProfileContainer.getPresentIndexes());
+    public void fillModelBasic(Map<String, Object> model, RivalTeam team) {
+        super.fillModelBasic(model, team);
+        WarTeam warTeam = (WarTeam) team;
+        model.put("activeIndex", warTeam.getActiveIndex());
+        model.put("presentIndexes", warTeam.getPresentIndexes());
 //        model.put("skills", model.prepareSkills())
-        model.put("team", container.prepareTeam(warProfileContainer.getTeamMembers()));
-        if (container.isOpponent()) {
-            model.put("opponentPresentIndexes", container.getTeamsContainer().opponentTeam(profileContainer.getProfileId()).getPresentIndexes());
-            model.put("opponentActiveIndex", container.getTeamsContainer().opponentTeam(profileContainer.getProfileId()).getActiveIndex());
-            model.put("opponentTeam", container.prepareTeam(container.getTeamsContainer().opponentTeam(profileContainer.getProfileId()).getTeamMembers()));
+        model.put("team", this.model.prepareTeam(warTeam.getTeamMembers()));
+        if (this.model.isOpponent()) {
+            model.put("opponentPresentIndexes", this.model.getTeams().opponentTeam(team.getProfileId()).getPresentIndexes());
+            model.put("opponentActiveIndex", this.model.getTeams().opponentTeam(team.getProfileId()).getActiveIndex());
+            model.put("opponentTeam", this.model.prepareTeam(this.model.getTeams().opponentTeam(team.getProfileId()).getTeamMembers()));
         }
     }
 
-    public void fillModelPreparingNextTask(Map<String, Object> model, RivalTeam profileContainer) {
-        super.fillModelPreparingNextTask(model, profileContainer);
-        WarTeam warProfileContainer = (WarTeam) profileContainer;
-        model.put("activeIndex", warProfileContainer.getActiveIndex());
+    public void fillModelPreparingNextTask(Map<String, Object> model, RivalTeam team) {
+        super.fillModelPreparingNextTask(model, team);
+        WarTeam warTeam = (WarTeam) team;
+        model.put("activeIndex", warTeam.getActiveIndex());
         model.put("wisieActions", null);
-        if (container.isOpponent()) {
-            model.put("opponentActiveIndex", container.getTeamsContainer().opponentTeam(profileContainer.getProfileId()).getActiveIndex());
+        if (this.model.isOpponent()) {
+            model.put("opponentActiveIndex", this.model.getTeams().opponentTeam(team.getProfileId()).getActiveIndex());
             model.put("opponentWisieActions", null);
         }
     }
 
-    public void fillModelAnswered(Map<String, Object> model, RivalTeam profileContainer) {
-        super.fillModelAnswered(model, profileContainer);
-        WarTeam warProfileContainer = (WarTeam) profileContainer;
-        model.put("presentIndexes", warProfileContainer.getPresentIndexes());
-        if (container.isOpponent()) {
-            model.put("opponentPresentIndexes", container.getTeamsContainer().opponentTeam(profileContainer.getProfileId()).getPresentIndexes());
+    public void fillModelAnswered(Map<String, Object> model, RivalTeam team) {
+        super.fillModelAnswered(model, team);
+        WarTeam warTeam = (WarTeam) team;
+        model.put("presentIndexes", warTeam.getPresentIndexes());
+        if (this.model.isOpponent()) {
+            model.put("opponentPresentIndexes", this.model.getTeams().opponentTeam(team.getProfileId()).getPresentIndexes());
         }
     }
 
-    public void fillModelAnswering(Map<String, Object> model, RivalTeam profileContainer) {
-        super.fillModelAnswering(model, profileContainer);
-        fillModelWisieAnswering(model, profileContainer);
+    public void fillModelAnswering(Map<String, Object> model, RivalTeam team) {
+        super.fillModelAnswering(model, team);
+        fillModelWisieAnswering(model, team);
     }
 
-    public void fillModelWisieAnswering(Map<String, Object> model, RivalTeam profileContainer) {
-        WarTeam warProfileContainer = (WarTeam) profileContainer;
-        if (warProfileContainer.getActiveTeamMember().isWisie()) {
-//            fillModelAnsweringSkills(model, warProfileContainer);
-            List<WisieAnswerAction> wisieActions = container.getAnsweringWisieActions(warProfileContainer);
+    public void fillModelWisieAnswering(Map<String, Object> model, RivalTeam team) {
+        WarTeam warTeam = (WarTeam) team;
+        if (warTeam.getActiveTeamMember().isWisie()) {
+//            fillModelAnsweringSkills(model, warTeam);
+            List<WisieAnswerAction> wisieActions = this.model.getAnsweringWisieActions(warTeam);
             if (wisieActions != null) {
                 model.put("wisieActions", wisieActions);
             }
-            if (container.isOpponent()) {
-                List<WisieAnswerAction> opponentWisieActions = container.getAnsweringWisieActions(container.getTeamsContainer().opponentTeam(profileContainer.getProfileId()));
+            if (this.model.isOpponent()) {
+                List<WisieAnswerAction> opponentWisieActions = this.model.getAnsweringWisieActions(this.model.getTeams().opponentTeam(team.getProfileId()));
                 if (opponentWisieActions != null) {
                     model.put("opponentWisieActions", opponentWisieActions);
                 }
@@ -77,33 +77,33 @@ public class WarModelFactory extends RivalModelFactory {
         }
     }
 
-    public void fillModelAnsweringTimeout(Map<String, Object> model, RivalTeam profileContainer) {
-        super.fillModelAnsweringTimeout(model, profileContainer);
-        WarTeam warProfileContainer = (WarTeam) profileContainer;
-        model.put("presentIndexes", warProfileContainer.getPresentIndexes());
-        if (container.isOpponent()) {
-            model.put("opponentPresentIndexes", container.getTeamsContainer().opponentTeam(profileContainer.getProfileId()).getPresentIndexes());
+    public void fillModelAnsweringTimeout(Map<String, Object> model, RivalTeam team) {
+        super.fillModelAnsweringTimeout(model, team);
+        WarTeam warTeam = (WarTeam) team;
+        model.put("presentIndexes", warTeam.getPresentIndexes());
+        if (this.model.isOpponent()) {
+            model.put("opponentPresentIndexes", this.model.getTeams().opponentTeam(team.getProfileId()).getPresentIndexes());
         }
     }
 
-    public void fillModelChoosingWhoAnswer(Map<String, Object> model, RivalTeam profileContainer) {
-        WarTeam warProfileContainer = (WarTeam) profileContainer;
-        model.put("status", container.getStatus());
-        model.put("choosingWhoAnswerInterval", Math.max(container.getEndChoosingWhoAnswerDate().toEpochMilli() - Instant.now().toEpochMilli(), 0L));
-        model.put("activeIndex", warProfileContainer.getActiveIndex());
-        model.put("presentIndexes", warProfileContainer.getPresentIndexes());
-        model.put("isChosenActiveIndex", warProfileContainer.isChosenActiveIndex());
-        model.put("task", container.getTaskDTOs().get(container.getCurrentTaskIndex()).toTaskMeta());
-//        fillModelChoosingWhoAnswerSkills(model, warProfileContainer);
-        if (container.isOpponent()) {
-            model.put("opponentPresentIndexes", container.getTeamsContainer().opponentTeam(profileContainer.getProfileId()).getPresentIndexes());
+    public void fillModelChoosingWhoAnswer(Map<String, Object> model, RivalTeam team) {
+        WarTeam warTeam = (WarTeam) team;
+        model.put("status", this.model.getStatus());
+        model.put("choosingWhoAnswerInterval", Math.max(this.model.getEndChoosingWhoAnswerDate().toEpochMilli() - Instant.now().toEpochMilli(), 0L));
+        model.put("activeIndex", warTeam.getActiveIndex());
+        model.put("presentIndexes", warTeam.getPresentIndexes());
+        model.put("isChosenActiveIndex", warTeam.isChosenActiveIndex());
+        model.put("task", this.model.getTaskDTOs().get(this.model.getCurrentTaskIndex()).toTaskMeta());
+//        fillModelChoosingWhoAnswerSkills(model, warTeam);
+        if (this.model.isOpponent()) {
+            model.put("opponentPresentIndexes", this.model.getTeams().opponentTeam(team.getProfileId()).getPresentIndexes());
         }
     }
 
-    public void fillModel(Map<String, Object> model, RivalTeam profileContainer) {
-        super.fillModel(model, profileContainer);
-        if (container.getStatus() == RivalStatus.CHOOSING_WHO_ANSWER) {
-            fillModelChoosingWhoAnswer(model, profileContainer);
+    public void fillModel(Map<String, Object> model, RivalTeam team) {
+        super.fillModel(model, team);
+        if (this.model.getStatus() == RivalStatus.CHOOSING_WHO_ANSWER) {
+            fillModelChoosingWhoAnswer(model, team);
         }
     }
 //

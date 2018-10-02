@@ -21,7 +21,7 @@ public class BattleStateAnswering extends State {
     protected Flowable<Long> processFlowable() {
         manager.getModel().setEndAnsweringDate(Instant.now().plus(manager.getInterval().getAnsweringInterval(), ChronoUnit.MILLIS));
         manager.getModel().setStatus(RivalStatus.ANSWERING);
-        manager.getModel().getTeamsContainer().forEachTeam(profileContainer -> {
+        manager.getModel().getTeams().forEachTeam(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelAnswering(model, profileContainer);
             manager.send(model, manager.getMessageContent(), profileContainer.getProfileId());

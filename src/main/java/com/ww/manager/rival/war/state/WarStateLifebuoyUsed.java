@@ -21,11 +21,11 @@ public class WarStateLifebuoyUsed extends WarState {
 
     @Override
     protected void processVoid() {
-        WarTeam container = manager.getModel().getTeamsContainer().team(profileId);
+        WarTeam container = manager.getModel().getTeams().team(profileId);
         if (container.getTeamSkills().getLifebuoys() <= 0 || !content.containsKey("index")) {
             return;
         }
-        container.getTeamSkills().decreaseLifebuoys();
+        container.getTeamSkills().useLifebuoy();
         Integer teamMemberIndex = ((Integer) content.get("index"));
         Optional<TeamMember> optionalTeamMember = container.getTeamMembers().stream().filter(teamMember -> teamMember.getIndex() == teamMemberIndex).findFirst();
         if (!optionalTeamMember.isPresent()) {
@@ -37,7 +37,7 @@ public class WarStateLifebuoyUsed extends WarState {
         }
         teamMember.setPresent(true);
         container.getPresentIndexes().add(teamMemberIndex);
-        manager.getModel().getTeamsContainer().forEachTeam(profileContainer -> {
+        manager.getModel().getTeams().forEachTeam(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelChoosingWhoAnswer(model, profileContainer);
             this.manager.send(model, this.manager.getMessageContent(), profileContainer.getProfileId());

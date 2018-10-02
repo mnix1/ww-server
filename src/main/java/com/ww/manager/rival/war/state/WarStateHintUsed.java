@@ -19,12 +19,12 @@ public class WarStateHintUsed extends WarState {
 
     @Override
     protected void processVoid() {
-        WarTeam container = manager.getModel().getTeamsContainer().team(profileId);
+        WarTeam container = manager.getModel().getTeams().team(profileId);
         WisieAnswerManager wisieAnswerManager = manager.getModel().getWisieAnswerManager(profileId);
         if (container.getTeamSkills().getHints() <= 0 || !content.containsKey("answerId") || wisieAnswerManager == null) {
             return;
         }
-        container.getTeamSkills().decreaseHints();
+        container.getTeamSkills().useHint();
         Long markedAnswerId = ((Integer) content.get("answerId")).longValue();
         Boolean isAnswerCorrect = manager.getModel().findCurrentCorrectAnswerId().equals(markedAnswerId);
         wisieAnswerManager.getFlow().hint(markedAnswerId, isAnswerCorrect);

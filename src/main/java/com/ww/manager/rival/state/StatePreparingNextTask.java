@@ -20,7 +20,7 @@ public class StatePreparingNextTask extends State {
     protected Flowable<Long> processFlowable() {
         manager.getModel().setNextTaskDate(Instant.now().plus(manager.getInterval().getPreparingNextTaskInterval(), ChronoUnit.MILLIS));
         manager.getModel().setStatus(RivalStatus.PREPARING_NEXT_TASK);
-        manager.getModel().getTeamsContainer().forEachTeam(profileContainer -> {
+        manager.getModel().getTeams().forEachTeam(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelPreparingNextTask(model, profileContainer);
             manager.send(model, manager.getMessageContent(), profileContainer.getProfileId());

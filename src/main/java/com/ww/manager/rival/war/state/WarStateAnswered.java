@@ -31,16 +31,16 @@ public class WarStateAnswered extends WarState {
             manager.getModel().setMarkedAnswerId(markedAnswerId);
             isAnswerCorrect = manager.getModel().findCurrentCorrectAnswerId().equals(markedAnswerId);
         }
-        WarTeam profileContainer = manager.getModel().getTeamsContainer().team(profileId);
+        WarTeam profileContainer = manager.getModel().getTeams().team(profileId);
         if (manager.getModel().isOpponent()) {
             if (isAnswerCorrect) {
-                profileContainer = manager.getModel().getTeamsContainer().opponentTeam(profileContainer.getProfileId());
+                profileContainer = manager.getModel().getTeams().opponentTeam(profileContainer.getProfileId());
             }
             profileContainer.setActiveTeamMemberPresentToFalse();
         } else if (!isAnswerCorrect) {
             profileContainer.setActiveTeamMemberPresentToFalse();
         }
-        manager.getModel().getTeamsContainer().forEachTeam(pC -> {
+        manager.getModel().getTeams().forEachTeam(pC -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelAnswered(model, pC);
             manager.send(model, manager.getMessageContent(), pC.getProfileId());

@@ -24,25 +24,25 @@ public class WarModel extends RivalModel {
 
     private List<WisieAnswerManager> wisieAnswerManagers = new ArrayList<>();
     private Instant endChoosingWhoAnswerDate;
-    private WarTeams teamsContainer;
+    private WarTeams teams;
 
-    public WarModel(RivalInit container, WarTeams teamsContainer) {
-        super(container, teamsContainer);
-        this.teamsContainer = teamsContainer;
+    public WarModel(RivalInit init, WarTeams teams) {
+        super(init, teams);
+        this.teams = teams;
     }
 
     public void updateWisieAnswerManagers(WarManager manager) {
         wisieAnswerManagers = new ArrayList<>();
-        for (WarTeam warProfileContainer : teamsContainer.getTeams()) {
-            TeamMember teamMember = warProfileContainer.getActiveTeamMember();
+        for (WarTeam warTeam : teams.getTeams()) {
+            TeamMember teamMember = warTeam.getActiveTeamMember();
             if (teamMember.isWisie()) {
                 wisieAnswerManagers.add(new WisieAnswerManager((OwnedWisie) teamMember.getContent(), manager));
             }
         }
     }
 
-    public List<WisieAnswerAction> getAnsweringWisieActions(WarTeam warProfileContainer) {
-        TeamMember teamMember = warProfileContainer.getActiveTeamMember();
+    public List<WisieAnswerAction> getAnsweringWisieActions(WarTeam warTeam) {
+        TeamMember teamMember = warTeam.getActiveTeamMember();
         if (!teamMember.isWisie()) {
             return null;
         }
@@ -82,7 +82,7 @@ public class WarModel extends RivalModel {
     }
 
     public String findChoosingTaskPropsTag() {
-        List<WarTeam> profileContainers = new ArrayList<>(getTeamsContainer().getTeams());
+        List<WarTeam> profileContainers = new ArrayList<>(this.getTeams().getTeams());
         if (profileContainers.size() < 2) {
             return null;
         }
@@ -98,7 +98,7 @@ public class WarModel extends RivalModel {
     }
 
     public Optional<Profile> findWinner() {
-        List<RivalTeam> profileContainers = new ArrayList<>(getTeamsContainer().getTeams());
+        List<RivalTeam> profileContainers = new ArrayList<>(this.getTeams().getTeams());
         if (profileContainers.size() < 2) {
             return Optional.empty();
         }

@@ -48,7 +48,7 @@ public class WarManager extends RivalManager {
     }
 
     public boolean isEnd() {
-        for (WarTeam warProfileContainer : this.getModel().getTeamsContainer().getTeams()) {
+        for (WarTeam warProfileContainer : this.getModel().getTeams().getTeams()) {
             if (!warProfileContainer.isAnyPresentMember()) {
                 return true;
             }

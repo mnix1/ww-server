@@ -35,7 +35,7 @@ public abstract class AbstractRivalService {
         if (!manager.isClosed()) {
             return;
         }
-        for (RivalTeam profileContainer : manager.getModel().getTeamsContainer().getTeams()) {
+        for (RivalTeam profileContainer : manager.getModel().getTeams().getTeams()) {
             getRivalGlobalService().remove(profileContainer.getProfileId());
         }
         RivalModel rivalModel = manager.getModel();

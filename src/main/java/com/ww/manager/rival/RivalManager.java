@@ -101,7 +101,7 @@ public abstract class RivalManager {
 
     public synchronized Map<String, Object> actualModel(Long profileId) {
         Map<String, Object> model = new HashMap<>();
-        RivalTeam profileContainer = getModel().getTeamsContainer().team(profileId);
+        RivalTeam profileContainer = getModel().getTeams().team(profileId);
         getModelFactory().fillModel(model, profileContainer);
         return model;
     }

@@ -14,15 +14,15 @@ import java.util.Optional;
 @Setter
 public class BattleModel extends RivalModel {
 
-    private BattleTeams teamsContainer;
+    private BattleTeams teams;
 
-    public BattleModel(RivalInit container, BattleTeams teamsContainer) {
-        super(container, teamsContainer);
-        this.teamsContainer = teamsContainer;
+    public BattleModel(RivalInit init, BattleTeams teams) {
+        super(init, teams);
+        this.teams = teams;
     }
 
     public String findChoosingTaskPropsTag() {
-        List<BattleTeam> profileContainers = new ArrayList<>(getTeamsContainer().getTeams());
+        List<BattleTeam> profileContainers = new ArrayList<>(this.getTeams().getTeams());
         Integer p1Score = profileContainers.get(0).getScore();
         Integer p2Score = profileContainers.get(1).getScore();
         if (p1Score.equals(p2Score)) {
@@ -35,7 +35,7 @@ public class BattleModel extends RivalModel {
     }
 
     public Optional<Profile> findWinner() {
-        List<BattleTeam> profileContainers = new ArrayList<>(getTeamsContainer().getTeams());
+        List<BattleTeam> profileContainers = new ArrayList<>(this.getTeams().getTeams());
         Integer p1Score = profileContainers.get(0).getScore();
         Integer p2Score = profileContainers.get(1).getScore();
         if (p1Score.equals(p2Score)) {

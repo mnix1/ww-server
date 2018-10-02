@@ -52,19 +52,19 @@ public abstract class RivalModel {
 
     protected RivalStatus status = RivalStatus.OPEN;
 
-    public abstract RivalTeams getTeamsContainer();
+    public abstract RivalTeams getTeams();
 
-    protected RivalModel(RivalInit container, RivalTeams teamsContainer) {
-        this.type = container.getType();
-        this.importance = container.getImportance();
-        if (container.getPlayer() == RivalPlayer.TWO) {
-            RivalTwoPlayerInit c = (RivalTwoPlayerInit) container;
+    protected RivalModel(RivalInit init, RivalTeams teams) {
+        this.type = init.getType();
+        this.importance = init.getImportance();
+        if (init.getPlayer() == RivalPlayer.TWO) {
+            RivalTwoPlayerInit c = (RivalTwoPlayerInit) init;
             this.creatorProfile = c.getCreatorProfile();
             this.opponentProfile = c.getOpponentProfile();
-            teamsContainer.getOpponentMap().put(creatorProfile.getId(), opponentProfile.getId());
-            teamsContainer.getOpponentMap().put(opponentProfile.getId(), creatorProfile.getId());
-        } else if (container.getPlayer() == RivalPlayer.ONE) {
-            RivalOnePlayerInit c = (RivalOnePlayerInit) container;
+            teams.getOpponentMap().put(creatorProfile.getId(), opponentProfile.getId());
+            teams.getOpponentMap().put(opponentProfile.getId(), creatorProfile.getId());
+        } else if (init.getPlayer() == RivalPlayer.ONE) {
+            RivalOnePlayerInit c = (RivalOnePlayerInit) init;
             this.creatorProfile = c.getCreatorProfile();
         }
     }
@@ -76,7 +76,7 @@ public abstract class RivalModel {
     public void setWinnerLooser(Profile winner) {
         this.draw = false;
         this.winner = winner;
-        this.looser = getTeamsContainer().opponentTeam(winner.getId()).getProfile();
+        this.looser = getTeams().opponentTeam(winner.getId()).getProfile();
     }
 
     public boolean isRanking() {
@@ -114,8 +114,4 @@ public abstract class RivalModel {
         questions.add(question);
         taskDTOs.add(taskDTO);
     }
-//
-//    public void forEachTeam(Consumer<? super RivalTeam> action) {
-//        profileContainers.values().parallelStream().forEach(action);
-//    }
 }
