@@ -152,7 +152,9 @@ public class WisieAnswerFlow {
                             if (aa5 == WisieAnswerAction.WILL_USE_HINT) {
                                 new StateAnsweringUseHint(manager).startVoid();
                             } else if (aa5 == WisieAnswerAction.WONT_USE_HINT) {
-                                new StateAnsweringNoUseHint(manager).startVoid();
+                                state = new StateStartThinkingAboutQuestion(manager).addOnFlowableEndListener(aLong3 -> {
+                                    new StateAnsweringNoUseHint(manager).startVoid();
+                                }).startFlowable();
                             }
                         }
                     }).startFlowable();

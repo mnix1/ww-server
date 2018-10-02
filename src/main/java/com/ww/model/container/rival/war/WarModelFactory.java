@@ -92,6 +92,9 @@ public class WarModelFactory extends RivalModelFactory {
         model.put("presentIndexes", warProfileContainer.getPresentIndexes());
         model.put("isChosenActiveIndex", warProfileContainer.isChosenActiveIndex());
         model.put("task", container.getTaskDTOs().get(container.getCurrentTaskIndex()).toTaskMeta());
+        if (container.isOpponent()) {
+            model.put("opponentPresentIndexes", container.getTeamsContainer().opponentProfileContainer(profileContainer.getProfileId()).getPresentIndexes());
+        }
     }
 
     public void fillModel(Map<String, Object> model, RivalProfileContainer profileContainer) {
