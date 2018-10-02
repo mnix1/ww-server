@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -54,17 +56,22 @@ public class WarTeamSkills {
     }
 
 
-    public List<SkillDTO> prepareSkills() {
-        List<SkillDTO> skills = new ArrayList<>();
-        if (canUseHint()) {
-            skills.add(new SkillDTO(Skill.HINT, hints));
-        }
-        if (canUseWaterPistol()) {
-            skills.add(new SkillDTO(Skill.WATER_PISTOL, waterPistols));
-        }
-        if (canUseLifebuoy()) {
-            skills.add(new SkillDTO(Skill.LIFEBUOY, lifebuoys));
-        }
+    public Map<String, Integer> prepareSkills() {
+        Map<String,Integer> skills = new HashMap<>();
+        skills.put(Skill.HINT.name(),hints);
+        skills.put(Skill.WATER_PISTOL.name(),waterPistols);
+        skills.put(Skill.LIFEBUOY.name(),lifebuoys);
         return skills;
+//        List<SkillDTO> skills = new ArrayList<>();
+//        if (canUseHint()) {
+//            skills.add(new SkillDTO(Skill.HINT, hints));
+//        }
+//        if (canUseWaterPistol()) {
+//            skills.add(new SkillDTO(Skill.WATER_PISTOL, waterPistols));
+//        }
+//        if (canUseLifebuoy()) {
+//            skills.add(new SkillDTO(Skill.LIFEBUOY, lifebuoys));
+//        }
+//        return skills;
     }
 }

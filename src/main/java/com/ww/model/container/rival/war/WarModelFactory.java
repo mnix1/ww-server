@@ -29,15 +29,22 @@ public class WarModelFactory extends RivalModelFactory {
         super.fillModelBasic(model, team);
         WarTeam warTeam = (WarTeam) team;
         model.put("activeIndex", warTeam.getActiveIndex());
-        model.put("presentIndexes", warTeam.getPresentIndexes());
-        model.put("skills", warTeam.getTeamSkills().prepareSkills());
         model.put("team", this.model.prepareTeam(warTeam.getTeamMembers()));
         if (this.model.isOpponent()) {
             WarTeam opponentTeam = opponentTeam(team);
-            model.put("opponentPresentIndexes", opponentTeam.getPresentIndexes());
             model.put("opponentActiveIndex", opponentTeam.getActiveIndex());
-            model.put("opponentSkills", opponentTeam.getTeamSkills().prepareSkills());
             model.put("opponentTeam", this.model.prepareTeam(opponentTeam.getTeamMembers()));
+        }
+        fillModelPresentIndexes(model, team);
+        fillModelSkills(model, team);
+    }
+
+    public void fillModelSkills(Map<String, Object> model, RivalTeam team) {
+        WarTeam warTeam = (WarTeam) team;
+        model.put("skills", warTeam.getTeamSkills().prepareSkills());
+        if (this.model.isOpponent()) {
+            WarTeam opponentTeam = opponentTeam(team);
+            model.put("opponentSkills", opponentTeam.getTeamSkills().prepareSkills());
         }
     }
 
@@ -54,11 +61,7 @@ public class WarModelFactory extends RivalModelFactory {
 
     public void fillModelAnswered(Map<String, Object> model, RivalTeam team) {
         super.fillModelAnswered(model, team);
-        WarTeam warTeam = (WarTeam) team;
-        model.put("presentIndexes", warTeam.getPresentIndexes());
-        if (this.model.isOpponent()) {
-            model.put("opponentPresentIndexes", opponentTeam(team).getPresentIndexes());
-        }
+        fillModelPresentIndexes(model, team);
     }
 
     public void fillModelAnswering(Map<String, Object> model, RivalTeam team) {
@@ -69,7 +72,6 @@ public class WarModelFactory extends RivalModelFactory {
     public void fillModelWisieAnswering(Map<String, Object> model, RivalTeam team) {
         WarTeam warTeam = (WarTeam) team;
         if (warTeam.getActiveTeamMember().isWisie()) {
-//            fillModelAnsweringSkills(model, warTeam);
             List<WisieAnswerAction> wisieActions = this.model.getAnsweringWisieActions(warTeam);
             if (wisieActions != null) {
                 model.put("wisieActions", wisieActions);
@@ -85,11 +87,7 @@ public class WarModelFactory extends RivalModelFactory {
 
     public void fillModelAnsweringTimeout(Map<String, Object> model, RivalTeam team) {
         super.fillModelAnsweringTimeout(model, team);
-        WarTeam warTeam = (WarTeam) team;
-        model.put("presentIndexes", warTeam.getPresentIndexes());
-        if (this.model.isOpponent()) {
-            model.put("opponentPresentIndexes", opponentTeam(team).getPresentIndexes());
-        }
+        fillModelPresentIndexes(model, team);
     }
 
     public void fillModelChoosingWhoAnswer(Map<String, Object> model, RivalTeam team) {
@@ -97,10 +95,14 @@ public class WarModelFactory extends RivalModelFactory {
         model.put("status", this.model.getStatus());
         model.put("choosingWhoAnswerInterval", Math.max(this.model.getEndChoosingWhoAnswerDate().toEpochMilli() - Instant.now().toEpochMilli(), 0L));
         model.put("activeIndex", warTeam.getActiveIndex());
-        model.put("presentIndexes", warTeam.getPresentIndexes());
         model.put("isChosenActiveIndex", warTeam.isChosenActiveIndex());
         model.put("task", this.model.getTaskDTOs().get(this.model.getCurrentTaskIndex()).toTaskMeta());
-//        fillModelChoosingWhoAnswerSkills(model, warTeam);
+        fillModelPresentIndexes(model, team);
+    }
+
+    public void fillModelPresentIndexes(Map<String, Object> model, RivalTeam team) {
+        WarTeam warTeam = (WarTeam) team;
+        model.put("presentIndexes", warTeam.getPresentIndexes());
         if (this.model.isOpponent()) {
             model.put("opponentPresentIndexes", opponentTeam(team).getPresentIndexes());
         }
@@ -112,24 +114,4 @@ public class WarModelFactory extends RivalModelFactory {
             fillModelChoosingWhoAnswer(model, team);
         }
     }
-//
-//    public Map<String,Object> prepareSkills(Map<String, Object> model, WarTeam team) {
-//        fillModelAnsweringSkills(model, team);
-//        fillModelChoosingWhoAnswerSkills(model, team);
-//    }
-//
-//    public void fillModelAnsweringSkills(Map<String, Object> model, WarTeam team) {
-//        fillIfMoreThen0(model, "hints", team.getHints());
-//        fillIfMoreThen0(model, "waterPistols", team.getWaterPistols());
-//    }
-//
-//    public void fillModelChoosingWhoAnswerSkills(Map<String, Object> model, WarTeam team) {
-//        fillIfMoreThen0(model, "lifebuoys", team.getLifebuoys());
-//    }
-//
-//    private void fillIfMoreThen0(Map<String, Object> model, String key, int value) {
-//        if (value > 0) {
-//            model.put(key, value);
-//        }
-//    }
 }

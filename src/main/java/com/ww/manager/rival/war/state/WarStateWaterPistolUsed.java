@@ -4,6 +4,9 @@ import com.ww.manager.rival.war.WarManager;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.model.container.rival.war.WarTeam;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class WarStateWaterPistolUsed extends WarState {
 
     private Long profileId;
@@ -23,5 +26,10 @@ public class WarStateWaterPistolUsed extends WarState {
         }
         team.getTeamSkills().useWaterPistol();
         wisieAnswerManager.getFlow().waterPistol();
+        manager.getModel().getTeams().forEachTeam(profileContainer -> {
+            Map<String, Object> model = new HashMap<>();
+            manager.getModelFactory().fillModelSkills(model, profileContainer);
+            this.manager.send(model, this.manager.getMessageContent(), profileContainer.getProfileId());
+        });
     }
 }
