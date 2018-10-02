@@ -14,13 +14,18 @@ public class WarProfileContainer extends RivalProfileContainer {
     private List<TeamMember> teamMembers;
     private int activeIndex;
     private boolean isChosenActiveIndex;
+
     private int hints;
+    private int waterPistols;
+    private int lifebuoys;
 
     public WarProfileContainer(Profile profile, List<TeamMember> teamMembers) {
         super(profile);
         this.teamMembers = teamMembers;
         this.activeIndex = 0;
         this.hints = 1;
+        this.waterPistols = 1;
+        this.lifebuoys = 1;
     }
 
     public void setActiveTeamMemberPresentToFalse() {
@@ -46,6 +51,12 @@ public class WarProfileContainer extends RivalProfileContainer {
 
     public void decreaseHints(){
         hints--;
+    }
+    public void decreaseWaterPistols(){
+        waterPistols--;
+    }
+    public void decreaseLifebuoys(){
+        lifebuoys--;
     }
 
     public List<Integer> getPresentIndexes(){

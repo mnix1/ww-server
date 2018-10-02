@@ -1,6 +1,7 @@
 package com.ww.manager.rival;
 
 import com.ww.manager.rival.state.StateSurrender;
+import com.ww.model.constant.rival.RivalStatus;
 import io.reactivex.disposables.Disposable;
 import lombok.Getter;
 import org.slf4j.Logger;
@@ -8,9 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-import static com.ww.service.rival.global.RivalMessageService.ANSWER;
-import static com.ww.service.rival.global.RivalMessageService.CHOOSE_TASK_PROPS;
-import static com.ww.service.rival.global.RivalMessageService.SURRENDER;
+import static com.ww.service.rival.global.RivalMessageService.*;
 
 @Getter
 public abstract class RivalFlow {
@@ -28,11 +27,12 @@ public abstract class RivalFlow {
 
     public boolean processMessage(Long profileId, Map<String, Object> content) {
         String id = (String) content.get("id");
-        if (id.equals(ANSWER)) {
+        RivalStatus status = getManager().getContainer().getStatus();
+        if (id.equals(ANSWER) && status == RivalStatus.ANSWERING) {
             answer(profileId, content);
-        } else if (id.equals(CHOOSE_TASK_PROPS)) {
+        } else if (id.equals(CHOOSE_TASK_PROPS) && status == RivalStatus.CHOOSING_TASK_PROPS) {
             chosenTaskProps(profileId, content);
-        } else if (id.equals(SURRENDER)) {
+        } else if (id.equals(SURRENDER) && status != RivalStatus.CLOSED && status != RivalStatus.DISPOSED) {
             surrender(profileId);
         } else {
             return false;

@@ -1,20 +1,16 @@
 package com.ww.model.container.rival.war;
 
 import com.ww.manager.rival.RivalFlow;
-import com.ww.manager.rival.battle.BattleManager;
-import com.ww.manager.rival.battle.state.BattleStateAnswered;
-import com.ww.manager.rival.battle.state.BattleStateAnswering;
-import com.ww.manager.rival.battle.state.BattleStateAnsweringTimeout;
 import com.ww.manager.rival.state.*;
 import com.ww.manager.rival.war.WarManager;
 import com.ww.manager.rival.war.state.*;
+import com.ww.model.constant.rival.RivalStatus;
 import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.ww.service.rival.global.RivalMessageService.CHOOSE_WHO_ANSWER;
-import static com.ww.service.rival.global.RivalMessageService.HINT;
+import static com.ww.service.rival.global.RivalMessageService.*;
 
 @Getter
 public class WarFlow extends RivalFlow {
@@ -30,10 +26,15 @@ public class WarFlow extends RivalFlow {
             return true;
         }
         String id = (String) content.get("id");
-        if (id.equals(CHOOSE_WHO_ANSWER)) {
+        RivalStatus status = getManager().getContainer().getStatus();
+        if (id.equals(CHOOSE_WHO_ANSWER) && status == RivalStatus.CHOOSING_WHO_ANSWER) {
             chosenWhoAnswer(profileId, content);
-        } else if (id.equals(HINT)) {
+        } else if (id.equals(HINT) && status == RivalStatus.ANSWERING) {
             hint(profileId, content);
+        } else if (id.equals(WATER_PISTOL) && status == RivalStatus.ANSWERING) {
+            waterPistol(profileId);
+        } else if (id.equals(LIFEBUOYS) && status == RivalStatus.CHOOSING_WHO_ANSWER) {
+            lifebuoy(profileId, content);
         } else {
             return false;
         }
@@ -92,7 +93,15 @@ public class WarFlow extends RivalFlow {
     }
 
     public synchronized void hint(Long profileId, Map<String, Object> content) {
-        new WarStateHinted(manager, profileId, content).startVoid();
+        new WarStateHintUsed(manager, profileId, content).startVoid();
+    }
+
+    public synchronized void waterPistol(Long profileId) {
+        new WarStateWaterPistolUsed(manager, profileId).startVoid();
+    }
+
+    public synchronized void lifebuoy(Long profileId, Map<String, Object> content) {
+        new WarStateLifebuoyUsed(manager, profileId, content).startVoid();
     }
 
     public synchronized void chosenTaskProps(Long profileId, Map<String, Object> content) {

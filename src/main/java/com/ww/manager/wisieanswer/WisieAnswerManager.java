@@ -63,6 +63,8 @@ public class WisieAnswerManager {
     private Long hintAnswerId;
     private boolean hintCorrect;
 
+    private boolean waterPistolUsedOnIt = false;
+
     protected Disposable activeFlowable;
 
     public WisieAnswerManager(OwnedWisie wisie, WarManager manager) {
@@ -236,9 +238,17 @@ public class WisieAnswerManager {
         }
         disposeFlowable();
         receivedHint = true;
-        this.hintAnswerId = answerId;
-        this.hintCorrect = isCorrect;
+        hintAnswerId = answerId;
+        hintCorrect = isCorrect;
         phaseHint();
+    }
+
+    public void waterPistol() {
+        if (waterPistolUsedOnIt || !inProgress) {
+            return;
+        }
+        disposeFlowable();
+        waterPistolUsedOnIt = true;
     }
 
     public WisieAnswerAction lastAction() {

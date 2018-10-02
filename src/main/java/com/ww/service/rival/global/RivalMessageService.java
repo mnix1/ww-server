@@ -27,6 +27,8 @@ public class RivalMessageService {
     public static final String SURRENDER = "SURRENDER";
     public static final String CHOOSE_WHO_ANSWER = "CHOOSE_WHO_ANSWER";
     public static final String HINT = "HINT";
+    public static final String WATER_PISTOL = "WATER_PISTOL";
+    public static final String LIFEBUOYS = "LIFEBUOYS";
 
     @Autowired
     private ProfileConnectionService profileConnectionService;
@@ -52,36 +54,5 @@ public class RivalMessageService {
         }
         RivalManager rivalManager = rivalGlobalService.get(optionalProfileConnection.get().getProfileId());
         rivalManager.getFlow().processMessage(optionalProfileConnection.get().getProfileId(), handleInput(message));
-
-//        AbstractRivalService abstractRivalService = null;
-//        RivalType rivalType = null;
-//        if (message.startsWith(RivalType.BATTLE.name())) {
-//            abstractRivalService = rivalBattleService;
-//            rivalType = RivalType.BATTLE;
-//        } else if (message.startsWith(RivalType.WAR.name())) {
-//            abstractRivalService = rivalWarService;
-//            rivalType = RivalType.WAR;
-//        } else if (message.startsWith(RivalType.CAMPAIGN_WAR.name())) {
-//            abstractRivalService = rivalCampaignWarService;
-//            rivalType = RivalType.CAMPAIGN_WAR;
-//        } else if (message.startsWith(RivalType.CHALLENGE.name())) {
-//            abstractRivalService = rivalChallengeService;
-//            rivalType = RivalType.CHALLENGE;
-//        }
-//        if (message.contains(ANSWER)) {
-//            abstractRivalService.answer(session.getId(), trimPrefixFromMessage(message, rivalType, ANSWER));
-//        } else if (message.contains(CHOOSE_TASK_PROPS)) {
-//            abstractRivalService.chooseTaskProps(session.getId(), trimPrefixFromMessage(message, rivalType, CHOOSE_TASK_PROPS));
-//        } else if (message.contains(SURRENDER)) {
-//            abstractRivalService.surrender(session.getId());
-//        } else if (message.contains(CHOOSE_WHO_ANSWER)) {
-//            abstractRivalService.chooseWhoAnswer(session.getId(), trimPrefixFromMessage(message, rivalType, CHOOSE_WHO_ANSWER));
-//        } else if (message.contains(HINT)) {
-//            abstractRivalService.hint(session.getId(), trimPrefixFromMessage(message, rivalType, HINT));
-//        }
-    }
-
-    private String trimPrefixFromMessage(String message, RivalType rivalType, String messageSuffix) {
-        return message.substring(rivalType.name().length() + messageSuffix.length());
     }
 }

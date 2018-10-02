@@ -6,12 +6,12 @@ import com.ww.model.container.rival.war.WarProfileContainer;
 
 import java.util.Map;
 
-public class WarStateHinted extends WarState {
+public class WarStateHintUsed extends WarState {
 
     private Long profileId;
     private Map<String, Object> content;
 
-    public WarStateHinted(WarManager manager, Long profileId, Map<String, Object> content) {
+    public WarStateHintUsed(WarManager manager, Long profileId, Map<String, Object> content) {
         super(manager);
         this.profileId = profileId;
         this.content = content;
