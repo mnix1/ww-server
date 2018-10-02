@@ -6,10 +6,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public abstract class RivalTeamContainer {
+public abstract class RivalTeam {
     private Profile profile;
 
-    public RivalTeamContainer(Profile profile) {
+    public RivalTeam(Profile profile) {
         this.profile = profile;
     }
 

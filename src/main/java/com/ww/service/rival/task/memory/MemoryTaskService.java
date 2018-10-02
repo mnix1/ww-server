@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.MemoryTaskType;
-import com.ww.model.container.rival.task.MemoryObject;
+import com.ww.model.container.rival.task.Memory;
 import com.ww.model.entity.inside.task.Color;
 import com.ww.model.entity.inside.task.MemoryShape;
 import com.ww.model.entity.outside.rival.task.*;
@@ -42,16 +42,16 @@ public class MemoryTaskService {
         int animationObjectsCount = Math.min(Math.max(DifficultyLevel.answersCount(remainedDifficulty) / 2, 2), 5);
         remainedDifficulty -= remainedDifficulty / 2;
         int answersCount = Math.max(DifficultyLevel.answersCount(remainedDifficulty), animationObjectsCount);
-        List<MemoryObject> allObjects = prepareObjects(answersCount);
-        MemoryObject correctObject = randomElement(allObjects);
-        List<MemoryObject> wrongObjects = new ArrayList<>(answersCount - 1);
-        allObjects.forEach(memoryObject -> {
-            if (memoryObject != correctObject) {
-                wrongObjects.add(memoryObject);
+        List<Memory> allObjects = prepareObjects(answersCount);
+        Memory correctObject = randomElement(allObjects);
+        List<Memory> wrongObjects = new ArrayList<>(answersCount - 1);
+        allObjects.forEach(memory -> {
+            if (memory != correctObject) {
+                wrongObjects.add(memory);
             }
         });
         Question question = prepareQuestion(type, difficultyLevel, typeValue, correctObject);
-        List<MemoryObject> animationObjects = new ArrayList<>(animationObjectsCount);
+        List<Memory> animationObjects = new ArrayList<>(animationObjectsCount);
         animationObjects.add(correctObject);
         if (animationObjects.size() < animationObjectsCount) {
             animationObjects.addAll(wrongObjects.subList(0, animationObjectsCount - 1));
@@ -63,7 +63,7 @@ public class MemoryTaskService {
         return question;
     }
 
-    private String prepareAnimation(List<MemoryObject> objects) {
+    private String prepareAnimation(List<Memory> objects) {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode objectsNode = mapper.createArrayNode();
         objects.forEach(object -> {
@@ -77,7 +77,7 @@ public class MemoryTaskService {
         return null;
     }
 
-    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, MemoryTaskType typeValue, MemoryObject correctObject) {
+    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, MemoryTaskType typeValue, Memory correctObject) {
         Question question = new Question(type, difficultyLevel);
         if (typeValue == MemoryTaskType.BACKGROUND_COLOR_FROM_FIGURE_KEY) {
             question.setTextContentPolish("Jaki kolor miał obiekt " + correctObject.getKey() + "?");
@@ -98,7 +98,7 @@ public class MemoryTaskService {
         return question;
     }
 
-    private List<Answer> prepareAnswers(MemoryTaskType typeValue, MemoryObject correctObject, List<MemoryObject> wrongObjects, int answersCount) {
+    private List<Answer> prepareAnswers(MemoryTaskType typeValue, Memory correctObject, List<Memory> wrongObjects, int answersCount) {
         Answer correctAnswer = new Answer(true);
         fillAnswerContent(typeValue, correctAnswer, correctObject);
         List<Answer> wrongAnswers = wrongObjects.stream().limit(answersCount - 1).map(wrongObject -> {
@@ -112,7 +112,7 @@ public class MemoryTaskService {
         return answers;
     }
 
-    private void fillAnswerContent(MemoryTaskType typeValue, Answer answer, MemoryObject object) {
+    private void fillAnswerContent(MemoryTaskType typeValue, Answer answer, Memory object) {
         if (typeValue == MemoryTaskType.BACKGROUND_COLOR_FROM_FIGURE_KEY) {
             answer.setTextContentPolish(object.getBackgroundColor().getNamePolish());
             answer.setTextContentEnglish(object.getBackgroundColor().getNameEnglish());
@@ -126,14 +126,14 @@ public class MemoryTaskService {
         }
     }
 
-    private List<MemoryObject> prepareObjects(int count) {
+    private List<Memory> prepareObjects(int count) {
         List<String> keys = prepareKeys(count);
         List<MemoryShape> shapes = randomElements(memoryShapeRepository.findAll(), count);
         List<Color> allColors = colorRepository.findAll();
         List<Color> backgroundColors = randomElements(allColors, count);
-        List<MemoryObject> figures = new ArrayList<>(count);
+        List<Memory> figures = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
-            MemoryObject figure = new MemoryObject(keys.get(i), shapes.get(i), backgroundColors.get(i));
+            Memory figure = new Memory(keys.get(i), shapes.get(i), backgroundColors.get(i));
             figures.add(figure);
         }
         return figures;

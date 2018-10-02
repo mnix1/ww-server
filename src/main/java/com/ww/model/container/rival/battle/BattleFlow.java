@@ -40,7 +40,7 @@ public class BattleFlow extends RivalFlow {
             new StateClose(manager).startVoid();
         } else {
             activeFlowable = new StateChoosingTaskProps(manager).startFlowable().subscribe(aLong5 -> {
-                boolean randomChooseTaskProps = manager.getContainer().randomChooseTaskProps();
+                boolean randomChooseTaskProps = manager.getModel().randomChooseTaskProps();
                 if (randomChooseTaskProps) {
                     phase1();
                 } else {

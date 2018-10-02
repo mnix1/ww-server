@@ -4,7 +4,7 @@ import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.container.rival.challenge.ChallengeInterval;
-import com.ww.model.container.rival.init.RivalChallengeInitContainer;
+import com.ww.model.container.rival.init.RivalChallengeInit;
 import com.ww.model.container.rival.war.*;
 import com.ww.model.dto.rival.task.AnswerDTO;
 import com.ww.model.dto.rival.task.TaskDTO;
@@ -24,22 +24,21 @@ public class ChallengeManager extends WarManager {
     public ChallengeProfile challengeProfile;
     public List<ChallengeQuestion> challengeQuestions;
 
-    public ChallengeManager(RivalChallengeInitContainer container, RivalChallengeService rivalChallengeService, ProfileConnectionService profileConnectionService) {
-        this.abstractRivalService = rivalChallengeService;
+    public ChallengeManager(RivalChallengeInit init, RivalChallengeService rivalService, ProfileConnectionService profileConnectionService) {
+        this.abstractRivalService = rivalService;
         this.profileConnectionService = profileConnectionService;
-        this.challengeProfile = container.getChallengeProfile();
-        this.challengeQuestions = container.getChallengeQuestions();
-        WarTeamsContainer teams = new WarTeamsContainer();
-
-        Profile creator = container.getCreatorProfile();
-        List<ProfileWisie> creatorWisies = rivalChallengeService.getProfileWisies(creator);
-        WarTeamContainer creatorTeam = new WarTeamContainer(creator, prepareTeamMembers(creator, creatorWisies), new WarTeamSkillsContainer(1, creatorWisies));
-        teams.addProfile(creator.getId(), creatorTeam);
-
-        this.container = new WarContainer(container, teams);
-        this.modelFactory = new WarModelFactory(this.container);
-        this.interval = new ChallengeInterval(this.container);
+        this.challengeProfile = init.getChallengeProfile();
+        this.challengeQuestions = init.getChallengeQuestions();
+        WarTeams teams = new WarTeams();
+        this.model = new WarModel(init, teams);
+        this.modelFactory = new WarModelFactory(this.model);
+        this.interval = new ChallengeInterval(this.model);
         this.flow = new WarFlow(this);
+
+        Profile creator = init.getCreatorProfile();
+        List<ProfileWisie> creatorWisies = rivalService.getProfileWisies(creator);
+        WarTeam creatorTeam = new WarTeam(creator, prepareTeamMembers(creator, creatorWisies), new WarTeamSkillsContainer(1, creatorWisies));
+        teams.addProfile(creator.getId(), creatorTeam);
     }
 
     @Override
@@ -57,6 +56,6 @@ public class ChallengeManager extends WarManager {
         question.rewriteAnswerIds();
         TaskDTO taskDTO = abstractRivalService.prepareTaskDTO(question);
         taskDTO.getAnswers().sort(Comparator.comparing(AnswerDTO::getId));
-        container.addTask(question, taskDTO);
+        model.addTask(question, taskDTO);
     }
 }

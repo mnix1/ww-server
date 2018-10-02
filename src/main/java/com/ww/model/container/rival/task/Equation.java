@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class EquationObject {
+public class Equation {
     private Integer value;
     private String leftSide = "";
     private String rightSide = "";
@@ -38,7 +38,7 @@ public class EquationObject {
         return leftSide + " = " + rightSide;
     }
 
-    public EquationObject(Integer value) {
+    public Equation(Integer value) {
         this.value = value;
     }
 }

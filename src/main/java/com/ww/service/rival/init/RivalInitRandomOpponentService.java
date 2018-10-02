@@ -3,9 +3,8 @@ package com.ww.service.rival.init;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.ProfileConnection;
-import com.ww.model.container.rival.init.RivalOnePlayerInitContainer;
-import com.ww.model.container.rival.init.RivalOnePlayerInitContainer;
-import com.ww.model.container.rival.init.RivalTwoPlayerInitContainer;
+import com.ww.model.container.rival.init.RivalOnePlayerInit;
+import com.ww.model.container.rival.init.RivalTwoPlayerInit;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.social.ProfileConnectionService;
@@ -27,7 +26,7 @@ import static com.ww.helper.ModelHelper.putSuccessCode;
 public class RivalInitRandomOpponentService {
     private static final Logger logger = LoggerFactory.getLogger(RivalInitRandomOpponentService.class);
 
-    private final ConcurrentHashMap<Long, RivalOnePlayerInitContainer> waitingForRivalProfiles = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Long, RivalOnePlayerInit> waitingForRivalProfiles = new ConcurrentHashMap<>();
     private static final int RIVAL_INIT_JOB_RATE = 2000;
 
     @Autowired
@@ -46,7 +45,7 @@ public class RivalInitRandomOpponentService {
         }
         Profile profile = profileService.getProfile();
         if (!waitingForRivalProfiles.containsKey(profile.getId())) {
-            waitingForRivalProfiles.put(profile.getId(), new RivalOnePlayerInitContainer(type, importance, profile));
+            waitingForRivalProfiles.put(profile.getId(), new RivalOnePlayerInit(type, importance, profile));
         }
         return putSuccessCode(model);
     }
@@ -75,8 +74,8 @@ public class RivalInitRandomOpponentService {
 //            logger.debug("Only one waiting for rival profile");
             return;
         }
-        Collection<RivalOnePlayerInitContainer> waitingContainers = waitingForRivalProfiles.values();
-        RivalOnePlayerInitContainer waitingContainer = waitingContainers.stream().findFirst().get();
+        Collection<RivalOnePlayerInit> waitingContainers = waitingForRivalProfiles.values();
+        RivalOnePlayerInit waitingContainer = waitingContainers.stream().findFirst().get();
         Profile profile = waitingContainer.getCreatorProfile();
         Optional<ProfileConnection> profileConnection = profileConnectionService.findByProfileId(profile.getId());
         if (!profileConnection.isPresent()) {
@@ -88,7 +87,7 @@ public class RivalInitRandomOpponentService {
                 .filter(container -> container.getImportance() == waitingContainer.getImportance()
                         && container.getType() == waitingContainer.getType()
                         && !container.getCreatorProfile().equals(profile))
-                .map(RivalOnePlayerInitContainer::getCreatorProfile)
+                .map(RivalOnePlayerInit::getCreatorProfile)
                 .collect(Collectors.toList());
         if (availableOpponentProfiles.size() < 1) {
             return;
@@ -103,13 +102,13 @@ public class RivalInitRandomOpponentService {
         logger.trace("Matched profiles {} and {}, now creating rival manager", profile.getId(), opponent.getId());
         waitingForRivalProfiles.remove(profile.getId());
         waitingForRivalProfiles.remove(opponent.getId());
-        RivalTwoPlayerInitContainer rival = new RivalTwoPlayerInitContainer(waitingContainer.getType(), waitingContainer.getImportance(), profile, opponent);
+        RivalTwoPlayerInit rival = new RivalTwoPlayerInit(waitingContainer.getType(), waitingContainer.getImportance(), profile, opponent);
         rivalRunService.run(rival);
         maybeInitRival();
         return;
     }
 
-//    private RivalManager createManager(RivalInitContainer rival) {
+//    private RivalManager createManager(RivalInit rival) {
 //        if (rival.getType() == RivalType.WAR) {
 //            return new WarManager(rival, rivalWarService, profileConnectionService);
 //        } else if (rival.getType() == RivalType.BATTLE) {

@@ -21,7 +21,7 @@ public class State {
             return Flowable.empty();
         }
         Flowable f =  processFlowable();
-        logger.trace("Status: " + manager.getContainer().getStatus().name());
+        logger.trace("Status: " + manager.getModel().getStatus().name());
         return f;
     }
 

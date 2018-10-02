@@ -2,8 +2,8 @@ package com.ww.manager.rival.campaign.state;
 
 import com.ww.manager.rival.campaign.CampaignWarManager;
 import com.ww.manager.rival.war.state.WarStateChosenWhoAnswer;
-import com.ww.model.container.rival.RivalTeamContainer;
-import com.ww.model.container.rival.war.WarTeamContainer;
+import com.ww.model.container.rival.RivalTeam;
+import com.ww.model.container.rival.war.WarTeam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,8 +19,8 @@ public class CampaignWarStateChosenWhoAnswer extends WarStateChosenWhoAnswer {
     }
 
     protected boolean allPlayersChoosen() {
-        for (RivalTeamContainer profileContainer : manager.getContainer().getTeamsContainer().getTeamContainers()) {
-            WarTeamContainer warProfileContainer = (WarTeamContainer) profileContainer;
+        for (RivalTeam profileContainer : manager.getModel().getTeamsContainer().getTeamContainers()) {
+            WarTeam warProfileContainer = (WarTeam) profileContainer;
             if (!warProfileContainer.isChosenActiveIndex() && !warProfileContainer.getProfileId().equals(BOT_PROFILE_ID)) {
                 return false;
             }

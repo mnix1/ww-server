@@ -3,7 +3,7 @@ package com.ww.service.rival.task.color;
 import com.ww.helper.ColorHelper;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.ColorTaskType;
-import com.ww.model.container.rival.task.ColorObject;
+import com.ww.model.container.rival.task.ColorComponents;
 import com.ww.model.entity.outside.rival.task.Answer;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskType;
@@ -28,50 +28,50 @@ public class ColorMixingTaskService {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
         int answersCount = DifficultyLevel.answersCount(remainedDifficulty);
         int colorsToMixCount = 2;
-        ColorObject correctColor = prepareCorrectColor();
-        List<ColorObject> colorsToMix = prepareMixColors(colorsToMixCount, correctColor);
-        List<ColorObject> wrongColors = prepareWrongColors(answersCount - 1, correctColor);
+        ColorComponents correctColor = prepareCorrectColor();
+        List<ColorComponents> colorsToMix = prepareMixColors(colorsToMixCount, correctColor);
+        List<ColorComponents> wrongColors = prepareWrongColors(answersCount - 1, correctColor);
         Question question = prepareQuestion(type, difficultyLevel, typeValue, colorsToMix);
         List<Answer> answers = prepareAnswers(correctColor, wrongColors);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
 
-    private ColorObject prepareCorrectColor() {
-        return new ColorObject(randomGoodColor());
+    private ColorComponents prepareCorrectColor() {
+        return new ColorComponents(randomGoodColor());
     }
 
-    private List<ColorObject> prepareMixColors(int count, ColorObject correctColor) {
-        List<ColorObject> colors = new ArrayList<>(count);
+    private List<ColorComponents> prepareMixColors(int count, ColorComponents correctColor) {
+        List<ColorComponents> colors = new ArrayList<>(count);
         int totalR = correctColor.getRed();
         int totalG = correctColor.getGreen();
         int totalB = correctColor.getBlue();
         int r = randomInteger(0, totalR);
         int g = randomInteger(Math.max(0, totalG - r), totalG);
         int b = randomInteger(Math.max(0, totalB - g), totalB);
-        colors.add(new ColorObject(r, g, b));
+        colors.add(new ColorComponents(r, g, b));
         totalR -= r;
         totalG -= g;
         totalB -= b;
-        colors.add(new ColorObject(totalR, totalG, totalB));
+        colors.add(new ColorComponents(totalR, totalG, totalB));
         Collections.shuffle(colors);
         return colors;
     }
 
-    private List<ColorObject> prepareWrongColors(int count, ColorObject correctColor) {
-        List<ColorObject> wrongColors = new ArrayList<>(count);
+    private List<ColorComponents> prepareWrongColors(int count, ColorComponents correctColor) {
+        List<ColorComponents> wrongColors = new ArrayList<>(count);
         int index = 0;
         double offset = .3;
         while (wrongColors.size() < count) {
             if (index++ > 100) {
                 offset -= 0.005;
             }
-            ColorObject possibleWrongColor = new ColorObject(ColorHelper.randomColor());
+            ColorComponents possibleWrongColor = new ColorComponents(ColorHelper.randomColor());
             if (similarColors(correctColor, possibleWrongColor, offset)) {
                 continue;
             }
             boolean accepted = true;
-            for (ColorObject wrongColor : wrongColors) {
+            for (ColorComponents wrongColor : wrongColors) {
                 if (similarColors(wrongColor, possibleWrongColor, offset)) {
                     accepted = false;
                     break;
@@ -84,7 +84,7 @@ public class ColorMixingTaskService {
         return wrongColors;
     }
 
-    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, ColorTaskType typeValue, List<ColorObject> colorsToMix) {
+    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, ColorTaskType typeValue, List<ColorComponents> colorsToMix) {
         Question question = new Question(type, difficultyLevel);
         if (typeValue == ColorTaskType.COLOR_MIXING) {
             question.setHtmlContent("<div style=\"display:flex;\">" + StringUtils.join(colorsToMix.stream().map(ColorTaskService::colorToHtml).collect(Collectors.toList()), "") + "</div>");

@@ -10,7 +10,7 @@ import lombok.Setter;
 
 import java.util.List;
 
-public interface RivalInitContainer {
+public interface RivalInit {
     RivalType getType();
     RivalImportance getImportance();
     RivalPlayer getPlayer();

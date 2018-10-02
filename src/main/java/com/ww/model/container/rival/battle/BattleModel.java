@@ -1,7 +1,7 @@
 package com.ww.model.container.rival.battle;
 
-import com.ww.model.container.rival.RivalContainer;
-import com.ww.model.container.rival.init.RivalInitContainer;
+import com.ww.model.container.rival.RivalModel;
+import com.ww.model.container.rival.init.RivalInit;
 import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,17 +12,17 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class BattleContainer extends RivalContainer {
+public class BattleModel extends RivalModel {
 
-    private BattleTeamsContainer teamsContainer;
+    private BattleTeams teamsContainer;
 
-    public BattleContainer(RivalInitContainer container, BattleTeamsContainer teamsContainer) {
+    public BattleModel(RivalInit container, BattleTeams teamsContainer) {
         super(container, teamsContainer);
         this.teamsContainer = teamsContainer;
     }
 
     public String findChoosingTaskPropsTag() {
-        List<BattleTeamContainer> profileContainers = new ArrayList<>(getTeamsContainer().getTeamContainers());
+        List<BattleTeam> profileContainers = new ArrayList<>(getTeamsContainer().getTeamContainers());
         Integer p1Score = profileContainers.get(0).getScore();
         Integer p2Score = profileContainers.get(1).getScore();
         if (p1Score.equals(p2Score)) {
@@ -35,7 +35,7 @@ public class BattleContainer extends RivalContainer {
     }
 
     public Optional<Profile> findWinner() {
-        List<BattleTeamContainer> profileContainers = new ArrayList<>(getTeamsContainer().getTeamContainers());
+        List<BattleTeam> profileContainers = new ArrayList<>(getTeamsContainer().getTeamContainers());
         Integer p1Score = profileContainers.get(0).getScore();
         Integer p2Score = profileContainers.get(1).getScore();
         if (p1Score.equals(p2Score)) {

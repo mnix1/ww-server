@@ -2,7 +2,7 @@ package com.ww.service.rival.task.color;
 
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.ColorTaskType;
-import com.ww.model.container.rival.task.ColorObject;
+import com.ww.model.container.rival.task.ColorComponents;
 import com.ww.model.entity.outside.rival.task.Answer;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskType;
@@ -30,7 +30,7 @@ public class ColorTaskService {
         return colorMatchAnswerTaskService.generate(type, difficultyLevel, typeValue);
     }
 
-    public static List<Answer> prepareAnswers(ColorObject correctColor, List<ColorObject> wrongColors) {
+    public static List<Answer> prepareAnswers(ColorComponents correctColor, List<ColorComponents> wrongColors) {
         Answer correctAnswer = new Answer(true);
         fillAnswerContent(correctAnswer, correctColor);
         List<Answer> wrongAnswers = wrongColors.stream().map(color -> {
@@ -44,11 +44,11 @@ public class ColorTaskService {
         return answers;
     }
 
-    public static void fillAnswerContent(Answer answer, ColorObject color) {
+    public static void fillAnswerContent(Answer answer, ColorComponents color) {
         answer.setHtmlContent(colorToHtml(color));
     }
 
-    public static String colorToHtml(ColorObject color) {
+    public static String colorToHtml(ColorComponents color) {
         return "<div class=\"color\" style=\"background:" + colorToHex(color.getColor()) + "\"></div>";
 //        return "<div class=\"color\" style=\"background:" + colorToHex(color.getColor()) + "\"><div>"
 //                + color.getRedPercentComponent() + "</div><div>"

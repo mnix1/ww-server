@@ -1,12 +1,12 @@
 package com.ww.model.container.rival.challenge;
 
-import com.ww.model.container.rival.RivalContainer;
+import com.ww.model.container.rival.RivalModel;
 import com.ww.model.container.rival.war.WarInterval;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class ChallengeInterval extends WarInterval {
-    private RivalContainer container;
+    private RivalModel container;
 
     public Integer getAnsweringInterval() {
         int taskIndex = Math.max(0, container.getCurrentTaskIndex());

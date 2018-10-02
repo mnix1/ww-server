@@ -2,8 +2,8 @@ package com.ww.manager.rival.war.state;
 
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.rival.RivalStatus;
-import com.ww.model.container.rival.RivalTeamContainer;
-import com.ww.model.container.rival.war.WarTeamContainer;
+import com.ww.model.container.rival.RivalTeam;
+import com.ww.model.container.rival.war.WarTeam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +31,7 @@ public class WarStateChosenWhoAnswer extends WarState {
         } catch (Exception e) {
             logger.error("Wrong content on WarStateChosenWhoAnswer for profileId: {}", profileId);
         }
-        WarTeamContainer warProfileContainer = manager.getContainer().getTeamsContainer().teamContainer(profileId);
+        WarTeam warProfileContainer = manager.getModel().getTeamsContainer().teamContainer(profileId);
         if (activeIndex != null && !warProfileContainer.isChosenActiveIndex() && warProfileContainer.getPresentIndexes().contains(activeIndex)) {
             warProfileContainer.setChosenActiveIndex(true);
             warProfileContainer.setActiveIndex(activeIndex);
@@ -39,13 +39,13 @@ public class WarStateChosenWhoAnswer extends WarState {
         if (!allPlayersChoosen()) {
             return false;
         }
-        this.manager.getContainer().setStatus(RivalStatus.CHOSEN_WHO_ANSWER);
+        this.manager.getModel().setStatus(RivalStatus.CHOSEN_WHO_ANSWER);
         return true;
     }
 
     protected boolean allPlayersChoosen() {
-        for (RivalTeamContainer profileContainer : manager.getContainer().getTeamsContainer().getTeamContainers()) {
-            WarTeamContainer warProfileContainer = (WarTeamContainer) profileContainer;
+        for (RivalTeam profileContainer : manager.getModel().getTeamsContainer().getTeamContainers()) {
+            WarTeam warProfileContainer = (WarTeam) profileContainer;
             if (!warProfileContainer.isChosenActiveIndex()) {
                 return false;
             }

@@ -3,7 +3,7 @@ package com.ww.manager.rival.battle;
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.container.rival.RivalInterval;
 import com.ww.model.container.rival.battle.*;
-import com.ww.model.container.rival.init.RivalTwoPlayerInitContainer;
+import com.ww.model.container.rival.init.RivalTwoPlayerInit;
 import com.ww.service.rival.battle.RivalBattleService;
 import com.ww.service.social.ProfileConnectionService;
 import lombok.Getter;
@@ -13,23 +13,23 @@ public class BattleManager extends RivalManager {
 
     public static final Integer TASK_COUNT = 5;
 
-    public BattleContainer container;
+    public BattleModel model;
     public BattleModelFactory modelFactory;
     public RivalInterval interval;
     public BattleFlow flow;
 
-    public BattleManager(RivalTwoPlayerInitContainer container, RivalBattleService rivalBattleService, ProfileConnectionService profileConnectionService) {
-        this.abstractRivalService = rivalBattleService;
+    public BattleManager(RivalTwoPlayerInit init, RivalBattleService rivalService, ProfileConnectionService profileConnectionService) {
+        this.abstractRivalService = rivalService;
         this.profileConnectionService = profileConnectionService;
-        this.container = new BattleContainer(container, new BattleTeamsContainer());
-        this.container.getTeamsContainer().addProfile(container.getCreatorProfile().getId(), new BattleTeamContainer(container.getCreatorProfile()));
-        this.container.getTeamsContainer().addProfile(container.getOpponentProfile().getId(), new BattleTeamContainer(container.getOpponentProfile()));
-        this.modelFactory = new BattleModelFactory(this.container);
+        this.model = new BattleModel(init, new BattleTeams());
+        this.model.getTeamsContainer().addProfile(init.getCreatorProfile().getId(), new BattleTeam(init.getCreatorProfile()));
+        this.model.getTeamsContainer().addProfile(init.getOpponentProfile().getId(), new BattleTeam(init.getOpponentProfile()));
+        this.modelFactory = new BattleModelFactory(this.model);
         this.interval = new RivalInterval();
         this.flow = new BattleFlow(this);
     }
 
     public boolean isEnd() {
-        return container.getCurrentTaskIndex() == TASK_COUNT - 1;
+        return model.getCurrentTaskIndex() == TASK_COUNT - 1;
     }
 }

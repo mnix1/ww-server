@@ -3,7 +3,7 @@ package com.ww.service.rival.task.color;
 import com.ww.helper.ColorHelper;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.ColorTaskType;
-import com.ww.model.container.rival.task.ColorObject;
+import com.ww.model.container.rival.task.ColorComponents;
 import com.ww.model.entity.outside.rival.task.Answer;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskType;
@@ -24,20 +24,20 @@ public class ColorMatchAnswerTaskService {
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, ColorTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
         int answersCount = Math.min(6, DifficultyLevel.answersCount(remainedDifficulty));
-        List<ColorObject> colors = prepareColors(typeValue, answersCount);
-        ColorObject correctColor = findCorrectColor(typeValue, colors);
-        List<ColorObject> wrongColors = colors.stream().filter(colorObject -> colorObject != correctColor).collect(Collectors.toList());
+        List<ColorComponents> colors = prepareColors(typeValue, answersCount);
+        ColorComponents correctColor = findCorrectColor(typeValue, colors);
+        List<ColorComponents> wrongColors = colors.stream().filter(colorComponents -> colorComponents != correctColor).collect(Collectors.toList());
         Question question = prepareQuestion(type, difficultyLevel, typeValue);
         List<Answer> answers = prepareAnswers(correctColor, wrongColors);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
 
-    private ColorObject findCorrectColor(ColorTaskType typeValue, List<ColorObject> colors) {
+    private ColorComponents findCorrectColor(ColorTaskType typeValue, List<ColorComponents> colors) {
         boolean aboutLowers = aboutLowest(typeValue);
-        ColorObject correct = null;
+        ColorComponents correct = null;
         double component = 0;
-        for (ColorObject color : colors) {
+        for (ColorComponents color : colors) {
             double possibleComponent = findComponent(typeValue, color);
             if (correct == null
                     || (aboutLowers && possibleComponent < component)
@@ -49,8 +49,8 @@ public class ColorMatchAnswerTaskService {
         return correct;
     }
 
-    private List<ColorObject> prepareColors(ColorTaskType typeValue, int count) {
-        List<ColorObject> colors = new ArrayList<>(count);
+    private List<ColorComponents> prepareColors(ColorTaskType typeValue, int count) {
+        List<ColorComponents> colors = new ArrayList<>(count);
         List<Double> components = new ArrayList<>(count);
         int index = 0;
         double offset = .3;
@@ -61,9 +61,9 @@ public class ColorMatchAnswerTaskService {
             if (offset < 0.1) {
                 return prepareColors(typeValue, count);
             }
-            ColorObject possibleColor = new ColorObject(ColorHelper.randomColor());
+            ColorComponents possibleColor = new ColorComponents(ColorHelper.randomColor());
             boolean accepted = true;
-            for (ColorObject color : colors) {
+            for (ColorComponents color : colors) {
                 if (similarColors(color, possibleColor, offset)) {
                     accepted = false;
                     break;
@@ -88,7 +88,7 @@ public class ColorMatchAnswerTaskService {
         return colors;
     }
 
-    private double findComponent(ColorTaskType typeValue, ColorObject color) {
+    private double findComponent(ColorTaskType typeValue, ColorComponents color) {
         if (typeValue == ColorTaskType.BIGGEST_R
                 || typeValue == ColorTaskType.LOWEST_R) {
             return color.getRedPercentComponent();

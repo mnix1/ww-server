@@ -17,11 +17,11 @@ public class BattleStateAnsweringTimeout extends State {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        if (manager.getContainer().getStatus() != RivalStatus.ANSWERING) {
+        if (manager.getModel().getStatus() != RivalStatus.ANSWERING) {
             return Flowable.empty();
         }
-        manager.getContainer().setStatus(RivalStatus.ANSWERING_TIMEOUT);
-        manager.getContainer().getTeamsContainer().forEachProfile(profileContainer -> {
+        manager.getModel().setStatus(RivalStatus.ANSWERING_TIMEOUT);
+        manager.getModel().getTeamsContainer().forEachProfile(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelAnsweringTimeout(model, profileContainer);
             manager.send(model, manager.getMessageContent(), profileContainer.getProfileId());

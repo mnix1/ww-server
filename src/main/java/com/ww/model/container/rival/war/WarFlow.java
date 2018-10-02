@@ -26,7 +26,7 @@ public class WarFlow extends RivalFlow {
             return true;
         }
         String id = (String) content.get("id");
-        RivalStatus status = getManager().getContainer().getStatus();
+        RivalStatus status = getManager().getModel().getStatus();
         if (id.equals(CHOOSE_WHO_ANSWER) && status == RivalStatus.CHOOSING_WHO_ANSWER) {
             chosenWhoAnswer(profileId, content);
         } else if (id.equals(HINT) && status == RivalStatus.ANSWERING) {
@@ -62,7 +62,7 @@ public class WarFlow extends RivalFlow {
             new StateClose(manager).startVoid();
         } else {
             activeFlowable = new StateChoosingTaskProps(manager).startFlowable().subscribe(aLong5 -> {
-                boolean randomChooseTaskProps = manager.getContainer().randomChooseTaskProps();
+                boolean randomChooseTaskProps = manager.getModel().randomChooseTaskProps();
                 if (randomChooseTaskProps) {
                     phase3();
                 } else {
@@ -119,7 +119,7 @@ public class WarFlow extends RivalFlow {
     }
 
     public synchronized void surrender(Long profileId) {
-        manager.getContainer().stopWisieAnswerManager();
+        manager.getModel().stopWisieAnswerManager();
         super.surrender(profileId);
     }
 

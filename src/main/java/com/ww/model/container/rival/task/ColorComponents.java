@@ -10,7 +10,7 @@ import static com.ww.helper.ColorHelper.percentComponent;
 
 @Getter
 @Setter
-public class ColorObject {
+public class ColorComponents {
     private Color color;
     private boolean calculatedComponents = false;
     private double redPercentComponent;
@@ -18,11 +18,11 @@ public class ColorObject {
     private double bluePercentComponent;
     private int sumComponent;
 
-    public ColorObject(Color color) {
+    public ColorComponents(Color color) {
         this.color = color;
     }
 
-    public ColorObject(int r, int g, int b) {
+    public ColorComponents(int r, int g, int b) {
         this.color = new Color(r, g, b);
     }
 

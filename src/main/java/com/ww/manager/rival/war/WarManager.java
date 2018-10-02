@@ -2,7 +2,7 @@ package com.ww.manager.rival.war;
 
 import com.ww.helper.TeamHelper;
 import com.ww.manager.rival.RivalManager;
-import com.ww.model.container.rival.init.RivalTwoPlayerInitContainer;
+import com.ww.model.container.rival.init.RivalTwoPlayerInit;
 import com.ww.model.container.rival.war.*;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.OwnedWisie;
@@ -18,38 +18,37 @@ import java.util.List;
 @Getter
 public class WarManager extends RivalManager {
 
-    public WarContainer container;
+    public WarModel model;
     public WarModelFactory modelFactory;
     public WarInterval interval;
     public WarFlow flow;
 
-    public WarManager(RivalTwoPlayerInitContainer initContainer, RivalWarService rivalWarService, ProfileConnectionService profileConnectionService) {
-        this.abstractRivalService = rivalWarService;
+    public WarManager(RivalTwoPlayerInit init, RivalWarService rivalService, ProfileConnectionService profileConnectionService) {
+        this.abstractRivalService = rivalService;
         this.profileConnectionService = profileConnectionService;
-        WarTeamsContainer teams = new WarTeamsContainer();
-
-        Profile creator = initContainer.getCreatorProfile();
-        List<ProfileWisie> creatorWisies = rivalWarService.getProfileWisies(creator);
-        WarTeamContainer creatorTeam = new WarTeamContainer(creator, prepareTeamMembers(creator, creatorWisies), new WarTeamSkillsContainer(1, creatorWisies));
-        teams.addProfile(creator.getId(), creatorTeam);
-
-        Profile opponent = initContainer.getOpponentProfile();
-        List<ProfileWisie> opponentWisies = rivalWarService.getProfileWisies(opponent);
-        WarTeamContainer opponentTeam = new WarTeamContainer(opponent, prepareTeamMembers(opponent, opponentWisies), new WarTeamSkillsContainer(1, opponentWisies));
-        teams.addProfile(opponent.getId(), opponentTeam);
-
-        this.container = new WarContainer(initContainer, teams);
-        this.modelFactory = new WarModelFactory(this.container);
+        WarTeams teams = new WarTeams();
+        this.model = new WarModel(init, teams);
+        this.modelFactory = new WarModelFactory(this.model);
         this.interval = new WarInterval();
         this.flow = new WarFlow(this);
+
+        Profile creator = init.getCreatorProfile();
+        List<ProfileWisie> creatorWisies = rivalService.getProfileWisies(creator);
+        WarTeam creatorTeam = new WarTeam(creator, prepareTeamMembers(creator, creatorWisies), new WarTeamSkillsContainer(1, creatorWisies));
+        teams.addProfile(creator.getId(), creatorTeam);
+
+        Profile opponent = init.getOpponentProfile();
+        List<ProfileWisie> opponentWisies = rivalService.getProfileWisies(opponent);
+        WarTeam opponentTeam = new WarTeam(opponent, prepareTeamMembers(opponent, opponentWisies), new WarTeamSkillsContainer(1, opponentWisies));
+        teams.addProfile(opponent.getId(), opponentTeam);
     }
 
     protected List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies) {
-        return TeamHelper.prepareTeamMembers(profile, wisies, container.getImportance(), container.getType());
+        return TeamHelper.prepareTeamMembers(profile, wisies, model.getImportance(), model.getType());
     }
 
     public boolean isEnd() {
-        for (WarTeamContainer warProfileContainer : getContainer().getTeamsContainer().getTeamContainers()) {
+        for (WarTeam warProfileContainer : this.getModel().getTeamsContainer().getTeamContainers()) {
             if (!warProfileContainer.isAnyPresentMember()) {
                 return true;
             }

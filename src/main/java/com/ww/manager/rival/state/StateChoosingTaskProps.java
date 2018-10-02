@@ -20,22 +20,22 @@ public class StateChoosingTaskProps extends State {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.getContainer().setStatus(RivalStatus.CHOOSING_TASK_PROPS);
-        manager.getContainer().increaseCurrentTaskIndex();
-        boolean randomChooseTaskProps = manager.getContainer().randomChooseTaskProps();
+        manager.getModel().setStatus(RivalStatus.CHOOSING_TASK_PROPS);
+        manager.getModel().increaseCurrentTaskIndex();
+        boolean randomChooseTaskProps = manager.getModel().randomChooseTaskProps();
         int interval;
         if (randomChooseTaskProps) {
-            manager.prepareTask((long) manager.getContainer().getCurrentTaskIndex() + 1);
+            manager.prepareTask((long) manager.getModel().getCurrentTaskIndex() + 1);
             interval = manager.getInterval().getRandomChooseTaskPropsInterval();
         } else {
-            manager.getContainer().setChosenCategory(Category.RANDOM);
-            manager.getContainer().setIsChosenCategory(false);
-            manager.getContainer().setChosenDifficulty(DifficultyLevel.NORMAL);
-            manager.getContainer().setIsChosenDifficulty(false);
+            manager.getModel().setChosenCategory(Category.RANDOM);
+            manager.getModel().setIsChosenCategory(false);
+            manager.getModel().setChosenDifficulty(DifficultyLevel.NORMAL);
+            manager.getModel().setIsChosenDifficulty(false);
             interval = manager.getInterval().getChoosingTaskPropsInterval();
         }
-        manager.getContainer().setEndChoosingTaskPropsDate(Instant.now().plus(interval, ChronoUnit.MILLIS));
-        manager.getContainer().getTeamsContainer().forEachProfile(profileContainer -> {
+        manager.getModel().setEndChoosingTaskPropsDate(Instant.now().plus(interval, ChronoUnit.MILLIS));
+        manager.getModel().getTeamsContainer().forEachProfile(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelChoosingTaskProps(model, profileContainer);
             manager.send(model, manager.getMessageContent(), profileContainer.getProfileId());

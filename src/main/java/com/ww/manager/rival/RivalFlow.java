@@ -27,7 +27,7 @@ public abstract class RivalFlow {
 
     public boolean processMessage(Long profileId, Map<String, Object> content) {
         String id = (String) content.get("id");
-        RivalStatus status = getManager().getContainer().getStatus();
+        RivalStatus status = getManager().getModel().getStatus();
         if (id.equals(ANSWER) && status == RivalStatus.ANSWERING) {
             answer(profileId, content);
         } else if (id.equals(CHOOSE_TASK_PROPS) && status == RivalStatus.CHOOSING_TASK_PROPS) {

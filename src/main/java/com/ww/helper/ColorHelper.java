@@ -1,6 +1,6 @@
 package com.ww.helper;
 
-import com.ww.model.container.rival.task.ColorObject;
+import com.ww.model.container.rival.task.ColorComponents;
 
 import java.awt.Color;
 import java.util.Arrays;
@@ -49,7 +49,7 @@ public class ColorHelper {
         return c.getRed() + c.getGreen() + c.getBlue();
     }
 
-    public static boolean similarColors(ColorObject c1, ColorObject c2, double offset) {
+    public static boolean similarColors(ColorComponents c1, ColorComponents c2, double offset) {
         c1.calculatePercentComponents();
         c2.calculatePercentComponents();
         double absRedDiff = Math.abs(c1.getRedPercentComponent() - c2.getRedPercentComponent());

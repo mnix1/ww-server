@@ -2,7 +2,7 @@ package com.ww.manager.rival.war.state;
 
 import com.ww.manager.rival.war.WarManager;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
-import com.ww.model.container.rival.war.WarTeamContainer;
+import com.ww.model.container.rival.war.WarTeam;
 
 import java.util.Map;
 
@@ -19,14 +19,14 @@ public class WarStateHintUsed extends WarState {
 
     @Override
     protected void processVoid() {
-        WarTeamContainer container = manager.getContainer().getTeamsContainer().teamContainer(profileId);
-        WisieAnswerManager wisieAnswerManager = manager.getContainer().getWisieAnswerManager(profileId);
+        WarTeam container = manager.getModel().getTeamsContainer().teamContainer(profileId);
+        WisieAnswerManager wisieAnswerManager = manager.getModel().getWisieAnswerManager(profileId);
         if (container.getTeamSkills().getHints() <= 0 || !content.containsKey("answerId") || wisieAnswerManager == null) {
             return;
         }
         container.getTeamSkills().decreaseHints();
         Long markedAnswerId = ((Integer) content.get("answerId")).longValue();
-        Boolean isAnswerCorrect = manager.getContainer().findCurrentCorrectAnswerId().equals(markedAnswerId);
+        Boolean isAnswerCorrect = manager.getModel().findCurrentCorrectAnswerId().equals(markedAnswerId);
         wisieAnswerManager.getFlow().hint(markedAnswerId, isAnswerCorrect);
     }
 }

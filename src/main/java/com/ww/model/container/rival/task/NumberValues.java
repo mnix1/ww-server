@@ -1,6 +1,5 @@
 package com.ww.model.container.rival.task;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class NumberObject {
+public class NumberValues {
     private Double value;
     private String stringValue;
 }

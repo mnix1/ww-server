@@ -6,10 +6,10 @@ import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.constant.rival.RivalType;
-import com.ww.model.container.rival.RivalContainer;
+import com.ww.model.container.rival.RivalModel;
 import com.ww.model.container.rival.RivalInterval;
 import com.ww.model.container.rival.RivalModelFactory;
-import com.ww.model.container.rival.RivalTeamContainer;
+import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
@@ -36,7 +36,7 @@ public abstract class RivalManager {
 
     public abstract RivalModelFactory getModelFactory();
 
-    public abstract RivalContainer getContainer();
+    public abstract RivalModel getModel();
 
     public abstract RivalInterval getInterval();
 
@@ -57,21 +57,21 @@ public abstract class RivalManager {
         question.setId(id);
         question.initAnswerIds();
         TaskDTO taskDTO = abstractRivalService.prepareTaskDTO(question);
-        getContainer().addTask(question, taskDTO);
+        getModel().addTask(question, taskDTO);
     }
 
     public synchronized void updateProfilesElo() {
-        if (!getContainer().isRanking()) {
+        if (!getModel().isRanking()) {
             return;
         }
-        Profile winner = getContainer().getWinner();
-        Profile creator = getContainer().getCreatorProfile();
-        Profile opponent = getContainer().getOpponentProfile();
+        Profile winner = getModel().getWinner();
+        Profile creator = getModel().getCreatorProfile();
+        Profile opponent = getModel().getOpponentProfile();
         Instant lastPlay = Instant.now();
         Long creatorEloChange = 0L;
         Long opponentEloChange = 0L;
-        if (getContainer().getType() == RivalType.BATTLE) {
-            if (getContainer().getDraw()) {
+        if (getModel().getType() == RivalType.BATTLE) {
+            if (getModel().getDraw()) {
                 creatorEloChange = prepareEloChange(creator.getBattleElo(), opponent.getBattleElo(), DRAW);
                 opponentEloChange = prepareEloChange(opponent.getBattleElo(), creator.getBattleElo(), DRAW);
             } else {
@@ -80,8 +80,8 @@ public abstract class RivalManager {
             }
             creator.setBattleLastPlay(lastPlay);
             opponent.setBattleLastPlay(lastPlay);
-        } else if (getContainer().getType() == RivalType.WAR) {
-            if (getContainer().getDraw()) {
+        } else if (getModel().getType() == RivalType.WAR) {
+            if (getModel().getDraw()) {
                 creatorEloChange = prepareEloChange(creator.getWarElo(), opponent.getWarElo(), DRAW);
                 opponentEloChange = prepareEloChange(opponent.getWarElo(), creator.getWarElo(), DRAW);
             } else {
@@ -91,17 +91,17 @@ public abstract class RivalManager {
             creator.setWarLastPlay(lastPlay);
             opponent.setWarLastPlay(lastPlay);
         }
-        updateElo(creator, creatorEloChange, getContainer().getType());
-        getContainer().setCreatorEloChange(creatorEloChange);
-        updateElo(opponent, opponentEloChange, getContainer().getType());
-        getContainer().setOpponentEloChange(opponentEloChange);
+        updateElo(creator, creatorEloChange, getModel().getType());
+        getModel().setCreatorEloChange(creatorEloChange);
+        updateElo(opponent, opponentEloChange, getModel().getType());
+        getModel().setOpponentEloChange(opponentEloChange);
         abstractRivalService.getProfileService().save(creator);
         abstractRivalService.getProfileService().save(opponent);
     }
 
     public synchronized Map<String, Object> actualModel(Long profileId) {
         Map<String, Object> model = new HashMap<>();
-        RivalTeamContainer profileContainer = getContainer().getTeamsContainer().teamContainer(profileId);
+        RivalTeam profileContainer = getModel().getTeamsContainer().teamContainer(profileId);
         getModelFactory().fillModel(model, profileContainer);
         return model;
     }
@@ -116,7 +116,7 @@ public abstract class RivalManager {
     }
 
     public boolean isClosed() {
-        return getContainer().getStatus() == RivalStatus.CLOSED;
+        return getModel().getStatus() == RivalStatus.CLOSED;
     }
 
 }

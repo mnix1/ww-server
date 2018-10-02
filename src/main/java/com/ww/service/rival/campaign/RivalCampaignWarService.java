@@ -8,7 +8,7 @@ import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.constant.wisie.WisieType;
 import com.ww.model.constant.wisie.WisorType;
-import com.ww.model.container.rival.init.RivalCampaignWarInitContainer;
+import com.ww.model.container.rival.init.RivalCampaignWarInit;
 import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.outside.social.Profile;
@@ -92,17 +92,17 @@ public class RivalCampaignWarService extends RivalWarService {
     public void disposeManager(RivalManager manager) {
         super.disposeManager(manager);
         CampaignWarManager campaignWarManager = (CampaignWarManager) manager;
-        Long profileId = manager.getContainer().getCreatorProfile().getId();
+        Long profileId = manager.getModel().getCreatorProfile().getId();
         ProfileCampaign profileCampaign = campaignService.active(profileId);
         campaignService.setProfileCampaignWisies(profileCampaign);
-        if (profileCampaign.getProfile().equals(manager.getContainer().getWinner())) {
+        if (profileCampaign.getProfile().equals(manager.getModel().getWinner())) {
             profileCampaign.setPhase(profileCampaign.getPhase() + 1);
             profileCampaign.updateResourceGains();
             if (profileCampaign.getPhase() >= profileCampaign.getCampaign().getPhases()) {
                 profileCampaign.setStatus(ProfileCampaignStatus.FINISHED);
                 profileCampaign.setBookGain(campaignService.getBookGainForCampaign(profileCampaign.getCampaign()));
             }
-            List<TeamMember> teamMembers = campaignWarManager.container.getTeamsContainer().teamContainer(profileId).getTeamMembers();
+            List<TeamMember> teamMembers = campaignWarManager.model.getTeamsContainer().teamContainer(profileId).getTeamMembers();
             for (TeamMember teamMember : teamMembers) {
                 if (teamMember.isWisie()) {
                     for (ProfileCampaignWisie wisie : profileCampaign.getWisies()) {
@@ -134,7 +134,7 @@ public class RivalCampaignWarService extends RivalWarService {
         if (profileCampaign == null) {
             return putErrorCode(model);
         }
-        RivalCampaignWarInitContainer rival = new RivalCampaignWarInitContainer(CAMPAIGN_WAR, RivalImportance.FAST, profileService.getProfile(), prepareComputerProfile(profileCampaign), profileCampaign);
+        RivalCampaignWarInit rival = new RivalCampaignWarInit(CAMPAIGN_WAR, RivalImportance.FAST, profileService.getProfile(), prepareComputerProfile(profileCampaign), profileCampaign);
         rivalRunService.run(rival);
         return putSuccessCode(model);
     }

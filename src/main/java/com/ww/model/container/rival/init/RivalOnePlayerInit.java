@@ -14,12 +14,12 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class RivalOnePlayerInitContainer implements RivalInitContainer {
+public class RivalOnePlayerInit implements RivalInit {
     private RivalType type;
     private RivalImportance importance;
     private Profile creatorProfile;
 
-    public RivalOnePlayerInitContainer(RivalType type, RivalImportance importance, Profile creatorProfile) {
+    public RivalOnePlayerInit(RivalType type, RivalImportance importance, Profile creatorProfile) {
         this.type = type;
         this.importance = importance;
         this.creatorProfile = creatorProfile;

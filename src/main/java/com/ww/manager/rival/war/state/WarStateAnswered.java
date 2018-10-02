@@ -2,7 +2,7 @@ package com.ww.manager.rival.war.state;
 
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.rival.RivalStatus;
-import com.ww.model.container.rival.war.WarTeamContainer;
+import com.ww.model.container.rival.war.WarTeam;
 import io.reactivex.Flowable;
 
 import java.util.HashMap;
@@ -22,25 +22,25 @@ public class WarStateAnswered extends WarState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.getContainer().setStatus(RivalStatus.ANSWERED);
-        manager.getContainer().stopWisieAnswerManager();
-        manager.getContainer().setAnsweredProfileId(profileId);
+        manager.getModel().setStatus(RivalStatus.ANSWERED);
+        manager.getModel().stopWisieAnswerManager();
+        manager.getModel().setAnsweredProfileId(profileId);
         Boolean isAnswerCorrect = false;
         if (content.containsKey("answerId")) {
             Long markedAnswerId = ((Integer) content.get("answerId")).longValue();
-            manager.getContainer().setMarkedAnswerId(markedAnswerId);
-            isAnswerCorrect = manager.getContainer().findCurrentCorrectAnswerId().equals(markedAnswerId);
+            manager.getModel().setMarkedAnswerId(markedAnswerId);
+            isAnswerCorrect = manager.getModel().findCurrentCorrectAnswerId().equals(markedAnswerId);
         }
-        WarTeamContainer profileContainer = manager.getContainer().getTeamsContainer().teamContainer(profileId);
-        if (manager.getContainer().isOpponent()) {
+        WarTeam profileContainer = manager.getModel().getTeamsContainer().teamContainer(profileId);
+        if (manager.getModel().isOpponent()) {
             if (isAnswerCorrect) {
-                profileContainer = manager.getContainer().getTeamsContainer().opponentTeamContainer(profileContainer.getProfileId());
+                profileContainer = manager.getModel().getTeamsContainer().opponentTeamContainer(profileContainer.getProfileId());
             }
             profileContainer.setActiveTeamMemberPresentToFalse();
         } else if (!isAnswerCorrect) {
             profileContainer.setActiveTeamMemberPresentToFalse();
         }
-        manager.getContainer().getTeamsContainer().forEachProfile(pC -> {
+        manager.getModel().getTeamsContainer().forEachProfile(pC -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelAnswered(model, pC);
             manager.send(model, manager.getMessageContent(), pC.getProfileId());

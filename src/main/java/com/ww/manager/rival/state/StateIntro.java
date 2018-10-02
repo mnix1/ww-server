@@ -16,8 +16,8 @@ public class StateIntro extends State {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.getContainer().setStatus(RivalStatus.INTRO);
-        manager.getContainer().getTeamsContainer().forEachProfile(profileContainer -> {
+        manager.getModel().setStatus(RivalStatus.INTRO);
+        manager.getModel().getTeamsContainer().forEachProfile(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelIntro(model, profileContainer);
             manager.send(model, manager.getMessageContent(), profileContainer.getProfileId());

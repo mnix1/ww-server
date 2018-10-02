@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class MemoryObject {
+public class Memory {
     private String key;
     private MemoryShape shape;
     private Color backgroundColor;

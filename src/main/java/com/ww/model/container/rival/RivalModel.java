@@ -2,9 +2,9 @@ package com.ww.model.container.rival;
 
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.*;
-import com.ww.model.container.rival.init.RivalInitContainer;
-import com.ww.model.container.rival.init.RivalOnePlayerInitContainer;
-import com.ww.model.container.rival.init.RivalTwoPlayerInitContainer;
+import com.ww.model.container.rival.init.RivalInit;
+import com.ww.model.container.rival.init.RivalOnePlayerInit;
+import com.ww.model.container.rival.init.RivalTwoPlayerInit;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.task.Answer;
 import com.ww.model.entity.outside.rival.task.Question;
@@ -18,7 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @Getter
 @Setter
-public abstract class RivalContainer {
+public abstract class RivalModel {
     protected RivalType type;
     protected RivalImportance importance;
     protected Profile creatorProfile;
@@ -52,19 +52,19 @@ public abstract class RivalContainer {
 
     protected RivalStatus status = RivalStatus.OPEN;
 
-    public abstract RivalTeamsContainer getTeamsContainer();
+    public abstract RivalTeams getTeamsContainer();
 
-    protected RivalContainer(RivalInitContainer container, RivalTeamsContainer teamsContainer) {
+    protected RivalModel(RivalInit container, RivalTeams teamsContainer) {
         this.type = container.getType();
         this.importance = container.getImportance();
         if (container.getPlayer() == RivalPlayer.TWO) {
-            RivalTwoPlayerInitContainer c = (RivalTwoPlayerInitContainer) container;
+            RivalTwoPlayerInit c = (RivalTwoPlayerInit) container;
             this.creatorProfile = c.getCreatorProfile();
             this.opponentProfile = c.getOpponentProfile();
             teamsContainer.getOpponents().put(creatorProfile.getId(), opponentProfile.getId());
             teamsContainer.getOpponents().put(opponentProfile.getId(), creatorProfile.getId());
         } else if (container.getPlayer() == RivalPlayer.ONE) {
-            RivalOnePlayerInitContainer c = (RivalOnePlayerInitContainer) container;
+            RivalOnePlayerInit c = (RivalOnePlayerInit) container;
             this.creatorProfile = c.getCreatorProfile();
         }
     }
@@ -115,7 +115,7 @@ public abstract class RivalContainer {
         taskDTOs.add(taskDTO);
     }
 //
-//    public void forEachProfile(Consumer<? super RivalTeamContainer> action) {
+//    public void forEachProfile(Consumer<? super RivalTeam> action) {
 //        profileContainers.values().parallelStream().forEach(action);
 //    }
 }

@@ -48,7 +48,7 @@ public class AutoController {
     public Map<String, Object> correctAnswer() {
         Map<String, Object> model = new HashMap<>();
         RivalManager rivalManager = rivalWarService.getRivalGlobalService().get(profileService.getProfileId());
-        model.put("id", rivalManager.getContainer().findCurrentCorrectAnswerId());
+        model.put("id", rivalManager.getModel().findCurrentCorrectAnswerId());
         return putSuccessCode(model);
     }
 }

@@ -2,7 +2,7 @@ package com.ww.manager.rival.war.state;
 
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.container.rival.war.TeamMember;
-import com.ww.model.container.rival.war.WarTeamContainer;
+import com.ww.model.container.rival.war.WarTeam;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,7 @@ public class WarStateLifebuoyUsed extends WarState {
 
     @Override
     protected void processVoid() {
-        WarTeamContainer container = manager.getContainer().getTeamsContainer().teamContainer(profileId);
+        WarTeam container = manager.getModel().getTeamsContainer().teamContainer(profileId);
         if (container.getTeamSkills().getLifebuoys() <= 0 || !content.containsKey("index")) {
             return;
         }
@@ -37,7 +37,7 @@ public class WarStateLifebuoyUsed extends WarState {
         }
         teamMember.setPresent(true);
         container.getPresentIndexes().add(teamMemberIndex);
-        manager.getContainer().getTeamsContainer().forEachProfile(profileContainer -> {
+        manager.getModel().getTeamsContainer().forEachProfile(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelChoosingWhoAnswer(model, profileContainer);
             this.manager.send(model, this.manager.getMessageContent(), profileContainer.getProfileId());

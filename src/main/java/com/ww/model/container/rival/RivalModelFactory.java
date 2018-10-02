@@ -12,13 +12,13 @@ import java.util.Map;
 @Getter
 @Setter
 public abstract class RivalModelFactory {
-    public abstract RivalContainer getContainer();
+    public abstract RivalModel getContainer();
 
     public RivalProfileDTO prepareProfile(Profile profile) {
         return new RivalProfileDTO(profile, getContainer().type);
     }
 
-    public void fillModelBasic(Map<String, Object> model, RivalTeamContainer profileContainer) {
+    public void fillModelBasic(Map<String, Object> model, RivalTeam profileContainer) {
         model.put("status", getContainer().status);
         model.put("importance", getContainer().importance.name());
         model.put("type", getContainer().type.name());
@@ -28,17 +28,17 @@ public abstract class RivalModelFactory {
         }
     }
 
-    public void fillModelIntro(Map<String, Object> model, RivalTeamContainer profileContainer) {
+    public void fillModelIntro(Map<String, Object> model, RivalTeam profileContainer) {
         fillModelBasic(model, profileContainer);
     }
 
-    public void fillModelPreparingNextTask(Map<String, Object> model, RivalTeamContainer profileContainer) {
+    public void fillModelPreparingNextTask(Map<String, Object> model, RivalTeam profileContainer) {
         model.put("status", getContainer().status);
         model.put("task", getContainer().taskDTOs.get(getContainer().currentTaskIndex).toTaskMeta());
         model.put("nextTaskInterval", Math.max(getContainer().nextTaskDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
     }
 
-    public void fillModelAnswering(Map<String, Object> model, RivalTeamContainer profileContainer) {
+    public void fillModelAnswering(Map<String, Object> model, RivalTeam profileContainer) {
         model.put("status", getContainer().status);
         model.put("task", getContainer().taskDTOs.get(getContainer().currentTaskIndex));
         model.put("correctAnswerId", null);
@@ -47,14 +47,14 @@ public abstract class RivalModelFactory {
         model.put("endAnsweringInterval", Math.max(getContainer().endAnsweringDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
     }
 
-    public void fillModelAnswered(Map<String, Object> model, RivalTeamContainer profileContainer) {
+    public void fillModelAnswered(Map<String, Object> model, RivalTeam profileContainer) {
         model.put("status", getContainer().status);
         model.put("correctAnswerId", getContainer().findCurrentCorrectAnswerId());
         model.put("markedAnswerId", getContainer().markedAnswerId);
         model.put("meAnswered", getContainer().answeredProfileId.equals(profileContainer.getProfileId()));
     }
 
-    public void fillModelAnsweringTimeout(Map<String, Object> model, RivalTeamContainer profileContainer) {
+    public void fillModelAnsweringTimeout(Map<String, Object> model, RivalTeam profileContainer) {
         model.put("status", getContainer().status);
         model.put("correctAnswerId", getContainer().findCurrentCorrectAnswerId());
         model.put("markedAnswerId", null);
@@ -66,7 +66,7 @@ public abstract class RivalModelFactory {
         model.put("task", getContainer().taskDTOs.get(getContainer().currentTaskIndex).toTaskMeta());
     }
 
-    public void fillModelChoosingTaskProps(Map<String, Object> model, RivalTeamContainer profileContainer) {
+    public void fillModelChoosingTaskProps(Map<String, Object> model, RivalTeam profileContainer) {
         model.put("status", getContainer().status);
         model.put("choosingTaskPropsInterval", Math.max(getContainer().endChoosingTaskPropsDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
         model.put("choosingTaskPropsTag", getContainer().findChoosingTaskPropsTag());
@@ -87,7 +87,7 @@ public abstract class RivalModelFactory {
         model.put("task", getContainer().taskDTOs.get(getContainer().currentTaskIndex).toTaskMeta());
     }
 
-    public void fillModelClosed(Map<String, Object> model, RivalTeamContainer profileContainer) {
+    public void fillModelClosed(Map<String, Object> model, RivalTeam profileContainer) {
         model.put("status", getContainer().status);
         model.put("isDraw", getContainer().draw);
         if (!getContainer().draw) {
@@ -96,7 +96,7 @@ public abstract class RivalModelFactory {
         model.put("resigned", getContainer().resigned);
     }
 
-    public void fillModelEloChanged(Map<String, Object> model, RivalTeamContainer profileContainer) {
+    public void fillModelEloChanged(Map<String, Object> model, RivalTeam profileContainer) {
         if (!getContainer().isRanking()) {
             return;
         }
@@ -106,7 +106,7 @@ public abstract class RivalModelFactory {
         }
     }
 
-    public void fillModel(Map<String, Object> model, RivalTeamContainer profileContainer) {
+    public void fillModel(Map<String, Object> model, RivalTeam profileContainer) {
         fillModelBasic(model, profileContainer);
         if (getContainer().status == RivalStatus.ANSWERING) {
             fillModelAnswering(model, profileContainer);

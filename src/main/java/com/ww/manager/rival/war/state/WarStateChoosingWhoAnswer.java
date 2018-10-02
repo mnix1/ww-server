@@ -2,8 +2,8 @@ package com.ww.manager.rival.war.state;
 
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.rival.RivalStatus;
-import com.ww.model.container.rival.RivalTeamContainer;
-import com.ww.model.container.rival.war.WarTeamContainer;
+import com.ww.model.container.rival.RivalTeam;
+import com.ww.model.container.rival.war.WarTeam;
 import io.reactivex.Flowable;
 
 import java.time.Instant;
@@ -20,17 +20,17 @@ public class WarStateChoosingWhoAnswer extends WarState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        this.manager.getContainer().setStatus(RivalStatus.CHOOSING_WHO_ANSWER);
+        this.manager.getModel().setStatus(RivalStatus.CHOOSING_WHO_ANSWER);
 
-        for (RivalTeamContainer profileContainer : manager.getContainer().getTeamsContainer().getTeamContainers()) {
-            WarTeamContainer warProfileContainer = (WarTeamContainer) profileContainer;
+        for (RivalTeam profileContainer : manager.getModel().getTeamsContainer().getTeamContainers()) {
+            WarTeam warProfileContainer = (WarTeam) profileContainer;
             warProfileContainer.setActiveIndex(warProfileContainer.getPresentIndexes().get(0));
             warProfileContainer.setChosenActiveIndex(false);
         }
 
         int interval = manager.getInterval().getChoosingWhoAnswerInterval();
-        manager.getContainer().setEndChoosingWhoAnswerDate(Instant.now().plus(interval, ChronoUnit.MILLIS));
-        manager.getContainer().getTeamsContainer().forEachProfile(profileContainer -> {
+        manager.getModel().setEndChoosingWhoAnswerDate(Instant.now().plus(interval, ChronoUnit.MILLIS));
+        manager.getModel().getTeamsContainer().forEachProfile(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelChoosingWhoAnswer(model, profileContainer);
             this.manager.send(model, this.manager.getMessageContent(), profileContainer.getProfileId());

@@ -11,10 +11,10 @@ public class StateChoosingTaskPropsTimeout extends State {
 
     @Override
     protected void processVoid() {
-        if (manager.getContainer().getStatus() != RivalStatus.CHOOSING_TASK_PROPS) {
+        if (manager.getModel().getStatus() != RivalStatus.CHOOSING_TASK_PROPS) {
             return;
         }
-        manager.getContainer().setStatus(RivalStatus.CHOOSING_TASK_PROPS_TIMEOUT);
-        manager.prepareTask((long) manager.getContainer().getCurrentTaskIndex() + 1, manager.getContainer().getChosenCategory(), manager.getContainer().getChosenDifficulty());
+        manager.getModel().setStatus(RivalStatus.CHOOSING_TASK_PROPS_TIMEOUT);
+        manager.prepareTask((long) manager.getModel().getCurrentTaskIndex() + 1, manager.getModel().getChosenCategory(), manager.getModel().getChosenDifficulty());
     }
 }

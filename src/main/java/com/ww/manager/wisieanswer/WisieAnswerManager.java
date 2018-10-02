@@ -53,7 +53,7 @@ public class WisieAnswerManager {
     public WisieAnswerManager(OwnedWisie wisie, WarManager manager) {
         this.wisie = wisie;
         this.manager = manager;
-        this.question = manager.getContainer().getQuestions().get(manager.getContainer().getCurrentTaskIndex());
+        this.question = manager.getModel().getQuestions().get(manager.getModel().getCurrentTaskIndex());
         this.difficulty = AnswerHelper.difficultyCalibration(question) + 1;
         this.answerCount = question.getAnswers().size();
         this.isHobby = wisie.getHobbies().contains(question.getType().getCategory());
@@ -106,7 +106,7 @@ public class WisieAnswerManager {
 
     public void addAndSendAction(WisieAnswerAction action) {
         actions.add(action);
-        manager.getContainer().getTeamsContainer().forEachProfile(profileContainer -> {
+        manager.getModel().getTeamsContainer().forEachProfile(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelWisieAnswering(model, profileContainer);
             manager.send(model, manager.getMessageContent(), profileContainer.getProfileId());

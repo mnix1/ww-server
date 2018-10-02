@@ -3,8 +3,8 @@ package com.ww.service.rival;
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
-import com.ww.model.container.rival.RivalContainer;
-import com.ww.model.container.rival.RivalTeamContainer;
+import com.ww.model.container.rival.RivalModel;
+import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.Rival;
 import com.ww.model.entity.outside.rival.task.Question;
@@ -35,13 +35,13 @@ public abstract class AbstractRivalService {
         if (!manager.isClosed()) {
             return;
         }
-        for (RivalTeamContainer profileContainer : manager.getContainer().getTeamsContainer().getTeamContainers()) {
+        for (RivalTeam profileContainer : manager.getModel().getTeamsContainer().getTeamContainers()) {
             getRivalGlobalService().remove(profileContainer.getProfileId());
         }
-        RivalContainer rivalContainer = manager.getContainer();
-        Boolean isDraw = rivalContainer.getDraw();
-        Profile winner = rivalContainer.getWinner();
-        Rival rival = new Rival(rivalContainer.getType(), rivalContainer.getImportance(), rivalContainer.getCreatorProfile(), rivalContainer.getOpponentProfile(), isDraw, winner);
+        RivalModel rivalModel = manager.getModel();
+        Boolean isDraw = rivalModel.getDraw();
+        Profile winner = rivalModel.getWinner();
+        Rival rival = new Rival(rivalModel.getType(), rivalModel.getImportance(), rivalModel.getCreatorProfile(), rivalModel.getOpponentProfile(), isDraw, winner);
         if (!isDraw) {
             addRewardFromWin(winner);
         }

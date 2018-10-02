@@ -7,7 +7,7 @@ import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.challenge.ChallengeProfileStatus;
 import com.ww.model.constant.rival.challenge.ChallengeStatus;
-import com.ww.model.container.rival.init.RivalChallengeInitContainer;
+import com.ww.model.container.rival.init.RivalChallengeInit;
 import com.ww.model.entity.outside.rival.challenge.Challenge;
 import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
 import com.ww.model.entity.outside.rival.challenge.ChallengeQuestion;
@@ -50,7 +50,7 @@ public class RivalChallengeService extends RivalWarService {
     public void init(ChallengeProfile challengeProfile) {
         List<ChallengeQuestion> challengeQuestions = new ArrayList<>(challengeProfile.getChallenge().getQuestions());
         sortChallengeQuestions(challengeQuestions);
-        RivalChallengeInitContainer rival = new RivalChallengeInitContainer(CHALLENGE, RivalImportance.FAST, challengeProfile.getProfile(), challengeProfile, challengeQuestions);
+        RivalChallengeInit rival = new RivalChallengeInit(CHALLENGE, RivalImportance.FAST, challengeProfile.getProfile(), challengeProfile, challengeQuestions);
         rivalRunService.run(rival);
     }
 
@@ -83,7 +83,7 @@ public class RivalChallengeService extends RivalWarService {
         ChallengeManager challengeManager = (ChallengeManager) manager;
         ChallengeProfile challengeProfile = challengeManager.challengeProfile;
         challengeProfile.setStatus(ChallengeProfileStatus.CLOSED);
-        challengeProfile.setScore(Math.max(0, manager.getContainer().getCurrentTaskIndex()));
+        challengeProfile.setScore(Math.max(0, manager.getModel().getCurrentTaskIndex()));
         challengeProfileRepository.save(challengeProfile);
         maybeCloseChallenge(challengeProfile.getChallenge(), Instant.now());
     }

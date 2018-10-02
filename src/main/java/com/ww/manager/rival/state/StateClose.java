@@ -16,16 +16,16 @@ public class StateClose extends State {
 
     @Override
     protected void processVoid() {
-        manager.getContainer().setStatus(RivalStatus.CLOSED);
-        Optional<Profile> optionalWinner = manager.getContainer().findWinner();
+        manager.getModel().setStatus(RivalStatus.CLOSED);
+        Optional<Profile> optionalWinner = manager.getModel().findWinner();
         if (optionalWinner.isPresent()) {
-            manager.getContainer().setWinnerLooser(optionalWinner.get());
+            manager.getModel().setWinnerLooser(optionalWinner.get());
         } else {
-            manager.getContainer().setDraw(true);
+            manager.getModel().setDraw(true);
         }
-        manager.getContainer().setResigned(false);
+        manager.getModel().setResigned(false);
         manager.updateProfilesElo();
-        manager.getContainer().getTeamsContainer().forEachProfile(profileContainer -> {
+        manager.getModel().getTeamsContainer().forEachProfile(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelEloChanged(model, profileContainer);
             manager.getModelFactory().fillModelClosed(model, profileContainer);

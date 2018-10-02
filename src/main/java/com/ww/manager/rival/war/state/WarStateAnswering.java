@@ -18,17 +18,17 @@ public class WarStateAnswering extends WarState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.getContainer().setEndAnsweringDate(Instant.now().plus(manager.getInterval().getAnsweringInterval(), ChronoUnit.MILLIS));
-        manager.getContainer().setStatus(RivalStatus.ANSWERING);
+        manager.getModel().setEndAnsweringDate(Instant.now().plus(manager.getInterval().getAnsweringInterval(), ChronoUnit.MILLIS));
+        manager.getModel().setStatus(RivalStatus.ANSWERING);
 
-        manager.getContainer().updateWisieAnswerManagers(manager);
+        manager.getModel().updateWisieAnswerManagers(manager);
 
-        manager.getContainer().getTeamsContainer().forEachProfile(profileContainer -> {
+        manager.getModel().getTeamsContainer().forEachProfile(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelAnswering(model, profileContainer);
             manager.send(model, manager.getMessageContent(), profileContainer.getProfileId());
         });
-        manager.getContainer().startWisieAnswerManager();
+        manager.getModel().startWisieAnswerManager();
         return Flowable.intervalRange(0L, 1L, manager.getInterval().getAnsweringInterval(), manager.getInterval().getAnsweringInterval(), TimeUnit.MILLISECONDS);
     }
 }

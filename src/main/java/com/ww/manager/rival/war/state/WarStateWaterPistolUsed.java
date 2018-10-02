@@ -2,7 +2,7 @@ package com.ww.manager.rival.war.state;
 
 import com.ww.manager.rival.war.WarManager;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
-import com.ww.model.container.rival.war.WarTeamContainer;
+import com.ww.model.container.rival.war.WarTeam;
 
 public class WarStateWaterPistolUsed extends WarState {
 
@@ -15,9 +15,9 @@ public class WarStateWaterPistolUsed extends WarState {
 
     @Override
     protected void processVoid() {
-        WarTeamContainer container = manager.getContainer().getTeamsContainer().teamContainer(profileId);
-        WarTeamContainer opponentContainer = manager.getContainer().getTeamsContainer().opponentTeamContainer(profileId);
-        WisieAnswerManager wisieAnswerManager = manager.getContainer().getWisieAnswerManager(opponentContainer.getProfileId());
+        WarTeam container = manager.getModel().getTeamsContainer().teamContainer(profileId);
+        WarTeam opponentContainer = manager.getModel().getTeamsContainer().opponentTeamContainer(profileId);
+        WisieAnswerManager wisieAnswerManager = manager.getModel().getWisieAnswerManager(opponentContainer.getProfileId());
         if (container.getTeamSkills().getWaterPistols() <= 0 || !container.getActiveTeamMember().isWisie() || wisieAnswerManager == null) {
             return;
         }

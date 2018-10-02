@@ -2,7 +2,7 @@ package com.ww.service.rival.task.equation;
 
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.EquationTaskType;
-import com.ww.model.container.rival.task.EquationObject;
+import com.ww.model.container.rival.task.Equation;
 import com.ww.model.entity.outside.rival.task.Answer;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskType;
@@ -23,20 +23,20 @@ public class EquationSolveTaskService {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
         int answersCount = DifficultyLevel.answersCount(remainedDifficulty);
         int calibration = difficultyCalibration(remainedDifficulty);
-        EquationObject equationObject = calibration > 2 ? prepareEquationType2(calibration) : prepareEquationType1(calibration);
-        Question question = prepareQuestion(type, difficultyLevel, typeValue, equationObject);
-        List<Answer> answers = prepareAnswers(typeValue, equationObject.getValue(), answersCount);
+        Equation equation = calibration > 2 ? prepareEquationType2(calibration) : prepareEquationType1(calibration);
+        Question question = prepareQuestion(type, difficultyLevel, typeValue, equation);
+        List<Answer> answers = prepareAnswers(typeValue, equation.getValue(), answersCount);
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
 
-    private EquationObject prepareEquationType1(int calibration) {
+    private Equation prepareEquationType1(int calibration) {
         int bound = calibration * 20 + 20;
         int value = randomInteger(-bound, -1);
         if (randomDouble() > 0.6) {
             value = randomInteger(1, bound);
         }
-        EquationObject eq = new EquationObject(value);
+        Equation eq = new Equation(value);
         int multiplier = randomInteger(calibration + 1, calibration * 2 + 4);
         if (randomDouble() > 0.6) {
             multiplier = randomInteger(-calibration * 2 - 4, -calibration - 1);
@@ -47,13 +47,13 @@ public class EquationSolveTaskService {
         return eq;
     }
 
-    private EquationObject prepareEquationType2(int calibration) {
+    private Equation prepareEquationType2(int calibration) {
         int bound = calibration * 10 + 10;
         int value = randomInteger(-bound, -1);
         if (randomDouble() > 0.6) {
             value = randomInteger(1, bound);
         }
-        EquationObject eq = new EquationObject(value);
+        Equation eq = new Equation(value);
         int multiplier = randomInteger(calibration + 1, calibration + 4);
         int leftConstant = randomInteger(2, calibration * 2 + 5);
         int leftMultiplier = randomInteger(calibration + 2, calibration + 4);
@@ -70,10 +70,10 @@ public class EquationSolveTaskService {
         return eq;
     }
 
-    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, EquationTaskType typeValue, EquationObject equationObject) {
+    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, EquationTaskType typeValue, Equation equation) {
         Question question = new Question(type, difficultyLevel);
         if (typeValue == EquationTaskType.FIND_X) {
-            question.setHtmlContent(equationObject.getEquation());
+            question.setHtmlContent(equation.getEquation());
             question.setTextContentPolish("Jaką liczbą jest x?");
             question.setTextContentEnglish("What number is x?");
         }

@@ -23,7 +23,7 @@ public class StateChosenTaskProps extends State {
 
     @Override
     protected Boolean processBoolean() {
-        if (!manager.getContainer().getTeamsContainer().teamContainer(profileId).getProfile().getTag().equals(manager.getContainer().findChoosingTaskPropsTag())) {
+        if (!manager.getModel().getTeamsContainer().teamContainer(profileId).getProfile().getTag().equals(manager.getModel().findChoosingTaskPropsTag())) {
             logger.error("Not choosing profile tried to choose task props, profileId: {}", profileId);
             return false;
         }
@@ -39,19 +39,19 @@ public class StateChosenTaskProps extends State {
         } catch (Exception e) {
             logger.error("Wrong content on stateChosenTaskProps for profileId: {}", profileId);
         }
-        if (!manager.getContainer().getIsChosenDifficulty() && difficultyLevel != null) {
-            manager.getContainer().setIsChosenDifficulty(true);
-            manager.getContainer().setChosenDifficulty(difficultyLevel);
+        if (!manager.getModel().getIsChosenDifficulty() && difficultyLevel != null) {
+            manager.getModel().setIsChosenDifficulty(true);
+            manager.getModel().setChosenDifficulty(difficultyLevel);
         }
-        if (!manager.getContainer().getIsChosenCategory() && category != null) {
-            manager.getContainer().setIsChosenCategory(true);
-            manager.getContainer().setChosenCategory(category);
+        if (!manager.getModel().getIsChosenCategory() && category != null) {
+            manager.getModel().setIsChosenCategory(true);
+            manager.getModel().setChosenCategory(category);
         }
-        if (!manager.getContainer().getIsChosenDifficulty() || !manager.getContainer().getIsChosenCategory()) {
+        if (!manager.getModel().getIsChosenDifficulty() || !manager.getModel().getIsChosenCategory()) {
             return false;
         }
-        manager.getContainer().setStatus(RivalStatus.CHOSEN_TASK_PROPS);
-        manager.prepareTask((long) manager.getContainer().getCurrentTaskIndex() + 1, manager.getContainer().getChosenCategory(), manager.getContainer().getChosenDifficulty());
+        manager.getModel().setStatus(RivalStatus.CHOSEN_TASK_PROPS);
+        manager.prepareTask((long) manager.getModel().getCurrentTaskIndex() + 1, manager.getModel().getChosenCategory(), manager.getModel().getChosenDifficulty());
         return true;
     }
 }

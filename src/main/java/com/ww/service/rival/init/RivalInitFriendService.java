@@ -6,7 +6,7 @@ import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.constant.social.FriendStatus;
 import com.ww.model.container.ProfileConnection;
-import com.ww.model.container.rival.init.RivalTwoPlayerInitContainer;
+import com.ww.model.container.rival.init.RivalTwoPlayerInit;
 import com.ww.model.dto.social.FriendDTO;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.rival.global.RivalGlobalService;
@@ -30,7 +30,7 @@ import static com.ww.helper.ModelHelper.putSuccessCode;
 public class RivalInitFriendService {
     private static final Logger logger = LoggerFactory.getLogger(RivalInitFriendService.class);
 
-    private final CopyOnWriteArrayList<RivalTwoPlayerInitContainer> waitingForActionProfiles = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<RivalTwoPlayerInit> waitingForActionProfiles = new CopyOnWriteArrayList<>();
 
     @Autowired
     private ProfileService profileService;
@@ -57,7 +57,7 @@ public class RivalInitFriendService {
         if (rivalInitRandomOpponentService.contains(opponentProfile.getId()) || rivalGlobalService.contains(opponentProfile.getId())) {
             return putErrorCode(model);
         }
-        RivalTwoPlayerInitContainer rivalInitContainer = prepareContainer(opponentProfile, type);
+        RivalTwoPlayerInit rivalInitContainer = prepareContainer(opponentProfile, type);
         if (rivalInitContainer == null) {
             return putErrorCode(model);
         }
@@ -86,7 +86,7 @@ public class RivalInitFriendService {
         if (rivalGlobalService.contains(profileService.getProfileId())) {
             return putErrorCode(model);
         }
-        RivalTwoPlayerInitContainer rival = waitingForActionProfiles.stream().filter(rivalInitContainer -> rivalInitContainer.getOpponentProfile().getId().equals(profileService.getProfileId())).findFirst().get();
+        RivalTwoPlayerInit rival = waitingForActionProfiles.stream().filter(rivalInitContainer -> rivalInitContainer.getOpponentProfile().getId().equals(profileService.getProfileId())).findFirst().get();
         this.sendAcceptInvite(rival);
         rivalRunService.run(rival);
         this.cleanCreator();
@@ -103,19 +103,19 @@ public class RivalInitFriendService {
         return model;
     }
 
-    private RivalTwoPlayerInitContainer prepareContainer(Profile opponentProfile, RivalType type) {
+    private RivalTwoPlayerInit prepareContainer(Profile opponentProfile, RivalType type) {
         Profile creatorProfile = profileService.getProfile();
         ProfileConnection opponentProfileConnection = profileConnectionService.findByProfileId(opponentProfile.getId()).orElseGet(null);
         if (opponentProfileConnection == null) {
             logger.error("Not connected profile with tag: {}, sessionProfileId: {}", opponentProfile.getTag(), profileService.getProfileId());
             return null;
         }
-        RivalTwoPlayerInitContainer battle = new RivalTwoPlayerInitContainer(type, RivalImportance.FRIEND, creatorProfile, opponentProfile);
+        RivalTwoPlayerInit battle = new RivalTwoPlayerInit(type, RivalImportance.FRIEND, creatorProfile, opponentProfile);
         sendInvite(battle);
         return battle;
     }
 
-    private void sendInvite(RivalTwoPlayerInitContainer rivalInitContainer) {
+    private void sendInvite(RivalTwoPlayerInit rivalInitContainer) {
         profileConnectionService.findByProfileId(rivalInitContainer.getOpponentProfile().getId()).ifPresent(profileConnection -> {
             FriendDTO friendDTO = new FriendDTO(rivalInitContainer.getCreatorProfile(), FriendStatus.ACCEPTED, true);
             Map<String, Object> model = new HashMap<>();
@@ -131,19 +131,19 @@ public class RivalInitFriendService {
         });
     }
 
-    private void sendCancelInvite(RivalTwoPlayerInitContainer rivalInitContainer) {
+    private void sendCancelInvite(RivalTwoPlayerInit rivalInitContainer) {
         profileConnectionService.findByProfileId(rivalInitContainer.getOpponentProfile().getId()).ifPresent(profileConnection -> {
             profileConnection.sendMessage(new MessageDTO(Message.RIVAL_CANCEL_INVITE, "").toString());
         });
     }
 
-    private void sendRejectInvite(RivalTwoPlayerInitContainer rivalInitContainer) {
+    private void sendRejectInvite(RivalTwoPlayerInit rivalInitContainer) {
         profileConnectionService.findByProfileId(rivalInitContainer.getCreatorProfile().getId()).ifPresent(profileConnection -> {
             profileConnection.sendMessage(new MessageDTO(Message.RIVAL_REJECT_INVITE, "").toString());
         });
     }
 
-    private void sendAcceptInvite(RivalTwoPlayerInitContainer rivalInitContainer) {
+    private void sendAcceptInvite(RivalTwoPlayerInit rivalInitContainer) {
         profileConnectionService.findByProfileId(rivalInitContainer.getCreatorProfile().getId()).ifPresent(profileConnection -> {
             profileConnection.sendMessage(new MessageDTO(Message.RIVAL_ACCEPT_INVITE, rivalInitContainer.getType().name()).toString());
         });
