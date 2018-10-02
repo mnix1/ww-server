@@ -8,6 +8,6 @@ public class WarInterval extends RivalInterval {
     }
 
     public Integer getChoosingWhoAnswerInterval() {
-        return 10000000;
+        return 10000;
     }
 }

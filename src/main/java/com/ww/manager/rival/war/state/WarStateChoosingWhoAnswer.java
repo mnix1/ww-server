@@ -22,18 +22,18 @@ public class WarStateChoosingWhoAnswer extends WarState {
     protected Flowable<Long> processFlowable() {
         this.manager.getModel().setStatus(RivalStatus.CHOOSING_WHO_ANSWER);
 
-        for (RivalTeam profileContainer : manager.getModel().getTeams().getTeams()) {
-            WarTeam warProfileContainer = (WarTeam) profileContainer;
-            warProfileContainer.setActiveIndex(warProfileContainer.getPresentIndexes().get(0));
-            warProfileContainer.setChosenActiveIndex(false);
+        for (RivalTeam team : manager.getModel().getTeams().getTeams()) {
+            WarTeam warTeam = (WarTeam) team;
+            warTeam.setActiveIndex(warTeam.getPresentIndexes().get(0));
+            warTeam.setChosenActiveIndex(false);
         }
 
         int interval = manager.getInterval().getChoosingWhoAnswerInterval();
         manager.getModel().setEndChoosingWhoAnswerDate(Instant.now().plus(interval, ChronoUnit.MILLIS));
-        manager.getModel().getTeams().forEachTeam(profileContainer -> {
+        manager.getModel().getTeams().forEachTeam(team -> {
             Map<String, Object> model = new HashMap<>();
-            manager.getModelFactory().fillModelChoosingWhoAnswer(model, profileContainer);
-            this.manager.send(model, this.manager.getMessageContent(), profileContainer.getProfileId());
+            manager.getModelFactory().fillModelChoosingWhoAnswer(model, team);
+            this.manager.send(model, this.manager.getMessageContent(), team.getProfileId());
         });
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

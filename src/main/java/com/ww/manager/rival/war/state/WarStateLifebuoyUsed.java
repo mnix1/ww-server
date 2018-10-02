@@ -37,11 +37,11 @@ public class WarStateLifebuoyUsed extends WarState {
         }
         teamMember.setPresent(true);
         team.getPresentIndexes().add(teamMemberIndex);
-        manager.getModel().getTeams().forEachTeam(profileContainer -> {
+        manager.getModel().getTeams().forEachTeam(rivalTeam -> {
             Map<String, Object> model = new HashMap<>();
-            manager.getModelFactory().fillModelPresentIndexes(model, profileContainer);
-            manager.getModelFactory().fillModelSkills(model, profileContainer);
-            this.manager.send(model, this.manager.getMessageContent(), profileContainer.getProfileId());
+            manager.getModelFactory().fillModelPresentIndexes(model, rivalTeam);
+            manager.getModelFactory().fillModelSkills(model, rivalTeam);
+            this.manager.send(model, this.manager.getMessageContent(), rivalTeam.getProfileId());
         });
     }
 }

@@ -44,9 +44,9 @@ public class WarStateChosenWhoAnswer extends WarState {
     }
 
     protected boolean allPlayersChoosen() {
-        for (RivalTeam profileContainer : manager.getModel().getTeams().getTeams()) {
-            WarTeam warProfileContainer = (WarTeam) profileContainer;
-            if (!warProfileContainer.isChosenActiveIndex()) {
+        for (RivalTeam team : manager.getModel().getTeams().getTeams()) {
+            WarTeam warTeam = (WarTeam) team;
+            if (!warTeam.isChosenActiveIndex()) {
                 return false;
             }
         }

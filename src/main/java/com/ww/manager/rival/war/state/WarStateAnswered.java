@@ -31,19 +31,19 @@ public class WarStateAnswered extends WarState {
             manager.getModel().setMarkedAnswerId(markedAnswerId);
             isAnswerCorrect = manager.getModel().findCurrentCorrectAnswerId().equals(markedAnswerId);
         }
-        WarTeam profileContainer = manager.getModel().getTeams().team(profileId);
+        WarTeam team = manager.getModel().getTeams().team(profileId);
         if (manager.getModel().isOpponent()) {
             if (isAnswerCorrect) {
-                profileContainer = manager.getModel().getTeams().opponentTeam(profileContainer.getProfileId());
+                team = manager.getModel().getTeams().opponentTeam(team.getProfileId());
             }
-            profileContainer.setActiveTeamMemberPresentToFalse();
+            team.setActiveTeamMemberPresentToFalse();
         } else if (!isAnswerCorrect) {
-            profileContainer.setActiveTeamMemberPresentToFalse();
+            team.setActiveTeamMemberPresentToFalse();
         }
-        manager.getModel().getTeams().forEachTeam(pC -> {
+        manager.getModel().getTeams().forEachTeam(rivalTeam -> {
             Map<String, Object> model = new HashMap<>();
-            manager.getModelFactory().fillModelAnswered(model, pC);
-            manager.send(model, manager.getMessageContent(), pC.getProfileId());
+            manager.getModelFactory().fillModelAnswered(model, rivalTeam);
+            manager.send(model, manager.getMessageContent(), rivalTeam.getProfileId());
         });
         return Flowable.intervalRange(0L, 1L, manager.getInterval().getShowingAnswerInterval(), manager.getInterval().getShowingAnswerInterval(), TimeUnit.MILLISECONDS);
     }

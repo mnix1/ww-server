@@ -29,10 +29,10 @@ public class WarStateHintUsed extends WarState {
         Long markedAnswerId = ((Integer) content.get("answerId")).longValue();
         Boolean isAnswerCorrect = manager.getModel().findCurrentCorrectAnswerId().equals(markedAnswerId);
         wisieAnswerManager.getFlow().hint(markedAnswerId, isAnswerCorrect);
-        manager.getModel().getTeams().forEachTeam(profileContainer -> {
+        manager.getModel().getTeams().forEachTeam(rivalTeam -> {
             Map<String, Object> model = new HashMap<>();
-            manager.getModelFactory().fillModelSkills(model, profileContainer);
-            this.manager.send(model, this.manager.getMessageContent(), profileContainer.getProfileId());
+            manager.getModelFactory().fillModelSkills(model, rivalTeam);
+            this.manager.send(model, this.manager.getMessageContent(), rivalTeam.getProfileId());
         });
     }
 }
