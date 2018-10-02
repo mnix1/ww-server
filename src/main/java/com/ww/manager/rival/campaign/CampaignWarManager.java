@@ -24,17 +24,21 @@ public class CampaignWarManager extends WarManager {
         return profile.getId().equals(BOT_PROFILE_ID);
     }
 
-    public CampaignWarManager(RivalCampaignWarInitContainer container, RivalCampaignWarService rivalCampaignWarService, ProfileConnectionService profileConnectionService) {
+    public CampaignWarManager(RivalCampaignWarInitContainer initContainer, RivalCampaignWarService rivalCampaignWarService, ProfileConnectionService profileConnectionService) {
         this.abstractRivalService = rivalCampaignWarService;
         this.profileConnectionService = profileConnectionService;
-        Profile creator = container.getCreatorProfile();
-        Long creatorId = creator.getId();
-        Profile opponent = container.getOpponentProfile();
-        Long opponentId = opponent.getId();
-        this.profileCampaign = container.getProfileCampaign();
-        this.container = new CampaignWarContainer(container, new WarTeamsContainer());
-        this.container.getTeamsContainer().addProfile(creatorId, new WarTeamContainer(creator, prepareTeamMembers(creator, profileCampaign)));
-        this.container.getTeamsContainer().addProfile(opponentId, new WarTeamContainer(opponent, prepareTeamMembers(opponent, profileCampaign)));
+        this.profileCampaign = initContainer.getProfileCampaign();
+        WarTeamsContainer teams = new WarTeamsContainer();
+
+        Profile creator = initContainer.getCreatorProfile();
+        WarTeamContainer creatorTeam = new WarTeamContainer(creator, prepareTeamMembers(creator, profileCampaign), new WarTeamSkillsContainer(1, profileCampaign.getWisies()));
+        teams.addProfile(creator.getId(), creatorTeam);
+
+        Profile opponent = initContainer.getOpponentProfile();
+        WarTeamContainer opponentTeam = new WarTeamContainer(opponent, prepareTeamMembers(opponent, profileCampaign), new WarTeamSkillsContainer(0));
+        teams.addProfile(opponent.getId(), opponentTeam);
+
+        this.container = new CampaignWarContainer(initContainer, teams);
         this.modelFactory = new WarModelFactory(this.container);
         this.interval = new WarInterval();
         this.flow = new CampaignWarFlow(this);

@@ -23,16 +23,22 @@ public class WarManager extends RivalManager {
     public WarInterval interval;
     public WarFlow flow;
 
-    public WarManager(RivalTwoPlayerInitContainer container, RivalWarService rivalWarService, ProfileConnectionService profileConnectionService) {
+    public WarManager(RivalTwoPlayerInitContainer initContainer, RivalWarService rivalWarService, ProfileConnectionService profileConnectionService) {
         this.abstractRivalService = rivalWarService;
         this.profileConnectionService = profileConnectionService;
-        Profile creator = container.getCreatorProfile();
+        WarTeamsContainer teams = new WarTeamsContainer();
+
+        Profile creator = initContainer.getCreatorProfile();
         List<ProfileWisie> creatorWisies = rivalWarService.getProfileWisies(creator);
-        Profile opponent = container.getOpponentProfile();
+        WarTeamContainer creatorTeam = new WarTeamContainer(creator, prepareTeamMembers(creator, creatorWisies), new WarTeamSkillsContainer(1, creatorWisies));
+        teams.addProfile(creator.getId(), creatorTeam);
+
+        Profile opponent = initContainer.getOpponentProfile();
         List<ProfileWisie> opponentWisies = rivalWarService.getProfileWisies(opponent);
-        this.container = new WarContainer(container, new WarTeamsContainer());
-        this.container.getTeamsContainer().addProfile(creator.getId(), new WarTeamContainer(creator, prepareTeamMembers(creator, creatorWisies)));
-        this.container.getTeamsContainer().addProfile(opponent.getId(), new WarTeamContainer(opponent, prepareTeamMembers(opponent, opponentWisies)));
+        WarTeamContainer opponentTeam = new WarTeamContainer(opponent, prepareTeamMembers(opponent, opponentWisies), new WarTeamSkillsContainer(1, opponentWisies));
+        teams.addProfile(opponent.getId(), opponentTeam);
+
+        this.container = new WarContainer(initContainer, teams);
         this.modelFactory = new WarModelFactory(this.container);
         this.interval = new WarInterval();
         this.flow = new WarFlow(this);

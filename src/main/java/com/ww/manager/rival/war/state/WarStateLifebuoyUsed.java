@@ -22,10 +22,10 @@ public class WarStateLifebuoyUsed extends WarState {
     @Override
     protected void processVoid() {
         WarTeamContainer container = manager.getContainer().getTeamsContainer().teamContainer(profileId);
-        if (container.getLifebuoys() <= 0 || !content.containsKey("index")) {
+        if (container.getTeamSkills().getLifebuoys() <= 0 || !content.containsKey("index")) {
             return;
         }
-        container.decreaseLifebuoys();
+        container.getTeamSkills().decreaseLifebuoys();
         Integer teamMemberIndex = ((Integer) content.get("index"));
         Optional<TeamMember> optionalTeamMember = container.getTeamMembers().stream().filter(teamMember -> teamMember.getIndex() == teamMemberIndex).findFirst();
         if (!optionalTeamMember.isPresent()) {

@@ -21,10 +21,10 @@ public class WarStateHintUsed extends WarState {
     protected void processVoid() {
         WarTeamContainer container = manager.getContainer().getTeamsContainer().teamContainer(profileId);
         WisieAnswerManager wisieAnswerManager = manager.getContainer().getWisieAnswerManager(profileId);
-        if (container.getHints() <= 0 || !content.containsKey("answerId") || wisieAnswerManager == null) {
+        if (container.getTeamSkills().getHints() <= 0 || !content.containsKey("answerId") || wisieAnswerManager == null) {
             return;
         }
-        container.decreaseHints();
+        container.getTeamSkills().decreaseHints();
         Long markedAnswerId = ((Integer) content.get("answerId")).longValue();
         Boolean isAnswerCorrect = manager.getContainer().findCurrentCorrectAnswerId().equals(markedAnswerId);
         wisieAnswerManager.getFlow().hint(markedAnswerId, isAnswerCorrect);

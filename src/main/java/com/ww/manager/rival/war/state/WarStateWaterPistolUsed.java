@@ -18,10 +18,10 @@ public class WarStateWaterPistolUsed extends WarState {
         WarTeamContainer container = manager.getContainer().getTeamsContainer().teamContainer(profileId);
         WarTeamContainer opponentContainer = manager.getContainer().getTeamsContainer().opponentTeamContainer(profileId);
         WisieAnswerManager wisieAnswerManager = manager.getContainer().getWisieAnswerManager(opponentContainer.getProfileId());
-        if (container.getWaterPistols() <= 0 || !container.getActiveTeamMember().isWisie() || wisieAnswerManager == null) {
+        if (container.getTeamSkills().getWaterPistols() <= 0 || !container.getActiveTeamMember().isWisie() || wisieAnswerManager == null) {
             return;
         }
-        container.decreaseWaterPistols();
+        container.getTeamSkills().decreaseWaterPistols();
         wisieAnswerManager.getFlow().waterPistol();
     }
 }

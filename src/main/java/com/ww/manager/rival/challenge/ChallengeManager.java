@@ -27,13 +27,16 @@ public class ChallengeManager extends WarManager {
     public ChallengeManager(RivalChallengeInitContainer container, RivalChallengeService rivalChallengeService, ProfileConnectionService profileConnectionService) {
         this.abstractRivalService = rivalChallengeService;
         this.profileConnectionService = profileConnectionService;
-        Profile creator = container.getCreatorProfile();
-        Long creatorId = creator.getId();
-        List<ProfileWisie> creatorWisies = rivalChallengeService.getProfileWisies(creator);
-        this.container = new WarContainer(container, new WarTeamsContainer());
-        this.container.getTeamsContainer().addProfile(creatorId, new WarTeamContainer(creator, prepareTeamMembers(creator, creatorWisies)));
         this.challengeProfile = container.getChallengeProfile();
         this.challengeQuestions = container.getChallengeQuestions();
+        WarTeamsContainer teams = new WarTeamsContainer();
+
+        Profile creator = container.getCreatorProfile();
+        List<ProfileWisie> creatorWisies = rivalChallengeService.getProfileWisies(creator);
+        WarTeamContainer creatorTeam = new WarTeamContainer(creator, prepareTeamMembers(creator, creatorWisies), new WarTeamSkillsContainer(1, creatorWisies));
+        teams.addProfile(creator.getId(), creatorTeam);
+
+        this.container = new WarContainer(container, teams);
         this.modelFactory = new WarModelFactory(this.container);
         this.interval = new ChallengeInterval(this.container);
         this.flow = new WarFlow(this);
