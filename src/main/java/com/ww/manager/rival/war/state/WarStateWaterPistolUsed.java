@@ -24,6 +24,6 @@ public class WarStateWaterPistolUsed extends WarState {
             return;
         }
         container.decreaseWaterPistols();
-        wisieAnswerManager.waterPistol();
+        wisieAnswerManager.getFlow().waterPistol();
     }
 }

@@ -27,6 +27,6 @@ public class WarStateHintUsed extends WarState {
         container.decreaseHints();
         Long markedAnswerId = ((Integer) content.get("answerId")).longValue();
         Boolean isAnswerCorrect = manager.getContainer().findCurrentCorrectAnswerId().equals(markedAnswerId);
-        wisieAnswerManager.hint(markedAnswerId, isAnswerCorrect);
+        wisieAnswerManager.getFlow().hint(markedAnswerId, isAnswerCorrect);
     }
 }

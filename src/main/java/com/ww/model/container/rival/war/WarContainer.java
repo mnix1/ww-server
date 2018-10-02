@@ -60,13 +60,13 @@ public class WarContainer extends RivalContainer {
 
     public void startWisieAnswerManager() {
         for (WisieAnswerManager manager : wisieAnswerManagers) {
-            manager.start();
+            manager.getFlow().start();
         }
     }
 
     public void stopWisieAnswerManager() {
         for (WisieAnswerManager manager : wisieAnswerManagers) {
-            manager.stop();
+            manager.getFlow().stop();
         }
     }
 
