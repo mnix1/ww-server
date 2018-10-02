@@ -2,7 +2,6 @@ package com.ww.manager.rival;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ww.manager.rival.state.StateSurrender;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.RivalStatus;
@@ -10,7 +9,7 @@ import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.rival.RivalContainer;
 import com.ww.model.container.rival.RivalInterval;
 import com.ww.model.container.rival.RivalModelFactory;
-import com.ww.model.container.rival.RivalProfileContainer;
+import com.ww.model.container.rival.RivalTeamContainer;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
@@ -18,7 +17,6 @@ import com.ww.service.rival.AbstractRivalService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.websocket.message.Message;
 import com.ww.websocket.message.MessageDTO;
-import io.reactivex.disposables.Disposable;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +26,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.ww.helper.EloHelper.*;
-import static com.ww.service.rival.global.RivalMessageService.*;
 
 @Getter
 public abstract class RivalManager {
@@ -104,7 +101,7 @@ public abstract class RivalManager {
 
     public synchronized Map<String, Object> actualModel(Long profileId) {
         Map<String, Object> model = new HashMap<>();
-        RivalProfileContainer profileContainer = getContainer().getTeamsContainer().profileContainer(profileId);
+        RivalTeamContainer profileContainer = getContainer().getTeamsContainer().teamContainer(profileId);
         getModelFactory().fillModel(model, profileContainer);
         return model;
     }

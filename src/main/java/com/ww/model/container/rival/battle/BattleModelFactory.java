@@ -2,7 +2,7 @@ package com.ww.model.container.rival.battle;
 
 import com.ww.manager.rival.battle.BattleManager;
 import com.ww.model.container.rival.RivalModelFactory;
-import com.ww.model.container.rival.RivalProfileContainer;
+import com.ww.model.container.rival.RivalTeamContainer;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,33 +18,33 @@ public class BattleModelFactory extends RivalModelFactory {
         this.container = container;
     }
 
-    public void fillModelBasic(Map<String, Object> model, RivalProfileContainer profileContainer) {
+    public void fillModelBasic(Map<String, Object> model, RivalTeamContainer profileContainer) {
         super.fillModelBasic(model, profileContainer);
-        BattleProfileContainer battleProfileContainer = (BattleProfileContainer) profileContainer;
+        BattleTeamContainer battleProfileContainer = (BattleTeamContainer) profileContainer;
         model.put("taskCount", BattleManager.TASK_COUNT);
         model.put("score", battleProfileContainer.getScore());
-        model.put("opponentScore", container.getTeamsContainer().opponentProfileContainer(profileContainer.getProfileId()).getScore());
+        model.put("opponentScore", container.getTeamsContainer().opponentTeamContainer(profileContainer.getProfileId()).getScore());
     }
 
-    public void fillModelAnswered(Map<String, Object> model, RivalProfileContainer profileContainer) {
+    public void fillModelAnswered(Map<String, Object> model, RivalTeamContainer profileContainer) {
         super.fillModelAnswered(model, profileContainer);
-        BattleProfileContainer battleProfileContainer = (BattleProfileContainer) profileContainer;
+        BattleTeamContainer battleProfileContainer = (BattleTeamContainer) profileContainer;
         model.put("newScore", battleProfileContainer.getScore());
-        model.put("newOpponentScore", container.getTeamsContainer().opponentProfileContainer(profileContainer.getProfileId()).getScore());
+        model.put("newOpponentScore", container.getTeamsContainer().opponentTeamContainer(profileContainer.getProfileId()).getScore());
     }
 
 
-    public void fillModelChoosingTaskProps(Map<String, Object> model, RivalProfileContainer profileContainer) {
+    public void fillModelChoosingTaskProps(Map<String, Object> model, RivalTeamContainer profileContainer) {
         super.fillModelChoosingTaskProps(model, profileContainer);
-        BattleProfileContainer battleProfileContainer = (BattleProfileContainer) profileContainer;
+        BattleTeamContainer battleProfileContainer = (BattleTeamContainer) profileContainer;
         model.put("score", battleProfileContainer.getScore());
-        model.put("opponentScore", container.getTeamsContainer().opponentProfileContainer(profileContainer.getProfileId()).getScore());
+        model.put("opponentScore", container.getTeamsContainer().opponentTeamContainer(profileContainer.getProfileId()).getScore());
     }
 
-    public void fillModelClosed(Map<String, Object> model, RivalProfileContainer profileContainer) {
+    public void fillModelClosed(Map<String, Object> model, RivalTeamContainer profileContainer) {
         super.fillModelClosed(model, profileContainer);
-        BattleProfileContainer battleProfileContainer = (BattleProfileContainer) profileContainer;
+        BattleTeamContainer battleProfileContainer = (BattleTeamContainer) profileContainer;
         model.put("score", battleProfileContainer.getScore());
-        model.put("opponentScore", container.getTeamsContainer().opponentProfileContainer(profileContainer.getProfileId()).getScore());
+        model.put("opponentScore", container.getTeamsContainer().opponentTeamContainer(profileContainer.getProfileId()).getScore());
     }
 }

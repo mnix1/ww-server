@@ -2,8 +2,8 @@ package com.ww.manager.rival.war.state;
 
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.rival.RivalStatus;
-import com.ww.model.container.rival.RivalProfileContainer;
-import com.ww.model.container.rival.war.WarProfileContainer;
+import com.ww.model.container.rival.RivalTeamContainer;
+import com.ww.model.container.rival.war.WarTeamContainer;
 import io.reactivex.Flowable;
 
 import java.util.HashMap;
@@ -22,8 +22,8 @@ public class WarStateAnsweringTimeout extends WarState {
             return Flowable.empty();
         }
         manager.getContainer().stopWisieAnswerManager();
-        for (RivalProfileContainer profileContainer : manager.getContainer().getTeamsContainer().getProfileContainers()) {
-            WarProfileContainer warProfileContainer = (WarProfileContainer) profileContainer;
+        for (RivalTeamContainer profileContainer : manager.getContainer().getTeamsContainer().getTeamContainers()) {
+            WarTeamContainer warProfileContainer = (WarTeamContainer) profileContainer;
             warProfileContainer.setActiveTeamMemberPresentToFalse();
         }
         manager.getContainer().setStatus(RivalStatus.ANSWERING_TIMEOUT);

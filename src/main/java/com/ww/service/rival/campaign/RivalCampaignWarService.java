@@ -102,7 +102,7 @@ public class RivalCampaignWarService extends RivalWarService {
                 profileCampaign.setStatus(ProfileCampaignStatus.FINISHED);
                 profileCampaign.setBookGain(campaignService.getBookGainForCampaign(profileCampaign.getCampaign()));
             }
-            List<TeamMember> teamMembers = campaignWarManager.container.getTeamsContainer().profileContainer(profileId).getTeamMembers();
+            List<TeamMember> teamMembers = campaignWarManager.container.getTeamsContainer().teamContainer(profileId).getTeamMembers();
             for (TeamMember teamMember : teamMembers) {
                 if (teamMember.isWisie()) {
                     for (ProfileCampaignWisie wisie : profileCampaign.getWisies()) {

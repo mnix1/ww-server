@@ -22,8 +22,8 @@ public class BattleManager extends RivalManager {
         this.abstractRivalService = rivalBattleService;
         this.profileConnectionService = profileConnectionService;
         this.container = new BattleContainer(container, new BattleTeamsContainer());
-        this.container.getTeamsContainer().addProfile(container.getCreatorProfile().getId(), new BattleProfileContainer(container.getCreatorProfile()));
-        this.container.getTeamsContainer().addProfile(container.getOpponentProfile().getId(), new BattleProfileContainer(container.getOpponentProfile()));
+        this.container.getTeamsContainer().addProfile(container.getCreatorProfile().getId(), new BattleTeamContainer(container.getCreatorProfile()));
+        this.container.getTeamsContainer().addProfile(container.getOpponentProfile().getId(), new BattleTeamContainer(container.getOpponentProfile()));
         this.modelFactory = new BattleModelFactory(this.container);
         this.interval = new RivalInterval();
         this.flow = new BattleFlow(this);

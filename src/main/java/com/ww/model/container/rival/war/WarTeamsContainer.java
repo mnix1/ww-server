@@ -12,27 +12,27 @@ import java.util.Map;
 @Setter
 public class WarTeamsContainer extends RivalTeamsContainer {
 
-    private final Map<Long, WarProfileContainer> profileContainerMap = new HashMap<>();
+    private final Map<Long, WarTeamContainer> teamContainerMap = new HashMap<>();
 
-    public void addProfile(Long id, WarProfileContainer profileContainer) {
-        getProfileContainerMap().put(id, profileContainer);
+    public void addProfile(Long id, WarTeamContainer profileContainer) {
+        this.getTeamContainerMap().put(id, profileContainer);
     }
 
-    public WarProfileContainer opponentProfileContainer(Long profileId) {
-        return profileContainer(getOpponents().get(profileId));
+    public WarTeamContainer opponentTeamContainer(Long profileId) {
+        return teamContainer(getOpponents().get(profileId));
     }
 
 
-    public WarProfileContainer profileContainer(Long profileId) {
-        return profileContainerMap.get(profileId);
+    public WarTeamContainer teamContainer(Long profileId) {
+        return teamContainerMap.get(profileId);
     }
 
-    public Map<Long, WarProfileContainer> getProfileContainerMap() {
-        return profileContainerMap;
+    public Map<Long, WarTeamContainer> getTeamContainerMap() {
+        return teamContainerMap;
     }
 
-    public Collection<WarProfileContainer> getProfileContainers() {
-        return getProfileContainerMap().values();
+    public Collection<WarTeamContainer> getTeamContainers() {
+        return this.getTeamContainerMap().values();
     }
 
 }

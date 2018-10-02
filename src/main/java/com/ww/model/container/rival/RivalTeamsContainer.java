@@ -11,15 +11,15 @@ import java.util.function.Consumer;
 public abstract class RivalTeamsContainer {
     private final Map<Long, Long> opponents = new HashMap<>();
 
-    public abstract Map<Long, ? extends RivalProfileContainer> getProfileContainerMap();
+    public abstract Map<Long, ? extends RivalTeamContainer> getTeamContainerMap();
 
-    public abstract RivalProfileContainer profileContainer(Long profileId);
+    public abstract RivalTeamContainer teamContainer(Long profileId);
 
-    public abstract RivalProfileContainer opponentProfileContainer(Long profileId);
+    public abstract RivalTeamContainer opponentTeamContainer(Long profileId);
 
-    public void forEachProfile(Consumer<? super RivalProfileContainer> action){
-        getProfileContainers().parallelStream().forEach(action);
+    public void forEachProfile(Consumer<? super RivalTeamContainer> action){
+        getTeamContainers().parallelStream().forEach(action);
     }
 
-    public abstract Collection<? extends RivalProfileContainer> getProfileContainers();
+    public abstract Collection<? extends RivalTeamContainer> getTeamContainers();
 }

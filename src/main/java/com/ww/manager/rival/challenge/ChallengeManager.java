@@ -31,7 +31,7 @@ public class ChallengeManager extends WarManager {
         Long creatorId = creator.getId();
         List<ProfileWisie> creatorWisies = rivalChallengeService.getProfileWisies(creator);
         this.container = new WarContainer(container, new WarTeamsContainer());
-        this.container.getTeamsContainer().addProfile(creatorId, new WarProfileContainer(creator, prepareTeamMembers(creator, creatorWisies)));
+        this.container.getTeamsContainer().addProfile(creatorId, new WarTeamContainer(creator, prepareTeamMembers(creator, creatorWisies)));
         this.challengeProfile = container.getChallengeProfile();
         this.challengeQuestions = container.getChallengeQuestions();
         this.modelFactory = new WarModelFactory(this.container);

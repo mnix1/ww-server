@@ -2,7 +2,7 @@ package com.ww.manager.rival.war.state;
 
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.container.rival.war.TeamMember;
-import com.ww.model.container.rival.war.WarProfileContainer;
+import com.ww.model.container.rival.war.WarTeamContainer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,7 @@ public class WarStateLifebuoyUsed extends WarState {
 
     @Override
     protected void processVoid() {
-        WarProfileContainer container = manager.getContainer().getTeamsContainer().profileContainer(profileId);
+        WarTeamContainer container = manager.getContainer().getTeamsContainer().teamContainer(profileId);
         if (container.getLifebuoys() <= 0 || !content.containsKey("index")) {
             return;
         }

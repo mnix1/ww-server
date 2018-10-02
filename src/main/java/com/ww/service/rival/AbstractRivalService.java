@@ -4,7 +4,7 @@ import com.ww.manager.rival.RivalManager;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.container.rival.RivalContainer;
-import com.ww.model.container.rival.RivalProfileContainer;
+import com.ww.model.container.rival.RivalTeamContainer;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.Rival;
 import com.ww.model.entity.outside.rival.task.Question;
@@ -35,7 +35,7 @@ public abstract class AbstractRivalService {
         if (!manager.isClosed()) {
             return;
         }
-        for (RivalProfileContainer profileContainer : manager.getContainer().getTeamsContainer().getProfileContainers()) {
+        for (RivalTeamContainer profileContainer : manager.getContainer().getTeamsContainer().getTeamContainers()) {
             getRivalGlobalService().remove(profileContainer.getProfileId());
         }
         RivalContainer rivalContainer = manager.getContainer();

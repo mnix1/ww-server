@@ -2,9 +2,6 @@ package com.ww.manager.rival.war;
 
 import com.ww.helper.TeamHelper;
 import com.ww.manager.rival.RivalManager;
-import com.ww.manager.rival.state.*;
-import com.ww.manager.rival.war.state.*;
-import com.ww.model.container.rival.battle.BattleFlow;
 import com.ww.model.container.rival.init.RivalTwoPlayerInitContainer;
 import com.ww.model.container.rival.war.*;
 import com.ww.model.entity.outside.social.Profile;
@@ -15,12 +12,7 @@ import com.ww.service.social.ProfileConnectionService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static com.ww.service.rival.global.RivalMessageService.CHOOSE_WHO_ANSWER;
-import static com.ww.service.rival.global.RivalMessageService.HINT;
 
 @NoArgsConstructor
 @Getter
@@ -39,8 +31,8 @@ public class WarManager extends RivalManager {
         Profile opponent = container.getOpponentProfile();
         List<ProfileWisie> opponentWisies = rivalWarService.getProfileWisies(opponent);
         this.container = new WarContainer(container, new WarTeamsContainer());
-        this.container.getTeamsContainer().addProfile(creator.getId(), new WarProfileContainer(creator, prepareTeamMembers(creator, creatorWisies)));
-        this.container.getTeamsContainer().addProfile(opponent.getId(), new WarProfileContainer(opponent, prepareTeamMembers(opponent, opponentWisies)));
+        this.container.getTeamsContainer().addProfile(creator.getId(), new WarTeamContainer(creator, prepareTeamMembers(creator, creatorWisies)));
+        this.container.getTeamsContainer().addProfile(opponent.getId(), new WarTeamContainer(opponent, prepareTeamMembers(opponent, opponentWisies)));
         this.modelFactory = new WarModelFactory(this.container);
         this.interval = new WarInterval();
         this.flow = new WarFlow(this);
@@ -51,7 +43,7 @@ public class WarManager extends RivalManager {
     }
 
     public boolean isEnd() {
-        for (WarProfileContainer warProfileContainer : getContainer().getTeamsContainer().getProfileContainers()) {
+        for (WarTeamContainer warProfileContainer : getContainer().getTeamsContainer().getTeamContainers()) {
             if (!warProfileContainer.isAnyPresentMember()) {
                 return true;
             }

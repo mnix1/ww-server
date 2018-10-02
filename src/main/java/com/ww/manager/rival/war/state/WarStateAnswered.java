@@ -2,7 +2,7 @@ package com.ww.manager.rival.war.state;
 
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.rival.RivalStatus;
-import com.ww.model.container.rival.war.WarProfileContainer;
+import com.ww.model.container.rival.war.WarTeamContainer;
 import io.reactivex.Flowable;
 
 import java.util.HashMap;
@@ -31,10 +31,10 @@ public class WarStateAnswered extends WarState {
             manager.getContainer().setMarkedAnswerId(markedAnswerId);
             isAnswerCorrect = manager.getContainer().findCurrentCorrectAnswerId().equals(markedAnswerId);
         }
-        WarProfileContainer profileContainer = manager.getContainer().getTeamsContainer().profileContainer(profileId);
+        WarTeamContainer profileContainer = manager.getContainer().getTeamsContainer().teamContainer(profileId);
         if (manager.getContainer().isOpponent()) {
             if (isAnswerCorrect) {
-                profileContainer = manager.getContainer().getTeamsContainer().opponentProfileContainer(profileContainer.getProfileId());
+                profileContainer = manager.getContainer().getTeamsContainer().opponentTeamContainer(profileContainer.getProfileId());
             }
             profileContainer.setActiveTeamMemberPresentToFalse();
         } else if (!isAnswerCorrect) {

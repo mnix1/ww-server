@@ -22,7 +22,7 @@ public class BattleContainer extends RivalContainer {
     }
 
     public String findChoosingTaskPropsTag() {
-        List<BattleProfileContainer> profileContainers = new ArrayList<>(getTeamsContainer().getProfileContainers());
+        List<BattleTeamContainer> profileContainers = new ArrayList<>(getTeamsContainer().getTeamContainers());
         Integer p1Score = profileContainers.get(0).getScore();
         Integer p2Score = profileContainers.get(1).getScore();
         if (p1Score.equals(p2Score)) {
@@ -35,7 +35,7 @@ public class BattleContainer extends RivalContainer {
     }
 
     public Optional<Profile> findWinner() {
-        List<BattleProfileContainer> profileContainers = new ArrayList<>(getTeamsContainer().getProfileContainers());
+        List<BattleTeamContainer> profileContainers = new ArrayList<>(getTeamsContainer().getTeamContainers());
         Integer p1Score = profileContainers.get(0).getScore();
         Integer p2Score = profileContainers.get(1).getScore();
         if (p1Score.equals(p2Score)) {

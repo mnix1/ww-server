@@ -1,6 +1,6 @@
 package com.ww.model.container.rival.war;
 
-import com.ww.model.container.rival.RivalProfileContainer;
+import com.ww.model.container.rival.RivalTeamContainer;
 import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class WarProfileContainer extends RivalProfileContainer {
+public class WarTeamContainer extends RivalTeamContainer {
     private List<TeamMember> teamMembers;
     private int activeIndex;
     private boolean isChosenActiveIndex;
@@ -19,7 +19,7 @@ public class WarProfileContainer extends RivalProfileContainer {
     private int waterPistols;
     private int lifebuoys;
 
-    public WarProfileContainer(Profile profile, List<TeamMember> teamMembers) {
+    public WarTeamContainer(Profile profile, List<TeamMember> teamMembers) {
         super(profile);
         this.teamMembers = teamMembers;
         this.activeIndex = 0;

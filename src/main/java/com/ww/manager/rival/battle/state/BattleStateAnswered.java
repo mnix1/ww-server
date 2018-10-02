@@ -3,7 +3,7 @@ package com.ww.manager.rival.battle.state;
 import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.state.State;
 import com.ww.model.constant.rival.RivalStatus;
-import com.ww.model.container.rival.battle.BattleProfileContainer;
+import com.ww.model.container.rival.battle.BattleTeamContainer;
 import io.reactivex.Flowable;
 
 import java.util.HashMap;
@@ -31,7 +31,7 @@ public class BattleStateAnswered extends State {
             manager.getContainer().setMarkedAnswerId(markedAnswerId);
             isAnswerCorrect = manager.getContainer().findCurrentCorrectAnswerId().equals(markedAnswerId);
         }
-        BattleProfileContainer container = (BattleProfileContainer) manager.getContainer().getTeamsContainer().profileContainer(profileId);
+        BattleTeamContainer container = (BattleTeamContainer) manager.getContainer().getTeamsContainer().teamContainer(profileId);
         container.setScore(isAnswerCorrect ? container.getScore() + manager.getContainer().getCurrentTaskPoints() : container.getScore() - manager.getContainer().getCurrentTaskPoints());
         manager.getContainer().getTeamsContainer().forEachProfile(profileContainer -> {
             Map<String, Object> model = new HashMap<>();

@@ -2,11 +2,9 @@ package com.ww.model.container.rival.war;
 
 import com.ww.manager.rival.war.WarManager;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
-import com.ww.model.constant.rival.RivalPlayer;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import com.ww.model.container.rival.RivalContainer;
-import com.ww.model.container.rival.RivalProfileContainer;
-import com.ww.model.container.rival.RivalTeamsContainer;
+import com.ww.model.container.rival.RivalTeamContainer;
 import com.ww.model.container.rival.init.RivalInitContainer;
 import com.ww.model.dto.rival.TeamMemberDTO;
 import com.ww.model.entity.outside.social.Profile;
@@ -35,7 +33,7 @@ public class WarContainer extends RivalContainer {
 
     public void updateWisieAnswerManagers(WarManager manager) {
         wisieAnswerManagers = new ArrayList<>();
-        for (WarProfileContainer warProfileContainer : teamsContainer.getProfileContainers()) {
+        for (WarTeamContainer warProfileContainer : teamsContainer.getTeamContainers()) {
             TeamMember teamMember = warProfileContainer.getActiveTeamMember();
             if (teamMember.isWisie()) {
                 wisieAnswerManagers.add(new WisieAnswerManager((OwnedWisie) teamMember.getContent(), manager));
@@ -43,7 +41,7 @@ public class WarContainer extends RivalContainer {
         }
     }
 
-    public List<WisieAnswerAction> getAnsweringWisieActions(WarProfileContainer warProfileContainer) {
+    public List<WisieAnswerAction> getAnsweringWisieActions(WarTeamContainer warProfileContainer) {
         TeamMember teamMember = warProfileContainer.getActiveTeamMember();
         if (!teamMember.isWisie()) {
             return null;
@@ -84,7 +82,7 @@ public class WarContainer extends RivalContainer {
     }
 
     public String findChoosingTaskPropsTag() {
-        List<WarProfileContainer> profileContainers = new ArrayList<>(getTeamsContainer().getProfileContainers());
+        List<WarTeamContainer> profileContainers = new ArrayList<>(getTeamsContainer().getTeamContainers());
         if (profileContainers.size() < 2) {
             return null;
         }
@@ -100,12 +98,12 @@ public class WarContainer extends RivalContainer {
     }
 
     public Optional<Profile> findWinner() {
-        List<RivalProfileContainer> profileContainers = new ArrayList<>(getTeamsContainer().getProfileContainers());
+        List<RivalTeamContainer> profileContainers = new ArrayList<>(getTeamsContainer().getTeamContainers());
         if (profileContainers.size() < 2) {
             return Optional.empty();
         }
-        Integer presentIndexSize1 = ((WarProfileContainer) profileContainers.get(0)).countPresentMembers();
-        Integer presentIndexSize2 = ((WarProfileContainer) profileContainers.get(1)).countPresentMembers();
+        Integer presentIndexSize1 = ((WarTeamContainer) profileContainers.get(0)).countPresentMembers();
+        Integer presentIndexSize2 = ((WarTeamContainer) profileContainers.get(1)).countPresentMembers();
         if (presentIndexSize1.equals(presentIndexSize2)) {
             return Optional.empty();
         }

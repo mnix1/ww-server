@@ -76,7 +76,7 @@ public abstract class RivalContainer {
     public void setWinnerLooser(Profile winner) {
         this.draw = false;
         this.winner = winner;
-        this.looser = getTeamsContainer().opponentProfileContainer(winner.getId()).getProfile();
+        this.looser = getTeamsContainer().opponentTeamContainer(winner.getId()).getProfile();
     }
 
     public boolean isRanking() {
@@ -115,7 +115,7 @@ public abstract class RivalContainer {
         taskDTOs.add(taskDTO);
     }
 //
-//    public void forEachProfile(Consumer<? super RivalProfileContainer> action) {
+//    public void forEachProfile(Consumer<? super RivalTeamContainer> action) {
 //        profileContainers.values().parallelStream().forEach(action);
 //    }
 }
