@@ -51,7 +51,7 @@ public class RivalMessageService {
             return;
         }
         RivalManager rivalManager = rivalGlobalService.get(optionalProfileConnection.get().getProfileId());
-        rivalManager.processMessage(optionalProfileConnection.get().getProfileId(), handleInput(message));
+        rivalManager.getFlow().processMessage(optionalProfileConnection.get().getProfileId(), handleInput(message));
 
 //        AbstractRivalService abstractRivalService = null;
 //        RivalType rivalType = null;

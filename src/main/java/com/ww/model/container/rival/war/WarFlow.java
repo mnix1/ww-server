@@ -13,6 +13,9 @@ import lombok.Getter;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.ww.service.rival.global.RivalMessageService.CHOOSE_WHO_ANSWER;
+import static com.ww.service.rival.global.RivalMessageService.HINT;
+
 @Getter
 public class WarFlow extends RivalFlow {
 
@@ -20,6 +23,21 @@ public class WarFlow extends RivalFlow {
 
     public WarFlow(WarManager manager) {
         this.manager = manager;
+    }
+
+    public boolean processMessage(Long profileId, Map<String, Object> content) {
+        if (super.processMessage(profileId, content)) {
+            return true;
+        }
+        String id = (String) content.get("id");
+        if (id.equals(CHOOSE_WHO_ANSWER)) {
+            chosenWhoAnswer(profileId, content);
+        } else if (id.equals(HINT)) {
+            hint(profileId, content);
+        } else {
+            return false;
+        }
+        return true;
     }
 
     public synchronized void start() {

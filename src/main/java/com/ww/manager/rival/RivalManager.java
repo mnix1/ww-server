@@ -45,19 +45,7 @@ public abstract class RivalManager {
 
     public abstract RivalFlow getFlow();
 
-    public boolean processMessage(Long profileId, Map<String, Object> content) {
-        String id = (String) content.get("id");
-        if (id.equals(ANSWER)) {
-            getFlow().answer(profileId, content);
-        } else if (id.equals(CHOOSE_TASK_PROPS)) {
-            getFlow().chosenTaskProps(profileId, content);
-        } else if (id.equals(SURRENDER)) {
-            getFlow().surrender(profileId);
-        } else {
-            return false;
-        }
-        return true;
-    }
+    public abstract boolean isEnd();
 
     public Message getMessageContent() {
         return abstractRivalService.getMessageContent();
@@ -114,8 +102,6 @@ public abstract class RivalManager {
         abstractRivalService.getProfileService().save(opponent);
     }
 
-    public abstract boolean isEnd();
-
     public synchronized Map<String, Object> actualModel(Long profileId) {
         Map<String, Object> model = new HashMap<>();
         RivalProfileContainer profileContainer = getContainer().getTeamsContainer().profileContainer(profileId);
@@ -128,20 +114,8 @@ public abstract class RivalManager {
         try {
             profileConnectionService.sendMessage(profileId, new MessageDTO(message, objectMapper.writeValueAsString(model)).toString());
         } catch (JsonProcessingException e) {
-            logger.error("Error when sending message");
+            logger.error("Error when sending message {}", profileId);
         }
-    }
-
-    public boolean canAnswer() {
-        return getContainer().getStatus() == RivalStatus.ANSWERING;
-    }
-
-    public boolean canChooseTaskProps() {
-        return getContainer().getStatus() == RivalStatus.CHOOSING_TASK_PROPS;
-    }
-
-    public boolean canChooseWhoAnswer() {
-        return getContainer().getStatus() == RivalStatus.CHOOSING_WHO_ANSWER;
     }
 
     public boolean isClosed() {

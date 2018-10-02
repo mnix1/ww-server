@@ -46,21 +46,6 @@ public class WarManager extends RivalManager {
         this.flow = new WarFlow(this);
     }
 
-    public boolean processMessage(Long profileId, Map<String, Object> content) {
-        if (super.processMessage(profileId, content)) {
-            return true;
-        }
-        String id = (String) content.get("id");
-        if (id.equals(CHOOSE_WHO_ANSWER)) {
-            flow.chosenWhoAnswer(profileId, content);
-        } else if (id.equals(HINT)) {
-            flow.hint(profileId, content);
-        } else {
-            return false;
-        }
-        return true;
-    }
-
     protected List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies) {
         return TeamHelper.prepareTeamMembers(profile, wisies, container.getImportance(), container.getType());
     }
