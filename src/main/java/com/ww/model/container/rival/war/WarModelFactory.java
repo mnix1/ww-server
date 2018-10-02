@@ -21,17 +21,23 @@ public class WarModelFactory extends RivalModelFactory {
         this.model = model;
     }
 
+    protected WarTeam opponentTeam(RivalTeam team) {
+        return this.model.getTeams().opponentTeam(team.getProfileId());
+    }
+
     public void fillModelBasic(Map<String, Object> model, RivalTeam team) {
         super.fillModelBasic(model, team);
         WarTeam warTeam = (WarTeam) team;
         model.put("activeIndex", warTeam.getActiveIndex());
         model.put("presentIndexes", warTeam.getPresentIndexes());
-//        model.put("skills", model.prepareSkills())
+        model.put("skills", warTeam.getTeamSkills().prepareSkills());
         model.put("team", this.model.prepareTeam(warTeam.getTeamMembers()));
         if (this.model.isOpponent()) {
-            model.put("opponentPresentIndexes", this.model.getTeams().opponentTeam(team.getProfileId()).getPresentIndexes());
-            model.put("opponentActiveIndex", this.model.getTeams().opponentTeam(team.getProfileId()).getActiveIndex());
-            model.put("opponentTeam", this.model.prepareTeam(this.model.getTeams().opponentTeam(team.getProfileId()).getTeamMembers()));
+            WarTeam opponentTeam = opponentTeam(team);
+            model.put("opponentPresentIndexes", opponentTeam.getPresentIndexes());
+            model.put("opponentActiveIndex", opponentTeam.getActiveIndex());
+            model.put("opponentSkills", opponentTeam.getTeamSkills().prepareSkills());
+            model.put("opponentTeam", this.model.prepareTeam(opponentTeam.getTeamMembers()));
         }
     }
 
@@ -41,7 +47,7 @@ public class WarModelFactory extends RivalModelFactory {
         model.put("activeIndex", warTeam.getActiveIndex());
         model.put("wisieActions", null);
         if (this.model.isOpponent()) {
-            model.put("opponentActiveIndex", this.model.getTeams().opponentTeam(team.getProfileId()).getActiveIndex());
+            model.put("opponentActiveIndex", opponentTeam(team).getActiveIndex());
             model.put("opponentWisieActions", null);
         }
     }
@@ -51,7 +57,7 @@ public class WarModelFactory extends RivalModelFactory {
         WarTeam warTeam = (WarTeam) team;
         model.put("presentIndexes", warTeam.getPresentIndexes());
         if (this.model.isOpponent()) {
-            model.put("opponentPresentIndexes", this.model.getTeams().opponentTeam(team.getProfileId()).getPresentIndexes());
+            model.put("opponentPresentIndexes", opponentTeam(team).getPresentIndexes());
         }
     }
 
@@ -69,7 +75,7 @@ public class WarModelFactory extends RivalModelFactory {
                 model.put("wisieActions", wisieActions);
             }
             if (this.model.isOpponent()) {
-                List<WisieAnswerAction> opponentWisieActions = this.model.getAnsweringWisieActions(this.model.getTeams().opponentTeam(team.getProfileId()));
+                List<WisieAnswerAction> opponentWisieActions = this.model.getAnsweringWisieActions(opponentTeam(team));
                 if (opponentWisieActions != null) {
                     model.put("opponentWisieActions", opponentWisieActions);
                 }
@@ -82,7 +88,7 @@ public class WarModelFactory extends RivalModelFactory {
         WarTeam warTeam = (WarTeam) team;
         model.put("presentIndexes", warTeam.getPresentIndexes());
         if (this.model.isOpponent()) {
-            model.put("opponentPresentIndexes", this.model.getTeams().opponentTeam(team.getProfileId()).getPresentIndexes());
+            model.put("opponentPresentIndexes", opponentTeam(team).getPresentIndexes());
         }
     }
 
@@ -96,7 +102,7 @@ public class WarModelFactory extends RivalModelFactory {
         model.put("task", this.model.getTaskDTOs().get(this.model.getCurrentTaskIndex()).toTaskMeta());
 //        fillModelChoosingWhoAnswerSkills(model, warTeam);
         if (this.model.isOpponent()) {
-            model.put("opponentPresentIndexes", this.model.getTeams().opponentTeam(team.getProfileId()).getPresentIndexes());
+            model.put("opponentPresentIndexes", opponentTeam(team).getPresentIndexes());
         }
     }
 

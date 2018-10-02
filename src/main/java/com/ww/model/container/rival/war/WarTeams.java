@@ -22,7 +22,6 @@ public class WarTeams extends RivalTeams {
         return team(getOpponentMap().get(profileId));
     }
 
-
     public WarTeam team(Long profileId) {
         return teamMap.get(profileId);
     }

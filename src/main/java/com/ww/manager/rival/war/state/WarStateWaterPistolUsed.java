@@ -15,13 +15,13 @@ public class WarStateWaterPistolUsed extends WarState {
 
     @Override
     protected void processVoid() {
-        WarTeam container = manager.getModel().getTeams().team(profileId);
+        WarTeam team = manager.getModel().getTeams().team(profileId);
         WarTeam opponentContainer = manager.getModel().getTeams().opponentTeam(profileId);
         WisieAnswerManager wisieAnswerManager = manager.getModel().getWisieAnswerManager(opponentContainer.getProfileId());
-        if (container.getTeamSkills().getWaterPistols() <= 0 || !container.getActiveTeamMember().isWisie() || wisieAnswerManager == null) {
+        if (!team.getTeamSkills().canUseWaterPistol() || !team.getActiveTeamMember().isWisie() || wisieAnswerManager == null) {
             return;
         }
-        container.getTeamSkills().useWaterPistol();
+        team.getTeamSkills().useWaterPistol();
         wisieAnswerManager.getFlow().waterPistol();
     }
 }
