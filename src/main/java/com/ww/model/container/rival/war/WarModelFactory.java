@@ -29,9 +29,9 @@ public class WarModelFactory extends RivalModelFactory {
 //        model.put("skills", model.prepareSkills())
         model.put("team", container.prepareTeam(warProfileContainer.getTeamMembers()));
         if (container.isOpponent()) {
-            model.put("opponentPresentIndexes", container.getTeamsContainer().opponentTeamContainer(profileContainer.getProfileId()).getPresentIndexes());
-            model.put("opponentActiveIndex", container.getTeamsContainer().opponentTeamContainer(profileContainer.getProfileId()).getActiveIndex());
-            model.put("opponentTeam", container.prepareTeam(container.getTeamsContainer().opponentTeamContainer(profileContainer.getProfileId()).getTeamMembers()));
+            model.put("opponentPresentIndexes", container.getTeamsContainer().opponentTeam(profileContainer.getProfileId()).getPresentIndexes());
+            model.put("opponentActiveIndex", container.getTeamsContainer().opponentTeam(profileContainer.getProfileId()).getActiveIndex());
+            model.put("opponentTeam", container.prepareTeam(container.getTeamsContainer().opponentTeam(profileContainer.getProfileId()).getTeamMembers()));
         }
     }
 
@@ -41,7 +41,7 @@ public class WarModelFactory extends RivalModelFactory {
         model.put("activeIndex", warProfileContainer.getActiveIndex());
         model.put("wisieActions", null);
         if (container.isOpponent()) {
-            model.put("opponentActiveIndex", container.getTeamsContainer().opponentTeamContainer(profileContainer.getProfileId()).getActiveIndex());
+            model.put("opponentActiveIndex", container.getTeamsContainer().opponentTeam(profileContainer.getProfileId()).getActiveIndex());
             model.put("opponentWisieActions", null);
         }
     }
@@ -51,7 +51,7 @@ public class WarModelFactory extends RivalModelFactory {
         WarTeam warProfileContainer = (WarTeam) profileContainer;
         model.put("presentIndexes", warProfileContainer.getPresentIndexes());
         if (container.isOpponent()) {
-            model.put("opponentPresentIndexes", container.getTeamsContainer().opponentTeamContainer(profileContainer.getProfileId()).getPresentIndexes());
+            model.put("opponentPresentIndexes", container.getTeamsContainer().opponentTeam(profileContainer.getProfileId()).getPresentIndexes());
         }
     }
 
@@ -69,7 +69,7 @@ public class WarModelFactory extends RivalModelFactory {
                 model.put("wisieActions", wisieActions);
             }
             if (container.isOpponent()) {
-                List<WisieAnswerAction> opponentWisieActions = container.getAnsweringWisieActions(container.getTeamsContainer().opponentTeamContainer(profileContainer.getProfileId()));
+                List<WisieAnswerAction> opponentWisieActions = container.getAnsweringWisieActions(container.getTeamsContainer().opponentTeam(profileContainer.getProfileId()));
                 if (opponentWisieActions != null) {
                     model.put("opponentWisieActions", opponentWisieActions);
                 }
@@ -82,7 +82,7 @@ public class WarModelFactory extends RivalModelFactory {
         WarTeam warProfileContainer = (WarTeam) profileContainer;
         model.put("presentIndexes", warProfileContainer.getPresentIndexes());
         if (container.isOpponent()) {
-            model.put("opponentPresentIndexes", container.getTeamsContainer().opponentTeamContainer(profileContainer.getProfileId()).getPresentIndexes());
+            model.put("opponentPresentIndexes", container.getTeamsContainer().opponentTeam(profileContainer.getProfileId()).getPresentIndexes());
         }
     }
 
@@ -96,7 +96,7 @@ public class WarModelFactory extends RivalModelFactory {
         model.put("task", container.getTaskDTOs().get(container.getCurrentTaskIndex()).toTaskMeta());
 //        fillModelChoosingWhoAnswerSkills(model, warProfileContainer);
         if (container.isOpponent()) {
-            model.put("opponentPresentIndexes", container.getTeamsContainer().opponentTeamContainer(profileContainer.getProfileId()).getPresentIndexes());
+            model.put("opponentPresentIndexes", container.getTeamsContainer().opponentTeam(profileContainer.getProfileId()).getPresentIndexes());
         }
     }
 
@@ -107,18 +107,18 @@ public class WarModelFactory extends RivalModelFactory {
         }
     }
 //
-//    public Map<String,Object> prepareSkills(Map<String, Object> model, WarTeam teamContainer) {
-//        fillModelAnsweringSkills(model, teamContainer);
-//        fillModelChoosingWhoAnswerSkills(model, teamContainer);
+//    public Map<String,Object> prepareSkills(Map<String, Object> model, WarTeam team) {
+//        fillModelAnsweringSkills(model, team);
+//        fillModelChoosingWhoAnswerSkills(model, team);
 //    }
 //
-//    public void fillModelAnsweringSkills(Map<String, Object> model, WarTeam teamContainer) {
-//        fillIfMoreThen0(model, "hints", teamContainer.getHints());
-//        fillIfMoreThen0(model, "waterPistols", teamContainer.getWaterPistols());
+//    public void fillModelAnsweringSkills(Map<String, Object> model, WarTeam team) {
+//        fillIfMoreThen0(model, "hints", team.getHints());
+//        fillIfMoreThen0(model, "waterPistols", team.getWaterPistols());
 //    }
 //
-//    public void fillModelChoosingWhoAnswerSkills(Map<String, Object> model, WarTeam teamContainer) {
-//        fillIfMoreThen0(model, "lifebuoys", teamContainer.getLifebuoys());
+//    public void fillModelChoosingWhoAnswerSkills(Map<String, Object> model, WarTeam team) {
+//        fillIfMoreThen0(model, "lifebuoys", team.getLifebuoys());
 //    }
 //
 //    private void fillIfMoreThen0(Map<String, Object> model, String key, int value) {

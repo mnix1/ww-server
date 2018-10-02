@@ -8,19 +8,19 @@ import java.util.List;
 
 @Getter
 @Setter
-public class WarTeamSkillsContainer {
+public class WarTeamSkills {
 
     private int hints;
     private int waterPistols;
     private int lifebuoys;
 
-    public WarTeamSkillsContainer(int base) {
+    public WarTeamSkills(int base) {
         this.hints = base;
         this.waterPistols = base;
         this.lifebuoys = base;
     }
 
-    public WarTeamSkillsContainer(int base, List<? extends OwnedWisie> wisies) {
+    public WarTeamSkills(int base, List<? extends OwnedWisie> wisies) {
         this.hints = base;
         this.waterPistols = base;
         this.lifebuoys = base;

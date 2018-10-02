@@ -11,33 +11,33 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class RivalGlobalService {
-    private final ConcurrentHashMap<Long, RivalManager> profileIdToRivalManagerMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Long, RivalManager> managerMap = new ConcurrentHashMap<>();
 
     @Autowired
     private RivalRepository rivalRepository;
 
     public void remove(Long profileId) {
-        profileIdToRivalManagerMap.remove(profileId);
+        managerMap.remove(profileId);
     }
 
-    public void put(Long profileId, RivalManager rivalManager) {
-        profileIdToRivalManagerMap.put(profileId, rivalManager);
+    public void put(Long profileId, RivalManager manager) {
+        managerMap.put(profileId, manager);
     }
 
     public RivalManager get(Long profileId) {
-        return profileIdToRivalManagerMap.get(profileId);
+        return managerMap.get(profileId);
     }
 
     public boolean contains(Long profileId) {
-        return profileIdToRivalManagerMap.containsKey(profileId);
+        return managerMap.containsKey(profileId);
     }
 
     public synchronized void sendActualRivalModelToNewProfileConnection(ProfileConnection profileConnection) {
         if (!contains(profileConnection.getProfileId())) {
             return;
         }
-        RivalManager rivalManager = profileIdToRivalManagerMap.get(profileConnection.getProfileId());
-        rivalManager.send(rivalManager.actualModel(profileConnection.getProfileId()), rivalManager.getMessageContent(), profileConnection.getProfileId());
+        RivalManager manager = managerMap.get(profileConnection.getProfileId());
+        manager.send(manager.actualModel(profileConnection.getProfileId()), manager.getMessageContent(), profileConnection.getProfileId());
     }
 
     public void save(Rival rival) {

@@ -36,13 +36,13 @@ public class RivalRunService {
     private ProfileConnectionService profileConnectionService;
 
     public void run(RivalInit initContainer) {
-        RivalManager rivalManager = createManager(initContainer);
+        RivalManager manager = createManager(initContainer);
         initContainer.getProfiles().forEach(profile -> {
             if (!profile.getId().equals(BOT_PROFILE_ID)) {
-                rivalGlobalService.put(profile.getId(), rivalManager);
+                rivalGlobalService.put(profile.getId(), manager);
             }
         });
-        rivalManager.getFlow().start();
+        manager.getFlow().start();
     }
 
     RivalManager createManager(RivalInit initContainer) {

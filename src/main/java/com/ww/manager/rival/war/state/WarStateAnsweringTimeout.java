@@ -22,12 +22,12 @@ public class WarStateAnsweringTimeout extends WarState {
             return Flowable.empty();
         }
         manager.getModel().stopWisieAnswerManager();
-        for (RivalTeam profileContainer : manager.getModel().getTeamsContainer().getTeamContainers()) {
+        for (RivalTeam profileContainer : manager.getModel().getTeamsContainer().getTeams()) {
             WarTeam warProfileContainer = (WarTeam) profileContainer;
             warProfileContainer.setActiveTeamMemberPresentToFalse();
         }
         manager.getModel().setStatus(RivalStatus.ANSWERING_TIMEOUT);
-        manager.getModel().getTeamsContainer().forEachProfile(profileContainer -> {
+        manager.getModel().getTeamsContainer().forEachTeam(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelAnsweringTimeout(model, profileContainer);
             manager.send(model, manager.getMessageContent(), profileContainer.getProfileId());

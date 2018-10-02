@@ -33,7 +33,7 @@ public class WarModel extends RivalModel {
 
     public void updateWisieAnswerManagers(WarManager manager) {
         wisieAnswerManagers = new ArrayList<>();
-        for (WarTeam warProfileContainer : teamsContainer.getTeamContainers()) {
+        for (WarTeam warProfileContainer : teamsContainer.getTeams()) {
             TeamMember teamMember = warProfileContainer.getActiveTeamMember();
             if (teamMember.isWisie()) {
                 wisieAnswerManagers.add(new WisieAnswerManager((OwnedWisie) teamMember.getContent(), manager));
@@ -82,7 +82,7 @@ public class WarModel extends RivalModel {
     }
 
     public String findChoosingTaskPropsTag() {
-        List<WarTeam> profileContainers = new ArrayList<>(getTeamsContainer().getTeamContainers());
+        List<WarTeam> profileContainers = new ArrayList<>(getTeamsContainer().getTeams());
         if (profileContainers.size() < 2) {
             return null;
         }
@@ -98,7 +98,7 @@ public class WarModel extends RivalModel {
     }
 
     public Optional<Profile> findWinner() {
-        List<RivalTeam> profileContainers = new ArrayList<>(getTeamsContainer().getTeamContainers());
+        List<RivalTeam> profileContainers = new ArrayList<>(getTeamsContainer().getTeams());
         if (profileContainers.size() < 2) {
             return Optional.empty();
         }

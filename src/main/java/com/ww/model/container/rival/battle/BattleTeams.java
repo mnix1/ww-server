@@ -15,23 +15,23 @@ public class BattleTeams extends RivalTeams {
     private final Map<Long, BattleTeam> profileContainerMap = new HashMap<>();
 
     public void addProfile(Long id, BattleTeam profileContainer) {
-        getTeamContainerMap().put(id, profileContainer);
+        getTeamMap().put(id, profileContainer);
     }
 
-    public BattleTeam opponentTeamContainer(Long profileId) {
-        return teamContainer(getOpponents().get(profileId));
+    public BattleTeam opponentTeam(Long profileId) {
+        return team(getOpponentMap().get(profileId));
     }
 
-    public BattleTeam teamContainer(Long profileId) {
+    public BattleTeam team(Long profileId) {
         return profileContainerMap.get(profileId);
     }
 
-    public Map<Long, BattleTeam> getTeamContainerMap() {
+    public Map<Long, BattleTeam> getTeamMap() {
         return profileContainerMap;
     }
 
-    public Collection<BattleTeam> getTeamContainers() {
-        return getTeamContainerMap().values();
+    public Collection<BattleTeam> getTeams() {
+        return getTeamMap().values();
     }
 
 }

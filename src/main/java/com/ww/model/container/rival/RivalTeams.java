@@ -9,17 +9,17 @@ import java.util.function.Consumer;
 
 @Getter
 public abstract class RivalTeams {
-    private final Map<Long, Long> opponents = new HashMap<>();
+    private final Map<Long, Long> opponentMap = new HashMap<>();
 
-    public abstract Map<Long, ? extends RivalTeam> getTeamContainerMap();
+    public abstract Map<Long, ? extends RivalTeam> getTeamMap();
 
-    public abstract RivalTeam teamContainer(Long profileId);
+    public abstract RivalTeam team(Long profileId);
 
-    public abstract RivalTeam opponentTeamContainer(Long profileId);
+    public abstract RivalTeam opponentTeam(Long profileId);
 
-    public void forEachProfile(Consumer<? super RivalTeam> action){
-        getTeamContainers().parallelStream().forEach(action);
+    public void forEachTeam(Consumer<? super RivalTeam> action){
+        getTeams().parallelStream().forEach(action);
     }
 
-    public abstract Collection<? extends RivalTeam> getTeamContainers();
+    public abstract Collection<? extends RivalTeam> getTeams();
 }

@@ -22,7 +22,7 @@ public class WarStateChoosingWhoAnswer extends WarState {
     protected Flowable<Long> processFlowable() {
         this.manager.getModel().setStatus(RivalStatus.CHOOSING_WHO_ANSWER);
 
-        for (RivalTeam profileContainer : manager.getModel().getTeamsContainer().getTeamContainers()) {
+        for (RivalTeam profileContainer : manager.getModel().getTeamsContainer().getTeams()) {
             WarTeam warProfileContainer = (WarTeam) profileContainer;
             warProfileContainer.setActiveIndex(warProfileContainer.getPresentIndexes().get(0));
             warProfileContainer.setChosenActiveIndex(false);
@@ -30,7 +30,7 @@ public class WarStateChoosingWhoAnswer extends WarState {
 
         int interval = manager.getInterval().getChoosingWhoAnswerInterval();
         manager.getModel().setEndChoosingWhoAnswerDate(Instant.now().plus(interval, ChronoUnit.MILLIS));
-        manager.getModel().getTeamsContainer().forEachProfile(profileContainer -> {
+        manager.getModel().getTeamsContainer().forEachTeam(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelChoosingWhoAnswer(model, profileContainer);
             this.manager.send(model, this.manager.getMessageContent(), profileContainer.getProfileId());

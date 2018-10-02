@@ -21,7 +21,7 @@ public class BattleStateAnsweringTimeout extends State {
             return Flowable.empty();
         }
         manager.getModel().setStatus(RivalStatus.ANSWERING_TIMEOUT);
-        manager.getModel().getTeamsContainer().forEachProfile(profileContainer -> {
+        manager.getModel().getTeamsContainer().forEachTeam(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelAnsweringTimeout(model, profileContainer);
             manager.send(model, manager.getMessageContent(), profileContainer.getProfileId());

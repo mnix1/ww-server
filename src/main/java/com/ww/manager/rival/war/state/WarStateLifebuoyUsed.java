@@ -21,7 +21,7 @@ public class WarStateLifebuoyUsed extends WarState {
 
     @Override
     protected void processVoid() {
-        WarTeam container = manager.getModel().getTeamsContainer().teamContainer(profileId);
+        WarTeam container = manager.getModel().getTeamsContainer().team(profileId);
         if (container.getTeamSkills().getLifebuoys() <= 0 || !content.containsKey("index")) {
             return;
         }
@@ -37,7 +37,7 @@ public class WarStateLifebuoyUsed extends WarState {
         }
         teamMember.setPresent(true);
         container.getPresentIndexes().add(teamMemberIndex);
-        manager.getModel().getTeamsContainer().forEachProfile(profileContainer -> {
+        manager.getModel().getTeamsContainer().forEachTeam(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelChoosingWhoAnswer(model, profileContainer);
             this.manager.send(model, this.manager.getMessageContent(), profileContainer.getProfileId());

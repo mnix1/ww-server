@@ -15,8 +15,8 @@ public class WarStateWaterPistolUsed extends WarState {
 
     @Override
     protected void processVoid() {
-        WarTeam container = manager.getModel().getTeamsContainer().teamContainer(profileId);
-        WarTeam opponentContainer = manager.getModel().getTeamsContainer().opponentTeamContainer(profileId);
+        WarTeam container = manager.getModel().getTeamsContainer().team(profileId);
+        WarTeam opponentContainer = manager.getModel().getTeamsContainer().opponentTeam(profileId);
         WisieAnswerManager wisieAnswerManager = manager.getModel().getWisieAnswerManager(opponentContainer.getProfileId());
         if (container.getTeamSkills().getWaterPistols() <= 0 || !container.getActiveTeamMember().isWisie() || wisieAnswerManager == null) {
             return;

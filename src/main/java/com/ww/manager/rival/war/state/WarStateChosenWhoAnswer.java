@@ -31,7 +31,7 @@ public class WarStateChosenWhoAnswer extends WarState {
         } catch (Exception e) {
             logger.error("Wrong content on WarStateChosenWhoAnswer for profileId: {}", profileId);
         }
-        WarTeam warProfileContainer = manager.getModel().getTeamsContainer().teamContainer(profileId);
+        WarTeam warProfileContainer = manager.getModel().getTeamsContainer().team(profileId);
         if (activeIndex != null && !warProfileContainer.isChosenActiveIndex() && warProfileContainer.getPresentIndexes().contains(activeIndex)) {
             warProfileContainer.setChosenActiveIndex(true);
             warProfileContainer.setActiveIndex(activeIndex);
@@ -44,7 +44,7 @@ public class WarStateChosenWhoAnswer extends WarState {
     }
 
     protected boolean allPlayersChoosen() {
-        for (RivalTeam profileContainer : manager.getModel().getTeamsContainer().getTeamContainers()) {
+        for (RivalTeam profileContainer : manager.getModel().getTeamsContainer().getTeams()) {
             WarTeam warProfileContainer = (WarTeam) profileContainer;
             if (!warProfileContainer.isChosenActiveIndex()) {
                 return false;

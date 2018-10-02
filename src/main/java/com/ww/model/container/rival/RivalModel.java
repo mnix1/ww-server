@@ -61,8 +61,8 @@ public abstract class RivalModel {
             RivalTwoPlayerInit c = (RivalTwoPlayerInit) container;
             this.creatorProfile = c.getCreatorProfile();
             this.opponentProfile = c.getOpponentProfile();
-            teamsContainer.getOpponents().put(creatorProfile.getId(), opponentProfile.getId());
-            teamsContainer.getOpponents().put(opponentProfile.getId(), creatorProfile.getId());
+            teamsContainer.getOpponentMap().put(creatorProfile.getId(), opponentProfile.getId());
+            teamsContainer.getOpponentMap().put(opponentProfile.getId(), creatorProfile.getId());
         } else if (container.getPlayer() == RivalPlayer.ONE) {
             RivalOnePlayerInit c = (RivalOnePlayerInit) container;
             this.creatorProfile = c.getCreatorProfile();
@@ -76,7 +76,7 @@ public abstract class RivalModel {
     public void setWinnerLooser(Profile winner) {
         this.draw = false;
         this.winner = winner;
-        this.looser = getTeamsContainer().opponentTeamContainer(winner.getId()).getProfile();
+        this.looser = getTeamsContainer().opponentTeam(winner.getId()).getProfile();
     }
 
     public boolean isRanking() {
@@ -115,7 +115,7 @@ public abstract class RivalModel {
         taskDTOs.add(taskDTO);
     }
 //
-//    public void forEachProfile(Consumer<? super RivalTeam> action) {
+//    public void forEachTeam(Consumer<? super RivalTeam> action) {
 //        profileContainers.values().parallelStream().forEach(action);
 //    }
 }

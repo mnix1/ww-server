@@ -106,7 +106,7 @@ public class WisieAnswerManager {
 
     public void addAndSendAction(WisieAnswerAction action) {
         actions.add(action);
-        manager.getModel().getTeamsContainer().forEachProfile(profileContainer -> {
+        manager.getModel().getTeamsContainer().forEachTeam(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelWisieAnswering(model, profileContainer);
             manager.send(model, manager.getMessageContent(), profileContainer.getProfileId());

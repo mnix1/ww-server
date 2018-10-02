@@ -52,7 +52,7 @@ public class RivalMessageService {
         if (!optionalProfileConnection.isPresent() || !rivalGlobalService.contains(optionalProfileConnection.get().getProfileId())) {
             return;
         }
-        RivalManager rivalManager = rivalGlobalService.get(optionalProfileConnection.get().getProfileId());
-        rivalManager.getFlow().processMessage(optionalProfileConnection.get().getProfileId(), handleInput(message));
+        RivalManager manager = rivalGlobalService.get(optionalProfileConnection.get().getProfileId());
+        manager.getFlow().processMessage(optionalProfileConnection.get().getProfileId(), handleInput(message));
     }
 }

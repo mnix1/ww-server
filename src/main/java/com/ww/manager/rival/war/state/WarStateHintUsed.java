@@ -19,7 +19,7 @@ public class WarStateHintUsed extends WarState {
 
     @Override
     protected void processVoid() {
-        WarTeam container = manager.getModel().getTeamsContainer().teamContainer(profileId);
+        WarTeam container = manager.getModel().getTeamsContainer().team(profileId);
         WisieAnswerManager wisieAnswerManager = manager.getModel().getWisieAnswerManager(profileId);
         if (container.getTeamSkills().getHints() <= 0 || !content.containsKey("answerId") || wisieAnswerManager == null) {
             return;

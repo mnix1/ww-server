@@ -24,7 +24,7 @@ public abstract class RivalModelFactory {
         model.put("type", getContainer().type.name());
         model.put("profile", prepareProfile(profileContainer.getProfile()));
         if (getContainer().isOpponent()) {
-            model.put("opponent", prepareProfile(getContainer().getTeamsContainer().opponentTeamContainer(profileContainer.getProfileId()).getProfile()));
+            model.put("opponent", prepareProfile(getContainer().getTeamsContainer().opponentTeam(profileContainer.getProfileId()).getProfile()));
         }
     }
 
@@ -102,7 +102,7 @@ public abstract class RivalModelFactory {
         }
         model.put("newProfile", prepareProfile(profileContainer.getProfile()));
         if (getContainer().isOpponent()) {
-            model.put("newOpponent", prepareProfile(getContainer().getTeamsContainer().opponentTeamContainer(profileContainer.getProfileId()).getProfile()));
+            model.put("newOpponent", prepareProfile(getContainer().getTeamsContainer().opponentTeam(profileContainer.getProfileId()).getProfile()));
         }
     }
 

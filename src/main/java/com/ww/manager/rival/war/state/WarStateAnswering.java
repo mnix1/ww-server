@@ -23,7 +23,7 @@ public class WarStateAnswering extends WarState {
 
         manager.getModel().updateWisieAnswerManagers(manager);
 
-        manager.getModel().getTeamsContainer().forEachProfile(profileContainer -> {
+        manager.getModel().getTeamsContainer().forEachTeam(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelAnswering(model, profileContainer);
             manager.send(model, manager.getMessageContent(), profileContainer.getProfileId());

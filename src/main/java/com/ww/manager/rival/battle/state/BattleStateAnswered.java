@@ -31,9 +31,9 @@ public class BattleStateAnswered extends State {
             manager.getModel().setMarkedAnswerId(markedAnswerId);
             isAnswerCorrect = manager.getModel().findCurrentCorrectAnswerId().equals(markedAnswerId);
         }
-        BattleTeam container = (BattleTeam) manager.getModel().getTeamsContainer().teamContainer(profileId);
+        BattleTeam container = (BattleTeam) manager.getModel().getTeamsContainer().team(profileId);
         container.setScore(isAnswerCorrect ? container.getScore() + manager.getModel().getCurrentTaskPoints() : container.getScore() - manager.getModel().getCurrentTaskPoints());
-        manager.getModel().getTeamsContainer().forEachProfile(profileContainer -> {
+        manager.getModel().getTeamsContainer().forEachTeam(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelAnswered(model, profileContainer);
             manager.send(model, manager.getMessageContent(), profileContainer.getProfileId());

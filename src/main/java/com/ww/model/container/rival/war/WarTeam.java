@@ -14,9 +14,9 @@ public class WarTeam extends RivalTeam {
     private List<TeamMember> teamMembers;
     private int activeIndex;
     private boolean isChosenActiveIndex;
-    private WarTeamSkillsContainer teamSkills;
+    private WarTeamSkills teamSkills;
 
-    public WarTeam(Profile profile, List<TeamMember> teamMembers, WarTeamSkillsContainer teamSkills) {
+    public WarTeam(Profile profile, List<TeamMember> teamMembers, WarTeamSkills teamSkills) {
         super(profile);
         this.teamMembers = teamMembers;
         this.activeIndex = 0;

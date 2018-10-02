@@ -25,7 +25,7 @@ public class StateClose extends State {
         }
         manager.getModel().setResigned(false);
         manager.updateProfilesElo();
-        manager.getModel().getTeamsContainer().forEachProfile(profileContainer -> {
+        manager.getModel().getTeamsContainer().forEachTeam(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelEloChanged(model, profileContainer);
             manager.getModelFactory().fillModelClosed(model, profileContainer);
