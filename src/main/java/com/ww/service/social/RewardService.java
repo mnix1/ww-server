@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.manager.rival.battle.BattleManager;
 import com.ww.model.container.Resources;
-import com.ww.model.container.RewardObject;
+import com.ww.model.container.Reward;
 import com.ww.model.entity.outside.book.Book;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.repository.outside.book.ProfileBookRepository;
@@ -35,32 +35,34 @@ public class RewardService {
     ProfileBookService profileBookService;
 
     public void addRewardFromBattleWin(Profile winner) {
-        RewardObject rewardObject = new RewardObject();
-        rewardObject.setGoldGain(1L);
+        Reward reward = new Reward();
+        Resources resources = new Resources(1L);
+        reward.setResources(resources);
         Profile profile = profileService.getProfile(winner.getId());
-        profile.addResources(new Resources(1L));
+        profile.addResources(resources);
         profileService.save(profile);
         if (!profileBookService.isProfileBookShelfFull(profile.getId())) {
             Book book = giveBook(profile);
-            rewardObject.setBookType(book.getType());
+            reward.setBookType(book.getType());
         }
         Map<String, Object> model = new HashMap<>();
-        rewardObject.writeToMap(model);
+        reward.writeToMap(model);
         send(model, Message.REWARD, profile.getId());
     }
 
     public void addRewardFromWarWin(Profile winner) {
-        RewardObject rewardObject = new RewardObject();
-        rewardObject.setGoldGain(2L);
+        Reward reward = new Reward();
+        Resources resources = new Resources(2L);
+        reward.setResources(resources);
         Profile profile = profileService.getProfile(winner.getId());
-        profile.addResources(new Resources(2L));
+        profile.addResources(resources);
         profileService.save(profile);
         if (!profileBookService.isProfileBookShelfFull(profile.getId())) {
             Book book = giveBook(profile);
-            rewardObject.setBookType(book.getType());
+            reward.setBookType(book.getType());
         }
         Map<String, Object> model = new HashMap<>();
-        rewardObject.writeToMap(model);
+        reward.writeToMap(model);
         send(model, Message.REWARD, profile.getId());
     }
 
