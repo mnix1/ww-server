@@ -96,7 +96,7 @@ public class WarModelFactory extends RivalModelFactory {
         model.put("choosingWhoAnswerInterval", Math.max(this.model.getEndChoosingWhoAnswerDate().toEpochMilli() - Instant.now().toEpochMilli(), 0L));
         model.put("activeIndex", warTeam.getActiveIndex());
         model.put("isChosenActiveIndex", warTeam.isChosenActiveIndex());
-        model.put("task", this.model.getTaskDTOs().get(this.model.getCurrentTaskIndex()).toTaskMeta());
+        fillModelTaskMeta(model);
         fillModelPresentIndexes(model, team);
     }
 

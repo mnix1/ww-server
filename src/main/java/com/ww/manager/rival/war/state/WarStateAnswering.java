@@ -18,8 +18,14 @@ public class WarStateAnswering extends WarState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.getModel().setEndAnsweringDate(Instant.now().plus(manager.getInterval().getAnsweringInterval(), ChronoUnit.MILLIS));
         manager.getModel().setStatus(RivalStatus.ANSWERING);
+        Map<String, Object> newTaskModel = new HashMap<>();
+        manager.getModelFactory().fillModelNewTask(newTaskModel);
+        manager.getModel().getTeams().forEachTeam(team -> {
+            manager.send(newTaskModel, manager.getMessageContent(), team.getProfileId());
+        });
+
+        manager.getModel().setEndAnsweringDate(Instant.now().plus(manager.getInterval().getAnsweringInterval(), ChronoUnit.MILLIS));
 
         manager.getModel().updateWisieAnswerManagers(manager);
 

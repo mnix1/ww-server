@@ -18,12 +18,17 @@ public class BattleStateAnswering extends State {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.getModel().setEndAnsweringDate(Instant.now().plus(manager.getInterval().getAnsweringInterval(), ChronoUnit.MILLIS));
         manager.getModel().setStatus(RivalStatus.ANSWERING);
-        manager.getModel().getTeams().forEachTeam(profileContainer -> {
+        Map<String, Object> newTaskModel = new HashMap<>();
+        manager.getModelFactory().fillModelNewTask(newTaskModel);
+        manager.getModel().getTeams().forEachTeam(team -> {
+            manager.send(newTaskModel, manager.getMessageContent(), team.getProfileId());
+        });
+        manager.getModel().setEndAnsweringDate(Instant.now().plus(manager.getInterval().getAnsweringInterval(), ChronoUnit.MILLIS));
+        manager.getModel().getTeams().forEachTeam(team -> {
             Map<String, Object> model = new HashMap<>();
-            manager.getModelFactory().fillModelAnswering(model, profileContainer);
-            manager.send(model, manager.getMessageContent(), profileContainer.getProfileId());
+            manager.getModelFactory().fillModelAnswering(model, team);
+            manager.send(model, manager.getMessageContent(), team.getProfileId());
         });
         return Flowable.intervalRange(0L, 1L, manager.getInterval().getAnsweringInterval(), manager.getInterval().getAnsweringInterval(), TimeUnit.MILLISECONDS);
     }
