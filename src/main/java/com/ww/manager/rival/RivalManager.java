@@ -6,8 +6,8 @@ import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.constant.rival.RivalType;
-import com.ww.model.container.rival.RivalModel;
 import com.ww.model.container.rival.RivalInterval;
+import com.ww.model.container.rival.RivalModel;
 import com.ww.model.container.rival.RivalModelFactory;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.dto.rival.task.TaskDTO;
@@ -43,6 +43,13 @@ public abstract class RivalManager {
     public abstract RivalFlow getFlow();
 
     public abstract boolean isEnd();
+
+    @Override
+    public String toString() {
+        return "RivalManager creatorId=" + getModel().getCreatorProfile().getId()
+                + (getModel().getOpponentProfile() == null ? "" : "opponentId=" + getModel().getOpponentProfile().getId())
+                + ", status=" + getModel().getStatus();
+    }
 
     public Message getMessageContent() {
         return abstractRivalService.getMessageContent();

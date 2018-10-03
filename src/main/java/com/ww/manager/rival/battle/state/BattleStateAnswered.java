@@ -11,12 +11,11 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class BattleStateAnswered extends State {
-
     private Long profileId;
     private Map<String, Object> content;
 
     public BattleStateAnswered(RivalManager manager, Long profileId, Map<String, Object> content) {
-        super(manager);
+        super(manager, STATE_TYPE_FLOWABLE);
         this.profileId = profileId;
         this.content = content;
     }

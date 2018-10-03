@@ -41,42 +41,49 @@ public class WarFlow extends RivalFlow {
         return true;
     }
 
+    protected synchronized void dispose() {
+        manager.getModel().stopWisieAnswerManager();
+        super.dispose();
+    }
+
     public synchronized void start() {
-        new StateIntro(manager).startFlowable().subscribe(aLong1 -> {
+        state = new StateIntro(manager).addOnFlowableEndListener(aLong1 -> {
             phase2();
-        });
+        }).startFlowable();
     }
 
     public synchronized void phase1() {
-        new StatePreparingNextTask(manager).startFlowable().subscribe(aLong2 -> {
-            activeFlowable = new WarStateAnswering(manager).startFlowable().subscribe(aLong3 -> {
-                new WarStateAnsweringTimeout(manager).startFlowable().subscribe(aLong4 -> {
+        state = new StatePreparingNextTask(manager).addOnFlowableEndListener(aLong2 -> {
+            state = new WarStateAnswering(manager).addOnFlowableEndListener(aLong3 -> {
+                state = new WarStateAnsweringTimeout(manager).addOnFlowableEndListener(aLong4 -> {
                     phase2();
-                });
-            });
-        });
+                }).startFlowable();
+            }).startFlowable();
+        }).startFlowable();
     }
 
     public synchronized void phase2() {
         if (manager.isEnd()) {
             new StateClose(manager).startVoid();
         } else {
-            activeFlowable = new StateChoosingTaskProps(manager).startFlowable().subscribe(aLong5 -> {
-                boolean randomChooseTaskProps = manager.getModel().randomChooseTaskProps();
-                if (randomChooseTaskProps) {
-                    phase3();
-                } else {
-                    new StateChoosingTaskPropsTimeout(manager).startVoid();
-                    phase3();
+            state = new StateChoosingTaskProps(manager).addOnFlowableEndListener(aLong5 -> {
+                synchronized (this) {
+                    boolean randomChooseTaskProps = manager.getModel().randomChooseTaskProps();
+                    if (randomChooseTaskProps) {
+                        phase3();
+                    } else {
+                        new StateChoosingTaskPropsTimeout(manager).startVoid();
+                        phase3();
+                    }
                 }
-            });
+            }).startFlowable();
         }
     }
 
     public synchronized void phase3() {
-        activeFlowable = new WarStateChoosingWhoAnswer(manager).startFlowable().subscribe(aLong2 -> {
+        state = new WarStateChoosingWhoAnswer(manager).addOnFlowableEndListener(aLong2 -> {
             phase1();
-        });
+        }).startFlowable();
     }
 
     public synchronized void wisieAnswered(Long profileId, Long answerId) {
@@ -86,10 +93,10 @@ public class WarFlow extends RivalFlow {
     }
 
     public synchronized void answer(Long profileId, Map<String, Object> content) {
-        disposeFlowable();
-        new WarStateAnswered(manager, profileId, content).startFlowable().subscribe(aLong -> {
+        dispose();
+        new WarStateAnswered(manager, profileId, content).addOnFlowableEndListener(aLong -> {
             phase2();
-        });
+        }).startFlowable();
     }
 
     public synchronized void hint(Long profileId, Map<String, Object> content) {
@@ -106,21 +113,15 @@ public class WarFlow extends RivalFlow {
 
     public synchronized void chosenTaskProps(Long profileId, Map<String, Object> content) {
         if (new StateChosenTaskProps(manager, profileId, content).startBoolean()) {
-            disposeFlowable();
+            dispose();
             phase3();
         }
     }
 
     public synchronized void chosenWhoAnswer(Long profileId, Map<String, Object> content) {
         if (new WarStateChosenWhoAnswer(manager, profileId, content).startBoolean()) {
-            disposeFlowable();
+            dispose();
             phase1();
         }
     }
-
-    public synchronized void surrender(Long profileId) {
-        manager.getModel().stopWisieAnswerManager();
-        super.surrender(profileId);
-    }
-
 }

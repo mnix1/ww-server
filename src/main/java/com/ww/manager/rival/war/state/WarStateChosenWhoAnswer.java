@@ -16,7 +16,7 @@ public class WarStateChosenWhoAnswer extends WarState {
     private Map<String, Object> content;
 
     public WarStateChosenWhoAnswer(WarManager manager, Long profileId, Map<String, Object> content) {
-        super(manager);
+        super(manager, STATE_TYPE_DECISION);
         this.profileId = profileId;
         this.content = content;
     }

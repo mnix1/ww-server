@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 public class WarStateAnswering extends WarState {
 
     public WarStateAnswering(WarManager manager) {
-        super(manager);
+        super(manager, STATE_TYPE_FLOWABLE);
     }
 
     @Override

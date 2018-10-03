@@ -12,8 +12,6 @@ import java.util.Map;
 import static com.ww.manager.rival.campaign.CampaignWarManager.BOT_PROFILE_ID;
 
 public class CampaignWarStateChosenWhoAnswer extends WarStateChosenWhoAnswer {
-    protected static final Logger logger = LoggerFactory.getLogger(CampaignWarStateChosenWhoAnswer.class);
-
     public CampaignWarStateChosenWhoAnswer(CampaignWarManager manager, Long profileId, Map<String, Object> content) {
         super(manager, profileId, content);
     }

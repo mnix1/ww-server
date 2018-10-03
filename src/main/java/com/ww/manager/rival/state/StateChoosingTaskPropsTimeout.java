@@ -6,7 +6,7 @@ import com.ww.model.constant.rival.RivalStatus;
 public class StateChoosingTaskPropsTimeout extends State {
 
     public StateChoosingTaskPropsTimeout(RivalManager manager) {
-        super(manager);
+        super(manager, STATE_TYPE_VOID);
     }
 
     @Override

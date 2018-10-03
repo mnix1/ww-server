@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 public class WarStateChoosingWhoAnswer extends WarState {
 
     public WarStateChoosingWhoAnswer(WarManager manager) {
-        super(manager);
+        super(manager, STATE_TYPE_FLOWABLE);
     }
 
     @Override

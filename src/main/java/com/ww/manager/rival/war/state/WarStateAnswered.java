@@ -15,7 +15,7 @@ public class WarStateAnswered extends WarState {
     private Map<String, Object> content;
 
     public WarStateAnswered(WarManager manager, Long profileId, Map<String, Object> content) {
-        super(manager);
+        super(manager, STATE_TYPE_FLOWABLE);
         this.profileId = profileId;
         this.content = content;
     }

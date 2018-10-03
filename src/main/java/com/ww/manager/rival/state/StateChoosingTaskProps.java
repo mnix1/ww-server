@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 public class StateChoosingTaskProps extends State {
 
     public StateChoosingTaskProps(RivalManager manager) {
-        super(manager);
+        super(manager, STATE_TYPE_FLOWABLE);
     }
 
     @Override

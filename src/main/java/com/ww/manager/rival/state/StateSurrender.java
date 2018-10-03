@@ -11,7 +11,7 @@ public class StateSurrender extends State {
     private Long profileId;
 
     public StateSurrender(RivalManager manager, Long profileId) {
-        super(manager);
+        super(manager, STATE_TYPE_VOID);
         this.profileId = profileId;
     }
 

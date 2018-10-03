@@ -13,7 +13,7 @@ public class WarStateHintUsed extends WarState {
     private Map<String, Object> content;
 
     public WarStateHintUsed(WarManager manager, Long profileId, Map<String, Object> content) {
-        super(manager);
+        super(manager, STATE_TYPE_VOID);
         this.profileId = profileId;
         this.content = content;
     }

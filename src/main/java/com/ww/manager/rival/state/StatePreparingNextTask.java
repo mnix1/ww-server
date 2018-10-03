@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 public class StatePreparingNextTask extends State {
 
     public StatePreparingNextTask(RivalManager manager) {
-        super(manager);
+        super(manager, STATE_TYPE_FLOWABLE);
     }
 
     @Override

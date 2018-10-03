@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 public class StateIntro extends State {
 
     public StateIntro(RivalManager manager) {
-        super(manager);
+        super(manager, STATE_TYPE_FLOWABLE);
     }
 
     @Override

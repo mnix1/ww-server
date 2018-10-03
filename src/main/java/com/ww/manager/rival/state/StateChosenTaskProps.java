@@ -16,7 +16,7 @@ public class StateChosenTaskProps extends State {
     private Map<String, Object> content;
 
     public StateChosenTaskProps(RivalManager manager, Long profileId, Map<String, Object> content) {
-        super(manager);
+        super(manager, STATE_TYPE_DECISION);
         this.profileId = profileId;
         this.content = content;
     }

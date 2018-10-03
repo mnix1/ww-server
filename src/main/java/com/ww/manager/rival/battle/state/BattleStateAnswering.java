@@ -12,9 +12,8 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class BattleStateAnswering extends State {
-
     public BattleStateAnswering(RivalManager manager) {
-        super(manager);
+        super(manager, STATE_TYPE_FLOWABLE);
     }
 
     @Override

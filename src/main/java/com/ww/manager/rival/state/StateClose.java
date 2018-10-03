@@ -11,7 +11,7 @@ import java.util.Optional;
 public class StateClose extends State {
 
     public StateClose(RivalManager manager) {
-        super(manager);
+        super(manager, STATE_TYPE_VOID);
     }
 
     @Override

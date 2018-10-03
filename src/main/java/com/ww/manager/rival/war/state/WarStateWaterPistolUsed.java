@@ -12,7 +12,7 @@ public class WarStateWaterPistolUsed extends WarState {
     private Long profileId;
 
     public WarStateWaterPistolUsed(WarManager manager, Long profileId) {
-        super(manager);
+        super(manager, STATE_TYPE_VOID);
         this.profileId = profileId;
     }
 

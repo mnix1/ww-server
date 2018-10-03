@@ -1,5 +1,6 @@
 package com.ww.manager.rival;
 
+import com.ww.manager.rival.state.AbstractState;
 import com.ww.manager.rival.state.StateSurrender;
 import com.ww.model.constant.rival.RivalStatus;
 import io.reactivex.disposables.Disposable;
@@ -14,15 +15,12 @@ import static com.ww.service.rival.global.RivalMessageService.*;
 @Getter
 public abstract class RivalFlow {
     protected static final Logger logger = LoggerFactory.getLogger(RivalFlow.class);
-    protected Disposable activeFlowable;
 
     protected abstract RivalManager getManager();
+    protected AbstractState state;
 
-    public void disposeFlowable() {
-        if (activeFlowable != null) {
-            activeFlowable.dispose();
-            activeFlowable = null;
-        }
+    protected synchronized void dispose() {
+        state.dispose();
     }
 
     public boolean processMessage(Long profileId, Map<String, Object> content) {
@@ -47,6 +45,7 @@ public abstract class RivalFlow {
     public abstract void chosenTaskProps(Long profileId, Map<String, Object> content);
 
     public synchronized void surrender(Long profileId) {
+        dispose();
         new StateSurrender(getManager(), profileId).startVoid();
     }
 }

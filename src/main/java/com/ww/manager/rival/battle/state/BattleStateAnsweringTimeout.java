@@ -10,9 +10,8 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class BattleStateAnsweringTimeout extends State {
-
     public BattleStateAnsweringTimeout(RivalManager manager) {
-        super(manager);
+        super(manager, STATE_TYPE_FLOWABLE);
     }
 
     @Override
