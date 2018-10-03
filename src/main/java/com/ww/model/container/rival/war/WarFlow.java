@@ -87,6 +87,8 @@ public class WarFlow extends RivalFlow {
     }
 
     public synchronized void wisieAnswered(Long profileId, Long answerId) {
+        dispose();
+        logger.trace(manager.toString() + ", wisieAnswered: {}, {}", profileId, answerId);
         Map<String, Object> content = new HashMap<>();
         content.put("answerId", answerId.intValue());
         answer(profileId, content);

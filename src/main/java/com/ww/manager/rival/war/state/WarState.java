@@ -18,8 +18,8 @@ public abstract class WarState extends AbstractState {
     }
 
     public AbstractState startFlowable() {
-        logger.trace(manager.toString() + ", startFlowable");
         super.startFlowable();
+        logger.trace(manager.toString() + ", startFlowable");
         return this;
     }
 }

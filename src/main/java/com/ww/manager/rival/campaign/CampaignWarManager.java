@@ -2,6 +2,7 @@ package com.ww.manager.rival.campaign;
 
 import com.ww.helper.TeamHelper;
 import com.ww.manager.rival.war.WarManager;
+import com.ww.model.container.rival.EmptyTeamSkills;
 import com.ww.model.container.rival.campaign.CampaignWarModel;
 import com.ww.model.container.rival.campaign.CampaignWarFlow;
 import com.ww.model.container.rival.init.RivalCampaignWarInit;
@@ -39,7 +40,7 @@ public class CampaignWarManager extends WarManager {
         teams.addProfile(creator.getId(), creatorTeam);
 
         Profile opponent = init.getOpponentProfile();
-        WarTeam opponentTeam = new WarTeam(opponent, prepareTeamMembers(opponent, profileCampaign), new WarTeamSkills(0));
+        WarTeam opponentTeam = new WarTeam(opponent, prepareTeamMembers(opponent, profileCampaign), new EmptyTeamSkills());
         teams.addProfile(opponent.getId(), opponentTeam);
     }
 

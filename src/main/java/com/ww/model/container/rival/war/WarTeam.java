@@ -1,6 +1,7 @@
 package com.ww.model.container.rival.war;
 
 import com.ww.model.container.rival.RivalTeam;
+import com.ww.model.container.rival.RivalTeamSkills;
 import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,9 +15,9 @@ public class WarTeam extends RivalTeam {
     private List<TeamMember> teamMembers;
     private int activeIndex;
     private boolean isChosenActiveIndex;
-    private WarTeamSkills teamSkills;
+    private RivalTeamSkills teamSkills;
 
-    public WarTeam(Profile profile, List<TeamMember> teamMembers, WarTeamSkills teamSkills) {
+    public WarTeam(Profile profile, List<TeamMember> teamMembers, RivalTeamSkills teamSkills) {
         super(profile);
         this.teamMembers = teamMembers;
         this.activeIndex = 0;

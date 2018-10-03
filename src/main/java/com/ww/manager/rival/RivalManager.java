@@ -47,7 +47,7 @@ public abstract class RivalManager {
     @Override
     public String toString() {
         return "RivalManager creatorId=" + getModel().getCreatorProfile().getId()
-                + (getModel().getOpponentProfile() == null ? "" : "opponentId=" + getModel().getOpponentProfile().getId())
+                + (getModel().getOpponentProfile() == null ? "" : ", opponentId=" + getModel().getOpponentProfile().getId())
                 + ", status=" + getModel().getStatus();
     }
 
