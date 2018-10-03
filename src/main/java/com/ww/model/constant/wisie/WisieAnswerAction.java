@@ -39,6 +39,8 @@ public enum WisieAnswerAction {
     THINKING_WHICH_ANSWER_MATCH,
     THINKING_IF_GIVE_RANDOM_ANSWER,
 
+    TALKING_ON_THE_PHONE,
+    WRITING_AN_SMS,
     DREAMING_ABOUT_VACATION,
     SCRATCHING,
     YAWNING,
@@ -52,7 +54,7 @@ public enum WisieAnswerAction {
 
     public static List<WisieAnswerAction> getNoConcentrationActions() {
         return Arrays.asList(DREAMING_ABOUT_VACATION, SCRATCHING, YAWNING, HUNG_UP, NEED_GO_TO_TOILET, HUMMING_A_SONG,
-                WATCHES_THE_AUDIENCE, HAS_MUSCLE_SPASM, DRINKING_JUICE, WOULD_EAT_SOMETHING);
+                WATCHES_THE_AUDIENCE, HAS_MUSCLE_SPASM, DRINKING_JUICE, WOULD_EAT_SOMETHING, WRITING_AN_SMS, TALKING_ON_THE_PHONE);
     }
 
     public static boolean isNoConcentration(WisieAnswerAction action) {
