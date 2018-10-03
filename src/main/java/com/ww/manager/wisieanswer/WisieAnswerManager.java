@@ -22,6 +22,8 @@ import static com.ww.helper.WisieHelper.f1;
 public class WisieAnswerManager {
     protected static final Logger logger = LoggerFactory.getLogger(WisieAnswerManager.class);
 
+    private boolean running = false;
+
     private CopyOnWriteArrayList<WisieAnswerAction> actions = new CopyOnWriteArrayList<>();
 
     private OwnedWisie wisie;
@@ -77,7 +79,10 @@ public class WisieAnswerManager {
 
     @Override
     public String toString() {
-        return getWisie().getId() + ", profileId=" + getWisie().getProfile().getId() + ", wisieName=" + getWisie().getWisie().getNamePolish() + ", lastAction=" + lastAction().name();
+        return "WisieAnswerManager wisieName=" + getWisie().getWisie().getNamePolish()
+                + ", profileWisieId=" + getWisie().getId()
+                + ", profileId=" + getWisie().getProfile().getId()
+                + ", lastAction=" + lastAction().name();
     }
 
     private void cacheAttributes() {

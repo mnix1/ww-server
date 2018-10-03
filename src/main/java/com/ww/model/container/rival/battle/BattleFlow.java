@@ -55,7 +55,7 @@ public class BattleFlow extends RivalFlow {
 
     public synchronized void answer(Long profileId, Map<String, Object> content) {
         dispose();
-        new BattleStateAnswered(manager, profileId, content).addOnFlowableEndListener(aLong -> {
+        state = new BattleStateAnswered(manager, profileId, content).addOnFlowableEndListener(aLong -> {
             phase2();
         }).startFlowable();
     }

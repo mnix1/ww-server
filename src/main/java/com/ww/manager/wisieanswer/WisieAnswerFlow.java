@@ -35,10 +35,12 @@ public class WisieAnswerFlow {
     }
 
     public void start() {
+        manager.setRunning(true);
         phase1();
     }
 
     public void stop() {
+        manager.setRunning(false);
         dispose();
     }
 

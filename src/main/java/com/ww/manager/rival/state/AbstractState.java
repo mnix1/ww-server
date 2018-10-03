@@ -1,18 +1,20 @@
 package com.ww.manager.rival.state;
 
+import com.ww.helper.Loggable;
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Setter
 @Getter
-public abstract class AbstractState {
+public abstract class AbstractState implements FlowRunnable, Loggable {
+    protected static final Logger logger = LoggerFactory.getLogger(AbstractState.class);
     public static String STATE_TYPE_FLOWABLE = "flowable";
     public static String STATE_TYPE_DECISION = "decision";
     public static String STATE_TYPE_VOID = "void";
@@ -27,6 +29,7 @@ public abstract class AbstractState {
     }
 
     public AbstractState dispose() {
+        logger.trace("AbstractState in dispose before for, disposablesCount=" + disposables.size());
         for (Disposable disposable : disposables) {
             if (!disposable.isDisposed()) {
                 disposable.dispose();
@@ -36,7 +39,16 @@ public abstract class AbstractState {
         return this;
     }
 
+    protected boolean startIfRunning() {
+        boolean isRunning = isRunning();
+        logger.trace(describe() + ", isRunning=" + isRunning);
+        return isRunning;
+    }
+
     public AbstractState startFlowable() {
+        if (!startIfRunning()) {
+            return this;
+        }
         Flowable<Long> flowable = processFlowable();
         for (Consumer onFlowableEndListener : onFlowableEndListeners) {
             disposables.add(flowable.subscribe(onFlowableEndListener));
@@ -49,6 +61,9 @@ public abstract class AbstractState {
     }
 
     public void startVoid() {
+        if (!startIfRunning()) {
+            return;
+        }
         processVoid();
     }
 
@@ -56,6 +71,9 @@ public abstract class AbstractState {
     }
 
     public Boolean startBoolean() {
+        if (!startIfRunning()) {
+            return null;
+        }
         return processBoolean();
     }
 

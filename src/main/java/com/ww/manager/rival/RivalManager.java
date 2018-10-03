@@ -45,13 +45,6 @@ public abstract class RivalManager {
 
     public abstract Message getMessageContent();
 
-    @Override
-    public String toString() {
-        return "RivalManager creatorId=" + getModel().getCreatorProfile().getId()
-                + (getModel().getOpponentProfile() == null ? "" : ", opponentId=" + getModel().getOpponentProfile().getId())
-                + ", status=" + getModel().getStatus();
-    }
-
     public void prepareTask(Long id) {
         prepareTask(id, Category.random(), DifficultyLevel.random());
     }
@@ -121,6 +114,13 @@ public abstract class RivalManager {
 
     public boolean isClosed() {
         return getModel().getStatus() == RivalStatus.CLOSED;
+    }
+
+    @Override
+    public String toString() {
+        return "RivalManager creatorId=" + getModel().getCreatorProfile().getId()
+                + (getModel().getOpponentProfile() == null ? "" : ", opponentId=" + getModel().getOpponentProfile().getId())
+                + ", status=" + getModel().getStatus();
     }
 
 }

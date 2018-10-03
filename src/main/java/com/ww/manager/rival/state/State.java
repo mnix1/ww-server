@@ -16,9 +16,13 @@ public abstract class State extends AbstractState {
         setType(type);
     }
 
-    public AbstractState startFlowable() {
-        super.startFlowable();
-        logger.trace(manager.toString() + ", startFlowable");
-        return this;
+    @Override
+    public String describe() {
+        return manager.toString();
+    }
+
+    @Override
+    public boolean isRunning() {
+        return !manager.isClosed();
     }
 }

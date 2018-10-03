@@ -14,7 +14,20 @@ public abstract class WisieState extends AbstractState {
         setType(type);
     }
 
+    @Override
+    public String describe() {
+        return manager.toString();
+    }
+
+    @Override
+    public boolean isRunning() {
+        return manager.isRunning();
+    }
+
     public WisieAnswerAction startWisieAnswerAction() {
+        if (!startIfRunning()) {
+            return WisieAnswerAction.NONE;
+        }
         return processWisieAnswerAction();
     }
 
