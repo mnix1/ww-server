@@ -9,6 +9,7 @@ import com.ww.model.entity.outside.wisie.OwnedWisie;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
 import com.ww.service.rival.war.RivalWarService;
 import com.ww.service.social.ProfileConnectionService;
+import com.ww.websocket.message.Message;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,9 +24,8 @@ public class WarManager extends RivalManager {
     public WarInterval interval;
     public WarFlow flow;
 
-    public WarManager(RivalTwoPlayerInit init, RivalWarService rivalService, ProfileConnectionService profileConnectionService) {
-        this.abstractRivalService = rivalService;
-        this.profileConnectionService = profileConnectionService;
+    public WarManager(RivalTwoPlayerInit init, RivalWarService rivalService) {
+        this.rivalService = rivalService;
         WarTeams teams = new WarTeams();
         this.model = new WarModel(init, teams);
         this.modelFactory = new WarModelFactory(this.model);
@@ -47,12 +47,18 @@ public class WarManager extends RivalManager {
         return TeamHelper.prepareTeamMembers(profile, wisies, model.getImportance(), model.getType());
     }
 
+    @Override
     public boolean isEnd() {
-        for (WarTeam warProfileContainer : this.getModel().getTeams().getTeams()) {
-            if (!warProfileContainer.isAnyPresentMember()) {
+        for (WarTeam team : this.getModel().getTeams().getTeams()) {
+            if (!team.isAnyPresentMember()) {
                 return true;
             }
         }
         return false;
+    }
+
+    @Override
+    public Message getMessageContent() {
+        return Message.WAR_CONTENT;
     }
 }

@@ -12,6 +12,7 @@ import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.social.ProfileFriend;
 import com.ww.repository.outside.rival.challenge.ChallengeProfileRepository;
 import com.ww.repository.outside.rival.challenge.ChallengeRepository;
+import com.ww.service.rival.init.RivalRunService;
 import com.ww.service.social.ProfileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,9 @@ public class ChallengeService {
 
     @Autowired
     private ProfileService profileService;
+
+    @Autowired
+    private RivalRunService rivalRunService;
 
     public Map<String, Object> friendInit(List<String> tags) {
         Map<String, Object> model = new HashMap<>();
@@ -72,7 +76,7 @@ public class ChallengeService {
         }
         challengeProfile.setStatus(ChallengeProfileStatus.IN_PROGRESS);
         challengeProfileRepository.save(challengeProfile);
-        rivalChallengeService.init(challengeProfile);
+        rivalRunService.run(rivalChallengeService.init(challengeProfile));
         return putSuccessCode(model);
     }
 

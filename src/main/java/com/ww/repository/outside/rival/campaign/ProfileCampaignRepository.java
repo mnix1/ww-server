@@ -5,7 +5,9 @@ import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ProfileCampaignRepository extends CrudRepository<ProfileCampaign, Long> {
-    ProfileCampaign findOneByProfile_IdAndStatusNot(Long profileId, ProfileCampaignStatus status);
+    Optional<ProfileCampaign> findOneByProfile_IdAndStatusNot(Long profileId, ProfileCampaignStatus status);
 }

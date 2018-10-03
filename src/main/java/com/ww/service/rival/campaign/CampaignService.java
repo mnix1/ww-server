@@ -63,19 +63,16 @@ public class CampaignService {
         return campaignRepository.findAll().stream().map(CampaignDTO::new).collect(Collectors.toList());
     }
 
-    public ProfileCampaignDTO activeDTO() {
-        ProfileCampaign profileCampaign = active();
-        if (profileCampaign == null) {
-            return null;
-        }
-        return new ProfileCampaignDTO(profileCampaign);
+    public Optional<ProfileCampaignDTO> activeDTO() {
+        Optional<ProfileCampaign> optionalProfileCampaign = active();
+        return optionalProfileCampaign.map(ProfileCampaignDTO::new);
     }
 
-    public ProfileCampaign active() {
+    public Optional<ProfileCampaign> active() {
         return active(profileService.getProfileId());
     }
 
-    public ProfileCampaign active(Long profileId) {
+    public Optional<ProfileCampaign> active(Long profileId) {
         return profileCampaignRepository.findOneByProfile_IdAndStatusNot(profileId, ProfileCampaignStatus.CLOSED);
     }
 
@@ -130,10 +127,11 @@ public class CampaignService {
 
     public synchronized Map<String, Object> close() {
         Map<String, Object> model = new HashMap<>();
-        ProfileCampaign profileCampaign = active();
-        if (profileCampaign == null || profileCampaign.getStatus() != ProfileCampaignStatus.FINISHED) {
+        Optional<ProfileCampaign> optionalProfileCampaign = active();
+        if (!optionalProfileCampaign.isPresent() || optionalProfileCampaign.get().getStatus() != ProfileCampaignStatus.FINISHED) {
             return putErrorCode(model);
         }
+        ProfileCampaign profileCampaign = optionalProfileCampaign.get();
         Profile profile = profileService.getProfile();
         if (profileCampaign.getBookGain() != null
                 && profileBookService.isProfileBookShelfFull(profile.getId())) {

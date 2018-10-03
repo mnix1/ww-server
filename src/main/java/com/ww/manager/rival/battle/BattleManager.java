@@ -5,7 +5,7 @@ import com.ww.model.container.rival.RivalInterval;
 import com.ww.model.container.rival.battle.*;
 import com.ww.model.container.rival.init.RivalTwoPlayerInit;
 import com.ww.service.rival.battle.RivalBattleService;
-import com.ww.service.social.ProfileConnectionService;
+import com.ww.websocket.message.Message;
 import lombok.Getter;
 
 @Getter
@@ -18,9 +18,8 @@ public class BattleManager extends RivalManager {
     public RivalInterval interval;
     public BattleFlow flow;
 
-    public BattleManager(RivalTwoPlayerInit init, RivalBattleService rivalService, ProfileConnectionService profileConnectionService) {
-        this.abstractRivalService = rivalService;
-        this.profileConnectionService = profileConnectionService;
+    public BattleManager(RivalTwoPlayerInit init, RivalBattleService rivalService) {
+        this.rivalService = rivalService;
         this.model = new BattleModel(init, new BattleTeams());
         this.model.getTeams().addProfile(init.getCreatorProfile().getId(), new BattleTeam(init.getCreatorProfile()));
         this.model.getTeams().addProfile(init.getOpponentProfile().getId(), new BattleTeam(init.getOpponentProfile()));
@@ -29,7 +28,13 @@ public class BattleManager extends RivalManager {
         this.flow = new BattleFlow(this);
     }
 
+    @Override
     public boolean isEnd() {
         return model.getCurrentTaskIndex() == TASK_COUNT - 1;
+    }
+
+    @Override
+    public Message getMessageContent() {
+        return Message.BATTLE_CONTENT;
     }
 }

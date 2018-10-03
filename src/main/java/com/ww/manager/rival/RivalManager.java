@@ -13,7 +13,7 @@ import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
-import com.ww.service.rival.AbstractRivalService;
+import com.ww.service.RivalService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.websocket.message.Message;
 import com.ww.websocket.message.MessageDTO;
@@ -31,8 +31,7 @@ import static com.ww.helper.EloHelper.*;
 public abstract class RivalManager {
     protected static final Logger logger = LoggerFactory.getLogger(RivalManager.class);
 
-    protected AbstractRivalService abstractRivalService;
-    protected ProfileConnectionService profileConnectionService;
+    protected RivalService rivalService;
 
     public abstract RivalModelFactory getModelFactory();
 
@@ -44,6 +43,8 @@ public abstract class RivalManager {
 
     public abstract boolean isEnd();
 
+    public abstract Message getMessageContent();
+
     @Override
     public String toString() {
         return "RivalManager creatorId=" + getModel().getCreatorProfile().getId()
@@ -51,19 +52,15 @@ public abstract class RivalManager {
                 + ", status=" + getModel().getStatus();
     }
 
-    public Message getMessageContent() {
-        return abstractRivalService.getMessageContent();
-    }
-
     public void prepareTask(Long id) {
         prepareTask(id, Category.random(), DifficultyLevel.random());
     }
 
     public void prepareTask(Long id, Category category, DifficultyLevel difficultyLevel) {
-        Question question = abstractRivalService.prepareQuestion(category, difficultyLevel);
+        Question question = rivalService.prepareQuestion(category, difficultyLevel);
         question.setId(id);
         question.initAnswerIds();
-        TaskDTO taskDTO = abstractRivalService.prepareTaskDTO(question);
+        TaskDTO taskDTO = rivalService.prepareTaskDTO(question);
         getModel().addTask(question, taskDTO);
     }
 
@@ -102,8 +99,8 @@ public abstract class RivalManager {
         getModel().setCreatorEloChange(creatorEloChange);
         updateElo(opponent, opponentEloChange, getModel().getType());
         getModel().setOpponentEloChange(opponentEloChange);
-        abstractRivalService.getProfileService().save(creator);
-        abstractRivalService.getProfileService().save(opponent);
+        rivalService.getProfileService().save(creator);
+        rivalService.getProfileService().save(opponent);
     }
 
     public synchronized Map<String, Object> actualModel(Long profileId) {
@@ -116,7 +113,7 @@ public abstract class RivalManager {
     public void send(Map<String, Object> model, Message message, Long profileId) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            profileConnectionService.sendMessage(profileId, new MessageDTO(message, objectMapper.writeValueAsString(model)).toString());
+            rivalService.getProfileConnectionService().sendMessage(profileId, new MessageDTO(message, objectMapper.writeValueAsString(model)).toString());
         } catch (JsonProcessingException e) {
             logger.error("Error when sending message {}", profileId);
         }

@@ -33,8 +33,6 @@ import static com.ww.model.constant.rival.RivalType.CHALLENGE;
 
 @Service
 public class RivalChallengeService extends RivalWarService {
-    private static final Logger logger = LoggerFactory.getLogger(RivalChallengeService.class);
-
     @Autowired
     private ChallengeRepository challengeRepository;
 
@@ -44,19 +42,10 @@ public class RivalChallengeService extends RivalWarService {
     @Autowired
     private ChallengeQuestionRepository challengeQuestionRepository;
 
-    @Autowired
-    protected RivalRunService rivalRunService;
-
-    public void init(ChallengeProfile challengeProfile) {
+    public RivalChallengeInit init(ChallengeProfile challengeProfile) {
         List<ChallengeQuestion> challengeQuestions = new ArrayList<>(challengeProfile.getChallenge().getQuestions());
         sortChallengeQuestions(challengeQuestions);
-        RivalChallengeInit rival = new RivalChallengeInit(CHALLENGE, RivalImportance.FAST, challengeProfile.getProfile(), challengeProfile, challengeQuestions);
-        rivalRunService.run(rival);
-    }
-
-    @Override
-    public Message getMessageContent() {
-        return Message.CHALLENGE_CONTENT;
+        return new RivalChallengeInit(CHALLENGE, RivalImportance.FAST, challengeProfile.getProfile(), challengeProfile, challengeQuestions);
     }
 
     public synchronized Question prepareQuestion(ChallengeProfile challengeProfile, int taskIndex, Category category, DifficultyLevel difficultyLevel) {
@@ -66,7 +55,7 @@ public class RivalChallengeService extends RivalWarService {
             return challengeQuestions.get(taskIndex).getQuestion();
         }
         Question question = getTaskGenerateService().generate(category, difficultyLevel);
-        taskService.save(question);
+        getTaskService().save(question);
         Challenge challenge = challengeProfile.getChallenge();
         ChallengeQuestion challengeQuestion = new ChallengeQuestion(challenge, question);
         challengeQuestionRepository.save(challengeQuestion);
@@ -78,7 +67,7 @@ public class RivalChallengeService extends RivalWarService {
     }
 
     @Override
-    public synchronized void disposeManager(RivalManager manager) {
+    public void disposeManager(RivalManager manager) {
         super.disposeManager(manager);
         ChallengeManager challengeManager = (ChallengeManager) manager;
         ChallengeProfile challengeProfile = challengeManager.challengeProfile;
@@ -89,7 +78,7 @@ public class RivalChallengeService extends RivalWarService {
     }
 
     @Override
-    protected void addRewardFromWin(Profile winner) {
+    public void addRewardFromWin(Profile winner) {
     }
 
     private void maybeCloseChallenge(Challenge challenge, Instant closeDate) {

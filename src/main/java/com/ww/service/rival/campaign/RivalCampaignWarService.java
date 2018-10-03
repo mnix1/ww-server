@@ -14,16 +14,8 @@ import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileCampaignWisie;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
-import com.ww.service.rival.init.RivalRunService;
-import com.ww.service.rival.task.TaskGenerateService;
-import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.rival.war.RivalWarService;
-import com.ww.service.social.ProfileConnectionService;
-import com.ww.service.social.ProfileService;
-import com.ww.service.social.RewardService;
-import com.ww.service.wisie.ProfileWisieService;
 import com.ww.service.wisie.WisieService;
-import com.ww.websocket.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,63 +29,17 @@ import static com.ww.model.constant.rival.RivalType.CAMPAIGN_WAR;
 @Service
 public class RivalCampaignWarService extends RivalWarService {
     @Autowired
-    protected ProfileConnectionService profileConnectionService;
+    private WisieService wisieService;
 
     @Autowired
-    protected TaskGenerateService taskGenerateService;
-
-    @Autowired
-    protected TaskRendererService taskRendererService;
-
-    @Autowired
-    protected RewardService rewardService;
-
-    @Autowired
-    protected ProfileService profileService;
-
-    @Autowired
-    protected ProfileWisieService profileWisieService;
-
-    @Autowired
-    protected WisieService wisieService;
-
-    @Autowired
-    protected CampaignService campaignService;
-
-    @Autowired
-    protected RivalRunService rivalRunService;
-
-    @Override
-    protected ProfileConnectionService getProfileConnectionService() {
-        return profileConnectionService;
-    }
-
-    @Override
-    protected TaskGenerateService getTaskGenerateService() {
-        return taskGenerateService;
-    }
-
-    @Override
-    protected TaskRendererService getTaskRendererService() {
-        return taskRendererService;
-    }
-
-    @Override
-    public ProfileService getProfileService() {
-        return profileService;
-    }
-
-    @Override
-    public Message getMessageContent() {
-        return Message.CAMPAIGN_WAR_CONTENT;
-    }
+    private CampaignService campaignService;
 
     @Override
     public void disposeManager(RivalManager manager) {
         super.disposeManager(manager);
         CampaignWarManager campaignWarManager = (CampaignWarManager) manager;
         Long profileId = manager.getModel().getCreatorProfile().getId();
-        ProfileCampaign profileCampaign = campaignService.active(profileId);
+        ProfileCampaign profileCampaign = campaignService.active(profileId).orElseThrow(IllegalArgumentException::new);
         campaignService.setProfileCampaignWisies(profileCampaign);
         if (profileCampaign.getProfile().equals(manager.getModel().getWinner())) {
             profileCampaign.setPhase(profileCampaign.getPhase() + 1);
@@ -125,18 +71,12 @@ public class RivalCampaignWarService extends RivalWarService {
     }
 
     @Override
-    protected void addRewardFromWin(Profile winner) {
+    public void addRewardFromWin(Profile winner) {
     }
 
-    public Map<String, Object> start() {
-        Map<String, Object> model = new HashMap<>();
-        ProfileCampaign profileCampaign = campaignService.active();
-        if (profileCampaign == null) {
-            return putErrorCode(model);
-        }
-        RivalCampaignWarInit rival = new RivalCampaignWarInit(CAMPAIGN_WAR, RivalImportance.FAST, profileService.getProfile(), prepareComputerProfile(profileCampaign), profileCampaign);
-        rivalRunService.run(rival);
-        return putSuccessCode(model);
+    public Optional<RivalCampaignWarInit> init() {
+        Optional<ProfileCampaign> optionalProfileCampaign = campaignService.active();
+        return optionalProfileCampaign.map(profileCampaign -> new RivalCampaignWarInit(CAMPAIGN_WAR, RivalImportance.FAST, getProfileService().getProfile(), prepareComputerProfile(profileCampaign), profileCampaign));
     }
 
     public Profile prepareComputerProfile(ProfileCampaign profileCampaign) {
@@ -153,8 +93,8 @@ public class RivalCampaignWarService extends RivalWarService {
         for (WisieType wisieType : wisieTypes) {
             ProfileWisie profileWisie = new ProfileWisie(computerProfile, wisieService.getWisie(wisieType));
             profileWisie.setId(profileWisieId--);
-            profileWisieService.initWisieAttributes(profileWisie);
-            profileWisieService.initWisieHobbies(profileWisie);
+            getProfileWisieService().initWisieAttributes(profileWisie);
+            getProfileWisieService().initWisieHobbies(profileWisie);
             int promo = 10 * profileCampaign.getPhase() * profileCampaign.getCampaign().getDifficultyLevel().getRating();
             for (MentalAttribute attribute : MentalAttribute.values()) {
                 profileWisie.setMentalAttributeValue(attribute, Math.pow(profileWisie.getMentalAttributeValue(attribute), 1.1) + promo);

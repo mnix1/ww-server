@@ -12,6 +12,7 @@ import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileCampaignWisie;
 import com.ww.service.rival.campaign.RivalCampaignWarService;
 import com.ww.service.social.ProfileConnectionService;
+import com.ww.websocket.message.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +26,8 @@ public class CampaignWarManager extends WarManager {
         return profile.getId().equals(BOT_PROFILE_ID);
     }
 
-    public CampaignWarManager(RivalCampaignWarInit init, RivalCampaignWarService rivalService, ProfileConnectionService profileConnectionService) {
-        this.abstractRivalService = rivalService;
-        this.profileConnectionService = profileConnectionService;
+    public CampaignWarManager(RivalCampaignWarInit init, RivalCampaignWarService rivalService) {
+        this.rivalService = rivalService;
         this.profileCampaign = init.getProfileCampaign();
         WarTeams teams = new WarTeams();
         this.model = new CampaignWarModel(init, teams);
@@ -65,6 +65,11 @@ public class CampaignWarManager extends WarManager {
             }
         }
         return teamMembers;
+    }
+
+    @Override
+    public Message getMessageContent() {
+        return Message.CAMPAIGN_WAR_CONTENT;
     }
 
 }

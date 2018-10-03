@@ -15,6 +15,7 @@ import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
 import com.ww.service.rival.challenge.RivalChallengeService;
 import com.ww.service.social.ProfileConnectionService;
+import com.ww.websocket.message.Message;
 
 import java.util.Comparator;
 import java.util.List;
@@ -24,9 +25,8 @@ public class ChallengeManager extends WarManager {
     public ChallengeProfile challengeProfile;
     public List<ChallengeQuestion> challengeQuestions;
 
-    public ChallengeManager(RivalChallengeInit init, RivalChallengeService rivalService, ProfileConnectionService profileConnectionService) {
-        this.abstractRivalService = rivalService;
-        this.profileConnectionService = profileConnectionService;
+    public ChallengeManager(RivalChallengeInit init, RivalChallengeService rivalService) {
+        this.rivalService = rivalService;
         this.challengeProfile = init.getChallengeProfile();
         this.challengeQuestions = init.getChallengeQuestions();
         WarTeams teams = new WarTeams();
@@ -43,7 +43,7 @@ public class ChallengeManager extends WarManager {
 
     @Override
     public void prepareTask(Long id, Category category, DifficultyLevel difficultyLevel) {
-        RivalChallengeService rivalChallengeService = (RivalChallengeService) abstractRivalService;
+        RivalChallengeService rivalChallengeService = (RivalChallengeService) rivalService;
         Question question;
         int taskIndex = id.intValue() - 1;
         if (challengeQuestions.size() > taskIndex) {
@@ -54,8 +54,13 @@ public class ChallengeManager extends WarManager {
         rivalChallengeService.initTaskWisdomAttributes(question);
         question.setId(id);
         question.rewriteAnswerIds();
-        TaskDTO taskDTO = abstractRivalService.prepareTaskDTO(question);
+        TaskDTO taskDTO = rivalService.prepareTaskDTO(question);
         taskDTO.getAnswers().sort(Comparator.comparing(AnswerDTO::getId));
         model.addTask(question, taskDTO);
+    }
+
+    @Override
+    public Message getMessageContent() {
+        return Message.CHALLENGE_CONTENT;
     }
 }

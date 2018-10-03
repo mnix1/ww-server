@@ -1,4 +1,4 @@
-package com.ww.service.rival;
+package com.ww.service;
 
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.constant.Category;
@@ -12,31 +12,47 @@ import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
+import com.ww.service.rival.task.TaskService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
+import com.ww.service.social.RewardService;
+import com.ww.service.wisie.ProfileWisieService;
 import com.ww.websocket.message.Message;
+import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public abstract class AbstractRivalService {
-    protected abstract void addRewardFromWin(Profile winner);
+@Service
+@Getter
+public class RivalService {
 
-    public abstract Message getMessageContent();
+    @Autowired
+    private ProfileConnectionService profileConnectionService;
 
-    protected abstract ProfileConnectionService getProfileConnectionService();
+    @Autowired
+    private TaskGenerateService taskGenerateService;
 
-    protected abstract TaskGenerateService getTaskGenerateService();
+    @Autowired
+    private TaskRendererService taskRendererService;
 
-    protected abstract TaskRendererService getTaskRendererService();
+    @Autowired
+    private RewardService rewardService;
 
-    public abstract ProfileService getProfileService();
+    @Autowired
+    private ProfileService profileService;
 
-    public abstract RivalGlobalService getRivalGlobalService();
+    @Autowired
+    private RivalGlobalService rivalGlobalService;
 
-    public synchronized void disposeManager(RivalManager manager) {
+    public void addRewardFromWin(Profile winner){
+    }
+
+    public void disposeManager(RivalManager manager) {
         if (!manager.isClosed()) {
             return;
         }
         for (RivalTeam profileContainer : manager.getModel().getTeams().getTeams()) {
-            getRivalGlobalService().remove(profileContainer.getProfileId());
+            rivalGlobalService.remove(profileContainer.getProfileId());
         }
         RivalModel rivalModel = manager.getModel();
         Boolean isDraw = rivalModel.getDraw();
@@ -45,16 +61,16 @@ public abstract class AbstractRivalService {
         if (!isDraw) {
             addRewardFromWin(winner);
         }
-        getRivalGlobalService().save(rival);
+        rivalGlobalService.save(rival);
         // TODO STORE RESULT
     }
 
     public Question prepareQuestion(Category category, DifficultyLevel difficultyLevel) {
-        return getTaskGenerateService().generate(category, difficultyLevel);
+        return taskGenerateService.generate(category, difficultyLevel);
     }
 
     public TaskDTO prepareTaskDTO(Question question) {
-        return getTaskRendererService().prepareTaskDTO(question);
+        return taskRendererService.prepareTaskDTO(question);
     }
 
 }
