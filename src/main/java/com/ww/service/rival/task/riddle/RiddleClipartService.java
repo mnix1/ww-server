@@ -37,9 +37,6 @@ public class RiddleClipartService {
     private BufferedImage joinImages(List<BufferedImage> images) {
         int joinedHeight = 364;
         int joinedWidth = 728;
-        BufferedImage joined = new BufferedImage(joinedWidth, joinedHeight,
-                BufferedImage.TYPE_INT_ARGB);
-        Graphics2D graphics = joined.createGraphics();
         int targetHeight = 180;
         int targetWidth = 180;
         boolean oneRow = false;
@@ -51,7 +48,14 @@ public class RiddleClipartService {
             targetHeight *= 1.33;
             targetWidth *= 1.33;
             oneRow = true;
+        } else if (images.size() < 5) {
+            joinedWidth /= 2;
+        } else if (images.size() < 7) {
+            joinedWidth -= targetWidth;
         }
+        BufferedImage joined = new BufferedImage(joinedWidth, joinedHeight,
+                BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics = joined.createGraphics();
         List<Position> positions = preparePositions(images.size(), joinedHeight, joinedWidth, targetHeight, targetWidth, oneRow);
         for (int i = 0; i < images.size(); i++) {
             Position position = positions.get(i);
