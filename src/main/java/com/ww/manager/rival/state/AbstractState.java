@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Setter
 @Getter
@@ -17,8 +18,8 @@ public abstract class AbstractState {
     public static String STATE_TYPE_VOID = "void";
 
     private String type;
-    private List<Consumer> onFlowableEndListeners = new ArrayList<>();
-    private List<Disposable> disposables = new ArrayList<>();
+    private CopyOnWriteArrayList<Consumer> onFlowableEndListeners = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<Disposable> disposables = new CopyOnWriteArrayList<>();
 
     public AbstractState addOnFlowableEndListener(Consumer<? super Long> onNext) {
         onFlowableEndListeners.add(onNext);

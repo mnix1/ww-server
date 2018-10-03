@@ -17,8 +17,8 @@ public abstract class State extends AbstractState {
     }
 
     public AbstractState startFlowable() {
-        logger.trace(manager.toString() + ", startFlowable");
         super.startFlowable();
+        logger.trace(manager.toString() + ", startFlowable");
         return this;
     }
 }
