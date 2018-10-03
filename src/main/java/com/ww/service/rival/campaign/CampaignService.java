@@ -98,10 +98,7 @@ public class CampaignService {
         }
         Profile profile = profileService.getProfile();
         Campaign campaign = optionalCampaign.get();
-        if (!profile.hasEnoughResources(campaign.getCostResources())) {
-            return putErrorCode(model);
-        }
-        if (active() != null) {
+        if (!profile.hasEnoughResources(campaign.getCostResources()) || active().isPresent()) {
             return putErrorCode(model);
         }
         profile.subtractResources(campaign.getCostResources());

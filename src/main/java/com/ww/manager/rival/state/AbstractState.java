@@ -29,7 +29,7 @@ public abstract class AbstractState implements FlowRunnable, Loggable {
     }
 
     public AbstractState dispose() {
-        logger.trace("AbstractState in dispose before for, disposablesCount=" + disposables.size());
+        logger.trace("AbstractState dispose class=" + this.getClass().getName() + ", disposablesCount=" + disposables.size() + ", describe=" + describe());
         for (Disposable disposable : disposables) {
             if (!disposable.isDisposed()) {
                 disposable.dispose();
