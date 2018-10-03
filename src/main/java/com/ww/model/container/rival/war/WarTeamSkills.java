@@ -11,55 +11,32 @@ import java.util.List;
 import java.util.Map;
 
 @Getter
-@Setter
 public class WarTeamSkills implements RivalTeamSkills {
 
-    private int hints;
-    private int waterPistols;
-    private int lifebuoys;
+    private Map<Skill, Integer> skills = new HashMap<>();
 
     public WarTeamSkills(int base, List<? extends OwnedWisie> wisies) {
-        this.hints = base;
-        this.waterPistols = base;
-        this.lifebuoys = base;
+        this.skills.put(Skill.HINT, base);
+        this.skills.put(Skill.WATER_PISTOL, base);
+        this.skills.put(Skill.LIFEBUOY, base);
+        this.skills.put(Skill.BLOCK, base);
+        this.skills.put(Skill.TASK_CHANGE, base);
+        this.skills.put(Skill.KIDNAPPING, base);
+        initSkills(wisies);
+    }
+
+    private void initSkills(List<? extends OwnedWisie> wisies) {
     }
 
     @Override
-    public boolean canUseHint() {
-        return hints > 0;
+    public boolean canUseSkill(Skill skill) {
+        return skills.containsKey(skill) && skills.get(skill) != 0;
     }
 
     @Override
-    public void useHint() {
-        hints--;
-    }
-
-    @Override
-    public boolean canUseWaterPistol() {
-        return waterPistols > 0;
-    }
-
-    @Override
-    public void useWaterPistol() {
-        waterPistols--;
-    }
-
-    @Override
-    public boolean canUseLifebuoy() {
-        return lifebuoys > 0;
-    }
-
-    @Override
-    public void useLifebuoy() {
-        lifebuoys--;
-    }
-
-    @Override
-    public Map<String, Integer> prepareSkills() {
-        Map<String, Integer> skills = new HashMap<>();
-        skills.put(Skill.HINT.name(), hints);
-        skills.put(Skill.WATER_PISTOL.name(), waterPistols);
-        skills.put(Skill.LIFEBUOY.name(), lifebuoys);
-        return skills;
+    public void useSkill(Skill skill) {
+        int value = skills.get(skill);
+        skills.remove(skill);
+        skills.put(skill, value - 1);
     }
 }

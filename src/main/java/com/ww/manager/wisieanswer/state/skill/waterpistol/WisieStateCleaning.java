@@ -1,4 +1,4 @@
-package com.ww.manager.wisieanswer.state.waterpistol;
+package com.ww.manager.wisieanswer.state.skill.waterpistol;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;

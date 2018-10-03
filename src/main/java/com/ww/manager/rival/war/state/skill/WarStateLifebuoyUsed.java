@@ -1,10 +1,11 @@
-package com.ww.manager.rival.war.state;
+package com.ww.manager.rival.war.state.skill;
 
 import com.ww.manager.rival.war.WarManager;
+import com.ww.manager.rival.war.state.WarState;
+import com.ww.model.constant.Skill;
 import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarTeam;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -22,10 +23,10 @@ public class WarStateLifebuoyUsed extends WarState {
     @Override
     protected void processVoid() {
         WarTeam team = manager.getModel().getTeams().team(profileId);
-        if (!team.getTeamSkills().canUseLifebuoy() || !content.containsKey("index")) {
+        if (!team.getTeamSkills().canUseSkill(Skill.LIFEBUOY) || !content.containsKey("index")) {
             return;
         }
-        team.getTeamSkills().useLifebuoy();
+        team.getTeamSkills().useSkill(Skill.LIFEBUOY);
         Integer teamMemberIndex = ((Integer) content.get("index"));
         Optional<TeamMember> optionalTeamMember = team.getTeamMembers().stream().filter(teamMember -> teamMember.getIndex() == teamMemberIndex).findFirst();
         if (!optionalTeamMember.isPresent()) {
@@ -37,11 +38,6 @@ public class WarStateLifebuoyUsed extends WarState {
         }
         teamMember.setPresent(true);
         team.getPresentIndexes().add(teamMemberIndex);
-        manager.getModel().getTeams().forEachTeam(rivalTeam -> {
-            Map<String, Object> model = new HashMap<>();
-            manager.getModelFactory().fillModelPresentIndexes(model, rivalTeam);
-            manager.getModelFactory().fillModelSkills(model, rivalTeam);
-            this.manager.send(model, this.manager.getMessageContent(), rivalTeam.getProfileId());
-        });
+        sendNewSkillsModel((m, wT) -> manager.getModelFactory().fillModelPresentIndexes(m, wT));
     }
 }

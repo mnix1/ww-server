@@ -1,39 +1,24 @@
 package com.ww.model.container.rival;
 
+import com.ww.model.constant.Skill;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class EmptyTeamSkills implements RivalTeamSkills {
 
-    @Override
-    public boolean canUseHint() {
-        return false;
-    }
 
     @Override
-    public void useHint() {
-    }
-
-    @Override
-    public boolean canUseWaterPistol() {
-        return false;
-    }
-
-    @Override
-    public void useWaterPistol() {
-    }
-
-    @Override
-    public boolean canUseLifebuoy() {
-        return false;
-    }
-
-    @Override
-    public void useLifebuoy() {
-    }
-
-    @Override
-    public Map<String, Integer> prepareSkills() {
+    public Map<Skill, Integer> getSkills() {
         return new HashMap<>();
+    }
+
+    @Override
+    public boolean canUseSkill(Skill skill) {
+        return false;
+    }
+
+    @Override
+    public void useSkill(Skill skill) {
     }
 }

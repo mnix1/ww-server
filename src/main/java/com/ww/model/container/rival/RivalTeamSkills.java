@@ -1,19 +1,13 @@
 package com.ww.model.container.rival;
 
+import com.ww.model.constant.Skill;
+
 import java.util.Map;
 
 public interface RivalTeamSkills {
-    Map<String, Integer> prepareSkills();
+    Map<Skill, Integer> getSkills();
 
-    boolean canUseHint();
+    boolean canUseSkill(Skill skill);
 
-    void useHint();
-
-    boolean canUseWaterPistol();
-
-    void useWaterPistol();
-
-    boolean canUseLifebuoy();
-
-    void useLifebuoy();
+    void useSkill(Skill skill);
 }

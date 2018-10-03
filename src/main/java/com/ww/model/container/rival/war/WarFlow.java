@@ -4,6 +4,10 @@ import com.ww.manager.rival.RivalFlow;
 import com.ww.manager.rival.state.*;
 import com.ww.manager.rival.war.WarManager;
 import com.ww.manager.rival.war.state.*;
+import com.ww.manager.rival.war.state.skill.WarStateHintUsed;
+import com.ww.manager.rival.war.state.skill.WarStateKidnappingUsed;
+import com.ww.manager.rival.war.state.skill.WarStateLifebuoyUsed;
+import com.ww.manager.rival.war.state.skill.WarStateWaterPistolUsed;
 import com.ww.model.constant.rival.RivalStatus;
 import lombok.Getter;
 
@@ -16,9 +20,11 @@ import static com.ww.service.rival.global.RivalMessageService.*;
 public class WarFlow extends RivalFlow {
 
     private WarManager manager;
+    private WarSkillFlow skillFlow;
 
     public WarFlow(WarManager manager) {
         this.manager = manager;
+        this.skillFlow = new WarSkillFlow(manager);
     }
 
     public boolean processMessage(Long profileId, Map<String, Object> content) {
@@ -29,14 +35,8 @@ public class WarFlow extends RivalFlow {
         RivalStatus status = getManager().getModel().getStatus();
         if (id.equals(CHOOSE_WHO_ANSWER) && status == RivalStatus.CHOOSING_WHO_ANSWER) {
             chosenWhoAnswer(profileId, content);
-        } else if (id.equals(HINT) && status == RivalStatus.ANSWERING) {
-            hint(profileId, content);
-        } else if (id.equals(WATER_PISTOL) && status == RivalStatus.ANSWERING) {
-            waterPistol(profileId);
-        } else if (id.equals(LIFEBUOY) && status == RivalStatus.CHOOSING_WHO_ANSWER) {
-            lifebuoy(profileId, content);
         } else {
-            return false;
+            return skillFlow.processMessage(profileId, content);
         }
         return true;
     }
@@ -101,18 +101,6 @@ public class WarFlow extends RivalFlow {
         }).startFlowable();
     }
 
-    public synchronized void hint(Long profileId, Map<String, Object> content) {
-        new WarStateHintUsed(manager, profileId, content).startVoid();
-    }
-
-    public synchronized void waterPistol(Long profileId) {
-        new WarStateWaterPistolUsed(manager, profileId).startVoid();
-    }
-
-    public synchronized void lifebuoy(Long profileId, Map<String, Object> content) {
-        new WarStateLifebuoyUsed(manager, profileId, content).startVoid();
-    }
-
     public synchronized void chosenTaskProps(Long profileId, Map<String, Object> content) {
         if (new StateChosenTaskProps(manager, profileId, content).startBoolean()) {
             dispose();
@@ -126,4 +114,5 @@ public class WarFlow extends RivalFlow {
             phase1();
         }
     }
+
 }

@@ -1,8 +1,6 @@
 package com.ww.manager.wisieanswer;
 
 import com.ww.manager.rival.state.AbstractState;
-import com.ww.manager.wisieanswer.state.WisieState;
-import com.ww.manager.wisieanswer.state.hint.*;
 import com.ww.manager.wisieanswer.state.multiphase.WisieStateCheckNoConcentration;
 import com.ww.manager.wisieanswer.state.multiphase.WisieStateLostConcentration;
 import com.ww.manager.wisieanswer.state.phase1.WisieStateStartRecognizingQuestion;
@@ -16,8 +14,8 @@ import com.ww.manager.wisieanswer.state.phase5.*;
 import com.ww.manager.wisieanswer.state.phase5.WisieStateCheckKnowAnswerAfterThinkingWhichMatch;
 import com.ww.manager.wisieanswer.state.phase5.WisieStateEndThinkingWhichAnswerMatch;
 import com.ww.manager.wisieanswer.state.phase6.*;
-import com.ww.manager.wisieanswer.state.waterpistol.WisieStateCleaning;
-import com.ww.manager.wisieanswer.state.waterpistol.WisieStateWaterPistolUsedOnIt;
+import com.ww.manager.wisieanswer.state.skill.waterpistol.WisieStateCleaning;
+import com.ww.manager.wisieanswer.state.skill.waterpistol.WisieStateWaterPistolUsedOnIt;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import lombok.Getter;
 import org.slf4j.Logger;
@@ -29,9 +27,11 @@ public class WisieAnswerFlow {
 
     private WisieAnswerManager manager;
     private AbstractState state;
+    private WisieAnswerSkillFlow skillFlow;
 
     public WisieAnswerFlow(WisieAnswerManager manager) {
         this.manager = manager;
+        this.skillFlow = new WisieAnswerSkillFlow(this);
     }
 
     public void start() {
@@ -44,7 +44,11 @@ public class WisieAnswerFlow {
         dispose();
     }
 
-    private synchronized void dispose() {
+    public void setState(AbstractState state) {
+        this.state = state;
+    }
+
+    public synchronized void dispose() {
         state.dispose();
     }
 
@@ -142,56 +146,6 @@ public class WisieAnswerFlow {
                 }
             }).startFlowable();
         }).startFlowable();
-    }
-
-    private synchronized void phaseHint() {
-        state = new WisieStateHintReceived(manager).addOnFlowableEndListener(aLong10 -> {
-            state = new WisieStateEndThinkingIfUseHint(manager).addOnFlowableEndListener(aLong11 -> {
-                synchronized (this) {
-                    WisieAnswerAction aa5 = new WisieStateCheckIfUseHint(manager).startWisieAnswerAction();
-                    state = new WisieStateDecidedIfUseHint(manager, aa5).addOnFlowableEndListener(aLong12 -> {
-                        synchronized (this) {
-                            if (aa5 == WisieAnswerAction.WILL_USE_HINT) {
-                                new WisieStateAnsweringUseHint(manager).startVoid();
-                            } else if (aa5 == WisieAnswerAction.WONT_USE_HINT) {
-                                state = new WisieStateStartThinkingAboutQuestion(manager).addOnFlowableEndListener(aLong3 -> {
-                                    new WisieStateAnsweringNoUseHint(manager).startVoid();
-                                }).startFlowable();
-                            }
-                        }
-                    }).startFlowable();
-                }
-            }).startFlowable();
-        }).startFlowable();
-    }
-
-    private synchronized void phaseWaterPistol() {
-        AbstractState prevState = state;
-        state = new WisieStateWaterPistolUsedOnIt(manager).addOnFlowableEndListener(aLong1 -> {
-            state = new WisieStateCleaning(manager).addOnFlowableEndListener(aLong2 -> {
-                prevState.startFlowable();
-            }).startFlowable();
-        }).startFlowable();
-    }
-
-    public void hint(Long answerId, Boolean isCorrect) {
-        if (manager.isReceivedHint()) {
-            return;
-        }
-        dispose();
-        manager.setReceivedHint(true);
-        manager.setHintAnswerId(answerId);
-        manager.setHintCorrect(isCorrect);
-        phaseHint();
-    }
-
-    public void waterPistol() {
-        if (manager.isWaterPistolUsedOnIt()) {
-            return;
-        }
-        dispose();
-        manager.setWaterPistolUsedOnIt(true);
-        phaseWaterPistol();
     }
 
 }

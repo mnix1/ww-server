@@ -4,5 +4,7 @@ public enum Skill {
     HINT,
     WATER_PISTOL,
     LIFEBUOY,
-
+    BLOCK,
+    TASK_CHANGE,
+    KIDNAPPING,
 }

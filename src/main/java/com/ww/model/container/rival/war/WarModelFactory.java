@@ -41,10 +41,10 @@ public class WarModelFactory extends RivalModelFactory {
 
     public void fillModelSkills(Map<String, Object> model, RivalTeam team) {
         WarTeam warTeam = (WarTeam) team;
-        model.put("skills", warTeam.getTeamSkills().prepareSkills());
+        model.put("skills", warTeam.getTeamSkills().getSkills());
         if (this.model.isOpponent()) {
             WarTeam opponentTeam = opponentTeam(team);
-            model.put("opponentSkills", opponentTeam.getTeamSkills().prepareSkills());
+            model.put("opponentSkills", opponentTeam.getTeamSkills().getSkills());
         }
     }
 

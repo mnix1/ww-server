@@ -6,14 +6,6 @@ import java.util.List;
 public enum WisieAnswerAction {
     NONE,
 
-    HINT_RECEIVED,
-    THINKING_IF_USE_HINT,
-    WILL_USE_HINT,
-    WONT_USE_HINT,
-
-    WATER_PISTOL_USED_ON_IT,
-    CLEANING,
-
     WAITING_FOR_QUESTION,
     RECOGNIZING_QUESTION,
     THINKING,
@@ -39,6 +31,7 @@ public enum WisieAnswerAction {
     THINKING_WHICH_ANSWER_MATCH,
     THINKING_IF_GIVE_RANDOM_ANSWER,
 
+//LOST CONCENTRATION
     TALKING_ON_THE_PHONE,
     WRITING_AN_SMS,
     DREAMING_ABOUT_VACATION,
@@ -50,7 +43,29 @@ public enum WisieAnswerAction {
     HAS_MUSCLE_SPASM,
     DRINKING_JUICE,
     WOULD_EAT_SOMETHING,
-    NEED_GO_TO_TOILET;
+    NEED_GO_TO_TOILET,
+
+
+
+//SKILLS
+    //HINT
+    HINT_RECEIVED,
+    THINKING_IF_USE_HINT,
+    WILL_USE_HINT,
+    WONT_USE_HINT,
+    //KIDNAPPING
+        //kidnapper
+    PREPARING_KIDNAPPING,
+    TRYING_TO_KIDNAP,
+    KIDNAPPING_SUCCEEDED,
+    KIDNAPPING_FAILED,
+        //victim
+    TRYING_TO_DEFEND,
+    WAS_KIDNAPPED,
+    WAS_NOT_KIDNAPPED,
+    //WATER PISTOL
+    WATER_PISTOL_USED_ON_IT,
+    CLEANING;
 
     public static List<WisieAnswerAction> getNoConcentrationActions() {
         return Arrays.asList(DREAMING_ABOUT_VACATION, SCRATCHING, YAWNING, HUNG_UP, NEED_GO_TO_TOILET, HUMMING_A_SONG,
@@ -60,4 +75,5 @@ public enum WisieAnswerAction {
     public static boolean isNoConcentration(WisieAnswerAction action) {
         return getNoConcentrationActions().contains(action);
     }
+
 }

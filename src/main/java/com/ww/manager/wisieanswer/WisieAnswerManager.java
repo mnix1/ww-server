@@ -50,6 +50,9 @@ public class WisieAnswerManager {
 
     private boolean waterPistolUsedOnIt = false;
 
+    private boolean kidnappingUsed = false;
+    private boolean kidnappingUsedOnIt = false;
+
     private WisieAnswerFlow flow;
 
     public WisieAnswerManager(OwnedWisie wisie, WarManager manager) {

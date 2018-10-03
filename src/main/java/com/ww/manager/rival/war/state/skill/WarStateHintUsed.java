@@ -1,7 +1,9 @@
-package com.ww.manager.rival.war.state;
+package com.ww.manager.rival.war.state.skill;
 
 import com.ww.manager.rival.war.WarManager;
+import com.ww.manager.rival.war.state.WarState;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
+import com.ww.model.constant.Skill;
 import com.ww.model.container.rival.war.WarTeam;
 
 import java.util.HashMap;
@@ -22,17 +24,13 @@ public class WarStateHintUsed extends WarState {
     protected void processVoid() {
         WarTeam team = manager.getModel().getTeams().team(profileId);
         WisieAnswerManager wisieAnswerManager = manager.getModel().getWisieAnswerManager(profileId);
-        if (!team.getTeamSkills().canUseHint() || !content.containsKey("answerId") || wisieAnswerManager == null) {
+        if (!team.getTeamSkills().canUseSkill(Skill.HINT) || !content.containsKey("answerId") || wisieAnswerManager == null) {
             return;
         }
-        team.getTeamSkills().useHint();
+        team.getTeamSkills().useSkill(Skill.HINT);
         Long markedAnswerId = ((Integer) content.get("answerId")).longValue();
         Boolean isAnswerCorrect = manager.getModel().findCurrentCorrectAnswerId().equals(markedAnswerId);
-        wisieAnswerManager.getFlow().hint(markedAnswerId, isAnswerCorrect);
-        manager.getModel().getTeams().forEachTeam(rivalTeam -> {
-            Map<String, Object> model = new HashMap<>();
-            manager.getModelFactory().fillModelSkills(model, rivalTeam);
-            this.manager.send(model, this.manager.getMessageContent(), rivalTeam.getProfileId());
-        });
+        wisieAnswerManager.getFlow().getSkillFlow().hint(markedAnswerId, isAnswerCorrect);
+        sendNewSkillsModel();
     }
 }
