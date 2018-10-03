@@ -88,7 +88,6 @@ public class WisieAnswerSkillFlow {
                             prevState.startFlowable();
                         }).startFlowable());
                     }
-                    prevState.startFlowable();
                 }).startFlowable());
             }
         }).startFlowable());

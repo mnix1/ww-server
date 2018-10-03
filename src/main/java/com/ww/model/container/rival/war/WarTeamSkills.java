@@ -19,8 +19,8 @@ public class WarTeamSkills implements RivalTeamSkills {
         this.skills.put(Skill.HINT, base);
         this.skills.put(Skill.WATER_PISTOL, base);
         this.skills.put(Skill.LIFEBUOY, base);
-        this.skills.put(Skill.BLOCK, base);
-        this.skills.put(Skill.TASK_CHANGE, base);
+//        this.skills.put(Skill.BLOCK, base);
+//        this.skills.put(Skill.TASK_CHANGE, base);
         this.skills.put(Skill.KIDNAPPING, base);
         initSkills(wisies);
     }
