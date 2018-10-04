@@ -21,13 +21,8 @@ public class WisieStateWasNotScared extends WisieState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.addAction(WisieAnswerAction.WAS_NOT_SCARED);
-        manager.getManager().sendNewSkillsModel((m, wT) -> {
-            WarTeam warTeam = (WarTeam) wT;
-            if(manager.getWisie().getProfile().getId().equals(warTeam.getProfileId())){
-                warTeam.getTeamSkills().unblockAll();
-            }
-        });
+        //actions in WisieStateScareSucceeded
+//        manager.addAction(WisieAnswerAction.WAS_NOT_SCARED);
         long interval = (long) (randomDouble(3 - manager.getSpeedF1() - manager.getReflexF1() - manager.getConcentrationF1(),
                 4 - manager.getSpeedF1() - manager.getReflexF1() - 2 * manager.getConcentrationF1()) * intervalMultiply());
         logger.trace(manager.toString() + ", interval: " + interval);

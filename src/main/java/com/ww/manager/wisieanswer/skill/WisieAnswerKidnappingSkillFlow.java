@@ -34,11 +34,11 @@ public class WisieAnswerKidnappingSkillFlow {
                 kidnapTryState.setInterval(interval);
                 flow.setState(kidnapTryState.addOnFlowableEndListener(aLong2 -> {
                     if (success) {
-                        flow.setState(new WisieStateKidnappingSucceeded(manager).addOnFlowableEndListener(aLong3 -> {
+                        flow.setState(new WisieStateKidnappingSucceeded(manager, opponent).addOnFlowableEndListener(aLong3 -> {
                             manager.getManager().getFlow().kidnapped();
                         }).startFlowable());
                     } else {
-                        flow.setState(new WisieStateKidnappingFailed(manager).addOnFlowableEndListener(aLong3 -> {
+                        flow.setState(new WisieStateKidnappingFailed(manager, opponent).addOnFlowableEndListener(aLong3 -> {
                             flow.setState(prevState.startFlowable());
                         }).startFlowable());
                     }

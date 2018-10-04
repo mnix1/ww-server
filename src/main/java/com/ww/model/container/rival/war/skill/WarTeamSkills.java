@@ -23,6 +23,7 @@ public class WarTeamSkills implements RivalTeamSkills {
 //        this.skills.put(Skill.BLOCK, base);
 //        this.skills.put(Skill.TASK_CHANGE, base);
         this.skills.put(Skill.KIDNAPPING, new AvailableSkill(base));
+        this.skills.put(Skill.GHOST, new AvailableSkill(base));
         init(wisies);
     }
 

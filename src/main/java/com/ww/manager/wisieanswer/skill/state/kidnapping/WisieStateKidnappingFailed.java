@@ -14,14 +14,16 @@ import static com.ww.helper.RandomHelper.randomDouble;
 
 public class WisieStateKidnappingFailed extends WisieState {
     protected static final Logger logger = LoggerFactory.getLogger(WisieStateKidnappingFailed.class);
-
-    public WisieStateKidnappingFailed(WisieAnswerManager manager) {
+    private WisieAnswerManager opponent;
+    public WisieStateKidnappingFailed(WisieAnswerManager manager, WisieAnswerManager opponent ) {
         super(manager, STATE_TYPE_FLOWABLE);
+        this.opponent = opponent;
     }
 
     @Override
     protected Flowable<Long> processFlowable() {
         manager.addAction(WisieAnswerAction.KIDNAPPING_FAILED);
+        opponent.addAction(WisieAnswerAction.WAS_NOT_KIDNAPPED);
         manager.getManager().sendNewSkillsModel((m, wT) -> {
             WarTeam warTeam = (WarTeam) wT;
             manager.getManager().getModelFactory().fillModelWisieAnswering(m, wT);

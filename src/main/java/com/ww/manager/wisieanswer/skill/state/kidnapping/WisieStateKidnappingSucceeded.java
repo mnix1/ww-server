@@ -9,18 +9,20 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.ww.helper.RandomHelper.randomDouble;
-
 public class WisieStateKidnappingSucceeded extends WisieState {
     protected static final Logger logger = LoggerFactory.getLogger(WisieStateKidnappingSucceeded.class);
 
-    public WisieStateKidnappingSucceeded(WisieAnswerManager manager) {
+    private WisieAnswerManager opponent;
+
+    public WisieStateKidnappingSucceeded(WisieAnswerManager manager, WisieAnswerManager opponent) {
         super(manager, STATE_TYPE_FLOWABLE);
+        this.opponent = opponent;
     }
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(WisieAnswerAction.KIDNAPPING_SUCCEEDED);
+        manager.addAction(WisieAnswerAction.KIDNAPPING_SUCCEEDED);
+        opponent.addAndSendAction(WisieAnswerAction.WAS_KIDNAPPED);
         long interval = intervalMultiply();
         logger.trace(manager.toString() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);

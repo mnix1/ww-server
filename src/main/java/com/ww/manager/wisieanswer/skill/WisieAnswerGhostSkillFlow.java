@@ -34,11 +34,11 @@ public class WisieAnswerGhostSkillFlow {
                 ghostTryState.setInterval(interval);
                 flow.setState(ghostTryState.addOnFlowableEndListener(aLong2 -> {
                     if (success) {
-                        flow.setState(new WisieStateScareSucceeded(manager).addOnFlowableEndListener(aLong3 -> {
+                        flow.setState(new WisieStateScareSucceeded(manager, opponent).addOnFlowableEndListener(aLong3 -> {
                             phaseGhostBan(prevState, true);
                         }).startFlowable());
                     } else {
-                        flow.setState(new WisieStateScareFailed(manager).addOnFlowableEndListener(aLong3 -> {
+                        flow.setState(new WisieStateScareFailed(manager, opponent).addOnFlowableEndListener(aLong3 -> {
                             phaseGhostBan(prevState, false);
                         }).startFlowable());
                     }

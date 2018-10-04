@@ -59,12 +59,13 @@ public enum WisieAnswerAction {
     TRYING_TO_SCARE,
     SCARE_SUCCEEDED,
     SCARE_FAILED,
-    SCARING_ON_IT,
-    RUN_AWAY,
-    WAS_NOT_SCARED,
     REMOVING_DISGUISE,
     WAS_CAUGHT,
     WAS_NOT_CAUGHT,
+        //victim
+    SCARING_ON_IT,
+    RUN_AWAY,
+    WAS_NOT_SCARED,
     //KIDNAPPING
         //kidnapper
     PREPARING_KIDNAPPING,

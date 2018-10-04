@@ -15,13 +15,24 @@ import static com.ww.helper.RandomHelper.randomDouble;
 public class WisieStateScareFailed extends WisieState {
     protected static final Logger logger = LoggerFactory.getLogger(WisieStateScareFailed.class);
 
-    public WisieStateScareFailed(WisieAnswerManager manager) {
+    private WisieAnswerManager opponent;
+
+    public WisieStateScareFailed(WisieAnswerManager manager, WisieAnswerManager opponent) {
         super(manager, STATE_TYPE_FLOWABLE);
+        this.opponent = opponent;
     }
 
     @Override
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.SCARE_FAILED);
+        opponent.addAction(WisieAnswerAction.WAS_NOT_SCARED);
+        manager.getManager().sendNewSkillsModel((m, wT) -> {
+            WarTeam warTeam = (WarTeam) wT;
+            manager.getManager().getModelFactory().fillModelWisieAnswering(m, wT);
+            if(opponent.getWisie().getProfile().getId().equals(warTeam.getProfileId())){
+                warTeam.getTeamSkills().unblockAll();
+            }
+        });
         long interval = (long) (randomDouble(6 - 6 * manager.getReflexF1(),
                 8 - 8 * manager.getReflexF1()) * intervalMultiply());
         logger.trace(manager.toString() + ", interval: " + interval);
