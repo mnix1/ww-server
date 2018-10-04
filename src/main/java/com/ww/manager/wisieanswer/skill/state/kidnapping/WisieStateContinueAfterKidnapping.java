@@ -3,6 +3,7 @@ package com.ww.manager.wisieanswer.skill.state.kidnapping;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
 import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.container.rival.war.WarTeam;
 import io.reactivex.Flowable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +22,13 @@ public class WisieStateContinueAfterKidnapping extends WisieState {
     @Override
     protected void processVoid() {
         manager.getTeam(manager).getActiveTeamMember().changeWisieDisguise(null);
-        manager.getManager().sendModel((m, wT) -> manager.getManager().getModelFactory().fillModelTeam(m, wT));
+        manager.getManager().sendNewSkillsModel((m, wT) -> {
+            WarTeam warTeam = (WarTeam) wT;
+            manager.getManager().getModelFactory().fillModelTeam(m, wT);
+            if (warTeam.getProfileId().equals(manager.getWisie().getProfile().getId())) {
+                warTeam.getTeamSkills().unblockAll();
+            }
+        });
         logger.trace(manager.toString());
     }
 }
