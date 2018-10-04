@@ -28,7 +28,7 @@ public class WarStateChoosingWhoAnswer extends WarState {
             warTeam.setChosenActiveIndex(false);
         }
 
-        int interval = manager.getInterval().getChoosingWhoAnswerInterval();
+        long interval = manager.getInterval().getChoosingWhoAnswerInterval();
         manager.getModel().setEndChoosingWhoAnswerDate(Instant.now().plus(interval, ChronoUnit.MILLIS));
         manager.getModel().getTeams().forEachTeam(team -> {
             Map<String, Object> model = new HashMap<>();

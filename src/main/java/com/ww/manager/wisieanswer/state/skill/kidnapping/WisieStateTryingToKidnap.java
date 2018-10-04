@@ -33,7 +33,7 @@ public class WisieStateTryingToKidnap extends WisieState {
     }
 
     public long calculateInterval() {
-        return (long) (1000 * (1d - Math.abs(manager.getWisdomSum() - opponentManager.getWisdomSum())
+        return (long) (intervalMultiply() * (1d - Math.abs(manager.getWisdomSum() - opponentManager.getWisdomSum())
                 + 1d - Math.abs(manager.getSpeedF1() - opponentManager.getSpeedF1())
                 + 1d - Math.abs(manager.getConfidenceF1() - opponentManager.getConfidenceF1())));
     }

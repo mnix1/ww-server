@@ -23,7 +23,7 @@ public class WisieStateEndThinkingIfUseHint extends WisieState {
 
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.THINKING_IF_USE_HINT);
-        double sumInterval = manager.getAnswerCount() * (4d - manager.getWisdomSum() - manager.getConfidenceF1() - manager.getIntuitionF1()) * 100;
+        double sumInterval = manager.getAnswerCount() * (4d - manager.getWisdomSum() - manager.getConfidenceF1() - manager.getIntuitionF1()) * intervalMultiply() / 10;
         if (hintCorrect) {
             sumInterval /= 2;
         }

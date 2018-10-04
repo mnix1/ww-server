@@ -20,7 +20,7 @@ public class WisieStateFoundAnswerLookingFor extends WisieState {
 
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.FOUND_ANSWER_LOOKING_FOR);
-        long interval = (long) ((3 - manager.getReflexF1() - manager.getSpeedF1() - manager.getConcentrationF1()) * 1000);
+        long interval = (long) ((3 - manager.getReflexF1() - manager.getSpeedF1() - manager.getConcentrationF1()) * intervalMultiply());
         logger.trace(manager.toString() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

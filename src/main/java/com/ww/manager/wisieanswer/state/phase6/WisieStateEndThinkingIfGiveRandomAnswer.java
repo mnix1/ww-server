@@ -24,7 +24,7 @@ public class WisieStateEndThinkingIfGiveRandomAnswer extends WisieState {
         if (manager.isHobby()) {
             sumInterval /= manager.getHobbyFactor();
         }
-        long interval = (long) (sumInterval * 1000);
+        long interval = (long) (sumInterval * intervalMultiply());
         logger.trace(manager.toString() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

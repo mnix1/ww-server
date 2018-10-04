@@ -22,7 +22,7 @@ public class WisieStateWasNotKidnapped extends WisieState {
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.WAS_NOT_KIDNAPPED);
         long interval = (long) (randomDouble(1 - manager.getReflexF1(),
-                2 - 1 * manager.getReflexF1() - 1 * manager.getConcentrationF1()) * 1000);
+                2 - 1 * manager.getReflexF1() - 1 * manager.getConcentrationF1()) * intervalMultiply());
         logger.trace(manager.toString() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

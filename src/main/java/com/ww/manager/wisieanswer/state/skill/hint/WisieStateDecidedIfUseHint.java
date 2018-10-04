@@ -22,7 +22,7 @@ public class WisieStateDecidedIfUseHint extends WisieState {
 
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(wisieAnswerAction);
-        long interval = (long) (randomDouble(1 - manager.getSpeedF1(), 2 - 2 * manager.getSpeedF1()) * 1000);
+        long interval = (long) (randomDouble(1 - manager.getSpeedF1(), 2 - 2 * manager.getSpeedF1()) * intervalMultiply());
         logger.trace(manager.toString() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

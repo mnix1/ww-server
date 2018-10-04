@@ -24,6 +24,10 @@ public abstract class AbstractState implements FlowRunnable, Loggable {
     private List<Consumer> onFlowableEndListeners = new CopyOnWriteArrayList<>();
     private List<Disposable> disposables = new CopyOnWriteArrayList<>();
 
+    public long intervalMultiply(){
+        return 1000;
+    }
+
     public AbstractState addOnFlowableEndListener(Consumer<? super Long> onNext) {
         onFlowableEndListeners.add(onNext);
         return this;

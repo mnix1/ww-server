@@ -25,7 +25,7 @@ public class WisieStateStartThinkingAboutQuestion extends WisieState {
         if (manager.isHobby()) {
             doubleInterval /= manager.getHobbyFactor();
         }
-        long interval = (long) (doubleInterval * 1000);
+        long interval = (long) (doubleInterval * intervalMultiply());
         logger.trace(manager.toString() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

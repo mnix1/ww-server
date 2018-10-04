@@ -23,7 +23,7 @@ public class StateChoosingTaskProps extends State {
         manager.getModel().setStatus(RivalStatus.CHOOSING_TASK_PROPS);
         manager.getModel().increaseCurrentTaskIndex();
         boolean randomChooseTaskProps = manager.getModel().randomChooseTaskProps();
-        int interval;
+        long interval;
         if (randomChooseTaskProps) {
             manager.prepareTask((long) manager.getModel().getCurrentTaskIndex() + 1);
             interval = manager.getInterval().getRandomChooseTaskPropsInterval();

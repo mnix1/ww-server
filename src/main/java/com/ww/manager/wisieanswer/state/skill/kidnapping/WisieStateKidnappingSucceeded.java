@@ -21,7 +21,7 @@ public class WisieStateKidnappingSucceeded extends WisieState {
     @Override
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.KIDNAPPING_SUCCEEDED);
-        long interval = 1000L;
+        long interval = intervalMultiply();
         logger.trace(manager.toString() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

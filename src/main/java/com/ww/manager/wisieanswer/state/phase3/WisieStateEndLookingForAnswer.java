@@ -20,7 +20,7 @@ public class WisieStateEndLookingForAnswer extends WisieState {
 
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.LOOKING_FOR_ANSWER);
-        double sumInterval = manager.getAnswerCount() * (2d - manager.getSpeedF1()) * 250;
+        double sumInterval = manager.getAnswerCount() * (2d - manager.getSpeedF1()) * intervalMultiply() / 4;
         if (manager.isHobby()) {
             sumInterval /= manager.getHobbyFactor();
         }

@@ -8,9 +8,9 @@ import lombok.AllArgsConstructor;
 public class ChallengeInterval extends WarInterval {
     private RivalModel container;
 
-    public Integer getAnsweringInterval() {
+    public long getAnsweringInterval() {
         int taskIndex = Math.max(0, container.getCurrentTaskIndex());
-        Integer interval = super.getAnsweringInterval() - taskIndex * 5000;
-        return Math.max(interval, 5000);
+        long interval = super.getAnsweringInterval() - taskIndex * calculateInterval(5);
+        return Math.max(interval, calculateInterval(5));
     }
 }

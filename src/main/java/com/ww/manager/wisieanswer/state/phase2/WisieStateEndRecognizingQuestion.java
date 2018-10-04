@@ -42,7 +42,7 @@ public class WisieStateEndRecognizingQuestion extends WisieState {
 //        } else if (taskRenderer == TaskRenderer.TEXT_DIGITAL_CLOCK) {
 //            otherInterval = manager.getDifficulty() * 500;
         } else {
-            otherInterval = manager.getDifficulty() * 500;
+            otherInterval = manager.getDifficulty() * intervalMultiply() / 2;
         }
         double sumInterval = readingInterval + randomDouble(otherInterval / 0.5, otherInterval);
         if (manager.isHobby()) {

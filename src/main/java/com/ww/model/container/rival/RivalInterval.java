@@ -1,31 +1,39 @@
 package com.ww.model.container.rival;
 
 public class RivalInterval {
-    public Integer getIntroInterval() {
-        return 3500;
+    protected long calculateInterval(double interval) {
+        return (long) (intervalMultiply() * interval);
     }
 
-    public Integer getPreparingNextTaskInterval() {
-        return 2000;
+    protected long intervalMultiply() {
+        return 1000;
     }
 
-    public Integer getAnsweringInterval() {
-        return 45000;
+    public long getIntroInterval() {
+        return calculateInterval(3.5);
     }
 
-    public Integer getAnsweringTimeoutInterval() {
-        return 8000;
+    public long getPreparingNextTaskInterval() {
+        return calculateInterval(2);
     }
 
-    public Integer getShowingAnswerInterval() {
-        return 8000;
+    public long getAnsweringInterval() {
+        return calculateInterval(45);
     }
 
-    public Integer getChoosingTaskPropsInterval() {
-        return 14000;
+    public long getAnsweringTimeoutInterval() {
+        return calculateInterval(8);
     }
 
-    public Integer getRandomChooseTaskPropsInterval() {
-        return 2500;
+    public long getShowingAnswerInterval() {
+        return calculateInterval(8);
+    }
+
+    public long getChoosingTaskPropsInterval() {
+        return calculateInterval(14);
+    }
+
+    public long getRandomChooseTaskPropsInterval() {
+        return calculateInterval(2.5);
     }
 }
