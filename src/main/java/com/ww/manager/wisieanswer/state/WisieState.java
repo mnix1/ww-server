@@ -1,6 +1,6 @@
 package com.ww.manager.wisieanswer.state;
 
-import com.ww.manager.rival.state.AbstractState;
+import com.ww.manager.AbstractState;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import lombok.Getter;

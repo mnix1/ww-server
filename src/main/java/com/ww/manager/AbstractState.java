@@ -1,4 +1,4 @@
-package com.ww.manager.rival.state;
+package com.ww.manager;
 
 import com.ww.helper.Loggable;
 import io.reactivex.Flowable;

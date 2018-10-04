@@ -11,10 +11,10 @@ import java.util.concurrent.TimeUnit;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 
-public class WisieStateNotSureOfAnswer extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStateNotSureOfAnswer.class);
+public class WisieStateDoesntKnowAnswer extends WisieState {
+    protected static final Logger logger = LoggerFactory.getLogger(WisieStateDoesntKnowAnswer.class);
 
-    public WisieStateNotSureOfAnswer(WisieAnswerManager manager) {
+    public WisieStateDoesntKnowAnswer(WisieAnswerManager manager) {
         super(manager, STATE_TYPE_FLOWABLE);
     }
 

@@ -1,4 +1,4 @@
-package com.ww.manager.rival.state;
+package com.ww.manager;
 
 public interface FlowRunnable {
     boolean isRunning();

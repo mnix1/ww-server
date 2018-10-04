@@ -1,6 +1,6 @@
 package com.ww.manager.rival.war.state;
 
-import com.ww.manager.rival.state.AbstractState;
+import com.ww.manager.AbstractState;
 import com.ww.manager.rival.war.WarManager;
 import lombok.Getter;
 import org.slf4j.Logger;

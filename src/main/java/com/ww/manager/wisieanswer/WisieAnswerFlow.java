@@ -1,6 +1,6 @@
 package com.ww.manager.wisieanswer;
 
-import com.ww.manager.rival.state.AbstractState;
+import com.ww.manager.AbstractState;
 import com.ww.manager.wisieanswer.skill.WisieAnswerGhostSkillFlow;
 import com.ww.manager.wisieanswer.skill.WisieAnswerHintSkillFlow;
 import com.ww.manager.wisieanswer.skill.WisieAnswerKidnappingSkillFlow;
@@ -143,7 +143,7 @@ public class WisieAnswerFlow {
     }
 
     private synchronized void phase6() {
-        state = new WisieStateNotSureOfAnswer(manager).addOnFlowableEndListener(aLong10 -> {
+        state = new WisieStateDoesntKnowAnswer(manager).addOnFlowableEndListener(aLong10 -> {
             state = new WisieStateEndThinkingIfGiveRandomAnswer(manager).addOnFlowableEndListener(aLong11 -> {
                 synchronized (this) {
                     WisieAnswerAction aa5 = new WisieStateCheckIfGiveRandomAnswer(manager).startWisieAnswerAction();

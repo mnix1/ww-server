@@ -1,6 +1,6 @@
 package com.ww.manager.wisieanswer.skill;
 
-import com.ww.manager.rival.state.AbstractState;
+import com.ww.manager.AbstractState;
 import com.ww.manager.wisieanswer.WisieAnswerFlow;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.skill.state.kidnapping.*;

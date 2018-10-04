@@ -19,7 +19,7 @@ public class WisieStateAnsweringNoUseHint extends WisieState {
     private Long hintAnswerId;
 
     public WisieStateAnsweringNoUseHint(WisieAnswerManager manager, Long hintAnswerId) {
-        super(manager,STATE_TYPE_VOID);
+        super(manager, STATE_TYPE_VOID);
         this.hintAnswerId = hintAnswerId;
     }
 

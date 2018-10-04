@@ -33,9 +33,9 @@ public class WisieStateTryingToKidnap extends WisieState {
     }
 
     public long calculateInterval() {
-        return (long) (intervalMultiply() * (1d - Math.abs(manager.getWisdomSum() - opponentManager.getWisdomSum())
-                + 1d - Math.abs(manager.getSpeedF1() - opponentManager.getSpeedF1())
-                + 1d - Math.abs(manager.getConfidenceF1() - opponentManager.getConfidenceF1())));
+        return (long) (intervalMultiply() * (3d - Math.abs(manager.getWisdomSum() - opponentManager.getWisdomSum())
+                - Math.abs(manager.getSpeedF1() - opponentManager.getSpeedF1())
+                - Math.abs(manager.getConfidenceF1() - opponentManager.getConfidenceF1())));
     }
 
     protected Flowable<Long> processFlowable() {

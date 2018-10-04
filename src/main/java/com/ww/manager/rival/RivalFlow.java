@@ -1,9 +1,8 @@
 package com.ww.manager.rival;
 
-import com.ww.manager.rival.state.AbstractState;
+import com.ww.manager.AbstractState;
 import com.ww.manager.rival.state.StateSurrender;
 import com.ww.model.constant.rival.RivalStatus;
-import io.reactivex.disposables.Disposable;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

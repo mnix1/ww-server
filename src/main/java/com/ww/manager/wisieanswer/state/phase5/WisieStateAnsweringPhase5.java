@@ -16,13 +16,13 @@ public class WisieStateAnsweringPhase5 extends WisieState {
     protected static final Logger logger = LoggerFactory.getLogger(WisieStateAnsweringPhase5.class);
 
     public WisieStateAnsweringPhase5(WisieAnswerManager manager) {
-        super(manager,STATE_TYPE_VOID);
+        super(manager, STATE_TYPE_VOID);
     }
 
     protected void processVoid() {
         manager.addAndSendAction(WisieAnswerAction.ANSWERED);
         double diffPart = (4 - manager.getDifficulty()) * 0.1;
-        double attrPart = ((manager.getWisdomSum() + 2 * manager.getIntuitionF1())/2 - 0.5) * 4 / 5;
+        double attrPart = ((manager.getWisdomSum() + 2 * manager.getIntuitionF1()) / 2 - 0.5) * 4 / 5;
         double hobbyPart = manager.isHobby() ? 0.1 : 0;
         double chance = 0.5 + diffPart + attrPart + hobbyPart;
         boolean correctAnswer = chance > randomDouble();
