@@ -39,7 +39,10 @@ public class WisieAnswerKidnappingSkillFlow {
                         }).startFlowable());
                     } else {
                         flow.setState(new WisieStateKidnappingFailed(manager, opponent).addOnFlowableEndListener(aLong3 -> {
-                            flow.setState(prevState.startFlowable());
+                            flow.setState(new WisieStateChangingClothes(manager).addOnFlowableEndListener(aLong4 -> {
+                                new WisieStateContinueAfterKidnapping(manager).startVoid();
+                                flow.setState(prevState.startFlowable());
+                            }).startFlowable());
                         }).startFlowable());
                     }
                 }).startFlowable());

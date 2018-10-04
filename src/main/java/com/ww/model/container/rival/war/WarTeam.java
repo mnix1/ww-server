@@ -32,6 +32,14 @@ public class WarTeam extends RivalTeam {
         return teamMembers.get(activeIndex);
     }
 
+    public void resetDisguises() {
+        for (TeamMember teamMember : teamMembers) {
+            if (teamMember.isWisie()) {
+                teamMember.changeWisieDisguise(null);
+            }
+        }
+    }
+
     public int countPresentMembers() {
         return getPresentIndexes().size();
     }
@@ -45,7 +53,7 @@ public class WarTeam extends RivalTeam {
         return false;
     }
 
-    public List<Integer> getPresentIndexes(){
+    public List<Integer> getPresentIndexes() {
         List<Integer> indexes = new ArrayList<>();
         for (TeamMember teamMember : teamMembers) {
             if (teamMember.isPresent()) {

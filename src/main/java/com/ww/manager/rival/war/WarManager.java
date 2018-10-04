@@ -78,6 +78,13 @@ public class WarManager extends RivalManager {
         sendModel(Arrays.asList(fillMethods));
     }
 
+    public void sendTeamAndActionsModel() {
+        sendModel((m, wT) -> {
+            getModelFactory().fillModelTeam(m, wT);
+            getModelFactory().fillModelWisieAnswering(m, wT);
+        });
+    }
+
     public void sendNewSkillsModel(BiConsumer<Map<String, Object>, ? super RivalTeam>... fillMethods) {
         List<BiConsumer<Map<String, Object>, ? super RivalTeam>> fillMethodList = new ArrayList<>(fillMethods.length + 1);
         fillMethodList.addAll(Arrays.asList(fillMethods));

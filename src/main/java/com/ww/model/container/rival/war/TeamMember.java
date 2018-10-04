@@ -1,6 +1,8 @@
 package com.ww.model.container.rival.war;
 
+import com.ww.model.constant.wisie.DisguiseType;
 import com.ww.model.constant.wisie.HeroType;
+import com.ww.model.dto.wisie.WarProfileWisieDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +21,11 @@ public class TeamMember {
         this.present = true;
         this.content = content;
         this.contentDTO = contentDTO;
+    }
+
+    public void changeWisieDisguise(DisguiseType disguiseType) {
+        WarProfileWisieDTO dto = (WarProfileWisieDTO) contentDTO;
+        dto.setDisguise(disguiseType);
     }
 
     public boolean isWisie() {

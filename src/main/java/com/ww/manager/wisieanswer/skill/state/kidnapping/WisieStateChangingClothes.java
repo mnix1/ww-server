@@ -1,4 +1,4 @@
-package com.ww.manager.wisieanswer.skill.state.ghost;
+package com.ww.manager.wisieanswer.skill.state.kidnapping;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
@@ -11,18 +11,18 @@ import java.util.concurrent.TimeUnit;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 
-public class WisieStateRemovingDisguise extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStateRemovingDisguise.class);
+public class WisieStateChangingClothes extends WisieState {
+    protected static final Logger logger = LoggerFactory.getLogger(com.ww.manager.wisieanswer.skill.state.ghost.WisieStateRemovingDisguise.class);
 
-    public WisieStateRemovingDisguise(WisieAnswerManager manager) {
+    public WisieStateChangingClothes(WisieAnswerManager manager) {
         super(manager, STATE_TYPE_FLOWABLE);
     }
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(WisieAnswerAction.REMOVING_DISGUISE);
-        long interval = (long) (randomDouble(3 - manager.getSpeedF1(),
-                6 - 4 * manager.getSpeedF1()) * intervalMultiply());
+        manager.addAndSendAction(WisieAnswerAction.CHANGING_CLOTHES);
+        long interval = (long) (randomDouble(2 - manager.getSpeedF1(),
+                4 - 3 * manager.getSpeedF1()) * intervalMultiply());
         logger.trace(manager.toString() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

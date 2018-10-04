@@ -45,8 +45,6 @@ public enum WisieAnswerAction {
     WOULD_EAT_SOMETHING,
     NEED_GO_TO_TOILET,
 
-
-
 //SKILLS
     //HINT
     HINT_RECEIVED,
@@ -72,6 +70,7 @@ public enum WisieAnswerAction {
     TRYING_TO_KIDNAP,
     KIDNAPPING_SUCCEEDED,
     KIDNAPPING_FAILED,
+    CHANGING_CLOTHES,
         //victim
     TRYING_TO_DEFEND,
     WAS_KIDNAPPED,

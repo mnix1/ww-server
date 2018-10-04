@@ -29,14 +29,20 @@ public class WarModelFactory extends RivalModelFactory {
         super.fillModelBasic(model, team);
         WarTeam warTeam = (WarTeam) team;
         model.put("activeIndex", warTeam.getActiveIndex());
-        model.put("team", this.model.prepareTeam(warTeam.getTeamMembers()));
+        fillModelTeam(model, team);
         if (this.model.isOpponent()) {
-            WarTeam opponentTeam = opponentTeam(team);
-            model.put("opponentActiveIndex", opponentTeam.getActiveIndex());
-            model.put("opponentTeam", this.model.prepareTeam(opponentTeam.getTeamMembers()));
+            model.put("opponentActiveIndex", opponentTeam(team).getActiveIndex());
         }
         fillModelPresentIndexes(model, team);
         fillModelSkills(model, team);
+    }
+
+    public void fillModelTeam(Map<String, Object> model, RivalTeam team){
+        WarTeam warTeam = (WarTeam) team;
+        model.put("team", this.model.prepareTeam(warTeam.getTeamMembers()));
+        if (this.model.isOpponent()) {
+            model.put("opponentTeam", this.model.prepareTeam(opponentTeam(team).getTeamMembers()));
+        }
     }
 
     public void fillModelSkills(Map<String, Object> model, RivalTeam team) {

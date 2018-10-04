@@ -2,6 +2,7 @@ package com.ww.manager.wisieanswer.skill.state.kidnapping;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
+import com.ww.model.constant.wisie.DisguiseType;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import io.reactivex.Flowable;
 import lombok.Setter;
@@ -42,7 +43,9 @@ public class WisieStateTryingToKidnap extends WisieState {
         manager.getTeam(manager).getTeamSkills().blockAll();
         manager.getTeam(opponentManager).getTeamSkills().blockAll();
         manager.addAction(WisieAnswerAction.TRYING_TO_KIDNAP);
+        manager.getTeam(manager).getActiveTeamMember().changeWisieDisguise(DisguiseType.NINJA);
         manager.getManager().sendNewSkillsModel((m, wT) -> {
+            manager.getManager().getModelFactory().fillModelTeam(m, wT);
             manager.getManager().getModelFactory().fillModelWisieAnswering(m, wT);
         });
         opponentManager.getFlow().getKidnappingSkillFlow().kidnappingUsedOnIt(success, interval);

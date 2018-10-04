@@ -15,7 +15,9 @@ public class WarStateChoosingTaskProps extends StateChoosingTaskProps {
     protected Flowable<Long> processFlowable() {
         ((WarManager) manager).sendNewSkillsModel((m, wT) -> {
             WarTeam warTeam = (WarTeam) wT;
+            warTeam.resetDisguises();
             warTeam.getTeamSkills().resetAll();
+            ((WarManager) manager).getModelFactory().fillModelTeam(m, wT);
         });
         return super.processFlowable();
     }

@@ -2,6 +2,7 @@ package com.ww.manager.wisieanswer.skill.state.ghost;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
+import com.ww.model.constant.wisie.DisguiseType;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import com.ww.model.container.rival.war.WarTeam;
 import io.reactivex.Flowable;
@@ -25,7 +26,9 @@ public class WisieStateScareSucceeded extends WisieState {
     @Override
     protected Flowable<Long> processFlowable() {
         manager.addAction(WisieAnswerAction.SCARE_SUCCEEDED);
-        opponent.addAndSendAction(WisieAnswerAction.RUN_AWAY);
+        opponent.addAction(WisieAnswerAction.RUN_AWAY);
+        opponent.getTeam(manager).getActiveTeamMember().changeWisieDisguise(DisguiseType.CHAIR_RED);
+        manager.getManager().sendTeamAndActionsModel();
         long interval = (long) (randomDouble(2 - 2 * manager.getReflexF1(),
                 4 - 4 * manager.getReflexF1()) * intervalMultiply());
         logger.trace(manager.toString() + ", interval: " + interval);
