@@ -1,4 +1,4 @@
-package com.ww.manager.wisieanswer.state.skill.hint;
+package com.ww.manager.wisieanswer.skill.state.kidnapping;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
@@ -11,16 +11,18 @@ import java.util.concurrent.TimeUnit;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 
-public class WisieStateHintReceived extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStateHintReceived.class);
+public class WisieStateTryingToDefend extends WisieState {
+    protected static final Logger logger = LoggerFactory.getLogger(WisieStateTryingToDefend.class);
 
-    public WisieStateHintReceived(WisieAnswerManager manager) {
+    private long interval;
+
+    public WisieStateTryingToDefend(WisieAnswerManager manager, long interval) {
         super(manager, STATE_TYPE_FLOWABLE);
+        this.interval = interval;
     }
 
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(WisieAnswerAction.HINT_RECEIVED);
-        long interval = (long) (randomDouble(2 - manager.getReflexF1() - manager.getConfidenceF1(), 4 - 2 * manager.getReflexF1() - 2 * manager.getConfidenceF1()) * intervalMultiply());
+        manager.addAndSendAction(WisieAnswerAction.TRYING_TO_DEFEND);
         logger.trace(manager.toString() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

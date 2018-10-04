@@ -24,7 +24,7 @@ public class WarStateWaterPistolUsed extends WarState {
             return;
         }
         team.getTeamSkills().use(Skill.WATER_PISTOL);
-        wisieAnswerManager.getFlow().getSkillFlow().waterPistol();
+        wisieAnswerManager.getFlow().getWaterPistolSkillFlow().waterPistol();
         manager.sendNewSkillsModel();
     }
 }

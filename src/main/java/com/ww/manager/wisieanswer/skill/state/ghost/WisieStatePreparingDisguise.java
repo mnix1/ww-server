@@ -1,4 +1,4 @@
-package com.ww.manager.wisieanswer.state.skill.hint;
+package com.ww.manager.wisieanswer.skill.state.ghost;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
@@ -11,18 +11,17 @@ import java.util.concurrent.TimeUnit;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 
-public class WisieStateDecidedIfUseHint extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStateDecidedIfUseHint.class);
-    private WisieAnswerAction wisieAnswerAction;
+public class WisieStatePreparingDisguise extends WisieState {
+    protected static final Logger logger = LoggerFactory.getLogger(WisieStatePreparingDisguise.class);
 
-    public WisieStateDecidedIfUseHint(WisieAnswerManager manager, WisieAnswerAction wisieAnswerAction) {
+    public WisieStatePreparingDisguise(WisieAnswerManager manager) {
         super(manager, STATE_TYPE_FLOWABLE);
-        this.wisieAnswerAction = wisieAnswerAction;
     }
 
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(wisieAnswerAction);
-        long interval = (long) (randomDouble(1 - manager.getSpeedF1(), 2 - 2 * manager.getSpeedF1()) * intervalMultiply());
+        manager.addAndSendAction(WisieAnswerAction.PREPARING_DISGUISE);
+        long interval = (long) (randomDouble(3 - manager.getSpeedF1() - manager.getReflexF1() - manager.getConfidenceF1(),
+                6 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1() - 2 * manager.getConfidenceF1()) * intervalMultiply());
         logger.trace(manager.toString() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

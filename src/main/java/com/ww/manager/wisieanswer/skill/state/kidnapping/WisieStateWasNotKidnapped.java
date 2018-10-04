@@ -1,4 +1,4 @@
-package com.ww.manager.wisieanswer.state.skill.kidnapping;
+package com.ww.manager.wisieanswer.skill.state.kidnapping;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;

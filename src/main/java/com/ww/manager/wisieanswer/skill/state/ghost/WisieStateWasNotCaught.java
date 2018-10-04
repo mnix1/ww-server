@@ -1,4 +1,4 @@
-package com.ww.manager.wisieanswer.state.skill.kidnapping;
+package com.ww.manager.wisieanswer.skill.state.ghost;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
@@ -11,15 +11,15 @@ import java.util.concurrent.TimeUnit;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 
-public class WisieStatePreparingKidnapping extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStatePreparingKidnapping.class);
+public class WisieStateWasNotCaught extends WisieState {
+    protected static final Logger logger = LoggerFactory.getLogger(WisieStateWasNotCaught.class);
 
-    public WisieStatePreparingKidnapping(WisieAnswerManager manager) {
+    public WisieStateWasNotCaught(WisieAnswerManager manager) {
         super(manager, STATE_TYPE_FLOWABLE);
     }
 
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(WisieAnswerAction.PREPARING_KIDNAPPING);
+        manager.addAndSendAction(WisieAnswerAction.WAS_NOT_CAUGHT);
         long interval = (long) (randomDouble(3 - manager.getSpeedF1() - manager.getReflexF1() - manager.getConfidenceF1(),
                 6 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1() - 2 * manager.getConfidenceF1()) * intervalMultiply());
         logger.trace(manager.toString() + ", interval: " + interval);

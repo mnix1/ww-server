@@ -1,4 +1,4 @@
-package com.ww.manager.wisieanswer.state.skill.kidnapping;
+package com.ww.manager.wisieanswer.skill.state.kidnapping;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
@@ -43,7 +43,7 @@ public class WisieStateTryingToKidnap extends WisieState {
         manager.getTeam(opponentManager).getTeamSkills().blockAll();
         manager.getManager().sendNewSkillsModel();
         manager.addAndSendAction(WisieAnswerAction.TRYING_TO_KIDNAP);
-        opponentManager.getFlow().getSkillFlow().kidnappingUsedOnIt(success, interval);
+        opponentManager.getFlow().getKidnappingSkillFlow().kidnappingUsedOnIt(success, interval);
         logger.trace(manager.toString() + ", interval=" + interval + ", success=" + success);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

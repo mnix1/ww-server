@@ -29,7 +29,7 @@ public class WarStateHintUsed extends WarState {
         team.getTeamSkills().use(Skill.HINT).disable();
         Long markedAnswerId = ((Integer) content.get("answerId")).longValue();
         Boolean isAnswerCorrect = manager.getModel().findCurrentCorrectAnswerId().equals(markedAnswerId);
-        wisieAnswerManager.getFlow().getSkillFlow().hint(markedAnswerId, isAnswerCorrect);
+        wisieAnswerManager.getFlow().getHintSkillFlow().hint(markedAnswerId, isAnswerCorrect);
         manager.sendNewSkillsModel();
     }
 }

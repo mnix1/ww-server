@@ -1,4 +1,4 @@
-package com.ww.manager.wisieanswer.state.skill.kidnapping;
+package com.ww.manager.wisieanswer.skill.state.ghost;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
@@ -12,16 +12,16 @@ import java.util.concurrent.TimeUnit;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 
-public class WisieStateKidnappingFailed extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStateKidnappingFailed.class);
+public class WisieStateScareFailed extends WisieState {
+    protected static final Logger logger = LoggerFactory.getLogger(WisieStateScareFailed.class);
 
-    public WisieStateKidnappingFailed(WisieAnswerManager manager) {
+    public WisieStateScareFailed(WisieAnswerManager manager) {
         super(manager, STATE_TYPE_FLOWABLE);
     }
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(WisieAnswerAction.KIDNAPPING_FAILED);
+        manager.addAndSendAction(WisieAnswerAction.SCARE_FAILED);
         manager.getManager().sendNewSkillsModel((m, wT) -> {
             WarTeam warTeam = (WarTeam) wT;
             warTeam.getTeamSkills().unblockAll();

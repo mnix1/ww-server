@@ -7,4 +7,5 @@ public enum Skill {
     BLOCK,
     TASK_CHANGE,
     KIDNAPPING,
+    GHOST,
 }

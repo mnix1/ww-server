@@ -1,4 +1,4 @@
-package com.ww.manager.wisieanswer.state.skill.kidnapping;
+package com.ww.manager.wisieanswer.skill.state.ghost;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
@@ -6,16 +6,16 @@ import com.ww.model.constant.wisie.WisieAnswerAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class WisieStateWasKidnapped extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStateWasKidnapped.class);
+public class WisieStateWasCaught extends WisieState {
+    protected static final Logger logger = LoggerFactory.getLogger(WisieStateWasCaught.class);
 
-    public WisieStateWasKidnapped(WisieAnswerManager manager) {
+    public WisieStateWasCaught(WisieAnswerManager manager) {
         super(manager, STATE_TYPE_VOID);
     }
 
     @Override
     protected void processVoid() {
-        manager.addAndSendAction(WisieAnswerAction.WAS_KIDNAPPED);
+        manager.addAndSendAction(WisieAnswerAction.WAS_NOT_CAUGHT);
         logger.trace(manager.toString());
     }
 }

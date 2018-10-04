@@ -1,4 +1,4 @@
-package com.ww.manager.wisieanswer.state.skill.hint;
+package com.ww.manager.wisieanswer.skill.state.hint;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;

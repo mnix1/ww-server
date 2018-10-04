@@ -25,7 +25,7 @@ public class WarStateKidnappingUsed extends WarState {
         team.getTeamSkills().use(Skill.KIDNAPPING);
         WisieAnswerManager wisieAnswerManager = manager.getModel().getWisieAnswerManager(team.getProfileId());
         WisieAnswerManager opponentWisieAnswerManager = manager.getModel().getWisieAnswerManager(opponentTeam.getProfileId());
-        wisieAnswerManager.getFlow().getSkillFlow().kidnapping(opponentWisieAnswerManager);
+        wisieAnswerManager.getFlow().getKidnappingSkillFlow().kidnapping(opponentWisieAnswerManager);
         manager.sendNewSkillsModel();
     }
 }

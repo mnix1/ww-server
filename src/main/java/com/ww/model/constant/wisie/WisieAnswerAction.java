@@ -53,6 +53,18 @@ public enum WisieAnswerAction {
     THINKING_IF_USE_HINT,
     WILL_USE_HINT,
     WONT_USE_HINT,
+    //GHOST
+        //ghost
+    PREPARING_DISGUISE,
+    TRYING_TO_SCARE,
+    SCARE_SUCCEEDED,
+    SCARE_FAILED,
+    SCARING_ON_IT,
+    RUN_AWAY,
+    WAS_NOT_SCARED,
+    REMOVING_DISGUISE,
+    WAS_CAUGHT,
+    WAS_NOT_CAUGHT,
     //KIDNAPPING
         //kidnapper
     PREPARING_KIDNAPPING,

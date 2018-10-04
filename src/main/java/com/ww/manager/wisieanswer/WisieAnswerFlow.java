@@ -1,6 +1,10 @@
 package com.ww.manager.wisieanswer;
 
 import com.ww.manager.rival.state.AbstractState;
+import com.ww.manager.wisieanswer.skill.WisieAnswerGhostSkillFlow;
+import com.ww.manager.wisieanswer.skill.WisieAnswerHintSkillFlow;
+import com.ww.manager.wisieanswer.skill.WisieAnswerKidnappingSkillFlow;
+import com.ww.manager.wisieanswer.skill.WisieAnswerWaterPistolSkillFlow;
 import com.ww.manager.wisieanswer.state.multiphase.WisieStateCheckNoConcentration;
 import com.ww.manager.wisieanswer.state.multiphase.WisieStateLostConcentration;
 import com.ww.manager.wisieanswer.state.phase1.WisieStateStartRecognizingQuestion;
@@ -14,8 +18,6 @@ import com.ww.manager.wisieanswer.state.phase5.*;
 import com.ww.manager.wisieanswer.state.phase5.WisieStateCheckKnowAnswerAfterThinkingWhichMatch;
 import com.ww.manager.wisieanswer.state.phase5.WisieStateEndThinkingWhichAnswerMatch;
 import com.ww.manager.wisieanswer.state.phase6.*;
-import com.ww.manager.wisieanswer.state.skill.waterpistol.WisieStateCleaning;
-import com.ww.manager.wisieanswer.state.skill.waterpistol.WisieStateWaterPistolUsedOnIt;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import lombok.Getter;
 import org.slf4j.Logger;
@@ -27,11 +29,18 @@ public class WisieAnswerFlow {
 
     private WisieAnswerManager manager;
     private AbstractState state;
-    private WisieAnswerSkillFlow skillFlow;
+
+    private WisieAnswerHintSkillFlow hintSkillFlow;
+    private WisieAnswerWaterPistolSkillFlow waterPistolSkillFlow;
+    private WisieAnswerKidnappingSkillFlow kidnappingSkillFlow;
+    private WisieAnswerGhostSkillFlow ghostSkillFlow;
 
     public WisieAnswerFlow(WisieAnswerManager manager) {
         this.manager = manager;
-        this.skillFlow = new WisieAnswerSkillFlow(this);
+        this.hintSkillFlow = new WisieAnswerHintSkillFlow(this);
+        this.kidnappingSkillFlow = new WisieAnswerKidnappingSkillFlow(this);
+        this.waterPistolSkillFlow = new WisieAnswerWaterPistolSkillFlow(this);
+        this.ghostSkillFlow = new WisieAnswerGhostSkillFlow(this);
     }
 
     public void start() {
