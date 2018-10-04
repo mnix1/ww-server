@@ -32,4 +32,8 @@ public class EmptyTeamSkills implements RivalTeamSkills {
     @Override
     public void unblockAll() {
     }
+
+    @Override
+    public void resetAll() {
+    }
 }

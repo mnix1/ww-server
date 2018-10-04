@@ -1,13 +1,11 @@
 package com.ww.model.container.rival.war.skill.available;
 
-import com.ww.model.constant.Skill;
 import lombok.Getter;
-
-import java.util.Map;
 
 @Getter
 public class AvailableSkill {
 
+    protected boolean used = false;
     protected boolean disabled = false;
     protected int count;
 
@@ -16,7 +14,11 @@ public class AvailableSkill {
     }
 
     public boolean getCanUse() {
-        return !disabled && count > 0;
+        return !disabled && !used && count > 0;
+    }
+
+    public boolean getUsed() {
+        return used;
     }
 
     public AvailableSkill disable() {
@@ -29,13 +31,15 @@ public class AvailableSkill {
         return this;
     }
 
-    public AvailableSkill use() {
-        count--;
+    public AvailableSkill reset() {
+        used = false;
+        enable();
         return this;
     }
 
-    public AvailableSkill use(Map<Skill, AvailableSkill> skills) {
-        use();
+    public AvailableSkill use() {
+        count--;
+        used = true;
         return this;
     }
 }

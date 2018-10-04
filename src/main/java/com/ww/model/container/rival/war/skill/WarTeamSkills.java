@@ -3,6 +3,7 @@ package com.ww.model.container.rival.war.skill;
 import com.ww.model.constant.Skill;
 import com.ww.model.container.rival.RivalTeamSkills;
 import com.ww.model.container.rival.war.skill.available.AvailableSkill;
+import com.ww.model.container.rival.war.skill.available.LifebuoyAvailableSkill;
 import com.ww.model.entity.outside.wisie.OwnedWisie;
 import lombok.Getter;
 
@@ -18,7 +19,7 @@ public class WarTeamSkills implements RivalTeamSkills {
     public WarTeamSkills(int base, List<? extends OwnedWisie> wisies) {
         this.skills.put(Skill.HINT, new AvailableSkill(base));
         this.skills.put(Skill.WATER_PISTOL, new AvailableSkill(base));
-        this.skills.put(Skill.LIFEBUOY, new AvailableSkill(base));
+        this.skills.put(Skill.LIFEBUOY, new LifebuoyAvailableSkill(base));
 //        this.skills.put(Skill.BLOCK, base);
 //        this.skills.put(Skill.TASK_CHANGE, base);
         this.skills.put(Skill.KIDNAPPING, new AvailableSkill(base));
@@ -35,7 +36,7 @@ public class WarTeamSkills implements RivalTeamSkills {
 
     @Override
     public AvailableSkill use(Skill skill) {
-        return skills.get(skill).use(skills);
+        return skills.get(skill).use();
     }
 
     @Override
@@ -46,6 +47,11 @@ public class WarTeamSkills implements RivalTeamSkills {
     @Override
     public void unblockAll() {
         skills.forEach((skill, availableSkill) -> availableSkill.enable());
+    }
+
+    @Override
+    public void resetAll() {
+        skills.forEach((skill, availableSkill) -> availableSkill.reset());
     }
 
 }

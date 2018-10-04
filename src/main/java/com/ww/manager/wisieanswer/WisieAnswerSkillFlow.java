@@ -68,7 +68,7 @@ public class WisieAnswerSkillFlow {
         AbstractState prevState = flow.getState();
         flow.setState(new WisieStateWaterPistolUsedOnIt(manager).addOnFlowableEndListener(aLong1 -> {
             flow.setState(new WisieStateCleaning(manager).addOnFlowableEndListener(aLong2 -> {
-                prevState.startFlowable();
+                flow.setState(prevState.startFlowable());
             }).startFlowable());
         }).startFlowable());
     }
@@ -98,7 +98,7 @@ public class WisieAnswerSkillFlow {
                         }).startFlowable());
                     } else {
                         flow.setState(new WisieStateKidnappingFailed(manager).addOnFlowableEndListener(aLong3 -> {
-                            prevState.startFlowable();
+                            flow.setState(prevState.startFlowable());
                         }).startFlowable());
                     }
                 }).startFlowable());
@@ -122,7 +122,7 @@ public class WisieAnswerSkillFlow {
                 new WisieStateWasKidnapped(manager).startVoid();
             } else {
                 flow.setState(new WisieStateWasNotKidnapped(manager).addOnFlowableEndListener(aLong3 -> {
-                    prevState.startFlowable();
+                    flow.setState(prevState.startFlowable());
                 }).startFlowable());
             }
         }).startFlowable());
