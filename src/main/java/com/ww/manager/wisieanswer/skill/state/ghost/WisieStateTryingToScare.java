@@ -26,16 +26,15 @@ public class WisieStateTryingToScare extends WisieState {
     }
 
     public boolean calculateSuccess() {
-        double value = manager.getWisdomSum() + manager.getConfidenceF1();
-        double opponentValue = opponentManager.getWisdomSum() + opponentManager.getConfidenceF1();
-        return value > opponentValue
-                || randomDouble(value, 2 * value) + value > randomDouble(opponentValue, 2 * opponentValue) + opponentValue;
+        double value = manager.getIntuitionF1() + manager.getConfidenceF1();
+        double opponentValue = opponentManager.getIntuitionF1() + opponentManager.getConfidenceF1();
+        return randomDouble(value, 2 * value) + value > randomDouble(opponentValue, 2 * opponentValue) + opponentValue;
     }
 
     public long calculateInterval() {
-        return (long) (intervalMultiply() * (1d - Math.abs(manager.getWisdomSum() - opponentManager.getWisdomSum())
-                + 1d - Math.abs(manager.getSpeedF1() - opponentManager.getSpeedF1())
-                + 1d - Math.abs(manager.getConfidenceF1() - opponentManager.getConfidenceF1())));
+        return (long) (intervalMultiply() * (3d - Math.abs(manager.getIntuitionF1() - opponentManager.getIntuitionF1())
+                - Math.abs(manager.getSpeedF1() - opponentManager.getSpeedF1())
+                - Math.abs(manager.getConfidenceF1() - opponentManager.getConfidenceF1())));
     }
 
     protected Flowable<Long> processFlowable() {

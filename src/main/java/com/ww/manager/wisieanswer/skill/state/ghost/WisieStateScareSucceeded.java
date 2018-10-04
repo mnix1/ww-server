@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
+import static com.ww.helper.RandomHelper.randomDouble;
+
 public class WisieStateScareSucceeded extends WisieState {
     protected static final Logger logger = LoggerFactory.getLogger(WisieStateScareSucceeded.class);
 
@@ -19,7 +21,8 @@ public class WisieStateScareSucceeded extends WisieState {
     @Override
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.SCARE_SUCCEEDED);
-        long interval = intervalMultiply();
+        long interval = (long) (randomDouble(2 - 2 * manager.getReflexF1(),
+                4 - 4 * manager.getReflexF1()) * intervalMultiply());
         logger.trace(manager.toString() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

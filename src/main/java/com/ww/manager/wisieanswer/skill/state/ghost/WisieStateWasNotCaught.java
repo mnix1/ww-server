@@ -20,8 +20,8 @@ public class WisieStateWasNotCaught extends WisieState {
 
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.WAS_NOT_CAUGHT);
-        long interval = (long) (randomDouble(3 - manager.getSpeedF1() - manager.getReflexF1() - manager.getConfidenceF1(),
-                6 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1() - 2 * manager.getConfidenceF1()) * intervalMultiply());
+        long interval = (long) (randomDouble(3 - manager.getSpeedF1() - manager.getReflexF1() - manager.getConcentrationF1(),
+                6 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1() - 2 * manager.getConcentrationF1()) * intervalMultiply());
         logger.trace(manager.toString() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

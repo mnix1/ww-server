@@ -22,12 +22,8 @@ public class WisieStateScareFailed extends WisieState {
     @Override
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.SCARE_FAILED);
-        manager.getManager().sendNewSkillsModel((m, wT) -> {
-            WarTeam warTeam = (WarTeam) wT;
-            warTeam.getTeamSkills().unblockAll();
-        });
-        long interval = (long) (randomDouble(6 - manager.getSpeedF1() - manager.getReflexF1() - manager.getConfidenceF1(),
-                9 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1() - 2 * manager.getConfidenceF1()) * intervalMultiply());
+        long interval = (long) (randomDouble(6 - 6 * manager.getReflexF1(),
+                8 - 8 * manager.getReflexF1()) * intervalMultiply());
         logger.trace(manager.toString() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

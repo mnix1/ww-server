@@ -21,8 +21,8 @@ public class WisieStateRemovingDisguise extends WisieState {
     @Override
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.REMOVING_DISGUISE);
-        long interval = (long) (randomDouble(1 - manager.getReflexF1(),
-                2 - 1 * manager.getReflexF1() - 1 * manager.getConcentrationF1()) * intervalMultiply());
+        long interval = (long) (randomDouble(3 - manager.getSpeedF1(),
+                6 - 5 * manager.getSpeedF1()) * intervalMultiply());
         logger.trace(manager.toString() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

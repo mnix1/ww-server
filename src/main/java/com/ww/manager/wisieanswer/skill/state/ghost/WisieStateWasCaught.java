@@ -15,7 +15,7 @@ public class WisieStateWasCaught extends WisieState {
 
     @Override
     protected void processVoid() {
-        manager.addAndSendAction(WisieAnswerAction.WAS_NOT_CAUGHT);
+        manager.addAndSendAction(WisieAnswerAction.WAS_CAUGHT);
         logger.trace(manager.toString());
     }
 }

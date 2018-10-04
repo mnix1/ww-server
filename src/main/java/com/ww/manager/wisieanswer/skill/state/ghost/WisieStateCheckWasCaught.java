@@ -14,6 +14,7 @@ public class WisieStateCheckWasCaught extends WisieState {
     protected static final Logger logger = LoggerFactory.getLogger(WisieStateCheckWasCaught.class);
 
     private boolean scareSuccess;
+
     public WisieStateCheckWasCaught(WisieAnswerManager manager, boolean scareSuccess) {
         super(manager, STATE_TYPE_DECISION);
         this.scareSuccess = scareSuccess;
@@ -21,9 +22,14 @@ public class WisieStateCheckWasCaught extends WisieState {
 
     @Override
     protected Boolean processBoolean() {
-        long interval = (long) (randomDouble(1 - manager.getReflexF1(),
-                2 - 1 * manager.getReflexF1() - 1 * manager.getConcentrationF1()) * intervalMultiply());
-        logger.trace(manager.toString() + ", interval: " + interval);
-        return true;
+        double chance = (manager.getConfidenceF1() + manager.getIntuitionF1()) / 2;
+        if (scareSuccess) {
+            chance += 0.25;
+        } else {
+            chance -= 0.25;
+        }
+        boolean caught = chance <= randomDouble();
+        logger.trace(manager.toString() + ", chance=" + chance+ ", caught=" + caught);
+        return caught;
     }
 }

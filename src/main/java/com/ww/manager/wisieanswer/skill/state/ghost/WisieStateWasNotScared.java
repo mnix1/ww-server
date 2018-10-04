@@ -21,8 +21,9 @@ public class WisieStateWasNotScared extends WisieState {
     @Override
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.WAS_NOT_SCARED);
-        long interval = (long) (randomDouble(1 - manager.getReflexF1(),
-                2 - 1 * manager.getReflexF1() - 1 * manager.getConcentrationF1()) * intervalMultiply());
+
+        long interval = (long) (randomDouble(3 - manager.getSpeedF1() - manager.getReflexF1() - manager.getConcentrationF1(),
+                4 - manager.getSpeedF1() - manager.getReflexF1() - 2 * manager.getConcentrationF1()) * intervalMultiply());
         logger.trace(manager.toString() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
