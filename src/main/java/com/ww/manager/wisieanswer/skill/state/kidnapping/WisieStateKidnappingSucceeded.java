@@ -27,7 +27,7 @@ public class WisieStateKidnappingSucceeded extends WisieState {
         manager.getTeam(opponent).getActiveTeamMember().changeWisieDisguise(DisguiseType.CHAIR_SIMPLE);
         manager.getTeam(manager).getActiveTeamMember().changeWisieDisguise(DisguiseType.CHAIR_SIMPLE);
         manager.getManager().sendTeamAndActionsModel();
-        long interval = intervalMultiply();
+        long interval = intervalMultiply() * 3;
         logger.trace(manager.toString() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

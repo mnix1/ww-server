@@ -47,6 +47,8 @@ public class DevSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .withUser("adam").password("{noop}t").roles(USER, ADMIN, AUTO)
                 .and()
+                .withUser("adasio").password("{noop}t").roles(USER)
+                .and()
                 .withUser("iza").password("{noop}t").roles(USER, AUTO)
                 .and()
                 .withUser("lukasz").password("{noop}t").roles(USER, AUTO)

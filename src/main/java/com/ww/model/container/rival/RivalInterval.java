@@ -18,7 +18,7 @@ public class RivalInterval {
     }
 
     public long getAnsweringInterval() {
-        return calculateInterval(450);
+        return calculateInterval(45);
     }
 
     public long getAnsweringTimeoutInterval() {

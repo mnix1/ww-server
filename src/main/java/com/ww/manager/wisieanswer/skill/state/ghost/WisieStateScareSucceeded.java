@@ -27,7 +27,7 @@ public class WisieStateScareSucceeded extends WisieState {
     protected Flowable<Long> processFlowable() {
         manager.addAction(WisieAnswerAction.SCARE_SUCCEEDED);
         opponent.addAction(WisieAnswerAction.RUN_AWAY);
-        opponent.getTeam(manager).getActiveTeamMember().changeWisieDisguise(DisguiseType.CHAIR_RED);
+        opponent.getTeam(opponent).getActiveTeamMember().changeWisieDisguise(DisguiseType.CHAIR_RED);
         manager.getManager().sendTeamAndActionsModel();
         long interval = (long) (randomDouble(2 - 2 * manager.getReflexF1(),
                 4 - 4 * manager.getReflexF1()) * intervalMultiply());
