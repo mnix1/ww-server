@@ -3,6 +3,7 @@ package com.ww.manager.wisieanswer.skill;
 import com.ww.manager.AbstractState;
 import com.ww.manager.wisieanswer.WisieAnswerFlow;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
+import com.ww.manager.wisieanswer.skill.state.waterpistol.WisieStateCleaned;
 import com.ww.manager.wisieanswer.skill.state.waterpistol.WisieStateCleaning;
 import com.ww.manager.wisieanswer.skill.state.waterpistol.WisieStateWaterPistolUsedOnIt;
 import lombok.Getter;
@@ -27,6 +28,7 @@ public class WisieAnswerWaterPistolSkillFlow {
         AbstractState prevState = flow.getState();
         flow.setState(new WisieStateWaterPistolUsedOnIt(manager).addOnFlowableEndListener(aLong1 -> {
             flow.setState(new WisieStateCleaning(manager).addOnFlowableEndListener(aLong2 -> {
+                new WisieStateCleaned(manager).startVoid();
                 flow.setState(prevState.startFlowable());
             }).startFlowable());
         }).startFlowable());
