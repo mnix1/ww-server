@@ -21,9 +21,10 @@ public class WisieStateKidnappingFailed extends WisieState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(WisieAnswerAction.KIDNAPPING_FAILED);
+        manager.addAction(WisieAnswerAction.KIDNAPPING_FAILED);
         manager.getManager().sendNewSkillsModel((m, wT) -> {
             WarTeam warTeam = (WarTeam) wT;
+            manager.getManager().getModelFactory().fillModelWisieAnswering(m, wT);
             warTeam.getTeamSkills().unblockAll();
         });
         long interval = (long) (randomDouble(6 - manager.getSpeedF1() - manager.getReflexF1() - manager.getConfidenceF1(),

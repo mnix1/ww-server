@@ -3,6 +3,7 @@ package com.ww.manager.wisieanswer.skill.state.ghost;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
 import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.container.rival.war.WarTeam;
 import io.reactivex.Flowable;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -40,9 +41,11 @@ public class WisieStateTryingToScare extends WisieState {
     protected Flowable<Long> processFlowable() {
         manager.getTeam(manager).getTeamSkills().blockAll();
         manager.getTeam(opponentManager).getTeamSkills().blockAll();
-        manager.getManager().sendNewSkillsModel();
-        manager.addAndSendAction(WisieAnswerAction.TRYING_TO_SCARE);
-        opponentManager.getFlow().getKidnappingSkillFlow().kidnappingUsedOnIt(success, interval);
+        manager.addAction(WisieAnswerAction.TRYING_TO_SCARE);
+        manager.getManager().sendNewSkillsModel((m, wT) -> {
+            manager.getManager().getModelFactory().fillModelWisieAnswering(m, wT);
+        });
+        opponentManager.getFlow().getGhostSkillFlow().ghostUsedOnIt(success, interval);
         logger.trace(manager.toString() + ", interval=" + interval + ", success=" + success);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

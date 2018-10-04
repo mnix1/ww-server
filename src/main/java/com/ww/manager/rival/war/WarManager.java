@@ -14,9 +14,7 @@ import com.ww.websocket.message.Message;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 @NoArgsConstructor
@@ -66,17 +64,24 @@ public class WarManager extends RivalManager {
         return Message.WAR_CONTENT;
     }
 
-    public void sendNewSkillsModel(BiConsumer<Map<String, Object>, ? super RivalTeam> fillMethod) {
+    public void sendModel(List<BiConsumer<Map<String, Object>, ? super RivalTeam>> fillMethods) {
         getModel().getTeams().forEachTeam(rivalTeam -> {
             Map<String, Object> model = new HashMap<>();
-            fillMethod.accept(model, rivalTeam);
-            getModelFactory().fillModelSkills(model, rivalTeam);
+            for (BiConsumer<Map<String, Object>, ? super RivalTeam> fillMethod : fillMethods) {
+                fillMethod.accept(model, rivalTeam);
+            }
             send(model, getMessageContent(), rivalTeam.getProfileId());
         });
     }
 
-    public void sendNewSkillsModel() {
-        sendNewSkillsModel((m, wT) -> {
-        });
+    public void sendModel(BiConsumer<Map<String, Object>, ? super RivalTeam>... fillMethods) {
+        sendModel(Arrays.asList(fillMethods));
+    }
+
+    public void sendNewSkillsModel(BiConsumer<Map<String, Object>, ? super RivalTeam>... fillMethods) {
+        List<BiConsumer<Map<String, Object>, ? super RivalTeam>> fillMethodList = new ArrayList<>(fillMethods.length + 1);
+        fillMethodList.addAll(Arrays.asList(fillMethods));
+        fillMethodList.add((m, wT) -> getModelFactory().fillModelSkills(m, wT));
+        sendModel(fillMethodList);
     }
 }

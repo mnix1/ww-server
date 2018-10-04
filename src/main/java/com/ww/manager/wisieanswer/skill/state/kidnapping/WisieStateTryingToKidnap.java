@@ -41,8 +41,10 @@ public class WisieStateTryingToKidnap extends WisieState {
     protected Flowable<Long> processFlowable() {
         manager.getTeam(manager).getTeamSkills().blockAll();
         manager.getTeam(opponentManager).getTeamSkills().blockAll();
-        manager.getManager().sendNewSkillsModel();
-        manager.addAndSendAction(WisieAnswerAction.TRYING_TO_KIDNAP);
+        manager.addAction(WisieAnswerAction.TRYING_TO_KIDNAP);
+        manager.getManager().sendNewSkillsModel((m, wT) -> {
+            manager.getManager().getModelFactory().fillModelWisieAnswering(m, wT);
+        });
         opponentManager.getFlow().getKidnappingSkillFlow().kidnappingUsedOnIt(success, interval);
         logger.trace(manager.toString() + ", interval=" + interval + ", success=" + success);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);

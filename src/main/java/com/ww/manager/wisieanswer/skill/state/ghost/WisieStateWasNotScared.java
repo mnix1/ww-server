@@ -3,6 +3,7 @@ package com.ww.manager.wisieanswer.skill.state.ghost;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
 import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.container.rival.war.WarTeam;
 import io.reactivex.Flowable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +21,13 @@ public class WisieStateWasNotScared extends WisieState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(WisieAnswerAction.WAS_NOT_SCARED);
-
+        manager.addAction(WisieAnswerAction.WAS_NOT_SCARED);
+        manager.getManager().sendNewSkillsModel((m, wT) -> {
+            WarTeam warTeam = (WarTeam) wT;
+            if(manager.getWisie().getProfile().getId().equals(warTeam.getProfileId())){
+                warTeam.getTeamSkills().unblockAll();
+            }
+        });
         long interval = (long) (randomDouble(3 - manager.getSpeedF1() - manager.getReflexF1() - manager.getConcentrationF1(),
                 4 - manager.getSpeedF1() - manager.getReflexF1() - 2 * manager.getConcentrationF1()) * intervalMultiply());
         logger.trace(manager.toString() + ", interval: " + interval);

@@ -12,6 +12,7 @@ import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,16 +105,18 @@ public class WisieAnswerManager {
         return actions.get(actions.size() - 1);
     }
 
-    public WarTeam getTeam(WisieAnswerManager manager){
+    public WarTeam getTeam(WisieAnswerManager manager) {
         return manager.getManager().getModel().getTeams().team(manager.getWisie().getProfile().getId());
     }
 
-    public void addAndSendAction(WisieAnswerAction action) {
+    public void addAction(WisieAnswerAction action) {
         actions.add(action);
-        manager.getModel().getTeams().forEachTeam(profileContainer -> {
-            Map<String, Object> model = new HashMap<>();
-            manager.getModelFactory().fillModelWisieAnswering(model, profileContainer);
-            manager.send(model, manager.getMessageContent(), profileContainer.getProfileId());
+    }
+
+    public void addAndSendAction(WisieAnswerAction action) {
+        addAction(action);
+        manager.sendModel((m, wT)-> {
+            manager.getModelFactory().fillModelWisieAnswering(m, wT);
         });
     }
 

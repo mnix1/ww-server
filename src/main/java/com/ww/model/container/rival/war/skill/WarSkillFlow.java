@@ -1,10 +1,7 @@
 package com.ww.model.container.rival.war.skill;
 
 import com.ww.manager.rival.war.WarManager;
-import com.ww.manager.rival.war.state.skill.WarStateHintUsed;
-import com.ww.manager.rival.war.state.skill.WarStateKidnappingUsed;
-import com.ww.manager.rival.war.state.skill.WarStateLifebuoyUsed;
-import com.ww.manager.rival.war.state.skill.WarStateWaterPistolUsed;
+import com.ww.manager.rival.war.state.skill.*;
 import com.ww.model.constant.rival.RivalStatus;
 import lombok.Getter;
 
@@ -32,6 +29,8 @@ public class WarSkillFlow {
             lifebuoy(profileId, content);
         } else if (id.equals(KIDNAPPING) && status == RivalStatus.ANSWERING) {
             kidnapping(profileId);
+        } else if (id.equals(GHOST) && status == RivalStatus.ANSWERING) {
+            ghost(profileId);
         } else {
             return false;
         }
@@ -52,5 +51,9 @@ public class WarSkillFlow {
 
     public synchronized void kidnapping(Long profileId) {
         new WarStateKidnappingUsed(manager, profileId).startVoid();
+    }
+
+    public synchronized void ghost(Long profileId) {
+        new WarStateGhostUsed(manager, profileId).startVoid();
     }
 }

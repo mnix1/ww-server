@@ -30,6 +30,7 @@ public class RivalMessageService {
     public static final String WATER_PISTOL = "WATER_PISTOL";
     public static final String LIFEBUOY = "LIFEBUOY";
     public static final String KIDNAPPING = "KIDNAPPING";
+    public static final String GHOST = "GHOST";
 
     @Autowired
     private ProfileConnectionService profileConnectionService;
