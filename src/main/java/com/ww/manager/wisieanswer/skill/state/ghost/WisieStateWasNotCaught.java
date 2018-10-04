@@ -22,7 +22,7 @@ public class WisieStateWasNotCaught extends WisieState {
 
     protected Flowable<Long> processFlowable() {
         manager.addAction(WisieAnswerAction.WAS_NOT_CAUGHT);
-        manager.getTeam(manager).getActiveTeamMember().changeWisieDisguise(null);
+        manager.getTeam(manager).getActiveTeamMember().removeDisguise();
         manager.getManager().sendNewSkillsModel((m, wT) -> {
             WarTeam warTeam = (WarTeam) wT;
             manager.getManager().getModelFactory().fillModelTeam(m, wT);

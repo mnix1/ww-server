@@ -21,7 +21,7 @@ public class WisieStateWaterPistolUsedOnIt extends WisieState {
 
     protected Flowable<Long> processFlowable() {
         manager.addAction(WisieAnswerAction.WATER_PISTOL_USED_ON_IT);
-        manager.getTeam(manager).getActiveTeamMember().changeWisieDisguise(DisguiseType.RAIN);
+        manager.getTeam(manager).getActiveTeamMember().addDisguise(DisguiseType.PENGUIN_RAIN);
         manager.getManager().sendTeamAndActionsModel();
         long interval = (long) (randomDouble(6 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1() - manager.getConcentrationF1() - manager.getConfidenceF1(),
                 8 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1() - 2 * manager.getConcentrationF1() - 2 * manager.getConfidenceF1()) * intervalMultiply());

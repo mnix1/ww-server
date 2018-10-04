@@ -14,7 +14,7 @@ public class WisieStateCleaned extends WisieState {
 
     @Override
     protected void processVoid() {
-        manager.getTeam(manager).getActiveTeamMember().changeWisieDisguise(null);
+        manager.getTeam(manager).getActiveTeamMember().removeDisguise();
         manager.getManager().sendModel((m, wT) -> manager.getManager().getModelFactory().fillModelTeam(m, wT));
         logger.trace(manager.toString());
     }

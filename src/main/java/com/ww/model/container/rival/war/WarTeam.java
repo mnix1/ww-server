@@ -35,7 +35,7 @@ public class WarTeam extends RivalTeam {
     public void resetDisguises() {
         for (TeamMember teamMember : teamMembers) {
             if (teamMember.isWisie()) {
-                teamMember.changeWisieDisguise(null);
+                teamMember.resetDisguises();
             }
         }
     }

@@ -6,6 +6,9 @@ import com.ww.model.dto.wisie.WarProfileWisieDTO;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 public class TeamMember {
@@ -14,6 +17,7 @@ public class TeamMember {
     private boolean present;
     private Object content;
     private Object contentDTO;
+    private List<DisguiseType> disguises = new ArrayList<>();
 
     public TeamMember(int index, HeroType type, Object content, Object contentDTO) {
         this.index = index;
@@ -23,9 +27,27 @@ public class TeamMember {
         this.contentDTO = contentDTO;
     }
 
-    public void changeWisieDisguise(DisguiseType disguiseType) {
+    public void addDisguise(DisguiseType disguise) {
+        disguises.add(disguise);
+        setActiveDisguise(disguise);
+    }
+
+    public void removeDisguise() {
+        DisguiseType disguise = disguises.size() > 1 ? disguises.get(disguises.size() - 2) : null;
+        if (!disguises.isEmpty()) {
+            disguises.remove(disguises.size() - 1);
+        }
+        setActiveDisguise(disguise);
+    }
+
+    public void resetDisguises() {
+        disguises.clear();
+        setActiveDisguise(null);
+    }
+
+    private void setActiveDisguise(DisguiseType disguise) {
         WarProfileWisieDTO dto = (WarProfileWisieDTO) contentDTO;
-        dto.setDisguise(disguiseType);
+        dto.setDisguise(disguise);
     }
 
     public boolean isWisie() {

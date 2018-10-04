@@ -43,7 +43,7 @@ public class WisieStateTryingToScare extends WisieState {
         manager.getTeam(manager).getTeamSkills().blockAll();
         manager.getTeam(opponentManager).getTeamSkills().blockAll();
         manager.addAction(WisieAnswerAction.TRYING_TO_SCARE);
-        manager.getTeam(manager).getActiveTeamMember().changeWisieDisguise(DisguiseType.GHOST);
+        manager.getTeam(manager).getActiveTeamMember().addDisguise(DisguiseType.GHOST);
         manager.getManager().sendNewSkillsModel((m, wT) -> {
             manager.getManager().getModelFactory().fillModelTeam(m, wT);
             manager.getManager().getModelFactory().fillModelWisieAnswering(m, wT);
