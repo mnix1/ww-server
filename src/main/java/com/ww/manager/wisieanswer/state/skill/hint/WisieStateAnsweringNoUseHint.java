@@ -16,8 +16,11 @@ import static com.ww.helper.RandomHelper.randomElement;
 public class WisieStateAnsweringNoUseHint extends WisieState {
     protected static final Logger logger = LoggerFactory.getLogger(WisieStateAnsweringNoUseHint.class);
 
-    public WisieStateAnsweringNoUseHint(WisieAnswerManager manager) {
+    private Long hintAnswerId;
+
+    public WisieStateAnsweringNoUseHint(WisieAnswerManager manager, Long hintAnswerId) {
         super(manager,STATE_TYPE_VOID);
+        this.hintAnswerId = hintAnswerId;
     }
 
     protected void processVoid() {
@@ -30,7 +33,7 @@ public class WisieStateAnsweringNoUseHint extends WisieState {
         logger.trace(manager.toString() + ", chance: " + chance + ", correctAnswer: " + correctAnswer);
         Answer answer = correctAnswer
                 ? manager.getQuestion().getAnswers().stream().filter(Answer::getCorrect).findFirst().get()
-                : randomElement(new ArrayList<>(manager.getQuestion().getAnswers().stream().filter(a -> !a.getId().equals(manager.getHintAnswerId())).collect(Collectors.toList())));
+                : randomElement(new ArrayList<>(manager.getQuestion().getAnswers().stream().filter(a -> !a.getId().equals(hintAnswerId)).collect(Collectors.toList())));
         manager.getManager().getFlow().wisieAnswered(manager.getWisie().getProfile().getId(), answer.getId());
     }
 }

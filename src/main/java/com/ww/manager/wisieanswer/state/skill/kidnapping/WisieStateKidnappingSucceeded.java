@@ -15,12 +15,14 @@ public class WisieStateKidnappingSucceeded extends WisieState {
     protected static final Logger logger = LoggerFactory.getLogger(WisieStateKidnappingSucceeded.class);
 
     public WisieStateKidnappingSucceeded(WisieAnswerManager manager) {
-        super(manager, STATE_TYPE_VOID);
+        super(manager, STATE_TYPE_FLOWABLE);
     }
 
     @Override
-    protected void processVoid() {
+    protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.KIDNAPPING_SUCCEEDED);
-        logger.trace(manager.toString());
+        long interval = 1000L;
+        logger.trace(manager.toString() + ", interval: " + interval);
+        return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

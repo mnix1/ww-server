@@ -2,27 +2,31 @@ package com.ww.manager.rival.war;
 
 import com.ww.helper.TeamHelper;
 import com.ww.manager.rival.RivalManager;
+import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.init.RivalTwoPlayerInit;
 import com.ww.model.container.rival.war.*;
+import com.ww.model.container.rival.war.skill.WarTeamSkills;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.OwnedWisie;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
 import com.ww.service.rival.war.RivalWarService;
-import com.ww.service.social.ProfileConnectionService;
 import com.ww.websocket.message.Message;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
 
 @NoArgsConstructor
 @Getter
 public class WarManager extends RivalManager {
 
-    public WarModel model;
-    public WarModelFactory modelFactory;
-    public WarInterval interval;
-    public WarFlow flow;
+    protected WarModel model;
+    protected WarModelFactory modelFactory;
+    protected WarInterval interval;
+    protected WarFlow flow;
 
     public WarManager(RivalTwoPlayerInit init, RivalWarService rivalService) {
         this.rivalService = rivalService;
@@ -60,5 +64,19 @@ public class WarManager extends RivalManager {
     @Override
     public Message getMessageContent() {
         return Message.WAR_CONTENT;
+    }
+
+    public void sendNewSkillsModel(BiConsumer<Map<String, Object>, ? super RivalTeam> fillMethod) {
+        getModel().getTeams().forEachTeam(rivalTeam -> {
+            Map<String, Object> model = new HashMap<>();
+            fillMethod.accept(model, rivalTeam);
+            getModelFactory().fillModelSkills(model, rivalTeam);
+            send(model, getMessageContent(), rivalTeam.getProfileId());
+        });
+    }
+
+    public void sendNewSkillsModel() {
+        sendNewSkillsModel((m, wT) -> {
+        });
     }
 }

@@ -9,6 +9,10 @@ import lombok.Getter;
 public abstract class WisieState extends AbstractState {
     protected WisieAnswerManager manager;
 
+    private long intervalMultiply(){
+        return 10000L;
+    }
+
     protected WisieState(WisieAnswerManager manager, String type) {
         this.manager = manager;
         setType(type);

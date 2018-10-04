@@ -26,7 +26,7 @@ import static com.ww.helper.ModelHelper.putSuccessCode;
 public class RivalInitRandomOpponentService {
     private static final Logger logger = LoggerFactory.getLogger(RivalInitRandomOpponentService.class);
 
-    private final ConcurrentHashMap<Long, RivalOnePlayerInit> waitingForRivalProfiles = new ConcurrentHashMap<>();
+    private final Map<Long, RivalOnePlayerInit> waitingForRivalProfiles = new ConcurrentHashMap<>();
     private static final int RIVAL_INIT_JOB_RATE = 2000;
 
     @Autowired

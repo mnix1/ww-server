@@ -13,14 +13,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketSession;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class ProfileConnectionService {
     private static Logger logger = LoggerFactory.getLogger(ProfileConnectionService.class);
-    private final ConcurrentHashMap<Long, ProfileConnection> profileIdToProfileConnectionMap = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, ProfileConnection> sessionIdToProfileConnectionMap = new ConcurrentHashMap<>();
+    private final Map<Long, ProfileConnection> profileIdToProfileConnectionMap = new ConcurrentHashMap<>();
+    private final Map<String, ProfileConnection> sessionIdToProfileConnectionMap = new ConcurrentHashMap<>();
 
     @Autowired
     private ProfileService profileService;

@@ -6,9 +6,6 @@ import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.model.constant.Skill;
 import com.ww.model.container.rival.war.WarTeam;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class WarStateWaterPistolUsed extends WarState {
 
     private Long profileId;
@@ -23,11 +20,11 @@ public class WarStateWaterPistolUsed extends WarState {
         WarTeam team = manager.getModel().getTeams().team(profileId);
         WarTeam opponentContainer = manager.getModel().getTeams().opponentTeam(profileId);
         WisieAnswerManager wisieAnswerManager = manager.getModel().getWisieAnswerManager(opponentContainer.getProfileId());
-        if (!team.getTeamSkills().canUseSkill(Skill.WATER_PISTOL) || !team.getActiveTeamMember().isWisie() || wisieAnswerManager == null) {
+        if (!team.getTeamSkills().canUse(Skill.WATER_PISTOL) || !team.getActiveTeamMember().isWisie() || wisieAnswerManager == null) {
             return;
         }
-        team.getTeamSkills().useSkill(Skill.WATER_PISTOL);
+        team.getTeamSkills().use(Skill.WATER_PISTOL);
         wisieAnswerManager.getFlow().getSkillFlow().waterPistol();
-        sendNewSkillsModel();
+        manager.sendNewSkillsModel();
     }
 }

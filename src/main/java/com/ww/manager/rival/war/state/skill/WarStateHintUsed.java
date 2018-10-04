@@ -6,7 +6,6 @@ import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.model.constant.Skill;
 import com.ww.model.container.rival.war.WarTeam;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class WarStateHintUsed extends WarState {
@@ -24,13 +23,13 @@ public class WarStateHintUsed extends WarState {
     protected void processVoid() {
         WarTeam team = manager.getModel().getTeams().team(profileId);
         WisieAnswerManager wisieAnswerManager = manager.getModel().getWisieAnswerManager(profileId);
-        if (!team.getTeamSkills().canUseSkill(Skill.HINT) || !content.containsKey("answerId") || wisieAnswerManager == null) {
+        if (!team.getTeamSkills().canUse(Skill.HINT) || !content.containsKey("answerId") || wisieAnswerManager == null) {
             return;
         }
-        team.getTeamSkills().useSkill(Skill.HINT);
+        team.getTeamSkills().use(Skill.HINT).disable();
         Long markedAnswerId = ((Integer) content.get("answerId")).longValue();
         Boolean isAnswerCorrect = manager.getModel().findCurrentCorrectAnswerId().equals(markedAnswerId);
         wisieAnswerManager.getFlow().getSkillFlow().hint(markedAnswerId, isAnswerCorrect);
-        sendNewSkillsModel();
+        manager.sendNewSkillsModel();
     }
 }

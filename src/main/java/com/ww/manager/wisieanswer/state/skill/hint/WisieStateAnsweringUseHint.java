@@ -9,13 +9,18 @@ import org.slf4j.LoggerFactory;
 public class WisieStateAnsweringUseHint extends WisieState {
     protected static final Logger logger = LoggerFactory.getLogger(WisieStateAnsweringUseHint.class);
 
-    public WisieStateAnsweringUseHint(WisieAnswerManager manager) {
+    private boolean hintCorrect;
+    private Long hintAnswerId;
+
+    public WisieStateAnsweringUseHint(WisieAnswerManager manager, boolean hintCorrect, Long hintAnswerId) {
         super(manager, STATE_TYPE_VOID);
+        this.hintCorrect = hintCorrect;
+        this.hintAnswerId = hintAnswerId;
     }
 
     protected void processVoid() {
         manager.addAndSendAction(WisieAnswerAction.ANSWERED);
-        logger.trace(manager.toString() + ", isHintCorrect: " + manager.isHintCorrect());
-        manager.getManager().getFlow().wisieAnswered(manager.getWisie().getProfile().getId(), manager.getHintAnswerId());
+        logger.trace(manager.toString() + ", isHintCorrect: " + hintCorrect);
+        manager.getManager().getFlow().wisieAnswered(manager.getWisie().getProfile().getId(), hintAnswerId);
     }
 }

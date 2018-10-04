@@ -6,6 +6,7 @@ import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.container.rival.challenge.ChallengeInterval;
 import com.ww.model.container.rival.init.RivalChallengeInit;
 import com.ww.model.container.rival.war.*;
+import com.ww.model.container.rival.war.skill.WarTeamSkills;
 import com.ww.model.dto.rival.task.AnswerDTO;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
@@ -14,7 +15,6 @@ import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
 import com.ww.service.rival.challenge.RivalChallengeService;
-import com.ww.service.social.ProfileConnectionService;
 import com.ww.websocket.message.Message;
 
 import java.util.Comparator;

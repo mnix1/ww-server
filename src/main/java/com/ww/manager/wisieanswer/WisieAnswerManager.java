@@ -3,6 +3,7 @@ package com.ww.manager.wisieanswer;
 import com.ww.helper.AnswerHelper;
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.container.rival.war.WarTeam;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskWisdomAttribute;
 import com.ww.model.entity.outside.wisie.OwnedWisie;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -23,8 +25,9 @@ public class WisieAnswerManager {
     protected static final Logger logger = LoggerFactory.getLogger(WisieAnswerManager.class);
 
     private boolean running = false;
+    private WisieAnswerFlow flow;
 
-    private CopyOnWriteArrayList<WisieAnswerAction> actions = new CopyOnWriteArrayList<>();
+    private List<WisieAnswerAction> actions = new CopyOnWriteArrayList<>();
 
     private OwnedWisie wisie;
     private WarManager manager;
@@ -43,17 +46,6 @@ public class WisieAnswerManager {
     private boolean isHobby;
     private int hobbyCount;
     private double hobbyFactor;
-
-    private boolean receivedHint = false;
-    private Long hintAnswerId;
-    private boolean hintCorrect;
-
-    private boolean waterPistolUsedOnIt = false;
-
-    private boolean kidnappingUsed = false;
-    private boolean kidnappingUsedOnIt = false;
-
-    private WisieAnswerFlow flow;
 
     public WisieAnswerManager(OwnedWisie wisie, WarManager manager) {
         this.wisie = wisie;
@@ -110,6 +102,10 @@ public class WisieAnswerManager {
             return WisieAnswerAction.NONE;
         }
         return actions.get(actions.size() - 1);
+    }
+
+    public WarTeam getTeam(WisieAnswerManager manager){
+        return manager.getManager().getModel().getTeams().team(manager.getWisie().getProfile().getId());
     }
 
     public void addAndSendAction(WisieAnswerAction action) {

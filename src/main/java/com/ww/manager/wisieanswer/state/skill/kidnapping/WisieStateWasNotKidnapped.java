@@ -20,7 +20,7 @@ public class WisieStateWasNotKidnapped extends WisieState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(WisieAnswerAction.KIDNAPPING_FAILED);
+        manager.addAndSendAction(WisieAnswerAction.WAS_NOT_KIDNAPPED);
         long interval = (long) (randomDouble(1 - manager.getReflexF1(),
                 2 - 1 * manager.getReflexF1() - 1 * manager.getConcentrationF1()) * 1000);
         logger.trace(manager.toString() + ", interval: " + interval);

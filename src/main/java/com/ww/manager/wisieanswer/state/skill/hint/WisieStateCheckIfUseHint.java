@@ -11,13 +11,15 @@ import static com.ww.helper.RandomHelper.randomDouble;
 public class WisieStateCheckIfUseHint extends WisieState {
     protected static final Logger logger = LoggerFactory.getLogger(WisieStateCheckIfUseHint.class);
 
-    public WisieStateCheckIfUseHint(WisieAnswerManager manager) {
+    private boolean hintCorrect;
+    public WisieStateCheckIfUseHint(WisieAnswerManager manager, boolean hintCorrect) {
         super(manager, STATE_TYPE_DECISION);
+        this.hintCorrect = hintCorrect;
     }
 
     protected WisieAnswerAction processWisieAnswerAction() {
-        if (manager.isHintCorrect()) {
-            logger.trace(manager.toString() + ", manager.isHintCorrect(): " + manager.isHintCorrect());
+        if (hintCorrect) {
+            logger.trace(manager.toString() + ", manager.isHintCorrect(): " + hintCorrect);
             return WisieAnswerAction.WILL_USE_HINT;
         }
         double diffPart = (4 - manager.getDifficulty()) * 0.05;

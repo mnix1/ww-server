@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -30,7 +31,7 @@ import static com.ww.helper.ModelHelper.putSuccessCode;
 public class RivalInitFriendService {
     private static final Logger logger = LoggerFactory.getLogger(RivalInitFriendService.class);
 
-    private final CopyOnWriteArrayList<RivalTwoPlayerInit> waitingForActionProfiles = new CopyOnWriteArrayList<>();
+    private final List<RivalTwoPlayerInit> waitingForActionProfiles = new CopyOnWriteArrayList<>();
 
     @Autowired
     private ProfileService profileService;

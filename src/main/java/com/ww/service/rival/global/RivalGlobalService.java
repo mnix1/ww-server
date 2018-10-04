@@ -7,11 +7,12 @@ import com.ww.repository.outside.rival.RivalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class RivalGlobalService {
-    private final ConcurrentHashMap<Long, RivalManager> managerMap = new ConcurrentHashMap<>();
+    private final Map<Long, RivalManager> managerMap = new ConcurrentHashMap<>();
 
     @Autowired
     private RivalRepository rivalRepository;

@@ -4,11 +4,8 @@ import com.ww.manager.rival.RivalFlow;
 import com.ww.manager.rival.state.*;
 import com.ww.manager.rival.war.WarManager;
 import com.ww.manager.rival.war.state.*;
-import com.ww.manager.rival.war.state.skill.WarStateHintUsed;
-import com.ww.manager.rival.war.state.skill.WarStateKidnappingUsed;
-import com.ww.manager.rival.war.state.skill.WarStateLifebuoyUsed;
-import com.ww.manager.rival.war.state.skill.WarStateWaterPistolUsed;
 import com.ww.model.constant.rival.RivalStatus;
+import com.ww.model.container.rival.war.skill.WarSkillFlow;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -55,9 +52,7 @@ public class WarFlow extends RivalFlow {
     public synchronized void phase1() {
         state = new StatePreparingNextTask(manager).addOnFlowableEndListener(aLong2 -> {
             state = new WarStateAnswering(manager).addOnFlowableEndListener(aLong3 -> {
-                state = new WarStateAnsweringTimeout(manager).addOnFlowableEndListener(aLong4 -> {
-                    phase2();
-                }).startFlowable();
+                phase4();
             }).startFlowable();
         }).startFlowable();
     }
@@ -66,7 +61,7 @@ public class WarFlow extends RivalFlow {
         if (manager.isEnd()) {
             new StateClose(manager).startVoid();
         } else {
-            state = new StateChoosingTaskProps(manager).addOnFlowableEndListener(aLong5 -> {
+            state = new WarStateChoosingTaskProps(manager).addOnFlowableEndListener(aLong5 -> {
                 synchronized (this) {
                     boolean randomChooseTaskProps = manager.getModel().randomChooseTaskProps();
                     if (randomChooseTaskProps) {
@@ -86,12 +81,24 @@ public class WarFlow extends RivalFlow {
         }).startFlowable();
     }
 
+    public synchronized void phase4() {
+        state = new WarStateAnsweringTimeout(manager).addOnFlowableEndListener(aLong4 -> {
+            phase2();
+        }).startFlowable();
+    }
+
     public synchronized void wisieAnswered(Long profileId, Long answerId) {
         dispose();
         logger.trace(manager.toString() + ", wisieAnswered, profileId={}, answerId={}", profileId, answerId);
         Map<String, Object> content = new HashMap<>();
         content.put("answerId", answerId.intValue());
         answer(profileId, content);
+    }
+
+    public synchronized void kidnapped() {
+        dispose();
+        logger.trace(manager.toString() + ", kidnapped");
+        phase4();
     }
 
     public synchronized void answer(Long profileId, Map<String, Object> content) {
@@ -114,5 +121,4 @@ public class WarFlow extends RivalFlow {
             phase1();
         }
     }
-
 }

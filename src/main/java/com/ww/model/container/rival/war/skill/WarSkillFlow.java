@@ -1,4 +1,4 @@
-package com.ww.model.container.rival.war;
+package com.ww.model.container.rival.war.skill;
 
 import com.ww.manager.rival.war.WarManager;
 import com.ww.manager.rival.war.state.skill.WarStateHintUsed;

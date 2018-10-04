@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Setter
@@ -20,8 +21,8 @@ public abstract class AbstractState implements FlowRunnable, Loggable {
     public static String STATE_TYPE_VOID = "void";
 
     private String type;
-    private CopyOnWriteArrayList<Consumer> onFlowableEndListeners = new CopyOnWriteArrayList<>();
-    private CopyOnWriteArrayList<Disposable> disposables = new CopyOnWriteArrayList<>();
+    private List<Consumer> onFlowableEndListeners = new CopyOnWriteArrayList<>();
+    private List<Disposable> disposables = new CopyOnWriteArrayList<>();
 
     public AbstractState addOnFlowableEndListener(Consumer<? super Long> onNext) {
         onFlowableEndListeners.add(onNext);

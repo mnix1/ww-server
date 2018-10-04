@@ -23,10 +23,10 @@ public class WarStateLifebuoyUsed extends WarState {
     @Override
     protected void processVoid() {
         WarTeam team = manager.getModel().getTeams().team(profileId);
-        if (!team.getTeamSkills().canUseSkill(Skill.LIFEBUOY) || !content.containsKey("index")) {
+        if (!team.getTeamSkills().canUse(Skill.LIFEBUOY) || !content.containsKey("index")) {
             return;
         }
-        team.getTeamSkills().useSkill(Skill.LIFEBUOY);
+        team.getTeamSkills().use(Skill.LIFEBUOY);
         Integer teamMemberIndex = ((Integer) content.get("index"));
         Optional<TeamMember> optionalTeamMember = team.getTeamMembers().stream().filter(teamMember -> teamMember.getIndex() == teamMemberIndex).findFirst();
         if (!optionalTeamMember.isPresent()) {
@@ -38,6 +38,6 @@ public class WarStateLifebuoyUsed extends WarState {
         }
         teamMember.setPresent(true);
         team.getPresentIndexes().add(teamMemberIndex);
-        sendNewSkillsModel((m, wT) -> manager.getModelFactory().fillModelPresentIndexes(m, wT));
+        manager.sendNewSkillsModel((m, wT) -> manager.getModelFactory().fillModelPresentIndexes(m, wT));
     }
 }

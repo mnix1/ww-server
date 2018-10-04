@@ -35,10 +35,10 @@ public class StateChoosingTaskProps extends State {
             interval = manager.getInterval().getChoosingTaskPropsInterval();
         }
         manager.getModel().setEndChoosingTaskPropsDate(Instant.now().plus(interval, ChronoUnit.MILLIS));
-        manager.getModel().getTeams().forEachTeam(profileContainer -> {
+        manager.getModel().getTeams().forEachTeam(team -> {
             Map<String, Object> model = new HashMap<>();
-            manager.getModelFactory().fillModelChoosingTaskProps(model, profileContainer);
-            manager.send(model, manager.getMessageContent(), profileContainer.getProfileId());
+            manager.getModelFactory().fillModelChoosingTaskProps(model, team);
+            manager.send(model, manager.getMessageContent(), team.getProfileId());
         });
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

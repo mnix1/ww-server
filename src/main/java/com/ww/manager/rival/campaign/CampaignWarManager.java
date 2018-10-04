@@ -2,16 +2,16 @@ package com.ww.manager.rival.campaign;
 
 import com.ww.helper.TeamHelper;
 import com.ww.manager.rival.war.WarManager;
-import com.ww.model.container.rival.EmptyTeamSkills;
+import com.ww.model.container.rival.war.skill.EmptyTeamSkills;
 import com.ww.model.container.rival.campaign.CampaignWarModel;
 import com.ww.model.container.rival.campaign.CampaignWarFlow;
 import com.ww.model.container.rival.init.RivalCampaignWarInit;
 import com.ww.model.container.rival.war.*;
+import com.ww.model.container.rival.war.skill.WarTeamSkills;
 import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileCampaignWisie;
 import com.ww.service.rival.campaign.RivalCampaignWarService;
-import com.ww.service.social.ProfileConnectionService;
 import com.ww.websocket.message.Message;
 
 import java.util.ArrayList;

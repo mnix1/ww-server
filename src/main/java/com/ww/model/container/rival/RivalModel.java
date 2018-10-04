@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -29,8 +30,8 @@ public abstract class RivalModel {
 
     protected int currentTaskIndex = -1;
 
-    protected CopyOnWriteArrayList<Question> questions = new CopyOnWriteArrayList<>();
-    protected CopyOnWriteArrayList<TaskDTO> taskDTOs = new CopyOnWriteArrayList<>();
+    protected List<Question> questions = new CopyOnWriteArrayList<>();
+    protected List<TaskDTO> taskDTOs = new CopyOnWriteArrayList<>();
 
     protected Instant nextTaskDate;
     protected Instant endChoosingTaskPropsDate;
