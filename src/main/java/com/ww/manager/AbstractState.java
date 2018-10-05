@@ -21,7 +21,7 @@ public abstract class AbstractState implements FlowRunnable, Loggable {
     public static String STATE_TYPE_VOID = "void";
 
     private String type;
-    private List<Consumer> onFlowableEndListeners = new CopyOnWriteArrayList<>();
+    private List<Consumer<? super Long>> onFlowableEndListeners = new CopyOnWriteArrayList<>();
     private List<Disposable> disposables = new CopyOnWriteArrayList<>();
 
     public long intervalMultiply() {
@@ -52,6 +52,17 @@ public abstract class AbstractState implements FlowRunnable, Loggable {
         boolean isRunning = isRunning();
         logger.trace("AbstractState startIfRunning " + describe());
         return isRunning;
+    }
+
+    public void startFlowableEndListeners() {
+        logger.trace("AbstractState startFlowableEndListeners " + describe());
+        for (Consumer<? super Long> onFlowableEndListener : onFlowableEndListeners) {
+            try {
+                onFlowableEndListener.accept(0L);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public AbstractState startFlowable() {

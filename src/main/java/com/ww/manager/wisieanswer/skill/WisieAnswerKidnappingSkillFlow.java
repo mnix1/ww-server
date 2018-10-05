@@ -41,7 +41,7 @@ public class WisieAnswerKidnappingSkillFlow {
                         flow.setState(new WisieStateKidnappingFailed(manager, opponent).addOnFlowableEndListener(aLong3 -> {
                             flow.setState(new WisieStateChangingClothes(manager).addOnFlowableEndListener(aLong4 -> {
                                 new WisieStateContinueAfterKidnapping(manager).startVoid();
-                                flow.setState(prevState.startFlowable());
+                                prevState.startFlowableEndListeners();
                             }).startFlowable());
                         }).startFlowable());
                     }
@@ -66,7 +66,7 @@ public class WisieAnswerKidnappingSkillFlow {
                 new WisieStateWasKidnapped(manager).startVoid();
             } else {
                 flow.setState(new WisieStateWasNotKidnapped(manager).addOnFlowableEndListener(aLong3 -> {
-                    flow.setState(prevState.startFlowable());
+                    prevState.startFlowableEndListeners();
                 }).startFlowable());
             }
         }).startFlowable());

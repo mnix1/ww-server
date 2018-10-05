@@ -29,7 +29,7 @@ public class WisieAnswerWaterPistolSkillFlow {
         flow.setState(new WisieStateWaterPistolUsedOnIt(manager).addOnFlowableEndListener(aLong1 -> {
             flow.setState(new WisieStateCleaning(manager).addOnFlowableEndListener(aLong2 -> {
                 new WisieStateCleaned(manager).startVoid();
-                flow.setState(prevState.startFlowable());
+                prevState.startFlowableEndListeners();
             }).startFlowable());
         }).startFlowable());
     }

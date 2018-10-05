@@ -38,6 +38,7 @@ public class WarModelFactory extends RivalModelFactory {
         }
         fillModelPresentIndexes(model, team);
         fillModelSkills(model, team);
+        fillModelActiveMemberAddOn(model, team);
     }
 
     public void fillModelTeam(Map<String, Object> model, RivalTeam team) {
@@ -70,11 +71,10 @@ public class WarModelFactory extends RivalModelFactory {
         WarTeam warTeam = (WarTeam) team;
         model.put("activeIndex", warTeam.getActiveIndex());
         model.put("wisieActions", null);
-        model.put("activeMember", null);
+        fillModelActiveMemberAddOn(model, team);
         if (this.model.isOpponent()) {
             model.put("opponentActiveIndex", opponentTeam(team).getActiveIndex());
             model.put("opponentWisieActions", null);
-            model.put("opponentActiveMember", null);
         }
     }
 

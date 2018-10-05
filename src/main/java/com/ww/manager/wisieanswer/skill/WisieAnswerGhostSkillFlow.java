@@ -53,7 +53,7 @@ public class WisieAnswerGhostSkillFlow {
                 new WisieStateWasCaught(manager).startVoid();
             } else {
                 flow.setState(new WisieStateWasNotCaught(manager).addOnFlowableEndListener(aLong4 -> {
-                    flow.setState(prevState.startFlowable());
+                    prevState.startFlowableEndListeners();
                 }).startFlowable());
             }
         }).startFlowable());
@@ -75,7 +75,7 @@ public class WisieAnswerGhostSkillFlow {
                 new WisieStateRunAway(manager).startVoid();
             } else {
                 flow.setState(new WisieStateWasNotScared(manager).addOnFlowableEndListener(aLong3 -> {
-                    flow.setState(prevState.startFlowable());
+                    prevState.startFlowableEndListeners();
                 }).startFlowable());
             }
         }).startFlowable());
