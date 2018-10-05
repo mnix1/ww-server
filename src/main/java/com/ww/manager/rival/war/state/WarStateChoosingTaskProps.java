@@ -17,7 +17,7 @@ public class WarStateChoosingTaskProps extends StateChoosingTaskProps {
             WarTeam warTeam = (WarTeam) wT;
             warTeam.resetDisguises();
             warTeam.getTeamSkills().resetUsedAll();
-            ((WarManager) manager).getModelFactory().fillModelActiveMember(m, wT);
+            ((WarManager) manager).getModelFactory().fillModelActiveMemberAddOn(m, wT);
         });
         return super.processFlowable();
     }

@@ -4,7 +4,6 @@ import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
 import com.ww.model.constant.wisie.DisguiseType;
 import com.ww.model.constant.wisie.WisieAnswerAction;
-import com.ww.model.container.rival.war.WarTeam;
 import io.reactivex.Flowable;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -45,7 +44,7 @@ public class WisieStateTryingToScare extends WisieState {
         manager.addAction(WisieAnswerAction.TRYING_TO_SCARE);
         manager.getTeam(manager).getActiveTeamMember().addDisguise(DisguiseType.GHOST);
         manager.getManager().sendNewSkillsModel((m, wT) -> {
-            manager.getManager().getModelFactory().fillModelActiveMember(m, wT);
+            manager.getManager().getModelFactory().fillModelActiveMemberAddOn(m, wT);
             manager.getManager().getModelFactory().fillModelWisieAnswering(m, wT);
         });
         opponentManager.getFlow().getGhostSkillFlow().ghostUsedOnIt(success, interval);

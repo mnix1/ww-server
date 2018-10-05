@@ -45,7 +45,7 @@ public class WisieStateTryingToKidnap extends WisieState {
         manager.addAction(WisieAnswerAction.TRYING_TO_KIDNAP);
         manager.getTeam(manager).getActiveTeamMember().addDisguise(DisguiseType.NINJA);
         manager.getManager().sendNewSkillsModel((m, wT) -> {
-            manager.getManager().getModelFactory().fillModelActiveMember(m, wT);
+            manager.getManager().getModelFactory().fillModelActiveMemberAddOn(m, wT);
             manager.getManager().getModelFactory().fillModelWisieAnswering(m, wT);
         });
         opponentManager.getFlow().getKidnappingSkillFlow().kidnappingUsedOnIt(success, interval);

@@ -48,11 +48,11 @@ public class WarModelFactory extends RivalModelFactory {
         }
     }
 
-    public void fillModelActiveMember(Map<String, Object> model, RivalTeam team) {
+    public void fillModelActiveMemberAddOn(Map<String, Object> model, RivalTeam team) {
         WarTeam warTeam = (WarTeam) team;
-        model.put("activeMember", new ActiveTeamMemberDTO(warTeam.getActiveTeamMember()));
+        model.put("activeMemberAddOn", new ActiveTeamMemberDTO(warTeam.getActiveTeamMember()));
         if (this.model.isOpponent()) {
-            model.put("opponentActiveMember", new ActiveTeamMemberDTO(opponentTeam(team).getActiveTeamMember()));
+            model.put("opponentActiveMemberAddOn", new ActiveTeamMemberDTO(opponentTeam(team).getActiveTeamMember()));
         }
     }
 

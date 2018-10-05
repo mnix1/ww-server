@@ -2,7 +2,6 @@ package com.ww.manager.wisieanswer.skill.state.ghost;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
-import com.ww.model.constant.wisie.DisguiseType;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import com.ww.model.container.rival.war.WarTeam;
 import io.reactivex.Flowable;
@@ -25,7 +24,7 @@ public class WisieStateWasNotCaught extends WisieState {
         manager.getTeam(manager).getActiveTeamMember().removeDisguise();
         manager.getManager().sendNewSkillsModel((m, wT) -> {
             WarTeam warTeam = (WarTeam) wT;
-            manager.getManager().getModelFactory().fillModelActiveMember(m, wT);
+            manager.getManager().getModelFactory().fillModelActiveMemberAddOn(m, wT);
             manager.getManager().getModelFactory().fillModelWisieAnswering(m, wT);
             if(manager.getWisie().getProfile().getId().equals(warTeam.getProfileId())){
                 warTeam.getTeamSkills().unblockAll();
