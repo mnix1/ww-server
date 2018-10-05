@@ -35,7 +35,7 @@ public class WisieStateScareFailed extends WisieState {
         });
         long interval = (long) (randomDouble(6 - 6 * manager.getReflexF1(),
                 8 - 8 * manager.getReflexF1()) * intervalMultiply());
-        logger.trace(manager.toString() + ", interval: " + interval);
+        logger.trace(describe() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

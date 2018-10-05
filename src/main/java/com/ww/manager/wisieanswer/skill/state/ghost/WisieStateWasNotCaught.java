@@ -33,7 +33,7 @@ public class WisieStateWasNotCaught extends WisieState {
         });
         long interval = (long) (randomDouble(3 - manager.getSpeedF1() - manager.getReflexF1() - manager.getConcentrationF1(),
                 6 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1() - 2 * manager.getConcentrationF1()) * intervalMultiply());
-        logger.trace(manager.toString() + ", interval: " + interval);
+        logger.trace(describe() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

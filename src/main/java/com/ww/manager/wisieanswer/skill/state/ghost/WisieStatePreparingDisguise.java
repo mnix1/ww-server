@@ -22,7 +22,7 @@ public class WisieStatePreparingDisguise extends WisieState {
         manager.addAndSendAction(WisieAnswerAction.PREPARING_DISGUISE);
         long interval = (long) (randomDouble(2 - manager.getSpeedF1() - manager.getReflexF1(),
                 4 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1()) * intervalMultiply());
-        logger.trace(manager.toString() + ", interval: " + interval);
+        logger.trace(describe() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

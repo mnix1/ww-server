@@ -22,7 +22,7 @@ public class WisieStateCleaning extends WisieState {
         manager.addAndSendAction(WisieAnswerAction.CLEANING);
         long interval = (long) (randomDouble(3 - manager.getSpeedF1(),
                 5 - 3 * manager.getSpeedF1()) * intervalMultiply());
-        logger.trace(manager.toString() + ", interval: " + interval);
+        logger.trace(describe() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

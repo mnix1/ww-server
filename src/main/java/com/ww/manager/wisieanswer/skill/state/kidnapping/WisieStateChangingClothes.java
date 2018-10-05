@@ -23,7 +23,7 @@ public class WisieStateChangingClothes extends WisieState {
         manager.addAndSendAction(WisieAnswerAction.CHANGING_CLOTHES);
         long interval = (long) (randomDouble(2 - manager.getSpeedF1(),
                 4 - 3 * manager.getSpeedF1()) * intervalMultiply());
-        logger.trace(manager.toString() + ", interval: " + interval);
+        logger.trace(describe() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

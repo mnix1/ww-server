@@ -21,7 +21,7 @@ public class WisieStateNowKnowAnswer extends WisieState {
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.NOW_KNOW_ANSWER);
         long interval = (long) ((3 - manager.getReflexF1() - manager.getSpeedF1() - manager.getConcentrationF1()) * intervalMultiply());
-        logger.trace(manager.toString() + ", interval: " + interval);
+        logger.trace(describe() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

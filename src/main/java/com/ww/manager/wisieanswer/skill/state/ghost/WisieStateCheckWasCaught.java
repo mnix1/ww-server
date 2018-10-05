@@ -29,7 +29,7 @@ public class WisieStateCheckWasCaught extends WisieState {
             chance -= 0.25;
         }
         boolean caught = chance <= randomDouble();
-        logger.trace(manager.toString() + ", chance=" + chance+ ", caught=" + caught);
+        logger.trace(describe() + ", chance=" + chance+ ", caught=" + caught);
         return caught;
     }
 }

@@ -25,7 +25,7 @@ public class WisieStateEndLookingForAnswer extends WisieState {
             sumInterval /= manager.getHobbyFactor();
         }
         long interval = (long) (sumInterval * (4 - 2 * manager.getSpeedF1() - manager.getConcentrationF1()));
-        logger.trace(manager.toString() + ", interval: " + interval);
+        logger.trace(describe() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

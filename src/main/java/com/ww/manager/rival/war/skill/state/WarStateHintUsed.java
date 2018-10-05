@@ -1,4 +1,4 @@
-package com.ww.manager.rival.war.state.skill;
+package com.ww.manager.rival.war.skill.state;
 
 import com.ww.manager.rival.war.WarManager;
 import com.ww.manager.rival.war.state.WarState;
@@ -22,10 +22,11 @@ public class WarStateHintUsed extends WarState {
     @Override
     protected void processVoid() {
         WarTeam team = manager.getModel().getTeams().team(profileId);
-        WisieAnswerManager wisieAnswerManager = manager.getModel().getWisieAnswerManager(profileId);
-        if (!team.getTeamSkills().canUse(Skill.HINT) || !content.containsKey("answerId") || wisieAnswerManager == null) {
+        if (!team.getTeamSkills().canUse(Skill.HINT) || !content.containsKey("answerId")
+                || !team.getActiveTeamMember().isWisie() || !team.istActiveTeamMemberPresent()) {
             return;
         }
+        WisieAnswerManager wisieAnswerManager = manager.getModel().getWisieAnswerManager(profileId);
         team.getTeamSkills().use(Skill.HINT).disable();
         Long markedAnswerId = ((Integer) content.get("answerId")).longValue();
         Boolean isAnswerCorrect = manager.getModel().findCurrentCorrectAnswerId().equals(markedAnswerId);

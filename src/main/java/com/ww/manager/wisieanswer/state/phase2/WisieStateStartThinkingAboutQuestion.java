@@ -26,7 +26,7 @@ public class WisieStateStartThinkingAboutQuestion extends WisieState {
             doubleInterval /= manager.getHobbyFactor();
         }
         long interval = (long) (doubleInterval * intervalMultiply());
-        logger.trace(manager.toString() + ", interval: " + interval);
+        logger.trace(describe() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

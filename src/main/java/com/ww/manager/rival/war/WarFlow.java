@@ -1,11 +1,10 @@
-package com.ww.model.container.rival.war;
+package com.ww.manager.rival.war;
 
 import com.ww.manager.rival.RivalFlow;
 import com.ww.manager.rival.state.*;
-import com.ww.manager.rival.war.WarManager;
 import com.ww.manager.rival.war.state.*;
 import com.ww.model.constant.rival.RivalStatus;
-import com.ww.model.container.rival.war.skill.WarSkillFlow;
+import com.ww.manager.rival.war.skill.WarSkillFlow;
 import lombok.Getter;
 
 import java.util.HashMap;

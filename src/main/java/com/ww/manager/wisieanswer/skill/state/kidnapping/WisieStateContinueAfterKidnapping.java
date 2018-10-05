@@ -23,6 +23,6 @@ public class WisieStateContinueAfterKidnapping extends WisieState {
                 warTeam.getTeamSkills().unblockAll();
             }
         });
-        logger.trace(manager.toString());
+        logger.trace(describe());
     }
 }

@@ -1,7 +1,7 @@
-package com.ww.model.container.rival.war.skill;
+package com.ww.manager.rival.war.skill;
 
 import com.ww.manager.rival.war.WarManager;
-import com.ww.manager.rival.war.state.skill.*;
+import com.ww.manager.rival.war.skill.state.*;
 import com.ww.model.constant.rival.RivalStatus;
 import lombok.Getter;
 

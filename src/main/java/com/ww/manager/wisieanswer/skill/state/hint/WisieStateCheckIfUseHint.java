@@ -19,7 +19,7 @@ public class WisieStateCheckIfUseHint extends WisieState {
 
     protected WisieAnswerAction processWisieAnswerAction() {
         if (hintCorrect) {
-            logger.trace(manager.toString() + ", manager.isHintCorrect(): " + hintCorrect);
+            logger.trace(describe() + ", manager.isHintCorrect(): " + hintCorrect);
             return WisieAnswerAction.WILL_USE_HINT;
         }
         double diffPart = (4 - manager.getDifficulty()) * 0.05;
@@ -27,7 +27,7 @@ public class WisieStateCheckIfUseHint extends WisieState {
         double hobbyPart = manager.isHobby() ? 0.1 : 0;
         double chance = 0.5 + diffPart + attrPart + hobbyPart;
         boolean useHint = chance <= randomDouble();
-        logger.trace(manager.toString() + ", chance: " + chance + ", useHint: " + useHint + ", hintNotCorrect");
+        logger.trace(describe() + ", chance: " + chance + ", useHint: " + useHint + ", hintNotCorrect");
         if (useHint) {
             return WisieAnswerAction.WILL_USE_HINT;
         }

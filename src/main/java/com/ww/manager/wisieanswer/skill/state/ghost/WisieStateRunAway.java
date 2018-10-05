@@ -17,6 +17,6 @@ public class WisieStateRunAway extends WisieState {
     protected void processVoid() {
         //action in WisieStateScareSucceeded
 //        manager.addAndSendAction(WisieAnswerAction.RUN_AWAY);
-        logger.trace(manager.toString());
+        logger.trace(describe());
     }
 }

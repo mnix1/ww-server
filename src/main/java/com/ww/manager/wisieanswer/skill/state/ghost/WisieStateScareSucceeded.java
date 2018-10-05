@@ -27,11 +27,11 @@ public class WisieStateScareSucceeded extends WisieState {
     protected Flowable<Long> processFlowable() {
         manager.addAction(WisieAnswerAction.SCARE_SUCCEEDED);
         opponent.addAction(WisieAnswerAction.RUN_AWAY);
-        opponent.getTeam(opponent).getActiveTeamMember().addDisguise(DisguiseType.CHAIR_RED);
+        opponent.getTeam(opponent).activeTeamMemberOutDuringAnswering(DisguiseType.CHAIR_RED);
         manager.getManager().sendTeamAndActionsModel();
         long interval = (long) (randomDouble(2 - 2 * manager.getReflexF1(),
                 4 - 4 * manager.getReflexF1()) * intervalMultiply());
-        logger.trace(manager.toString() + ", interval: " + interval);
+        logger.trace(describe() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

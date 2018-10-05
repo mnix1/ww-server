@@ -21,7 +21,7 @@ public class WisieStateStartRecognizingAnswers extends WisieState {
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.NOT_SURE_OF_ANSWER);
         long interval = (long) (randomDouble(2 - manager.getReflexF1(), 4 - manager.getReflexF1() - manager.getConcentrationF1()) * intervalMultiply());
-        logger.trace(manager.toString() + ", interval: " + interval);
+        logger.trace(describe() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

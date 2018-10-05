@@ -1,4 +1,4 @@
-package com.ww.manager.rival.war.state.skill;
+package com.ww.manager.rival.war.skill.state;
 
 import com.ww.manager.rival.war.WarManager;
 import com.ww.manager.rival.war.state.WarState;

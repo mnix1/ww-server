@@ -20,7 +20,7 @@ public class WisieStateCheckNoConcentration extends WisieState {
         double hobbyPart = manager.isHobby() ? 0.1 : 0;
         double chance = manager.getConcentrationF1() + hobbyPart;
         boolean lostConcentration = chance < randomDouble();
-        logger.trace(manager.toString() + ", chance: " + chance + ", lostConcentration: " + lostConcentration);
+        logger.trace(describe() + ", chance: " + chance + ", lostConcentration: " + lostConcentration);
         if (lostConcentration) {
             return randomElement(WisieAnswerAction.getNoConcentrationActions());
         }

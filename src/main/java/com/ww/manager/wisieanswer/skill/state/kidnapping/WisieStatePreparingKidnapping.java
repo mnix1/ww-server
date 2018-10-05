@@ -22,7 +22,7 @@ public class WisieStatePreparingKidnapping extends WisieState {
         manager.addAndSendAction(WisieAnswerAction.PREPARING_KIDNAPPING);
         long interval = (long) (randomDouble(3 - manager.getSpeedF1() - manager.getReflexF1() - manager.getConfidenceF1(),
                 6 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1() - 2 * manager.getConfidenceF1()) * intervalMultiply());
-        logger.trace(manager.toString() + ", interval: " + interval);
+        logger.trace(describe() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

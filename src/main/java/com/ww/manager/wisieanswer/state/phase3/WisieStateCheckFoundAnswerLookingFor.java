@@ -21,7 +21,7 @@ public class WisieStateCheckFoundAnswerLookingFor extends WisieState {
         double hobbyPart = manager.isHobby() ? 0.1 : 0;
         double chance = 0.5 + diffPart + attrPart + hobbyPart;
         boolean foundAnswerLookingFor = chance > randomDouble();
-        logger.trace(manager.toString() + ", chance: " + chance+ ", foundAnswerLookingFor: " + foundAnswerLookingFor);
+        logger.trace(describe() + ", chance: " + chance+ ", foundAnswerLookingFor: " + foundAnswerLookingFor);
         if (foundAnswerLookingFor) {
             return WisieAnswerAction.FOUND_ANSWER_LOOKING_FOR;
         }

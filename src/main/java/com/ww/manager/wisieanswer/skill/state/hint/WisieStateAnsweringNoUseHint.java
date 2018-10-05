@@ -30,7 +30,7 @@ public class WisieStateAnsweringNoUseHint extends WisieState {
         double hobbyPart = manager.isHobby() ? 0.1 : 0;
         double chance = 0.5 + diffPart + attrPart + hobbyPart;
         boolean correctAnswer = chance > randomDouble();
-        logger.trace(manager.toString() + ", chance: " + chance + ", correctAnswer: " + correctAnswer);
+        logger.trace(describe() + ", chance: " + chance + ", correctAnswer: " + correctAnswer);
         Answer answer = correctAnswer
                 ? manager.getQuestion().getAnswers().stream().filter(Answer::getCorrect).findFirst().get()
                 : randomElement(new ArrayList<>(manager.getQuestion().getAnswers().stream().filter(a -> !a.getId().equals(hintAnswerId)).collect(Collectors.toList())));

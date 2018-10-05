@@ -24,11 +24,11 @@ public class WisieStateKidnappingSucceeded extends WisieState {
     protected Flowable<Long> processFlowable() {
         manager.addAction(WisieAnswerAction.KIDNAPPING_SUCCEEDED);
         opponent.addAction(WisieAnswerAction.WAS_KIDNAPPED);
-        manager.getTeam(opponent).getActiveTeamMember().addDisguise(DisguiseType.CHAIR_SIMPLE);
-        manager.getTeam(manager).getActiveTeamMember().addDisguise(DisguiseType.CHAIR_SIMPLE);
+        manager.getTeam(opponent).activeTeamMemberOutDuringAnswering(DisguiseType.CHAIR_SIMPLE);
+        manager.getTeam(manager).activeTeamMemberOutDuringAnswering(DisguiseType.CHAIR_SIMPLE);
         manager.getManager().sendTeamAndActionsModel();
         long interval = intervalMultiply() * 3;
-        logger.trace(manager.toString() + ", interval: " + interval);
+        logger.trace(describe() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

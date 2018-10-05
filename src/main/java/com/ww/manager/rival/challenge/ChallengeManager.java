@@ -1,5 +1,6 @@
 package com.ww.manager.rival.challenge;
 
+import com.ww.manager.rival.war.WarFlow;
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;

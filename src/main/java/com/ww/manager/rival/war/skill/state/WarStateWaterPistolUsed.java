@@ -1,4 +1,4 @@
-package com.ww.manager.rival.war.state.skill;
+package com.ww.manager.rival.war.skill.state;
 
 import com.ww.manager.rival.war.WarManager;
 import com.ww.manager.rival.war.state.WarState;
@@ -18,13 +18,15 @@ public class WarStateWaterPistolUsed extends WarState {
     @Override
     protected void processVoid() {
         WarTeam team = manager.getModel().getTeams().team(profileId);
-        WarTeam opponentContainer = manager.getModel().getTeams().opponentTeam(profileId);
-        WisieAnswerManager wisieAnswerManager = manager.getModel().getWisieAnswerManager(opponentContainer.getProfileId());
-        if (!team.getTeamSkills().canUse(Skill.WATER_PISTOL) || !team.getActiveTeamMember().isWisie() || wisieAnswerManager == null) {
+        WarTeam opponentTeam = manager.getModel().getTeams().opponentTeam(profileId);
+        if (!team.getTeamSkills().canUse(Skill.WATER_PISTOL)
+                || !opponentTeam.getActiveTeamMember().isWisie() || !opponentTeam.istActiveTeamMemberPresent()
+                || !team.getActiveTeamMember().isWisie() || !team.istActiveTeamMemberPresent()) {
             return;
         }
         team.getTeamSkills().use(Skill.WATER_PISTOL);
-        wisieAnswerManager.getFlow().getWaterPistolSkillFlow().waterPistol();
+        WisieAnswerManager opponentWisieAnswerManager = manager.getModel().getWisieAnswerManager(opponentTeam.getProfileId());
+        opponentWisieAnswerManager.getFlow().getWaterPistolSkillFlow().waterPistol();
         manager.sendNewSkillsModel();
     }
 }

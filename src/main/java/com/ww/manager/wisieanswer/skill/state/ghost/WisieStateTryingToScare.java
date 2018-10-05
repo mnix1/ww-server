@@ -49,7 +49,7 @@ public class WisieStateTryingToScare extends WisieState {
             manager.getManager().getModelFactory().fillModelWisieAnswering(m, wT);
         });
         opponentManager.getFlow().getGhostSkillFlow().ghostUsedOnIt(success, interval);
-        logger.trace(manager.toString() + ", interval=" + interval + ", success=" + success);
+        logger.trace(describe() + ", interval=" + interval + ", success=" + success);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

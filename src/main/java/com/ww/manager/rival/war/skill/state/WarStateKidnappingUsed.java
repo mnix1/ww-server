@@ -1,4 +1,4 @@
-package com.ww.manager.rival.war.state.skill;
+package com.ww.manager.rival.war.skill.state;
 
 import com.ww.manager.rival.war.WarManager;
 import com.ww.manager.rival.war.state.WarState;
@@ -19,7 +19,9 @@ public class WarStateKidnappingUsed extends WarState {
     protected void processVoid() {
         WarTeam team = manager.getModel().getTeams().team(profileId);
         WarTeam opponentTeam = manager.getModel().getTeams().opponentTeam(profileId);
-        if (!team.getTeamSkills().canUse(Skill.KIDNAPPING) || !team.getActiveTeamMember().isWisie() || !opponentTeam.getActiveTeamMember().isWisie()) {
+        if (!team.getTeamSkills().canUse(Skill.KIDNAPPING)
+                || !opponentTeam.getActiveTeamMember().isWisie() || !opponentTeam.istActiveTeamMemberPresent()
+                || !team.getActiveTeamMember().isWisie() || !team.istActiveTeamMemberPresent()) {
             return;
         }
         team.getTeamSkills().use(Skill.KIDNAPPING);

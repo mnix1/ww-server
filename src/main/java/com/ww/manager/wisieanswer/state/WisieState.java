@@ -16,7 +16,7 @@ public abstract class WisieState extends AbstractState {
 
     @Override
     public String describe() {
-        return manager.toString();
+        return "WisieState " + super.describe() + ", manager=" + manager.toString();
     }
 
     @Override
@@ -28,7 +28,9 @@ public abstract class WisieState extends AbstractState {
         if (!startIfRunning()) {
             return WisieAnswerAction.NONE;
         }
-        return processWisieAnswerAction();
+        WisieAnswerAction result = processWisieAnswerAction();
+        logger.trace("WisieState startWisieAnswerAction end " + describe() + ", result=" + result);
+        return result;
     }
 
     protected WisieAnswerAction processWisieAnswerAction() {

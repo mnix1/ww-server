@@ -1,5 +1,6 @@
 package com.ww.model.container.rival.war;
 
+import com.ww.model.constant.wisie.DisguiseType;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.RivalTeamSkills;
 import com.ww.model.entity.outside.social.Profile;
@@ -30,6 +31,14 @@ public class WarTeam extends RivalTeam {
 
     public TeamMember getActiveTeamMember() {
         return teamMembers.get(activeIndex);
+    }
+
+    public boolean istActiveTeamMemberPresent() {
+        return getActiveTeamMember().isPresent();
+    }
+
+    public void activeTeamMemberOutDuringAnswering(DisguiseType disguise){
+        getActiveTeamMember().addDisguise(disguise).setPresent(false);
     }
 
     public void resetDisguises() {

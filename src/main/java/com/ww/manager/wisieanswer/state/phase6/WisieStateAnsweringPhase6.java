@@ -9,9 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
-import static com.ww.helper.RandomHelper.randomDouble;
 import static com.ww.helper.RandomHelper.randomElement;
-import static com.ww.helper.RandomHelper.randomElementIndex;
 
 public class WisieStateAnsweringPhase6 extends WisieState {
     protected static final Logger logger = LoggerFactory.getLogger(WisieStateAnsweringPhase6.class);
@@ -23,7 +21,7 @@ public class WisieStateAnsweringPhase6 extends WisieState {
     protected void processVoid() {
         manager.addAndSendAction(WisieAnswerAction.ANSWERED);
         Answer answer = randomElement(new ArrayList<>(manager.getQuestion().getAnswers()));
-        logger.trace(manager.toString() + ", correctAnswer: " + answer.getCorrect());
+        logger.trace(describe() + ", correctAnswer: " + answer.getCorrect());
         manager.getManager().getFlow().wisieAnswered(manager.getWisie().getProfile().getId(), answer.getId());
     }
 }

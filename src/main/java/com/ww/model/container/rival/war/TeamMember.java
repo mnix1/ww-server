@@ -27,22 +27,25 @@ public class TeamMember {
         this.contentDTO = contentDTO;
     }
 
-    public void addDisguise(DisguiseType disguise) {
+    public TeamMember addDisguise(DisguiseType disguise) {
         disguises.add(disguise);
         setActiveDisguise(disguise);
+        return this;
     }
 
-    public void removeDisguise() {
+    public TeamMember removeDisguise() {
         DisguiseType disguise = disguises.size() > 1 ? disguises.get(disguises.size() - 2) : null;
         if (!disguises.isEmpty()) {
             disguises.remove(disguises.size() - 1);
         }
         setActiveDisguise(disguise);
+        return this;
     }
 
-    public void resetDisguises() {
+    public TeamMember resetDisguises() {
         disguises.clear();
         setActiveDisguise(null);
+        return this;
     }
 
     private void setActiveDisguise(DisguiseType disguise) {
