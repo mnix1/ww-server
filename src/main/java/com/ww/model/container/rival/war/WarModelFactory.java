@@ -1,9 +1,12 @@
 package com.ww.model.container.rival.war;
 
 import com.ww.model.constant.rival.RivalStatus;
+import com.ww.model.constant.wisie.DisguiseType;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import com.ww.model.container.rival.RivalModelFactory;
 import com.ww.model.container.rival.RivalTeam;
+import com.ww.model.dto.rival.ActiveTeamMemberDTO;
+import com.ww.model.dto.rival.TeamMemberDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,11 +40,19 @@ public class WarModelFactory extends RivalModelFactory {
         fillModelSkills(model, team);
     }
 
-    public void fillModelTeam(Map<String, Object> model, RivalTeam team){
+    public void fillModelTeam(Map<String, Object> model, RivalTeam team) {
         WarTeam warTeam = (WarTeam) team;
         model.put("team", this.model.prepareTeam(warTeam.getTeamMembers()));
         if (this.model.isOpponent()) {
             model.put("opponentTeam", this.model.prepareTeam(opponentTeam(team).getTeamMembers()));
+        }
+    }
+
+    public void fillModelActiveMember(Map<String, Object> model, RivalTeam team) {
+        WarTeam warTeam = (WarTeam) team;
+        model.put("activeMember", new ActiveTeamMemberDTO(warTeam.getActiveTeamMember()));
+        if (this.model.isOpponent()) {
+            model.put("opponentActiveMember", new ActiveTeamMemberDTO(opponentTeam(team).getActiveTeamMember()));
         }
     }
 
@@ -59,9 +70,11 @@ public class WarModelFactory extends RivalModelFactory {
         WarTeam warTeam = (WarTeam) team;
         model.put("activeIndex", warTeam.getActiveIndex());
         model.put("wisieActions", null);
+        model.put("activeMember", null);
         if (this.model.isOpponent()) {
             model.put("opponentActiveIndex", opponentTeam(team).getActiveIndex());
             model.put("opponentWisieActions", null);
+            model.put("opponentActiveMember", null);
         }
     }
 

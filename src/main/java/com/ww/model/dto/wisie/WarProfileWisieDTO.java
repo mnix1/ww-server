@@ -11,12 +11,10 @@ import lombok.Setter;
 import java.util.Set;
 
 @Getter
-@Setter
 public class WarProfileWisieDTO {
     private String namePolish;
     private String nameEnglish;
     private WisieType type;
-    private DisguiseType disguise;
     private Double value;
     private Set<Category> hobbies;
 
@@ -27,6 +25,4 @@ public class WarProfileWisieDTO {
         this.value = ownedWisie.calculateValue();
         this.hobbies = ownedWisie.getHobbies();
     }
-
-
 }

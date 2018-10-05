@@ -16,6 +16,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 @Getter
@@ -32,7 +33,7 @@ public class WarModel extends RivalModel {
     }
 
     public void updateWisieAnswerManagers(WarManager manager) {
-        wisieAnswerManagers = new ArrayList<>();
+        wisieAnswerManagers = new CopyOnWriteArrayList<>();
         for (WarTeam warTeam : teams.getTeams()) {
             TeamMember teamMember = warTeam.getActiveTeamMember();
             if (teamMember.isWisie()) {

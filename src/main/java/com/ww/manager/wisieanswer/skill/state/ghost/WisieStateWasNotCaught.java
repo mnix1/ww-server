@@ -25,7 +25,7 @@ public class WisieStateWasNotCaught extends WisieState {
         manager.getTeam(manager).getActiveTeamMember().removeDisguise();
         manager.getManager().sendNewSkillsModel((m, wT) -> {
             WarTeam warTeam = (WarTeam) wT;
-            manager.getManager().getModelFactory().fillModelTeam(m, wT);
+            manager.getManager().getModelFactory().fillModelActiveMember(m, wT);
             manager.getManager().getModelFactory().fillModelWisieAnswering(m, wT);
             if(manager.getWisie().getProfile().getId().equals(warTeam.getProfileId())){
                 warTeam.getTeamSkills().unblockAll();

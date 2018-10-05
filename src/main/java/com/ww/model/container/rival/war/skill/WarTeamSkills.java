@@ -51,7 +51,7 @@ public class WarTeamSkills implements RivalTeamSkills {
     }
 
     @Override
-    public void resetAll() {
+    public void resetUsedAll() {
         skills.forEach((skill, availableSkill) -> availableSkill.reset());
     }
 

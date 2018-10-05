@@ -2,59 +2,56 @@ package com.ww.model.container.rival.war;
 
 import com.ww.model.constant.wisie.DisguiseType;
 import com.ww.model.constant.wisie.HeroType;
-import com.ww.model.dto.wisie.WarProfileWisieDTO;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Getter
-@Setter
-public class TeamMember {
+
+public abstract class TeamMember {
     private int index;
     private HeroType type;
+    @Setter
     private boolean present;
-    private Object content;
-    private Object contentDTO;
-    private List<DisguiseType> disguises = new ArrayList<>();
+    private List<DisguiseType> disguises = new CopyOnWriteArrayList<>();
 
-    public TeamMember(int index, HeroType type, Object content, Object contentDTO) {
+    public abstract Object getContent();
+    public abstract Object getContentDTO();
+
+    public TeamMember(int index, HeroType type) {
         this.index = index;
         this.type = type;
         this.present = true;
-        this.content = content;
-        this.contentDTO = contentDTO;
+    }
+
+    public boolean isWisie() {
+        return HeroType.isWisie(type);
     }
 
     public TeamMember addDisguise(DisguiseType disguise) {
         disguises.add(disguise);
-        setActiveDisguise(disguise);
         return this;
     }
 
     public TeamMember removeDisguise() {
-        DisguiseType disguise = disguises.size() > 1 ? disguises.get(disguises.size() - 2) : null;
         if (!disguises.isEmpty()) {
             disguises.remove(disguises.size() - 1);
         }
-        setActiveDisguise(disguise);
         return this;
     }
 
     public TeamMember resetDisguises() {
         disguises.clear();
-        setActiveDisguise(null);
         return this;
     }
 
-    private void setActiveDisguise(DisguiseType disguise) {
-        WarProfileWisieDTO dto = (WarProfileWisieDTO) contentDTO;
-        dto.setDisguise(disguise);
-    }
-
-    public boolean isWisie() {
-        return HeroType.isWisie(type);
+    public DisguiseType activeDisguise() {
+        if (disguises.isEmpty()) {
+            return null;
+        }
+        return disguises.get(disguises.size() - 1);
     }
 
 }

@@ -14,5 +14,5 @@ public interface RivalTeamSkills {
 
     void blockAll();
     void unblockAll();
-    void resetAll();
+    void resetUsedAll();
 }

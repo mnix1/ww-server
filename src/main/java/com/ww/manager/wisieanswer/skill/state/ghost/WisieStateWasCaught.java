@@ -18,7 +18,7 @@ public class WisieStateWasCaught extends WisieState {
     protected void processVoid() {
         manager.addAction(WisieAnswerAction.WAS_CAUGHT);
         manager.getTeam(manager).activeTeamMemberOutDuringAnswering(DisguiseType.CHAIR_GREEN);
-        manager.getManager().sendTeamAndActionsModel();
+        manager.getManager().sendActiveMemberAndActionsModel();
         logger.trace(describe());
     }
 }
