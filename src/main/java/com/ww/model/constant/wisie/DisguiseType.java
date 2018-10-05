@@ -5,6 +5,7 @@ public enum DisguiseType {
     CHAIR_GREEN,
     CHAIR_SIMPLE,
     PENGUIN_RAIN,
+    JUDGE,
     NINJA,
     GHOST;
 }
