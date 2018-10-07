@@ -52,6 +52,7 @@ public class BattleFlow extends RivalFlow {
     }
 
     public synchronized void answer(Long profileId, Map<String, Object> content) {
+        logger.trace(describe() + manager.toString() + " answer, profileId={}", profileId);
         dispose();
         addState(new BattleStateAnswered(manager, profileId, content)).addOnFlowableEndListener(aLong -> {
             phase2();
@@ -59,6 +60,7 @@ public class BattleFlow extends RivalFlow {
     }
 
     public synchronized void chosenTaskProps(Long profileId, Map<String, Object> content) {
+        logger.trace(describe() + manager.toString() + " chosenTaskProps, profileId={}", profileId);
         if (addState(new StateChosenTaskProps(manager, profileId, content)).startBoolean()) {
             dispose();
             phase1();

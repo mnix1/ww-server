@@ -9,7 +9,6 @@ import com.ww.model.container.rival.war.WarTeam;
 import java.util.Map;
 
 public class WarStateHintUsed extends WarState {
-
     private Long profileId;
     private Map<String, Object> content;
 

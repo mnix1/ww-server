@@ -16,8 +16,6 @@ import static com.ww.service.rival.global.RivalMessageService.*;
 
 @Getter
 public class WarFlow extends RivalFlow {
-    protected static final Logger logger = LoggerFactory.getLogger(WarFlow.class);
-
     private WarManager manager;
     private WarSkillFlow skillFlow;
 
@@ -88,20 +86,21 @@ public class WarFlow extends RivalFlow {
     }
 
     public synchronized void wisieAnswered(Long profileId, Long answerId) {
+        logger.trace(describe() + manager.toString() + " wisieAnswered, profileId={}, answerId={}", profileId, answerId);
         dispose();
-        logger.trace(manager.toString() + ", wisieAnswered, profileId={}, answerId={}", profileId, answerId);
         Map<String, Object> content = new HashMap<>();
         content.put("answerId", answerId.intValue());
         answer(profileId, content);
     }
 
     public synchronized void kidnapped() {
+        logger.trace(describe() + manager.toString() + " kidnapped");
         dispose();
-        logger.trace(manager.toString() + ", kidnapped");
         phase4();
     }
 
     public synchronized void answer(Long profileId, Map<String, Object> content) {
+        logger.trace(describe() + manager.toString() + " answer, profileId={}", profileId);
         dispose();
         addState(new WarStateAnswered(manager, profileId, content)).addOnFlowableEndListener(aLong -> {
             phase2();
@@ -109,6 +108,7 @@ public class WarFlow extends RivalFlow {
     }
 
     public synchronized void chosenTaskProps(Long profileId, Map<String, Object> content) {
+        logger.trace(describe() + manager.toString() + " chosenTaskProps, profileId={}", profileId);
         if (addState(new StateChosenTaskProps(manager, profileId, content)).startBoolean()) {
             dispose();
             phase3();
@@ -116,6 +116,7 @@ public class WarFlow extends RivalFlow {
     }
 
     public synchronized void chosenWhoAnswer(Long profileId, Map<String, Object> content) {
+        logger.trace(describe() + manager.toString() + " chosenWhoAnswer, profileId={}", profileId);
         if (addState(new WarStateChosenWhoAnswer(manager, profileId, content)).startBoolean()) {
             dispose();
             phase1();

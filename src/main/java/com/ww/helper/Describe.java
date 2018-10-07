@@ -1,5 +1,5 @@
 package com.ww.helper;
 
-public interface Loggable {
+public interface Describe {
     String describe();
 }

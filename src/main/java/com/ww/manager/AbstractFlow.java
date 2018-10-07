@@ -1,6 +1,10 @@
 package com.ww.manager;
 
+import com.ww.helper.Describe;
+import com.ww.manager.rival.war.WarFlow;
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -8,7 +12,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import static com.ww.manager.AbstractState.STATE_TYPE_FLOWABLE;
 
 @Getter
-public abstract class AbstractFlow {
+public abstract class AbstractFlow implements Describe {
+    protected static final Logger logger = LoggerFactory.getLogger(AbstractFlow.class);
+
     protected List<AbstractState> states = new CopyOnWriteArrayList<>();
     protected List<AbstractState> flowableStates = new CopyOnWriteArrayList<>();
 
@@ -18,6 +24,11 @@ public abstract class AbstractFlow {
 
     public synchronized void dispose() {
         lastFlowableState().dispose();
+    }
+
+    @Override
+    public String describe() {
+        return ", class=" + this.getClass().getName() + ", statesCount=" + states.size() + ", flowableStatesCount=" + flowableStates.size();
     }
 
     protected synchronized AbstractState addState(AbstractState state) {

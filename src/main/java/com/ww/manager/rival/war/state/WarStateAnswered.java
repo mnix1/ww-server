@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class WarStateAnswered extends WarState {
-
     private Long profileId;
     private Map<String, Object> content;
 

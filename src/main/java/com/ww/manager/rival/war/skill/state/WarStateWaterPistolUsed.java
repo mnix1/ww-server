@@ -7,7 +7,6 @@ import com.ww.model.constant.Skill;
 import com.ww.model.container.rival.war.WarTeam;
 
 public class WarStateWaterPistolUsed extends WarState {
-
     private Long profileId;
 
     public WarStateWaterPistolUsed(WarManager manager, Long profileId) {

@@ -3,6 +3,7 @@ package com.ww.manager.rival;
 import com.ww.manager.AbstractFlow;
 import com.ww.manager.AbstractState;
 import com.ww.manager.rival.state.StateSurrender;
+import com.ww.manager.rival.war.WarFlow;
 import com.ww.model.constant.rival.RivalStatus;
 import lombok.Getter;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import static com.ww.service.rival.global.RivalMessageService.*;
 
 @Getter
 public abstract class RivalFlow extends AbstractFlow  {
+
     protected abstract RivalManager getManager();
 
     public boolean processMessage(Long profileId, Map<String, Object> content) {
@@ -41,6 +43,7 @@ public abstract class RivalFlow extends AbstractFlow  {
 
     public synchronized void surrender(Long profileId) {
         dispose();
+        logger.trace(describe() + " surrender, profileId=" + profileId);
         addState(new StateSurrender(getManager(), profileId)).startVoid();
     }
 }

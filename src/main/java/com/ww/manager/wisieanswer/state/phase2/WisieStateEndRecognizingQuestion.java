@@ -13,13 +13,20 @@ import java.util.concurrent.TimeUnit;
 import static com.ww.helper.RandomHelper.randomDouble;
 
 public class WisieStateEndRecognizingQuestion extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStateEndRecognizingQuestion.class);
     private static final long ONE_CHAR_READING_SPEED = 40;//ms
+
+    private Long interval;
 
     public WisieStateEndRecognizingQuestion(WisieAnswerManager manager) {
         super(manager, STATE_TYPE_FLOWABLE);
     }
 
+    @Override
+    public String describe() {
+        return super.describe() + ", interval=" + interval;
+    }
+
+    @Override
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.RECOGNIZING_QUESTION);
         long readingInterval = manager.getQuestion().getTextContent().length() * ONE_CHAR_READING_SPEED;
@@ -48,8 +55,7 @@ public class WisieStateEndRecognizingQuestion extends WisieState {
         if (manager.isHobby()) {
             sumInterval /= manager.getHobbyFactor();
         }
-        long interval = (long) (sumInterval * (3 - 2 * manager.getSpeedF1() - manager.getConcentrationF1()));
-        logger.trace(describe() + ", interval: " + interval);
+        interval = (long) (sumInterval * (3 - 2 * manager.getSpeedF1() - manager.getConcentrationF1()));
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

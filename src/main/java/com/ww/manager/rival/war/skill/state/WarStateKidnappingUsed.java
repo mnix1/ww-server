@@ -7,7 +7,6 @@ import com.ww.model.constant.Skill;
 import com.ww.model.container.rival.war.WarTeam;
 
 public class WarStateKidnappingUsed extends WarState {
-
     private Long profileId;
 
     public WarStateKidnappingUsed(WarManager manager, Long profileId) {

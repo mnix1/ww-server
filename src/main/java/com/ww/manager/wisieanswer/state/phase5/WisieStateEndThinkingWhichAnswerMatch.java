@@ -12,20 +12,25 @@ import java.util.concurrent.TimeUnit;
 import static com.ww.helper.RandomHelper.randomDouble;
 
 public class WisieStateEndThinkingWhichAnswerMatch extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStateEndThinkingWhichAnswerMatch.class);
+    private Long interval;
 
     public WisieStateEndThinkingWhichAnswerMatch(WisieAnswerManager manager) {
         super(manager, STATE_TYPE_FLOWABLE);
     }
 
+    @Override
+    public String describe() {
+        return super.describe() + ", interval=" + interval;
+    }
+
+    @Override
     protected Flowable<Long> processFlowable(){
         manager.addAndSendAction(WisieAnswerAction.THINKING_WHICH_ANSWER_MATCH);
         double sumInterval = manager.getAnswerCount() * (4d - manager.getWisdomSum() - manager.getIntuitionF1()) * 100;
         if (manager.isHobby()) {
             sumInterval /= manager.getHobbyFactor();
         }
-        long interval = (long) (sumInterval * (3d - manager.getWisdomSum() - manager.getIntuitionF1()));
-        logger.trace(describe() + ", interval: " + interval);
+        interval = (long) (sumInterval * (3d - manager.getWisdomSum() - manager.getIntuitionF1()));
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

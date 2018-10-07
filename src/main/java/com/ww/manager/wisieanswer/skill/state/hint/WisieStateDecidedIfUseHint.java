@@ -4,26 +4,29 @@ import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import io.reactivex.Flowable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 
 public class WisieStateDecidedIfUseHint extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStateDecidedIfUseHint.class);
-    private WisieAnswerAction wisieAnswerAction;
+    private WisieAnswerAction action;
+    private Long interval;
 
-    public WisieStateDecidedIfUseHint(WisieAnswerManager manager, WisieAnswerAction wisieAnswerAction) {
+    public WisieStateDecidedIfUseHint(WisieAnswerManager manager, WisieAnswerAction action) {
         super(manager, STATE_TYPE_FLOWABLE);
-        this.wisieAnswerAction = wisieAnswerAction;
+        this.action = action;
     }
 
+    @Override
+    public String describe(){
+        return super.describe() + ", interval=" + interval + ", action=" + action;
+    }
+
+    @Override
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(wisieAnswerAction);
-        long interval = (long) (randomDouble(1 - manager.getSpeedF1(), 2 - 2 * manager.getSpeedF1()) * intervalMultiply());
-        logger.trace(describe() + ", interval: " + interval);
+        manager.addAndSendAction(action);
+        interval = (long) (randomDouble(1 - manager.getSpeedF1(), 2 - 2 * manager.getSpeedF1()) * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

@@ -13,19 +13,24 @@ import java.util.concurrent.TimeUnit;
 import static com.ww.helper.RandomHelper.randomDouble;
 
 public class WisieStateWaterPistolUsedOnIt extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStateWaterPistolUsedOnIt.class);
+    private Long interval;
 
     public WisieStateWaterPistolUsedOnIt(WisieAnswerManager manager) {
         super(manager, STATE_TYPE_FLOWABLE);
     }
 
+    @Override
+    public String describe(){
+        return super.describe() + ", interval=" + interval;
+    }
+
+    @Override
     protected Flowable<Long> processFlowable() {
         manager.addAction(WisieAnswerAction.WATER_PISTOL_USED_ON_IT);
         manager.getTeam(manager).getActiveTeamMember().addDisguise(DisguiseType.PENGUIN_RAIN);
         manager.getManager().sendActiveMemberAndActionsModel();
-        long interval = (long) (randomDouble(6 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1() - manager.getConcentrationF1() - manager.getConfidenceF1(),
+        interval = (long) (randomDouble(6 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1() - manager.getConcentrationF1() - manager.getConfidenceF1(),
                 8 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1() - 2 * manager.getConcentrationF1() - 2 * manager.getConfidenceF1()) * intervalMultiply());
-        logger.trace(describe() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

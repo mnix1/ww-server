@@ -13,13 +13,17 @@ import java.util.concurrent.TimeUnit;
 import static com.ww.helper.RandomHelper.randomDouble;
 
 public class WisieStateScareSucceeded extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStateScareSucceeded.class);
-
     private WisieAnswerManager opponent;
+    private Long interval;
 
     public WisieStateScareSucceeded(WisieAnswerManager manager, WisieAnswerManager opponent) {
         super(manager, STATE_TYPE_FLOWABLE);
         this.opponent = opponent;
+    }
+
+    @Override
+    public String describe(){
+        return super.describe() + ", interval=" + interval;
     }
 
     @Override
@@ -28,9 +32,8 @@ public class WisieStateScareSucceeded extends WisieState {
         opponent.addAction(WisieAnswerAction.RUN_AWAY);
         opponent.getTeam(opponent).activeTeamMemberOutDuringAnswering(DisguiseType.CHAIR_RED);
         manager.getManager().sendActiveMemberAndActionsModel();
-        long interval = (long) (randomDouble(2 - 2 * manager.getReflexF1(),
+        interval = (long) (randomDouble(2 - 2 * manager.getReflexF1(),
                 4 - 4 * manager.getReflexF1()) * intervalMultiply());
-        logger.trace(describe() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

@@ -12,8 +12,6 @@ import java.util.concurrent.TimeUnit;
 import static com.ww.helper.RandomHelper.randomDouble;
 
 public class WisieStateTryingToDefend extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStateTryingToDefend.class);
-
     private long interval;
 
     public WisieStateTryingToDefend(WisieAnswerManager manager, long interval) {
@@ -21,9 +19,13 @@ public class WisieStateTryingToDefend extends WisieState {
         this.interval = interval;
     }
 
+    @Override
+    public String describe(){
+        return super.describe() + ", interval=" + interval;
+    }
+
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.TRYING_TO_DEFEND);
-        logger.trace(describe() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

@@ -1,6 +1,6 @@
 package com.ww.manager;
 
-import com.ww.helper.Loggable;
+import com.ww.helper.Describe;
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -14,7 +14,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @Setter
 @Getter
-public abstract class AbstractState implements FlowRunnable, Loggable {
+public abstract class AbstractState implements FlowRunnable, Describe {
     protected static final Logger logger = LoggerFactory.getLogger(AbstractState.class);
     public static String STATE_TYPE_FLOWABLE = "flowable";
     public static String STATE_TYPE_DECISION = "decision";
@@ -45,7 +45,7 @@ public abstract class AbstractState implements FlowRunnable, Loggable {
     }
 
     public String describe() {
-        return "class=" + this.getClass().getName() + "disposablesCount=" + disposables.size() + ", isRunning=" + isRunning() + ", type=" + type + ", onFlowableEndListenersCount=" + onFlowableEndListeners.size();
+        return ", class=" + this.getClass().getName() + ", disposablesCount=" + disposables.size() + ", isRunning=" + isRunning() + ", type=" + type + ", onFlowableEndListenersCount=" + onFlowableEndListeners.size();
     }
 
     protected boolean startIfRunning() {

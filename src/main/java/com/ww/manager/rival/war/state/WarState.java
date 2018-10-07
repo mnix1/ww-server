@@ -8,8 +8,6 @@ import org.slf4j.LoggerFactory;
 
 @Getter
 public abstract class WarState extends AbstractState {
-    protected static final Logger logger = LoggerFactory.getLogger(WarState.class);
-
     protected WarManager manager;
 
     protected WarState(WarManager manager, String type) {

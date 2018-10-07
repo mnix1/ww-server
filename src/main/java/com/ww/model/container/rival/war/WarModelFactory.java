@@ -1,12 +1,10 @@
 package com.ww.model.container.rival.war;
 
 import com.ww.model.constant.rival.RivalStatus;
-import com.ww.model.constant.wisie.DisguiseType;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import com.ww.model.container.rival.RivalModelFactory;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.dto.rival.ActiveTeamMemberDTO;
-import com.ww.model.dto.rival.TeamMemberDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -85,10 +83,10 @@ public class WarModelFactory extends RivalModelFactory {
 
     public void fillModelAnswering(Map<String, Object> model, RivalTeam team) {
         super.fillModelAnswering(model, team);
-        fillModelWisieAnswering(model, team);
+        fillModelWisieActions(model, team);
     }
 
-    public void fillModelWisieAnswering(Map<String, Object> model, RivalTeam team) {
+    public void fillModelWisieActions(Map<String, Object> model, RivalTeam team) {
         WarTeam warTeam = (WarTeam) team;
         if (warTeam.getActiveTeamMember().isWisie()) {
             List<WisieAnswerAction> wisieActions = this.model.getAnsweringWisieActions(warTeam);

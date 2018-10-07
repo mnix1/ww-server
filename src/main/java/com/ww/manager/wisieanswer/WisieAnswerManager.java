@@ -12,10 +12,7 @@ import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.ww.helper.WisieHelper.f1;
@@ -116,7 +113,7 @@ public class WisieAnswerManager {
     public void addAndSendAction(WisieAnswerAction action) {
         addAction(action);
         manager.sendModel((m, wT)-> {
-            manager.getModelFactory().fillModelWisieAnswering(m, wT);
+            manager.getModelFactory().fillModelWisieActions(m, wT);
         });
     }
 

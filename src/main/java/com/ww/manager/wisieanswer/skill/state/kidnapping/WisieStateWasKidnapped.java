@@ -7,8 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class WisieStateWasKidnapped extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStateWasKidnapped.class);
-
     public WisieStateWasKidnapped(WisieAnswerManager manager) {
         super(manager, STATE_TYPE_VOID);
     }
@@ -17,6 +15,5 @@ public class WisieStateWasKidnapped extends WisieState {
     protected void processVoid() {
         //actions in WisieStateKidnappingSucceeded
 //        manager.addAndSendAction(WisieAnswerAction.WAS_KIDNAPPED);
-        logger.trace(describe());
     }
 }

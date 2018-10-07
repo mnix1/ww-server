@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Optional;
 
 public class WarStateLifebuoyUsed extends WarState {
-
     private Long profileId;
     private Map<String, Object> content;
 

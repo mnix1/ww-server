@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class WisieStateContinueAfterKidnapping extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(com.ww.manager.wisieanswer.skill.state.ghost.WisieStateRemovingDisguise.class);
 
     public WisieStateContinueAfterKidnapping(WisieAnswerManager manager) {
         super(manager, STATE_TYPE_VOID);
@@ -23,6 +22,5 @@ public class WisieStateContinueAfterKidnapping extends WisieState {
                 warTeam.getTeamSkills().unblockAll();
             }
         });
-        logger.trace(describe());
     }
 }

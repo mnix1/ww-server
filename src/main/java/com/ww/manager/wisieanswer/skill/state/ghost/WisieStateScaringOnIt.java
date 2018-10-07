@@ -10,8 +10,6 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.TimeUnit;
 
 public class WisieStateScaringOnIt extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStateScaringOnIt.class);
-
     private long interval;
 
     public WisieStateScaringOnIt(WisieAnswerManager manager, long interval) {
@@ -19,9 +17,13 @@ public class WisieStateScaringOnIt extends WisieState {
         this.interval = interval;
     }
 
+    @Override
+    public String describe(){
+        return super.describe() + ", interval=" + interval;
+    }
+
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.SCARING_ON_IT);
-        logger.trace(describe() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

@@ -6,16 +6,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class WisieStateCleaned extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStateCleaned.class);
-
     public WisieStateCleaned(WisieAnswerManager manager) {
-        super(manager, STATE_TYPE_FLOWABLE);
+        super(manager, STATE_TYPE_VOID);
     }
 
     @Override
     protected void processVoid() {
         manager.getTeam(manager).getActiveTeamMember().removeDisguise();
         manager.getManager().sendModel((m, wT) -> manager.getManager().getModelFactory().fillModelActiveMemberAddOn(m, wT));
-        logger.trace(describe());
     }
 }

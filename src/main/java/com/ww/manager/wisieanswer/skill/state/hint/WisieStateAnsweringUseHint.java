@@ -7,8 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class WisieStateAnsweringUseHint extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStateAnsweringUseHint.class);
-
     private boolean hintCorrect;
     private Long hintAnswerId;
 
@@ -18,6 +16,12 @@ public class WisieStateAnsweringUseHint extends WisieState {
         this.hintAnswerId = hintAnswerId;
     }
 
+    @Override
+    public String describe() {
+        return super.describe() + ", hintCorrect=" + hintCorrect;
+    }
+
+    @Override
     protected void processVoid() {
         manager.addAndSendAction(WisieAnswerAction.ANSWERED);
         logger.trace(describe() + ", isHintCorrect: " + hintCorrect);

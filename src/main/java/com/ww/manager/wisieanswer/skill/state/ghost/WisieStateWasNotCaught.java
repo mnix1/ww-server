@@ -13,26 +13,31 @@ import java.util.concurrent.TimeUnit;
 import static com.ww.helper.RandomHelper.randomDouble;
 
 public class WisieStateWasNotCaught extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStateWasNotCaught.class);
+    private Long interval;
 
     public WisieStateWasNotCaught(WisieAnswerManager manager) {
         super(manager, STATE_TYPE_FLOWABLE);
     }
 
+    @Override
+    public String describe(){
+        return super.describe() + ", interval=" + interval;
+    }
+
+    @Override
     protected Flowable<Long> processFlowable() {
         manager.addAction(WisieAnswerAction.WAS_NOT_CAUGHT);
         manager.getTeam(manager).getActiveTeamMember().removeDisguise();
         manager.getManager().sendNewSkillsModel((m, wT) -> {
             WarTeam warTeam = (WarTeam) wT;
             manager.getManager().getModelFactory().fillModelActiveMemberAddOn(m, wT);
-            manager.getManager().getModelFactory().fillModelWisieAnswering(m, wT);
+            manager.getManager().getModelFactory().fillModelWisieActions(m, wT);
             if(manager.getWisie().getProfile().getId().equals(warTeam.getProfileId())){
                 warTeam.getTeamSkills().unblockAll();
             }
         });
-        long interval = (long) (randomDouble(3 - manager.getSpeedF1() - manager.getReflexF1() - manager.getConcentrationF1(),
+        interval = (long) (randomDouble(3 - manager.getSpeedF1() - manager.getReflexF1() - manager.getConcentrationF1(),
                 6 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1() - 2 * manager.getConcentrationF1()) * intervalMultiply());
-        logger.trace(describe() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

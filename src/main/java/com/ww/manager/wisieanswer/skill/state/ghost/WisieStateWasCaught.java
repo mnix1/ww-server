@@ -8,8 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class WisieStateWasCaught extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStateWasCaught.class);
-
     public WisieStateWasCaught(WisieAnswerManager manager) {
         super(manager, STATE_TYPE_VOID);
     }
@@ -19,6 +17,5 @@ public class WisieStateWasCaught extends WisieState {
         manager.addAction(WisieAnswerAction.WAS_CAUGHT);
         manager.getTeam(manager).activeTeamMemberOutDuringAnswering(DisguiseType.JUDGE);
         manager.getManager().sendActiveMemberAndActionsModel();
-        logger.trace(describe());
     }
 }

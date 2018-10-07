@@ -12,17 +12,21 @@ import java.util.concurrent.TimeUnit;
 import static com.ww.helper.RandomHelper.randomDouble;
 
 public class WisieStatePreparingDisguise extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStatePreparingDisguise.class);
+    private Long interval;
 
     public WisieStatePreparingDisguise(WisieAnswerManager manager) {
         super(manager, STATE_TYPE_FLOWABLE);
     }
 
+    @Override
+    public String describe(){
+        return super.describe() + ", interval=" + interval;
+    }
+
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.PREPARING_DISGUISE);
-        long interval = (long) (randomDouble(2 - manager.getSpeedF1() - manager.getReflexF1(),
+        interval = (long) (randomDouble(2 - manager.getSpeedF1() - manager.getReflexF1(),
                 4 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1()) * intervalMultiply());
-        logger.trace(describe() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

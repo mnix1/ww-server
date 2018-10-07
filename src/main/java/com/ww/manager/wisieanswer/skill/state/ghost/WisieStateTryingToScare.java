@@ -6,8 +6,6 @@ import com.ww.model.constant.wisie.DisguiseType;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import io.reactivex.Flowable;
 import lombok.Setter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,8 +13,6 @@ import static com.ww.helper.RandomHelper.randomDouble;
 
 @Setter
 public class WisieStateTryingToScare extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStateTryingToScare.class);
-
     private WisieAnswerManager opponentManager;
     private boolean success;
     private long interval;
@@ -38,6 +34,12 @@ public class WisieStateTryingToScare extends WisieState {
                 - Math.abs(manager.getConfidenceF1() - opponentManager.getConfidenceF1())));
     }
 
+    @Override
+    public String describe() {
+        return super.describe() + ", interval=" + interval + ", success=" + success;
+    }
+
+    @Override
     protected Flowable<Long> processFlowable() {
         manager.getTeam(manager).getTeamSkills().blockAll();
         manager.getTeam(opponentManager).getTeamSkills().blockAll();
@@ -45,10 +47,9 @@ public class WisieStateTryingToScare extends WisieState {
         manager.getTeam(manager).getActiveTeamMember().addDisguise(DisguiseType.GHOST);
         manager.getManager().sendNewSkillsModel((m, wT) -> {
             manager.getManager().getModelFactory().fillModelActiveMemberAddOn(m, wT);
-            manager.getManager().getModelFactory().fillModelWisieAnswering(m, wT);
+            manager.getManager().getModelFactory().fillModelWisieActions(m, wT);
         });
         opponentManager.getFlow().getGhostSkillFlow().ghostUsedOnIt(success, interval);
-        logger.trace(describe() + ", interval=" + interval + ", success=" + success);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

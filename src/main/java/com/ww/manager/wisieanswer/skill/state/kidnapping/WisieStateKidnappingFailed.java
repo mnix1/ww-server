@@ -13,11 +13,17 @@ import java.util.concurrent.TimeUnit;
 import static com.ww.helper.RandomHelper.randomDouble;
 
 public class WisieStateKidnappingFailed extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStateKidnappingFailed.class);
     private WisieAnswerManager opponent;
+    private Long interval;
+
     public WisieStateKidnappingFailed(WisieAnswerManager manager, WisieAnswerManager opponent ) {
         super(manager, STATE_TYPE_FLOWABLE);
         this.opponent = opponent;
+    }
+
+    @Override
+    public String describe(){
+        return super.describe() + ", interval=" + interval;
     }
 
     @Override
@@ -26,14 +32,13 @@ public class WisieStateKidnappingFailed extends WisieState {
         opponent.addAction(WisieAnswerAction.WAS_NOT_KIDNAPPED);
         manager.getManager().sendNewSkillsModel((m, wT) -> {
             WarTeam warTeam = (WarTeam) wT;
-            manager.getManager().getModelFactory().fillModelWisieAnswering(m, wT);
+            manager.getManager().getModelFactory().fillModelWisieActions(m, wT);
             if(warTeam.getProfileId().equals(opponent.getWisie().getProfile().getId())){
                 warTeam.getTeamSkills().unblockAll();
             }
         });
-        long interval = (long) (randomDouble(6 - manager.getSpeedF1() - manager.getReflexF1() - manager.getConfidenceF1(),
+        interval = (long) (randomDouble(6 - manager.getSpeedF1() - manager.getReflexF1() - manager.getConfidenceF1(),
                 9 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1() - 2 * manager.getConfidenceF1()) * intervalMultiply());
-        logger.trace(describe() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

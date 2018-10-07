@@ -81,7 +81,7 @@ public class WarManager extends RivalManager {
     public void sendActiveMemberAndActionsModel() {
         sendModel((m, wT) -> {
             getModelFactory().fillModelActiveMemberAddOn(m, wT);
-            getModelFactory().fillModelWisieAnswering(m, wT);
+            getModelFactory().fillModelWisieActions(m, wT);
         });
     }
 

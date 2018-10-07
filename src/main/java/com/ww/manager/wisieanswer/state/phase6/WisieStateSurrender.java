@@ -9,8 +9,6 @@ import org.slf4j.LoggerFactory;
 import static com.ww.helper.RandomHelper.randomElement;
 
 public class WisieStateSurrender extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStateSurrender.class);
-
     public WisieStateSurrender(WisieAnswerManager manager) {
         super(manager, STATE_TYPE_VOID);
     }

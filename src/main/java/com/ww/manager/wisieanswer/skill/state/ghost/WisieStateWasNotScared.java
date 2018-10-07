@@ -13,19 +13,23 @@ import java.util.concurrent.TimeUnit;
 import static com.ww.helper.RandomHelper.randomDouble;
 
 public class WisieStateWasNotScared extends WisieState {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieStateWasNotScared.class);
+    private Long interval;
 
     public WisieStateWasNotScared(WisieAnswerManager manager) {
         super(manager, STATE_TYPE_FLOWABLE);
     }
 
     @Override
+    public String describe(){
+        return super.describe() + ", interval=" + interval;
+    }
+
+    @Override
     protected Flowable<Long> processFlowable() {
         //actions in WisieStateScareSucceeded
 //        manager.addAction(WisieAnswerAction.WAS_NOT_SCARED);
-        long interval = (long) (randomDouble(3 - manager.getSpeedF1() - manager.getReflexF1() - manager.getConcentrationF1(),
+        interval = (long) (randomDouble(3 - manager.getSpeedF1() - manager.getReflexF1() - manager.getConcentrationF1(),
                 4 - manager.getSpeedF1() - manager.getReflexF1() - 2 * manager.getConcentrationF1()) * intervalMultiply());
-        logger.trace(describe() + ", interval: " + interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }
