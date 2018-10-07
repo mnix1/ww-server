@@ -1,5 +1,6 @@
 package com.ww.manager.rival;
 
+import com.ww.manager.AbstractFlow;
 import com.ww.manager.AbstractState;
 import com.ww.manager.rival.state.StateSurrender;
 import com.ww.model.constant.rival.RivalStatus;
@@ -7,20 +8,15 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.ww.service.rival.global.RivalMessageService.*;
 
 @Getter
-public abstract class RivalFlow {
-    protected static final Logger logger = LoggerFactory.getLogger(RivalFlow.class);
-
+public abstract class RivalFlow extends AbstractFlow  {
     protected abstract RivalManager getManager();
-    protected AbstractState state;
-
-    protected synchronized void dispose() {
-        state.dispose();
-    }
 
     public boolean processMessage(Long profileId, Map<String, Object> content) {
         String id = (String) content.get("id");
@@ -45,6 +41,6 @@ public abstract class RivalFlow {
 
     public synchronized void surrender(Long profileId) {
         dispose();
-        new StateSurrender(getManager(), profileId).startVoid();
+        addState(new StateSurrender(getManager(), profileId)).startVoid();
     }
 }

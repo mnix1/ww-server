@@ -5,13 +5,9 @@ import com.ww.manager.wisieanswer.WisieAnswerFlow;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.skill.state.kidnapping.*;
 import lombok.Getter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Getter
 public class WisieAnswerKidnappingSkillFlow {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieAnswerKidnappingSkillFlow.class);
-
     private WisieAnswerFlow flow;
     private WisieAnswerManager manager;
 
@@ -24,30 +20,29 @@ public class WisieAnswerKidnappingSkillFlow {
     }
 
     private synchronized void phaseKidnapping(WisieAnswerManager opponent) {
-        AbstractState prevState = flow.getState();
-        flow.setState(new WisieStatePreparingKidnapping(manager).addOnFlowableEndListener(aLong1 -> {
-            synchronized (this) {
+        AbstractState prevState = flow.lastFlowableState();
+        flow.addState(new WisieStatePreparingKidnapping(manager)).addOnFlowableEndListener(aLong1 -> {
                 WisieStateTryingToKidnap kidnapTryState = new WisieStateTryingToKidnap(manager, opponent);
+                flow.addState(kidnapTryState);
                 boolean success = kidnapTryState.calculateSuccess();
                 long interval = kidnapTryState.calculateInterval();
                 kidnapTryState.setSuccess(success);
                 kidnapTryState.setInterval(interval);
-                flow.setState(kidnapTryState.addOnFlowableEndListener(aLong2 -> {
+                kidnapTryState.addOnFlowableEndListener(aLong2 -> {
                     if (success) {
-                        flow.setState(new WisieStateKidnappingSucceeded(manager, opponent).addOnFlowableEndListener(aLong3 -> {
+                        flow.addState(new WisieStateKidnappingSucceeded(manager, opponent)).addOnFlowableEndListener(aLong3 -> {
                             manager.getManager().getFlow().kidnapped();
-                        }).startFlowable());
+                        }).startFlowable();
                     } else {
-                        flow.setState(new WisieStateKidnappingFailed(manager, opponent).addOnFlowableEndListener(aLong3 -> {
-                            flow.setState(new WisieStateChangingClothes(manager).addOnFlowableEndListener(aLong4 -> {
-                                new WisieStateContinueAfterKidnapping(manager).startVoid();
+                        flow.addState(new WisieStateKidnappingFailed(manager, opponent)).addOnFlowableEndListener(aLong3 -> {
+                            flow.addState(new WisieStateChangingClothes(manager)).addOnFlowableEndListener(aLong4 -> {
+                                flow.addState(new WisieStateContinueAfterKidnapping(manager)).startVoid();
                                 prevState.startFlowableEndListeners();
-                            }).startFlowable());
-                        }).startFlowable());
+                            }).startFlowable();
+                        }).startFlowable();
                     }
-                }).startFlowable());
-            }
-        }).startFlowable());
+                }).startFlowable();
+        }).startFlowable();
     }
 
     public void kidnapping(WisieAnswerManager opponent) {
@@ -60,16 +55,16 @@ public class WisieAnswerKidnappingSkillFlow {
     }
 
     private synchronized void phaseKidnappingUsedOnIt(boolean success, long interval) {
-        AbstractState prevState = flow.getState();
-        flow.setState(new WisieStateTryingToDefend(manager, interval).addOnFlowableEndListener(aLong1 -> {
+        AbstractState prevState = flow.lastFlowableState();
+        flow.addState(new WisieStateTryingToDefend(manager, interval)).addOnFlowableEndListener(aLong1 -> {
             if (success) {
-                new WisieStateWasKidnapped(manager).startVoid();
+                flow.addState(new WisieStateWasKidnapped(manager)).startVoid();
             } else {
-                flow.setState(new WisieStateWasNotKidnapped(manager).addOnFlowableEndListener(aLong3 -> {
+                flow.addState(new WisieStateWasNotKidnapped(manager)).addOnFlowableEndListener(aLong3 -> {
                     prevState.startFlowableEndListeners();
-                }).startFlowable());
+                }).startFlowable();
             }
-        }).startFlowable());
+        }).startFlowable();
     }
 
     public void kidnappingUsedOnIt(boolean success, long interval) {

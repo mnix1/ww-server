@@ -5,13 +5,9 @@ import com.ww.manager.wisieanswer.WisieAnswerFlow;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.skill.state.ghost.*;
 import lombok.Getter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Getter
 public class WisieAnswerGhostSkillFlow {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieAnswerGhostSkillFlow.class);
-
     private WisieAnswerFlow flow;
     private WisieAnswerManager manager;
 
@@ -24,39 +20,38 @@ public class WisieAnswerGhostSkillFlow {
     }
 
     private synchronized void phaseGhost(WisieAnswerManager opponent) {
-        AbstractState prevState = flow.getState();
-        flow.setState(new WisieStatePreparingDisguise(manager).addOnFlowableEndListener(aLong1 -> {
-            synchronized (this) {
-                WisieStateTryingToScare ghostTryState = new WisieStateTryingToScare(manager, opponent);
-                boolean success = ghostTryState.calculateSuccess();
-                long interval = ghostTryState.calculateInterval();
-                ghostTryState.setSuccess(success);
-                ghostTryState.setInterval(interval);
-                flow.setState(ghostTryState.addOnFlowableEndListener(aLong2 -> {
-                    if (success) {
-                        flow.setState(new WisieStateScareSucceeded(manager, opponent).addOnFlowableEndListener(aLong3 -> {
-                            phaseGhostBan(prevState, true);
-                        }).startFlowable());
-                    } else {
-                        flow.setState(new WisieStateScareFailed(manager, opponent).addOnFlowableEndListener(aLong3 -> {
-                            phaseGhostBan(prevState, false);
-                        }).startFlowable());
-                    }
-                }).startFlowable());
-            }
-        }).startFlowable());
+        AbstractState prevState = flow.lastFlowableState();
+        flow.addState(new WisieStatePreparingDisguise(manager)).addOnFlowableEndListener(aLong1 -> {
+            WisieStateTryingToScare ghostTryState = new WisieStateTryingToScare(manager, opponent);
+            flow.addState(ghostTryState);
+            boolean success = ghostTryState.calculateSuccess();
+            long interval = ghostTryState.calculateInterval();
+            ghostTryState.setSuccess(success);
+            ghostTryState.setInterval(interval);
+            ghostTryState.addOnFlowableEndListener(aLong2 -> {
+                if (success) {
+                    flow.addState(new WisieStateScareSucceeded(manager, opponent)).addOnFlowableEndListener(aLong3 -> {
+                        phaseGhostBan(prevState, true);
+                    }).startFlowable();
+                } else {
+                    flow.addState(new WisieStateScareFailed(manager, opponent)).addOnFlowableEndListener(aLong3 -> {
+                        phaseGhostBan(prevState, false);
+                    }).startFlowable();
+                }
+            }).startFlowable();
+        }).startFlowable();
     }
 
     private synchronized void phaseGhostBan(AbstractState prevState, boolean success) {
-        flow.setState(new WisieStateRemovingDisguise(manager).addOnFlowableEndListener(aLong3 -> {
-            if (new WisieStateCheckWasCaught(manager, success).startBoolean()) {
-                new WisieStateWasCaught(manager).startVoid();
+        flow.addState(new WisieStateRemovingDisguise(manager)).addOnFlowableEndListener(aLong3 -> {
+            if (flow.addState(new WisieStateCheckWasCaught(manager, success)).startBoolean()) {
+                flow.addState(new WisieStateWasCaught(manager)).startVoid();
             } else {
-                flow.setState(new WisieStateWasNotCaught(manager).addOnFlowableEndListener(aLong4 -> {
+                flow.addState(new WisieStateWasNotCaught(manager)).addOnFlowableEndListener(aLong4 -> {
                     prevState.startFlowableEndListeners();
-                }).startFlowable());
+                }).startFlowable();
             }
-        }).startFlowable());
+        }).startFlowable();
     }
 
     public void ghost(WisieAnswerManager opponent) {
@@ -69,16 +64,16 @@ public class WisieAnswerGhostSkillFlow {
     }
 
     private synchronized void phaseGhostUsedOnIt(boolean success, long interval) {
-        AbstractState prevState = flow.getState();
-        flow.setState(new WisieStateScaringOnIt(manager, interval).addOnFlowableEndListener(aLong1 -> {
+        AbstractState prevState = flow.lastFlowableState();
+        flow.addState(new WisieStateScaringOnIt(manager, interval)).addOnFlowableEndListener(aLong1 -> {
             if (success) {
-                new WisieStateRunAway(manager).startVoid();
+                flow.addState(new WisieStateRunAway(manager)).startVoid();
             } else {
-                flow.setState(new WisieStateWasNotScared(manager).addOnFlowableEndListener(aLong3 -> {
+                flow.addState(new WisieStateWasNotScared(manager)).addOnFlowableEndListener(aLong3 -> {
                     prevState.startFlowableEndListeners();
-                }).startFlowable());
+                }).startFlowable();
             }
-        }).startFlowable());
+        }).startFlowable();
     }
 
     public void ghostUsedOnIt(boolean success, long interval) {

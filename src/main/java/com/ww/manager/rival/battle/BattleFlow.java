@@ -1,4 +1,4 @@
-package com.ww.model.container.rival.battle;
+package com.ww.manager.rival.battle;
 
 import com.ww.manager.rival.RivalFlow;
 import com.ww.manager.rival.battle.BattleManager;
@@ -20,15 +20,15 @@ public class BattleFlow extends RivalFlow {
     }
 
     public synchronized void start() {
-        state = new StateIntro(manager).addOnFlowableEndListener(aLong1 -> {
+        addState(new StateIntro(manager)).addOnFlowableEndListener(aLong1 -> {
             phase2();
         }).startFlowable();
     }
 
     public synchronized void phase1() {
-        state = new StatePreparingNextTask(manager).addOnFlowableEndListener(aLong2 -> {
-            state = new BattleStateAnswering(manager).addOnFlowableEndListener(aLong3 -> {
-                state = new BattleStateAnsweringTimeout(manager).addOnFlowableEndListener(aLong4 -> {
+        addState(new StatePreparingNextTask(manager)).addOnFlowableEndListener(aLong2 -> {
+            addState(new BattleStateAnswering(manager)).addOnFlowableEndListener(aLong3 -> {
+                addState(new BattleStateAnsweringTimeout(manager)).addOnFlowableEndListener(aLong4 -> {
                     phase2();
                 }).startFlowable();
             }).startFlowable();
@@ -37,17 +37,15 @@ public class BattleFlow extends RivalFlow {
 
     public synchronized void phase2() {
         if (manager.isEnd()) {
-            new StateClose(manager).startVoid();
+            addState(new StateClose(manager)).startVoid();
         } else {
-            state = new StateChoosingTaskProps(manager).addOnFlowableEndListener(aLong5 -> {
-                synchronized (this) {
-                    boolean randomChooseTaskProps = manager.getModel().randomChooseTaskProps();
-                    if (randomChooseTaskProps) {
-                        phase1();
-                    } else {
-                        new StateChoosingTaskPropsTimeout(manager).startVoid();
-                        phase1();
-                    }
+            addState(new StateChoosingTaskProps(manager)).addOnFlowableEndListener(aLong5 -> {
+                boolean randomChooseTaskProps = manager.getModel().randomChooseTaskProps();
+                if (randomChooseTaskProps) {
+                    phase1();
+                } else {
+                    addState(new StateChoosingTaskPropsTimeout(manager)).startVoid();
+                    phase1();
                 }
             }).startFlowable();
         }
@@ -55,13 +53,13 @@ public class BattleFlow extends RivalFlow {
 
     public synchronized void answer(Long profileId, Map<String, Object> content) {
         dispose();
-        state = new BattleStateAnswered(manager, profileId, content).addOnFlowableEndListener(aLong -> {
+        addState(new BattleStateAnswered(manager, profileId, content)).addOnFlowableEndListener(aLong -> {
             phase2();
         }).startFlowable();
     }
 
     public synchronized void chosenTaskProps(Long profileId, Map<String, Object> content) {
-        if (new StateChosenTaskProps(manager, profileId, content).startBoolean()) {
+        if (addState(new StateChosenTaskProps(manager, profileId, content)).startBoolean()) {
             dispose();
             phase1();
         }

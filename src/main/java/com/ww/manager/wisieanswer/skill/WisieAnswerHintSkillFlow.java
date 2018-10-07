@@ -11,8 +11,6 @@ import org.slf4j.LoggerFactory;
 
 @Getter
 public class WisieAnswerHintSkillFlow {
-    protected static final Logger logger = LoggerFactory.getLogger(WisieAnswerHintSkillFlow.class);
-
     private WisieAnswerFlow flow;
     private WisieAnswerManager manager;
 
@@ -26,24 +24,20 @@ public class WisieAnswerHintSkillFlow {
     }
 
     private synchronized void phaseHint() {
-        flow.setState(new WisieStateHintReceived(manager).addOnFlowableEndListener(aLong10 -> {
-            flow.setState(new WisieStateEndThinkingIfUseHint(manager, hintCorrect).addOnFlowableEndListener(aLong11 -> {
-                synchronized (this) {
-                    WisieAnswerAction aa5 = new WisieStateCheckIfUseHint(manager, hintCorrect).startWisieAnswerAction();
-                    flow.setState(new WisieStateDecidedIfUseHint(manager, aa5).addOnFlowableEndListener(aLong12 -> {
-                        synchronized (this) {
-                            if (aa5 == WisieAnswerAction.WILL_USE_HINT) {
-                                new WisieStateAnsweringUseHint(manager, hintCorrect, hintAnswerId).startVoid();
-                            } else if (aa5 == WisieAnswerAction.WONT_USE_HINT) {
-                                flow.setState(new WisieStateStartThinkingAboutQuestion(manager).addOnFlowableEndListener(aLong3 -> {
-                                    new WisieStateAnsweringNoUseHint(manager, hintAnswerId).startVoid();
-                                }).startFlowable());
-                            }
-                        }
-                    }).startFlowable());
-                }
-            }).startFlowable());
-        }).startFlowable());
+        flow.addState(new WisieStateHintReceived(manager)).addOnFlowableEndListener(aLong10 -> {
+            flow.addState(new WisieStateEndThinkingIfUseHint(manager, hintCorrect)).addOnFlowableEndListener(aLong11 -> {
+                WisieAnswerAction aa5 = flow.addState(new WisieStateCheckIfUseHint(manager, hintCorrect)).startWisieAnswerAction();
+                flow.addState(new WisieStateDecidedIfUseHint(manager, aa5)).addOnFlowableEndListener(aLong12 -> {
+                    if (aa5 == WisieAnswerAction.WILL_USE_HINT) {
+                        flow.addState(new WisieStateAnsweringUseHint(manager, hintCorrect, hintAnswerId)).startVoid();
+                    } else if (aa5 == WisieAnswerAction.WONT_USE_HINT) {
+                        flow.addState(new WisieStateStartThinkingAboutQuestion(manager)).addOnFlowableEndListener(aLong3 -> {
+                            flow.addState(new WisieStateAnsweringNoUseHint(manager, hintAnswerId)).startVoid();
+                        }).startFlowable();
+                    }
+                }).startFlowable();
+            }).startFlowable();
+        }).startFlowable();
     }
 
     public void hint(Long answerId, Boolean isCorrect) {

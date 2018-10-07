@@ -6,6 +6,8 @@ import com.ww.manager.rival.war.state.*;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.manager.rival.war.skill.WarSkillFlow;
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +16,7 @@ import static com.ww.service.rival.global.RivalMessageService.*;
 
 @Getter
 public class WarFlow extends RivalFlow {
+    protected static final Logger logger = LoggerFactory.getLogger(WarFlow.class);
 
     private WarManager manager;
     private WarSkillFlow skillFlow;
@@ -37,20 +40,20 @@ public class WarFlow extends RivalFlow {
         return true;
     }
 
-    protected synchronized void dispose() {
+    public synchronized void dispose() {
         manager.getModel().stopWisieAnswerManager();
         super.dispose();
     }
 
     public synchronized void start() {
-        state = new StateIntro(manager).addOnFlowableEndListener(aLong1 -> {
+        addState(new StateIntro(manager)).addOnFlowableEndListener(aLong1 -> {
             phase2();
         }).startFlowable();
     }
 
     public synchronized void phase1() {
-        state = new StatePreparingNextTask(manager).addOnFlowableEndListener(aLong2 -> {
-            state = new WarStateAnswering(manager).addOnFlowableEndListener(aLong3 -> {
+        addState(new StatePreparingNextTask(manager)).addOnFlowableEndListener(aLong2 -> {
+            addState(new WarStateAnswering(manager)).addOnFlowableEndListener(aLong3 -> {
                 phase4();
             }).startFlowable();
         }).startFlowable();
@@ -58,30 +61,28 @@ public class WarFlow extends RivalFlow {
 
     public synchronized void phase2() {
         if (manager.isEnd()) {
-            new StateClose(manager).startVoid();
+            addState(new StateClose(manager)).startVoid();
         } else {
-            state = new WarStateChoosingTaskProps(manager).addOnFlowableEndListener(aLong5 -> {
-                synchronized (this) {
-                    boolean randomChooseTaskProps = manager.getModel().randomChooseTaskProps();
-                    if (randomChooseTaskProps) {
-                        phase3();
-                    } else {
-                        new StateChoosingTaskPropsTimeout(manager).startVoid();
-                        phase3();
-                    }
+            addState(new WarStateChoosingTaskProps(manager)).addOnFlowableEndListener(aLong5 -> {
+                boolean randomChooseTaskProps = manager.getModel().randomChooseTaskProps();
+                if (randomChooseTaskProps) {
+                    phase3();
+                } else {
+                    addState(new StateChoosingTaskPropsTimeout(manager)).startVoid();
+                    phase3();
                 }
             }).startFlowable();
         }
     }
 
     public synchronized void phase3() {
-        state = new WarStateChoosingWhoAnswer(manager).addOnFlowableEndListener(aLong2 -> {
+        addState(new WarStateChoosingWhoAnswer(manager)).addOnFlowableEndListener(aLong2 -> {
             phase1();
         }).startFlowable();
     }
 
     public synchronized void phase4() {
-        state = new WarStateAnsweringTimeout(manager).addOnFlowableEndListener(aLong4 -> {
+        addState(new WarStateAnsweringTimeout(manager)).addOnFlowableEndListener(aLong4 -> {
             phase2();
         }).startFlowable();
     }
@@ -102,20 +103,20 @@ public class WarFlow extends RivalFlow {
 
     public synchronized void answer(Long profileId, Map<String, Object> content) {
         dispose();
-        state = new WarStateAnswered(manager, profileId, content).addOnFlowableEndListener(aLong -> {
+        addState(new WarStateAnswered(manager, profileId, content)).addOnFlowableEndListener(aLong -> {
             phase2();
         }).startFlowable();
     }
 
     public synchronized void chosenTaskProps(Long profileId, Map<String, Object> content) {
-        if (new StateChosenTaskProps(manager, profileId, content).startBoolean()) {
+        if (addState(new StateChosenTaskProps(manager, profileId, content)).startBoolean()) {
             dispose();
             phase3();
         }
     }
 
     public synchronized void chosenWhoAnswer(Long profileId, Map<String, Object> content) {
-        if (new WarStateChosenWhoAnswer(manager, profileId, content).startBoolean()) {
+        if (addState(new WarStateChosenWhoAnswer(manager, profileId, content)).startBoolean()) {
             dispose();
             phase1();
         }

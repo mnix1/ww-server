@@ -65,16 +65,15 @@ public abstract class AbstractState implements FlowRunnable, Loggable {
         }
     }
 
-    public AbstractState startFlowable() {
+    public void startFlowable() {
         if (!startIfRunning()) {
-            return this;
+            return;
         }
         Flowable<Long> flowable = processFlowable();
         for (Consumer onFlowableEndListener : onFlowableEndListeners) {
             disposables.add(flowable.subscribe(onFlowableEndListener));
         }
         logger.trace("AbstractState startFlowable end " + describe());
-        return this;
     }
 
     protected Flowable<Long> processFlowable() {
