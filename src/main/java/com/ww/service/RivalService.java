@@ -12,19 +12,19 @@ import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
-import com.ww.service.rival.task.TaskService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
 import com.ww.service.social.RewardService;
-import com.ww.service.wisie.ProfileWisieService;
-import com.ww.websocket.message.Message;
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @Getter
 public class RivalService {
+    protected static final Logger logger = LoggerFactory.getLogger(RivalService.class);
 
     @Autowired
     private ProfileConnectionService profileConnectionService;
@@ -44,7 +44,7 @@ public class RivalService {
     @Autowired
     private RivalGlobalService rivalGlobalService;
 
-    public void addRewardFromWin(Profile winner){
+    public void addRewardFromWin(Profile winner) {
     }
 
     public void disposeManager(RivalManager manager) {

@@ -20,7 +20,6 @@ import java.util.function.BiConsumer;
 @NoArgsConstructor
 @Getter
 public class WarManager extends RivalManager {
-
     protected WarModel model;
     protected WarModelFactory modelFactory;
     protected WarInterval interval;

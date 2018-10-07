@@ -1,7 +1,6 @@
 package com.ww.manager;
 
 import com.ww.helper.Describe;
-import com.ww.manager.rival.war.WarFlow;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +28,15 @@ public abstract class AbstractFlow implements Describe {
     @Override
     public String describe() {
         return ", class=" + this.getClass().getName() + ", statesCount=" + states.size() + ", flowableStatesCount=" + flowableStates.size();
+    }
+
+    public String statesDescribe() {
+        StringBuilder describe = new StringBuilder();
+        for (AbstractState state : states) {
+            describe.append("\n  ");
+            describe.append(state.getClass().getName());
+        }
+        return describe.toString();
     }
 
     protected synchronized AbstractState addState(AbstractState state) {

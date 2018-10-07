@@ -34,7 +34,7 @@ public abstract class AbstractState implements FlowRunnable, Describe {
     }
 
     public AbstractState dispose() {
-        logger.trace("AbstractState dispose " + describe());
+        logger.trace("AbstractState dispose" + describe());
         for (Disposable disposable : disposables) {
             if (!disposable.isDisposed()) {
                 disposable.dispose();
@@ -50,7 +50,7 @@ public abstract class AbstractState implements FlowRunnable, Describe {
 
     protected boolean startIfRunning() {
         boolean isRunning = isRunning();
-        logger.trace("AbstractState startIfRunning " + describe());
+        logger.trace("AbstractState startIfRunning" + describe());
         return isRunning;
     }
 
@@ -73,7 +73,7 @@ public abstract class AbstractState implements FlowRunnable, Describe {
         for (Consumer onFlowableEndListener : onFlowableEndListeners) {
             disposables.add(flowable.subscribe(onFlowableEndListener));
         }
-        logger.trace("AbstractState startFlowable end " + describe());
+        logger.trace("AbstractState startFlowable end" + describe());
     }
 
     protected Flowable<Long> processFlowable() {
@@ -85,7 +85,7 @@ public abstract class AbstractState implements FlowRunnable, Describe {
             return;
         }
         processVoid();
-        logger.trace("AbstractState startVoid end " + describe());
+        logger.trace("AbstractState startVoid end" + describe());
     }
 
     protected void processVoid() {
@@ -96,7 +96,7 @@ public abstract class AbstractState implements FlowRunnable, Describe {
             return null;
         }
         Boolean result = processBoolean();
-        logger.trace("AbstractState startBoolean end " + describe() + ", result=" + result);
+        logger.trace("AbstractState startBoolean end" + describe() + ", result=" + result);
         return result;
     }
 

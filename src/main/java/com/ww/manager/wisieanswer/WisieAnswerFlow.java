@@ -43,13 +43,18 @@ public class WisieAnswerFlow extends AbstractFlow {
     }
 
     public void start() {
-        manager.setRunning(true);
-        phase1();
+        if (!manager.isRunning()) {
+            manager.setRunning(true);
+            phase1();
+        }
     }
 
     public void stop() {
-        manager.setRunning(false);
-        dispose();
+        if (manager.isRunning()) {
+            manager.setRunning(false);
+            dispose();
+            logger.trace("WisieAnswerFlow stop, " + manager.toString() + statesDescribe());
+        }
     }
 
     public synchronized WisieState addState(WisieState state) {
