@@ -1,6 +1,7 @@
 package com.ww.model.container.rival.war;
 
 
+import com.ww.model.constant.wisie.WisieValueChange;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskWisdomAttribute;
 import com.ww.model.entity.outside.wisie.AbstractWisieAttributes;
@@ -15,6 +16,7 @@ import static com.ww.helper.WisieHelper.f1;
 public class WarWisie extends AbstractWisieAttributes {
 
     private OwnedWisie wisie;
+    private double originalValue;
 
     private Question question;
 
@@ -25,6 +27,8 @@ public class WarWisie extends AbstractWisieAttributes {
     private double confidenceF1;
     private double intuitionF1;
 
+    private double value;
+
     private boolean isHobby;
     private int hobbyCount;
     private double hobbyFactor;
@@ -32,6 +36,8 @@ public class WarWisie extends AbstractWisieAttributes {
     public WarWisie(OwnedWisie wisie) {
         super(wisie);
         this.wisie = wisie;
+        this.originalValue = wisie.calculateValue();
+        this.value = calculateValue();
     }
 
     public void cacheAttributes() {
@@ -44,6 +50,17 @@ public class WarWisie extends AbstractWisieAttributes {
         this.concentrationF1 = f1(concentration);
         this.confidenceF1 = f1(confidence);
         this.intuitionF1 = f1(intuition);
+        this.value = calculateValue();
+    }
+
+    public WisieValueChange getWisieValueChange() {
+        if (originalValue > value) {
+            return WisieValueChange.DECREASE;
+        }
+        if (originalValue < value) {
+            return WisieValueChange.DECREASE;
+        }
+        return WisieValueChange.NONE;
     }
 
     private double prepareWisdomSum() {
