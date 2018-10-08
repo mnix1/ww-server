@@ -99,6 +99,12 @@ public class WarFlow extends RivalFlow {
         phase4();
     }
 
+    public synchronized void ghostScaredAndCaught() {
+        logger.trace(describe() + manager.toString() + " ghostScaredAndCaught");
+        dispose();
+        phase4();
+    }
+
     public synchronized void answer(Long profileId, Map<String, Object> content) {
         logger.trace(describe() + manager.toString() + " answer, profileId={}", profileId);
         dispose();

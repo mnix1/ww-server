@@ -43,7 +43,11 @@ public class WisieAnswerGhostSkillFlow {
     private synchronized void phaseGhostBan(AbstractState prevState, boolean success) {
         flow.addState(new WisieStateRemovingDisguise(manager)).addOnFlowableEndListener(aLong3 -> {
             if (flow.addState(new WisieStateCheckWasCaught(manager, success)).startBoolean()) {
-                flow.addState(new WisieStateWasCaught(manager)).startVoid();
+                flow.addState(new WisieStateWasCaught(manager)).addOnFlowableEndListener(aLong4 -> {
+                    if(success){
+                        manager.getManager().getFlow().ghostScaredAndCaught();
+                    }
+                }).startFlowable();
             } else {
                 flow.addState(new WisieStateWasNotCaught(manager)).addOnFlowableEndListener(aLong4 -> {
                     prevState.startFlowableEndListeners();
