@@ -94,6 +94,9 @@ public abstract class RivalModel {
     public Long findCurrentCorrectAnswerId() {
         return findCorrectAnswerId(currentTaskIndex);
     }
+    public Question findCurrentQuestion() {
+        return questions.get(currentTaskIndex);
+    }
 
     public abstract String findChoosingTaskPropsTag();
 

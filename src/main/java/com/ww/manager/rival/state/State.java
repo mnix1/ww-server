@@ -19,7 +19,7 @@ public abstract class State extends AbstractState {
 
     @Override
     public String describe() {
-        return "State" + super.describe() + ", manager=" + manager.toString();
+        return "State" + super.describe() + ", warManager=" + manager.toString();
     }
 
     @Override

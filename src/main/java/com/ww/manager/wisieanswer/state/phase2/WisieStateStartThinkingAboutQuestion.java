@@ -26,9 +26,9 @@ public class WisieStateStartThinkingAboutQuestion extends WisieState {
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.THINKING);
         double diffPart = (manager.getDifficulty() - 4) * 0.5;
-        double doubleInterval = randomDouble(2.5 + diffPart - manager.getWisdomSum(), 6.5 + diffPart - 5 * manager.getWisdomSum());
-        if (manager.isHobby()) {
-            doubleInterval /= manager.getHobbyFactor();
+        double doubleInterval = randomDouble(2.5 + diffPart - manager.getWarWisie().getWisdomSum(), 6.5 + diffPart - 5 * manager.getWarWisie().getWisdomSum());
+        if (manager.getWarWisie().isHobby()) {
+            doubleInterval /= manager.getWarWisie().getHobbyFactor();
         }
         interval = (long) (doubleInterval * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);

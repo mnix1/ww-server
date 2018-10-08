@@ -2,8 +2,8 @@ package com.ww.manager.wisieanswer.skill.state.pizza;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
-import com.ww.model.constant.wisie.DisguiseType;
 import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.container.rival.war.WisieTeamMember;
 import io.reactivex.Flowable;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,18 +29,22 @@ public class WisieStateCleaningAfterPizza extends WisieState {
     }
 
     private long interval() {
-        return (long) (randomDouble(6 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1(),
-                10 - 3 * manager.getSpeedF1() - 3 * manager.getReflexF1()) * intervalMultiply());
+        return (long) (randomDouble(6 - 2 * manager.getWarWisie().getSpeedF1() - 2 * manager.getWarWisie().getReflexF1(),
+                10 - 3 * manager.getWarWisie().getSpeedF1() - 3 * manager.getWarWisie().getReflexF1()) * intervalMultiply());
     }
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.getTeam(opponentManager).getTeamSkills().unblockAll();
         manager.addAction(WisieAnswerAction.CLEANING_AFTER_PIZZA);
-        opponentManager.getTeam(opponentManager).getActiveTeamMember().removeDisguise();
-        manager.getManager().sendNewSkillsModel((m, wT) -> {
-            manager.getManager().getModelFactory().fillModelActiveMemberAddOn(m, wT);
-            manager.getManager().getModelFactory().fillModelWisieActions(m, wT);
+        opponentManager.getTeam(opponentManager).getTeamSkills().unblockAll();
+        WisieTeamMember opponentTeamMember = (WisieTeamMember) opponentManager.getTeam(opponentManager).getActiveTeamMember();
+        opponentTeamMember.decreaseAttributesByHalf();
+//        opponentManager.cacheAttributes();
+        opponentTeamMember.removeDisguise();
+        manager.getWarManager().sendNewSkillsModel((m, wT) -> {
+            manager.getWarManager().getModelFactory().fillModelTeam(m, wT);
+            manager.getWarManager().getModelFactory().fillModelActiveMemberAddOn(m, wT);
+            manager.getWarManager().getModelFactory().fillModelWisieActions(m, wT);
         });
         interval = interval();
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);

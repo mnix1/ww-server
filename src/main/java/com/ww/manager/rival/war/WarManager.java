@@ -2,6 +2,7 @@ package com.ww.manager.rival.war;
 
 import com.ww.helper.TeamHelper;
 import com.ww.manager.rival.RivalManager;
+import com.ww.model.container.rival.RivalModel;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.init.RivalTwoPlayerInit;
 import com.ww.model.container.rival.war.*;
@@ -45,7 +46,11 @@ public class WarManager extends RivalManager {
     }
 
     protected List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies) {
-        return TeamHelper.prepareTeamMembers(profile, wisies, model.getImportance(), model.getType());
+        return TeamHelper.prepareTeamMembers(profile, wisies, model);
+    }
+
+    public WarTeam getTeam(Long profileId){
+        return getModel().getTeams().team(profileId);
     }
 
     @Override

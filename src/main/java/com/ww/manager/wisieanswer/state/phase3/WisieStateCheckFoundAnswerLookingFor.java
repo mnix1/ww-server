@@ -24,8 +24,8 @@ public class WisieStateCheckFoundAnswerLookingFor extends WisieState {
     @Override
     protected WisieAnswerAction processWisieAnswerAction() {
         double diffPart = (4 - manager.getDifficulty()) * 0.05;
-        double attrPart = (manager.getWisdomSum() - 0.5) * 4 / 5;
-        double hobbyPart = manager.isHobby() ? 0.1 : 0;
+        double attrPart = (manager.getWarWisie().getWisdomSum() - 0.5) * 4 / 5;
+        double hobbyPart = manager.getWarWisie().isHobby() ? 0.1 : 0;
         chance = 0.5 + diffPart + attrPart + hobbyPart;
          foundAnswerLookingFor = chance > randomDouble();
         if (foundAnswerLookingFor) {

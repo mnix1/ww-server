@@ -16,7 +16,7 @@ public abstract class WisieState extends AbstractState {
 
     @Override
     public String describe() {
-        return "WisieState" + super.describe() + ", manager=" + manager.toString();
+        return "WisieState" + super.describe() + ", warManager=" + manager.toString();
     }
 
     @Override

@@ -26,7 +26,7 @@ public class WisieStateDoesntKnowAnswer extends WisieState {
     @Override
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.DOESNT_KNOW_ANSWER);
-        interval = (long) (randomDouble(2 - manager.getReflexF1() - manager.getConfidenceF1(), 4 - 2 * manager.getReflexF1() - 2 * manager.getConfidenceF1()) * intervalMultiply());
+        interval = (long) (randomDouble(2 - manager.getWarWisie().getReflexF1() - manager.getWarWisie().getConfidenceF1(), 4 - 2 * manager.getWarWisie().getReflexF1() - 2 * manager.getWarWisie().getConfidenceF1()) * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

@@ -23,8 +23,8 @@ public class WisieStateTryingToScare extends WisieState {
     }
 
     public boolean calculateSuccess() {
-        double value = manager.getIntuitionF1() + manager.getConfidenceF1();
-        double opponentValue = opponentManager.getIntuitionF1() + opponentManager.getConfidenceF1();
+        double value = manager.getWarWisie().getIntuitionF1() + manager.getWarWisie().getConfidenceF1();
+        double opponentValue = opponentManager.getWarWisie().getIntuitionF1() + opponentManager.getWarWisie().getConfidenceF1();
         return randomDouble(value, 2 * value) + value > randomDouble(opponentValue, 2 * opponentValue) + opponentValue;
     }
 
@@ -39,13 +39,13 @@ public class WisieStateTryingToScare extends WisieState {
         manager.getTeam(opponentManager).getTeamSkills().blockAll();
         manager.addAction(WisieAnswerAction.TRYING_TO_SCARE);
         manager.getTeam(manager).getActiveTeamMember().addDisguise(DisguiseType.GHOST);
-        manager.getManager().sendNewSkillsModel((m, wT) -> {
-            manager.getManager().getModelFactory().fillModelActiveMemberAddOn(m, wT);
-            manager.getManager().getModelFactory().fillModelWisieActions(m, wT);
+        manager.getWarManager().sendNewSkillsModel((m, wT) -> {
+            manager.getWarManager().getModelFactory().fillModelActiveMemberAddOn(m, wT);
+            manager.getWarManager().getModelFactory().fillModelWisieActions(m, wT);
         });
-        interval = (long) (intervalMultiply() * (3d - Math.abs(manager.getIntuitionF1() - opponentManager.getIntuitionF1())
-                - Math.abs(manager.getSpeedF1() - opponentManager.getSpeedF1())
-                - Math.abs(manager.getConfidenceF1() - opponentManager.getConfidenceF1())));
+        interval = (long) (intervalMultiply() * (3d - Math.abs(manager.getWarWisie().getIntuitionF1() - opponentManager.getWarWisie().getIntuitionF1())
+                - Math.abs(manager.getWarWisie().getSpeedF1() - opponentManager.getWarWisie().getSpeedF1())
+                - Math.abs(manager.getWarWisie().getConfidenceF1() - opponentManager.getWarWisie().getConfidenceF1())));
         opponentManager.getFlow().getGhostSkillFlow().ghostUsedOnIt(success, interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

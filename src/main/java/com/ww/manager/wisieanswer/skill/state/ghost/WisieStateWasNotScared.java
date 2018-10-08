@@ -27,9 +27,9 @@ public class WisieStateWasNotScared extends WisieState {
     @Override
     protected Flowable<Long> processFlowable() {
         //actions in WisieStateScareSucceeded
-//        manager.addAction(WisieAnswerAction.WAS_NOT_SCARED);
-        interval = (long) (randomDouble(3 - manager.getSpeedF1() - manager.getReflexF1() - manager.getConcentrationF1(),
-                4 - manager.getSpeedF1() - manager.getReflexF1() - 2 * manager.getConcentrationF1()) * intervalMultiply());
+//        warManager.addAction(WisieAnswerAction.WAS_NOT_SCARED);
+        interval = (long) (randomDouble(3 - manager.getWarWisie().getSpeedF1() - manager.getWarWisie().getReflexF1() - manager.getWarWisie().getConcentrationF1(),
+                4 - manager.getWarWisie().getSpeedF1() - manager.getWarWisie().getReflexF1() - 2 * manager.getWarWisie().getConcentrationF1()) * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

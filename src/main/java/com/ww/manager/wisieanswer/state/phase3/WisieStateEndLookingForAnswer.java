@@ -26,11 +26,11 @@ public class WisieStateEndLookingForAnswer extends WisieState {
     @Override
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.LOOKING_FOR_ANSWER);
-        double sumInterval = manager.getAnswerCount() * (2d - manager.getSpeedF1()) * intervalMultiply() / 4;
-        if (manager.isHobby()) {
-            sumInterval /= manager.getHobbyFactor();
+        double sumInterval = manager.getAnswerCount() * (2d - manager.getWarWisie().getSpeedF1()) * intervalMultiply() / 4;
+        if (manager.getWarWisie().isHobby()) {
+            sumInterval /= manager.getWarWisie().getHobbyFactor();
         }
-        interval = (long) (sumInterval * (4 - 2 * manager.getSpeedF1() - manager.getConcentrationF1()));
+        interval = (long) (sumInterval * (4 - 2 * manager.getWarWisie().getSpeedF1() - manager.getWarWisie().getConcentrationF1()));
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

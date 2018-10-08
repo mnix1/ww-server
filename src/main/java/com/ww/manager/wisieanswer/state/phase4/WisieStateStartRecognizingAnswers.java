@@ -26,7 +26,7 @@ public class WisieStateStartRecognizingAnswers extends WisieState {
     @Override
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.NOT_SURE_OF_ANSWER);
-        interval = (long) (randomDouble(2 - manager.getReflexF1(), 4 - manager.getReflexF1() - manager.getConcentrationF1()) * intervalMultiply());
+        interval = (long) (randomDouble(2 - manager.getWarWisie().getReflexF1(), 4 - manager.getWarWisie().getReflexF1() - manager.getWarWisie().getConcentrationF1()) * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

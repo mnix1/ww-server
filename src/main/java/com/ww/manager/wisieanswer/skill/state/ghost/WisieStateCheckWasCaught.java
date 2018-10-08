@@ -25,7 +25,7 @@ public class WisieStateCheckWasCaught extends WisieState {
 
     @Override
     protected Boolean processBoolean() {
-        chance = (manager.getConfidenceF1() + manager.getIntuitionF1()) / 2;
+        chance = (manager.getWarWisie().getConfidenceF1() + manager.getWarWisie().getIntuitionF1()) / 2;
         if (scareSuccess) {
             chance += 0.25;
         } else {

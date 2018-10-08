@@ -5,8 +5,6 @@ import com.ww.manager.wisieanswer.state.WisieState;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import com.ww.model.container.rival.war.WarTeam;
 import io.reactivex.Flowable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -28,16 +26,16 @@ public class WisieStateWasNotCaught extends WisieState {
     protected Flowable<Long> processFlowable() {
         manager.addAction(WisieAnswerAction.WAS_NOT_CAUGHT);
         manager.getTeam(manager).getActiveTeamMember().removeDisguise();
-        manager.getManager().sendNewSkillsModel((m, wT) -> {
+        manager.getWarManager().sendNewSkillsModel((m, wT) -> {
             WarTeam warTeam = (WarTeam) wT;
-            manager.getManager().getModelFactory().fillModelActiveMemberAddOn(m, wT);
-            manager.getManager().getModelFactory().fillModelWisieActions(m, wT);
-            if(manager.getWisie().getProfile().getId().equals(warTeam.getProfileId())){
+            manager.getWarManager().getModelFactory().fillModelActiveMemberAddOn(m, wT);
+            manager.getWarManager().getModelFactory().fillModelWisieActions(m, wT);
+            if(manager.getOwnedWisie().getProfile().getId().equals(warTeam.getProfileId())){
                 warTeam.getTeamSkills().unblockAll();
             }
         });
-        interval = (long) (randomDouble(3 - manager.getSpeedF1() - manager.getReflexF1() - manager.getConcentrationF1(),
-                6 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1() - 2 * manager.getConcentrationF1()) * intervalMultiply());
+        interval = (long) (randomDouble(3 - manager.getWarWisie().getSpeedF1() - manager.getWarWisie().getReflexF1() - manager.getWarWisie().getConcentrationF1(),
+                6 - 2 * manager.getWarWisie().getSpeedF1() - 2 * manager.getWarWisie().getReflexF1() - 2 * manager.getWarWisie().getConcentrationF1()) * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

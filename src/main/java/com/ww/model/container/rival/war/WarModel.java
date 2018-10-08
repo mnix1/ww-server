@@ -37,7 +37,7 @@ public class WarModel extends RivalModel {
         for (WarTeam warTeam : teams.getTeams()) {
             TeamMember teamMember = warTeam.getActiveTeamMember();
             if (teamMember.isWisie()) {
-                wisieAnswerManagers.add(new WisieAnswerManager((OwnedWisie) teamMember.getContent(), manager));
+                wisieAnswerManagers.add(new WisieAnswerManager((WisieTeamMember) teamMember, findCurrentQuestion(), manager));
             }
         }
     }
@@ -49,7 +49,7 @@ public class WarModel extends RivalModel {
         }
         OwnedWisie wisie = (OwnedWisie) teamMember.getContent();
         for (WisieAnswerManager answerManager : wisieAnswerManagers) {
-            if (answerManager.getWisie().equals(wisie)) {
+            if (answerManager.getOwnedWisie().equals(wisie)) {
                 List<WisieAnswerAction> actions = answerManager.getActions();
                 return actions.subList(Math.max(0, actions.size() - 2), actions.size());
             }
@@ -71,7 +71,7 @@ public class WarModel extends RivalModel {
 
     public WisieAnswerManager getWisieAnswerManager(Long profileId) {
         for (WisieAnswerManager manager : wisieAnswerManagers) {
-            if (manager.getWisie().getProfile().getId().equals(profileId)) {
+            if (manager.getOwnedWisie().getProfile().getId().equals(profileId)) {
                 return manager;
             }
         }

@@ -26,7 +26,7 @@ public class WisieStateDecidedIfUseHint extends WisieState {
     @Override
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(action);
-        interval = (long) (randomDouble(1 - manager.getSpeedF1(), 2 - 2 * manager.getSpeedF1()) * intervalMultiply());
+        interval = (long) (randomDouble(1 - manager.getWarWisie().getSpeedF1(), 2 - 2 * manager.getWarWisie().getSpeedF1()) * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

@@ -2,8 +2,6 @@ package com.ww.manager.wisieanswer.skill.state.waterpistol;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class WisieStateCleaned extends WisieState {
     public WisieStateCleaned(WisieAnswerManager manager) {
@@ -13,6 +11,6 @@ public class WisieStateCleaned extends WisieState {
     @Override
     protected void processVoid() {
         manager.getTeam(manager).getActiveTeamMember().removeDisguise();
-        manager.getManager().sendModel((m, wT) -> manager.getManager().getModelFactory().fillModelActiveMemberAddOn(m, wT));
+        manager.getWarManager().sendModel((m, wT) -> manager.getWarManager().getModelFactory().fillModelActiveMemberAddOn(m, wT));
     }
 }

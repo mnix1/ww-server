@@ -29,8 +29,8 @@ public class WisieStateProposingPizza extends WisieState {
     }
 
     private long interval() {
-        return (long) (randomDouble(5 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1(),
-                7 - 3 * manager.getSpeedF1() - 3 * manager.getReflexF1()) * intervalMultiply());
+        return (long) (randomDouble(5 - 2 * manager.getWarWisie().getSpeedF1() - 2 * manager.getWarWisie().getReflexF1(),
+                7 - 3 * manager.getWarWisie().getSpeedF1() - 3 * manager.getWarWisie().getReflexF1()) * intervalMultiply());
     }
 
     @Override
@@ -40,9 +40,9 @@ public class WisieStateProposingPizza extends WisieState {
         manager.addAction(WisieAnswerAction.PROPOSING_PIZZA);
         opponentManager.addAction(WisieAnswerAction.THINKING_IF_GET_PIZZA);
         manager.getTeam(manager).getActiveTeamMember().addDisguise(DisguiseType.PIZZA_COOK);
-        manager.getManager().sendNewSkillsModel((m, wT) -> {
-            manager.getManager().getModelFactory().fillModelActiveMemberAddOn(m, wT);
-            manager.getManager().getModelFactory().fillModelWisieActions(m, wT);
+        manager.getWarManager().sendNewSkillsModel((m, wT) -> {
+            manager.getWarManager().getModelFactory().fillModelActiveMemberAddOn(m, wT);
+            manager.getWarManager().getModelFactory().fillModelWisieActions(m, wT);
         });
         interval = interval();
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);

@@ -22,8 +22,8 @@ public class WisieStateCheckNoConcentration extends WisieState {
 
     @Override
     protected WisieAnswerAction processWisieAnswerAction() {
-        double hobbyPart = manager.isHobby() ? 0.1 : 0;
-        chance = manager.getConcentrationF1() + hobbyPart;
+        double hobbyPart = manager.getWarWisie().isHobby() ? 0.1 : 0;
+        chance = manager.getWarWisie().getConcentrationF1() + hobbyPart;
         lostConcentration = chance < randomDouble();
         if (lostConcentration) {
             return randomElement(WisieAnswerAction.getNoConcentrationActions());

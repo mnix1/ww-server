@@ -2,11 +2,11 @@ package com.ww.manager.rival.campaign;
 
 import com.ww.helper.TeamHelper;
 import com.ww.manager.rival.war.WarManager;
-import com.ww.model.container.rival.war.skill.EmptyTeamSkills;
-import com.ww.model.container.rival.campaign.CampaignWarModel;
 import com.ww.model.container.rival.campaign.CampaignWarFlow;
+import com.ww.model.container.rival.campaign.CampaignWarModel;
 import com.ww.model.container.rival.init.RivalCampaignWarInit;
 import com.ww.model.container.rival.war.*;
+import com.ww.model.container.rival.war.skill.EmptyTeamSkills;
 import com.ww.model.container.rival.war.skill.WarTeamSkills;
 import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.outside.social.Profile;
@@ -46,13 +46,13 @@ public class CampaignWarManager extends WarManager {
 
     protected List<TeamMember> prepareTeamMembers(Profile profile, ProfileCampaign profileCampaign) {
         if (isBotProfile(profile)) {
-            return TeamHelper.prepareTeamMembers(new ArrayList<>(profile.getWisies()));
+            return TeamHelper.prepareTeamMembers(new ArrayList<>(profile.getWisies()), model);
         }
         return prepareTeamMembers(profileCampaign, profileCampaign.getWisies());
     }
 
     protected List<TeamMember> prepareTeamMembers(ProfileCampaign profileCampaign, List<ProfileCampaignWisie> wisies) {
-        List<TeamMember> teamMembers = TeamHelper.prepareTeamMembers(profileCampaign.getProfile(), wisies, model.getImportance(), model.getType());
+        List<TeamMember> teamMembers = TeamHelper.prepareTeamMembers(profileCampaign.getProfile(), wisies, model);
         for (TeamMember teamMember : teamMembers) {
             if (teamMember.isWisie()) {
                 for (ProfileCampaignWisie wisie : wisies) {

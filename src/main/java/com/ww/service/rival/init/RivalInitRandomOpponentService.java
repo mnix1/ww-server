@@ -99,7 +99,7 @@ public class RivalInitRandomOpponentService {
             maybeInitRival();
             return;
         }
-        logger.trace("Matched profiles {} and {}, now creating rival manager", profile.getId(), opponent.getId());
+        logger.trace("Matched profiles {} and {}, now creating rival warManager", profile.getId(), opponent.getId());
         waitingForRivalProfiles.remove(profile.getId());
         waitingForRivalProfiles.remove(opponent.getId());
         RivalTwoPlayerInit rival = new RivalTwoPlayerInit(waitingContainer.getType(), waitingContainer.getImportance(), profile, opponent);

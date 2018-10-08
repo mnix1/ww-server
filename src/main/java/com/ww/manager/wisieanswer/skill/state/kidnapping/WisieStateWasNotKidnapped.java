@@ -26,9 +26,9 @@ public class WisieStateWasNotKidnapped extends WisieState {
     @Override
     protected Flowable<Long> processFlowable() {
         //actions in WisieStateKidnappingFailed
-//        manager.addAndSendAction(WisieAnswerAction.WAS_NOT_KIDNAPPED);
-        interval = (long) (randomDouble(1 - manager.getReflexF1(),
-                2 - manager.getReflexF1() - manager.getConcentrationF1()) * intervalMultiply());
+//        warManager.addAndSendAction(WisieAnswerAction.WAS_NOT_KIDNAPPED);
+        interval = (long) (randomDouble(1 - manager.getWarWisie().getReflexF1(),
+                2 - manager.getWarWisie().getReflexF1() - manager.getWarWisie().getConcentrationF1()) * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

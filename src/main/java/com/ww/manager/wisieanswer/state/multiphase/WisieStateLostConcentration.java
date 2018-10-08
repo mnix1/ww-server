@@ -29,7 +29,7 @@ public class WisieStateLostConcentration extends WisieState {
     @Override
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(noConcentrationAction);
-        interval = (long) (randomDouble(2 - manager.getConcentrationF1(), 5 - manager.getConcentrationF1() * 4) * intervalMultiply());
+        interval = (long) (randomDouble(2 - manager.getWarWisie().getConcentrationF1(), 5 - manager.getWarWisie().getConcentrationF1() * 4) * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

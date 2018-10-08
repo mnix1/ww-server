@@ -26,7 +26,7 @@ public class WisieStateNowKnowAnswer extends WisieState {
     @Override
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.NOW_KNOW_ANSWER);
-        interval = (long) ((3 - manager.getReflexF1() - manager.getSpeedF1() - manager.getConcentrationF1()) * intervalMultiply());
+        interval = (long) ((3 - manager.getWarWisie().getReflexF1() - manager.getWarWisie().getSpeedF1() - manager.getWarWisie().getConcentrationF1()) * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

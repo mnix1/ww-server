@@ -24,8 +24,8 @@ public class WisieStateCheckIfGiveRandomAnswer extends WisieState {
     @Override
     protected WisieAnswerAction processWisieAnswerAction() {
         double diffPart = (4 - manager.getDifficulty()) * 0.15;
-        double attrPart = ((2 * manager.getConfidenceF1() + manager.getIntuitionF1()) / 2 - 0.5) * 4 / 5;
-        double hobbyPart = manager.isHobby() ? 0.1 : 0;
+        double attrPart = ((2 * manager.getWarWisie().getConfidenceF1() + manager.getWarWisie().getIntuitionF1()) / 2 - 0.5) * 4 / 5;
+        double hobbyPart = manager.getWarWisie().isHobby() ? 0.1 : 0;
         chance = 0.5 + diffPart + attrPart + hobbyPart;
         willGiveRandomAnswer = chance > randomDouble();
         if (willGiveRandomAnswer) {

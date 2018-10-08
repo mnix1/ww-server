@@ -4,8 +4,6 @@ import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import com.ww.model.entity.outside.rival.task.Answer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
@@ -30,6 +28,6 @@ public class WisieStateAnsweringPhase6 extends WisieState {
         Answer answer = randomElement(new ArrayList<>(manager.getQuestion().getAnswers()));
         correctAnswer = answer.getCorrect();
         answerId = answer.getId();
-        manager.getManager().getFlow().wisieAnswered(manager.getWisie().getProfile().getId(), answerId);
+        manager.getWarManager().getFlow().wisieAnswered(manager.getOwnedWisie().getProfile().getId(), answerId);
     }
 }

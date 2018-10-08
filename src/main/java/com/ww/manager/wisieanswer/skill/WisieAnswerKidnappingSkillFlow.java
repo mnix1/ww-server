@@ -29,7 +29,7 @@ public class WisieAnswerKidnappingSkillFlow {
                 kidnapTryState.addOnFlowableEndListener(aLong2 -> {
                     if (success) {
                         flow.addState(new WisieStateKidnappingSucceeded(manager, opponent)).addOnFlowableEndListener(aLong3 -> {
-                            manager.getManager().getFlow().kidnapped();
+                            manager.getWarManager().getFlow().kidnapped();
                         }).startFlowable();
                     } else {
                         flow.addState(new WisieStateKidnappingFailed(manager, opponent)).addOnFlowableEndListener(aLong3 -> {

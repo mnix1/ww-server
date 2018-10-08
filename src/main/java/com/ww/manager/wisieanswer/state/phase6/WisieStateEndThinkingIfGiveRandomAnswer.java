@@ -26,9 +26,9 @@ public class WisieStateEndThinkingIfGiveRandomAnswer extends WisieState {
     @Override
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.THINKING_IF_GIVE_RANDOM_ANSWER);
-        double sumInterval = randomDouble(1 - manager.getConfidenceF1(), 4 - 2 * manager.getConfidenceF1() - manager.getIntuitionF1());
-        if (manager.isHobby()) {
-            sumInterval /= manager.getHobbyFactor();
+        double sumInterval = randomDouble(1 - manager.getWarWisie().getConfidenceF1(), 4 - 2 * manager.getWarWisie().getConfidenceF1() - manager.getWarWisie().getIntuitionF1());
+        if (manager.getWarWisie().isHobby()) {
+            sumInterval /= manager.getWarWisie().getHobbyFactor();
         }
         interval = (long) (sumInterval * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);

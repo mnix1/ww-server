@@ -24,11 +24,11 @@ public class WisieStateEndThinkingIfUseHint extends WisieState {
 
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.THINKING_IF_USE_HINT);
-        double sumInterval = manager.getAnswerCount() * (4d - manager.getWisdomSum() - manager.getConfidenceF1() - manager.getIntuitionF1()) * intervalMultiply() / 10;
+        double sumInterval = manager.getAnswerCount() * (4d - manager.getWarWisie().getWisdomSum() - manager.getWarWisie().getConfidenceF1() - manager.getWarWisie().getIntuitionF1()) * intervalMultiply() / 10;
         if (hintCorrect) {
             sumInterval /= 2;
         }
-        interval = (long) (sumInterval * (4d - manager.getWisdomSum() - manager.getConfidenceF1() - manager.getIntuitionF1()));
+        interval = (long) (sumInterval * (4d - manager.getWarWisie().getWisdomSum() - manager.getWarWisie().getConfidenceF1() - manager.getWarWisie().getIntuitionF1()));
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

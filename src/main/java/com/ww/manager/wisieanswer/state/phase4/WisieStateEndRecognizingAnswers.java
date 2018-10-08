@@ -26,11 +26,11 @@ public class WisieStateEndRecognizingAnswers extends WisieState {
     @Override
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.RECOGNIZING_ANSWERS);
-        double sumInterval = manager.getAnswerCount() * (3d - manager.getSpeedF1() - manager.getConcentrationF1()) * 500;
-        if (manager.isHobby()) {
-            sumInterval /= manager.getHobbyFactor();
+        double sumInterval = manager.getAnswerCount() * (3d - manager.getWarWisie().getSpeedF1() - manager.getWarWisie().getConcentrationF1()) * 500;
+        if (manager.getWarWisie().isHobby()) {
+            sumInterval /= manager.getWarWisie().getHobbyFactor();
         }
-        interval = (long) (sumInterval * (3 - manager.getSpeedF1() - manager.getConcentrationF1()));
+        interval = (long) (sumInterval * (3 - manager.getWarWisie().getSpeedF1() - manager.getWarWisie().getConcentrationF1()));
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

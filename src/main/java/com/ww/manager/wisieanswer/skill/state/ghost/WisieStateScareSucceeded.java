@@ -5,8 +5,6 @@ import com.ww.manager.wisieanswer.state.WisieState;
 import com.ww.model.constant.wisie.DisguiseType;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import io.reactivex.Flowable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -31,9 +29,9 @@ public class WisieStateScareSucceeded extends WisieState {
         manager.addAction(WisieAnswerAction.SCARE_SUCCEEDED);
         opponent.addAction(WisieAnswerAction.RUN_AWAY);
         opponent.getTeam(opponent).activeTeamMemberOutDuringAnswering(DisguiseType.CHAIR_RED);
-        manager.getManager().sendActiveMemberAndActionsModel();
-        interval = (long) (randomDouble(2 - 2 * manager.getReflexF1(),
-                4 - 4 * manager.getReflexF1()) * intervalMultiply());
+        manager.getWarManager().sendActiveMemberAndActionsModel();
+        interval = (long) (randomDouble(2 - 2 * manager.getWarWisie().getReflexF1(),
+                4 - 4 * manager.getWarWisie().getReflexF1()) * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

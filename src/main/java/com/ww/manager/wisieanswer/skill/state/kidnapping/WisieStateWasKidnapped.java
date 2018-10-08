@@ -14,6 +14,6 @@ public class WisieStateWasKidnapped extends WisieState {
     @Override
     protected void processVoid() {
         //actions in WisieStateKidnappingSucceeded
-//        manager.addAndSendAction(WisieAnswerAction.WAS_KIDNAPPED);
+//        warManager.addAndSendAction(WisieAnswerAction.WAS_KIDNAPPED);
     }
 }

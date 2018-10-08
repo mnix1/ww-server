@@ -27,15 +27,15 @@ public class WisieStateServesPizza extends WisieState {
     }
 
     private long interval() {
-        return (long) (randomDouble(4 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1(),
-                6 - 3 * manager.getSpeedF1() - 3 * manager.getReflexF1()) * intervalMultiply());
+        return (long) (randomDouble(4 - 2 * manager.getWarWisie().getSpeedF1() - 2 * manager.getWarWisie().getReflexF1(),
+                6 - 3 * manager.getWarWisie().getSpeedF1() - 3 * manager.getWarWisie().getReflexF1()) * intervalMultiply());
     }
     @Override
     protected Flowable<Long> processFlowable() {
         manager.addAction(WisieAnswerAction.SERVES_PIZZA);
         opponentManager.addAction(WisieAnswerAction.PREPARING_FOR_EAT_PIZZA);
         opponentManager.getTeam(opponentManager).getActiveTeamMember().addDisguise(DisguiseType.PIZZA_MAN);
-        manager.getManager().sendActiveMemberAndActionsModel();
+        manager.getWarManager().sendActiveMemberAndActionsModel();
         interval = interval();
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

@@ -26,8 +26,8 @@ public class WisieStateCleaning extends WisieState {
     @Override
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.CLEANING);
-        interval = (long) (randomDouble(3 - manager.getSpeedF1(),
-                6 - 3 * manager.getSpeedF1()) * intervalMultiply());
+        interval = (long) (randomDouble(3 - manager.getWarWisie().getSpeedF1(),
+                6 - 3 * manager.getWarWisie().getSpeedF1()) * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

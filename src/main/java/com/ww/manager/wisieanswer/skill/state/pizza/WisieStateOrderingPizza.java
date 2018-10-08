@@ -23,8 +23,8 @@ public class WisieStateOrderingPizza extends WisieState {
 
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.ORDERING_PIZZA);
-        interval = (long) (randomDouble(5 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1(),
-                8 - 3 * manager.getSpeedF1() - 3 * manager.getReflexF1()) * intervalMultiply());
+        interval = (long) (randomDouble(5 - 2 * manager.getWarWisie().getSpeedF1() - 2 * manager.getWarWisie().getReflexF1(),
+                8 - 3 * manager.getWarWisie().getSpeedF1() - 3 * manager.getWarWisie().getReflexF1()) * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

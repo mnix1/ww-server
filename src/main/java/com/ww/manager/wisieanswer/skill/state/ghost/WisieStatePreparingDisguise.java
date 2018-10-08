@@ -25,8 +25,8 @@ public class WisieStatePreparingDisguise extends WisieState {
 
     protected Flowable<Long> processFlowable() {
         manager.addAndSendAction(WisieAnswerAction.PREPARING_DISGUISE);
-        interval = (long) (randomDouble(2 - manager.getSpeedF1() - manager.getReflexF1(),
-                4 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1()) * intervalMultiply());
+        interval = (long) (randomDouble(2 - manager.getWarWisie().getSpeedF1() - manager.getWarWisie().getReflexF1(),
+                4 - 2 * manager.getWarWisie().getSpeedF1() - 2 * manager.getWarWisie().getReflexF1()) * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

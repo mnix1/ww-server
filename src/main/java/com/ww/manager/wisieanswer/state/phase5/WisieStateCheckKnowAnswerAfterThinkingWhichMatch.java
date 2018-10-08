@@ -24,8 +24,8 @@ public class WisieStateCheckKnowAnswerAfterThinkingWhichMatch extends WisieState
     @Override
     protected WisieAnswerAction processWisieAnswerAction() {
         double diffPart = (4 - manager.getDifficulty()) * 0.05;
-        double attrPart = ((manager.getWisdomSum() + manager.getIntuitionF1() + manager.getConfidenceF1()) / 3 - 0.5) * 4 / 5;
-        double hobbyPart = manager.isHobby() ? 0.1 : 0;
+        double attrPart = ((manager.getWarWisie().getWisdomSum() + manager.getWarWisie().getIntuitionF1() + manager.getWarWisie().getConfidenceF1()) / 3 - 0.5) * 4 / 5;
+        double hobbyPart = manager.getWarWisie().isHobby() ? 0.1 : 0;
         chance = 0.5 + diffPart + attrPart + hobbyPart;
         thinkKnowAnswer = chance > randomDouble();
         if (thinkKnowAnswer) {

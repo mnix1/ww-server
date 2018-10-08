@@ -7,13 +7,18 @@ import lombok.Getter;
 
 @Getter
 public class WisieTeamMember extends TeamMember {
-    private OwnedWisie content;
+    private WarWisie content;
     private WarProfileWisieDTO contentDTO;
 
-    public WisieTeamMember(int index, OwnedWisie content, WarProfileWisieDTO contentDTO) {
+    public WisieTeamMember(int index, WarWisie content, WarProfileWisieDTO contentDTO) {
         super(index, HeroType.WISIE);
         this.content = content;
         this.contentDTO = contentDTO;
+    }
+
+    public void decreaseAttributesByHalf() {
+
+        contentDTO = new WarProfileWisieDTO(content);
     }
 
 }

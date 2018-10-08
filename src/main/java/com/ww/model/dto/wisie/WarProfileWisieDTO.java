@@ -3,6 +3,7 @@ package com.ww.model.dto.wisie;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.wisie.DisguiseType;
 import com.ww.model.constant.wisie.WisieType;
+import com.ww.model.container.rival.war.WarWisie;
 import com.ww.model.entity.outside.wisie.OwnedWisie;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
 import lombok.Getter;
@@ -18,11 +19,11 @@ public class WarProfileWisieDTO {
     private Double value;
     private Set<Category> hobbies;
 
-    public WarProfileWisieDTO(OwnedWisie ownedWisie) {
-        this.namePolish = ownedWisie.getWisie().getNamePolish();
-        this.nameEnglish = ownedWisie.getWisie().getNameEnglish();
-        this.type = ownedWisie.getWisie().getType();
-        this.value = ownedWisie.calculateValue();
-        this.hobbies = ownedWisie.getHobbies();
+    public WarProfileWisieDTO(WarWisie warWisie) {
+        this.namePolish = warWisie.getWisie().getWisie().getNamePolish();
+        this.nameEnglish = warWisie.getWisie().getWisie().getNameEnglish();
+        this.type = warWisie.getWisie().getWisie().getType();
+        this.value = warWisie.getWisie().calculateValue();
+        this.hobbies = warWisie.getWisie().getHobbies();
     }
 }

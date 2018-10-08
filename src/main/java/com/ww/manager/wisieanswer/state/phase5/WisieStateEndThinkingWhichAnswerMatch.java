@@ -26,11 +26,11 @@ public class WisieStateEndThinkingWhichAnswerMatch extends WisieState {
     @Override
     protected Flowable<Long> processFlowable(){
         manager.addAndSendAction(WisieAnswerAction.THINKING_WHICH_ANSWER_MATCH);
-        double sumInterval = manager.getAnswerCount() * (4d - manager.getWisdomSum() - manager.getIntuitionF1()) * 100;
-        if (manager.isHobby()) {
-            sumInterval /= manager.getHobbyFactor();
+        double sumInterval = manager.getAnswerCount() * (4d - manager.getWarWisie().getWisdomSum() - manager.getWarWisie().getIntuitionF1()) * 100;
+        if (manager.getWarWisie().isHobby()) {
+            sumInterval /= manager.getWarWisie().getHobbyFactor();
         }
-        interval = (long) (sumInterval * (3d - manager.getWisdomSum() - manager.getIntuitionF1()));
+        interval = (long) (sumInterval * (3d - manager.getWarWisie().getWisdomSum() - manager.getWarWisie().getIntuitionF1()));
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

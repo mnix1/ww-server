@@ -4,8 +4,9 @@ import com.ww.helper.AnswerHelper;
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import com.ww.model.container.rival.war.WarTeam;
+import com.ww.model.container.rival.war.WarWisie;
+import com.ww.model.container.rival.war.WisieTeamMember;
 import com.ww.model.entity.outside.rival.task.Question;
-import com.ww.model.entity.outside.rival.task.TaskWisdomAttribute;
 import com.ww.model.entity.outside.wisie.OwnedWisie;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,8 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import static com.ww.helper.WisieHelper.f1;
 
 @Getter
 @Setter
@@ -27,72 +26,41 @@ public class WisieAnswerManager {
 
     private List<WisieAnswerAction> actions = new CopyOnWriteArrayList<>();
 
-    private OwnedWisie wisie;
-    private WarManager manager;
+    private WisieTeamMember wisieMember;
+
+    private WarManager warManager;
     private Question question;
 
     private int difficulty;
     private int answerCount;
 
-    private double wisdomSum;
-    private double speedF1;
-    private double reflexF1;
-    private double concentrationF1;
-    private double confidenceF1;
-    private double intuitionF1;
-
-    private boolean isHobby;
-    private int hobbyCount;
-    private double hobbyFactor;
-
-    public WisieAnswerManager(OwnedWisie wisie, WarManager manager) {
-        this.wisie = wisie;
-        this.manager = manager;
-        this.question = manager.getModel().getQuestions().get(manager.getModel().getCurrentTaskIndex());
+    public WisieAnswerManager(WisieTeamMember wisieMember, Question question, WarManager warManager) {
+        this.wisieMember = wisieMember;
+        this.warManager = warManager;
+        this.question = question;
+//        this.question = warManager.getModel().getQuestions().get(warManager.getModel().getCurrentTaskIndex());
         this.difficulty = AnswerHelper.difficultyCalibration(question) + 1;
         this.answerCount = question.getAnswers().size();
-        this.isHobby = wisie.getHobbies().contains(question.getType().getCategory());
-        this.hobbyCount = wisie.getHobbies().size();
-        this.hobbyFactor = 1 + 1d / hobbyCount;
-        this.cacheAttributes();
+        this.flow = new WisieAnswerFlow(this);
         logger.trace(toString() +
                 ", difficulty=" + difficulty +
-                ", answerCount=" + answerCount +
-                ", wisdomSum=" + wisdomSum +
-                ", speedF1=" + speedF1 +
-                ", reflexF1=" + reflexF1 +
-                ", concentrationF1=" + concentrationF1 +
-                ", confidenceF1=" + confidenceF1 +
-                ", intuitionF1=" + intuitionF1 +
-                ", isHobby=" + isHobby +
-                ", hobbyCount=" + hobbyCount +
-                ", hobbyFactor=" + hobbyFactor);
-        this.flow = new WisieAnswerFlow(this);
+                ", answerCount=" + answerCount);
     }
 
     @Override
     public String toString() {
-        return "WisieAnswerManager wisieName=" + getWisie().getWisie().getNamePolish()
-                + ", profileWisieId=" + getWisie().getId()
-                + ", profileId=" + getWisie().getProfile().getId()
+        return "WisieAnswerManager wisieName=" + getOwnedWisie().getWisie().getNamePolish()
+                + ", profileWisieId=" + getOwnedWisie().getId()
+                + ", profileId=" + getOwnedWisie().getProfile().getId()
                 + ", lastAction=" + lastAction().name();
     }
 
-    private void cacheAttributes() {
-        this.wisdomSum = prepareWisdomSum();
-        this.speedF1 = f1(wisie.getMentalAttributeSpeed());
-        this.reflexF1 = f1(wisie.getMentalAttributeReflex());
-        this.concentrationF1 = f1(wisie.getMentalAttributeConcentration());
-        this.confidenceF1 = f1(wisie.getMentalAttributeConfidence());
-        this.intuitionF1 = f1(wisie.getMentalAttributeIntuition());
+    public OwnedWisie getOwnedWisie() {
+        return getWarWisie().getWisie();
     }
 
-    private double prepareWisdomSum() {
-        double sum = 0;
-        for (TaskWisdomAttribute attribute : question.getType().getWisdomAttributes()) {
-            sum += f1(wisie.getWisdomAttributeValue(attribute.getWisdomAttribute())) * attribute.getValue();
-        }
-        return sum;
+    public WarWisie getWarWisie() {
+        return wisieMember.getContent();
     }
 
     public WisieAnswerAction lastAction() {
@@ -103,7 +71,7 @@ public class WisieAnswerManager {
     }
 
     public WarTeam getTeam(WisieAnswerManager manager) {
-        return manager.getManager().getModel().getTeams().team(manager.getWisie().getProfile().getId());
+        return warManager.getTeam(manager.getOwnedWisie().getProfile().getId());
     }
 
     public void addAction(WisieAnswerAction action) {
@@ -112,8 +80,8 @@ public class WisieAnswerManager {
 
     public void addAndSendAction(WisieAnswerAction action) {
         addAction(action);
-        manager.sendModel((m, wT)-> {
-            manager.getModelFactory().fillModelWisieActions(m, wT);
+        warManager.sendModel((m, wT) -> {
+            warManager.getModelFactory().fillModelWisieActions(m, wT);
         });
     }
 

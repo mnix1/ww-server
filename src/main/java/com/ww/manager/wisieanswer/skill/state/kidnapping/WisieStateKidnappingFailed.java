@@ -5,8 +5,6 @@ import com.ww.manager.wisieanswer.state.WisieState;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import com.ww.model.container.rival.war.WarTeam;
 import io.reactivex.Flowable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -30,15 +28,15 @@ public class WisieStateKidnappingFailed extends WisieState {
     protected Flowable<Long> processFlowable() {
         manager.addAction(WisieAnswerAction.KIDNAPPING_FAILED);
         opponent.addAction(WisieAnswerAction.WAS_NOT_KIDNAPPED);
-        manager.getManager().sendNewSkillsModel((m, wT) -> {
+        manager.getWarManager().sendNewSkillsModel((m, wT) -> {
             WarTeam warTeam = (WarTeam) wT;
-            manager.getManager().getModelFactory().fillModelWisieActions(m, wT);
-            if(warTeam.getProfileId().equals(opponent.getWisie().getProfile().getId())){
+            manager.getWarManager().getModelFactory().fillModelWisieActions(m, wT);
+            if(warTeam.getProfileId().equals(opponent.getOwnedWisie().getProfile().getId())){
                 warTeam.getTeamSkills().unblockAll();
             }
         });
-        interval = (long) (randomDouble(6 - manager.getSpeedF1() - manager.getReflexF1() - manager.getConfidenceF1(),
-                9 - 2 * manager.getSpeedF1() - 2 * manager.getReflexF1() - 2 * manager.getConfidenceF1()) * intervalMultiply());
+        interval = (long) (randomDouble(6 - manager.getWarWisie().getSpeedF1() - manager.getWarWisie().getReflexF1() - manager.getWarWisie().getConfidenceF1(),
+                9 - 2 * manager.getWarWisie().getSpeedF1() - 2 * manager.getWarWisie().getReflexF1() - 2 * manager.getWarWisie().getConfidenceF1()) * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

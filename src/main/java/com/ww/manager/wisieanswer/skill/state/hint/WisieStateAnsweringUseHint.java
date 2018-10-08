@@ -3,8 +3,6 @@ package com.ww.manager.wisieanswer.skill.state.hint;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
 import com.ww.model.constant.wisie.WisieAnswerAction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class WisieStateAnsweringUseHint extends WisieState {
     private boolean hintCorrect;
@@ -25,6 +23,6 @@ public class WisieStateAnsweringUseHint extends WisieState {
     protected void processVoid() {
         manager.addAndSendAction(WisieAnswerAction.ANSWERED);
         logger.trace(describe() + ", isHintCorrect: " + hintCorrect);
-        manager.getManager().getFlow().wisieAnswered(manager.getWisie().getProfile().getId(), hintAnswerId);
+        manager.getWarManager().getFlow().wisieAnswered(manager.getOwnedWisie().getProfile().getId(), hintAnswerId);
     }
 }

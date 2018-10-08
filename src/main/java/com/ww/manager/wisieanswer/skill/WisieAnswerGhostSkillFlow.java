@@ -45,7 +45,7 @@ public class WisieAnswerGhostSkillFlow {
             if (flow.addState(new WisieStateCheckWasCaught(manager, success)).startBoolean()) {
                 flow.addState(new WisieStateWasCaught(manager)).addOnFlowableEndListener(aLong4 -> {
                     if(success){
-                        manager.getManager().getFlow().ghostScaredAndCaught();
+                        manager.getWarManager().getFlow().ghostScaredAndCaught();
                     }
                 }).startFlowable();
             } else {

@@ -5,8 +5,6 @@ import com.ww.manager.wisieanswer.state.WisieState;
 import com.ww.model.constant.wisie.DisguiseType;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import io.reactivex.Flowable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -30,7 +28,7 @@ public class WisieStateKidnappingSucceeded extends WisieState {
         opponent.addAction(WisieAnswerAction.WAS_KIDNAPPED);
         manager.getTeam(opponent).activeTeamMemberOutDuringAnswering(DisguiseType.CHAIR_SIMPLE);
         manager.getTeam(manager).activeTeamMemberOutDuringAnswering(DisguiseType.CHAIR_SIMPLE);
-        manager.getManager().sendActiveMemberAndActionsModel();
+        manager.getWarManager().sendActiveMemberAndActionsModel();
         interval = intervalMultiply() * 3;
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
