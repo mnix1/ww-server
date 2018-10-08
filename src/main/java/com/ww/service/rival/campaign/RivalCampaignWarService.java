@@ -10,6 +10,8 @@ import com.ww.model.constant.wisie.WisieType;
 import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.container.rival.init.RivalCampaignWarInit;
 import com.ww.model.container.rival.war.TeamMember;
+import com.ww.model.container.rival.war.WarTeam;
+import com.ww.model.container.rival.war.WarWisie;
 import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileCampaignWisie;
@@ -19,10 +21,11 @@ import com.ww.service.wisie.WisieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
-import static com.ww.helper.ModelHelper.putErrorCode;
-import static com.ww.helper.ModelHelper.putSuccessCode;
 import static com.ww.manager.rival.campaign.CampaignWarManager.BOT_PROFILE_ID;
 import static com.ww.model.constant.rival.RivalType.CAMPAIGN_WAR;
 
@@ -48,11 +51,11 @@ public class RivalCampaignWarService extends RivalWarService {
                 profileCampaign.setStatus(ProfileCampaignStatus.FINISHED);
                 profileCampaign.setBookGain(campaignService.getBookGainForCampaign(profileCampaign.getCampaign()));
             }
-            List<TeamMember> teamMembers = campaignWarManager.getModel().getTeams().team(profileId).getTeamMembers();
+            List<TeamMember> teamMembers = ((WarTeam) campaignWarManager.getTeam(profileId)).getTeamMembers();
             for (TeamMember teamMember : teamMembers) {
                 if (teamMember.isWisie()) {
                     for (ProfileCampaignWisie wisie : profileCampaign.getWisies()) {
-                        if (wisie.equals(teamMember.getContent())) {
+                        if (wisie.equals(((WarWisie) teamMember.getContent()).getWisie())) {
                             wisie.setDisabled(!teamMember.isPresent());
                         }
                     }

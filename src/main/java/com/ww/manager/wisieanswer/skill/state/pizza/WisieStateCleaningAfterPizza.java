@@ -39,7 +39,6 @@ public class WisieStateCleaningAfterPizza extends WisieState {
         opponentManager.getTeam(opponentManager).getTeamSkills().unblockAll();
         WisieTeamMember opponentTeamMember = (WisieTeamMember) opponentManager.getTeam(opponentManager).getActiveTeamMember();
         opponentTeamMember.decreaseAttributesByHalf();
-//        opponentManager.cacheAttributes();
         opponentTeamMember.removeDisguise();
         manager.getWarManager().sendNewSkillsModel((m, wT) -> {
             manager.getWarManager().getModelFactory().fillModelTeam(m, wT);

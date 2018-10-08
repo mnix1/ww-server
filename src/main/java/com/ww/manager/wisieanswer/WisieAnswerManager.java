@@ -72,7 +72,7 @@ public class WisieAnswerManager {
     }
 
     public WarTeam getTeam(WisieAnswerManager manager) {
-        return warManager.getTeam(manager.getOwnedWisie().getProfile().getId());
+        return (WarTeam) warManager.getTeam(manager.getOwnedWisie().getProfile().getId());
     }
 
     public void addAction(WisieAnswerAction action) {

@@ -39,17 +39,17 @@ public class WarWisie extends AbstractWisieAttributes {
         this.hobbyCount = wisie.getHobbies().size();
         this.hobbyFactor = 1 + 1d / hobbyCount;
         this.wisdomSum = prepareWisdomSum();
-        this.speedF1 = f1(wisie.getSpeed());
-        this.reflexF1 = f1(wisie.getReflex());
-        this.concentrationF1 = f1(wisie.getConcentration());
-        this.confidenceF1 = f1(wisie.getConfidence());
-        this.intuitionF1 = f1(wisie.getIntuition());
+        this.speedF1 = f1(speed);
+        this.reflexF1 = f1(reflex);
+        this.concentrationF1 = f1(concentration);
+        this.confidenceF1 = f1(confidence);
+        this.intuitionF1 = f1(intuition);
     }
 
     private double prepareWisdomSum() {
         double sum = 0;
         for (TaskWisdomAttribute attribute : question.getType().getWisdomAttributes()) {
-            sum += f1(wisie.getWisdomAttributeValue(attribute.getWisdomAttribute())) * attribute.getValue();
+            sum += f1(getWisdomAttributeValue(attribute.getWisdomAttribute())) * attribute.getValue();
         }
         return sum;
     }

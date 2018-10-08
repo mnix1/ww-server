@@ -20,7 +20,7 @@ public class WarStateHintUsed extends WarState {
 
     @Override
     protected void processVoid() {
-        WarTeam team = manager.getModel().getTeams().team(profileId);
+        WarTeam team = (WarTeam) manager.getTeam(profileId);
         if (!team.getTeamSkills().canUse(Skill.HINT) || !content.containsKey("answerId")
                 || !team.getActiveTeamMember().isWisie() || !team.istActiveTeamMemberPresent()) {
             return;

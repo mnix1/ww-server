@@ -23,7 +23,7 @@ public class WarProfileWisieDTO {
         this.namePolish = warWisie.getWisie().getWisie().getNamePolish();
         this.nameEnglish = warWisie.getWisie().getWisie().getNameEnglish();
         this.type = warWisie.getWisie().getWisie().getType();
-        this.value = warWisie.getWisie().calculateValue();
+        this.value = warWisie.calculateValue();
         this.hobbies = warWisie.getWisie().getHobbies();
     }
 }

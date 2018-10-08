@@ -1,8 +1,9 @@
 package com.ww.model.container.rival.war;
 
 import com.ww.model.constant.wisie.HeroType;
+import com.ww.model.constant.wisie.MentalAttribute;
+import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.dto.wisie.WarProfileWisieDTO;
-import com.ww.model.entity.outside.wisie.OwnedWisie;
 import lombok.Getter;
 
 @Getter
@@ -17,7 +18,13 @@ public class WisieTeamMember extends TeamMember {
     }
 
     public void decreaseAttributesByHalf() {
-
+        for (WisdomAttribute wisdomAttribute : WisdomAttribute.values()) {
+            content.setWisdomAttributeValue(wisdomAttribute, content.getWisdomAttributeValue(wisdomAttribute) / 2);
+        }
+        for (MentalAttribute mentalAttribute : MentalAttribute.values()) {
+            content.setMentalAttributeValue(mentalAttribute, content.getMentalAttributeValue(mentalAttribute) / 2);
+        }
+        content.cacheAttributes();
         contentDTO = new WarProfileWisieDTO(content);
     }
 

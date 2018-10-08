@@ -16,7 +16,7 @@ public class WarStateGhostUsed extends WarState {
 
     @Override
     protected void processVoid() {
-        WarTeam team = manager.getModel().getTeams().team(profileId);
+        WarTeam team = (WarTeam) manager.getTeam(profileId);
         WarTeam opponentTeam = manager.getModel().getTeams().opponentTeam(profileId);
         if (!team.getTeamSkills().canUse(Skill.GHOST)
                 || !opponentTeam.getActiveTeamMember().isWisie() || !opponentTeam.istActiveTeamMemberPresent()

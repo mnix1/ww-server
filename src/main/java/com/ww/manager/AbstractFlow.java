@@ -27,7 +27,7 @@ public abstract class AbstractFlow implements Describe {
 
     @Override
     public String describe() {
-        return ", class=" + this.getClass().getName() + ", statesCount=" + states.size() + ", flowableStatesCount=" + flowableStates.size();
+        return "AbstractFlow class=" + this.getClass().getName() + ", statesCount=" + states.size() + ", flowableStatesCount=" + flowableStates.size();
     }
 
     public String statesDescribe() {

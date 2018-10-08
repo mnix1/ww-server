@@ -21,7 +21,7 @@ public class WarStateLifebuoyUsed extends WarState {
 
     @Override
     protected void processVoid() {
-        WarTeam team = manager.getModel().getTeams().team(profileId);
+        WarTeam team = (WarTeam) manager.getTeam(profileId);
         if (!team.getTeamSkills().canUse(Skill.LIFEBUOY) || !content.containsKey("index")) {
             return;
         }

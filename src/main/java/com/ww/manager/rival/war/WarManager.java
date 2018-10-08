@@ -49,10 +49,6 @@ public class WarManager extends RivalManager {
         return TeamHelper.prepareTeamMembers(profile, wisies, model);
     }
 
-    public WarTeam getTeam(Long profileId){
-        return getModel().getTeams().team(profileId);
-    }
-
     @Override
     public boolean isEnd() {
         for (WarTeam team : this.getModel().getTeams().getTeams()) {

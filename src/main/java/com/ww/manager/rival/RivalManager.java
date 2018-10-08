@@ -10,6 +10,7 @@ import com.ww.model.container.rival.RivalInterval;
 import com.ww.model.container.rival.RivalModel;
 import com.ww.model.container.rival.RivalModelFactory;
 import com.ww.model.container.rival.RivalTeam;
+import com.ww.model.container.rival.war.WarTeam;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
@@ -44,6 +45,10 @@ public abstract class RivalManager {
     public abstract boolean isEnd();
 
     public abstract Message getMessageContent();
+
+    public RivalTeam getTeam(Long profileId) {
+        return getModel().getTeams().team(profileId);
+    }
 
     public void prepareTask(Long id) {
         prepareTask(id, Category.random(), DifficultyLevel.random());

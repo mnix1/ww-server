@@ -30,7 +30,7 @@ public class WarStateAnswered extends WarState {
             manager.getModel().setMarkedAnswerId(markedAnswerId);
             isAnswerCorrect = manager.getModel().findCurrentCorrectAnswerId().equals(markedAnswerId);
         }
-        WarTeam team = manager.getModel().getTeams().team(profileId);
+        WarTeam team = (WarTeam) manager.getTeam(profileId);
         if (manager.getModel().isOpponent()) {
             if (isAnswerCorrect) {
                 team = manager.getModel().getTeams().opponentTeam(team.getProfileId());
