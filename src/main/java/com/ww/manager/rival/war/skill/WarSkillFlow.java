@@ -31,6 +31,8 @@ public class WarSkillFlow {
             kidnapping(profileId);
         } else if (id.equals(GHOST) && status == RivalStatus.ANSWERING) {
             ghost(profileId);
+        } else if (id.equals(PIZZA) && status == RivalStatus.ANSWERING) {
+            pizza(profileId);
         } else {
             return false;
         }
@@ -55,5 +57,9 @@ public class WarSkillFlow {
 
     public synchronized void ghost(Long profileId) {
         new WarStateGhostUsed(manager, profileId).startVoid();
+    }
+
+    public synchronized void pizza(Long profileId) {
+        new WarStatePizzaUsed(manager, profileId).startVoid();
     }
 }

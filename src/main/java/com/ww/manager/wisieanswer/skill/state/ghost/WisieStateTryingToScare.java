@@ -28,12 +28,6 @@ public class WisieStateTryingToScare extends WisieState {
         return randomDouble(value, 2 * value) + value > randomDouble(opponentValue, 2 * opponentValue) + opponentValue;
     }
 
-    public long calculateInterval() {
-        return (long) (intervalMultiply() * (3d - Math.abs(manager.getIntuitionF1() - opponentManager.getIntuitionF1())
-                - Math.abs(manager.getSpeedF1() - opponentManager.getSpeedF1())
-                - Math.abs(manager.getConfidenceF1() - opponentManager.getConfidenceF1())));
-    }
-
     @Override
     public String describe() {
         return super.describe() + ", interval=" + interval + ", success=" + success;
@@ -49,6 +43,9 @@ public class WisieStateTryingToScare extends WisieState {
             manager.getManager().getModelFactory().fillModelActiveMemberAddOn(m, wT);
             manager.getManager().getModelFactory().fillModelWisieActions(m, wT);
         });
+        interval = (long) (intervalMultiply() * (3d - Math.abs(manager.getIntuitionF1() - opponentManager.getIntuitionF1())
+                - Math.abs(manager.getSpeedF1() - opponentManager.getSpeedF1())
+                - Math.abs(manager.getConfidenceF1() - opponentManager.getConfidenceF1())));
         opponentManager.getFlow().getGhostSkillFlow().ghostUsedOnIt(success, interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

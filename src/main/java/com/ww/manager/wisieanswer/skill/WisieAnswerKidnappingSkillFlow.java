@@ -25,9 +25,7 @@ public class WisieAnswerKidnappingSkillFlow {
                 WisieStateTryingToKidnap kidnapTryState = new WisieStateTryingToKidnap(manager, opponent);
                 flow.addState(kidnapTryState);
                 boolean success = kidnapTryState.calculateSuccess();
-                long interval = kidnapTryState.calculateInterval();
                 kidnapTryState.setSuccess(success);
-                kidnapTryState.setInterval(interval);
                 kidnapTryState.addOnFlowableEndListener(aLong2 -> {
                     if (success) {
                         flow.addState(new WisieStateKidnappingSucceeded(manager, opponent)).addOnFlowableEndListener(aLong3 -> {

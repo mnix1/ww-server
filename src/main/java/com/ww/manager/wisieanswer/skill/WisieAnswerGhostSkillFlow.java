@@ -25,9 +25,7 @@ public class WisieAnswerGhostSkillFlow {
             WisieStateTryingToScare ghostTryState = new WisieStateTryingToScare(manager, opponent);
             flow.addState(ghostTryState);
             boolean success = ghostTryState.calculateSuccess();
-            long interval = ghostTryState.calculateInterval();
             ghostTryState.setSuccess(success);
-            ghostTryState.setInterval(interval);
             ghostTryState.addOnFlowableEndListener(aLong2 -> {
                 if (success) {
                     flow.addState(new WisieStateScareSucceeded(manager, opponent)).addOnFlowableEndListener(aLong3 -> {

@@ -8,4 +8,5 @@ public enum Skill {
     TASK_CHANGE,
     KIDNAPPING,
     GHOST,
+    PIZZA,
 }

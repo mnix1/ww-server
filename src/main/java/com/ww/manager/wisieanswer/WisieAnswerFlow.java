@@ -2,10 +2,7 @@ package com.ww.manager.wisieanswer;
 
 import com.ww.manager.AbstractFlow;
 import com.ww.manager.AbstractState;
-import com.ww.manager.wisieanswer.skill.WisieAnswerGhostSkillFlow;
-import com.ww.manager.wisieanswer.skill.WisieAnswerHintSkillFlow;
-import com.ww.manager.wisieanswer.skill.WisieAnswerKidnappingSkillFlow;
-import com.ww.manager.wisieanswer.skill.WisieAnswerWaterPistolSkillFlow;
+import com.ww.manager.wisieanswer.skill.*;
 import com.ww.manager.wisieanswer.state.WisieState;
 import com.ww.manager.wisieanswer.state.multiphase.WisieStateCheckNoConcentration;
 import com.ww.manager.wisieanswer.state.multiphase.WisieStateLostConcentration;
@@ -33,6 +30,7 @@ public class WisieAnswerFlow extends AbstractFlow {
     private WisieAnswerWaterPistolSkillFlow waterPistolSkillFlow;
     private WisieAnswerKidnappingSkillFlow kidnappingSkillFlow;
     private WisieAnswerGhostSkillFlow ghostSkillFlow;
+    private WisieAnswerPizzaSkillFlow pizzaSkillFlow;
 
     public WisieAnswerFlow(WisieAnswerManager manager) {
         this.manager = manager;
@@ -40,6 +38,7 @@ public class WisieAnswerFlow extends AbstractFlow {
         this.kidnappingSkillFlow = new WisieAnswerKidnappingSkillFlow(this);
         this.waterPistolSkillFlow = new WisieAnswerWaterPistolSkillFlow(this);
         this.ghostSkillFlow = new WisieAnswerGhostSkillFlow(this);
+        this.pizzaSkillFlow = new WisieAnswerPizzaSkillFlow(this);
     }
 
     public void start() {

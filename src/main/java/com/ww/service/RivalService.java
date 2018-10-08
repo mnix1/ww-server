@@ -16,16 +16,12 @@ import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
 import com.ww.service.social.RewardService;
 import lombok.Getter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @Getter
 public class RivalService {
-    protected static final Logger logger = LoggerFactory.getLogger(RivalService.class);
-
     @Autowired
     private ProfileConnectionService profileConnectionService;
 

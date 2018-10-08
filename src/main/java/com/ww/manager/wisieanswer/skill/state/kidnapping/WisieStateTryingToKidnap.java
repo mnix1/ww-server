@@ -31,12 +31,6 @@ public class WisieStateTryingToKidnap extends WisieState {
                 || randomDouble(value, 2 * value) + value > randomDouble(opponentValue, 2 * opponentValue) + opponentValue;
     }
 
-    public long calculateInterval() {
-        return (long) (intervalMultiply() * (3d - Math.abs(manager.getWisdomSum() - opponentManager.getWisdomSum())
-                - Math.abs(manager.getSpeedF1() - opponentManager.getSpeedF1())
-                - Math.abs(manager.getConfidenceF1() - opponentManager.getConfidenceF1())));
-    }
-
     @Override
     public String describe() {
         return super.describe() + ", interval=" + interval + ", success=" + success;
@@ -52,6 +46,9 @@ public class WisieStateTryingToKidnap extends WisieState {
             manager.getManager().getModelFactory().fillModelActiveMemberAddOn(m, wT);
             manager.getManager().getModelFactory().fillModelWisieActions(m, wT);
         });
+        interval = (long) (intervalMultiply() * (3d - Math.abs(manager.getWisdomSum() - opponentManager.getWisdomSum())
+                - Math.abs(manager.getSpeedF1() - opponentManager.getSpeedF1())
+                - Math.abs(manager.getConfidenceF1() - opponentManager.getConfidenceF1())));
         opponentManager.getFlow().getKidnappingSkillFlow().kidnappingUsedOnIt(success, interval);
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
