@@ -17,6 +17,11 @@ public class WisieTeamMember extends TeamMember {
         this.contentDTO = contentDTO;
     }
 
+    private void refreshCache() {
+        content.cacheAttributes();
+        contentDTO = new WarProfileWisieDTO(content);
+    }
+
     public void decreaseAttributesByHalf() {
         for (WisdomAttribute wisdomAttribute : WisdomAttribute.values()) {
             content.setWisdomAttributeValue(wisdomAttribute, content.getWisdomAttributeValue(wisdomAttribute) / 2);
@@ -24,8 +29,25 @@ public class WisieTeamMember extends TeamMember {
         for (MentalAttribute mentalAttribute : MentalAttribute.values()) {
             content.setMentalAttributeValue(mentalAttribute, content.getMentalAttributeValue(mentalAttribute) / 2);
         }
-        content.cacheAttributes();
-        contentDTO = new WarProfileWisieDTO(content);
+        refreshCache();
+    }
+
+    public void increaseWisdomAttributes(WarWisie source, double factor) {
+        for (WisdomAttribute wisdomAttribute : WisdomAttribute.values()) {
+            double actualValue = content.getWisdomAttributeValue(wisdomAttribute);
+            double changeValue = source.getWisie().getWisdomAttributeValue(wisdomAttribute) * factor;
+            content.setWisdomAttributeValue(wisdomAttribute, actualValue + changeValue);
+        }
+//        refreshCache();
+    }
+
+    public void increaseMentalAttributes(WarWisie source, double factor) {
+        for (MentalAttribute mentalAttribute : MentalAttribute.values()) {
+            double actualValue = content.getMentalAttributeValue(mentalAttribute);
+            double changeValue = source.getWisie().getMentalAttributeValue(mentalAttribute) * factor;
+            content.setMentalAttributeValue(mentalAttribute, actualValue + changeValue);
+        }
+//        refreshCache();
     }
 
 }

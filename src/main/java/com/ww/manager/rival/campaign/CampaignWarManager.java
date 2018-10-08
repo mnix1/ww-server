@@ -36,7 +36,8 @@ public class CampaignWarManager extends WarManager {
         this.flow = new CampaignWarFlow(this);
 
         Profile creator = init.getCreatorProfile();
-        WarTeam creatorTeam = new WarTeam(creator, prepareTeamMembers(creator, profileCampaign), new WarTeamSkills(1, profileCampaign.getWisies()));
+        List<TeamMember> teamMembers =  prepareTeamMembers(creator, profileCampaign);
+        WarTeam creatorTeam = new WarTeam(creator,teamMembers, new WarTeamSkills(1, teamMembers));
         teams.addProfile(creator.getId(), creatorTeam);
 
         Profile opponent = init.getOpponentProfile();

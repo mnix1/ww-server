@@ -1,6 +1,7 @@
 package com.ww.model.container.rival;
 
 import com.ww.model.constant.Skill;
+import com.ww.model.container.rival.war.WarTeam;
 import com.ww.model.container.rival.war.skill.available.AvailableSkill;
 import com.ww.model.container.rival.war.skill.available.active.ActiveAvailableSkill;
 

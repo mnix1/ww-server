@@ -3,6 +3,9 @@ package com.ww.model.container.rival.war.skill;
 import com.ww.model.constant.Skill;
 import com.ww.model.constant.SkillType;
 import com.ww.model.container.rival.RivalTeamSkills;
+import com.ww.model.container.rival.war.TeamMember;
+import com.ww.model.container.rival.war.WarWisie;
+import com.ww.model.container.rival.war.WisieTeamMember;
 import com.ww.model.container.rival.war.skill.available.AvailableSkill;
 import com.ww.model.container.rival.war.skill.available.SkillBuilder;
 import com.ww.model.container.rival.war.skill.available.active.ActiveAvailableSkill;
@@ -21,17 +24,23 @@ public class WarTeamSkills implements RivalTeamSkills {
     private Map<Skill, ActiveAvailableSkill> activeSkills = new ConcurrentHashMap<>();
     private Map<Skill, PassiveAvailableSkill> passiveSkills = new ConcurrentHashMap<>();
 
-    public WarTeamSkills(int base, List<? extends OwnedWisie> wisies) {
-        this.activeSkills.put(Skill.HINT, (ActiveAvailableSkill) SkillBuilder.build(Skill.HINT, base));
-        this.activeSkills.put(Skill.WATER_PISTOL, (ActiveAvailableSkill) SkillBuilder.build(Skill.WATER_PISTOL, base));
-        this.activeSkills.put(Skill.LIFEBUOY, (ActiveAvailableSkill) SkillBuilder.build(Skill.LIFEBUOY, base));
-        initFromWisies(wisies);
+    public WarTeamSkills(int count, List<? extends TeamMember> teamMembers) {
+        this.activeSkills.put(Skill.HINT, (ActiveAvailableSkill) SkillBuilder.build(Skill.HINT, count));
+        this.activeSkills.put(Skill.WATER_PISTOL, (ActiveAvailableSkill) SkillBuilder.build(Skill.WATER_PISTOL, count));
+        this.activeSkills.put(Skill.LIFEBUOY, (ActiveAvailableSkill) SkillBuilder.build(Skill.LIFEBUOY, count));
+        initFromWisies(teamMembers);
         skills.putAll(activeSkills);
         skills.putAll(passiveSkills);
     }
 
-    private void initFromWisies(List<? extends OwnedWisie> wisies) {
-        for (OwnedWisie wisie : wisies) {
+    private void initFromWisies(List<? extends TeamMember> teamMembers) {
+        for (TeamMember teamMember : teamMembers) {
+            if (!teamMember.isWisie()) {
+                continue;
+            }
+            WisieTeamMember wisieTeamMember = (WisieTeamMember) teamMember;
+            WarWisie warWisie = wisieTeamMember.getContent();
+            OwnedWisie wisie = warWisie.getWisie();
             for (Skill skill : wisie.getSkills()) {
                 if (activeSkills.containsKey(skill)) {
                     activeSkills.get(skill).increaseCount();
@@ -42,7 +51,9 @@ public class WarTeamSkills implements RivalTeamSkills {
                     if (availableSkill.getType() == SkillType.ACTIVE) {
                         activeSkills.put(skill, (ActiveAvailableSkill) availableSkill);
                     } else if (availableSkill.getType() == SkillType.PASSIVE) {
-                        passiveSkills.put(skill, (PassiveAvailableSkill) availableSkill);
+                        PassiveAvailableSkill passiveAvailableSkill = (PassiveAvailableSkill) availableSkill;
+                        passiveAvailableSkill.addSourceWarWisie(warWisie);
+                        passiveSkills.put(skill, passiveAvailableSkill);
                     }
                 }
             }

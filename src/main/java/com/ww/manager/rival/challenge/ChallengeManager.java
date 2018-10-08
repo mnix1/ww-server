@@ -38,7 +38,8 @@ public class ChallengeManager extends WarManager {
 
         Profile creator = init.getCreatorProfile();
         List<ProfileWisie> creatorWisies = rivalService.getProfileWisies(creator);
-        WarTeam creatorTeam = new WarTeam(creator, prepareTeamMembers(creator, creatorWisies), new WarTeamSkills(1, creatorWisies));
+        List<TeamMember> teamMembers = prepareTeamMembers(creator, creatorWisies);
+        WarTeam creatorTeam = new WarTeam(creator, teamMembers, new WarTeamSkills(1, teamMembers));
         teams.addProfile(creator.getId(), creatorTeam);
     }
 

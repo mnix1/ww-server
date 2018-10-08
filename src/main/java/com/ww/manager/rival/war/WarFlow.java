@@ -5,6 +5,8 @@ import com.ww.manager.rival.state.*;
 import com.ww.manager.rival.war.state.*;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.manager.rival.war.skill.WarSkillFlow;
+import com.ww.model.container.rival.war.WarTeam;
+import com.ww.model.container.rival.war.skill.PassiveSkillsInit;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +46,9 @@ public class WarFlow extends RivalFlow {
     }
 
     public synchronized void start() {
+        for(WarTeam warTeam : manager.getModel().getTeams().getTeams()){
+            new PassiveSkillsInit(warTeam).init();
+        }
         addState(new StateIntro(manager)).addOnFlowableEndListener(aLong1 -> {
             phase2();
         }).startFlowable();
