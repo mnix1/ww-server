@@ -19,6 +19,7 @@ public class WisieTeamMember extends TeamMember {
 
     private void refreshCache() {
         content.cacheAttributes();
+        content.cacheHobbies();
         contentDTO = new WarProfileWisieDTO(content);
     }
 
@@ -38,7 +39,8 @@ public class WisieTeamMember extends TeamMember {
             double changeValue = source.getWisie().getWisdomAttributeValue(wisdomAttribute) * factor;
             content.setWisdomAttributeValue(wisdomAttribute, actualValue + changeValue);
         }
-//        refreshCache();
+        content.setValue(content.calculateValue());
+        contentDTO = new WarProfileWisieDTO(content);
     }
 
     public void increaseMentalAttributes(WarWisie source, double factor) {
@@ -47,7 +49,8 @@ public class WisieTeamMember extends TeamMember {
             double changeValue = source.getWisie().getMentalAttributeValue(mentalAttribute) * factor;
             content.setMentalAttributeValue(mentalAttribute, actualValue + changeValue);
         }
-//        refreshCache();
+        content.setValue(content.calculateValue());
+        contentDTO = new WarProfileWisieDTO(content);
     }
 
 }

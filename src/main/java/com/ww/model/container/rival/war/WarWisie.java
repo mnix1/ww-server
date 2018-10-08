@@ -40,10 +40,13 @@ public class WarWisie extends AbstractWisieAttributes {
         this.value = calculateValue();
     }
 
-    public void cacheAttributes() {
+    public void cacheHobbies(){
         this.isHobby = wisie.getHobbies().contains(question.getType().getCategory());
         this.hobbyCount = wisie.getHobbies().size();
         this.hobbyFactor = 1 + 1d / hobbyCount;
+    }
+
+    public void cacheAttributes() {
         this.wisdomSum = prepareWisdomSum();
         this.speedF1 = f1(speed);
         this.reflexF1 = f1(reflex);
@@ -58,7 +61,7 @@ public class WarWisie extends AbstractWisieAttributes {
             return WisieValueChange.DECREASE;
         }
         if (originalValue < value) {
-            return WisieValueChange.DECREASE;
+            return WisieValueChange.INCREASE;
         }
         return WisieValueChange.NONE;
     }

@@ -46,6 +46,7 @@ public class WisieAnswerManager {
                 ", answerCount=" + answerCount);
         getWarWisie().setQuestion(question);
         getWarWisie().cacheAttributes();
+        getWarWisie().cacheHobbies();
     }
 
     @Override
