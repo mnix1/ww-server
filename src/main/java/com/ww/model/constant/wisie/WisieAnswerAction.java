@@ -59,6 +59,7 @@ public enum WisieAnswerAction {
     PREPARING_FOR_EAT_PIZZA,
     WAITING_FOR_OPPONENT_EAT_PIZZA,
     EATING_PIZZA,
+    EATEN_PIZZA,
     CLEANING_AFTER_PIZZA,
     //GHOST
         //ghost

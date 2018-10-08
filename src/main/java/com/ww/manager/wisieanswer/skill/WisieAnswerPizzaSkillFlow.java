@@ -31,7 +31,9 @@ public class WisieAnswerPizzaSkillFlow {
                             flow.addState(new WisieStateCleanedAfterPizza(manager)).startVoid();
                             prevState.startFlowableEndListeners();
                         }).startFlowable();
-                        opponentPrevState.startFlowableEndListeners();
+                        opponent.getFlow().addState(new WisieStateEatenPizza(opponent)).addOnFlowableEndListener(aLong5 -> {
+                            opponentPrevState.startFlowableEndListeners();
+                        }).startFlowable();
                     }).startFlowable();
                 }).startFlowable();
             }).startFlowable();

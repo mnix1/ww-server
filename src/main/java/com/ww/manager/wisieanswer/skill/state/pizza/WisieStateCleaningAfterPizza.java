@@ -36,6 +36,7 @@ public class WisieStateCleaningAfterPizza extends WisieState {
     @Override
     protected Flowable<Long> processFlowable() {
         manager.addAction(WisieAnswerAction.CLEANING_AFTER_PIZZA);
+        opponentManager.addAction(WisieAnswerAction.EATEN_PIZZA);
         opponentManager.getTeam(opponentManager).getTeamSkills().unblockAll();
         WisieTeamMember opponentTeamMember = (WisieTeamMember) opponentManager.getTeam(opponentManager).getActiveTeamMember();
         opponentTeamMember.decreaseAttributesByHalf();
