@@ -1,6 +1,7 @@
 package com.ww.model.dto.wisie;
 
 import com.ww.model.constant.Category;
+import com.ww.model.constant.Skill;
 import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.constant.wisie.WisieType;
@@ -21,6 +22,7 @@ public class ProfileWisieDTO extends AbstractWisieAttributes {
     private Boolean inTeam;
 
     private Set<Category> hobbies;
+    private Set<Skill> skills;
 
     private Double value;
 
@@ -29,6 +31,7 @@ public class ProfileWisieDTO extends AbstractWisieAttributes {
         this.type = profileWisie.getWisie().getType();
         this.inTeam = profileWisie.getInTeam();
         this.hobbies = profileWisie.getHobbies();
+        this.skills = profileWisie.getSkills();
         for (WisdomAttribute wisdomAttribute : WisdomAttribute.values()) {
             setWisdomAttributeValue(wisdomAttribute, smartRound(profileWisie.getWisdomAttributeValue(wisdomAttribute)));
         }

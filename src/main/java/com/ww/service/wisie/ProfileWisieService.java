@@ -1,6 +1,7 @@
 package com.ww.service.wisie;
 
 import com.ww.model.constant.Category;
+import com.ww.model.constant.Skill;
 import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.container.Resources;
@@ -153,6 +154,7 @@ public class ProfileWisieService {
     public ProfileWisie addWisie(Profile profile, Wisie wisie) {
         ProfileWisie profileWisie = createWisie(profile, wisie);
         initWisieHobbies(profileWisie);
+        initWisieSkills(profileWisie);
         save(profileWisie);
         return profileWisie;
     }
@@ -178,5 +180,12 @@ public class ProfileWisieService {
 
     public void initWisieHobbies(ProfileWisie wisie, List<Category> hobbies) {
         wisie.setHobbies(new HashSet<>(hobbies));
+    }
+
+    public void initWisieSkills(ProfileWisie wisie) {
+        initWisieSkills(wisie, Arrays.asList(Skill.random()));
+    }
+    public void initWisieSkills(ProfileWisie wisie, List<Skill> skills) {
+        wisie.setSkills(new HashSet<>(skills));
     }
 }

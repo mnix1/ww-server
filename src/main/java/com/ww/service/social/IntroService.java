@@ -1,6 +1,7 @@
 package com.ww.service.social;
 
 import com.ww.model.constant.Category;
+import com.ww.model.constant.Skill;
 import com.ww.model.constant.wisie.WisieType;
 import com.ww.model.dto.social.ProfileResourcesDTO;
 import com.ww.model.entity.outside.social.Profile;
@@ -92,11 +93,13 @@ public class IntroService {
         wisies.sort(Comparator.comparingInt(o -> wisieTypes.indexOf(o.getType())));
         List<Category> categories = Category.list();
         Collections.shuffle(categories);
-        categories = categories.subList(0, PICK_WISIES_COUNT);
+        List<Skill> skills = Skill.list();
+        Collections.shuffle(skills);
         List<ProfileWisie> profileWisies = new ArrayList<>(PICK_WISIES_COUNT);
         for (int i = 0; i < PICK_WISIES_COUNT; i++) {
             ProfileWisie profileWisie = profileWisieService.createWisie(profile, wisies.get(i));
             profileWisieService.initWisieHobbies(profileWisie, Arrays.asList(categories.get(i)));
+            profileWisieService.initWisieSkills(profileWisie, Arrays.asList(skills.get(i)));
             profileWisieEvolutionService.upgradeAttribute(profileWisie, ((PICK_WISIES_COUNT - 1) - i) * 50);
             profileWisies.add(profileWisie);
         }

@@ -20,15 +20,22 @@ public class WarTeamSkills implements RivalTeamSkills {
         this.skills.put(Skill.HINT, new AvailableSkill(base));
         this.skills.put(Skill.WATER_PISTOL, new AvailableSkill(base));
         this.skills.put(Skill.LIFEBUOY, new LifebuoyAvailableSkill(base));
-//        this.skills.put(Skill.BLOCK, base);
-//        this.skills.put(Skill.TASK_CHANGE, base);
-        this.skills.put(Skill.KIDNAPPING, new AvailableSkill(base));
-        this.skills.put(Skill.GHOST, new AvailableSkill(base));
-        this.skills.put(Skill.PIZZA, new AvailableSkill(base));
         init(wisies);
     }
 
     private void init(List<? extends OwnedWisie> wisies) {
+        for (OwnedWisie wisie : wisies) {
+            for (Skill skill : wisie.getSkills()) {
+                AvailableSkill availableSkill;
+                if (skills.containsKey(skill)) {
+                    availableSkill = new AvailableSkill(1 + skills.get(skill).getCount());
+                    skills.remove(skill);
+                } else {
+                    availableSkill = new AvailableSkill(1);
+                }
+                skills.put(skill, availableSkill);
+            }
+        }
     }
 
     @Override

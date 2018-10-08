@@ -98,6 +98,7 @@ public class RivalCampaignWarService extends RivalWarService {
             profileWisie.setId(profileWisieId--);
             getProfileWisieService().initWisieAttributes(profileWisie);
             getProfileWisieService().initWisieHobbies(profileWisie);
+            getProfileWisieService().initWisieSkills(profileWisie);
             int promo = 10 * profileCampaign.getPhase() * profileCampaign.getCampaign().getDifficultyLevel().getRating();
             for (MentalAttribute attribute : MentalAttribute.values()) {
                 profileWisie.setMentalAttributeValue(attribute, Math.pow(profileWisie.getMentalAttributeValue(attribute), 1.1) + promo);
