@@ -100,7 +100,6 @@ public class IntroService {
             ProfileWisie profileWisie = profileWisieService.createWisie(profile, wisies.get(i));
             profileWisieService.initWisieHobbies(profileWisie, Arrays.asList(categories.get(i)));
             profileWisieService.initWisieSkills(profileWisie, Arrays.asList(skills.get(i)));
-            profileWisieEvolutionService.upgradeAttribute(profileWisie, ((PICK_WISIES_COUNT - 1) - i) * 50);
             profileWisies.add(profileWisie);
         }
         profile.setIntroductionStepIndex(profile.getIntroductionStepIndex() + 1);

@@ -24,6 +24,10 @@ public class PassiveAvailableSkill extends AvailableSkill {
         sourceWarWisies.add(warWisie);
     }
 
+    public boolean getCanUse() {
+        return true;
+    }
+
     @Override
     public SkillType getType() {
         return SkillType.PASSIVE;
