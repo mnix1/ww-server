@@ -49,7 +49,7 @@ public class WarModel extends RivalModel {
         if (!teamMember.isWisie()) {
             return null;
         }
-        OwnedWisie wisie = (OwnedWisie) teamMember.getContent();
+        OwnedWisie wisie = ((WisieTeamMember) teamMember).getContent().getWisie();
         for (WisieAnswerManager answerManager : wisieAnswerManagers) {
             if (answerManager.getOwnedWisie().equals(wisie)) {
                 List<WisieAnswerAction> actions = answerManager.getActions();

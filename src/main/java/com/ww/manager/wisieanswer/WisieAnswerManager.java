@@ -44,8 +44,7 @@ public class WisieAnswerManager {
         logger.trace(toString() +
                 ", difficulty=" + difficulty +
                 ", answerCount=" + answerCount);
-
-        getWarWisie().initAttributes();
+        getWarWisie().setQuestion(question);
         getWarWisie().cacheAttributes();
     }
 

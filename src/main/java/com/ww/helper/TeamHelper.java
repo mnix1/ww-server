@@ -21,25 +21,25 @@ import java.util.List;
 
 public class TeamHelper {
     public static List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies, RivalModel model) {
-        return prepareTeamMembers(profile, wisies, model.getImportance(), model.getType(), model.findCurrentQuestion());
+        return prepareTeamMembers(profile, wisies, model.getImportance(), model.getType());
     }
 
-    public static List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies, RivalImportance importance, RivalType type, Question question) {
+    public static List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies, RivalImportance importance, RivalType type) {
         List<TeamMember> teamMembers = new ArrayList<>();
         int index = 0;
         teamMembers.add(new WisorTeamMember(index++, profile, importance == RivalImportance.RANKING ? new RivalProfileDTO(profile, type) : new ProfileDTO(profile)));
         for (OwnedWisie wisie : wisies) {
-            WarWisie warWisie = new WarWisie(wisie, question);
+            WarWisie warWisie = new WarWisie(wisie);
             teamMembers.add(new WisieTeamMember(index++, warWisie, new WarProfileWisieDTO(warWisie)));
         }
         return teamMembers;
     }
 
-    public static List<TeamMember> prepareTeamMembers(List<? extends OwnedWisie> wisies, RivalModel model) {
+    public static List<TeamMember> prepareTeamMembers(List<? extends OwnedWisie> wisies) {
         List<TeamMember> teamMembers = new ArrayList<>();
         int index = 0;
         for (OwnedWisie wisie : wisies) {
-            WarWisie warWisie = new WarWisie(wisie, model.findCurrentQuestion());
+            WarWisie warWisie = new WarWisie(wisie);
             teamMembers.add(new WisieTeamMember(index++, warWisie, new WarProfileWisieDTO(warWisie)));
         }
         return teamMembers;

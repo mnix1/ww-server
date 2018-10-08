@@ -2,19 +2,20 @@ package com.ww.helper;
 
 import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
+import com.ww.model.entity.outside.wisie.AbstractWisieAttributes;
 import com.ww.model.entity.outside.wisie.OwnedWisie;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
 
 import static com.ww.helper.NumberHelper.smartRound;
 
 public class WisieHelper {
-    public static Double calculateValue(OwnedWisie ownedWisie) {
+    public static Double calculateValue(AbstractWisieAttributes abstractWisieAttributes) {
         Double value = 0d;
         for (WisdomAttribute wisdomAttribute : WisdomAttribute.values()) {
-            value += ownedWisie.getWisdomAttributeValue(wisdomAttribute);
+            value += abstractWisieAttributes.getWisdomAttributeValue(wisdomAttribute);
         }
         for (MentalAttribute mentalAttribute : MentalAttribute.values()) {
-            value += ownedWisie.getMentalAttributeValue(mentalAttribute);
+            value += abstractWisieAttributes.getMentalAttributeValue(mentalAttribute);
         }
         value /= WisdomAttribute.COUNT + MentalAttribute.COUNT;
         value = smartRound(value);

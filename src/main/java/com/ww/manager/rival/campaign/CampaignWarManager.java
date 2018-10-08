@@ -46,7 +46,7 @@ public class CampaignWarManager extends WarManager {
 
     protected List<TeamMember> prepareTeamMembers(Profile profile, ProfileCampaign profileCampaign) {
         if (isBotProfile(profile)) {
-            return TeamHelper.prepareTeamMembers(new ArrayList<>(profile.getWisies()), model);
+            return TeamHelper.prepareTeamMembers(new ArrayList<>(profile.getWisies()));
         }
         return prepareTeamMembers(profileCampaign, profileCampaign.getWisies());
     }
@@ -56,7 +56,7 @@ public class CampaignWarManager extends WarManager {
         for (TeamMember teamMember : teamMembers) {
             if (teamMember.isWisie()) {
                 for (ProfileCampaignWisie wisie : wisies) {
-                    if (wisie.equals(teamMember.getContent())) {
+                    if (wisie.equals(((WarWisie)teamMember.getContent()).getWisie())) {
                         teamMember.setPresent(!wisie.getDisabled());
                     }
                 }

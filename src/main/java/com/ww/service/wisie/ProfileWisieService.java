@@ -162,19 +162,19 @@ public class ProfileWisieService {
     }
 
     public void initWisieAttributes(ProfileWisie wisie) {
-        wisie.setWisdomAttributeMemory(randomDouble(1, 10));
-        wisie.setWisdomAttributeLogic(randomDouble(1, 10));
-        wisie.setWisdomAttributePerceptivity(randomDouble(1, 10));
-        wisie.setWisdomAttributeCounting(randomDouble(1, 10));
-        wisie.setWisdomAttributeCombiningFacts(randomDouble(1, 10));
-        wisie.setWisdomAttributePatternRecognition(randomDouble(1, 10));
-        wisie.setWisdomAttributeImagination(randomDouble(1, 10));
+        wisie.setMemory(randomDouble(1, 10));
+        wisie.setLogic(randomDouble(1, 10));
+        wisie.setPerceptivity(randomDouble(1, 10));
+        wisie.setCounting(randomDouble(1, 10));
+        wisie.setCombiningFacts(randomDouble(1, 10));
+        wisie.setPatternRecognition(randomDouble(1, 10));
+        wisie.setImagination(randomDouble(1, 10));
 
-        wisie.setMentalAttributeSpeed(randomDouble(1, 10));
-        wisie.setMentalAttributeReflex(randomDouble(1, 10));
-        wisie.setMentalAttributeConcentration(randomDouble(1, 10));
-        wisie.setMentalAttributeConfidence(randomDouble(1, 10));
-        wisie.setMentalAttributeIntuition(randomDouble(1, 10));
+        wisie.setSpeed(randomDouble(1, 10));
+        wisie.setReflex(randomDouble(1, 10));
+        wisie.setConcentration(randomDouble(1, 10));
+        wisie.setConfidence(randomDouble(1, 10));
+        wisie.setIntuition(randomDouble(1, 10));
     }
 
     public void initWisieHobbies(ProfileWisie wisie) {

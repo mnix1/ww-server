@@ -2,6 +2,7 @@ package com.ww.model.dto.wisie;
 
 import com.ww.model.constant.Category;
 import com.ww.model.constant.wisie.WisieType;
+import com.ww.model.entity.outside.wisie.AbstractWisieAttributes;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
 import lombok.Getter;
 
@@ -10,7 +11,7 @@ import java.util.Set;
 import static com.ww.helper.NumberHelper.smartRound;
 
 @Getter
-public class ProfileWisieDTO {
+public class ProfileWisieDTO extends AbstractWisieAttributes {
 
     private Long id;
     private WisieType type;
@@ -19,20 +20,6 @@ public class ProfileWisieDTO {
 
     private Set<Category> hobbies;
 
-    private Double memory;
-    private Double logic;
-    private Double perceptivity;
-    private Double counting;
-    private Double combiningFacts;
-    private Double patternRecognition;
-    private Double imagination;
-
-    private Double speed;
-    private Double reflex;
-    private Double concentration;
-    private Double confidence;
-    private Double intuition;
-
     private Double value;
 
     public ProfileWisieDTO(ProfileWisie profileWisie) {
@@ -40,18 +27,18 @@ public class ProfileWisieDTO {
         this.type = profileWisie.getWisie().getType();
         this.inTeam = profileWisie.getInTeam();
         this.hobbies = profileWisie.getHobbies();
-        this.memory = smartRound(profileWisie.getWisdomAttributeMemory());
-        this.logic = smartRound(profileWisie.getWisdomAttributeLogic());
-        this.perceptivity = smartRound(profileWisie.getWisdomAttributePerceptivity());
-        this.counting = smartRound(profileWisie.getWisdomAttributeCounting());
-        this.combiningFacts = smartRound(profileWisie.getWisdomAttributeCombiningFacts());
-        this.patternRecognition = smartRound(profileWisie.getWisdomAttributePatternRecognition());
-        this.imagination = smartRound(profileWisie.getWisdomAttributeImagination());
-        this.speed = smartRound(profileWisie.getMentalAttributeSpeed());
-        this.reflex = smartRound(profileWisie.getMentalAttributeReflex());
-        this.concentration = smartRound(profileWisie.getMentalAttributeConcentration());
-        this.confidence = smartRound(profileWisie.getMentalAttributeConfidence());
-        this.intuition = smartRound(profileWisie.getMentalAttributeIntuition());
+        this.memory = smartRound(profileWisie.getMemory());
+        this.logic = smartRound(profileWisie.getLogic());
+        this.perceptivity = smartRound(profileWisie.getPerceptivity());
+        this.counting = smartRound(profileWisie.getCounting());
+        this.combiningFacts = smartRound(profileWisie.getCombiningFacts());
+        this.patternRecognition = smartRound(profileWisie.getPatternRecognition());
+        this.imagination = smartRound(profileWisie.getImagination());
+        this.speed = smartRound(profileWisie.getSpeed());
+        this.reflex = smartRound(profileWisie.getReflex());
+        this.concentration = smartRound(profileWisie.getConcentration());
+        this.confidence = smartRound(profileWisie.getConfidence());
+        this.intuition = smartRound(profileWisie.getIntuition());
         this.value = profileWisie.calculateValue();
     }
 
