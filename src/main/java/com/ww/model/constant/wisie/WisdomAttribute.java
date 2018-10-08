@@ -7,7 +7,6 @@ public enum WisdomAttribute {
     LOGIC,
     PERCEPTIVITY,
     COUNTING,
-    COMBINING_FACTS,
     PATTERN_RECOGNITION,
     IMAGINATION;
 
@@ -22,5 +21,5 @@ public enum WisdomAttribute {
 
     public static Resources UPGRADE_COST = new Resources(null, null,1L);
 
-    public static int COUNT = 7;
+    public static int COUNT = 6;
 }

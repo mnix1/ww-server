@@ -1,6 +1,8 @@
 package com.ww.service.wisie;
 
 import com.ww.model.constant.Category;
+import com.ww.model.constant.wisie.MentalAttribute;
+import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.container.Resources;
 import com.ww.model.dto.social.ProfileResourcesDTO;
 import com.ww.model.dto.wisie.ProfileWisieDTO;
@@ -162,19 +164,12 @@ public class ProfileWisieService {
     }
 
     public void initWisieAttributes(ProfileWisie wisie) {
-        wisie.setMemory(randomDouble(1, 10));
-        wisie.setLogic(randomDouble(1, 10));
-        wisie.setPerceptivity(randomDouble(1, 10));
-        wisie.setCounting(randomDouble(1, 10));
-        wisie.setCombiningFacts(randomDouble(1, 10));
-        wisie.setPatternRecognition(randomDouble(1, 10));
-        wisie.setImagination(randomDouble(1, 10));
-
-        wisie.setSpeed(randomDouble(1, 10));
-        wisie.setReflex(randomDouble(1, 10));
-        wisie.setConcentration(randomDouble(1, 10));
-        wisie.setConfidence(randomDouble(1, 10));
-        wisie.setIntuition(randomDouble(1, 10));
+        for(WisdomAttribute wisdomAttribute : WisdomAttribute.values()){
+            wisie.setWisdomAttributeValue(wisdomAttribute, randomDouble(1, 10));
+        }
+        for(MentalAttribute mentalAttribute : MentalAttribute.values()){
+            wisie.setMentalAttributeValue(mentalAttribute, randomDouble(1, 10));
+        }
     }
 
     public void initWisieHobbies(ProfileWisie wisie) {

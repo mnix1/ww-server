@@ -53,54 +53,47 @@ public class InitTaskTypesService {
     private void initOlympicGames(List<TaskType> taskTypes) {
         taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.CITY_FROM_YEAR.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 0, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.7),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.3)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.3)
         ))));
         taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.YEAR_FROM_CITY.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 0, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.67),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.2),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.13)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.33)
         ))));
         taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.ATHLETE_FROM_MEDAL_YEAR.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 8, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.9),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.05),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.05)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.1)
         ))));
         taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.ATHLETE_FROM_MEDAL_CITY.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 8, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.9),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.05),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.05)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.1)
         ))));
         taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.ATHLETE_FROM_MEDAL_YEAR_SPORT.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 7, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.8),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.15),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.05)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2)
         ))));
         taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.ATHLETE_FROM_MEDAL_CITY_SPORT.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 7, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.8),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.15),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.05)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2)
         ))));
         taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.YEAR_FROM_ATHLETE.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 6, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.7),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.3)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.3)
         ))));
         taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.CITY_FROM_ATHLETE.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 6, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.7),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.3)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.3)
         ))));
         taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.COUNTRY_FROM_MEDAL_YEAR_FOR_POPULAR_ONLY_TEAM_SPORT.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 4, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.6),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.4)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.4)
         ))));
         taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.COUNTRY_FROM_ATHLETE.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.3),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.5),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.7)
         ))));
         taskTypes.add(new TaskType(Category.OLYMPIC_GAMES, OlympicGamesTaskType.ATHLETE_FROM_COUNTRY.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.2),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.5),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.3)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.8)
         ))));
     }
 
@@ -108,14 +101,14 @@ public class InitTaskTypesService {
         taskTypes.add(new TaskType(Category.LYRICS, LyricsTaskTypeValue.NEXT_LINE.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.3),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.3),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.15),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.15),
                 new TaskWisdomAttribute(WisdomAttribute.PATTERN_RECOGNITION, 0.15),
                 new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.1)
         ))));
         taskTypes.add(new TaskType(Category.LYRICS, LyricsTaskTypeValue.PREVIOUS_LINE.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 3, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.1),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.2),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
                 new TaskWisdomAttribute(WisdomAttribute.PATTERN_RECOGNITION, 0.4),
                 new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.2)
         ))));
@@ -125,30 +118,26 @@ public class InitTaskTypesService {
         taskTypes.add(new TaskType(Category.MEMORY, MemoryTaskType.BACKGROUND_COLOR_FROM_FIGURE_KEY.name(), TaskRenderer.TEXT_ANIMATION, TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.6),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.15),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.25)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.25)
         ))));
         taskTypes.add(new TaskType(Category.MEMORY, MemoryTaskType.SHAPE_FROM_FIGURE_KEY.name(), TaskRenderer.TEXT_ANIMATION, TaskRenderer.TEXT, 3, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.7),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.1),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.1)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2)
         ))));
         taskTypes.add(new TaskType(Category.MEMORY, MemoryTaskType.SHAPE_FROM_BACKGROUND_COLOR.name(), TaskRenderer.TEXT_ANIMATION, TaskRenderer.TEXT, 1, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.65),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.1),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.15)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.25)
         ))));
         taskTypes.add(new TaskType(Category.MEMORY, MemoryTaskType.FIGURE_KEY_FROM_BACKGROUND_COLOR.name(), TaskRenderer.TEXT_ANIMATION, TaskRenderer.TEXT, 4, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.8),
-                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.1)
+                new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.2)
         ))));
         taskTypes.add(new TaskType(Category.MEMORY, MemoryTaskType.FIGURE_KEY_FROM_SHAPE.name(), TaskRenderer.TEXT_ANIMATION, TaskRenderer.TEXT, 4, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.65),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.15),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.1)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.25)
         ))));
     }
 
@@ -178,145 +167,127 @@ public class InitTaskTypesService {
     private void initEquation(List<TaskType> taskTypes) {
         taskTypes.add(new TaskType(Category.EQUATION, EquationTaskType.ADDITION.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, -2, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.9),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.1)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.1)
         ))));
         taskTypes.add(new TaskType(Category.EQUATION, EquationTaskType.MULTIPLICATION.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 0, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.8),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.05),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.05),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.05),
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.1)
         ))));
         taskTypes.add(new TaskType(Category.EQUATION, EquationTaskType.MODULO.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 0, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.8),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.05),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.05),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.15)
         ))));
         taskTypes.add(new TaskType(Category.EQUATION, EquationTaskType.FIND_X.name(), TaskRenderer.TEXT_EQUATION, TaskRenderer.EQUATION, 5, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.95),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.05)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.05)
         ))));
     }
 
     private void initCountry(List<TaskType> taskTypes) {
         taskTypes.add(new TaskType(Category.COUNTRY, CountryTaskType.COUNTRY_NAME_FROM_ALPHA_2.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, -4, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.35),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.4),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.2),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.6),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.05)
         ))));
         taskTypes.add(new TaskType(Category.COUNTRY, CountryTaskType.COUNTRY_NAME_FROM_CAPITAL_NAME.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 1, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.6),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.2)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.4)
         ))));
         taskTypes.add(new TaskType(Category.COUNTRY, CountryTaskType.COUNTRY_NAME_FROM_MAP.name(), TaskRenderer.TEXT_IMAGE_SVG, TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.3),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.3),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.3),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.6),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1)
         ))));
         taskTypes.add(new TaskType(Category.COUNTRY, CountryTaskType.COUNTRY_NAME_FROM_FLAG.name(), TaskRenderer.TEXT_IMAGE_SVG, TaskRenderer.TEXT, 1, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.6),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.1),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.3),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1)
         ))));
         taskTypes.add(new TaskType(Category.COUNTRY, CountryTaskType.CAPITAL_NAME_FROM_ALPHA_3.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 3, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.5),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.3)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.5)
         ))));
         taskTypes.add(new TaskType(Category.COUNTRY, CountryTaskType.CAPITAL_NAME_FROM_COUNTRY_NAME.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 1, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.55),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.15),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.35),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1)
         ))));
         taskTypes.add(new TaskType(Category.COUNTRY, CountryTaskType.CAPITAL_NAME_FROM_MAP.name(), TaskRenderer.TEXT_IMAGE_SVG, TaskRenderer.TEXT, 4, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.3),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.2),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.4),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.3)
         ))));
         taskTypes.add(new TaskType(Category.COUNTRY, CountryTaskType.CAPITAL_NAME_FROM_FLAG.name(), TaskRenderer.TEXT_IMAGE_SVG, TaskRenderer.TEXT, 3, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.5),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.2),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.4),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.1)
         ))));
         taskTypes.add(new TaskType(Category.COUNTRY, CountryTaskType.MAX_POPULATION.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.3),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.3),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.4)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.7)
         ))));
         taskTypes.add(new TaskType(Category.COUNTRY, CountryTaskType.MIN_POPULATION.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 3, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.25),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.35),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.4)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.75)
         ))));
         taskTypes.add(new TaskType(Category.COUNTRY, CountryTaskType.MAX_AREA.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 2, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.2),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.35),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.45)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.8)
         ))));
         taskTypes.add(new TaskType(Category.COUNTRY, CountryTaskType.MIN_AREA.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 3, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.2),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.6)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.8)
         ))));
     }
 
     private void initElement(List<TaskType> taskTypes) {
         taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.MAX_ATOMIC_MASS.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 3, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.6),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.2)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.4)
         ))));
         taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.MIN_ATOMIC_MASS.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 3, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.6),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.2)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.4)
         ))));
         taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.NAME_FROM_SYMBOL.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, -4, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.3),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.3),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.4)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.7)
         ))));
         taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.SYMBOL_FROM_NAME.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, -4, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.1),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.1),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.8)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.9)
         ))));
         taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.NAME_FROM_SHELL_COUNT.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 7, new HashSet<>(Arrays.asList(
-                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.3),
-                new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.4),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.3)
+                new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.2),
+                new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.6),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2)
         ))));
         taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.SYMBOL_FROM_SHELL_COUNT.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 7, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.4),
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.3),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.3)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.3)
         ))));
         taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.NUMBER_FROM_SHELL_COUNT.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 4, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.1),
                 new TaskWisdomAttribute(WisdomAttribute.COUNTING, 0.7),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.2)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2)
         ))));
         taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.NAME_FROM_NUMBER.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 6, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.5),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.2),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.3)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.5)
         ))));
         taskTypes.add(new TaskType(Category.ELEMENT, ElementTaskType.SYMBOL_FROM_NUMBER.name(), TaskRenderer.TEXT, TaskRenderer.TEXT, 6, new HashSet<>(Arrays.asList(
                 new TaskWisdomAttribute(WisdomAttribute.MEMORY, 0.6),
-                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.15),
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.25)
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.4)
         ))));
     }
 
     private void initRiddle(List<TaskType> taskTypes) {
         taskTypes.add(new TaskType(Category.RIDDLE, RiddleTaskType.MISSING_CLIPART.name(), TaskRenderer.TEXT_IMAGE_PNG, TaskRenderer.TEXT, -2, new HashSet<>(Arrays.asList(
-                new TaskWisdomAttribute(WisdomAttribute.COMBINING_FACTS, 0.09),
+                new TaskWisdomAttribute(WisdomAttribute.LOGIC, 0.09),
                 new TaskWisdomAttribute(WisdomAttribute.PATTERN_RECOGNITION, 0.41),
                 new TaskWisdomAttribute(WisdomAttribute.PERCEPTIVITY, 0.4),
                 new TaskWisdomAttribute(WisdomAttribute.IMAGINATION, 0.1)

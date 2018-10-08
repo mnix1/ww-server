@@ -5,6 +5,7 @@ import com.ww.model.container.Resources;
 public enum MentalAttribute {
     SPEED,
     REFLEX,
+    CUNNING,
     CONCENTRATION,
     CONFIDENCE,
     INTUITION;
@@ -19,5 +20,5 @@ public enum MentalAttribute {
 
     public static Resources UPGRADE_COST = new Resources(null, null,2L);
 
-    public static int COUNT = 5;
+    public static int COUNT = 6;
 }

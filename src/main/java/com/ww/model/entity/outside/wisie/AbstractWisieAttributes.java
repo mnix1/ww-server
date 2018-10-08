@@ -19,29 +19,23 @@ public abstract class AbstractWisieAttributes {
     protected Double logic;
     protected Double perceptivity;
     protected Double counting;
-    protected Double combiningFacts;
     protected Double patternRecognition;
     protected Double imagination;
 
     protected Double speed;
     protected Double reflex;
+    protected Double cunning;
     protected Double concentration;
     protected Double confidence;
     protected Double intuition;
 
     protected AbstractWisieAttributes(AbstractWisieAttributes profileWisie) {
-        this.memory = profileWisie.memory;
-        this.logic = profileWisie.logic;
-        this.perceptivity = profileWisie.perceptivity;
-        this.counting = profileWisie.counting;
-        this.combiningFacts = profileWisie.combiningFacts;
-        this.patternRecognition = profileWisie.patternRecognition;
-        this.imagination = profileWisie.imagination;
-        this.speed = profileWisie.speed;
-        this.reflex = profileWisie.reflex;
-        this.concentration = profileWisie.concentration;
-        this.confidence = profileWisie.confidence;
-        this.intuition = profileWisie.intuition;
+        for (WisdomAttribute wisdomAttribute : WisdomAttribute.values()) {
+            setWisdomAttributeValue(wisdomAttribute, profileWisie.getWisdomAttributeValue(wisdomAttribute));
+        }
+        for (MentalAttribute mentalAttribute : MentalAttribute.values()) {
+            setMentalAttributeValue(mentalAttribute, profileWisie.getMentalAttributeValue(mentalAttribute));
+        }
     }
 
     public Double getWisdomAttributeValue(WisdomAttribute wisdomAttribute) {
@@ -56,9 +50,6 @@ public abstract class AbstractWisieAttributes {
         }
         if (wisdomAttribute == WisdomAttribute.COUNTING) {
             return counting;
-        }
-        if (wisdomAttribute == WisdomAttribute.COMBINING_FACTS) {
-            return combiningFacts;
         }
         if (wisdomAttribute == WisdomAttribute.PATTERN_RECOGNITION) {
             return patternRecognition;
@@ -78,8 +69,6 @@ public abstract class AbstractWisieAttributes {
             setPerceptivity(value);
         } else if (wisdomAttribute == WisdomAttribute.COUNTING) {
             setCounting(value);
-        } else if (wisdomAttribute == WisdomAttribute.COMBINING_FACTS) {
-            setCombiningFacts(value);
         } else if (wisdomAttribute == WisdomAttribute.PATTERN_RECOGNITION) {
             setPatternRecognition(value);
         } else if (wisdomAttribute == WisdomAttribute.IMAGINATION) {
@@ -95,6 +84,9 @@ public abstract class AbstractWisieAttributes {
         }
         if (mentalAttribute == MentalAttribute.REFLEX) {
             return reflex;
+        }
+        if (mentalAttribute == MentalAttribute.CUNNING) {
+            return cunning;
         }
         if (mentalAttribute == MentalAttribute.CONCENTRATION) {
             return concentration;
@@ -113,6 +105,8 @@ public abstract class AbstractWisieAttributes {
             setSpeed(value);
         } else if (mentalAttribute == MentalAttribute.REFLEX) {
             setReflex(value);
+        } else if (mentalAttribute == MentalAttribute.CUNNING) {
+            setCunning(value);
         } else if (mentalAttribute == MentalAttribute.CONCENTRATION) {
             setConcentration(value);
         } else if (mentalAttribute == MentalAttribute.CONFIDENCE) {
