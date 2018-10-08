@@ -11,6 +11,7 @@ import com.ww.model.dto.social.ProfileDTO;
 import com.ww.model.dto.social.RivalProfileDTO;
 import com.ww.model.dto.wisie.WarProfileWisieDTO;
 import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
+import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.OwnedWisie;
 import com.ww.model.entity.outside.wisie.ProfileCampaignWisie;
@@ -20,22 +21,15 @@ import java.util.List;
 
 public class TeamHelper {
     public static List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies, RivalModel model) {
-        List<TeamMember> teamMembers = new ArrayList<>();
-        int index = 0;
-        teamMembers.add(new WisorTeamMember(index++, profile, model.getImportance() == RivalImportance.RANKING ? new RivalProfileDTO(profile, model.getType()) : new ProfileDTO(profile)));
-        for (OwnedWisie wisie : wisies) {
-            WarWisie warWisie = new WarWisie(wisie, model.findCurrentQuestion());
-            teamMembers.add(new WisieTeamMember(index++, warWisie, new WarProfileWisieDTO(warWisie)));
-        }
-        return teamMembers;
+        return prepareTeamMembers(profile, wisies, model.getImportance(), model.getType(), model.findCurrentQuestion());
     }
 
-    public static List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies, RivalImportance importance, RivalType type) {
+    public static List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies, RivalImportance importance, RivalType type, Question question) {
         List<TeamMember> teamMembers = new ArrayList<>();
         int index = 0;
         teamMembers.add(new WisorTeamMember(index++, profile, importance == RivalImportance.RANKING ? new RivalProfileDTO(profile, type) : new ProfileDTO(profile)));
         for (OwnedWisie wisie : wisies) {
-            WarWisie warWisie = new WarWisie(wisie, null);
+            WarWisie warWisie = new WarWisie(wisie, question);
             teamMembers.add(new WisieTeamMember(index++, warWisie, new WarProfileWisieDTO(warWisie)));
         }
         return teamMembers;

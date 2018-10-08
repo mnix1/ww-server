@@ -9,8 +9,6 @@ import com.ww.model.entity.outside.wisie.OwnedWisie;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Set;
-
 import static com.ww.helper.WisieHelper.f1;
 
 @Setter
@@ -51,7 +49,23 @@ public class WarWisie {
         this.question = question;
     }
 
-    private void cacheAttributes() {
+    public void initAttributes() {
+//        this.wisdomAttributeMemory = wisie.getWisdomAttributeMemory();
+//        this.wisdomAttributeLogic = wisie.getWisdomAttributeLogic();
+//        this.wisdomAttributePerceptivity = wisie.getWisdomAttributePerceptivity();
+//        this.wisdomAttributeCounting = wisie.getWisdomAttributeCounting();
+//        this.wisdomAttributeCombiningFacts = wisie.getWisdomAttributeCombiningFacts();
+//        this.wisdomAttributePatternRecognition = wisie.getWisdomAttributePatternRecognition();
+//        this.wisdomAttributeImagination = wisie.getWisdomAttributeImagination();
+//
+//        this.mentalAttributeSpeed = wisie.getMentalAttributeSpeed();
+//        this.mentalAttributeReflex = wisie.getMentalAttributeReflex();
+//        this.mentalAttributeConcentration = wisie.getMentalAttributeConcentration();
+//        this.mentalAttributeConfidence = wisie.getMentalAttributeConfidence();
+//        this.mentalAttributeIntuition = wisie.getMentalAttributeIntuition();
+    }
+
+    public void cacheAttributes() {
         this.isHobby = wisie.getHobbies().contains(question.getType().getCategory());
         this.hobbyCount = wisie.getHobbies().size();
         this.hobbyFactor = 1 + 1d / hobbyCount;

@@ -38,13 +38,15 @@ public class WisieAnswerManager {
         this.wisieMember = wisieMember;
         this.warManager = warManager;
         this.question = question;
-//        this.question = warManager.getModel().getQuestions().get(warManager.getModel().getCurrentTaskIndex());
         this.difficulty = AnswerHelper.difficultyCalibration(question) + 1;
         this.answerCount = question.getAnswers().size();
         this.flow = new WisieAnswerFlow(this);
         logger.trace(toString() +
                 ", difficulty=" + difficulty +
                 ", answerCount=" + answerCount);
+
+        getWarWisie().initAttributes();
+        getWarWisie().cacheAttributes();
     }
 
     @Override

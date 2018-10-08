@@ -7,6 +7,7 @@ import com.ww.model.container.rival.RivalModel;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.init.RivalInit;
 import com.ww.model.dto.rival.TeamMemberDTO;
+import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.OwnedWisie;
 import lombok.Getter;
@@ -33,11 +34,12 @@ public class WarModel extends RivalModel {
     }
 
     public void updateWisieAnswerManagers(WarManager manager) {
+        Question question = findCurrentQuestion();
         wisieAnswerManagers = new CopyOnWriteArrayList<>();
         for (WarTeam warTeam : teams.getTeams()) {
             TeamMember teamMember = warTeam.getActiveTeamMember();
             if (teamMember.isWisie()) {
-                wisieAnswerManagers.add(new WisieAnswerManager((WisieTeamMember) teamMember, findCurrentQuestion(), manager));
+                wisieAnswerManagers.add(new WisieAnswerManager((WisieTeamMember) teamMember, question, manager));
             }
         }
     }
