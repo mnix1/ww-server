@@ -2,6 +2,7 @@ package com.ww.model.container.rival;
 
 import com.ww.model.constant.Skill;
 import com.ww.model.container.rival.war.skill.available.AvailableSkill;
+import com.ww.model.container.rival.war.skill.available.active.ActiveAvailableSkill;
 
 import java.util.Map;
 
@@ -10,7 +11,7 @@ public interface RivalTeamSkills {
 
     boolean canUse(Skill skill);
 
-    AvailableSkill use(Skill skill);
+    ActiveAvailableSkill use(Skill skill);
 
     void blockAll();
     void unblockAll();

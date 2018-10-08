@@ -1,9 +1,12 @@
 package com.ww.model.container.rival.war.skill;
 
 import com.ww.model.constant.Skill;
+import com.ww.model.constant.SkillType;
 import com.ww.model.container.rival.RivalTeamSkills;
 import com.ww.model.container.rival.war.skill.available.AvailableSkill;
-import com.ww.model.container.rival.war.skill.available.LifebuoyAvailableSkill;
+import com.ww.model.container.rival.war.skill.available.SkillBuilder;
+import com.ww.model.container.rival.war.skill.available.active.ActiveAvailableSkill;
+import com.ww.model.container.rival.war.skill.available.passive.PassiveAvailableSkill;
 import com.ww.model.entity.outside.wisie.OwnedWisie;
 import lombok.Getter;
 
@@ -15,52 +18,60 @@ import java.util.concurrent.ConcurrentHashMap;
 public class WarTeamSkills implements RivalTeamSkills {
 
     private Map<Skill, AvailableSkill> skills = new ConcurrentHashMap<>();
+    private Map<Skill, ActiveAvailableSkill> activeSkills = new ConcurrentHashMap<>();
+    private Map<Skill, PassiveAvailableSkill> passiveSkills = new ConcurrentHashMap<>();
 
     public WarTeamSkills(int base, List<? extends OwnedWisie> wisies) {
-        this.skills.put(Skill.HINT, new AvailableSkill(base));
-        this.skills.put(Skill.WATER_PISTOL, new AvailableSkill(base));
-        this.skills.put(Skill.LIFEBUOY, new LifebuoyAvailableSkill(base));
-        init(wisies);
+        this.activeSkills.put(Skill.HINT, (ActiveAvailableSkill) SkillBuilder.build(Skill.HINT, base));
+        this.activeSkills.put(Skill.WATER_PISTOL, (ActiveAvailableSkill) SkillBuilder.build(Skill.WATER_PISTOL, base));
+        this.activeSkills.put(Skill.LIFEBUOY, (ActiveAvailableSkill) SkillBuilder.build(Skill.LIFEBUOY, base));
+        initFromWisies(wisies);
+        skills.putAll(activeSkills);
+        skills.putAll(passiveSkills);
     }
 
-    private void init(List<? extends OwnedWisie> wisies) {
+    private void initFromWisies(List<? extends OwnedWisie> wisies) {
         for (OwnedWisie wisie : wisies) {
             for (Skill skill : wisie.getSkills()) {
-                AvailableSkill availableSkill;
-                if (skills.containsKey(skill)) {
-                    availableSkill = new AvailableSkill(1 + skills.get(skill).getCount());
-                    skills.remove(skill);
+                if (activeSkills.containsKey(skill)) {
+                    activeSkills.get(skill).increaseCount();
+                } else if (passiveSkills.containsKey(skill)) {
+                    passiveSkills.get(skill).increaseCount();
                 } else {
-                    availableSkill = new AvailableSkill(1);
+                    AvailableSkill availableSkill = SkillBuilder.build(skill, 1);
+                    if (availableSkill.getType() == SkillType.ACTIVE) {
+                        activeSkills.put(skill, (ActiveAvailableSkill) availableSkill);
+                    } else if (availableSkill.getType() == SkillType.PASSIVE) {
+                        passiveSkills.put(skill, (PassiveAvailableSkill) availableSkill);
+                    }
                 }
-                skills.put(skill, availableSkill);
             }
         }
     }
 
     @Override
     public boolean canUse(Skill skill) {
-        return skills.containsKey(skill) && skills.get(skill).getCanUse();
+        return activeSkills.containsKey(skill) && activeSkills.get(skill).getCanUse();
     }
 
     @Override
-    public AvailableSkill use(Skill skill) {
-        return skills.get(skill).use();
+    public ActiveAvailableSkill use(Skill skill) {
+        return activeSkills.get(skill).use();
     }
 
     @Override
     public void blockAll() {
-        skills.forEach((skill, availableSkill) -> availableSkill.disable());
+        activeSkills.forEach((skill, availableSkill) -> availableSkill.disable());
     }
 
     @Override
     public void unblockAll() {
-        skills.forEach((skill, availableSkill) -> availableSkill.enable());
+        activeSkills.forEach((skill, availableSkill) -> availableSkill.enable());
     }
 
     @Override
     public void resetUsedAll() {
-        skills.forEach((skill, availableSkill) -> availableSkill.reset());
+        activeSkills.forEach((skill, availableSkill) -> availableSkill.reset());
     }
 
 }

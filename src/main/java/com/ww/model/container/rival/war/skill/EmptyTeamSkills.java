@@ -3,6 +3,7 @@ package com.ww.model.container.rival.war.skill;
 import com.ww.model.constant.Skill;
 import com.ww.model.container.rival.RivalTeamSkills;
 import com.ww.model.container.rival.war.skill.available.AvailableSkill;
+import com.ww.model.container.rival.war.skill.available.active.ActiveAvailableSkill;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +22,7 @@ public class EmptyTeamSkills implements RivalTeamSkills {
     }
 
     @Override
-    public AvailableSkill use(Skill skill) {
+    public ActiveAvailableSkill use(Skill skill) {
         return null;
     }
 

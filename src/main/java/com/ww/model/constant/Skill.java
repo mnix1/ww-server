@@ -6,6 +6,8 @@ import java.util.List;
 import static com.ww.helper.RandomHelper.randomElement;
 
 public enum Skill {
+    TEACHER,
+    MOTIVATOR,
     HINT,
     WATER_PISTOL,
     LIFEBUOY,
