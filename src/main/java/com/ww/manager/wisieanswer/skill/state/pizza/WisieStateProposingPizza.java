@@ -39,10 +39,10 @@ public class WisieStateProposingPizza extends WisieSkillState {
         manager.getTeam(opponentManager).getTeamSkills().blockAll();
         manager.addAction(WisieAnswerAction.PROPOSING_PIZZA);
         opponentManager.addAction(WisieAnswerAction.THINKING_IF_GET_PIZZA);
-        manager.getTeam(manager).getActiveTeamMember().addDisguise(DisguiseType.PIZZA_COOK);
+        manager.getWisieMember().addDisguise(DisguiseType.PIZZA_COOK);
         manager.getWarManager().sendNewSkillsModel((m, wT) -> {
-            manager.getWarManager().getModelFactory().fillModelActiveMemberAddOn(m, wT);
-            manager.getWarManager().getModelFactory().fillModelWisieActions(m, wT);
+            manager.getModelFactory().fillModelActiveMemberAddOn(m, wT);
+            manager.getModelFactory().fillModelWisieActions(m, wT);
         });
         interval = interval();
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);

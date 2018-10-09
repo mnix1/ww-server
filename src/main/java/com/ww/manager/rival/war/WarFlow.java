@@ -2,19 +2,17 @@ package com.ww.manager.rival.war;
 
 import com.ww.manager.rival.RivalFlow;
 import com.ww.manager.rival.state.*;
+import com.ww.manager.rival.war.skill.WarSkillFlow;
 import com.ww.manager.rival.war.state.*;
 import com.ww.model.constant.rival.RivalStatus;
-import com.ww.manager.rival.war.skill.WarSkillFlow;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.model.container.rival.war.skill.PassiveSkillsInit;
 import lombok.Getter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.ww.service.rival.global.RivalMessageService.*;
+import static com.ww.service.rival.global.RivalMessageService.CHOOSE_WHO_ANSWER;
 
 @Getter
 public class WarFlow extends RivalFlow {
@@ -46,7 +44,7 @@ public class WarFlow extends RivalFlow {
     }
 
     public synchronized void start() {
-        for(WarTeam warTeam : manager.getModel().getTeams().getTeams()){
+        for (WarTeam warTeam : manager.getModel().getTeams().getTeams()) {
             new PassiveSkillsInit(warTeam).init();
         }
         addState(new StateIntro(manager)).addOnFlowableEndListener(aLong1 -> {
@@ -102,6 +100,16 @@ public class WarFlow extends RivalFlow {
         logger.trace(describe() + manager.toString() + " kidnapped");
         dispose();
         phase4();
+    }
+
+    public synchronized void changeTask() {
+        logger.trace(describe() + manager.toString() + " changeTask");
+        dispose();
+        addState(new WarStateChangingTask(manager)).addOnFlowableEndListener(aLong4 -> {
+            addState(new WarStateChoosingTaskProps(manager, true)).addOnFlowableEndListener(aLong5 -> {
+                phase1();
+            }).startFlowable();
+        }).startFlowable();
     }
 
     public synchronized void ghostScaredAndCaught() {

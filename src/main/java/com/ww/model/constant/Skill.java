@@ -15,6 +15,7 @@ public enum Skill {
     KIDNAPPING,
     GHOST,
     COVERALL,
+    CHANGE_TASK,
     PIZZA;
 
     public static List<Skill> list() {

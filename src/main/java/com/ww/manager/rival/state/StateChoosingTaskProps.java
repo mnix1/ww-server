@@ -13,9 +13,14 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class StateChoosingTaskProps extends State {
+    protected boolean forceRandom = false;
 
     public StateChoosingTaskProps(RivalManager manager) {
         super(manager, STATE_TYPE_FLOWABLE);
+    }
+    public StateChoosingTaskProps(RivalManager manager, boolean forceRandom) {
+        super(manager, STATE_TYPE_FLOWABLE);
+        this.forceRandom = forceRandom;
     }
 
     @Override
@@ -24,7 +29,7 @@ public class StateChoosingTaskProps extends State {
         manager.getModel().increaseCurrentTaskIndex();
         boolean randomChooseTaskProps = manager.getModel().randomChooseTaskProps();
         long interval;
-        if (randomChooseTaskProps) {
+        if (randomChooseTaskProps || forceRandom) {
             manager.prepareTask((long) manager.getModel().getCurrentTaskIndex() + 1);
             interval = manager.getInterval().getRandomChooseTaskPropsInterval();
         } else {

@@ -30,7 +30,7 @@ public class WisieStateScareFailed extends WisieSkillState {
         opponent.addAction(WisieAnswerAction.WAS_NOT_SCARED);
         manager.getWarManager().sendNewSkillsModel((m, wT) -> {
             WarTeam warTeam = (WarTeam) wT;
-            manager.getWarManager().getModelFactory().fillModelWisieActions(m, wT);
+            manager.getModelFactory().fillModelWisieActions(m, wT);
             if(opponent.getOwnedWisie().getProfile().getId().equals(warTeam.getProfileId())){
                 warTeam.getTeamSkills().unblockAll();
             }

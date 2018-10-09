@@ -17,10 +17,10 @@ public class WisieStateCleanedAfterPizza extends WisieSkillState {
     @Override
     protected void processVoid() {
         manager.getTeam(manager).getTeamSkills().unblockAll();
-        manager.getTeam(manager).getActiveTeamMember().removeDisguise();
+        manager.getWisieMember().removeDisguise();
         manager.getWarManager().sendNewSkillsModel((m, wT) -> {
-            manager.getWarManager().getModelFactory().fillModelActiveMemberAddOn(m, wT);
-            manager.getWarManager().getModelFactory().fillModelWisieActions(m, wT);
+            manager.getModelFactory().fillModelActiveMemberAddOn(m, wT);
+            manager.getModelFactory().fillModelWisieActions(m, wT);
         });
     }
 }

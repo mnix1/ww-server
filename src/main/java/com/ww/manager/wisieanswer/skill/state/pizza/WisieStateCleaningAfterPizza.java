@@ -42,9 +42,9 @@ public class WisieStateCleaningAfterPizza extends WisieSkillState {
         opponentTeamMember.decreaseAttributesByHalf();
         opponentTeamMember.removeDisguise();
         manager.getWarManager().sendNewSkillsModel((m, wT) -> {
-            manager.getWarManager().getModelFactory().fillModelTeam(m, wT);
-            manager.getWarManager().getModelFactory().fillModelActiveMemberAddOn(m, wT);
-            manager.getWarManager().getModelFactory().fillModelWisieActions(m, wT);
+            manager.getModelFactory().fillModelTeam(m, wT);
+            manager.getModelFactory().fillModelActiveMemberAddOn(m, wT);
+            manager.getModelFactory().fillModelWisieActions(m, wT);
         });
         interval = interval();
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);

@@ -32,6 +32,7 @@ public class WisieAnswerFlow extends AbstractFlow {
     private WisieAnswerGhostSkillFlow ghostSkillFlow;
     private WisieAnswerPizzaSkillFlow pizzaSkillFlow;
     private WisieAnswerCoverallSkillFlow coverallSkillFlow;
+    private WisieAnswerChangeTaskSkillFlow changeTaskSkillFlow;
 
     public WisieAnswerFlow(WisieAnswerManager manager) {
         this.manager = manager;
@@ -41,6 +42,7 @@ public class WisieAnswerFlow extends AbstractFlow {
         this.ghostSkillFlow = new WisieAnswerGhostSkillFlow(this);
         this.pizzaSkillFlow = new WisieAnswerPizzaSkillFlow(this);
         this.coverallSkillFlow = new WisieAnswerCoverallSkillFlow(this);
+        this.changeTaskSkillFlow = new WisieAnswerChangeTaskSkillFlow(this);
     }
 
     public void start() {

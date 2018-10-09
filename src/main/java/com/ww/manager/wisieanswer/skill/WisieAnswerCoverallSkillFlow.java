@@ -25,11 +25,6 @@ public class WisieAnswerCoverallSkillFlow {
         AbstractState prevState = flow.lastFlowableState();
         flow.addState(new WisieStatePuttingOnCoverall(manager)).addOnFlowableEndListener(aLong1 -> {
             flow.addState(new WisieStateCoverallReady(manager, opponent)).addOnFlowableEndListener(aLong2 -> {
-//                AbstractState opponentPrevState = opponent.getFlow().lastFlowableState();
-//                if (opponentPrevState instanceof WisieSkillState) {
-//                    opponentPrevState.dispose();
-//                    ((WisieSkillState) opponentPrevState).runPrevState();
-//                }
                 prevState.startFlowableEndListeners();
             }).startFlowable();
         }).startFlowable();

@@ -39,10 +39,10 @@ public class WisieStateTryingToScare extends WisieSkillState {
         manager.getTeam(manager).getTeamSkills().blockAll();
         manager.getTeam(opponentManager).getTeamSkills().blockAll();
         manager.addAction(WisieAnswerAction.TRYING_TO_SCARE);
-        manager.getTeam(manager).getActiveTeamMember().addDisguise(DisguiseType.GHOST);
+        manager.getWisieMember().addDisguise(DisguiseType.GHOST);
         manager.getWarManager().sendNewSkillsModel((m, wT) -> {
-            manager.getWarManager().getModelFactory().fillModelActiveMemberAddOn(m, wT);
-            manager.getWarManager().getModelFactory().fillModelWisieActions(m, wT);
+            manager.getModelFactory().fillModelActiveMemberAddOn(m, wT);
+            manager.getModelFactory().fillModelWisieActions(m, wT);
         });
         interval = (long) (intervalMultiply() * (3d - Math.abs(manager.getWarWisie().getIntuitionF1() - opponentManager.getWarWisie().getIntuitionF1())
                 - Math.abs(manager.getWarWisie().getSpeedF1() - opponentManager.getWarWisie().getSpeedF1())

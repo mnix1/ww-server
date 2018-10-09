@@ -12,6 +12,7 @@ public enum RivalStatus {
     CHOSEN_WHO_ANSWER,
     CHOOSING_TASK_PROPS_TIMEOUT,
     CHOSEN_TASK_PROPS,
+    CHANGING_TASK,
     CLOSED,
     DISPOSED,
 }

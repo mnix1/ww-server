@@ -3,6 +3,7 @@ package com.ww.manager.wisieanswer;
 import com.ww.helper.AnswerHelper;
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.container.rival.war.WarModelFactory;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.model.container.rival.war.WarWisie;
 import com.ww.model.container.rival.war.WisieTeamMember;
@@ -74,6 +75,10 @@ public class WisieAnswerManager {
 
     public WarTeam getTeam(WisieAnswerManager manager) {
         return (WarTeam) warManager.getTeam(manager.getOwnedWisie().getProfile().getId());
+    }
+
+    public WarModelFactory getModelFactory(){
+        return warManager.getModelFactory();
     }
 
     public void addAction(WisieAnswerAction action) {

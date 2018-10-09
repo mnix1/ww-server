@@ -23,6 +23,7 @@ public class WarWisie extends AbstractWisieAttributes {
     private double wisdomSum;
     private double speedF1;
     private double reflexF1;
+    private double cunningF1;
     private double concentrationF1;
     private double confidenceF1;
     private double intuitionF1;
@@ -50,6 +51,7 @@ public class WarWisie extends AbstractWisieAttributes {
         this.wisdomSum = prepareWisdomSum();
         this.speedF1 = f1(speed);
         this.reflexF1 = f1(reflex);
+        this.cunningF1 = f1(cunning);
         this.concentrationF1 = f1(concentration);
         this.confidenceF1 = f1(confidence);
         this.intuitionF1 = f1(intuition);

@@ -7,6 +7,8 @@ public enum DisguiseType {
     PENGUIN_RAIN,
     PIZZA_COOK,
     PIZZA_MAN,
+    PENGUIN_BOOKS,
+    BIRD_RED,
     JUDGE,
     NINJA,
     COVERALL,

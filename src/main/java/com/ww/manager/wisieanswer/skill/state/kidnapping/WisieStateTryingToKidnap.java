@@ -39,10 +39,10 @@ public class WisieStateTryingToKidnap extends WisieSkillState {
         manager.getTeam(manager).getTeamSkills().blockAll();
         manager.getTeam(opponentManager).getTeamSkills().blockAll();
         manager.addAction(WisieAnswerAction.TRYING_TO_KIDNAP);
-        manager.getTeam(manager).getActiveTeamMember().addDisguise(DisguiseType.NINJA);
+        manager.getWisieMember().addDisguise(DisguiseType.NINJA);
         manager.getWarManager().sendNewSkillsModel((m, wT) -> {
-            manager.getWarManager().getModelFactory().fillModelActiveMemberAddOn(m, wT);
-            manager.getWarManager().getModelFactory().fillModelWisieActions(m, wT);
+            manager.getModelFactory().fillModelActiveMemberAddOn(m, wT);
+            manager.getModelFactory().fillModelWisieActions(m, wT);
         });
         interval = (long) (intervalMultiply() * (3d - Math.abs(manager.getWarWisie().getWisdomSum() - opponentManager.getWarWisie().getWisdomSum())
                 - Math.abs(manager.getWarWisie().getSpeedF1() - opponentManager.getWarWisie().getSpeedF1())

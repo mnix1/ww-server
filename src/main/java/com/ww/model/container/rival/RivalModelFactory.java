@@ -18,8 +18,12 @@ public abstract class RivalModelFactory {
         return new RivalProfileDTO(profile, getModel().type);
     }
 
-    public void fillModelBasic(Map<String, Object> model, RivalTeam team) {
+    public void fillModelStatus(Map<String,Object> model){
         model.put("status", getModel().status);
+    }
+
+    public void fillModelBasic(Map<String, Object> model, RivalTeam team) {
+        fillModelStatus(model);
         model.put("importance", getModel().importance.name());
         model.put("type", getModel().type.name());
         model.put("profile", prepareProfile(team.getProfile()));
@@ -44,35 +48,35 @@ public abstract class RivalModelFactory {
     }
 
     public void fillModelPreparingNextTask(Map<String, Object> model, RivalTeam team) {
-        model.put("status", getModel().status);
+        fillModelStatus(model);
         fillModelTaskMeta(model);
         model.put("nextTaskInterval", Math.max(getModel().nextTaskDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
     }
 
     public void fillModelAnswering(Map<String, Object> model, RivalTeam team) {
-        model.put("status", getModel().status);
+        fillModelStatus(model);
         model.put("endAnsweringInterval", Math.max(getModel().endAnsweringDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
     }
 
     public void fillModelAnswered(Map<String, Object> model, RivalTeam team) {
-        model.put("status", getModel().status);
+        fillModelStatus(model);
         model.put("correctAnswerId", getModel().findCurrentCorrectAnswerId());
         model.put("markedAnswerId", getModel().markedAnswerId);
         model.put("meAnswered", getModel().answeredProfileId.equals(team.getProfileId()));
     }
 
     public void fillModelAnsweringTimeout(Map<String, Object> model, RivalTeam team) {
-        model.put("status", getModel().status);
+        fillModelStatus(model);
         model.put("correctAnswerId", getModel().findCurrentCorrectAnswerId());
     }
 
     public void fillModelChoosingTaskPropsTimeout(Map<String, Object> model) {
-        model.put("status", getModel().status);
+        fillModelStatus(model);
         fillModelTaskMeta(model);
     }
 
     public void fillModelChoosingTaskProps(Map<String, Object> model, RivalTeam team) {
-        model.put("status", getModel().status);
+        fillModelStatus(model);
         model.put("choosingTaskPropsInterval", Math.max(getModel().endChoosingTaskPropsDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
         model.put("choosingTaskPropsTag", getModel().findChoosingTaskPropsTag());
         model.put("taskId", getModel().currentTaskIndex + 1);
@@ -88,12 +92,12 @@ public abstract class RivalModelFactory {
     }
 
     public void fillModelChosenTaskProps(Map<String, Object> model) {
-        model.put("status", getModel().status);
+        fillModelStatus(model);
         model.put("task", getModel().taskDTOs.get(getModel().currentTaskIndex).toTaskMeta());
     }
 
     public void fillModelClosed(Map<String, Object> model, RivalTeam team) {
-        model.put("status", getModel().status);
+        fillModelStatus(model);
         model.put("isDraw", getModel().draw);
         if (!getModel().draw) {
             model.put("winnerTag", getModel().winner.getTag());

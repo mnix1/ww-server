@@ -12,10 +12,10 @@ public class WisieStateContinueAfterKidnapping extends WisieSkillState {
 
     @Override
     protected void processVoid() {
-        manager.getTeam(manager).getActiveTeamMember().removeDisguise();
+        manager.getWisieMember().removeDisguise();
         manager.getWarManager().sendNewSkillsModel((m, wT) -> {
             WarTeam warTeam = (WarTeam) wT;
-            manager.getWarManager().getModelFactory().fillModelActiveMemberAddOn(m, wT);
+            manager.getModelFactory().fillModelActiveMemberAddOn(m, wT);
             if (warTeam.getProfileId().equals(manager.getOwnedWisie().getProfile().getId())) {
                 warTeam.getTeamSkills().unblockAll();
             }

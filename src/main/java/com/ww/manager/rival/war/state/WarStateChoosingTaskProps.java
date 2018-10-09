@@ -10,6 +10,9 @@ public class WarStateChoosingTaskProps extends StateChoosingTaskProps {
     public WarStateChoosingTaskProps(WarManager manager) {
         super(manager);
     }
+    public WarStateChoosingTaskProps(WarManager manager, boolean forceRandom) {
+        super(manager, forceRandom);
+    }
 
     @Override
     protected Flowable<Long> processFlowable() {

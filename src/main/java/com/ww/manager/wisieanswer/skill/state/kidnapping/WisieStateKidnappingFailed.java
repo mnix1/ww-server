@@ -30,7 +30,7 @@ public class WisieStateKidnappingFailed extends WisieSkillState {
         opponent.addAction(WisieAnswerAction.WAS_NOT_KIDNAPPED);
         manager.getWarManager().sendNewSkillsModel((m, wT) -> {
             WarTeam warTeam = (WarTeam) wT;
-            manager.getWarManager().getModelFactory().fillModelWisieActions(m, wT);
+            manager.getModelFactory().fillModelWisieActions(m, wT);
             if(warTeam.getProfileId().equals(opponent.getOwnedWisie().getProfile().getId())){
                 warTeam.getTeamSkills().unblockAll();
             }

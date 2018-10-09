@@ -36,10 +36,10 @@ public class WisieStateCoverallReady extends WisieSkillState {
     protected Flowable<Long> processFlowable() {
         manager.addAction(WisieAnswerAction.COVERALL_READY);
         opponentManager.getTeam(opponentManager).getTeamSkills().blockAll();
-        manager.getTeam(manager).getActiveTeamMember().addDisguise(DisguiseType.COVERALL);
+        manager.getWisieMember().addDisguise(DisguiseType.COVERALL);
         manager.getWarManager().sendNewSkillsModel((m, wT) -> {
-            manager.getWarManager().getModelFactory().fillModelActiveMemberAddOn(m, wT);
-            manager.getWarManager().getModelFactory().fillModelWisieActions(m, wT);
+            manager.getModelFactory().fillModelActiveMemberAddOn(m, wT);
+            manager.getModelFactory().fillModelWisieActions(m, wT);
         });
         maybeRunOpponentPrevState();
         interval = (long) (randomDouble(2 - manager.getWarWisie().getSpeedF1() - manager.getWarWisie().getReflexF1(),

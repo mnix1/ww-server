@@ -46,6 +46,9 @@ public enum WisieAnswerAction {
     NEED_GO_TO_TOILET,
 
 //SKILLS
+    //CHANGE_TASK
+    WANTS_TO_CHANGE_TASK,
+    SUBMITS_APPLICATION,
     //HINT
     HINT_RECEIVED,
     THINKING_IF_USE_HINT,

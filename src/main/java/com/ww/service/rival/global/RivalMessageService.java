@@ -33,6 +33,7 @@ public class RivalMessageService {
     public static final String GHOST = "GHOST";
     public static final String PIZZA = "PIZZA";
     public static final String COVERALL = "COVERALL";
+    public static final String CHANGE_TASK = "CHANGE_TASK";
 
     @Autowired
     private ProfileConnectionService profileConnectionService;
