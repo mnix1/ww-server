@@ -13,6 +13,8 @@ import java.util.stream.IntStream;
 
 @Service
 public class RivalClassificationService {
+    public static final int CLASSIFICATION_POSITIONS_COUNT = 10;
+
     @Autowired
     private ProfileService profileService;
 
@@ -21,7 +23,7 @@ public class RivalClassificationService {
         List<Profile> profiles = profileService.classification(type);
         return IntStream.range(0, profiles.size())
                 .mapToObj(value -> new ClassificationProfileDTO(profiles.get(value), type, (long) value + 1))
-                .filter(value -> value.getPosition() <= 20 || value.getTag().equals(profileTag))
+                .filter(value -> value.getPosition() <= CLASSIFICATION_POSITIONS_COUNT || value.getTag().equals(profileTag))
                 .collect(Collectors.toList());
     }
 }

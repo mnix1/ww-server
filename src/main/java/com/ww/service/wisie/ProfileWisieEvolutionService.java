@@ -2,6 +2,7 @@ package com.ww.service.wisie;
 
 import com.ww.helper.WisieHelper;
 import com.ww.model.constant.Category;
+import com.ww.model.constant.Skill;
 import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.container.Resources;
@@ -103,8 +104,33 @@ public class ProfileWisieEvolutionService {
         return putSuccessCode(model);
     }
 
+    public synchronized Map<String, Object> changeSkill(Long profileWisieId, String skill) {
+        Map<String, Object> model = new HashMap<>();
+        Profile profile = profileService.getProfile();
+        Optional<ProfileWisie> optionalProfileWisie = profileWisieService.findByIdAndProfileId(profileWisieId, profile.getId());
+        if (!optionalProfileWisie.isPresent()) {
+            return putErrorCode(model);
+        }
+        ProfileWisie profileWisie = optionalProfileWisie.get();
+        Resources changeSkillCostResources = changeSkillCostResources(profileWisie);
+        if (!profile.hasEnoughResources(changeSkillCostResources)) {
+            return putErrorCode(model);
+        }
+        changeSkill(profileWisie, skill == null ? null : Skill.fromString(skill));
+        profile.subtractResources(changeSkillCostResources);
+        profileService.save(profile);
+        profileWisieService.save(profileWisie);
+        model.put("profileWisie", new ProfileWisieDTO(profileWisie));
+        model.put("profile", new ProfileResourcesDTO(profile));
+        return putSuccessCode(model);
+    }
+
     private Resources changeHobbyCostResources(ProfileWisie profleWisie) {
         return new Resources(null, (long) profleWisie.getHobbies().size() * 20, null, (long) profleWisie.getHobbies().size() * 10);
+    }
+
+    private Resources changeSkillCostResources(ProfileWisie profleWisie) {
+        return new Resources(null, 50L, null, 25L);
     }
 
     private void changeHobby(ProfileWisie profileWisie, Category hobby) {
@@ -124,6 +150,20 @@ public class ProfileWisieEvolutionService {
                 continue;
             }
             added = hobbies.add(newHobby);
+        }
+    }
+
+    private void changeSkill(ProfileWisie profileWisie, Skill skill) {
+        Set<Skill> skills = profileWisie.getSkills();
+        List<Skill> skillList = new ArrayList<>(skills);
+        skills.remove(skillList.get(0));
+        boolean added = false;
+        while (!added) {
+            Skill newSkill = Skill.random();
+            if (newSkill == skill) {
+                continue;
+            }
+            added = skills.add(newSkill);
         }
     }
 

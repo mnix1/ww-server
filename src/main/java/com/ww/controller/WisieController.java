@@ -76,4 +76,14 @@ public class WisieController {
         return profileWisieEvolutionService.changeHobby(profileWisieId,hobby);
     }
 
+    @RequestMapping(value = "/changeSkill", method = RequestMethod.POST)
+    public Map<String, Object> changeSkill(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("id") || !payload.containsKey("skill")) {
+            throw new IllegalArgumentException();
+        }
+        String skill = (String) payload.get("skill");
+        Long profileWisieId = ((Integer) payload.get("id")).longValue();
+        return profileWisieEvolutionService.changeSkill(profileWisieId,skill);
+    }
+
 }
