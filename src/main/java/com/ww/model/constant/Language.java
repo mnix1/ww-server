@@ -3,7 +3,8 @@ package com.ww.model.constant;
 public enum Language {
     POLISH,
     ENGLISH,
-    ALL;
+    NONE,
+    NO_COMMON;
 
     public static Language fromLocale(String locale) {
         if (locale.equals("pl")) {
@@ -13,10 +14,10 @@ public enum Language {
     }
 
     public static boolean addPolish(Language lang) {
-        return lang == POLISH || lang == ALL;
+        return lang == POLISH;
     }
 
     public static boolean addEnglish(Language lang) {
-        return lang == ENGLISH || lang == ALL;
+        return lang == ENGLISH || lang == NO_COMMON;
     }
 }

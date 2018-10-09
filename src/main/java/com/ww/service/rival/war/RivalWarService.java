@@ -1,6 +1,7 @@
 package com.ww.service.rival.war;
 
 import com.ww.model.constant.Category;
+import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
@@ -34,8 +35,8 @@ public class RivalWarService extends RivalService {
     }
 
     @Override
-    public Question prepareQuestion(Category category, DifficultyLevel difficultyLevel) {
-        Question question = super.prepareQuestion(category, difficultyLevel);
+    public Question prepareQuestion(Category category, DifficultyLevel difficultyLevel, Language language) {
+        Question question = super.prepareQuestion(category, difficultyLevel, language);
         initTaskWisdomAttributes(question);
         return question;
     }

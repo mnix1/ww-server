@@ -1,6 +1,7 @@
 package com.ww.service.rival.practise;
 
 import com.ww.model.constant.Category;
+import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.practise.PractiseResult;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.dto.rival.task.PractiseDTO;
@@ -36,7 +37,8 @@ public class PractiseService {
     private ProfileService profileService;
 
     public PractiseDTO start(Category category, DifficultyLevel difficultyLevel) {
-        Question question = taskService.generateQuestion(category, difficultyLevel);
+        Language language = profileService.getProfileLanguage();
+        Question question = taskService.generateQuestion(category, difficultyLevel, language);
         TaskDTO taskDTO = taskRendererService.prepareTaskDTO(question);
         Practise practise = create(question);
         return new PractiseDTO(practise, taskDTO);

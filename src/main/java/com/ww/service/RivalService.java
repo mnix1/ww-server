@@ -2,6 +2,7 @@ package com.ww.service;
 
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.constant.Category;
+import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.container.rival.RivalModel;
 import com.ww.model.container.rival.RivalTeam;
@@ -61,8 +62,8 @@ public class RivalService {
         // TODO STORE RESULT
     }
 
-    public Question prepareQuestion(Category category, DifficultyLevel difficultyLevel) {
-        return taskGenerateService.generate(category, difficultyLevel);
+    public Question prepareQuestion(Category category, DifficultyLevel difficultyLevel, Language language) {
+        return taskGenerateService.generate(category, difficultyLevel, language);
     }
 
     public TaskDTO prepareTaskDTO(Question question) {

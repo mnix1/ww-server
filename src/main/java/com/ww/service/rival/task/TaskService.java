@@ -1,6 +1,7 @@
 package com.ww.service.rival.task;
 
 import com.ww.model.constant.Category;
+import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.entity.outside.rival.task.Answer;
 import com.ww.model.entity.outside.rival.task.Question;
@@ -29,20 +30,8 @@ public class TaskService {
     @Autowired
     private TaskWisdomAttributeRepository taskWisdomAttributeRepository;
 
-    public List<Question> generateQuestions(List<Category> categories) {
-        return generateQuestions(categories, DifficultyLevel.random());
-    }
-
-    public List<Question> generateQuestions(List<Category> categories, DifficultyLevel difficultyLevel) {
-        List<Question> questions = categories.stream()
-                .map(category -> taskGenerateService.generate(category, difficultyLevel))
-                .collect(Collectors.toList());
-        save(questions);
-        return questions;
-    }
-
-    public Question generateQuestion(Category category, DifficultyLevel difficultyLevel) {
-        Question question = taskGenerateService.generate(category, difficultyLevel);
+    public Question generateQuestion(Category category, DifficultyLevel difficultyLevel, Language language) {
+        Question question = taskGenerateService.generate(category, difficultyLevel, language);
         save(question);
         return question;
     }

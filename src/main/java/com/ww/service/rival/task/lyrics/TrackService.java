@@ -24,7 +24,7 @@ public class TrackService {
     private static String LINE = "_L_";
 
     public Boolean addTrack(String author, String name, String url) {
-        return addTrack(author, name, url, Language.ALL);
+        return addTrack(author, name, url, Language.NO_COMMON);
     }
 
     public Boolean addTrack(String author, String name, String url, Language lang) {

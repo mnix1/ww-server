@@ -3,6 +3,7 @@ package com.ww.manager.rival;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.model.constant.Category;
+import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.constant.rival.RivalType;
@@ -54,8 +55,20 @@ public abstract class RivalManager {
         prepareTask(id, Category.random(), DifficultyLevel.random());
     }
 
+    protected Language findQuestionLanguage() {
+        Language creatorLanguage = getModel().getCreatorProfile().getLanguage();
+        Language opponentLanguage = getModel().getOpponentProfile() == null ? getModel().getOpponentProfile().getLanguage() : Language.NONE;
+        if (creatorLanguage == opponentLanguage) {
+            return creatorLanguage;
+        }
+        if (opponentLanguage == Language.NONE) {
+            return creatorLanguage;
+        }
+        return Language.NO_COMMON;
+    }
+
     public void prepareTask(Long id, Category category, DifficultyLevel difficultyLevel) {
-        Question question = rivalService.prepareQuestion(category, difficultyLevel);
+        Question question = rivalService.prepareQuestion(category, difficultyLevel, findQuestionLanguage());
         question.setId(id);
         question.initAnswerIds();
         TaskDTO taskDTO = rivalService.prepareTaskDTO(question);

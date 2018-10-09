@@ -1,6 +1,7 @@
 package com.ww.service;
 
 import com.ww.model.Session;
+import com.ww.model.constant.Language;
 import com.ww.model.entity.outside.social.Profile;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -15,17 +16,22 @@ public class SessionService implements Serializable {
 
     private Session session = new Session();
 
-    public void storeProfile(Profile profile){
+    public void storeProfile(Profile profile) {
         setProfileId(profile.getId());
         setProfileTag(profile.getTag());
+        setProfileLanguage(profile.getLanguage());
     }
 
-    public void setProfileId(Long profileId) {
+    private void setProfileId(Long profileId) {
         session.setProfileId(profileId);
     }
 
-    public void setProfileTag(String profileTag) {
+    private void setProfileTag(String profileTag) {
         session.setProfileTag(profileTag);
+    }
+
+    private void setProfileLanguage(Language language) {
+        session.setLanguage(language);
     }
 
     public Long getProfileId() {
@@ -36,10 +42,8 @@ public class SessionService implements Serializable {
         return session.getProfileTag();
     }
 
-    public void checkForProfileId(Long profileId) throws IllegalAccessException {
-        if (!getProfileId().equals(profileId)) {
-            throw new IllegalAccessException("Wrong profileId");
-        }
+    public Language getProfileLanguage() {
+        return session.getLanguage();
     }
 
 }

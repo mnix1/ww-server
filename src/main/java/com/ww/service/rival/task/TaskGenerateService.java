@@ -59,13 +59,13 @@ public class TaskGenerateService {
     @Autowired
     TaskTypeRepository taskTypeRepository;
 
-    public Question generate(Category category, DifficultyLevel difficultyLevel) {
+    public Question generate(Category category, DifficultyLevel difficultyLevel, Language language) {
         if (category == Category.RANDOM) {
             category = Category.random();
         }
         TaskType taskType = findProperTaskType(category, difficultyLevel);
         if (category == Category.LYRICS) {
-            return lyricsTaskService.generate(taskType, difficultyLevel, Language.ALL);
+            return lyricsTaskService.generate(taskType, difficultyLevel, language);
         }
         if (category == Category.COUNTRY) {
             return countryTaskService.generate(taskType, difficultyLevel);

@@ -88,7 +88,7 @@ public class InitService {
         logger.debug("INITIALIZING initAutos");
         initAutoService.initAutos();
 
-        logger.debug("ALL INITIALIZED");
+        logger.debug("NO_COMMON INITIALIZED");
     }
 
     public void initMusicTracks() {

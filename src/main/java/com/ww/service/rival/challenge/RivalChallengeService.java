@@ -3,6 +3,7 @@ package com.ww.service.rival.challenge;
 import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.challenge.ChallengeManager;
 import com.ww.model.constant.Category;
+import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.challenge.ChallengeProfileStatus;
@@ -54,12 +55,16 @@ public class RivalChallengeService extends RivalWarService {
         if (challengeQuestions.size() > taskIndex) {
             return challengeQuestions.get(taskIndex).getQuestion();
         }
-        Question question = getTaskGenerateService().generate(category, difficultyLevel);
+        Question question = getTaskGenerateService().generate(category, difficultyLevel, findQuestionLanguage(challengeProfile));
         getTaskService().save(question);
         Challenge challenge = challengeProfile.getChallenge();
         ChallengeQuestion challengeQuestion = new ChallengeQuestion(challenge, question);
         challengeQuestionRepository.save(challengeQuestion);
         return question;
+    }
+
+    protected Language findQuestionLanguage(ChallengeProfile challengeProfile){
+        return challengeProfile.getProfile().getLanguage();
     }
 
     private void sortChallengeQuestions(List<ChallengeQuestion> challengeQuestions) {

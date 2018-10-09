@@ -28,7 +28,7 @@ public class Profile {
     private String tag;
     private String name;
     private WisorType wisorType;
-    private Language language;
+    private Language language = Language.NONE;
     private Long level;
     private Long experience;
     private Long gold;
