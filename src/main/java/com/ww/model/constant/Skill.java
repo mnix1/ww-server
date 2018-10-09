@@ -11,7 +11,6 @@ public enum Skill {
     HINT,
     WATER_PISTOL,
     LIFEBUOY,
-//    TASK_CHANGE,
     KIDNAPPING,
     GHOST,
     COVERALL,
