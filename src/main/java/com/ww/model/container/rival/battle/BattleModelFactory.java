@@ -33,8 +33,8 @@ public class BattleModelFactory extends RivalModelFactory {
         model.put("newOpponentScore", this.model.getTeams().opponentTeam(profileContainer.getProfileId()).getScore());
     }
 
-    public void fillModelChoosingTaskProps(Map<String, Object> model, RivalTeam profileContainer) {
-        super.fillModelChoosingTaskProps(model, profileContainer);
+    public void fillModelChoosingTaskProps(Map<String, Object> model, RivalTeam profileContainer, boolean forceRandom) {
+        super.fillModelChoosingTaskProps(model, profileContainer, forceRandom);
         BattleTeam battleProfileContainer = (BattleTeam) profileContainer;
         model.put("score", battleProfileContainer.getScore());
         model.put("opponentScore", this.model.getTeams().opponentTeam(profileContainer.getProfileId()).getScore());

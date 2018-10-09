@@ -75,12 +75,12 @@ public abstract class RivalModelFactory {
         fillModelTaskMeta(model);
     }
 
-    public void fillModelChoosingTaskProps(Map<String, Object> model, RivalTeam team) {
+    public void fillModelChoosingTaskProps(Map<String, Object> model, RivalTeam team, boolean forceRandom) {
         fillModelStatus(model);
         model.put("choosingTaskPropsInterval", Math.max(getModel().endChoosingTaskPropsDate.toEpochMilli() - Instant.now().toEpochMilli(), 0L));
-        model.put("choosingTaskPropsTag", getModel().findChoosingTaskPropsTag());
+        model.put("choosingTaskPropsTag", forceRandom ? null : getModel().findChoosingTaskPropsTag());
         model.put("taskId", getModel().currentTaskIndex + 1);
-        if (getModel().randomChooseTaskProps()) {
+        if (forceRandom || getModel().randomChooseTaskProps()) {
             fillModelTaskMeta(model);
         } else {
             model.put("task", null);
@@ -131,7 +131,7 @@ public abstract class RivalModelFactory {
         } else if (getModel().status == RivalStatus.CLOSED) {
             fillModelClosed(model, team);
         } else if (getModel().status == RivalStatus.CHOOSING_TASK_PROPS) {
-            fillModelChoosingTaskProps(model, team);
+            fillModelChoosingTaskProps(model, team, false);
         } else if (getModel().status == RivalStatus.CHOOSING_TASK_PROPS_TIMEOUT) {
             fillModelChoosingTaskPropsTimeout(model);
         } else if (getModel().status == RivalStatus.CHOSEN_TASK_PROPS) {
