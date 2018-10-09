@@ -9,5 +9,6 @@ public enum DisguiseType {
     PIZZA_MAN,
     JUDGE,
     NINJA,
+    COVERALL,
     GHOST;
 }

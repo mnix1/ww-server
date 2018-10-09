@@ -11,10 +11,10 @@ public enum Skill {
     HINT,
     WATER_PISTOL,
     LIFEBUOY,
-    //    BLOCK,
 //    TASK_CHANGE,
     KIDNAPPING,
     GHOST,
+    COVERALL,
     PIZZA;
 
     public static List<Skill> list() {

@@ -51,6 +51,9 @@ public enum WisieAnswerAction {
     THINKING_IF_USE_HINT,
     WILL_USE_HINT,
     WONT_USE_HINT,
+    //COVERALL
+    PUTTING_ON_COVERALL,
+    COVERALL_READY,
     //PIZZA
     ORDERING_PIZZA,
     PROPOSING_PIZZA,
