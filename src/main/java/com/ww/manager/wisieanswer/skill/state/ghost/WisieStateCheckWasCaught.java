@@ -1,13 +1,13 @@
 package com.ww.manager.wisieanswer.skill.state.ghost;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
-import com.ww.manager.wisieanswer.state.WisieState;
+import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 
-public class WisieStateCheckWasCaught extends WisieState {
+public class WisieStateCheckWasCaught extends WisieSkillState {
     private boolean scareSuccess;
 
     private Boolean caught;

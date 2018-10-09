@@ -1,7 +1,7 @@
 package com.ww.manager.wisieanswer.skill.state.hint;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
-import com.ww.manager.wisieanswer.state.WisieState;
+import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import com.ww.model.entity.outside.rival.task.Answer;
 
@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import static com.ww.helper.RandomHelper.randomDouble;
 import static com.ww.helper.RandomHelper.randomElement;
 
-public class WisieStateAnsweringNoUseHint extends WisieState {
+public class WisieStateAnsweringNoUseHint extends WisieSkillState {
     private Long hintAnswerId;
 
     private Boolean correctAnswer;

@@ -1,9 +1,9 @@
 package com.ww.manager.wisieanswer.skill.state.waterpistol;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
-import com.ww.manager.wisieanswer.state.WisieState;
+import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
 
-public class WisieStateCleaned extends WisieState {
+public class WisieStateCleaned extends WisieSkillState {
     public WisieStateCleaned(WisieAnswerManager manager) {
         super(manager, STATE_TYPE_VOID);
     }

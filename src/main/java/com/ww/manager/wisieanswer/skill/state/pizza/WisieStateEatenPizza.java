@@ -1,7 +1,7 @@
 package com.ww.manager.wisieanswer.skill.state.pizza;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
-import com.ww.manager.wisieanswer.state.WisieState;
+import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
 import io.reactivex.Flowable;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +12,7 @@ import static com.ww.helper.RandomHelper.randomDouble;
 
 @Getter
 @Setter
-public class WisieStateEatenPizza extends WisieState {
+public class WisieStateEatenPizza extends WisieSkillState {
     private Long interval;
 
     public WisieStateEatenPizza(WisieAnswerManager manager) {

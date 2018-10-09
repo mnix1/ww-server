@@ -1,7 +1,7 @@
 package com.ww.manager.wisieanswer.skill.state.hint;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
-import com.ww.manager.wisieanswer.state.WisieState;
+import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import io.reactivex.Flowable;
 
@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 
-public class WisieStateDecidedIfUseHint extends WisieState {
+public class WisieStateDecidedIfUseHint extends WisieSkillState {
     private WisieAnswerAction action;
     private Long interval;
 

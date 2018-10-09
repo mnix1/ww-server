@@ -1,7 +1,7 @@
 package com.ww.manager.wisieanswer.skill.state.ghost;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
-import com.ww.manager.wisieanswer.state.WisieState;
+import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import com.ww.model.container.rival.war.WarTeam;
 import io.reactivex.Flowable;
@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 
-public class WisieStateWasNotCaught extends WisieState {
+public class WisieStateWasNotCaught extends WisieSkillState {
     private Long interval;
 
     public WisieStateWasNotCaught(WisieAnswerManager manager) {

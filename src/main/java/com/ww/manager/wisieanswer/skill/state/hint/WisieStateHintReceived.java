@@ -1,7 +1,7 @@
 package com.ww.manager.wisieanswer.skill.state.hint;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
-import com.ww.manager.wisieanswer.state.WisieState;
+import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import io.reactivex.Flowable;
 import org.slf4j.Logger;
@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 
-public class WisieStateHintReceived extends WisieState {
+public class WisieStateHintReceived extends WisieSkillState {
     private Long interval;
 
     public WisieStateHintReceived(WisieAnswerManager manager) {

@@ -32,6 +32,7 @@ public class RivalMessageService {
     public static final String KIDNAPPING = "KIDNAPPING";
     public static final String GHOST = "GHOST";
     public static final String PIZZA = "PIZZA";
+    public static final String COVERALL = "COVERALL";
 
     @Autowired
     private ProfileConnectionService profileConnectionService;

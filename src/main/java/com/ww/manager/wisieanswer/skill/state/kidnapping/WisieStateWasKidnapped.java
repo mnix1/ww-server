@@ -1,12 +1,12 @@
 package com.ww.manager.wisieanswer.skill.state.kidnapping;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
-import com.ww.manager.wisieanswer.state.WisieState;
+import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class WisieStateWasKidnapped extends WisieState {
+public class WisieStateWasKidnapped extends WisieSkillState {
     public WisieStateWasKidnapped(WisieAnswerManager manager) {
         super(manager, STATE_TYPE_VOID);
     }

@@ -1,8 +1,8 @@
 package com.ww.manager.wisieanswer;
 
 import com.ww.manager.AbstractFlow;
-import com.ww.manager.AbstractState;
 import com.ww.manager.wisieanswer.skill.*;
+import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
 import com.ww.manager.wisieanswer.state.WisieState;
 import com.ww.manager.wisieanswer.state.multiphase.WisieStateCheckNoConcentration;
 import com.ww.manager.wisieanswer.state.multiphase.WisieStateLostConcentration;
@@ -59,6 +59,11 @@ public class WisieAnswerFlow extends AbstractFlow {
     }
 
     public synchronized WisieState addState(WisieState state) {
+        super.addState(state);
+        return state;
+    }
+
+    public synchronized WisieSkillState addSkillState(WisieSkillState state) {
         super.addState(state);
         return state;
     }

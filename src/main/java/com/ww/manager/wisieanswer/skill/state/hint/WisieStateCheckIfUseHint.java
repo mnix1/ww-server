@@ -1,12 +1,12 @@
 package com.ww.manager.wisieanswer.skill.state.hint;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
-import com.ww.manager.wisieanswer.state.WisieState;
+import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 
-public class WisieStateCheckIfUseHint extends WisieState {
+public class WisieStateCheckIfUseHint extends WisieSkillState {
     private boolean hintCorrect;
 
     private WisieAnswerAction action;

@@ -1,10 +1,10 @@
 package com.ww.manager.wisieanswer.skill.state.hint;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
-import com.ww.manager.wisieanswer.state.WisieState;
+import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 
-public class WisieStateAnsweringUseHint extends WisieState {
+public class WisieStateAnsweringUseHint extends WisieSkillState {
     private boolean hintCorrect;
     private Long hintAnswerId;
 

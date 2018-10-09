@@ -1,14 +1,14 @@
 package com.ww.manager.wisieanswer.skill.state.kidnapping;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
-import com.ww.manager.wisieanswer.state.WisieState;
+import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
 import com.ww.model.constant.wisie.DisguiseType;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import io.reactivex.Flowable;
 
 import java.util.concurrent.TimeUnit;
 
-public class WisieStateKidnappingSucceeded extends WisieState {
+public class WisieStateKidnappingSucceeded extends WisieSkillState {
     private WisieAnswerManager opponent;
     private Long interval;
 

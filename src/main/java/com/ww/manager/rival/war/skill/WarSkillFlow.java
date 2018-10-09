@@ -33,6 +33,8 @@ public class WarSkillFlow {
             ghost(profileId);
         } else if (id.equals(PIZZA) && status == RivalStatus.ANSWERING) {
             pizza(profileId);
+        } else if (id.equals(COVERALL) && status == RivalStatus.ANSWERING) {
+            coverall(profileId);
         } else {
             return false;
         }
@@ -61,5 +63,8 @@ public class WarSkillFlow {
 
     public synchronized void pizza(Long profileId) {
         new WarStatePizzaUsed(manager, profileId).startVoid();
+    }
+    public synchronized void coverall(Long profileId) {
+        new WarStateCoverallUsed(manager, profileId).startVoid();
     }
 }
