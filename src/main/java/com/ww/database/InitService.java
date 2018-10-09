@@ -99,6 +99,22 @@ public class InitService {
         trackService.addTrack("Marek Grechuta", "Dni których nie znamy", "https://ising.pl/marek-grechuta-dni-ktorych-nie-znamy-tekst", Language.POLISH);
         trackService.addTrack("Myslovitz", "Długość dźwięku samotności", "https://ising.pl/myslovitz-dlugosc-dzwieku-samotnosci-tekst", Language.POLISH);
         trackService.addTrack("Lady Pank", "Warszawa", "https://ising.pl/lady-pank-stacja-warszawa-tekst", Language.POLISH);
+        trackService.addTrack("Beata", "Upiłam się Tobą", "https://ising.pl/beata-upilam-sie-toba-tekst", Language.POLISH);
+        trackService.addTrack("Szymon Wydra & Carpe Diem", "Życie jak poemat", "https://ising.pl/szymon-wydra-and-carpe-diem-zycie-jak-poemat-tekst", Language.POLISH);
+        trackService.addTrack("Szymon Wydra & Carpe Diem", "Jak ja jej to powiem", "https://ising.pl/szymon-wydra-jak-ja-jej-to-powiem-tekst", Language.POLISH);
+        trackService.addTrack("Dawid Podsiadło", "Nieznajomy", "https://ising.pl/dawid-podsiadlo-nieznajomy-tekst", Language.POLISH);
+        trackService.addTrack("Dawid Podsiadło", "W dobrą stronę", "https://ising.pl/dawid-podsiadlo-w-dobra-strone-tekst", Language.POLISH);
+        trackService.addTrack("Dawid Podsiadło", "Pastempomat", "https://ising.pl/dawid-podsiadlo-pastempomat-tekst", Language.POLISH);
+        trackService.addTrack("Dawid Podsiadło", "Małomiasteczkowy", "https://ising.pl/dawid-podsiadlo-malomiasteczkowy-tekst", Language.POLISH);
+        trackService.addTrack("Dawid Podsiadło", "Trójkąty i kwadraty", "https://ising.pl/dawid-podsiadlo-trojkaty-i-kwadraty-tekst", Language.POLISH);
+
+        trackService.addTrack("The Beatles", "All You Need Is Love", "https://ising.pl/the-beatles-all-you-need-is-love-tekst", Language.ENGLISH);
+        trackService.addTrack("The Beatles", "Hey Jude", "https://ising.pl/the-beatles-hey-jude-tekst", Language.ENGLISH);
+        trackService.addTrack("The Beatles", "Yesterday", "https://ising.pl/the-beatles-yesterday-tekst", Language.ENGLISH);
+        trackService.addTrack("Elvis Presley", "Love Me Tender", "https://ising.pl/elvis-presley-love-me-tender-tekst", Language.ENGLISH);
+        trackService.addTrack("Eric Clapton", "Layla", "https://ising.pl/eric-clapton-layla-tekst", Language.ENGLISH);
+        trackService.addTrack("Coldplay", "Hymn for the Weekend", "https://ising.pl/coldplay-hymn-for-the-weekend-tekst", Language.ENGLISH);
+        trackService.addTrack("Coldplay", "Paradise", "https://ising.pl/coldplay-paradise-tekst", Language.ENGLISH);
     }
 
     public void initGeographyCountries() {

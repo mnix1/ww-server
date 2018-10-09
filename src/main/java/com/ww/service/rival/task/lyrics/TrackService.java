@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 
-import static com.ww.helper.FileHelper.getResource;
-import static com.ww.helper.FileHelper.readFile;
-import static com.ww.helper.FileHelper.saveToFile;
+import static com.ww.helper.FileHelper.*;
 import static com.ww.helper.NetworkHelper.downloadContent;
 
 @Service
@@ -22,10 +20,6 @@ public class TrackService {
 
     private static String VERSE = "_V_";
     private static String LINE = "_L_";
-
-    public Boolean addTrack(String author, String name, String url) {
-        return addTrack(author, name, url, Language.ENGLISH);
-    }
 
     public Boolean addTrack(String author, String name, String url, Language lang) {
         Track track = new Track();
@@ -97,7 +91,12 @@ public class TrackService {
                 .replaceAll("<br >\r\n[ ]*<br >\r\n", VERSE)
                 .replaceAll("<br >\r\n", LINE)
                 .replaceAll("<br >\n", LINE)
-                .replaceAll("<br >", LINE);
+                .replaceAll("<br >", LINE)
+                .replaceAll(" " + LINE, LINE)
+                .replaceAll(LINE + " ", LINE)
+                .replaceAll(" " + VERSE, VERSE)
+                .replaceAll(VERSE + " ", VERSE)
+                ;
     }
 
     //    private String transformContentGroove(String content) {

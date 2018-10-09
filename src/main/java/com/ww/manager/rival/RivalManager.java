@@ -57,7 +57,7 @@ public abstract class RivalManager {
 
     protected Language findQuestionLanguage() {
         Language creatorLanguage = getModel().getCreatorProfile().getLanguage();
-        Language opponentLanguage = getModel().getOpponentProfile() == null ? getModel().getOpponentProfile().getLanguage() : Language.NONE;
+        Language opponentLanguage = getModel().getOpponentProfile() == null ? Language.NONE : getModel().getOpponentProfile().getLanguage();
         if (creatorLanguage == opponentLanguage) {
             return creatorLanguage;
         }
