@@ -33,7 +33,7 @@ public class LyricsTaskService {
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, Language language) {
         LyricsTaskTypeValue typeValue = LyricsTaskTypeValue.valueOf(type.getValue());
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
-        int answersCount = DifficultyLevel.answersCount(remainedDifficulty);
+        int answersCount = Math.min(6, DifficultyLevel.answersCount(remainedDifficulty));
         if (language != Language.POLISH) {
             language = Language.ENGLISH;
         }
