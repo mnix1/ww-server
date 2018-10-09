@@ -26,7 +26,7 @@ public class Track {
     private String url;
     @Column(length = 4000)
     private String content;
-    private Language lang;
+    private Language language;
 
     public String getContentResourcePath() {
         return "task/music-track-content/" + replaceAllNonAlphaumeric(author) + "_" + replaceAllNonAlphaumeric(name) + ".txt";

@@ -24,24 +24,10 @@ public class MusicTaskController {
     @RequestMapping(value = "/addTrack", method = RequestMethod.GET)
     public Map addTrack(@RequestParam String author, @RequestParam String name, @RequestParam String url, @RequestParam(required = false) Language lang) {
         if (lang == null) {
-            lang = Language.NO_COMMON;
+            lang = Language.ENGLISH;
         }
         Map<String, Object> model = new HashMap<>();
         model.put("result", trackService.addTrack(author, name, url, lang));
         return model;
     }
-
-//    @RequestMapping(value = "/generate", method = RequestMethod.GET)
-//    public Map generate(@RequestParam(required = false) Language lang, @RequestParam(required = false) LyricsTaskTypeValue type) {
-//        if (lang == null) {
-//            lang = Language.NO_COMMON;
-//        }
-//        if (type == null) {
-//            type = LyricsTaskTypeValue.random();
-//        }
-//        Map<String, Object> model = new HashMap<>();
-//        model.put("question", musicTaskService.generate(lang, type));
-//        return model;
-//    }
-
 }

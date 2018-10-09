@@ -24,7 +24,7 @@ public class TrackService {
     private static String LINE = "_L_";
 
     public Boolean addTrack(String author, String name, String url) {
-        return addTrack(author, name, url, Language.NO_COMMON);
+        return addTrack(author, name, url, Language.ENGLISH);
     }
 
     public Boolean addTrack(String author, String name, String url, Language lang) {
@@ -34,7 +34,7 @@ public class TrackService {
         track.setUrl(url);
         TrackSource source = TrackSource.fromUrl(url);
         track.setSource(source);
-        track.setLang(lang);
+        track.setLanguage(lang);
         String content = loadOrDownloadContent(track);
         track.setContent(content);
         trackRepository.save(track);

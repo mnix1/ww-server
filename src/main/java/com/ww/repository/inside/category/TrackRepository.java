@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface TrackRepository extends CrudRepository<Track, Long> {
-    List<Track> findAllByLang(Language lang);
+    List<Track> findAllByLanguage(Language lang);
 }

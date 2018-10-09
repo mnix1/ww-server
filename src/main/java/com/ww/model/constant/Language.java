@@ -18,6 +18,6 @@ public enum Language {
     }
 
     public static boolean addEnglish(Language lang) {
-        return lang == ENGLISH || lang == NO_COMMON;
+        return lang == ENGLISH || lang == NO_COMMON || lang == NONE;
     }
 }

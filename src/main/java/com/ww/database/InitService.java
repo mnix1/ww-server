@@ -1,5 +1,6 @@
 package com.ww.database;
 
+import com.ww.model.constant.Language;
 import com.ww.service.rival.task.country.CountryService;
 import com.ww.service.rival.task.element.ElementService;
 import com.ww.service.rival.task.lyrics.TrackService;
@@ -88,16 +89,16 @@ public class InitService {
         logger.debug("INITIALIZING initAutos");
         initAutoService.initAutos();
 
-        logger.debug("NO_COMMON INITIALIZED");
+        logger.debug("ALL INITIALIZED");
     }
 
     public void initMusicTracks() {
-        trackService.addTrack("Łzy", "Agnieszka", "http://www.tekstowo.pl/piosenka,Lzy,agnieszka.html");
-        trackService.addTrack("Hej", "Teksański", "https://ising.pl/hey-teksanski-tekst");
-        trackService.addTrack("Ich Troje", "Zawsze z Tobą chciałbym być", "https://ising.pl/ich-troje-zawsze-z-toba-chcialbym-byc-przez-miesiac-tekst");
-        trackService.addTrack("Marek Grechuta", "Dni których nie znamy", "https://ising.pl/marek-grechuta-dni-ktorych-nie-znamy-tekst");
-        trackService.addTrack("Myslovitz", "Długość dźwięku samotności", "https://ising.pl/myslovitz-dlugosc-dzwieku-samotnosci-tekst");
-        trackService.addTrack("Lady Pank", "Warszawa", "https://ising.pl/lady-pank-stacja-warszawa-tekst");
+        trackService.addTrack("Łzy", "Agnieszka", "http://www.tekstowo.pl/piosenka,Lzy,agnieszka.html", Language.POLISH);
+        trackService.addTrack("Hej", "Teksański", "https://ising.pl/hey-teksanski-tekst", Language.POLISH);
+        trackService.addTrack("Ich Troje", "Zawsze z Tobą chciałbym być", "https://ising.pl/ich-troje-zawsze-z-toba-chcialbym-byc-przez-miesiac-tekst", Language.POLISH);
+        trackService.addTrack("Marek Grechuta", "Dni których nie znamy", "https://ising.pl/marek-grechuta-dni-ktorych-nie-znamy-tekst", Language.POLISH);
+        trackService.addTrack("Myslovitz", "Długość dźwięku samotności", "https://ising.pl/myslovitz-dlugosc-dzwieku-samotnosci-tekst", Language.POLISH);
+        trackService.addTrack("Lady Pank", "Warszawa", "https://ising.pl/lady-pank-stacja-warszawa-tekst", Language.POLISH);
     }
 
     public void initGeographyCountries() {

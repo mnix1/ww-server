@@ -3,8 +3,8 @@ package com.ww.service.rival.task.lyrics;
 import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.LyricsTaskTypeValue;
-import com.ww.model.entity.outside.rival.task.Answer;
 import com.ww.model.entity.inside.task.Track;
+import com.ww.model.entity.outside.rival.task.Answer;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskType;
 import com.ww.repository.inside.category.TrackRepository;
@@ -30,11 +30,14 @@ public class LyricsTaskService {
     private static String VERSE = "_V_";
     private static String LINE = "_L_";
 
-    public Question generate(TaskType type, DifficultyLevel difficultyLevel, Language lang) {
+    public Question generate(TaskType type, DifficultyLevel difficultyLevel, Language language) {
         LyricsTaskTypeValue typeValue = LyricsTaskTypeValue.valueOf(type.getValue());
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();
         int answersCount = DifficultyLevel.answersCount(remainedDifficulty);
-        List<Track> tracks = trackRepository.findAllByLang(lang);
+        if (language != Language.POLISH) {
+            language = Language.ENGLISH;
+        }
+        List<Track> tracks = trackRepository.findAllByLanguage(language);
         Track track = randomElement(tracks);
         List<List<String>> verses = trackVerseLineContent(track.getContent());
         Map<String, Integer> allLinesRepeatMap = new HashMap<>();
@@ -71,29 +74,39 @@ public class LyricsTaskService {
                 wrongAnswerIndexes.add(wrongAnswerIndex);
             }
         }
-        Question question = prepareQuestion(type, difficultyLevel, typeValue, track, questionLine, lang);
+        Question question = prepareQuestion(type, difficultyLevel, typeValue, track, questionLine);
         List<Answer> answers = prepareAnswers(allLines.get(correctAnswerIndex), wrongAnswerIndexes.stream().map(i -> allLines.get(i)).collect(Collectors.toList()));
         question.setAnswers(new HashSet<>(answers));
         return question;
     }
 
-    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, LyricsTaskTypeValue typeValue, Track track, String questionLine, Language lang) {
+    private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, LyricsTaskTypeValue typeValue, Track track, String questionLine) {
         Question question = new Question(type, difficultyLevel);
-        if (Language.addPolish(lang)) {
-            String content = "W tekście utworu \"" + track.getName() + "\" zespołu " + track.getAuthor();
-            if (typeValue == LyricsTaskTypeValue.NEXT_LINE) {
-                content += " po wierszu: \"";
-            }
-            if (typeValue == LyricsTaskTypeValue.PREVIOUS_LINE) {
-                content += " przed wierszem: \"";
-            }
-            content += questionLine + "\" występuje wiersz";
-            question.setTextContentPolish(content);
-        }
-        if (Language.addEnglish(lang)) {
-            // TODO add english
-        }
+        question.setTextContentPolish(getContentPolishQuestion(typeValue, track, questionLine));
+        question.setTextContentEnglish(getContentEnglishQuestion(typeValue, track, questionLine));
         return question;
+    }
+
+    private String getContentPolishQuestion(LyricsTaskTypeValue typeValue, Track track, String questionLine) {
+        String content = "W tekście utworu \"" + track.getAuthor() + "\" - \"" + track.getName() + "\"";
+        if (typeValue == LyricsTaskTypeValue.NEXT_LINE) {
+            content += " po wierszu: \"";
+        }
+        if (typeValue == LyricsTaskTypeValue.PREVIOUS_LINE) {
+            content += " przed wierszem: \"";
+        }
+        return content + questionLine + "\" występuje wiersz";
+    }
+
+    private String getContentEnglishQuestion(LyricsTaskTypeValue typeValue, Track track, String questionLine) {
+        String content = "In the song \"" + track.getAuthor() + "\" - \"" + track.getName() + "\"";
+        if (typeValue == LyricsTaskTypeValue.NEXT_LINE) {
+            content += " after song line: \"";
+        }
+        if (typeValue == LyricsTaskTypeValue.PREVIOUS_LINE) {
+            content += " before song line: \"";
+        }
+        return content + questionLine + "\" there is";
     }
 
     private List<Answer> prepareAnswers(String correctAnswerLine, List<String> wrongAnswerLines) {
