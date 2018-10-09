@@ -9,7 +9,7 @@ import lombok.Getter;
 public class ActiveAvailableSkill extends AvailableSkill {
 
     protected boolean used = false;
-    protected boolean disabled = false;
+    protected int disabled = 0;
 
     public ActiveAvailableSkill(Skill skill, int count) {
         super(skill, count);
@@ -21,7 +21,7 @@ public class ActiveAvailableSkill extends AvailableSkill {
     }
 
     public boolean getCanUse() {
-        return !disabled && !used && count > 0;
+        return disabled == 0 && !used && count > 0;
     }
 
     public boolean getUsed() {
@@ -29,18 +29,18 @@ public class ActiveAvailableSkill extends AvailableSkill {
     }
 
     public ActiveAvailableSkill disable() {
-        disabled = true;
+        disabled++;
         return this;
     }
 
     public ActiveAvailableSkill enable() {
-        disabled = false;
+        disabled = Math.max(disabled - 1, 0);
         return this;
     }
 
     public ActiveAvailableSkill reset() {
         used = false;
-        enable();
+        disabled = 0;
         return this;
     }
 

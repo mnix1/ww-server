@@ -12,6 +12,6 @@ public class LifebuoyActiveAvailableSkill extends ActiveAvailableSkill {
     }
 
     public boolean getCanUse() {
-        return !disabled && count > 0;
+        return disabled == 0 && count > 0;
     }
 }

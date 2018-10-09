@@ -28,6 +28,8 @@ public class WarTeamSkills implements RivalTeamSkills {
         this.activeSkills.put(Skill.HINT, (ActiveAvailableSkill) SkillBuilder.build(Skill.HINT, count));
         this.activeSkills.put(Skill.WATER_PISTOL, (ActiveAvailableSkill) SkillBuilder.build(Skill.WATER_PISTOL, count));
         this.activeSkills.put(Skill.LIFEBUOY, (ActiveAvailableSkill) SkillBuilder.build(Skill.LIFEBUOY, count));
+        this.activeSkills.put(Skill.PIZZA, (ActiveAvailableSkill) SkillBuilder.build(Skill.PIZZA, count));
+        this.activeSkills.put(Skill.GHOST, (ActiveAvailableSkill) SkillBuilder.build(Skill.GHOST, count));
         initFromWisies(teamMembers);
         skills.putAll(activeSkills);
         skills.putAll(passiveSkills);
