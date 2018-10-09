@@ -111,8 +111,7 @@ public class ProfileService {
         if (user instanceof OAuth2Authentication) {
             Map<String, String> details = (Map<String, String>) ((OAuth2Authentication) user).getUserAuthentication().getDetails();
             String name = details.get("name");
-//            profile = new Profile(authId, name.substring(0, Math.min(name.length(), NAME_MAX_LENGTH)), Language.fromLocale(details.get("locale")));
-            profile = new Profile(authId, name.substring(0, Math.min(name.length(), NAME_MAX_LENGTH)), Language.ENGLISH);
+            profile = new Profile(authId, name.substring(0, Math.min(name.length(), NAME_MAX_LENGTH)), Language.fromLocale(details.get("locale")));
         } else if (user instanceof UsernamePasswordAuthenticationToken) {
             profile = new Profile(authId, authId, Language.POLISH);
         }
