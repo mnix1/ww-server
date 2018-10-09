@@ -3,10 +3,7 @@ package com.ww.manager.rival.war.state;
 import com.ww.manager.AbstractState;
 import com.ww.manager.rival.war.WarManager;
 import lombok.Getter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-@Getter
 public abstract class WarState extends AbstractState {
     protected WarManager manager;
 
@@ -17,7 +14,7 @@ public abstract class WarState extends AbstractState {
 
     @Override
     public String describe() {
-        return "WarState" + super.describe() + ", warManager=" + manager.toString();
+        return "WarState " + super.describe() + ", warManager=" + manager.describe();
     }
 
     @Override

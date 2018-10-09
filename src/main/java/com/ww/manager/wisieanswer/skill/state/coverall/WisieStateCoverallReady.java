@@ -28,8 +28,11 @@ public class WisieStateCoverallReady extends WisieSkillState {
     private void maybeRunOpponentPrevState() {
         AbstractState state = opponentManager.getFlow().lastFlowableState();
         if (state instanceof WisieSkillState) {
-            state.dispose();
-            ((WisieSkillState) state).runPrevState();
+            WisieSkillState wisieSkillState = (WisieSkillState) state;
+            if (wisieSkillState.hasPrevState()) {
+                wisieSkillState.dispose();
+                wisieSkillState.runPrevState();
+            }
         }
     }
 

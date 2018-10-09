@@ -2,6 +2,7 @@ package com.ww.manager.rival;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ww.helper.Describe;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.DifficultyLevel;
@@ -30,7 +31,7 @@ import java.util.Map;
 import static com.ww.helper.EloHelper.*;
 
 @Getter
-public abstract class RivalManager {
+public abstract class RivalManager implements Describe {
     protected static final Logger logger = LoggerFactory.getLogger(RivalManager.class);
 
     protected RivalService rivalService;
@@ -135,10 +136,12 @@ public abstract class RivalManager {
     }
 
     @Override
-    public String toString() {
-        return "RivalManager creatorId=" + getModel().getCreatorProfile().getId()
-                + (getModel().getOpponentProfile() == null ? "" : ", opponentId=" + getModel().getOpponentProfile().getId())
-                + ", status=" + getModel().getStatus();
+    public String describe() {
+        return "class=" + this.getClass().getName()
+                + ", status=" + getModel().getStatus()
+                + ", creatorId=" + getModel().getCreatorProfile().getId()
+                + (getModel().getOpponentProfile() == null ? "" : ", opponentId=" + getModel().getOpponentProfile().getId());
+
     }
 
 }

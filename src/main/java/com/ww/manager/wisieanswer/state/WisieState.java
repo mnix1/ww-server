@@ -5,7 +5,6 @@ import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import lombok.Getter;
 
-@Getter
 public abstract class WisieState extends AbstractState {
     protected WisieAnswerManager manager;
 
@@ -16,7 +15,7 @@ public abstract class WisieState extends AbstractState {
 
     @Override
     public String describe() {
-        return "WisieState" + super.describe() + ", warManager=" + manager.toString();
+        return "WisieState " + super.describe() + ", warManager=" + manager.describe();
     }
 
     @Override
@@ -26,10 +25,11 @@ public abstract class WisieState extends AbstractState {
 
     public WisieAnswerAction startWisieAnswerAction() {
         if (!startIfRunning()) {
+            logger.trace(describe() + " NO startWisieAnswerAction");
             return WisieAnswerAction.NONE;
         }
         WisieAnswerAction result = processWisieAnswerAction();
-        logger.trace("WisieState startWisieAnswerAction end" + describe() + ", result=" + result);
+        logger.trace(describe() + " startWisieAnswerAction, result=" + result);
         return result;
     }
 

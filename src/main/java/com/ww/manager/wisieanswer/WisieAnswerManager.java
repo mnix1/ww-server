@@ -1,6 +1,7 @@
 package com.ww.manager.wisieanswer;
 
 import com.ww.helper.AnswerHelper;
+import com.ww.helper.Describe;
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import com.ww.model.container.rival.war.WarModelFactory;
@@ -19,7 +20,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @Getter
 @Setter
-public class WisieAnswerManager {
+public class WisieAnswerManager implements Describe {
     protected static final Logger logger = LoggerFactory.getLogger(WisieAnswerManager.class);
 
     private boolean running = false;
@@ -42,20 +43,14 @@ public class WisieAnswerManager {
         this.difficulty = AnswerHelper.difficultyCalibration(question) + 1;
         this.answerCount = question.getAnswers().size();
         this.flow = new WisieAnswerFlow(this);
-        logger.trace(toString() +
+        logger.trace("new " + describe() +
                 ", difficulty=" + difficulty +
+                ", questionCategory=" + question.getType().getCategory().name() +
+                ", questionType=" + question.getType().getValue() +
                 ", answerCount=" + answerCount);
         getWarWisie().setQuestion(question);
         getWarWisie().cacheAttributes();
         getWarWisie().cacheHobbies();
-    }
-
-    @Override
-    public String toString() {
-        return "WisieAnswerManager wisieName=" + getOwnedWisie().getWisie().getNamePolish()
-                + ", profileWisieId=" + getOwnedWisie().getId()
-                + ", profileId=" + getOwnedWisie().getProfile().getId()
-                + ", lastAction=" + lastAction().name();
     }
 
     public OwnedWisie getOwnedWisie() {
@@ -77,7 +72,7 @@ public class WisieAnswerManager {
         return (WarTeam) warManager.getTeam(manager.getOwnedWisie().getProfile().getId());
     }
 
-    public WarModelFactory getModelFactory(){
+    public WarModelFactory getModelFactory() {
         return warManager.getModelFactory();
     }
 
@@ -92,4 +87,11 @@ public class WisieAnswerManager {
         });
     }
 
+    @Override
+    public String describe() {
+        return "WisieAnswerManager wisieName=" + getOwnedWisie().getWisie().getNamePolish()
+                + ", profileWisieId=" + getOwnedWisie().getId()
+                + ", profileId=" + getOwnedWisie().getProfile().getId()
+                + ", lastAction=" + lastAction().name();
+    }
 }
