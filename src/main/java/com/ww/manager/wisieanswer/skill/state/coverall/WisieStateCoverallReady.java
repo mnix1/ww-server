@@ -1,5 +1,6 @@
 package com.ww.manager.wisieanswer.skill.state.coverall;
 
+import com.ww.manager.AbstractState;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
 import com.ww.model.constant.wisie.DisguiseType;
@@ -24,6 +25,14 @@ public class WisieStateCoverallReady extends WisieSkillState {
         return super.describe() + ", interval=" + interval;
     }
 
+    private void maybeRunOpponentPrevState() {
+        AbstractState state = opponentManager.getFlow().lastFlowableState();
+        if (state instanceof WisieSkillState) {
+            state.dispose();
+            ((WisieSkillState) state).runPrevState();
+        }
+    }
+
     protected Flowable<Long> processFlowable() {
         manager.addAction(WisieAnswerAction.COVERALL_READY);
         opponentManager.getTeam(opponentManager).getTeamSkills().blockAll();
@@ -32,6 +41,7 @@ public class WisieStateCoverallReady extends WisieSkillState {
             manager.getWarManager().getModelFactory().fillModelActiveMemberAddOn(m, wT);
             manager.getWarManager().getModelFactory().fillModelWisieActions(m, wT);
         });
+        maybeRunOpponentPrevState();
         interval = (long) (randomDouble(2 - manager.getWarWisie().getSpeedF1() - manager.getWarWisie().getReflexF1(),
                 4 - 2 * manager.getWarWisie().getSpeedF1() - 2 * manager.getWarWisie().getReflexF1()) * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);

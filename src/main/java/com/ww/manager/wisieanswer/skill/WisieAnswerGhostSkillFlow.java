@@ -21,7 +21,7 @@ public class WisieAnswerGhostSkillFlow {
 
     private synchronized void phaseGhost(WisieAnswerManager opponent) {
         AbstractState prevState = flow.lastFlowableState();
-        flow.addState(new WisieStatePreparingDisguise(manager)).addOnFlowableEndListener(aLong1 -> {
+        flow.addSkillState(new WisieStatePreparingDisguise(manager)).setPrevState(prevState).addOnFlowableEndListener(aLong1 -> {
             WisieStateTryingToScare ghostTryState = new WisieStateTryingToScare(manager, opponent);
             flow.addState(ghostTryState);
             boolean success = ghostTryState.calculateSuccess();

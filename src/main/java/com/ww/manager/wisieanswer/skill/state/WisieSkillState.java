@@ -17,6 +17,11 @@ public class WisieSkillState extends WisieState {
         return this;
     }
 
+    @Override
+    public boolean isRunning() {
+        return manager.isRunning();
+    }
+
     public void runPrevState(){
         prevState.startFlowableEndListeners();
     }

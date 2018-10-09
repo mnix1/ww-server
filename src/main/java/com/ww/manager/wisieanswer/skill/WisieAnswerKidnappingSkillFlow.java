@@ -21,25 +21,25 @@ public class WisieAnswerKidnappingSkillFlow {
 
     private synchronized void phaseKidnapping(WisieAnswerManager opponent) {
         AbstractState prevState = flow.lastFlowableState();
-        flow.addState(new WisieStatePreparingKidnapping(manager)).addOnFlowableEndListener(aLong1 -> {
-                WisieStateTryingToKidnap kidnapTryState = new WisieStateTryingToKidnap(manager, opponent);
-                flow.addState(kidnapTryState);
-                boolean success = kidnapTryState.calculateSuccess();
-                kidnapTryState.setSuccess(success);
-                kidnapTryState.addOnFlowableEndListener(aLong2 -> {
-                    if (success) {
-                        flow.addState(new WisieStateKidnappingSucceeded(manager, opponent)).addOnFlowableEndListener(aLong3 -> {
-                            manager.getWarManager().getFlow().kidnapped();
+        flow.addSkillState(new WisieStatePreparingKidnapping(manager)).setPrevState(prevState).addOnFlowableEndListener(aLong1 -> {
+            WisieStateTryingToKidnap kidnapTryState = new WisieStateTryingToKidnap(manager, opponent);
+            flow.addState(kidnapTryState);
+            boolean success = kidnapTryState.calculateSuccess();
+            kidnapTryState.setSuccess(success);
+            kidnapTryState.addOnFlowableEndListener(aLong2 -> {
+                if (success) {
+                    flow.addState(new WisieStateKidnappingSucceeded(manager, opponent)).addOnFlowableEndListener(aLong3 -> {
+                        manager.getWarManager().getFlow().kidnapped();
+                    }).startFlowable();
+                } else {
+                    flow.addState(new WisieStateKidnappingFailed(manager, opponent)).addOnFlowableEndListener(aLong3 -> {
+                        flow.addState(new WisieStateChangingClothes(manager)).addOnFlowableEndListener(aLong4 -> {
+                            flow.addState(new WisieStateContinueAfterKidnapping(manager)).startVoid();
+                            prevState.startFlowableEndListeners();
                         }).startFlowable();
-                    } else {
-                        flow.addState(new WisieStateKidnappingFailed(manager, opponent)).addOnFlowableEndListener(aLong3 -> {
-                            flow.addState(new WisieStateChangingClothes(manager)).addOnFlowableEndListener(aLong4 -> {
-                                flow.addState(new WisieStateContinueAfterKidnapping(manager)).startVoid();
-                                prevState.startFlowableEndListeners();
-                            }).startFlowable();
-                        }).startFlowable();
-                    }
-                }).startFlowable();
+                    }).startFlowable();
+                }
+            }).startFlowable();
         }).startFlowable();
     }
 

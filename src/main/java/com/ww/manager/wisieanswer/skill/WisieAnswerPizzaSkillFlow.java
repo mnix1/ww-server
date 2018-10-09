@@ -20,7 +20,7 @@ public class WisieAnswerPizzaSkillFlow {
 
     private synchronized void phasePizza(WisieAnswerManager opponent) {
         AbstractState prevState = flow.lastFlowableState();
-        flow.addState(new WisieStateOrderingPizza(manager)).addOnFlowableEndListener(aLong1 -> {
+        flow.addSkillState(new WisieStateOrderingPizza(manager)).setPrevState(prevState).addOnFlowableEndListener(aLong1 -> {
             WisieStateProposingPizza proposingPizzaState = new WisieStateProposingPizza(manager, opponent);
             AbstractState opponentPrevState = opponent.getFlow().lastFlowableState();
             opponentPrevState.dispose();
