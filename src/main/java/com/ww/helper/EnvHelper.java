@@ -11,6 +11,7 @@ public class EnvHelper {
     public static final String DB_DEV = "dbDev";//only h2
 
     public static final String CREATE_SCHEMA = "createSchema";//can create schema (only local)
+    public static final String UPDATE_SCHEMA = "updateSchema";//can update schema (only local)
     public static final String INIT_DB = "initDb";//init outside db
 
     public static final String SIGN_PROD = "signProd";//with oauth
@@ -40,6 +41,9 @@ public class EnvHelper {
         List<String> profiles = Arrays.asList(env.getActiveProfiles());
         if (profiles.contains(CREATE_SCHEMA)) {
             return "create";
+        }
+        if (profiles.contains(UPDATE_SCHEMA)) {
+            return "update";
         }
         return "none";
     }
