@@ -3,6 +3,7 @@ package com.ww.service.rival.war;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.DifficultyLevel;
+import com.ww.model.container.Resources;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
@@ -27,7 +28,7 @@ public class RivalWarService extends RivalService {
 
     @Override
     public void addRewardFromWin(Profile profile) {
-        getRewardService().addRewardFromWarWin(profile);
+        getRewardService().addSendRewardFromRivalWin(profile, new Resources(2L));
     }
 
     public List<ProfileWisie> getProfileWisies(Profile profile) {

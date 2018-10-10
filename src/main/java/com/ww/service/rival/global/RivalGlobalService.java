@@ -2,11 +2,13 @@ package com.ww.service.rival.global;
 
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.container.ProfileConnection;
+import com.ww.model.container.rival.RivalModel;
 import com.ww.model.entity.outside.rival.Rival;
 import com.ww.repository.outside.rival.RivalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -39,6 +41,12 @@ public class RivalGlobalService {
         }
         RivalManager manager = managerMap.get(profileConnection.getProfileId());
         manager.send(manager.actualModel(profileConnection.getProfileId()), manager.getMessageContent(), profileConnection.getProfileId());
+    }
+
+    @Transactional
+    public void store(RivalModel rivalModel) {
+        Rival rival = new Rival(rivalModel.getType(), rivalModel.getImportance(), rivalModel.getCreatorProfile(), rivalModel.getOpponentProfile(), rivalModel.getDraw(), rivalModel.getWinner());
+        save(rival);
     }
 
     public void save(Rival rival) {

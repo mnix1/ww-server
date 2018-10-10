@@ -2,6 +2,7 @@ package com.ww.model.entity.outside.social;
 
 import com.ww.helper.TagHelper;
 import com.ww.model.constant.Language;
+import com.ww.model.constant.rival.RivalType;
 import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.container.Resources;
 import com.ww.model.entity.outside.book.ProfileBook;
@@ -82,21 +83,6 @@ public class Profile {
         this.id = id;
     }
 
-    public void changeResources(Long gold, Long crystal, Long wisdom, Long elixir) {
-        if (gold != null) {
-            this.gold += gold;
-        }
-        if (crystal != null) {
-            this.crystal += crystal;
-        }
-        if (wisdom != null) {
-            this.wisdom += wisdom;
-        }
-        if (elixir != null) {
-            this.elixir += elixir;
-        }
-    }
-
     public boolean hasEnoughResources(Resources resources) {
         return getResources().hasNotLessThan(resources);
     }
@@ -118,6 +104,38 @@ public class Profile {
 
     public void subtractResources(Resources resources) {
         setResources(getResources().subtract(resources));
+    }
+
+    public void setHalfElo(RivalType type) {
+        setElo(type, getElo(type) / 2);
+    }
+
+    public void setElo(RivalType type, Long value) {
+        if (type == RivalType.BATTLE) {
+            setBattleElo(value);
+        } else if (type == RivalType.WAR) {
+            setWarElo(value);
+        }
+    }
+
+    public void setBattleElo(Long value) {
+        battlePreviousElo = battleElo;
+        battleElo = value;
+    }
+
+    public void setWarElo(Long value) {
+        warPreviousElo = warElo;
+        warElo = value;
+    }
+
+    public Long getElo(RivalType type) {
+        if (type == RivalType.BATTLE) {
+            return battleElo;
+        }
+        if (type == RivalType.WAR) {
+            return warElo;
+        }
+        throw new IllegalArgumentException();
     }
 
     @Override

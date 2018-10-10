@@ -1,5 +1,7 @@
 package com.ww.service.social;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.model.constant.social.FriendStatus;
 import com.ww.model.container.ProfileConnection;
 import com.ww.model.entity.outside.social.Profile;
@@ -78,6 +80,15 @@ public class ProfileConnectionService {
 
     public boolean sendMessage(Long profileId, String msg) {
         return findByProfileId(profileId).map(profileConnection -> profileConnection.sendMessage(msg)).orElse(false);
+    }
+
+    public void send(Map<String, Object> model, Message message, Long profileId) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            sendMessage(profileId, new MessageDTO(message, objectMapper.writeValueAsString(model)).toString());
+        } catch (JsonProcessingException e) {
+            logger.error("Error when sending message");
+        }
     }
 
     public void sendFriendConnectionChanged(String profileTag, Message message) {

@@ -1,19 +1,13 @@
 package com.ww.service.social;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ww.manager.rival.battle.BattleManager;
+import com.ww.model.constant.Grade;
 import com.ww.model.container.Resources;
 import com.ww.model.container.Reward;
 import com.ww.model.entity.outside.book.Book;
 import com.ww.model.entity.outside.social.Profile;
-import com.ww.repository.outside.book.ProfileBookRepository;
 import com.ww.service.book.BookService;
 import com.ww.service.book.ProfileBookService;
 import com.ww.websocket.message.Message;
-import com.ww.websocket.message.MessageDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,21 +16,17 @@ import java.util.Map;
 
 @Service
 public class RewardService {
-    private static final Logger logger = LoggerFactory.getLogger(BattleManager.class);
     @Autowired
     private ProfileService profileService;
     @Autowired
     private ProfileConnectionService profileConnectionService;
     @Autowired
-    ProfileBookRepository profileBookRepository;
+    private BookService bookService;
     @Autowired
-    BookService bookService;
-    @Autowired
-    ProfileBookService profileBookService;
+    private ProfileBookService profileBookService;
 
-    public void addRewardFromBattleWin(Profile winner) {
+    public void addSendRewardFromRivalWin(Profile winner, Resources resources) {
         Reward reward = new Reward();
-        Resources resources = new Resources(1L);
         reward.setResources(resources);
         Profile profile = profileService.getProfile(winner.getId());
         profile.addResources(resources);
@@ -47,38 +37,31 @@ public class RewardService {
         }
         Map<String, Object> model = new HashMap<>();
         reward.writeToMap(model);
-        send(model, Message.REWARD, profile.getId());
+        profileConnectionService.send(model, Message.REWARD, profile.getId());
     }
 
-    public void addRewardFromWarWin(Profile winner) {
+    public void addSendRewardFromSeason(Profile profile, Grade grade) {
+        if (grade.getResources() == null) {
+            profileService.save(profile);
+            return;
+        }
         Reward reward = new Reward();
-        Resources resources = new Resources(2L);
-        reward.setResources(resources);
-        Profile profile = profileService.getProfile(winner.getId());
-        profile.addResources(resources);
+        reward.setResources(grade.getResources());
+        profile.addResources(grade.getResources());
         profileService.save(profile);
-        if (!profileBookService.isProfileBookShelfFull(profile.getId())) {
+        if (grade.getLevel() > 3 && !profileBookService.isProfileBookShelfFull(profile.getId())) {
             Book book = giveBook(profile);
             reward.setBookType(book.getType());
         }
         Map<String, Object> model = new HashMap<>();
         reward.writeToMap(model);
-        send(model, Message.REWARD, profile.getId());
+        profileConnectionService.send(model, Message.REWARD, profile.getId());
     }
 
     public Book giveBook(Profile profile) {
         Book book = bookService.findRandomBook();
         profileBookService.giveBook(profile, book);
         return book;
-    }
-
-    public void send(Map<String, Object> model, Message message, Long profileId) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            profileConnectionService.sendMessage(profileId, new MessageDTO(message, objectMapper.writeValueAsString(model)).toString());
-        } catch (JsonProcessingException e) {
-            logger.error("Error when sending message");
-        }
     }
 
 }

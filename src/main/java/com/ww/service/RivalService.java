@@ -10,7 +10,9 @@ import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.Rival;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
+import com.ww.service.rival.global.RivalClassificationService;
 import com.ww.service.rival.global.RivalGlobalService;
+import com.ww.service.rival.global.RivalSeasonService;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.social.ProfileConnectionService;
@@ -36,10 +38,16 @@ public class RivalService {
     private RewardService rewardService;
 
     @Autowired
+    private RivalSeasonService rivalSeasonService;
+
+    @Autowired
     private ProfileService profileService;
 
     @Autowired
     private RivalGlobalService rivalGlobalService;
+
+    @Autowired
+    private RivalClassificationService rivalClassificationService;
 
     public void addRewardFromWin(Profile winner) {
     }
@@ -52,14 +60,25 @@ public class RivalService {
             rivalGlobalService.remove(profileContainer.getProfileId());
         }
         RivalModel rivalModel = manager.getModel();
-        Boolean isDraw = rivalModel.getDraw();
-        Profile winner = rivalModel.getWinner();
-        Rival rival = new Rival(rivalModel.getType(), rivalModel.getImportance(), rivalModel.getCreatorProfile(), rivalModel.getOpponentProfile(), isDraw, winner);
-        if (!isDraw) {
-            addRewardFromWin(winner);
+        rivalGlobalService.store(rivalModel);
+        if (!rivalModel.getDraw()) {
+            addRewardFromWin(rivalModel.getWinner());
         }
-        rivalGlobalService.save(rival);
-        // TODO STORE RESULT
+        updateSeason(manager);
+    }
+
+    public void updateSeason(RivalManager manager) {
+        if (!manager.getModel().isRanking()) {
+            return;
+        }
+        rivalSeasonService.update(manager.getModel().getType());
+    }
+
+    public void updateProfilesElo(RivalManager manager) {
+        if (!manager.getModel().isRanking()) {
+            return;
+        }
+        rivalClassificationService.updateProfilesElo(manager.getModel());
     }
 
     public Question prepareQuestion(Category category, DifficultyLevel difficultyLevel, Language language) {
