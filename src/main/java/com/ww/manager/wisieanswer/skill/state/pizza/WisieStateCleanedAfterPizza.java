@@ -5,8 +5,6 @@ import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
 import lombok.Getter;
 import lombok.Setter;
 
-import static com.ww.helper.RandomHelper.randomDouble;
-
 @Getter
 @Setter
 public class WisieStateCleanedAfterPizza extends WisieSkillState {

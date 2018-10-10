@@ -23,6 +23,14 @@ public class StateChoosingTaskProps extends State {
         this.forceRandom = forceRandom;
     }
 
+    protected void send(){
+        manager.getModel().getTeams().forEachTeam(team -> {
+            Map<String, Object> model = new HashMap<>();
+            manager.getModelFactory().fillModelChoosingTaskProps(model, team, forceRandom);
+            manager.send(model, manager.getMessageContent(), team.getProfileId());
+        });
+    }
+
     @Override
     protected Flowable<Long> processFlowable() {
         manager.getModel().setStatus(RivalStatus.CHOOSING_TASK_PROPS);
@@ -40,11 +48,7 @@ public class StateChoosingTaskProps extends State {
             interval = manager.getInterval().getChoosingTaskPropsInterval();
         }
         manager.getModel().setEndChoosingTaskPropsDate(Instant.now().plus(interval, ChronoUnit.MILLIS));
-        manager.getModel().getTeams().forEachTeam(team -> {
-            Map<String, Object> model = new HashMap<>();
-            manager.getModelFactory().fillModelChoosingTaskProps(model, team, forceRandom);
-            manager.send(model, manager.getMessageContent(), team.getProfileId());
-        });
+        send();
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

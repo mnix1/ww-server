@@ -15,12 +15,19 @@ public class WarStateChoosingTaskProps extends StateChoosingTaskProps {
     }
 
     @Override
-    protected Flowable<Long> processFlowable() {
+    protected void send(){
         ((WarManager) manager).sendNewSkillsModel((m, wT) -> {
+            manager.getModelFactory().fillModelChoosingTaskProps(m, wT, forceRandom);
+            ((WarManager) manager).getModelFactory().fillModelActiveMemberAddOn(m, wT);
+        });
+    }
+
+    @Override
+    protected Flowable<Long> processFlowable() {
+        manager.getModel().getTeams().forEachTeam(wT -> {
             WarTeam warTeam = (WarTeam) wT;
             warTeam.resetDisguises();
             warTeam.getTeamSkills().resetUsedAll();
-            ((WarManager) manager).getModelFactory().fillModelActiveMemberAddOn(m, wT);
         });
         return super.processFlowable();
     }
