@@ -3,9 +3,7 @@ package com.ww.model.container.rival.war.skill.available.active;
 import com.ww.model.constant.Skill;
 import com.ww.model.constant.SkillType;
 import com.ww.model.container.rival.war.skill.available.AvailableSkill;
-import lombok.Getter;
 
-@Getter
 public class ActiveAvailableSkill extends AvailableSkill {
 
     protected boolean used = false;

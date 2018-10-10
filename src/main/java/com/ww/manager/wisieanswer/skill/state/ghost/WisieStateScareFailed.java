@@ -28,12 +28,9 @@ public class WisieStateScareFailed extends WisieSkillState {
     protected Flowable<Long> processFlowable() {
         manager.addAction(WisieAnswerAction.SCARE_FAILED);
         opponent.addAction(WisieAnswerAction.WAS_NOT_SCARED);
+        opponent.getTeam(opponent).getTeamSkills().unblockAll();
         manager.getWarManager().sendNewSkillsModel((m, wT) -> {
-            WarTeam warTeam = (WarTeam) wT;
             manager.getModelFactory().fillModelWisieActions(m, wT);
-            if(opponent.getOwnedWisie().getProfile().getId().equals(warTeam.getProfileId())){
-                warTeam.getTeamSkills().unblockAll();
-            }
         });
         interval = (long) (randomDouble(6 - 6 * manager.getWarWisie().getReflexF1(),
                 8 - 8 * manager.getWarWisie().getReflexF1()) * intervalMultiply());

@@ -26,13 +26,10 @@ public class WisieStateWasNotCaught extends WisieSkillState {
     protected Flowable<Long> processFlowable() {
         manager.addAction(WisieAnswerAction.WAS_NOT_CAUGHT);
         manager.getWisieMember().removeDisguise();
+        manager.getTeam(manager).getTeamSkills().unblockAll();
         manager.getWarManager().sendNewSkillsModel((m, wT) -> {
-            WarTeam warTeam = (WarTeam) wT;
             manager.getModelFactory().fillModelActiveMemberAddOn(m, wT);
             manager.getModelFactory().fillModelWisieActions(m, wT);
-            if(manager.getOwnedWisie().getProfile().getId().equals(warTeam.getProfileId())){
-                warTeam.getTeamSkills().unblockAll();
-            }
         });
         interval = (long) (randomDouble(3 - manager.getWarWisie().getSpeedF1() - manager.getWarWisie().getReflexF1() - manager.getWarWisie().getConcentrationF1(),
                 6 - 2 * manager.getWarWisie().getSpeedF1() - 2 * manager.getWarWisie().getReflexF1() - 2 * manager.getWarWisie().getConcentrationF1()) * intervalMultiply());

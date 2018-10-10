@@ -28,12 +28,9 @@ public class WisieStateKidnappingFailed extends WisieSkillState {
     protected Flowable<Long> processFlowable() {
         manager.addAction(WisieAnswerAction.KIDNAPPING_FAILED);
         opponent.addAction(WisieAnswerAction.WAS_NOT_KIDNAPPED);
+        opponent.getTeam(opponent).getTeamSkills().unblockAll();
         manager.getWarManager().sendNewSkillsModel((m, wT) -> {
-            WarTeam warTeam = (WarTeam) wT;
             manager.getModelFactory().fillModelWisieActions(m, wT);
-            if(warTeam.getProfileId().equals(opponent.getOwnedWisie().getProfile().getId())){
-                warTeam.getTeamSkills().unblockAll();
-            }
         });
         interval = (long) (randomDouble(6 - manager.getWarWisie().getSpeedF1() - manager.getWarWisie().getReflexF1() - manager.getWarWisie().getConfidenceF1(),
                 9 - 2 * manager.getWarWisie().getSpeedF1() - 2 * manager.getWarWisie().getReflexF1() - 2 * manager.getWarWisie().getConfidenceF1()) * intervalMultiply());
