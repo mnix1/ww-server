@@ -12,27 +12,31 @@ public class WisieAnswerKidnappingSkillFlow {
     private WisieAnswerManager manager;
 
     private boolean kidnappingUsed = false;
-    private boolean kidnappingUsedOnIt = false;
 
     public WisieAnswerKidnappingSkillFlow(WisieAnswerFlow flow) {
         this.flow = flow;
         this.manager = flow.getManager();
     }
 
-    private synchronized void phaseKidnapping(WisieAnswerManager opponent) {
+    private synchronized void phaseKidnapping(WisieAnswerManager opponentManager) {
         AbstractState prevState = flow.lastFlowableState();
         flow.addSkillState(new WisieStatePreparingKidnapping(manager)).setPrevState(prevState).addOnFlowableEndListener(aLong1 -> {
-            WisieStateTryingToKidnap kidnapTryState = new WisieStateTryingToKidnap(manager, opponent);
+            opponentManager.getFlow().dispose();
+            AbstractState opponentPrevState = opponentManager.getFlow().lastFlowableState();
+            WisieStateTryingToKidnap kidnapTryState = new WisieStateTryingToKidnap(manager, opponentManager);
             flow.addState(kidnapTryState);
             boolean success = kidnapTryState.calculateSuccess();
             kidnapTryState.setSuccess(success);
             kidnapTryState.addOnFlowableEndListener(aLong2 -> {
                 if (success) {
-                    flow.addState(new WisieStateKidnappingSucceeded(manager, opponent)).addOnFlowableEndListener(aLong3 -> {
+                    flow.addState(new WisieStateKidnappingSucceeded(manager, opponentManager)).addOnFlowableEndListener(aLong3 -> {
                         manager.getWarManager().getFlow().kidnapped();
                     }).startFlowable();
                 } else {
-                    flow.addState(new WisieStateKidnappingFailed(manager, opponent)).addOnFlowableEndListener(aLong3 -> {
+                    opponentManager.getFlow().addState(new WisieStateWasNotKidnapped(manager)).addOnFlowableEndListener(aLong3 -> {
+                        opponentPrevState.startFlowableEndListeners();
+                    }).startFlowable();
+                    flow.addState(new WisieStateKidnappingFailed(manager, opponentManager)).addOnFlowableEndListener(aLong3 -> {
                         flow.addState(new WisieStateChangingClothes(manager)).addOnFlowableEndListener(aLong4 -> {
                             flow.addState(new WisieStateContinueAfterKidnapping(manager)).startVoid();
                             prevState.startFlowableEndListeners();
@@ -43,35 +47,13 @@ public class WisieAnswerKidnappingSkillFlow {
         }).startFlowable();
     }
 
-    public void kidnapping(WisieAnswerManager opponent) {
+    public void kidnapping(WisieAnswerManager opponentManager) {
         if (kidnappingUsed) {
             return;
         }
         flow.dispose();
         kidnappingUsed = true;
-        phaseKidnapping(opponent);
-    }
-
-    private synchronized void phaseKidnappingUsedOnIt(boolean success, long interval) {
-        AbstractState prevState = flow.lastFlowableState();
-        flow.addState(new WisieStateTryingToDefend(manager, interval)).addOnFlowableEndListener(aLong1 -> {
-            if (success) {
-                flow.addState(new WisieStateWasKidnapped(manager)).startVoid();
-            } else {
-                flow.addState(new WisieStateWasNotKidnapped(manager)).addOnFlowableEndListener(aLong3 -> {
-                    prevState.startFlowableEndListeners();
-                }).startFlowable();
-            }
-        }).startFlowable();
-    }
-
-    public void kidnappingUsedOnIt(boolean success, long interval) {
-        if (kidnappingUsedOnIt) {
-            return;
-        }
-        flow.dispose();
-        kidnappingUsedOnIt = true;
-        phaseKidnappingUsedOnIt(success, interval);
+        phaseKidnapping(opponentManager);
     }
 
 }
