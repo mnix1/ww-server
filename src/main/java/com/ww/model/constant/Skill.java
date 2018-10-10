@@ -17,6 +17,14 @@ public enum Skill {
     CHANGE_TASK,
     PIZZA;
 
+    public static List<Skill> alwaysAvailableSkills() {
+        return Arrays.asList(HINT, WATER_PISTOL, LIFEBUOY);
+    }
+
+    public static List<Skill> optionalAvailableSkills() {
+        return Arrays.asList(KIDNAPPING, GHOST, CHANGE_TASK, PIZZA);
+    }
+
     public static List<Skill> list() {
         return Arrays.asList(values());
     }

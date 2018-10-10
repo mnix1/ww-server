@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.ww.helper.RandomHelper.randomElement;
+
 @Getter
 public class WarTeamSkills implements RivalTeamSkills {
 
@@ -25,14 +27,11 @@ public class WarTeamSkills implements RivalTeamSkills {
     private Map<Skill, PassiveAvailableSkill> passiveSkills = new ConcurrentHashMap<>();
 
     public WarTeamSkills(int count, List<? extends TeamMember> teamMembers) {
-        this.activeSkills.put(Skill.HINT, (ActiveAvailableSkill) SkillBuilder.build(Skill.HINT, count));
-        this.activeSkills.put(Skill.WATER_PISTOL, (ActiveAvailableSkill) SkillBuilder.build(Skill.WATER_PISTOL, count));
-        this.activeSkills.put(Skill.LIFEBUOY, (ActiveAvailableSkill) SkillBuilder.build(Skill.LIFEBUOY, count));
-        this.activeSkills.put(Skill.CHANGE_TASK, (ActiveAvailableSkill) SkillBuilder.build(Skill.CHANGE_TASK, count));
-        this.activeSkills.put(Skill.GHOST, (ActiveAvailableSkill) SkillBuilder.build(Skill.GHOST, count));
-        this.activeSkills.put(Skill.KIDNAPPING, (ActiveAvailableSkill) SkillBuilder.build(Skill.KIDNAPPING, count));
-        this.activeSkills.put(Skill.PIZZA, (ActiveAvailableSkill) SkillBuilder.build(Skill.PIZZA, count));
-        this.activeSkills.put(Skill.COVERALL, (ActiveAvailableSkill) SkillBuilder.build(Skill.COVERALL, count));
+        for (Skill skill : Skill.alwaysAvailableSkills()) {
+            this.activeSkills.put(skill, (ActiveAvailableSkill) SkillBuilder.build(skill, count));
+        }
+        Skill optional = randomElement(Skill.optionalAvailableSkills());
+        this.activeSkills.put(optional, (ActiveAvailableSkill) SkillBuilder.build(optional, count));
         initFromWisies(teamMembers);
         skills.putAll(activeSkills);
         skills.putAll(passiveSkills);
