@@ -75,12 +75,12 @@ public class RiddleDifferenceTaskService {
         String right = StringUtils.join(questionClipartsRight.stream().map(Clipart::getPngResourcePath).collect(Collectors.toList()), ",");
         question.setImageContent(left + ";" + right);
         if (typeValue == RiddleTaskType.FIND_DIFFERENCE_LEFT_MISSING) {
-            question.setTextContentPolish("Co znajduje się na prawym obrazku, a na lewym nie?");
-            question.setTextContentEnglish("What is on the right picture and not on the left one?");
+            question.setTextContentPolish("Jest na prawym obrazku, a na lewym nie");
+            question.setTextContentEnglish("It's on the right picture and not on the left");
         }
         if (typeValue == RiddleTaskType.FIND_DIFFERENCE_RIGHT_MISSING) {
-            question.setTextContentPolish("Co znajduje się na lewym obrazku, a na prawym nie?");
-            question.setTextContentEnglish("What is on the left picture and not on the right one?");
+            question.setTextContentPolish("Jest na lewym obrazku, a na prawym nie");
+            question.setTextContentEnglish("It's on the left picture and not on the right");
         }
         return question;
     }

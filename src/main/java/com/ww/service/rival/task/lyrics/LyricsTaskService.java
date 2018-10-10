@@ -88,23 +88,23 @@ public class LyricsTaskService {
     }
 
     private String getContentPolishQuestion(LyricsTaskTypeValue typeValue, Track track, String questionLine) {
-        String content = "W tekście utworu \"" + track.getAuthor() + "\" - \"" + track.getName() + "\"";
+        String content = "W utworze \"" + track.getAuthor() + "\" - \"" + track.getName() + "\"";
         if (typeValue == LyricsTaskTypeValue.NEXT_LINE) {
-            content += " po wierszu: \"";
+            content += " po tekście: \"";
         }
         if (typeValue == LyricsTaskTypeValue.PREVIOUS_LINE) {
-            content += " przed wierszem: \"";
+            content += " przed tekście: \"";
         }
-        return content + questionLine + "\" występuje wiersz";
+        return content + questionLine + "\" występuje";
     }
 
     private String getContentEnglishQuestion(LyricsTaskTypeValue typeValue, Track track, String questionLine) {
         String content = "In the song \"" + track.getAuthor() + "\" - \"" + track.getName() + "\"";
         if (typeValue == LyricsTaskTypeValue.NEXT_LINE) {
-            content += " after song line: \"";
+            content += " after the text: \"";
         }
         if (typeValue == LyricsTaskTypeValue.PREVIOUS_LINE) {
-            content += " before song line: \"";
+            content += " before the text: \"";
         }
         return content + questionLine + "\" there is";
     }
