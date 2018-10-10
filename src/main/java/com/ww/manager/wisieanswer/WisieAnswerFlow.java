@@ -56,7 +56,7 @@ public class WisieAnswerFlow extends AbstractFlow {
         if (manager.isRunning()) {
             manager.setRunning(false);
             dispose();
-            logger.trace("WisieAnswerFlow stop, " + manager.toString() + statesDescribe());
+            logger.trace("WisieAnswerFlow stop, " + manager.describe() + statesDescribe());
         }
     }
 

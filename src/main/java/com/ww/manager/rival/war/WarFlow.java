@@ -89,7 +89,7 @@ public class WarFlow extends RivalFlow {
     }
 
     public synchronized void wisieAnswered(Long profileId, Long answerId) {
-        logger.trace(describe() + manager.toString() + " wisieAnswered, profileId={}, answerId={}", profileId, answerId);
+        logger.trace(describe() + manager.describe() + " wisieAnswered, profileId={}, answerId={}", profileId, answerId);
         dispose();
         Map<String, Object> content = new HashMap<>();
         content.put("answerId", answerId.intValue());
@@ -97,13 +97,13 @@ public class WarFlow extends RivalFlow {
     }
 
     public synchronized void kidnapped() {
-        logger.trace(describe() + manager.toString() + " kidnapped");
+        logger.trace(describe() + manager.describe() + " kidnapped");
         dispose();
         phase4();
     }
 
     public synchronized void changeTask() {
-        logger.trace(describe() + manager.toString() + " changeTask");
+        logger.trace(describe() + manager.describe() + " changeTask");
         dispose();
         addState(new WarStateChangingTask(manager)).addOnFlowableEndListener(aLong4 -> {
             addState(new WarStateChoosingTaskProps(manager, true)).addOnFlowableEndListener(aLong5 -> {
@@ -113,13 +113,13 @@ public class WarFlow extends RivalFlow {
     }
 
     public synchronized void ghostScaredAndCaught() {
-        logger.trace(describe() + manager.toString() + " ghostScaredAndCaught");
+        logger.trace(describe() + manager.describe() + " ghostScaredAndCaught");
         dispose();
         phase4();
     }
 
     public synchronized void answer(Long profileId, Map<String, Object> content) {
-        logger.trace(describe() + manager.toString() + " answer, profileId={}", profileId);
+        logger.trace(describe() + manager.describe() + " answer, profileId={}", profileId);
         dispose();
         addState(new WarStateAnswered(manager, profileId, content)).addOnFlowableEndListener(aLong -> {
             phase2();
@@ -127,7 +127,7 @@ public class WarFlow extends RivalFlow {
     }
 
     public synchronized void chosenTaskProps(Long profileId, Map<String, Object> content) {
-        logger.trace(describe() + manager.toString() + " chosenTaskProps, profileId={}", profileId);
+        logger.trace(describe() + manager.describe() + " chosenTaskProps, profileId={}", profileId);
         if (addState(new StateChosenTaskProps(manager, profileId, content)).startBoolean()) {
             dispose();
             phase3();
@@ -135,7 +135,7 @@ public class WarFlow extends RivalFlow {
     }
 
     public synchronized void chosenWhoAnswer(Long profileId, Map<String, Object> content) {
-        logger.trace(describe() + manager.toString() + " chosenWhoAnswer, profileId={}", profileId);
+        logger.trace(describe() + manager.describe() + " chosenWhoAnswer, profileId={}", profileId);
         if (addState(new WarStateChosenWhoAnswer(manager, profileId, content)).startBoolean()) {
             dispose();
             phase1();
