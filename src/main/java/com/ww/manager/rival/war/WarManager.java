@@ -48,7 +48,7 @@ public class WarManager extends RivalManager {
     }
 
     protected List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies) {
-        return TeamHelper.prepareTeamMembers(profile, wisies, model);
+        return TeamHelper.prepareTeamMembers(profile, wisies);
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.container.Resources;
 import com.ww.model.entity.outside.book.ProfileBook;
 import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
+import com.ww.model.entity.outside.rival.season.ProfileSeason;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,12 +39,6 @@ public class Profile {
     private Long elixir;
     private Boolean introductionCompleted;
     private Integer introductionStepIndex;
-    private Long battleElo;
-    private Long battlePreviousElo;
-    private Instant battleLastPlay;
-    private Long warElo;
-    private Long warPreviousElo;
-    private Instant warLastPlay;
 
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
     private Set<ProfileFriend> friends = new HashSet<>();
@@ -56,6 +51,9 @@ public class Profile {
 
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
     private Set<ProfileCampaign> campaigns = new HashSet<>();
+
+    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
+    private Set<ProfileSeason> seasons = new HashSet<>();
 
     public Profile(String authId, String name, Language language) {
         this.tag = TagHelper.randomTag();
@@ -71,12 +69,6 @@ public class Profile {
         this.wisorType = WisorType.random();
         this.introductionCompleted = false;
         this.introductionStepIndex = 0;
-        this.battleElo = 0L;
-        this.battleLastPlay = Instant.now();
-        this.battlePreviousElo = 0L;
-        this.warElo = 0L;
-        this.warLastPlay = Instant.now();
-        this.warPreviousElo = 0L;
     }
 
     public Profile(Long id) {
@@ -104,38 +96,6 @@ public class Profile {
 
     public void subtractResources(Resources resources) {
         setResources(getResources().subtract(resources));
-    }
-
-    public void setHalfElo(RivalType type) {
-        setElo(type, getElo(type) / 2);
-    }
-
-    public void setElo(RivalType type, Long value) {
-        if (type == RivalType.BATTLE) {
-            setBattleElo(value);
-        } else if (type == RivalType.WAR) {
-            setWarElo(value);
-        }
-    }
-
-    public void setBattleElo(Long value) {
-        battlePreviousElo = battleElo;
-        battleElo = value;
-    }
-
-    public void setWarElo(Long value) {
-        warPreviousElo = warElo;
-        warElo = value;
-    }
-
-    public Long getElo(RivalType type) {
-        if (type == RivalType.BATTLE) {
-            return battleElo;
-        }
-        if (type == RivalType.WAR) {
-            return warElo;
-        }
-        throw new IllegalArgumentException();
     }
 
     @Override

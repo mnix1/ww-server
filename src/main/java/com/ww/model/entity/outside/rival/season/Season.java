@@ -1,19 +1,18 @@
-package com.ww.model.entity.outside.rival;
+package com.ww.model.entity.outside.rival.season;
 
 import com.ww.model.constant.rival.RivalType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.HashSet;
+import java.util.Set;
 
-import static com.ww.service.rival.global.RivalSeasonService.SEASON_RIVAL_COUNT;
+import static com.ww.service.rival.season.RivalSeasonService.SEASON_RIVAL_COUNT;
 
 @Setter
 @Getter
@@ -23,15 +22,18 @@ public class Season {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private RivalType rivalType;
+    private RivalType type;
     private Integer monthId = 0;
     private Long remaining = SEASON_RIVAL_COUNT;
     private Instant startDate = Instant.now();
     private Instant closeDate;
     private String positions;
 
+    @OneToMany(mappedBy = "season", fetch = FetchType.LAZY)
+    private Set<ProfileSeason> profiles = new HashSet<>();
+
     public Season(Season previousSeason) {
-        this.rivalType = previousSeason.getRivalType();
+        this.type = previousSeason.getType();
         LocalDateTime previousStartLocalDateTime = previousSeason.startLocalDateTime();
         if (previousStartLocalDateTime.getMonthValue() == startLocalDateTime().getMonthValue()) {
             this.monthId = previousSeason.getMonthId() + 1;
@@ -41,7 +43,7 @@ public class Season {
     }
 
     public Season(RivalType type) {
-        this.rivalType = type;
+        this.type = type;
     }
 
     public LocalDateTime startLocalDateTime() {

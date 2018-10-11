@@ -1,10 +1,12 @@
-package com.ww.service.rival.global;
+package com.ww.service.rival.season;
 
 import com.ww.model.constant.Grade;
 import com.ww.model.constant.rival.RivalType;
-import com.ww.model.entity.outside.rival.Season;
+import com.ww.model.entity.outside.rival.season.ProfileSeason;
+import com.ww.model.entity.outside.rival.season.Season;
 import com.ww.model.entity.outside.social.Profile;
-import com.ww.repository.outside.rival.SeasonRepository;
+import com.ww.repository.outside.rival.season.ProfileSeasonRepository;
+import com.ww.repository.outside.rival.season.SeasonRepository;
 import com.ww.service.social.ProfileService;
 import com.ww.service.social.RewardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ public class RivalSeasonService {
 
     @Autowired
     private SeasonRepository seasonRepository;
+    @Autowired
+    private ProfileSeasonRepository profileSeasonRepository;
 
     @Autowired
     private ProfileService profileService;
@@ -33,7 +37,7 @@ public class RivalSeasonService {
     private RewardService rewardService;
 
     public Optional<Season> previous(RivalType type) {
-        return seasonRepository.findFirstByRivalTypeOrderByStartDateDesc(type);
+        return seasonRepository.findFirstByTypeOrderByStartDateDesc(type);
     }
 
     public Season create(RivalType type) {
@@ -48,7 +52,7 @@ public class RivalSeasonService {
 
     @Transactional
     public Season actual(RivalType type) {
-        return seasonRepository.findFirstByRivalTypeAndCloseDateIsNull(type).orElseGet(() -> create(type));
+        return seasonRepository.findFirstByTypeAndCloseDateIsNull(type).orElseGet(() -> create(type));
     }
 
     @Transactional
@@ -62,18 +66,18 @@ public class RivalSeasonService {
 
     public void endSeason(Season season) {
         season.setCloseDate(Instant.now());
-        List<Profile> profiles = profileService.classification(season.getRivalType());
-        String positions = StringUtils.join(profiles.stream().limit(CLASSIFICATION_POSITIONS_COUNT).map(Profile::getTag).collect(Collectors.toList()), ",");
-        season.setPositions(positions);
-        updateEloGiveReward(profiles, season.getRivalType());
-        profileService.save(profiles);
+//        List<Profile> profiles = profileService.classification(season.getType());
+//        String positions = StringUtils.join(profiles.stream().limit(CLASSIFICATION_POSITIONS_COUNT).map(Profile::getTag).collect(Collectors.toList()), ",");
+//        season.setPositions(positions);
+//        updateEloGiveReward(profiles, season.getType());
+//        profileService.save(profiles);
     }
 
-    public void updateEloGiveReward(List<Profile> profiles, RivalType type) {
-        profiles.parallelStream().forEach(profile -> {
-            Grade grade = Grade.fromElo(profile.getElo(type));
-            profile.setHalfElo(type);
-            rewardService.addRewardFromSeason(profile, grade);
-        });
-    }
+//    public void updateEloGiveReward(List<Profile> profiles, RivalType type) {
+//        profiles.parallelStream().forEach(profile -> {
+//            Grade grade = Grade.fromElo(profile.getElo(type));
+//            profile.setHalfElo(type);
+//            rewardService.addRewardFromSeason(profile, grade);
+//        });
+//    }
 }

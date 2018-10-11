@@ -7,12 +7,12 @@ import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.container.rival.RivalModel;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.dto.rival.task.TaskDTO;
-import com.ww.model.entity.outside.rival.Rival;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.rival.global.RivalClassificationService;
 import com.ww.service.rival.global.RivalGlobalService;
-import com.ww.service.rival.global.RivalSeasonService;
+import com.ww.service.rival.season.RivalProfileSeasonService;
+import com.ww.service.rival.season.RivalSeasonService;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.social.ProfileConnectionService;
@@ -47,7 +47,7 @@ public class RivalService {
     private RivalGlobalService rivalGlobalService;
 
     @Autowired
-    private RivalClassificationService rivalClassificationService;
+    private RivalProfileSeasonService rivalProfileSeasonService;
 
     public void addRewardFromWin(Profile winner) {
     }
@@ -78,7 +78,7 @@ public class RivalService {
         if (!manager.getModel().isRanking()) {
             return;
         }
-        rivalClassificationService.updateProfilesElo(manager.getModel());
+        rivalProfileSeasonService.updateProfilesElo(manager.getModel());
     }
 
     public Question prepareQuestion(Category category, DifficultyLevel difficultyLevel, Language language) {

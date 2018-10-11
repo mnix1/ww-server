@@ -16,8 +16,4 @@ public interface ProfileRepository extends CrudRepository<Profile, Long> {
     List<Profile> findAllByIdNotIn(List<Long> ids);
 
     List<Profile> findAll();
-
-    List<Profile> findAllByOrderByBattleEloDescBattlePreviousEloDescBattleLastPlayDesc();
-
-    List<Profile> findAllByOrderByWarEloDescWarPreviousEloDescWarLastPlayDesc();
 }

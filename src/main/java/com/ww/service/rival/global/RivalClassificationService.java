@@ -3,8 +3,11 @@ package com.ww.service.rival.global;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.rival.RivalModel;
 import com.ww.model.dto.social.ClassificationProfileDTO;
+import com.ww.model.entity.outside.rival.season.ProfileSeason;
+import com.ww.model.entity.outside.rival.season.Season;
 import com.ww.model.entity.outside.social.Profile;
-import com.ww.repository.outside.rival.SeasonRepository;
+import com.ww.service.rival.season.RivalProfileSeasonService;
+import com.ww.service.rival.season.RivalSeasonService;
 import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +20,6 @@ import java.util.stream.IntStream;
 
 import static com.ww.helper.EloHelper.*;
 import static com.ww.helper.EloHelper.LOOSER;
-import static com.ww.helper.EloHelper.updateElo;
 
 @Service
 public class RivalClassificationService {
@@ -26,51 +28,19 @@ public class RivalClassificationService {
     @Autowired
     private ProfileService profileService;
 
+    @Autowired
+    private RivalSeasonService rivalSeasonService;
+    @Autowired
+    private RivalProfileSeasonService rivalProfileSeasonService;
+
     public List<ClassificationProfileDTO> classification(RivalType type) {
         String profileTag = profileService.getProfileTag();
-        List<Profile> profiles = profileService.classification(type);
-        return IntStream.range(0, profiles.size())
-                .mapToObj(value -> new ClassificationProfileDTO(profiles.get(value), type, (long) value + 1))
+        Season season = rivalSeasonService.actual(type);
+        List<ProfileSeason> profileSeasons = rivalProfileSeasonService.findProfileSeasons(season.getId());
+        return IntStream.range(0, profileSeasons.size())
+                .mapToObj(value -> new ClassificationProfileDTO(profileSeasons.get(value), (long) value + 1))
                 .filter(value -> value.getPosition() <= CLASSIFICATION_POSITIONS_COUNT || value.getTag().equals(profileTag))
                 .collect(Collectors.toList());
-    }
-
-    @Transactional
-    public void updateProfilesElo(RivalModel model) {
-        RivalType type = model.getType();
-        Profile winner = model.getWinner();
-        Profile creator = profileService.getProfile(model.getCreatorProfile().getId());
-        Profile opponent = profileService.getProfile(model.getOpponentProfile().getId());
-        Instant lastPlay = Instant.now();
-        Long creatorEloChange = 0L;
-        Long opponentEloChange = 0L;
-        if (type == RivalType.BATTLE) {
-            if (model.getDraw()) {
-                creatorEloChange = prepareEloChange(creator.getBattleElo(), opponent.getBattleElo(), DRAW);
-                opponentEloChange = prepareEloChange(opponent.getBattleElo(), creator.getBattleElo(), DRAW);
-            } else {
-                creatorEloChange = prepareEloChange(creator.getBattleElo(), opponent.getBattleElo(), creator.equals(winner) ? WINNER : LOOSER);
-                opponentEloChange = prepareEloChange(opponent.getBattleElo(), creator.getBattleElo(), opponent.equals(winner) ? WINNER : LOOSER);
-            }
-            creator.setBattleLastPlay(lastPlay);
-            opponent.setBattleLastPlay(lastPlay);
-        } else if (type == RivalType.WAR) {
-            if (model.getDraw()) {
-                creatorEloChange = prepareEloChange(creator.getWarElo(), opponent.getWarElo(), DRAW);
-                opponentEloChange = prepareEloChange(opponent.getWarElo(), creator.getWarElo(), DRAW);
-            } else {
-                creatorEloChange = prepareEloChange(creator.getWarElo(), opponent.getWarElo(), creator.equals(winner) ? WINNER : LOOSER);
-                opponentEloChange = prepareEloChange(opponent.getWarElo(), creator.getWarElo(), opponent.equals(winner) ? WINNER : LOOSER);
-            }
-            creator.setWarLastPlay(lastPlay);
-            opponent.setWarLastPlay(lastPlay);
-        }
-        updateElo(creator, creatorEloChange, type);
-        updateElo(opponent, opponentEloChange, type);
-        model.getCreatorProfile().setElo(type, creator.getElo(type));
-        model.getOpponentProfile().setElo(type, opponent.getElo(type));
-        profileService.save(creator);
-        profileService.save(opponent);
     }
 
 }

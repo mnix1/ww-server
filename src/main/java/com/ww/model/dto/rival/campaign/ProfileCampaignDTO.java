@@ -51,7 +51,7 @@ public class ProfileCampaignDTO {
     }
 
     private void initTeam(ProfileCampaign profileCampaign) {
-        List<TeamMember> teamMembers = prepareTeamMembers(profileCampaign.getProfile(), new ArrayList(profileCampaign.getWisies()), RivalImportance.FAST, RivalType.CAMPAIGN_WAR);
+        List<TeamMember> teamMembers = prepareTeamMembers(profileCampaign.getProfile(), new ArrayList(profileCampaign.getWisies()));
         this.team = teamMembers.stream()
                 .map(TeamMemberDTO::new)
                 .collect(Collectors.toList());

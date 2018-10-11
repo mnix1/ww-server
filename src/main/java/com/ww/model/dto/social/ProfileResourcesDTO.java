@@ -13,8 +13,6 @@ public class ProfileResourcesDTO extends ProfileDTO {
     private Long crystal;
     private Long gold;
     private Long elixir;
-    private Long battleElo;
-    private Long warElo;
     private Language language;
     private Boolean introductionCompleted;
     private Integer introductionStepIndex;
@@ -28,8 +26,6 @@ public class ProfileResourcesDTO extends ProfileDTO {
         this.crystal = profile.getCrystal();
         this.gold = profile.getGold();
         this.elixir = profile.getElixir();
-        this.battleElo = profile.getBattleElo();
-        this.warElo = profile.getWarElo();
         this.introductionCompleted = profile.getIntroductionCompleted();
         this.introductionStepIndex = profile.getIntroductionStepIndex();
     }

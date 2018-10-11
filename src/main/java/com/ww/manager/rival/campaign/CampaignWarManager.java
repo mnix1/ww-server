@@ -53,7 +53,7 @@ public class CampaignWarManager extends WarManager {
     }
 
     protected List<TeamMember> prepareTeamMembers(ProfileCampaign profileCampaign, List<ProfileCampaignWisie> wisies) {
-        List<TeamMember> teamMembers = TeamHelper.prepareTeamMembers(profileCampaign.getProfile(), wisies, model);
+        List<TeamMember> teamMembers = TeamHelper.prepareTeamMembers(profileCampaign.getProfile(), wisies);
         for (TeamMember teamMember : teamMembers) {
             if (teamMember.isWisie()) {
                 for (ProfileCampaignWisie wisie : wisies) {

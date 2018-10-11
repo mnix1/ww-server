@@ -20,14 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TeamHelper {
-    public static List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies, RivalModel model) {
-        return prepareTeamMembers(profile, wisies, model.getImportance(), model.getType());
-    }
-
-    public static List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies, RivalImportance importance, RivalType type) {
+    public static List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies) {
         List<TeamMember> teamMembers = new ArrayList<>();
         int index = 0;
-        teamMembers.add(new WisorTeamMember(index++, profile, importance == RivalImportance.RANKING ? new RivalProfileDTO(profile, type) : new ProfileDTO(profile)));
+        teamMembers.add(new WisorTeamMember(index++, profile, new ProfileDTO(profile)));
         for (OwnedWisie wisie : wisies) {
             WarWisie warWisie = new WarWisie(wisie);
             teamMembers.add(new WisieTeamMember(index++, warWisie, new WarProfileWisieDTO(warWisie)));

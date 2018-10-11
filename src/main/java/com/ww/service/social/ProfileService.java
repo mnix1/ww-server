@@ -126,13 +126,4 @@ public class ProfileService {
     public void save(List<Profile> profiles) {
         profileRepository.saveAll(profiles);
     }
-
-    public List<Profile> classification(RivalType type) {
-        if (type == RivalType.BATTLE) {
-            return profileRepository.findAllByOrderByBattleEloDescBattlePreviousEloDescBattleLastPlayDesc();
-        } else if (type == RivalType.WAR) {
-            return profileRepository.findAllByOrderByWarEloDescWarPreviousEloDescWarLastPlayDesc();
-        }
-        throw new IllegalArgumentException();
-    }
 }
