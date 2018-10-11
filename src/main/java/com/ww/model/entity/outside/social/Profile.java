@@ -90,8 +90,9 @@ public class Profile {
         this.elixir = resources.getElixir();
     }
 
-    public void addResources(Resources resources) {
+    public Profile addResources(Resources resources) {
         setResources(getResources().add(resources));
+        return this;
     }
 
     public void subtractResources(Resources resources) {

@@ -1,19 +1,26 @@
 package com.ww.service.rival.season;
 
+import com.ww.model.constant.Grade;
 import com.ww.model.constant.rival.RivalType;
+import com.ww.model.entity.outside.rival.season.ProfileSeason;
 import com.ww.model.entity.outside.rival.season.Season;
 import com.ww.model.entity.outside.rival.season.SeasonGrade;
+import com.ww.model.entity.outside.social.Profile;
 import com.ww.repository.outside.rival.season.ProfileSeasonRepository;
 import com.ww.repository.outside.rival.season.SeasonGradeRepository;
 import com.ww.repository.outside.rival.season.SeasonRepository;
+import com.ww.service.social.ProfileService;
 import com.ww.service.social.RewardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RivalSeasonService {
@@ -25,11 +32,16 @@ public class RivalSeasonService {
     @Autowired
     private SeasonGradeRepository seasonGradeRepository;
 
-    @Autowired
-    private RewardService rewardService;
-
     public List<SeasonGrade> findSeasonGrades(RivalType type) {
         return seasonGradeRepository.findAllByType(type);
+    }
+
+    public Optional<Season> findSeason(Long seasonId) {
+        return seasonRepository.findById(seasonId);
+    }
+
+    public Map<Grade, SeasonGrade> findSeasonGradesMap(RivalType type) {
+        return findSeasonGrades(type).stream().collect(Collectors.toMap(SeasonGrade::getGrade, o -> o));
     }
 
     public Optional<Season> previous(RivalType type) {
@@ -51,17 +63,22 @@ public class RivalSeasonService {
         return seasonRepository.findFirstByTypeAndCloseDateIsNull(type).orElseGet(() -> create(type));
     }
 
-    @Transactional
-    public void update(RivalType type) {
-        Season season = actual(type);
+    public boolean update(Season season) {
+        season = findSeason(season.getId()).get();
+        boolean shouldReward = false;
         if (season.rivalPlayed()) {
-            endSeason(season);
+            shouldReward = true;
+            if (!season.isClosed()) {
+                season.setCloseDate(Instant.now());
+            }
         }
         seasonRepository.save(season);
+        return shouldReward;
     }
 
     public void endSeason(Season season) {
-        season.setCloseDate(Instant.now());
+
+
 //        List<Profile> profiles = profileService.classification(season.getType());
 //        String positions = StringUtils.join(profiles.stream().limit(CLASSIFICATION_POSITIONS_COUNT).map(Profile::getTag).collect(Collectors.toList()), ",");
 //        season.setPositions(positions);

@@ -10,9 +10,7 @@ import javax.persistence.*;
 import java.time.Instant;
 import java.util.List;
 
-import static com.ww.helper.EloHelper.MIN_ELO;
-import static com.ww.helper.EloHelper.eloSeasonEndChange;
-import static com.ww.helper.EloHelper.findGrade;
+import static com.ww.helper.EloHelper.*;
 
 @Setter
 @Getter
@@ -27,6 +25,7 @@ public class ProfileSeason {
     protected Long highestElo;
     protected Grade grade;
     protected Instant updateDate;
+    protected Boolean rewarded = false;
     @ManyToOne
     @JoinColumn(name = "profile_id", nullable = false, updatable = false)
     protected Profile profile;

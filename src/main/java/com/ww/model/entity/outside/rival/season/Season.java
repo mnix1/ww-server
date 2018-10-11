@@ -54,6 +54,10 @@ public class Season {
         return remaining <= 0;
     }
 
+    public boolean isClosed(){
+        return closeDate != null;
+    }
+
     public String getName() {
         LocalDateTime ldt = openLocalDateTime();
         return ldt.getYear() + "/" + ldt.getMonthValue() + " (" + monthId + ")";

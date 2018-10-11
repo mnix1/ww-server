@@ -7,6 +7,7 @@ import com.ww.model.container.rival.init.RivalOnePlayerInit;
 import com.ww.model.container.rival.init.RivalTwoPlayerInit;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.season.ProfileSeason;
+import com.ww.model.entity.outside.rival.season.Season;
 import com.ww.model.entity.outside.rival.task.Answer;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
@@ -27,6 +28,7 @@ public abstract class RivalModel {
     protected Profile creatorProfile;
     protected Profile opponentProfile;
 
+    protected Season season;
     protected ProfileSeason creatorProfileSeason;
     protected ProfileSeason opponentProfileSeason;
 
@@ -67,6 +69,7 @@ public abstract class RivalModel {
             teams.getOpponentMap().put(creatorProfile.getId(), opponentProfile.getId());
             teams.getOpponentMap().put(opponentProfile.getId(), creatorProfile.getId());
             if (importance == RivalImportance.RANKING) {
+                this.season = c.getSeason();
                 this.creatorProfileSeason = c.getCreatorProfileSeason();
                 this.opponentProfileSeason = c.getOpponentProfileSeason();
             }
@@ -76,14 +79,15 @@ public abstract class RivalModel {
         }
     }
 
-    public ProfileSeason getProfileSeason(Long profileId){
-        if(profileId.equals(creatorProfileSeason.getProfile().getId())){
+    public ProfileSeason getProfileSeason(Long profileId) {
+        if (profileId.equals(creatorProfileSeason.getProfile().getId())) {
             return creatorProfileSeason;
         }
         return opponentProfileSeason;
     }
-    public ProfileSeason getOpponentProfileSeason(Long profileId){
-        if(profileId.equals(creatorProfileSeason.getProfile().getId())){
+
+    public ProfileSeason getOpponentProfileSeason(Long profileId) {
+        if (profileId.equals(creatorProfileSeason.getProfile().getId())) {
             return opponentProfileSeason;
         }
         return creatorProfileSeason;
