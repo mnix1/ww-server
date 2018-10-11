@@ -5,6 +5,7 @@ import com.ww.manager.rival.battle.BattleManager;
 import com.ww.manager.rival.campaign.CampaignWarManager;
 import com.ww.manager.rival.challenge.ChallengeManager;
 import com.ww.manager.rival.war.WarManager;
+import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.rival.init.RivalCampaignWarInit;
 import com.ww.model.container.rival.init.RivalChallengeInit;
@@ -14,6 +15,7 @@ import com.ww.service.rival.battle.RivalBattleService;
 import com.ww.service.rival.campaign.RivalCampaignWarService;
 import com.ww.service.rival.challenge.RivalChallengeService;
 import com.ww.service.rival.global.RivalGlobalService;
+import com.ww.service.rival.season.RivalProfileSeasonService;
 import com.ww.service.rival.war.RivalWarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,8 +34,11 @@ public class RivalRunService {
     private RivalBattleService rivalBattleService;
     @Autowired
     private RivalChallengeService rivalChallengeService;
+    @Autowired
+    private RivalProfileSeasonService rivalProfileSeasonService;
 
     public void run(RivalInit initContainer) {
+        addProfileSeasons(initContainer);
         RivalManager manager = createManager(initContainer);
         initContainer.getProfiles().forEach(profile -> {
             if (!profile.getId().equals(BOT_PROFILE_ID)) {
@@ -41,6 +46,13 @@ public class RivalRunService {
             }
         });
         manager.getFlow().start();
+    }
+
+    public void addProfileSeasons(RivalInit initContainer) {
+        if (initContainer.getImportance() != RivalImportance.RANKING || !(initContainer instanceof RivalTwoPlayerInit)) {
+            return;
+        }
+        rivalProfileSeasonService.addProfileSeasons((RivalTwoPlayerInit) initContainer);
     }
 
     private RivalManager createManager(RivalInit initContainer) {

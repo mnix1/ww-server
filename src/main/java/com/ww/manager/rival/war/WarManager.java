@@ -36,19 +36,15 @@ public class WarManager extends RivalManager {
 
         Profile creator = init.getCreatorProfile();
         List<ProfileWisie> creatorWisies = rivalService.getProfileWisies(creator);
-        List<TeamMember> teamMembers = prepareTeamMembers(creator, creatorWisies);
+        List<TeamMember> teamMembers = TeamHelper.prepareTeamMembers(creator, creatorWisies);
         WarTeam creatorTeam = new WarTeam(creator, teamMembers, new WarTeamSkills(1, teamMembers));
         teams.addProfile(creator.getId(), creatorTeam);
 
         Profile opponent = init.getOpponentProfile();
         List<ProfileWisie> opponentWisies = rivalService.getProfileWisies(opponent);
-        List<TeamMember> opponentTeamMembers = prepareTeamMembers(opponent, opponentWisies);
+        List<TeamMember> opponentTeamMembers = TeamHelper.prepareTeamMembers(opponent, opponentWisies);
         WarTeam opponentTeam = new WarTeam(opponent,opponentTeamMembers , new WarTeamSkills(1, opponentTeamMembers));
         teams.addProfile(opponent.getId(), opponentTeam);
-    }
-
-    protected List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies) {
-        return TeamHelper.prepareTeamMembers(profile, wisies);
     }
 
     @Override

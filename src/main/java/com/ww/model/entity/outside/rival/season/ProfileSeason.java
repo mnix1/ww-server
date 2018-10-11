@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.time.Instant;
 
 import static com.ww.helper.EloHelper.MIN_ELO;
+import static com.ww.helper.EloHelper.eloSeasonEndChange;
 
 @Setter
 @Getter
@@ -35,6 +36,24 @@ public class ProfileSeason {
         this.highestElo = highestElo;
         this.updateDate = updateDate;
         this.profile = profile;
+        this.season = season;
+    }
+
+    public ProfileSeason(Profile profile, Season season) {
+        this.elo = 0L;
+        this.previousElo = this.elo;
+        this.highestElo = this.elo;
+        this.updateDate = Instant.now();
+        this.profile = profile;
+        this.season = season;
+    }
+
+    public ProfileSeason(ProfileSeason previousProfileSeason, Season season) {
+        this.elo = eloSeasonEndChange(previousProfileSeason.getElo());
+        this.previousElo = this.elo;
+        this.highestElo = this.elo;
+        this.updateDate = Instant.now();
+        this.profile = previousProfileSeason.getProfile();
         this.season = season;
     }
 

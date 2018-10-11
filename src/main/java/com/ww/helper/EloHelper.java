@@ -24,4 +24,8 @@ public class EloHelper {
         double eloChange = FACTOR_K * (score - (1 / (1 + (Math.pow(10, (opponentElo - profileElo) / 400d)))));
         return Math.round(eloChange);
     }
+
+    public static Long eloSeasonEndChange(Long oldElo) {
+        return oldElo / 2;
+    }
 }

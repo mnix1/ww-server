@@ -2,7 +2,7 @@ package com.ww.model.container.rival;
 
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.dto.social.ProfileDTO;
-import com.ww.model.dto.social.RivalProfileDTO;
+import com.ww.model.dto.social.RivalProfileSeasonDTO;
 import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +19,7 @@ public abstract class RivalModelFactory {
         return new ProfileDTO(profile);
     }
 
-    public void fillModelStatus(Map<String,Object> model){
+    public void fillModelStatus(Map<String, Object> model) {
         model.put("status", getModel().status);
     }
 
@@ -35,16 +35,17 @@ public abstract class RivalModelFactory {
 
     public void fillModelIntro(Map<String, Object> model, RivalTeam team) {
         fillModelBasic(model, team);
+        fillModelEloChanged(model, team);
     }
 
-    public void fillModelNewTask(Map<String, Object> model){
+    public void fillModelNewTask(Map<String, Object> model) {
         model.put("correctAnswerId", null);
         model.put("markedAnswerId", null);
         model.put("meAnswered", null);
         model.put("task", getModel().taskDTOs.get(getModel().currentTaskIndex));
     }
 
-    public void fillModelTaskMeta(Map<String,Object> model){
+    public void fillModelTaskMeta(Map<String, Object> model) {
         model.put("task", getModel().taskDTOs.get(getModel().currentTaskIndex).toTaskMeta());
     }
 
@@ -110,9 +111,9 @@ public abstract class RivalModelFactory {
         if (!getModel().isRanking()) {
             return;
         }
-        model.put("newProfile", prepareProfile(team.getProfile()));
+        model.put("profileSeason", new RivalProfileSeasonDTO(getModel().getProfileSeason(team.getProfileId())));
         if (getModel().isOpponent()) {
-            model.put("newOpponent", prepareProfile(getModel().getTeams().opponentTeam(team.getProfileId()).getProfile()));
+            model.put("opponentProfileSeason", new RivalProfileSeasonDTO(getModel().getOpponentProfileSeason(team.getProfileId())));
         }
     }
 

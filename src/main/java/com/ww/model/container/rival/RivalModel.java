@@ -6,6 +6,7 @@ import com.ww.model.container.rival.init.RivalInit;
 import com.ww.model.container.rival.init.RivalOnePlayerInit;
 import com.ww.model.container.rival.init.RivalTwoPlayerInit;
 import com.ww.model.dto.rival.task.TaskDTO;
+import com.ww.model.entity.outside.rival.season.ProfileSeason;
 import com.ww.model.entity.outside.rival.task.Answer;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
@@ -25,6 +26,9 @@ public abstract class RivalModel {
 
     protected Profile creatorProfile;
     protected Profile opponentProfile;
+
+    protected ProfileSeason creatorProfileSeason;
+    protected ProfileSeason opponentProfileSeason;
 
     protected int currentTaskIndex = -1;
 
@@ -62,10 +66,27 @@ public abstract class RivalModel {
             this.opponentProfile = c.getOpponentProfile();
             teams.getOpponentMap().put(creatorProfile.getId(), opponentProfile.getId());
             teams.getOpponentMap().put(opponentProfile.getId(), creatorProfile.getId());
+            if (importance == RivalImportance.RANKING) {
+                this.creatorProfileSeason = c.getCreatorProfileSeason();
+                this.opponentProfileSeason = c.getOpponentProfileSeason();
+            }
         } else if (init.getPlayer() == RivalPlayer.ONE) {
             RivalOnePlayerInit c = (RivalOnePlayerInit) init;
             this.creatorProfile = c.getCreatorProfile();
         }
+    }
+
+    public ProfileSeason getProfileSeason(Long profileId){
+        if(profileId.equals(creatorProfileSeason.getProfile().getId())){
+            return creatorProfileSeason;
+        }
+        return opponentProfileSeason;
+    }
+    public ProfileSeason getOpponentProfileSeason(Long profileId){
+        if(profileId.equals(creatorProfileSeason.getProfile().getId())){
+            return opponentProfileSeason;
+        }
+        return creatorProfileSeason;
     }
 
     public boolean isOpponent() {

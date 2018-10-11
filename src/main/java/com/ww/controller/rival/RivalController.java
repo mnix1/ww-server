@@ -2,7 +2,7 @@ package com.ww.controller.rival;
 
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
-import com.ww.model.dto.social.ClassificationProfileDTO;
+import com.ww.model.dto.social.ClassificationProfileSeasonDTO;
 import com.ww.service.rival.global.RivalClassificationService;
 import com.ww.service.rival.init.RivalInitFriendService;
 import com.ww.service.rival.init.RivalInitRandomOpponentService;
@@ -29,7 +29,7 @@ public class RivalController {
     private RivalClassificationService rivalClassificationService;
 
     @RequestMapping(value = "/classification", method = RequestMethod.POST)
-    public List<ClassificationProfileDTO> classification(@RequestBody Map<String, Object> payload) {
+    public List<ClassificationProfileSeasonDTO> classification(@RequestBody Map<String, Object> payload) {
         if (!payload.containsKey("type")) {
             throw new IllegalArgumentException();
         }

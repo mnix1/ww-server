@@ -5,25 +5,20 @@ import com.ww.model.constant.Category;
 import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.RivalStatus;
-import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.rival.RivalInterval;
 import com.ww.model.container.rival.RivalModel;
 import com.ww.model.container.rival.RivalModelFactory;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.task.Question;
-import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.RivalService;
 import com.ww.websocket.message.Message;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.ww.helper.EloHelper.*;
 
 @Getter
 public abstract class RivalManager implements Describe {

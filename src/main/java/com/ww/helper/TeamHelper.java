@@ -1,17 +1,12 @@
 package com.ww.helper;
 
-import com.ww.model.constant.rival.RivalImportance;
-import com.ww.model.constant.rival.RivalType;
-import com.ww.model.container.rival.RivalModel;
 import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarWisie;
 import com.ww.model.container.rival.war.WisieTeamMember;
 import com.ww.model.container.rival.war.WisorTeamMember;
 import com.ww.model.dto.social.ProfileDTO;
-import com.ww.model.dto.social.RivalProfileDTO;
 import com.ww.model.dto.wisie.WarProfileWisieDTO;
 import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
-import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.OwnedWisie;
 import com.ww.model.entity.outside.wisie.ProfileCampaignWisie;

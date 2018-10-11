@@ -1,5 +1,6 @@
 package com.ww.manager.rival.challenge;
 
+import com.ww.helper.TeamHelper;
 import com.ww.manager.rival.war.WarFlow;
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.Category;
@@ -38,7 +39,7 @@ public class ChallengeManager extends WarManager {
 
         Profile creator = init.getCreatorProfile();
         List<ProfileWisie> creatorWisies = rivalService.getProfileWisies(creator);
-        List<TeamMember> teamMembers = prepareTeamMembers(creator, creatorWisies);
+        List<TeamMember> teamMembers = TeamHelper.prepareTeamMembers(creator, creatorWisies);
         WarTeam creatorTeam = new WarTeam(creator, teamMembers, new WarTeamSkills(1, teamMembers));
         teams.addProfile(creator.getId(), creatorTeam);
     }

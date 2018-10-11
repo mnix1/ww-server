@@ -7,16 +7,15 @@ import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 
 @Getter
-public class RivalProfileDTO extends ProfileDTO {
+public class RivalProfileSeasonDTO {
 
     private Long elo;
+    private Long previousElo;
     private Grade grade;
-    private RivalType type;
 
-    public RivalProfileDTO(ProfileSeason profileSeason) {
-        super(profileSeason.getProfile());
+    public RivalProfileSeasonDTO(ProfileSeason profileSeason) {
         this.elo = profileSeason.getElo();
+        this.previousElo = profileSeason.getPreviousElo();
         this.grade = Grade.fromElo(elo);
-        this.type = profileSeason.getSeason().getType();
     }
 }
