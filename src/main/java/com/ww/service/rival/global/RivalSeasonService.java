@@ -21,7 +21,7 @@ import static com.ww.service.rival.global.RivalClassificationService.CLASSIFICAT
 
 @Service
 public class RivalSeasonService {
-    public static final Long SEASON_RIVAL_COUNT = 4L;
+    public static final Long SEASON_RIVAL_COUNT = 3L;
 
     @Autowired
     private SeasonRepository seasonRepository;
@@ -37,7 +37,7 @@ public class RivalSeasonService {
     }
 
     public Season create(RivalType type) {
-        return create(previous(type).orElse(new Season()));
+        return create(previous(type).orElse(new Season(type)));
     }
 
     public Season create(Season previous) {
@@ -66,13 +66,14 @@ public class RivalSeasonService {
         String positions = StringUtils.join(profiles.stream().limit(CLASSIFICATION_POSITIONS_COUNT).map(Profile::getTag).collect(Collectors.toList()), ",");
         season.setPositions(positions);
         updateEloGiveReward(profiles, season.getRivalType());
+        profileService.save(profiles);
     }
 
     public void updateEloGiveReward(List<Profile> profiles, RivalType type) {
         profiles.parallelStream().forEach(profile -> {
             Grade grade = Grade.fromElo(profile.getElo(type));
             profile.setHalfElo(type);
-            rewardService.addSendRewardFromSeason(profile, grade);
+            rewardService.addRewardFromSeason(profile, grade);
         });
     }
 }

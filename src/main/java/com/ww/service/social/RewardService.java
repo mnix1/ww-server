@@ -40,22 +40,11 @@ public class RewardService {
         profileConnectionService.send(model, Message.REWARD, profile.getId());
     }
 
-    public void addSendRewardFromSeason(Profile profile, Grade grade) {
+    public void addRewardFromSeason(Profile profile, Grade grade) {
         if (grade.getResources() == null) {
-            profileService.save(profile);
             return;
         }
-        Reward reward = new Reward();
-        reward.setResources(grade.getResources());
         profile.addResources(grade.getResources());
-        profileService.save(profile);
-        if (grade.getLevel() > 3 && !profileBookService.isProfileBookShelfFull(profile.getId())) {
-            Book book = giveBook(profile);
-            reward.setBookType(book.getType());
-        }
-        Map<String, Object> model = new HashMap<>();
-        reward.writeToMap(model);
-        profileConnectionService.send(model, Message.REWARD, profile.getId());
     }
 
     public Book giveBook(Profile profile) {

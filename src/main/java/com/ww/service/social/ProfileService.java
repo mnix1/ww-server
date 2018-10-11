@@ -123,6 +123,10 @@ public class ProfileService {
         profileRepository.save(profile);
     }
 
+    public void save(List<Profile> profiles) {
+        profileRepository.saveAll(profiles);
+    }
+
     public List<Profile> classification(RivalType type) {
         if (type == RivalType.BATTLE) {
             return profileRepository.findAllByOrderByBattleEloDescBattlePreviousEloDescBattleLastPlayDesc();

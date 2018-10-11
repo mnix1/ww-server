@@ -22,11 +22,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public abstract class RivalModel {
     protected RivalType type;
     protected RivalImportance importance;
+
     protected Profile creatorProfile;
     protected Profile opponentProfile;
-
-    protected Long creatorEloChange;
-    protected Long opponentEloChange;
 
     protected int currentTaskIndex = -1;
 

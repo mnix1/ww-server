@@ -25,12 +25,6 @@ public class EloHelper {
     }
 
     public static void updateElo(Profile p, Long eloChange, RivalType type) {
-        if (type == RivalType.BATTLE) {
-            p.setBattlePreviousElo(p.getBattleElo());
-            p.setBattleElo(Math.max(0L, p.getBattleElo() + eloChange));
-        } else if (type == RivalType.WAR) {
-            p.setWarPreviousElo(p.getWarElo());
-            p.setWarElo(Math.max(0L, p.getWarElo() + eloChange));
-        }
+        p.setElo(type, Math.max(MIN_ELO, p.getElo(type) + eloChange));
     }
 }

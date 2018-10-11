@@ -40,6 +40,10 @@ public class Season {
         }
     }
 
+    public Season(RivalType type) {
+        this.rivalType = type;
+    }
+
     public LocalDateTime startLocalDateTime() {
         return LocalDateTime.ofInstant(startDate, ZoneId.systemDefault());
     }

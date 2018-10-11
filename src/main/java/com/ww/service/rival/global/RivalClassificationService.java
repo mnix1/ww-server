@@ -37,13 +37,14 @@ public class RivalClassificationService {
 
     @Transactional
     public void updateProfilesElo(RivalModel model) {
+        RivalType type = model.getType();
         Profile winner = model.getWinner();
         Profile creator = profileService.getProfile(model.getCreatorProfile().getId());
         Profile opponent = profileService.getProfile(model.getOpponentProfile().getId());
         Instant lastPlay = Instant.now();
         Long creatorEloChange = 0L;
         Long opponentEloChange = 0L;
-        if (model.getType() == RivalType.BATTLE) {
+        if (type == RivalType.BATTLE) {
             if (model.getDraw()) {
                 creatorEloChange = prepareEloChange(creator.getBattleElo(), opponent.getBattleElo(), DRAW);
                 opponentEloChange = prepareEloChange(opponent.getBattleElo(), creator.getBattleElo(), DRAW);
@@ -53,7 +54,7 @@ public class RivalClassificationService {
             }
             creator.setBattleLastPlay(lastPlay);
             opponent.setBattleLastPlay(lastPlay);
-        } else if (model.getType() == RivalType.WAR) {
+        } else if (type == RivalType.WAR) {
             if (model.getDraw()) {
                 creatorEloChange = prepareEloChange(creator.getWarElo(), opponent.getWarElo(), DRAW);
                 opponentEloChange = prepareEloChange(opponent.getWarElo(), creator.getWarElo(), DRAW);
@@ -64,10 +65,10 @@ public class RivalClassificationService {
             creator.setWarLastPlay(lastPlay);
             opponent.setWarLastPlay(lastPlay);
         }
-        updateElo(creator, creatorEloChange, model.getType());
-        model.setCreatorEloChange(creatorEloChange);
-        updateElo(opponent, opponentEloChange, model.getType());
-        model.setOpponentEloChange(opponentEloChange);
+        updateElo(creator, creatorEloChange, type);
+        updateElo(opponent, opponentEloChange, type);
+        model.getCreatorProfile().setElo(type, creator.getElo(type));
+        model.getOpponentProfile().setElo(type, opponent.getElo(type));
         profileService.save(creator);
         profileService.save(opponent);
     }
