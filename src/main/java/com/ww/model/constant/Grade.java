@@ -26,7 +26,7 @@ public enum Grade {
 
     public static Grade fromElo(Long elo) {
         for (Grade grade : values()) {
-            if (elo >= grade.rangeFrom && grade.rangeTo != null && grade.rangeTo < elo) {
+            if (elo >= grade.rangeFrom && grade.rangeTo != null && elo < grade.rangeTo) {
                 return grade;
             }
         }

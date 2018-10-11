@@ -113,7 +113,7 @@ public abstract class RivalModelFactory {
         }
         model.put("profileSeason", new RivalProfileSeasonDTO(getModel().getProfileSeason(team.getProfileId())));
         if (getModel().isOpponent()) {
-            model.put("opponentProfileSeason", new RivalProfileSeasonDTO(getModel().getOpponentProfileSeason(team.getProfileId())));
+            model.put("opponentSeason", new RivalProfileSeasonDTO(getModel().getOpponentProfileSeason(team.getProfileId())));
         }
     }
 
