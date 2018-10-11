@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface SeasonRepository extends CrudRepository<Season, Long> {
     Optional<Season> findFirstByTypeAndCloseDateIsNull(RivalType type);
 
-    Optional<Season> findFirstByTypeOrderByStartDateDesc(RivalType type);
+    Optional<Season> findFirstByTypeOrderByOpenDateDesc(RivalType type);
 }

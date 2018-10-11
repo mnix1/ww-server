@@ -1,25 +1,17 @@
 package com.ww.service.rival.season;
 
-import com.ww.model.constant.Grade;
 import com.ww.model.constant.rival.RivalType;
-import com.ww.model.entity.outside.rival.season.ProfileSeason;
 import com.ww.model.entity.outside.rival.season.Season;
-import com.ww.model.entity.outside.social.Profile;
 import com.ww.repository.outside.rival.season.ProfileSeasonRepository;
 import com.ww.repository.outside.rival.season.SeasonRepository;
 import com.ww.service.social.ProfileService;
 import com.ww.service.social.RewardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static com.ww.service.rival.global.RivalClassificationService.CLASSIFICATION_POSITIONS_COUNT;
 
 @Service
 public class RivalSeasonService {
@@ -37,7 +29,7 @@ public class RivalSeasonService {
     private RewardService rewardService;
 
     public Optional<Season> previous(RivalType type) {
-        return seasonRepository.findFirstByTypeOrderByStartDateDesc(type);
+        return seasonRepository.findFirstByTypeOrderByOpenDateDesc(type);
     }
 
     public Season create(RivalType type) {

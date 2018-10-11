@@ -1,7 +1,8 @@
 package com.ww.service.rival.global;
 
 import com.ww.model.constant.rival.RivalType;
-import com.ww.model.dto.social.ClassificationProfileSeasonDTO;
+import com.ww.model.dto.social.ClassificationDTO;
+import com.ww.model.dto.social.ClassificationPositionDTO;
 import com.ww.model.entity.outside.rival.season.ProfileSeason;
 import com.ww.model.entity.outside.rival.season.Season;
 import com.ww.service.rival.season.RivalProfileSeasonService;
@@ -26,14 +27,15 @@ public class RivalClassificationService {
     @Autowired
     private RivalProfileSeasonService rivalProfileSeasonService;
 
-    public List<ClassificationProfileSeasonDTO> classification(RivalType type) {
+    public ClassificationDTO classification(RivalType type) {
         String profileTag = profileService.getProfileTag();
         Season season = rivalSeasonService.actual(type);
         List<ProfileSeason> profileSeasons = rivalProfileSeasonService.findProfileSeasons(season.getId());
-        return IntStream.range(0, profileSeasons.size())
-                .mapToObj(value -> new ClassificationProfileSeasonDTO(profileSeasons.get(value), (long) value + 1))
+        List<ClassificationPositionDTO> positions = IntStream.range(0, profileSeasons.size())
+                .mapToObj(value -> new ClassificationPositionDTO(profileSeasons.get(value), (long) value + 1))
                 .filter(value -> value.getPosition() <= CLASSIFICATION_POSITIONS_COUNT || value.getProfile().getTag().equals(profileTag))
                 .collect(Collectors.toList());
+        return new ClassificationDTO(season, positions);
     }
 
 }

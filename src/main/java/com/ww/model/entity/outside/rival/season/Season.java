@@ -25,17 +25,16 @@ public class Season {
     private RivalType type;
     private Integer monthId = 0;
     private Long remaining = SEASON_RIVAL_COUNT;
-    private Instant startDate = Instant.now();
+    private Instant openDate = Instant.now();
     private Instant closeDate;
-    private String positions;
 
     @OneToMany(mappedBy = "season", fetch = FetchType.LAZY)
     private Set<ProfileSeason> profiles = new HashSet<>();
 
     public Season(Season previousSeason) {
         this.type = previousSeason.getType();
-        LocalDateTime previousStartLocalDateTime = previousSeason.startLocalDateTime();
-        if (previousStartLocalDateTime.getMonthValue() == startLocalDateTime().getMonthValue()) {
+        LocalDateTime previousStartLocalDateTime = previousSeason.openLocalDateTime();
+        if (previousStartLocalDateTime.getMonthValue() == openLocalDateTime().getMonthValue()) {
             this.monthId = previousSeason.getMonthId() + 1;
         } else {
             this.monthId = 1;
@@ -46,8 +45,8 @@ public class Season {
         this.type = type;
     }
 
-    public LocalDateTime startLocalDateTime() {
-        return LocalDateTime.ofInstant(startDate, ZoneId.systemDefault());
+    public LocalDateTime openLocalDateTime() {
+        return LocalDateTime.ofInstant(openDate, ZoneId.systemDefault());
     }
 
     public boolean rivalPlayed() {
@@ -56,7 +55,7 @@ public class Season {
     }
 
     public String getName() {
-        LocalDateTime ldt = startLocalDateTime();
+        LocalDateTime ldt = openLocalDateTime();
         return ldt.getYear() + "/" + ldt.getMonthValue() + "/" + monthId;
     }
 }
