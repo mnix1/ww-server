@@ -64,7 +64,7 @@ public class RivalProfileSeasonService {
     }
 
     public Optional<ProfileSeason> findPreviousProfileSeason(RivalType type, Long profileId) {
-        List<ProfileSeason> profileSeasons = profileSeasonRepository.findAllBySeason_TypeAndProfile_IdOrderBySeason_StartDateDesc(type, profileId);
+        List<ProfileSeason> profileSeasons = profileSeasonRepository.findAllBySeason_TypeAndProfile_IdOrderBySeason_OpenDateDesc(type, profileId);
         if (profileSeasons.isEmpty()) {
             return Optional.empty();
         }

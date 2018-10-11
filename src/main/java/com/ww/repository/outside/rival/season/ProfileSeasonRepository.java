@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface ProfileSeasonRepository extends CrudRepository<ProfileSeason, Long> {
     List<ProfileSeason> findAllBySeason_IdOrderByEloDescPreviousEloDescUpdateDateAsc(Long seasonId);
 
-    List<ProfileSeason> findAllBySeason_TypeAndProfile_IdOrderBySeason_StartDateDesc(RivalType type, Long profileId);
+    List<ProfileSeason> findAllBySeason_TypeAndProfile_IdOrderBySeason_OpenDateDesc(RivalType type, Long profileId);
 
     Optional<ProfileSeason> findFirstBySeason_IdAndProfile_Id(Long seasonId, Long profileId);
 }
