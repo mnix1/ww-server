@@ -1,8 +1,9 @@
 package com.ww.helper;
 
-import com.ww.model.constant.rival.RivalType;
-import com.ww.model.entity.outside.rival.season.ProfileSeason;
-import com.ww.model.entity.outside.social.Profile;
+import com.ww.model.constant.Grade;
+import com.ww.model.entity.outside.rival.season.SeasonGrade;
+
+import java.util.List;
 
 public class EloHelper {
 
@@ -27,5 +28,16 @@ public class EloHelper {
 
     public static Long eloSeasonEndChange(Long oldElo) {
         return oldElo / 2;
+    }
+
+    public static Grade findGrade(Long elo, List<SeasonGrade> seasonGrades) {
+        for (SeasonGrade seasonGrade : seasonGrades) {
+            if (elo >= seasonGrade.getRangeFrom() && seasonGrade.getRangeTo() != null && elo < seasonGrade.getRangeTo()) {
+                return seasonGrade.getGrade();
+            } else if (elo >= seasonGrade.getRangeFrom() && seasonGrade.getRangeTo() == null) {
+                return seasonGrade.getGrade();
+            }
+        }
+        return null;
     }
 }

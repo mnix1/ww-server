@@ -2,15 +2,17 @@ package com.ww.service.rival.season;
 
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.entity.outside.rival.season.Season;
+import com.ww.model.entity.outside.rival.season.SeasonGrade;
 import com.ww.repository.outside.rival.season.ProfileSeasonRepository;
+import com.ww.repository.outside.rival.season.SeasonGradeRepository;
 import com.ww.repository.outside.rival.season.SeasonRepository;
-import com.ww.service.social.ProfileService;
 import com.ww.service.social.RewardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,14 +21,16 @@ public class RivalSeasonService {
 
     @Autowired
     private SeasonRepository seasonRepository;
-    @Autowired
-    private ProfileSeasonRepository profileSeasonRepository;
 
     @Autowired
-    private ProfileService profileService;
+    private SeasonGradeRepository seasonGradeRepository;
 
     @Autowired
     private RewardService rewardService;
+
+    public List<SeasonGrade> findSeasonGrades(RivalType type) {
+        return seasonGradeRepository.findAllByType(type);
+    }
 
     public Optional<Season> previous(RivalType type) {
         return seasonRepository.findFirstByTypeOrderByOpenDateDesc(type);

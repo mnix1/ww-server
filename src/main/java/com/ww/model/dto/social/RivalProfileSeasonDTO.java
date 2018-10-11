@@ -16,6 +16,6 @@ public class RivalProfileSeasonDTO {
     public RivalProfileSeasonDTO(ProfileSeason profileSeason) {
         this.elo = profileSeason.getElo();
         this.previousElo = profileSeason.getPreviousElo();
-        this.grade = Grade.fromElo(elo);
+        this.grade = profileSeason.getGrade();
     }
 }

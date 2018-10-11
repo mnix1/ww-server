@@ -5,6 +5,7 @@ import com.ww.model.container.rival.RivalModel;
 import com.ww.model.container.rival.init.RivalTwoPlayerInit;
 import com.ww.model.entity.outside.rival.season.ProfileSeason;
 import com.ww.model.entity.outside.rival.season.Season;
+import com.ww.model.entity.outside.rival.season.SeasonGrade;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.repository.outside.rival.season.ProfileSeasonRepository;
 import com.ww.service.social.ProfileService;
@@ -32,8 +33,6 @@ public class RivalProfileSeasonService {
 
     @Autowired
     private RivalSeasonService rivalSeasonService;
-    @Autowired
-    private RivalProfileSeasonService rivalProfileSeasonService;
 
     public List<ProfileSeason> findProfileSeasons(Long seasonId) {
         return profileSeasonRepository.findAllBySeason_IdOrderByEloDescPreviousEloDescUpdateDateAsc(seasonId);
@@ -46,21 +45,22 @@ public class RivalProfileSeasonService {
     @Transactional
     public void addProfileSeasons(RivalTwoPlayerInit init) {
         Season season = rivalSeasonService.actual(init.getType());
-        init.setCreatorProfileSeason(findOrCreateProfileSeason(season, init.getCreatorProfile()));
-        init.setOpponentProfileSeason(findOrCreateProfileSeason(season, init.getOpponentProfile()));
+        List<SeasonGrade> seasonGrades = rivalSeasonService.findSeasonGrades(season.getType());
+        init.setCreatorProfileSeason(findOrCreateProfileSeason(season, seasonGrades, init.getCreatorProfile()));
+        init.setOpponentProfileSeason(findOrCreateProfileSeason(season, seasonGrades, init.getOpponentProfile()));
     }
 
-    public ProfileSeason findOrCreateProfileSeason(Season season, Profile profile) {
-        return profileSeasonRepository.findFirstBySeason_IdAndProfile_Id(season.getId(), profile.getId()).orElseGet(() -> createProfileSeason(season, profile));
+    public ProfileSeason findOrCreateProfileSeason(Season season, List<SeasonGrade> seasonGrades, Profile profile) {
+        return profileSeasonRepository.findFirstBySeason_IdAndProfile_Id(season.getId(), profile.getId()).orElseGet(() -> createProfileSeason(season, seasonGrades, profile));
     }
 
-    public ProfileSeason createProfileSeason(Season season, Profile profile) {
+    public ProfileSeason createProfileSeason(Season season, List<SeasonGrade> seasonGrades, Profile profile) {
         Optional<ProfileSeason> optionalPreviousProfileSeason = findPreviousProfileSeason(season.getType(), profile.getId());
         if (optionalPreviousProfileSeason.isPresent()) {
             ProfileSeason previousProfileSeason = optionalPreviousProfileSeason.get();
-            return new ProfileSeason(previousProfileSeason, season);
+            return new ProfileSeason(previousProfileSeason, season, seasonGrades);
         }
-        return new ProfileSeason(profile, season);
+        return new ProfileSeason(profile, season, seasonGrades);
     }
 
     public Optional<ProfileSeason> findPreviousProfileSeason(RivalType type, Long profileId) {
@@ -76,6 +76,7 @@ public class RivalProfileSeasonService {
 //        RivalType type = model.getType();
         //TODO add fix when season changes during rival
 //        Season season = rivalSeasonService.actual(type);
+        List<SeasonGrade> seasonGrades = rivalSeasonService.findSeasonGrades(model.getType());
         Profile winner = model.getWinner();
         ProfileSeason creator = model.getCreatorProfileSeason();
         ProfileSeason opponent = model.getOpponentProfileSeason();
@@ -91,8 +92,8 @@ public class RivalProfileSeasonService {
         Instant updateDate = Instant.now();
         creator.setUpdateDate(updateDate);
         opponent.setUpdateDate(updateDate);
-        creator.updateElo(creatorEloChange);
-        opponent.updateElo(opponentEloChange);
+        creator.updateElo(creatorEloChange, seasonGrades);
+        opponent.updateElo(opponentEloChange, seasonGrades);
         save(creator);
         save(opponent);
     }

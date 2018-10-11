@@ -50,6 +50,10 @@ public class InitService {
 
     @Autowired
     private InitCampaignsService initCampaignsService;
+
+    @Autowired
+    private InitGradeService initGradeService;
+
     @Autowired
     private InitAutoService initAutoService;
 
@@ -66,6 +70,8 @@ public class InitService {
             initWisiesService.initWisies();
             logger.debug("INITIALIZING initCampaigns");
             initCampaignsService.initCampaigns();
+            logger.debug("INITIALIZING initSeasonGrades");
+            initGradeService.initSeasonGrades();
         }
     }
 

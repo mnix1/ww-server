@@ -40,12 +40,12 @@ public class RewardService {
         profileConnectionService.send(model, Message.REWARD, profile.getId());
     }
 
-    public void addRewardFromSeason(Profile profile, Grade grade) {
-        if (grade.getResources() == null) {
-            return;
-        }
-        profile.addResources(grade.getResources());
-    }
+//    public void addRewardFromSeason(Profile profile, Grade grade) {
+//        if (grade.getResources() == null) {
+//            return;
+//        }
+//        profile.addResources(grade.getResources());
+//    }
 
     public Book giveBook(Profile profile) {
         Book book = bookService.findRandomBook();
