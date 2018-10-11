@@ -1,6 +1,7 @@
 package com.ww.service.rival.season;
 
 import com.ww.model.constant.Grade;
+import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.rival.RivalModel;
 import com.ww.model.container.rival.init.RivalTwoPlayerInit;
@@ -9,6 +10,7 @@ import com.ww.model.entity.outside.rival.season.Season;
 import com.ww.model.entity.outside.rival.season.SeasonGrade;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.repository.outside.rival.season.ProfileSeasonRepository;
+import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.ww.helper.EloHelper.*;
 
@@ -35,6 +38,9 @@ public class RivalProfileSeasonService {
 
     @Autowired
     private RivalSeasonService rivalSeasonService;
+
+    @Autowired
+    private RivalGlobalService rivalGlobalService;
 
     public List<ProfileSeason> findProfileSeasons(Long seasonId) {
         return profileSeasonRepository.findAllBySeason_IdOrderByEloDescPreviousEloDescUpdateDateAsc(seasonId);
@@ -63,11 +69,15 @@ public class RivalProfileSeasonService {
 
     public ProfileSeason createProfileSeason(Season season, List<SeasonGrade> seasonGrades, Profile profile) {
         Optional<ProfileSeason> optionalPreviousProfileSeason = findPreviousProfileSeason(season.getType(), profile.getId());
+        ProfileSeason profileSeason;
         if (optionalPreviousProfileSeason.isPresent()) {
             ProfileSeason previousProfileSeason = optionalPreviousProfileSeason.get();
-            return new ProfileSeason(previousProfileSeason, season, seasonGrades);
+            profileSeason = new ProfileSeason(previousProfileSeason, season, seasonGrades);
+        } else {
+            profileSeason = new ProfileSeason(profile, season, seasonGrades);
         }
-        return new ProfileSeason(profile, season, seasonGrades);
+        profileSeasonRepository.save(profileSeason);
+        return profileSeason;
     }
 
     public Optional<ProfileSeason> findPreviousProfileSeason(RivalType type, Long profileId) {
@@ -86,11 +96,20 @@ public class RivalProfileSeasonService {
     }
 
     public List<ProfileSeason> findAllNotRewardedProfileSeasons() {
-        return profileSeasonRepository.findAllBySeason_CloseDateNotNullAndRewarded(false);
+        return filterProfileSeasonsNotPlaying(profileSeasonRepository.findAllBySeason_CloseDateNotNullAndRewarded(false));
     }
 
     public List<ProfileSeason> findSeasonNotRewardedProfileSeasons(Season season) {
-        return profileSeasonRepository.findAllBySeason_IdAndRewarded(season.getId(), false);
+        return filterProfileSeasonsNotPlaying(profileSeasonRepository.findAllBySeason_IdAndRewarded(season.getId(), false));
+    }
+
+    public List<ProfileSeason> filterProfileSeasonsNotPlaying(List<ProfileSeason> profileSeasons) {
+        return profileSeasons.stream().filter(profileSeason -> {
+            if (!rivalGlobalService.contains(profileSeason.getProfile().getId())) {
+                return true;
+            }
+            return rivalGlobalService.get(profileSeason.getProfile().getId()).getModel().getImportance() != RivalImportance.RANKING;
+        }).collect(Collectors.toList());
     }
 
     public void rewardProfiles(Season season) {
@@ -134,8 +153,9 @@ public class RivalProfileSeasonService {
         save(opponent);
     }
 
+    @Transactional
     @Scheduled(fixedRate = RIVAL_REWARD_JOB_RATE)
-    private synchronized void maybeRewardProfiles() {
+    public synchronized void maybeRewardProfiles() {
         List<ProfileSeason> profileSeasons = findAllNotRewardedProfileSeasons();
         if (profileSeasons.isEmpty()) {
             return;

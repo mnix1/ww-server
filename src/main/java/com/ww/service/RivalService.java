@@ -71,7 +71,7 @@ public class RivalService {
         if (!manager.getModel().isRanking()) {
             return;
         }
-        rivalSeasonService.update(manager.getModel().getSeason());
+        rivalProfileSeasonService.update(manager.getModel().getSeason());
     }
 
     public void updateProfilesElo(RivalManager manager) {

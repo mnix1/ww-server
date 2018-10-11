@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class RivalSeasonService {
-    public static final Long SEASON_RIVAL_COUNT = 3L;
+    public static final Long SEASON_RIVAL_COUNT = 1000L;
 
     @Autowired
     private SeasonRepository seasonRepository;
@@ -75,22 +74,4 @@ public class RivalSeasonService {
         seasonRepository.save(season);
         return shouldReward;
     }
-
-    public void endSeason(Season season) {
-
-
-//        List<Profile> profiles = profileService.classification(season.getType());
-//        String positions = StringUtils.join(profiles.stream().limit(CLASSIFICATION_POSITIONS_COUNT).map(Profile::getTag).collect(Collectors.toList()), ",");
-//        season.setPositions(positions);
-//        updateEloGiveReward(profiles, season.getType());
-//        profileService.save(profiles);
-    }
-
-//    public void updateEloGiveReward(List<Profile> profiles, RivalType type) {
-//        profiles.parallelStream().forEach(profile -> {
-//            Grade grade = Grade.fromElo(profile.getElo(type));
-//            profile.setHalfElo(type);
-//            rewardService.addRewardFromSeason(profile, grade);
-//        });
-//    }
 }
