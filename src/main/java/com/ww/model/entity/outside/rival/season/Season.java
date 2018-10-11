@@ -56,6 +56,6 @@ public class Season {
 
     public String getName() {
         LocalDateTime ldt = openLocalDateTime();
-        return ldt.getYear() + "/" + ldt.getMonthValue() + "/" + monthId;
+        return ldt.getYear() + "/" + ldt.getMonthValue() + " (" + monthId + ")";
     }
 }
