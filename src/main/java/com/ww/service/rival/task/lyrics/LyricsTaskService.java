@@ -93,7 +93,7 @@ public class LyricsTaskService {
             content += " po tekście: \"";
         }
         if (typeValue == LyricsTaskTypeValue.PREVIOUS_LINE) {
-            content += " przed tekście: \"";
+            content += " przed tekstem: \"";
         }
         return content + questionLine + "\" występuje";
     }
