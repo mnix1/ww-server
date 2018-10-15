@@ -1,24 +1,17 @@
 package com.ww.service.rival.challenge;
 
-import com.ww.model.constant.rival.challenge.ChallengeProfileStatus;
-import com.ww.model.constant.rival.challenge.ChallengeStatus;
-import com.ww.model.constant.social.FriendStatus;
-import com.ww.model.dto.rival.challenge.ChallengeInfoDTO;
-import com.ww.model.dto.rival.challenge.ChallengePositionDTO;
-import com.ww.model.dto.rival.challenge.ChallengeSummaryDTO;
+import com.ww.model.constant.rival.challenge.*;
+import com.ww.model.dto.rival.challenge.*;
 import com.ww.model.entity.outside.rival.challenge.Challenge;
 import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
-import com.ww.model.entity.outside.social.Profile;
-import com.ww.model.entity.outside.social.ProfileFriend;
 import com.ww.repository.outside.rival.challenge.ChallengeProfileRepository;
 import com.ww.repository.outside.rival.challenge.ChallengeRepository;
 import com.ww.service.rival.init.RivalRunService;
 import com.ww.service.social.ProfileService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -27,13 +20,14 @@ import static com.ww.helper.ModelHelper.putSuccessCode;
 
 @Service
 public class ChallengeService {
-    private static final Logger logger = LoggerFactory.getLogger(ChallengeService.class);
-
     @Autowired
     private ChallengeRepository challengeRepository;
 
     @Autowired
     private ChallengeProfileRepository challengeProfileRepository;
+
+    @Autowired
+    private ChallengeCreateService challengeCreateService;
 
     @Autowired
     private RivalChallengeService rivalChallengeService;
@@ -44,75 +38,84 @@ public class ChallengeService {
     @Autowired
     private RivalRunService rivalRunService;
 
-    public Map<String, Object> friendInit(List<String> tags) {
-        Map<String, Object> model = new HashMap<>();
-        if (tags.isEmpty()) {
-            logger.error("Empty tags: {}", profileService.getProfileId());
-            return putErrorCode(model);
-        }
-        Set<String> tagSet = new HashSet<>(tags);
-        Profile profile = profileService.getProfile();
-        List<Profile> friends = profile.getFriends().stream()
-                .filter(profileFriend -> profileFriend.getStatus() == FriendStatus.ACCEPTED)
-                .map(ProfileFriend::getFriendProfile)
-                .filter(e -> tagSet.contains(e.getTag()))
-                .collect(Collectors.toList());
-        if (friends.isEmpty()) {
-            logger.error("Empty friends: {}", profileService.getProfileId());
-            return putErrorCode(model); //error no one to fight
-        }
-        List<Profile> profiles = new ArrayList<>();
-        profiles.add(profile);
-        profiles.addAll(friends);
-        create(profile, profiles);
-        return putSuccessCode(model);
+    @Transactional
+    public ChallengeGlobalInfoDTO global() {
+        Optional<Challenge> optionalChallenge = challengeRepository.findFirstByTypeAndStatus(ChallengeType.GLOBAL, ChallengeStatus.IN_PROGRESS);
+        Challenge challenge = optionalChallenge.orElseGet(challengeCreateService::createGlobal);
+        boolean isPresent = challengeProfileRepository.findByProfile_IdAndChallenge_Id(profileService.getProfileId(), challenge.getId()).isPresent();
+        return new ChallengeGlobalInfoDTO(challenge, !isPresent);
     }
 
     public Map<String, Object> response(Long challengeId) {
         Map<String, Object> model = new HashMap<>();
-        ChallengeProfile challengeProfile = challengeProfileRepository.findByProfile_IdAndChallenge_Id(profileService.getProfileId(), challengeId);
-        if (challengeProfile == null || challengeProfile.getStatus() != ChallengeProfileStatus.OPEN) {
+        Optional<ChallengeProfile> optionalChallengeProfile = challengeProfileRepository.findByProfile_IdAndChallenge_Id(profileService.getProfileId(), challengeId);
+        ChallengeProfile challengeProfile;
+        if (optionalChallengeProfile.isPresent()) {
+            challengeProfile = optionalChallengeProfile.get();
+        } else {
+            Optional<Challenge> optionalChallenge = challengeRepository.findById(challengeId);
+            if (!optionalChallenge.isPresent()) {
+                return putErrorCode(model);
+            }
+            Challenge challenge = optionalChallenge.get();
+            if (challenge.getType() == ChallengeType.GLOBAL) {
+                challengeProfile = new ChallengeProfile(challenge, profileService.getProfile(), ChallengeProfileType.JOINED);
+            } else {
+                return putErrorCode(model);
+            }
+        }
+        if (challengeProfile.getResponseStatus() != ChallengeProfileResponse.OPEN) {
             return putErrorCode(model);
         }
-        challengeProfile.setStatus(ChallengeProfileStatus.IN_PROGRESS);
+        challengeProfile.setResponseStatus(ChallengeProfileResponse.IN_PROGRESS);
         challengeProfileRepository.save(challengeProfile);
         rivalRunService.run(rivalChallengeService.init(challengeProfile));
         return putSuccessCode(model);
     }
 
-    private void create(Profile creator, List<Profile> profiles) {
-        Challenge challenge = new Challenge();
-        challenge.setCreatorProfile(creator);
-        challenge.setProfiles(profiles.stream()
-                .map(profile -> new ChallengeProfile(challenge, profile, ChallengeProfileStatus.OPEN))
-                .collect(Collectors.toSet()));
-        challengeRepository.save(challenge);
-        challengeProfileRepository.saveAll(challenge.getProfiles());
+    public List<ChallengePrivateDTO> list(ChallengeStatus status, Boolean participant) {
+        if (status == ChallengeStatus.IN_PROGRESS) {
+            if (participant) {
+                return listActive();
+            }
+            return listPrivate();
+        }
+        return listHistory();
     }
 
-    public List<ChallengeInfoDTO> list(ChallengeStatus status) {
-        if (status == ChallengeStatus.CLOSED) {
-            List<ChallengeProfile> challengeProfiles = challengeProfileRepository.findAllByProfile_IdAndStatusAndChallenge_Status(profileService.getProfileId(), ChallengeProfileStatus.CLOSED, ChallengeStatus.CLOSED);
-            return challengeProfiles.stream()
-                    .map(challengeProfile -> new ChallengeInfoDTO(challengeProfile.getChallenge()))
-                    .distinct()
-                    .collect(Collectors.toList());
-        }
+    private List<ChallengePrivateDTO> listPrivate() {
+        List<Challenge> challenges = challengeRepository.findAllByTypeAndStatusAndAccessIn(ChallengeType.PRIVATE, ChallengeStatus.IN_PROGRESS, Arrays.asList(ChallengeAccess.LOCK, ChallengeAccess.UNLOCK));
+        Set<Long> challengeIds = challengeProfileRepository.findAllByProfile_IdAndChallenge_IdIn(profileService.getProfileId(), challenges.stream().map(Challenge::getId).collect(Collectors.toList()))
+                .stream().map(challengeProfile -> challengeProfile.getChallenge().getId()).collect(Collectors.toSet());
+        return challenges.stream()
+                .filter(challenge -> !challengeIds.contains(challenge.getId()) && challenge.getTimeoutInterval() > 60 * 1000)
+                .limit(10)
+                .map(ChallengePrivateDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    private List<ChallengePrivateDTO> listActive() {
         List<ChallengeProfile> challengeProfiles = challengeProfileRepository.findAllByProfile_IdAndChallenge_Status(profileService.getProfileId(), ChallengeStatus.IN_PROGRESS);
         return challengeProfiles.stream()
-                .map(challengeProfile -> new ChallengeInfoDTO(challengeProfile.getChallenge(), challengeProfile.getStatus() != ChallengeProfileStatus.CLOSED))
+                .map(ChallengeActiveDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    private List<ChallengePrivateDTO> listHistory() {
+        List<ChallengeProfile> challengeProfiles = challengeProfileRepository.findAllByProfile_IdAndJoinedAndChallenge_StatusOrderByChallenge_CloseDateDesc(profileService.getProfileId(), true, ChallengeStatus.CLOSED);
+        return challengeProfiles.stream()
+                .limit(10)
+                .map(challengeProfile -> new ChallengePrivateDTO(challengeProfile.getChallenge()))
                 .distinct()
                 .collect(Collectors.toList());
     }
 
     public ChallengeSummaryDTO summary(Long challengeId) {
-        return summary(challengeProfileRepository.findByProfile_IdAndChallenge_Id(profileService.getProfileId(), challengeId));
+        Optional<ChallengeProfile> optionalChallengeProfile = challengeProfileRepository.findByProfile_IdAndChallenge_Id(profileService.getProfileId(), challengeId);
+        return optionalChallengeProfile.map(this::summary).orElse(null);
     }
 
     public ChallengeSummaryDTO summary(ChallengeProfile challengeProfile) {
-        if (challengeProfile == null) {
-            return null;
-        }
         Challenge challenge = challengeProfile.getChallenge();
         List<ChallengePositionDTO> positions = new ArrayList<>();
         Set<ChallengeProfile> challengeProfiles = challenge.getProfiles();
@@ -121,13 +124,13 @@ public class ChallengeService {
             positions.add(position);
         }
         positions.sort((o1, o2) -> {
-            if (o1.getStatus() != ChallengeProfileStatus.CLOSED) {
-                if (o2.getStatus() != ChallengeProfileStatus.CLOSED) {
+            if (o1.getStatus() != ChallengeProfileResponse.CLOSED) {
+                if (o2.getStatus() != ChallengeProfileResponse.CLOSED) {
                     return 0;
                 }
                 return 1;
             }
-            if (o2.getStatus() != ChallengeProfileStatus.CLOSED) {
+            if (o2.getStatus() != ChallengeProfileResponse.CLOSED) {
                 return -1;
             }
             if (o1.getScore().equals(o2.getScore())) {

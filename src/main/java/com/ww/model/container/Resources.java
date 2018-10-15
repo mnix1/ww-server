@@ -1,7 +1,7 @@
 package com.ww.model.container;
 
+import com.ww.model.constant.social.ResourceType;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
@@ -29,6 +29,18 @@ public class Resources {
     public Resources(Long gold, Long crystal, Long wisdom, Long elixir) {
         this(gold, crystal, wisdom);
         this.elixir = elixir;
+    }
+
+    public Resources(ResourceType type, Long value) {
+        if (type == ResourceType.GOLD) {
+            this.gold = value;
+        } else if (type == ResourceType.CRYSTAL) {
+            this.crystal = value;
+        } else if (type == ResourceType.WISDOM) {
+            this.wisdom = value;
+        } else if (type == ResourceType.ELIXIR) {
+            this.elixir = value;
+        }
     }
 
     public boolean hasNotLessThan(Resources resources) {
@@ -77,6 +89,13 @@ public class Resources {
             elixir += resources.elixir;
         }
         return this;
+    }
+
+    public boolean getEmpty() {
+        return !((gold != null && gold > 0)
+                || (crystal != null && crystal > 0)
+                || (wisdom != null && wisdom > 0)
+                || (elixir != null && elixir > 0));
     }
 
 }

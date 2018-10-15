@@ -1,12 +1,14 @@
 package com.ww.model.entity.outside.rival.challenge;
 
-import com.ww.model.constant.rival.challenge.ChallengeProfileStatus;
+import com.ww.model.constant.rival.challenge.ChallengeProfileType;
+import com.ww.model.constant.rival.challenge.ChallengeProfileResponse;
 import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.Instant;
 
 @Setter
 @Getter
@@ -16,8 +18,12 @@ public class ChallengeProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private ChallengeProfileStatus status = ChallengeProfileStatus.OPEN;
-    private Integer score = 0;
+    private ChallengeProfileResponse responseStatus = ChallengeProfileResponse.OPEN;
+    private ChallengeProfileType type;
+    private Boolean joined = false;
+    private Instant responseStart;
+    private Instant responseEnd;
+    private Integer score;
     @ManyToOne
     @JoinColumn(name = "challenge_id", nullable = false, updatable = false)
     private Challenge challenge;
@@ -25,9 +31,9 @@ public class ChallengeProfile {
     @JoinColumn(name = "profile_id", nullable = false, updatable = false)
     private Profile profile;
 
-    public ChallengeProfile(Challenge challenge, Profile profile, ChallengeProfileStatus status) {
+    public ChallengeProfile(Challenge challenge, Profile profile, ChallengeProfileType type) {
         this.challenge = challenge;
         this.profile = profile;
-        this.status = status;
+        this.type = type;
     }
 }

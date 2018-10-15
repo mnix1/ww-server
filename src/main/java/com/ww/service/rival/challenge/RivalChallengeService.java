@@ -6,7 +6,7 @@ import com.ww.model.constant.Category;
 import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.RivalImportance;
-import com.ww.model.constant.rival.challenge.ChallengeProfileStatus;
+import com.ww.model.constant.rival.challenge.ChallengeProfileResponse;
 import com.ww.model.constant.rival.challenge.ChallengeStatus;
 import com.ww.model.container.rival.init.RivalChallengeInit;
 import com.ww.model.entity.outside.rival.challenge.Challenge;
@@ -17,11 +17,7 @@ import com.ww.model.entity.outside.social.Profile;
 import com.ww.repository.outside.rival.challenge.ChallengeProfileRepository;
 import com.ww.repository.outside.rival.challenge.ChallengeQuestionRepository;
 import com.ww.repository.outside.rival.challenge.ChallengeRepository;
-import com.ww.service.rival.init.RivalRunService;
 import com.ww.service.rival.war.RivalWarService;
-import com.ww.websocket.message.Message;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -76,7 +72,7 @@ public class RivalChallengeService extends RivalWarService {
         super.disposeManager(manager);
         ChallengeManager challengeManager = (ChallengeManager) manager;
         ChallengeProfile challengeProfile = challengeManager.challengeProfile;
-        challengeProfile.setStatus(ChallengeProfileStatus.CLOSED);
+        challengeProfile.setResponseStatus(ChallengeProfileResponse.CLOSED);
         challengeProfile.setScore(Math.max(0, manager.getModel().getCurrentTaskIndex()));
         challengeProfileRepository.save(challengeProfile);
         maybeCloseChallenge(challengeProfile.getChallenge(), Instant.now());
@@ -87,7 +83,7 @@ public class RivalChallengeService extends RivalWarService {
     }
 
     private void maybeCloseChallenge(Challenge challenge, Instant closeDate) {
-        if (challengeProfileRepository.findAllByChallenge_Id(challenge.getId()).stream().anyMatch(challengeProfile -> challengeProfile.getStatus() != ChallengeProfileStatus.CLOSED)) {
+        if (challengeProfileRepository.findAllByChallenge_Id(challenge.getId()).stream().anyMatch(challengeProfile -> challengeProfile.getResponseStatus() != ChallengeProfileResponse.CLOSED)) {
             return;
         }
         challenge.setStatus(ChallengeStatus.CLOSED);

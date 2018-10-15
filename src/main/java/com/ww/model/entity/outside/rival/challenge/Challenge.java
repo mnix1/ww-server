@@ -1,6 +1,9 @@
 package com.ww.model.entity.outside.rival.challenge;
 
+import com.ww.model.constant.rival.challenge.ChallengeAccess;
+import com.ww.model.constant.rival.challenge.ChallengeType;
 import com.ww.model.constant.rival.challenge.ChallengeStatus;
+import com.ww.model.container.Resources;
 import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,9 +11,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
 import java.util.Set;
-
-import static java.time.temporal.ChronoUnit.DAYS;
 
 @Setter
 @Getter
@@ -21,16 +24,58 @@ public class Challenge {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "creator_profile_id", nullable = false, updatable = false)
+    @JoinColumn(name = "creator_profile_id", updatable = false)
     private Profile creatorProfile;
+    private ChallengeType type = ChallengeType.PRIVATE;
     private ChallengeStatus status = ChallengeStatus.IN_PROGRESS;
-    private Instant inProgressDate = Instant.now();
+    private Long participants = 0L;
+    private ChallengeAccess access;
+    private Long goldCost;
+    private Long crystalCost;
+    private Long wisdomCost;
+    private Long elixirCost;
+    private Long goldGain;
+    private Long crystalGain;
+    private Long wisdomGain;
+    private Long elixirGain;
+    private Instant creationDate = Instant.now();
     private Instant closeDate;
-    private Instant timeoutDate = Instant.now().plus(3, DAYS);//automatic close
+    private Instant timeoutDate;
 
     @OneToMany(mappedBy = "challenge", fetch = FetchType.LAZY)
-    private Set<ChallengeProfile> profiles;
+    private Set<ChallengeProfile> profiles = new HashSet<>();
 
     @OneToMany(mappedBy = "challenge", fetch = FetchType.LAZY)
     private Set<ChallengeQuestion> questions;
+
+    public Challenge(Profile creatorProfile, ChallengeType type, ChallengeAccess access, Resources resources, Integer duration) {
+        this.creatorProfile = creatorProfile;
+        this.type = type;
+        this.access = access;
+        setCostResources(resources);
+        this.timeoutDate = creationDate.plus(duration, ChronoUnit.HOURS);
+    }
+    public Challenge(ChallengeType type, ChallengeAccess access, Resources resources, Instant timeoutDate) {
+        setCostResources(resources);
+        this.timeoutDate = timeoutDate;
+    }
+
+    private void setCostResources(Resources resources){
+        this.goldCost = resources.getGold();
+        this.crystalCost = resources.getCrystal();
+        this.wisdomCost = resources.getWisdom();
+        this.elixirCost = resources.getElixir();
+    }
+
+    public Resources getCostResources(){
+        return new Resources(goldCost, crystalCost, wisdomCost, elixirCost);
+    }
+
+    public Resources getGainResources(){
+        return new Resources(goldGain, crystalGain, wisdomGain, elixirGain);
+    }
+
+    public Long getTimeoutInterval(){
+        return timeoutDate.toEpochMilli() - Instant.now().toEpochMilli();
+    }
 }

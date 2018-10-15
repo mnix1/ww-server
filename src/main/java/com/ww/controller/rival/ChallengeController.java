@@ -1,11 +1,13 @@
 package com.ww.controller.rival;
 
+import com.ww.model.constant.rival.challenge.ChallengeAccess;
 import com.ww.model.constant.rival.challenge.ChallengeStatus;
-import com.ww.model.dto.rival.challenge.ChallengeInfoDTO;
+import com.ww.model.constant.social.ResourceType;
+import com.ww.model.dto.rival.challenge.ChallengePrivateDTO;
+import com.ww.model.dto.rival.challenge.ChallengeGlobalInfoDTO;
 import com.ww.model.dto.rival.challenge.ChallengeSummaryDTO;
-import com.ww.model.entity.outside.rival.challenge.Challenge;
+import com.ww.service.rival.challenge.ChallengeCreateService;
 import com.ww.service.rival.challenge.ChallengeService;
-import com.ww.service.rival.challenge.RivalChallengeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,14 +23,20 @@ public class ChallengeController {
 
     @Autowired
     private ChallengeService challengeService;
+    @Autowired
+    private ChallengeCreateService challengeCreateService;
 
-    @RequestMapping(value = "/friendInit", method = RequestMethod.POST)
-    public Map startFriend(@RequestBody Map<String, Object> payload) {
-        if (!payload.containsKey("tags")) {
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public Map create(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("tags") || !payload.containsKey("access") || !payload.containsKey("resourceType") || !payload.containsKey("resourceCost") || !payload.containsKey("duration")) {
             throw new IllegalArgumentException();
         }
         List<String> tags = (List<String>) payload.get("tags");
-        return challengeService.friendInit(tags);
+        ChallengeAccess access = ChallengeAccess.valueOf((String) payload.get("access"));
+        ResourceType resourceType = ResourceType.valueOf((String) payload.get("resourceType"));
+        Long resourceCost = ((Integer) payload.get("resourceCost")).longValue();
+        Integer duration = (Integer) payload.get("duration");
+        return challengeCreateService.createPrivate(tags, access, resourceType, resourceCost, duration);
     }
 
     @RequestMapping(value = "/response", method = RequestMethod.POST)
@@ -41,15 +49,18 @@ public class ChallengeController {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.POST)
-    public List<ChallengeInfoDTO> list(@RequestBody Map<String, Object> payload) {
-        ChallengeStatus status = null;
-        if (payload.containsKey("status")) {
-            try {
-                status = ChallengeStatus.valueOf((String) payload.get("status"));
-            } catch (IllegalArgumentException e) {
-            }
+    public List<ChallengePrivateDTO> list(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("status") || !payload.containsKey("participant")) {
+            throw new IllegalArgumentException();
         }
-        return challengeService.list(status);
+        ChallengeStatus status = ChallengeStatus.valueOf((String) payload.get("status"));
+        Boolean participant = (Boolean) payload.get("participant");
+        return challengeService.list(status, participant);
+    }
+
+    @RequestMapping(value = "/global", method = RequestMethod.POST)
+    public ChallengeGlobalInfoDTO global(@RequestBody Map<String, Object> payload) {
+        return challengeService.global();
     }
 
     @RequestMapping(value = "/summary", method = RequestMethod.POST)
