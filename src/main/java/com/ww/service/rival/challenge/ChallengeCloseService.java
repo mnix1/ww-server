@@ -66,8 +66,11 @@ public class ChallengeCloseService {
     }
 
     public void maybeCloseChallenge(Challenge challenge, Instant closeDate) {
+        if (challenge.getAccess() != ChallengeAccess.INVITE) {
+            return;
+        }
         List<ChallengeProfile> challengeProfiles = challengeProfileRepository.findAllByChallenge_Id(challenge.getId());
-        if (challenge.getAccess() == ChallengeAccess.INVITE && challengeProfiles.stream().anyMatch(challengeProfile -> challengeProfile.getResponseStatus() != ChallengeProfileResponse.CLOSED)) {
+        if (challengeProfiles.stream().anyMatch(challengeProfile -> challengeProfile.getResponseStatus() != ChallengeProfileResponse.CLOSED)) {
             return;
         }
         challenge.setStatus(ChallengeStatus.CLOSED);

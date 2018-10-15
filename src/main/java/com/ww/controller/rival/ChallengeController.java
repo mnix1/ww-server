@@ -3,8 +3,8 @@ package com.ww.controller.rival;
 import com.ww.model.constant.rival.challenge.ChallengeAccess;
 import com.ww.model.constant.rival.challenge.ChallengeStatus;
 import com.ww.model.constant.social.ResourceType;
-import com.ww.model.dto.rival.challenge.ChallengePrivateDTO;
 import com.ww.model.dto.rival.challenge.ChallengeGlobalInfoDTO;
+import com.ww.model.dto.rival.challenge.ChallengePrivateDTO;
 import com.ww.model.dto.rival.challenge.ChallengeSummaryDTO;
 import com.ww.service.rival.challenge.ChallengeCreateService;
 import com.ww.service.rival.challenge.ChallengeService;
@@ -71,12 +71,14 @@ public class ChallengeController {
         Long challengeId = ((Integer) payload.get("id")).longValue();
         return challengeService.summary(challengeId);
     }
+
     @RequestMapping(value = "/join", method = RequestMethod.POST)
-    public Map<String,Object> join(@RequestBody Map<String, Object> payload) {
+    public Map<String, Object> join(@RequestBody Map<String, Object> payload) {
         if (!payload.containsKey("id")) {
             throw new IllegalArgumentException();
         }
+        String creatorTag = payload.containsKey("creatorTag") ? (String) payload.get("creatorTag") : "";
         Long challengeId = ((Integer) payload.get("id")).longValue();
-        return challengeService.join(challengeId);
+        return challengeService.join(challengeId, creatorTag);
     }
 }

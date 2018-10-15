@@ -1,5 +1,6 @@
 package com.ww.service.rival.challenge;
 
+import com.ww.helper.TagHelper;
 import com.ww.model.constant.rival.challenge.*;
 import com.ww.model.dto.rival.challenge.*;
 import com.ww.model.entity.outside.rival.challenge.Challenge;
@@ -117,7 +118,7 @@ public class ChallengeService {
     }
 
     @Transactional
-    public Map<String, Object> join(Long challengeId) {
+    public Map<String, Object> join(Long challengeId, String creatorTag) {
         Map<String, Object> model = new HashMap<>();
         Optional<Challenge> optionalChallenge = challengeRepository.findById(challengeId);
         if (!optionalChallenge.isPresent()) {
@@ -135,6 +136,15 @@ public class ChallengeService {
         if (!optionalChallengeProfile.isPresent()) {
             if (challenge.getAccess() == ChallengeAccess.INVITE) {
                 return putErrorCode(model);
+            } else if (challenge.getAccess() == ChallengeAccess.LOCK) {
+                if (TagHelper.shouldPrepareTag(creatorTag)) {
+                    creatorTag = TagHelper.prepareTag(creatorTag);
+                } else {
+                    return putCode(model, -4);
+                }
+                if (!TagHelper.isCorrectTag(creatorTag) || !challenge.getCreatorProfile().getTag().equals(creatorTag)) {
+                    return putCode(model, -4);
+                }
             }
             challengeProfile = new ChallengeProfile(challenge, profile, ChallengeProfileType.JOINED);
         } else {

@@ -13,6 +13,10 @@ public class TagHelper {
         return tag.trim().replace("#", "");
     }
 
+    static public boolean shouldPrepareTag(String tag) {
+        return tag.length() <= 10;
+    }
+
     static public boolean isCorrectTag(String tag) {
         if (tag.length() != 7) {
             return false;

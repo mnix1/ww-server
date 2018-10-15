@@ -24,6 +24,7 @@ import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.ww.helper.ModelHelper.putCode;
 import static com.ww.helper.ModelHelper.putErrorCode;
 import static com.ww.helper.ModelHelper.putSuccessCode;
 
@@ -44,8 +45,11 @@ public class ChallengeCreateService {
     @Transactional
     public Map<String, Object> createPrivate(List<String> tags, ChallengeAccess access, ResourceType resourceType, Long resourceCost, Integer duration) {
         Map<String, Object> model = new HashMap<>();
-        if (!DURATIONS.contains(duration) || !RESOURCE_COSTS.contains(resourceCost) || (tags.isEmpty() && access == ChallengeAccess.INVITE)) {
+        if (!DURATIONS.contains(duration) || !RESOURCE_COSTS.contains(resourceCost)) {
             return putErrorCode(model);
+        }
+        if(tags.isEmpty() && access == ChallengeAccess.INVITE){
+            return putCode(model, -2);
         }
         Profile profile = profileService.getProfile();
         Challenge challenge = new Challenge(profile, ChallengeType.PRIVATE, access, new Resources(resourceType, resourceCost), duration);
