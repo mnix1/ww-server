@@ -1,7 +1,7 @@
 package com.ww.model.container.rival;
 
 import com.ww.model.constant.rival.RivalStatus;
-import com.ww.model.dto.social.ProfileDTO;
+import com.ww.model.dto.social.ExtendedProfileDTO;
 import com.ww.model.dto.social.RivalProfileSeasonDTO;
 import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
@@ -15,8 +15,8 @@ import java.util.Map;
 public abstract class RivalModelFactory {
     public abstract RivalModel getModel();
 
-    public ProfileDTO prepareProfile(Profile profile) {
-        return new ProfileDTO(profile);
+    public ExtendedProfileDTO prepareProfile(Profile profile) {
+        return new ExtendedProfileDTO(profile);
     }
 
     public void fillModelStatus(Map<String, Object> model) {

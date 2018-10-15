@@ -6,6 +6,7 @@ import com.ww.model.constant.Category;
 import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.RivalImportance;
+import com.ww.model.constant.rival.challenge.ChallengeAccess;
 import com.ww.model.constant.rival.challenge.ChallengeProfileResponse;
 import com.ww.model.constant.rival.challenge.ChallengeStatus;
 import com.ww.model.container.rival.init.RivalChallengeInit;
@@ -38,6 +39,8 @@ public class RivalChallengeService extends RivalWarService {
 
     @Autowired
     private ChallengeQuestionRepository challengeQuestionRepository;
+    @Autowired
+    private ChallengeCloseService challengeCloseService;
 
     public RivalChallengeInit init(ChallengeProfile challengeProfile) {
         List<ChallengeQuestion> challengeQuestions = new ArrayList<>(challengeProfile.getChallenge().getQuestions());
@@ -59,7 +62,7 @@ public class RivalChallengeService extends RivalWarService {
         return question;
     }
 
-    protected Language findQuestionLanguage(ChallengeProfile challengeProfile){
+    protected Language findQuestionLanguage(ChallengeProfile challengeProfile) {
         return challengeProfile.getProfile().getLanguage();
     }
 
@@ -72,24 +75,11 @@ public class RivalChallengeService extends RivalWarService {
         super.disposeManager(manager);
         ChallengeManager challengeManager = (ChallengeManager) manager;
         ChallengeProfile challengeProfile = challengeManager.challengeProfile;
+        challengeProfile.setResponseEnd(Instant.now());
         challengeProfile.setResponseStatus(ChallengeProfileResponse.CLOSED);
         challengeProfile.setScore(Math.max(0, manager.getModel().getCurrentTaskIndex()));
         challengeProfileRepository.save(challengeProfile);
-        maybeCloseChallenge(challengeProfile.getChallenge(), Instant.now());
-    }
-
-    @Override
-    public void addRewardFromWin(Profile winner) {
-    }
-
-    private void maybeCloseChallenge(Challenge challenge, Instant closeDate) {
-        if (challengeProfileRepository.findAllByChallenge_Id(challenge.getId()).stream().anyMatch(challengeProfile -> challengeProfile.getResponseStatus() != ChallengeProfileResponse.CLOSED)) {
-            return;
-        }
-        challenge.setStatus(ChallengeStatus.CLOSED);
-        challenge.setCloseDate(closeDate);
-        // TODO ADD AUTO CLOSE WHEN TIMEOUT
-        challengeRepository.save(challenge);
+        challengeCloseService.maybeCloseChallenge(challengeProfile.getChallenge(), Instant.now());
     }
 
 }

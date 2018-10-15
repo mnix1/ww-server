@@ -8,17 +8,17 @@ import com.ww.model.entity.outside.social.ProfileFriend;
 import lombok.Getter;
 
 @Getter
-public class FriendDTO extends ProfileDTO {
+public class FriendDTOExtended extends ExtendedProfileDTO {
 
     private Long level;
     private Boolean isOnline;
     private FriendStatus status;
 
-    public FriendDTO(ProfileFriend profileFriend, Boolean isOnline) {
+    public FriendDTOExtended(ProfileFriend profileFriend, Boolean isOnline) {
         this(profileFriend.getFriendProfile(), profileFriend.getStatus(), isOnline);
     }
 
-    public FriendDTO(Profile profile, FriendStatus status, Boolean isOnline) {
+    public FriendDTOExtended(Profile profile, FriendStatus status, Boolean isOnline) {
         super(profile);
         this.level = profile.getLevel();
         this.status = status;

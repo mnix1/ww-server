@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,8 @@ public class ChallengeService {
 
     @Autowired
     private ChallengeCreateService challengeCreateService;
+    @Autowired
+    private ChallengeCloseService challengeCloseService;
 
     @Autowired
     private RivalChallengeService rivalChallengeService;
@@ -70,6 +73,7 @@ public class ChallengeService {
             return putErrorCode(model);
         }
         challengeProfile.setResponseStatus(ChallengeProfileResponse.IN_PROGRESS);
+        challengeProfile.setResponseStart(Instant.now());
         challengeProfileRepository.save(challengeProfile);
         rivalRunService.run(rivalChallengeService.init(challengeProfile));
         return putSuccessCode(model);
@@ -155,30 +159,7 @@ public class ChallengeService {
 
     public ChallengeSummaryDTO summary(ChallengeProfile challengeProfile) {
         Challenge challenge = challengeProfile.getChallenge();
-        List<ChallengePositionDTO> positions = new ArrayList<>();
-        Set<ChallengeProfile> challengeProfiles = challenge.getProfiles();
-        for (ChallengeProfile cp : challengeProfiles) {
-            if(cp.getJoined()){
-                ChallengePositionDTO position = new ChallengePositionDTO(cp);
-                positions.add(position);
-            }
-        }
-        positions.sort((o1, o2) -> {
-            if (o1.getStatus() != ChallengeProfileResponse.CLOSED) {
-                if (o2.getStatus() != ChallengeProfileResponse.CLOSED) {
-                    return 0;
-                }
-                return 1;
-            }
-            if (o2.getStatus() != ChallengeProfileResponse.CLOSED) {
-                return -1;
-            }
-            if (o1.getScore().equals(o2.getScore())) {
-                return 0;
-            }
-            return o2.getScore().compareTo(o1.getScore());
-        });
-        return new ChallengeSummaryDTO(challenge, positions);
+        return new ChallengeSummaryDTO(challenge, challengeCloseService.preparePositions(challenge));
     }
 
 }

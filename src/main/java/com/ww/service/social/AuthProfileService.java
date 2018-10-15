@@ -2,7 +2,7 @@ package com.ww.service.social;
 
 import com.ww.config.security.Roles;
 import com.ww.model.constant.wisie.WisieType;
-import com.ww.model.dto.social.ProfileResourcesDTO;
+import com.ww.model.dto.social.ExtendedProfileResourcesDTO;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
 import com.ww.service.wisie.ProfileWisieService;
@@ -32,7 +32,7 @@ public class AuthProfileService {
     @Autowired
     private IntroService introService;
 
-    public ProfileResourcesDTO authProfile(Principal user) {
+    public ExtendedProfileResourcesDTO authProfile(Principal user) {
         String authId = profileService.getAuthId(user);
         if (authId != null) {
             Profile profile = profileService.retrieveProfile(authId);
@@ -46,7 +46,7 @@ public class AuthProfileService {
             } else {
                 profileService.storeInSession(profile);
             }
-            return new ProfileResourcesDTO(profile);
+            return new ExtendedProfileResourcesDTO(profile);
         }
         return null;
     }

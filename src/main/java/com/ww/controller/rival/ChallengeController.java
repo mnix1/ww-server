@@ -65,10 +65,10 @@ public class ChallengeController {
 
     @RequestMapping(value = "/summary", method = RequestMethod.POST)
     public ChallengeSummaryDTO summary(@RequestBody Map<String, Object> payload) {
-        if (!payload.containsKey("challengeId")) {
+        if (!payload.containsKey("id")) {
             throw new IllegalArgumentException();
         }
-        Long challengeId = ((Integer) payload.get("challengeId")).longValue();
+        Long challengeId = ((Integer) payload.get("id")).longValue();
         return challengeService.summary(challengeId);
     }
     @RequestMapping(value = "/join", method = RequestMethod.POST)

@@ -7,11 +7,13 @@ import lombok.Getter;
 public class ClassificationPositionDTO extends RivalProfileSeasonDTO {
 
     private Long position;
-    private ProfileDTO profile;
+    private BaseProfileDTO profile;
+    private Boolean me;
 
-    public ClassificationPositionDTO(ProfileSeason profileSeason, Long position) {
+    public ClassificationPositionDTO(ProfileSeason profileSeason, Long position, String requesterTag) {
         super(profileSeason);
         this.position = position;
-        this.profile = new ProfileDTO(profileSeason.getProfile());
+        this.profile = new BaseProfileDTO(profileSeason.getProfile());
+        this.me = profileSeason.getProfile().getTag().equals(requesterTag);
     }
 }

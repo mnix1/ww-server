@@ -5,7 +5,7 @@ import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 
 @Getter
-public class ProfileResourcesDTO extends ProfileDTO {
+public class ExtendedProfileResourcesDTO extends ExtendedProfileDTO {
 
     private Long level;
     private Long experience;
@@ -17,7 +17,7 @@ public class ProfileResourcesDTO extends ProfileDTO {
     private Boolean introductionCompleted;
     private Integer introductionStepIndex;
 
-    public ProfileResourcesDTO(Profile profile) {
+    public ExtendedProfileResourcesDTO(Profile profile) {
         super(profile);
         this.language = profile.getLanguage();
         this.level = profile.getLevel();

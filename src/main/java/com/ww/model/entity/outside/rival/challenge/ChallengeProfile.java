@@ -1,7 +1,7 @@
 package com.ww.model.entity.outside.rival.challenge;
 
-import com.ww.model.constant.rival.challenge.ChallengeProfileType;
 import com.ww.model.constant.rival.challenge.ChallengeProfileResponse;
+import com.ww.model.constant.rival.challenge.ChallengeProfileType;
 import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +24,7 @@ public class ChallengeProfile {
     private Instant responseStart;
     private Instant responseEnd;
     private Integer score;
+    private Boolean rewarded = false;
     @ManyToOne
     @JoinColumn(name = "challenge_id", nullable = false, updatable = false)
     private Challenge challenge;
@@ -37,8 +38,15 @@ public class ChallengeProfile {
         this.type = type;
     }
 
-    public void join(){
-        joined= true;
+    public Long responseInterval() {
+        if (responseStart == null || responseEnd == null) {
+            return null;
+        }
+        return responseEnd.toEpochMilli() - responseStart.toEpochMilli();
+    }
+
+    public void join() {
+        joined = true;
         score = 0;
     }
 }

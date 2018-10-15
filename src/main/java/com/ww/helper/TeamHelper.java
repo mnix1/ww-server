@@ -4,7 +4,7 @@ import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarWisie;
 import com.ww.model.container.rival.war.WisieTeamMember;
 import com.ww.model.container.rival.war.WisorTeamMember;
-import com.ww.model.dto.social.ProfileDTO;
+import com.ww.model.dto.social.ExtendedProfileDTO;
 import com.ww.model.dto.wisie.WarProfileWisieDTO;
 import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.outside.social.Profile;
@@ -18,7 +18,7 @@ public class TeamHelper {
     public static List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies) {
         List<TeamMember> teamMembers = new ArrayList<>();
         int index = 0;
-        teamMembers.add(new WisorTeamMember(index++, profile, new ProfileDTO(profile)));
+        teamMembers.add(new WisorTeamMember(index++, profile, new ExtendedProfileDTO(profile)));
         for (OwnedWisie wisie : wisies) {
             WarWisie warWisie = new WarWisie(wisie);
             teamMembers.add(new WisieTeamMember(index++, warWisie, new WarProfileWisieDTO(warWisie)));

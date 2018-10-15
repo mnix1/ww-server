@@ -6,7 +6,7 @@ import com.ww.model.constant.Skill;
 import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.container.Resources;
-import com.ww.model.dto.social.ProfileResourcesDTO;
+import com.ww.model.dto.social.ExtendedProfileResourcesDTO;
 import com.ww.model.dto.wisie.ProfileWisieDTO;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
@@ -54,7 +54,7 @@ public class ProfileWisieEvolutionService {
         profileWisieService.save(profileWisie);
         model.put("attributeChange", smartRound(attributeChange));
         model.put("profileWisie", new ProfileWisieDTO(profileWisie));
-        model.put("profile", new ProfileResourcesDTO(profile));
+        model.put("profile", new ExtendedProfileResourcesDTO(profile));
         return putSuccessCode(model);
     }
 
@@ -100,7 +100,7 @@ public class ProfileWisieEvolutionService {
         profileService.save(profile);
         profileWisieService.save(profileWisie);
         model.put("profileWisie", new ProfileWisieDTO(profileWisie));
-        model.put("profile", new ProfileResourcesDTO(profile));
+        model.put("profile", new ExtendedProfileResourcesDTO(profile));
         return putSuccessCode(model);
     }
 
@@ -121,7 +121,7 @@ public class ProfileWisieEvolutionService {
         profileService.save(profile);
         profileWisieService.save(profileWisie);
         model.put("profileWisie", new ProfileWisieDTO(profileWisie));
-        model.put("profile", new ProfileResourcesDTO(profile));
+        model.put("profile", new ExtendedProfileResourcesDTO(profile));
         return putSuccessCode(model);
     }
 

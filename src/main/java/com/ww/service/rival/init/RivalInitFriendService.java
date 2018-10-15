@@ -7,7 +7,7 @@ import com.ww.model.constant.rival.RivalType;
 import com.ww.model.constant.social.FriendStatus;
 import com.ww.model.container.ProfileConnection;
 import com.ww.model.container.rival.init.RivalTwoPlayerInit;
-import com.ww.model.dto.social.FriendDTO;
+import com.ww.model.dto.social.FriendDTOExtended;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.social.ProfileConnectionService;
@@ -118,7 +118,7 @@ public class RivalInitFriendService {
 
     private void sendInvite(RivalTwoPlayerInit rivalInitContainer) {
         profileConnectionService.findByProfileId(rivalInitContainer.getOpponentProfile().getId()).ifPresent(profileConnection -> {
-            FriendDTO friendDTO = new FriendDTO(rivalInitContainer.getCreatorProfile(), FriendStatus.ACCEPTED, true);
+            FriendDTOExtended friendDTO = new FriendDTOExtended(rivalInitContainer.getCreatorProfile(), FriendStatus.ACCEPTED, true);
             Map<String, Object> model = new HashMap<>();
             model.put("friend", friendDTO);
             model.put("type", rivalInitContainer.getType().name());

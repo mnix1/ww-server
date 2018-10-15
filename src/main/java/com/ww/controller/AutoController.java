@@ -1,7 +1,7 @@
 package com.ww.controller;
 
 import com.ww.manager.rival.RivalManager;
-import com.ww.model.dto.social.ProfileDTO;
+import com.ww.model.dto.social.ExtendedProfileDTO;
 import com.ww.service.rival.war.RivalWarService;
 import com.ww.service.social.AuthProfileService;
 import com.ww.service.social.ProfileService;
@@ -33,7 +33,7 @@ public class AutoController {
 
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     public String page(Model model) {
-        model.addAttribute("profile", new ProfileDTO(profileService.getProfile()));
+        model.addAttribute("profile", new ExtendedProfileDTO(profileService.getProfile()));
         return "page.html";
     }
 

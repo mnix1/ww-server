@@ -35,8 +35,8 @@ public class RivalClassificationService {
         List<SeasonGrade> seasonGrades = rivalSeasonService.findSeasonGrades(season.getType());
         List<ProfileSeason> profileSeasons = rivalProfileSeasonService.findProfileSeasons(season.getId());
         List<ClassificationPositionDTO> positions = IntStream.range(0, profileSeasons.size())
-                .mapToObj(value -> new ClassificationPositionDTO(profileSeasons.get(value), (long) value + 1))
-                .filter(value -> value.getPosition() <= CLASSIFICATION_POSITIONS_COUNT || value.getProfile().getTag().equals(profileTag))
+                .mapToObj(value -> new ClassificationPositionDTO(profileSeasons.get(value), (long) value + 1, profileTag))
+                .filter(value -> value.getPosition() <= CLASSIFICATION_POSITIONS_COUNT || value.getMe())
                 .collect(Collectors.toList());
         return new ClassificationDTO(season, seasonGrades, positions);
     }

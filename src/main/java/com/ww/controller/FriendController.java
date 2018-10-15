@@ -1,6 +1,6 @@
 package com.ww.controller;
 
-import com.ww.model.dto.social.FriendDTO;
+import com.ww.model.dto.social.FriendDTOExtended;
 import com.ww.service.social.FriendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +29,7 @@ public class FriendController {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public List<FriendDTO> list() {
+    public List<FriendDTOExtended> list() {
         return friendService.list();
     }
 

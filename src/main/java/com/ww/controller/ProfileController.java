@@ -2,7 +2,7 @@ package com.ww.controller;
 
 import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.dto.book.ProfileBookDTO;
-import com.ww.model.dto.social.ProfileResourcesDTO;
+import com.ww.model.dto.social.ExtendedProfileResourcesDTO;
 import com.ww.service.book.ProfileBookService;
 import com.ww.service.social.AuthProfileService;
 import com.ww.service.social.ProfileService;
@@ -52,7 +52,7 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
-    public ProfileResourcesDTO profile(Principal user) {
+    public ExtendedProfileResourcesDTO profile(Principal user) {
         return authProfileService.authProfile(user);
     }
 

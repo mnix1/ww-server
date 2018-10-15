@@ -1,7 +1,7 @@
 package com.ww.service.social;
 
 import com.ww.model.constant.social.FriendStatus;
-import com.ww.model.dto.social.FriendDTO;
+import com.ww.model.dto.social.FriendDTOExtended;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.social.ProfileFriend;
 import com.ww.repository.outside.social.ProfileFriendRepository;
@@ -91,7 +91,7 @@ public class FriendService {
     }
 
     public void sendWebSocketFriendAdd(ProfileFriend profileFriend) {
-        FriendDTO friendDTO = new FriendDTO(profileFriend.getFriendProfile(), profileFriend.getStatus(), profileFriend.getStatus() == FriendStatus.ACCEPTED ? true : null);
+        FriendDTOExtended friendDTO = new FriendDTOExtended(profileFriend.getFriendProfile(), profileFriend.getStatus(), profileFriend.getStatus() == FriendStatus.ACCEPTED ? true : null);
         profileConnectionService.sendMessage(profileFriend.getProfile().getId(), new MessageDTO(Message.FRIEND_ADD, friendDTO.toString()).toString());
     }
 
@@ -99,7 +99,7 @@ public class FriendService {
         profileConnectionService.sendMessage(profileId, new MessageDTO(Message.FRIEND_DELETE, tag).toString());
     }
 
-    public List<FriendDTO> list() {
+    public List<FriendDTOExtended> list() {
         Set<ProfileFriend> profileFriends = profileService.getProfile().getFriends();
         return profileFriends.stream()
                 .map(profileFriend -> {
@@ -107,7 +107,7 @@ public class FriendService {
                     if (profileFriend.getStatus() == FriendStatus.ACCEPTED) {
                         isOnline = profileConnectionService.findByProfileId(profileFriend.getFriendProfile().getId()).isPresent();
                     }
-                    return new FriendDTO(profileFriend, isOnline);
+                    return new FriendDTOExtended(profileFriend, isOnline);
                 })
                 .collect(Collectors.toList());
     }
@@ -135,10 +135,10 @@ public class FriendService {
         notSuggestIds.add(profileService.getProfileId());
         List<Profile> profiles = profileRepository.findAllByIdNotIn(notSuggestIds);
         Collections.shuffle(profiles);
-        List<FriendDTO> possibleNewFriends = profiles
+        List<FriendDTOExtended> possibleNewFriends = profiles
                 .stream()
                 .limit(3)
-                .map(profile -> new FriendDTO(profile, FriendStatus.SUGGESTED, null))
+                .map(profile -> new FriendDTOExtended(profile, FriendStatus.SUGGESTED, null))
                 .collect(Collectors.toList());
         model.put("suggestedFriends", possibleNewFriends);
         return model;

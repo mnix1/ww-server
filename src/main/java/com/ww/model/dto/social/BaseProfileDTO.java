@@ -5,14 +5,12 @@ import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 
 @Getter
-public class ProfileDTO {
+public class BaseProfileDTO {
 
-    private String tag;
     private String name;
     private WisorType wisorType;
 
-    public ProfileDTO(Profile profile) {
-        this.tag = profile.getTag();
+    public BaseProfileDTO(Profile profile) {
         this.name = profile.getName();
         this.wisorType = profile.getWisorType();
     }
