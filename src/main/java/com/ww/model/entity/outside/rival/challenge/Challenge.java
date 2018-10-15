@@ -49,33 +49,48 @@ public class Challenge {
     private Set<ChallengeQuestion> questions;
 
     public Challenge(Profile creatorProfile, ChallengeType type, ChallengeAccess access, Resources resources, Integer duration) {
+        setCostResources(resources);
         this.creatorProfile = creatorProfile;
         this.type = type;
         this.access = access;
-        setCostResources(resources);
         this.timeoutDate = creationDate.plus(duration, ChronoUnit.HOURS);
     }
+
     public Challenge(ChallengeType type, ChallengeAccess access, Resources resources, Instant timeoutDate) {
         setCostResources(resources);
+        this.type = type;
+        this.access = access;
         this.timeoutDate = timeoutDate;
     }
 
-    private void setCostResources(Resources resources){
+    private void setCostResources(Resources resources) {
         this.goldCost = resources.getGold();
         this.crystalCost = resources.getCrystal();
         this.wisdomCost = resources.getWisdom();
         this.elixirCost = resources.getElixir();
     }
 
-    public Resources getCostResources(){
+    private void setGainResources(Resources resources) {
+        this.goldGain = resources.getGold();
+        this.crystalGain = resources.getCrystal();
+        this.wisdomGain = resources.getWisdom();
+        this.elixirGain = resources.getElixir();
+    }
+
+    public Resources getCostResources() {
         return new Resources(goldCost, crystalCost, wisdomCost, elixirCost);
     }
 
-    public Resources getGainResources(){
+    public Resources getGainResources() {
         return new Resources(goldGain, crystalGain, wisdomGain, elixirGain);
     }
 
-    public Long getTimeoutInterval(){
+    public Long getTimeoutInterval() {
         return timeoutDate.toEpochMilli() - Instant.now().toEpochMilli();
+    }
+
+    public void joined() {
+        participants++;
+        setGainResources(getGainResources().add(getCostResources()));
     }
 }

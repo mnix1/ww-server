@@ -1,17 +1,17 @@
 package com.ww.model.dto.rival.challenge;
 
+import com.ww.model.entity.outside.rival.challenge.Challenge;
 import lombok.Getter;
 
 import java.util.List;
 
 @Getter
-public class ChallengeSummaryDTO {
+public class ChallengeSummaryDTO extends ChallengePrivateDTO {
 
-    private Long id;
     private List<ChallengePositionDTO> positions;
 
-    public ChallengeSummaryDTO(Long id, List<ChallengePositionDTO> positions) {
-        this.id = id;
+    public ChallengeSummaryDTO(Challenge challenge, List<ChallengePositionDTO> positions) {
+        super(challenge);
         this.positions = positions;
     }
 }

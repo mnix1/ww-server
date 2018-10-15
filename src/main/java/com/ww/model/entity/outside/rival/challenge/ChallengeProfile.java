@@ -36,4 +36,9 @@ public class ChallengeProfile {
         this.profile = profile;
         this.type = type;
     }
+
+    public void join(){
+        joined= true;
+        score = 0;
+    }
 }

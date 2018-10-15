@@ -61,15 +61,27 @@ public class Resources {
 
     public Resources subtract(Resources resources) {
         if (resources.gold != null) {
+            if (gold == null) {
+                gold = 0L;
+            }
             gold -= resources.gold;
         }
         if (resources.crystal != null) {
+            if (crystal == null) {
+                crystal = 0L;
+            }
             crystal -= resources.crystal;
         }
         if (resources.wisdom != null) {
+            if (wisdom == null) {
+                wisdom = 0L;
+            }
             wisdom -= resources.wisdom;
         }
         if (resources.elixir != null) {
+            if (elixir == null) {
+                elixir = 0L;
+            }
             elixir -= resources.elixir;
         }
         return this;
@@ -77,15 +89,27 @@ public class Resources {
 
     public Resources add(Resources resources) {
         if (resources.gold != null) {
+            if (gold == null) {
+                gold = 0L;
+            }
             gold += resources.gold;
         }
         if (resources.crystal != null) {
+            if (crystal == null) {
+                crystal = 0L;
+            }
             crystal += resources.crystal;
         }
         if (resources.wisdom != null) {
+            if (wisdom == null) {
+                wisdom = 0L;
+            }
             wisdom += resources.wisdom;
         }
         if (resources.elixir != null) {
+            if (elixir == null) {
+                elixir = 0L;
+            }
             elixir += resources.elixir;
         }
         return this;

@@ -71,4 +71,12 @@ public class ChallengeController {
         Long challengeId = ((Integer) payload.get("challengeId")).longValue();
         return challengeService.summary(challengeId);
     }
+    @RequestMapping(value = "/join", method = RequestMethod.POST)
+    public Map<String,Object> join(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("id")) {
+            throw new IllegalArgumentException();
+        }
+        Long challengeId = ((Integer) payload.get("id")).longValue();
+        return challengeService.join(challengeId);
+    }
 }

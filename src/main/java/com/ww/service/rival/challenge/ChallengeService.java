@@ -4,6 +4,7 @@ import com.ww.model.constant.rival.challenge.*;
 import com.ww.model.dto.rival.challenge.*;
 import com.ww.model.entity.outside.rival.challenge.Challenge;
 import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
+import com.ww.model.entity.outside.social.Profile;
 import com.ww.repository.outside.rival.challenge.ChallengeProfileRepository;
 import com.ww.repository.outside.rival.challenge.ChallengeRepository;
 import com.ww.service.rival.init.RivalRunService;
@@ -15,6 +16,7 @@ import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.ww.helper.ModelHelper.putCode;
 import static com.ww.helper.ModelHelper.putErrorCode;
 import static com.ww.helper.ModelHelper.putSuccessCode;
 
@@ -110,6 +112,42 @@ public class ChallengeService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public Map<String, Object> join(Long challengeId) {
+        Map<String, Object> model = new HashMap<>();
+        Optional<Challenge> optionalChallenge = challengeRepository.findById(challengeId);
+        if (!optionalChallenge.isPresent()) {
+            return putErrorCode(model);
+        }
+        Challenge challenge = optionalChallenge.get();
+        Profile profile = profileService.getProfile();
+        if (challenge.getStatus() != ChallengeStatus.IN_PROGRESS) {
+            return putCode(model, -2);
+        } else if (!profile.hasEnoughResources(challenge.getCostResources())) {
+            return putCode(model, -3);
+        }
+        Optional<ChallengeProfile> optionalChallengeProfile = challengeProfileRepository.findByProfile_IdAndChallenge_Id(profile.getId(), challengeId);
+        ChallengeProfile challengeProfile;
+        if (!optionalChallengeProfile.isPresent()) {
+            if (challenge.getAccess() == ChallengeAccess.INVITE) {
+                return putErrorCode(model);
+            }
+            challengeProfile = new ChallengeProfile(challenge, profile, ChallengeProfileType.JOINED);
+        } else {
+            challengeProfile = optionalChallengeProfile.get();
+        }
+        if (challengeProfile.getJoined()) {
+            return putErrorCode(model);
+        }
+        challengeProfile.join();
+        challengeProfileRepository.save(challengeProfile);
+        challenge.joined();
+        challengeRepository.save(challenge);
+        profile.subtractResources(challenge.getCostResources());
+        profileService.save(profile);
+        return putSuccessCode(model);
+    }
+
     public ChallengeSummaryDTO summary(Long challengeId) {
         Optional<ChallengeProfile> optionalChallengeProfile = challengeProfileRepository.findByProfile_IdAndChallenge_Id(profileService.getProfileId(), challengeId);
         return optionalChallengeProfile.map(this::summary).orElse(null);
@@ -120,8 +158,10 @@ public class ChallengeService {
         List<ChallengePositionDTO> positions = new ArrayList<>();
         Set<ChallengeProfile> challengeProfiles = challenge.getProfiles();
         for (ChallengeProfile cp : challengeProfiles) {
-            ChallengePositionDTO position = new ChallengePositionDTO(cp);
-            positions.add(position);
+            if(cp.getJoined()){
+                ChallengePositionDTO position = new ChallengePositionDTO(cp);
+                positions.add(position);
+            }
         }
         positions.sort((o1, o2) -> {
             if (o1.getStatus() != ChallengeProfileResponse.CLOSED) {
@@ -138,7 +178,7 @@ public class ChallengeService {
             }
             return o2.getScore().compareTo(o1.getScore());
         });
-        return new ChallengeSummaryDTO(challenge.getId(), positions);
+        return new ChallengeSummaryDTO(challenge, positions);
     }
 
 }

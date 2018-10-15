@@ -9,9 +9,11 @@ import lombok.Getter;
 public class ChallengeActiveDTO extends ChallengePrivateDTO {
 
     Boolean canResponse;
+    Boolean joined;
 
     public ChallengeActiveDTO(ChallengeProfile challengeProfile) {
         super(challengeProfile.getChallenge());
-        this.canResponse = challengeProfile.getResponseStatus() == ChallengeProfileResponse.OPEN;
+        this.joined = challengeProfile.getJoined();
+        this.canResponse = joined && challengeProfile.getResponseStatus() == ChallengeProfileResponse.OPEN;
     }
 }

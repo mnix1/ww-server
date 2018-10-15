@@ -16,6 +16,7 @@ import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -40,6 +41,7 @@ public class ChallengeCreateService {
     @Autowired
     private ProfileService profileService;
 
+    @Transactional
     public Map<String, Object> createPrivate(List<String> tags, ChallengeAccess access, ResourceType resourceType, Long resourceCost, Integer duration) {
         Map<String, Object> model = new HashMap<>();
         if (!DURATIONS.contains(duration) || !RESOURCE_COSTS.contains(resourceCost) || (tags.isEmpty() && access == ChallengeAccess.INVITE)) {
@@ -52,6 +54,7 @@ public class ChallengeCreateService {
         return putSuccessCode(model);
     }
 
+    @Transactional
     public Challenge createGlobal() {
         LocalDateTime date = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(0, 0));
         Challenge challenge = new Challenge(ChallengeType.GLOBAL, ChallengeAccess.UNLOCK, new Resources(ResourceType.random(), 10L), date.toInstant(ZoneOffset.UTC));
