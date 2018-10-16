@@ -1,5 +1,6 @@
 package com.ww.model.dto.rival.challenge;
 
+import com.ww.model.constant.rival.challenge.ChallengeApproach;
 import com.ww.model.constant.rival.challenge.ChallengeProfileResponse;
 import com.ww.model.container.Resources;
 import com.ww.model.container.rival.challenge.ChallengePosition;
@@ -19,9 +20,11 @@ public class ChallengeGlobalDTO {
     private Instant closeDate;
     private Long timeoutInterval;
     private Long participants;
+    private ChallengeApproach approach;
     private Resources cost;
     private Resources gain;
     private Boolean canResponse = false;
+    private Boolean canTryAgain = false;
     private Boolean joined = false;
     private List<ChallengePositionDTO> positions;
 
@@ -32,10 +35,12 @@ public class ChallengeGlobalDTO {
         this.participants = challenge.getParticipants();
         this.cost = challenge.getCostResources();
         this.gain = challenge.getGainResources();
+        this.approach = challenge.getApproach();
         if (optionalChallengeProfile.isPresent()) {
             ChallengeProfile challengeProfile = optionalChallengeProfile.get();
-            canResponse = challengeProfile.getResponseStatus() == ChallengeProfileResponse.OPEN;
             joined = challengeProfile.getJoined();
+            canResponse = joined && challengeProfile.getResponseStatus() == ChallengeProfileResponse.OPEN;
+            canTryAgain = joined && approach == ChallengeApproach.MANY && challengeProfile.getResponseStatus() == ChallengeProfileResponse.CLOSED;
         }
         String tag = optionalChallengeProfile.isPresent() ? optionalChallengeProfile.get().getProfile().getTag() : "";
         this.positions = positions.stream().limit(20).map((ChallengePosition challengePosition) -> new ChallengePositionDTO(challengePosition, tag)).collect(Collectors.toList());

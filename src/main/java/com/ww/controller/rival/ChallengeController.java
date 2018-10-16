@@ -1,6 +1,7 @@
 package com.ww.controller.rival;
 
 import com.ww.model.constant.rival.challenge.ChallengeAccess;
+import com.ww.model.constant.rival.challenge.ChallengeApproach;
 import com.ww.model.constant.rival.challenge.ChallengeStatus;
 import com.ww.model.constant.social.ResourceType;
 import com.ww.model.dto.rival.challenge.ChallengeGlobalDTO;
@@ -28,15 +29,16 @@ public class ChallengeController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public Map create(@RequestBody Map<String, Object> payload) {
-        if (!payload.containsKey("tags") || !payload.containsKey("access") || !payload.containsKey("resourceType") || !payload.containsKey("resourceCost") || !payload.containsKey("duration")) {
+        if (!payload.containsKey("tags") || !payload.containsKey("access") || !payload.containsKey("approach") || !payload.containsKey("resourceType") || !payload.containsKey("resourceCost") || !payload.containsKey("duration")) {
             throw new IllegalArgumentException();
         }
         List<String> tags = (List<String>) payload.get("tags");
         ChallengeAccess access = ChallengeAccess.valueOf((String) payload.get("access"));
+        ChallengeApproach approach = ChallengeApproach.valueOf((String) payload.get("approach"));
         ResourceType resourceType = ResourceType.valueOf((String) payload.get("resourceType"));
         Long resourceCost = ((Integer) payload.get("resourceCost")).longValue();
         Integer duration = (Integer) payload.get("duration");
-        return challengeCreateService.createPrivate(tags, access, resourceType, resourceCost, duration);
+        return challengeCreateService.createPrivate(tags, access, approach, resourceType, resourceCost, duration);
     }
 
     @RequestMapping(value = "/response", method = RequestMethod.POST)
@@ -80,5 +82,14 @@ public class ChallengeController {
         String creatorTag = payload.containsKey("creatorTag") ? (String) payload.get("creatorTag") : "";
         Long challengeId = ((Integer) payload.get("id")).longValue();
         return challengeService.join(challengeId, creatorTag);
+    }
+
+    @RequestMapping(value = "/tryAgain", method = RequestMethod.POST)
+    public Map<String, Object> tryAgain(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("id")) {
+            throw new IllegalArgumentException();
+        }
+        Long challengeId = ((Integer) payload.get("id")).longValue();
+        return challengeService.tryAgain(challengeId);
     }
 }

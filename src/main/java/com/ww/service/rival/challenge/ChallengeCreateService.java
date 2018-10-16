@@ -3,6 +3,7 @@ package com.ww.service.rival.challenge;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.challenge.ChallengeAccess;
+import com.ww.model.constant.rival.challenge.ChallengeApproach;
 import com.ww.model.constant.rival.challenge.ChallengeProfileType;
 import com.ww.model.constant.rival.challenge.ChallengeType;
 import com.ww.model.constant.social.FriendStatus;
@@ -50,7 +51,7 @@ public class ChallengeCreateService {
     private ProfileService profileService;
 
     @Transactional
-    public Map<String, Object> createPrivate(List<String> tags, ChallengeAccess access, ResourceType resourceType, Long resourceCost, Integer duration) {
+    public Map<String, Object> createPrivate(List<String> tags, ChallengeAccess access, ChallengeApproach approach, ResourceType resourceType, Long resourceCost, Integer duration) {
         Map<String, Object> model = new HashMap<>();
         if (!DURATIONS.contains(duration) || !RESOURCE_COSTS.contains(resourceCost)) {
             return putErrorCode(model);
@@ -59,7 +60,7 @@ public class ChallengeCreateService {
             return putCode(model, -2);
         }
         Profile profile = profileService.getProfile();
-        Challenge challenge = new Challenge(profile, ChallengeType.PRIVATE, access, new Resources(resourceType, resourceCost), duration);
+        Challenge challenge = new Challenge(profile, ChallengeType.PRIVATE, access, approach, new Resources(resourceType, resourceCost), duration);
         challengeRepository.save(challenge);
         rivalChallengeService.preparePhase(challenge, 0, Category.random(), DifficultyLevel.random());
         createPrivateChampionProfiles(profile, challenge, new HashSet<>(tags));
@@ -70,7 +71,7 @@ public class ChallengeCreateService {
     public Challenge createGlobal() {
         LocalDateTime date = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(0, 0));
         Long joinCost = randomElement(Arrays.asList(1L, 2L, 5L, 10L));
-        Challenge challenge = new Challenge(ChallengeType.GLOBAL, ChallengeAccess.UNLOCK, new Resources(ResourceType.random(), joinCost), date.toInstant(ZoneOffset.UTC));
+        Challenge challenge = new Challenge(ChallengeType.GLOBAL, ChallengeAccess.UNLOCK, ChallengeApproach.MANY, new Resources(ResourceType.random(), joinCost), date.toInstant(ZoneOffset.UTC));
         challenge.setGainResources(challenge.getGainResources().add(new Resources(joinCost * 2, joinCost * 2, joinCost * 2, joinCost * 2)));
         challengeRepository.save(challenge);
         rivalChallengeService.preparePhase(challenge, 0, Category.random(), DifficultyLevel.random());

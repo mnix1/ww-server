@@ -1,6 +1,7 @@
 package com.ww.model.entity.outside.rival.challenge;
 
 import com.ww.model.constant.rival.challenge.ChallengeAccess;
+import com.ww.model.constant.rival.challenge.ChallengeApproach;
 import com.ww.model.constant.rival.challenge.ChallengeType;
 import com.ww.model.constant.rival.challenge.ChallengeStatus;
 import com.ww.model.container.Resources;
@@ -30,6 +31,7 @@ public class Challenge {
     private ChallengeStatus status = ChallengeStatus.IN_PROGRESS;
     private Long participants = 0L;
     private ChallengeAccess access;
+    private ChallengeApproach approach;
     private Long goldCost;
     private Long crystalCost;
     private Long wisdomCost;
@@ -48,18 +50,20 @@ public class Challenge {
     @OneToMany(mappedBy = "challenge", fetch = FetchType.LAZY)
     private Set<ChallengePhase> phases;
 
-    public Challenge(Profile creatorProfile, ChallengeType type, ChallengeAccess access, Resources resources, Integer duration) {
+    public Challenge(Profile creatorProfile, ChallengeType type, ChallengeAccess access, ChallengeApproach approach, Resources resources, Integer duration) {
         setCostResources(resources);
         this.creatorProfile = creatorProfile;
         this.type = type;
         this.access = access;
-        this.timeoutDate = creationDate.plus(duration, ChronoUnit.SECONDS);
+        this.approach = approach;
+        this.timeoutDate = creationDate.plus(duration, ChronoUnit.HOURS);
     }
 
-    public Challenge(ChallengeType type, ChallengeAccess access, Resources resources, Instant timeoutDate) {
+    public Challenge(ChallengeType type, ChallengeAccess access, ChallengeApproach approach, Resources resources, Instant timeoutDate) {
         setCostResources(resources);
         this.type = type;
         this.access = access;
+        this.approach = approach;
         this.timeoutDate = timeoutDate;
     }
 

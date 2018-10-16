@@ -1,6 +1,7 @@
 package com.ww.service.rival.challenge;
 
 import com.ww.model.constant.rival.challenge.ChallengeAccess;
+import com.ww.model.constant.rival.challenge.ChallengeApproach;
 import com.ww.model.constant.rival.challenge.ChallengeProfileResponse;
 import com.ww.model.constant.rival.challenge.ChallengeStatus;
 import com.ww.model.container.Resources;
@@ -137,7 +138,7 @@ public class ChallengeCloseService {
     }
 
     public void maybeCloseChallenge(Challenge challenge, Instant closeDate) {
-        if (challenge.getAccess() != ChallengeAccess.INVITE) {
+        if (challenge.getAccess() != ChallengeAccess.INVITE || challenge.getApproach() != ChallengeApproach.ONE) {
             return;
         }
         List<ChallengeProfile> challengeProfiles = challengeProfileRepository.findAllByChallenge_Id(challenge.getId());

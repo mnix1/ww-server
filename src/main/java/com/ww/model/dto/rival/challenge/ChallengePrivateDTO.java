@@ -1,6 +1,7 @@
 package com.ww.model.dto.rival.challenge;
 
 import com.ww.model.constant.rival.challenge.ChallengeAccess;
+import com.ww.model.constant.rival.challenge.ChallengeApproach;
 import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.container.Resources;
 import com.ww.model.entity.outside.rival.challenge.Challenge;
@@ -18,6 +19,7 @@ public class ChallengePrivateDTO {
     private Instant closeDate;
     private Long timeoutInterval;
     private ChallengeAccess access;
+    protected ChallengeApproach approach;
     private Long participants;
     private Resources cost;
     private Resources gain;
@@ -30,6 +32,7 @@ public class ChallengePrivateDTO {
         this.closeDate = challenge.getCloseDate();
         this.timeoutInterval = challenge.getTimeoutInterval();
         this.access = challenge.getAccess();
+        this.approach = challenge.getApproach();
         this.participants = challenge.getParticipants();
         this.cost = challenge.getCostResources();
         this.gain = challenge.getGainResources();

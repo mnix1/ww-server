@@ -52,6 +52,7 @@ public class ChallengeService {
         return new ChallengeGlobalDTO(challenge, optionalChallengeProfile, challengeCloseService.preparePositions(challenge));
     }
 
+    @Transactional
     public Map<String, Object> response(Long challengeId) {
         Map<String, Object> model = new HashMap<>();
         Optional<ChallengeProfile> optionalChallengeProfile = challengeProfileRepository.findByProfile_IdAndChallenge_Id(profileService.getProfileId(), challengeId);
@@ -115,6 +116,40 @@ public class ChallengeService {
                 .map(challengeProfile -> new ChallengePrivateDTO(challengeProfile.getChallenge()))
                 .distinct()
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public Map<String, Object> tryAgain(Long challengeId) {
+        Map<String, Object> model = new HashMap<>();
+        Optional<Challenge> optionalChallenge = challengeRepository.findById(challengeId);
+        if (!optionalChallenge.isPresent()) {
+            return putErrorCode(model);
+        }
+        Challenge challenge = optionalChallenge.get();
+        Profile profile = profileService.getProfile();
+        if (challenge.getApproach() != ChallengeApproach.MANY) {
+            return putErrorCode(model);
+        }
+        if (challenge.getStatus() != ChallengeStatus.IN_PROGRESS || challenge.getTimeoutInterval() <= 0) {
+            return putCode(model, -2);
+        } else if (!profile.hasEnoughResources(challenge.getCostResources())) {
+            return putCode(model, -3);
+        }
+        Optional<ChallengeProfile> optionalChallengeProfile = challengeProfileRepository.findByProfile_IdAndChallenge_Id(profile.getId(), challengeId);
+        if (!optionalChallengeProfile.isPresent()) {
+            return putErrorCode(model);
+        }
+        ChallengeProfile challengeProfile = optionalChallengeProfile.get();
+        challengeProfileRepository.delete(challengeProfile);
+        ChallengeProfile nextTryChallengeProfile = new ChallengeProfile(challenge, profile, challengeProfile.getType());
+        nextTryChallengeProfile.join();
+        challengeProfileRepository.save(nextTryChallengeProfile);
+        challenge.joined();
+        challengeRepository.save(challenge);
+        profile.subtractResources(challenge.getCostResources());
+        profileService.save(profile);
+        response(challengeId);
+        return putSuccessCode(model);
     }
 
     @Transactional
