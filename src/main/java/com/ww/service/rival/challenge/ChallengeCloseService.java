@@ -1,6 +1,7 @@
 package com.ww.service.rival.challenge;
 
 import com.ww.model.constant.rival.challenge.*;
+import com.ww.model.constant.social.ResourceType;
 import com.ww.model.container.Resources;
 import com.ww.model.container.rival.challenge.ChallengePosition;
 import com.ww.model.dto.rival.challenge.*;
@@ -54,22 +55,24 @@ public class ChallengeCloseService {
 
     public void rewardProfiles(Challenge challenge) {
         List<ChallengeProfile> challengeProfiles = challengeProfileRepository.findAllByChallenge_Id(challenge.getId());
-        List<ChallengePosition> challengePositions = preparePositions(challengeProfiles);
+        List<ChallengePosition> challengePositions = filterNotClosedPositions(preparePositions(challengeProfiles));
         if (challengePositions.isEmpty()) {
             return;
         }
         List<ChallengeProfile> rewardedChallengeProfiles = new ArrayList<>();
+        Resources challengeSummaryGain = challenge.getGainResources();
         int profilesWithReward = Math.max(1, challengePositions.size() / 10);
         for (int i = profilesWithReward - 1; i >= 0; i--) {
             ChallengeProfile challengeProfile = challengePositions.get(i).getChallengeProfile();
             Resources resources = challenge.getCostResources();
             if (i == 2) {
-                resources.add(challenge.getCostResources());
+                for (int k = 1; k < challengePositions.size() / 6; k++) {
+                    resources.add(challenge.getCostResources());
+                }
             } else if (i == 1) {
-                resources.add(challenge.getCostResources());
-                resources.add(challenge.getCostResources());
-                resources.add(challenge.getCostResources());
-                resources.add(challenge.getCostResources());
+                for (int k = 1; k < challengePositions.size() / 3; k++) {
+                    resources.add(challenge.getCostResources());
+                }
             } else if (i == 0) {
                 resources = challenge.getGainResources();
             }
@@ -83,6 +86,7 @@ public class ChallengeCloseService {
             challengeProfile.getProfile().addResources(challengeProfile.getGainResources());
             challengeProfile.setRewarded(true);
         }
+        challenge.setGainResources(challengeSummaryGain);
         challengeProfileRepository.saveAll(rewardedChallengeProfiles);
         profileService.save(profiles);
     }
@@ -118,6 +122,10 @@ public class ChallengeCloseService {
             positions.get(i).setPosition((long) i + 1);
         }
         return positions;
+    }
+
+    public List<ChallengePosition> filterNotClosedPositions(List<ChallengePosition> positions) {
+        return positions.stream().filter(challengePosition -> challengePosition.getStatus() != ChallengeProfileResponse.CLOSED).collect(Collectors.toList());
     }
 
     @Transactional

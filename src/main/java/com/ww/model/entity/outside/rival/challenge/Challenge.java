@@ -53,7 +53,7 @@ public class Challenge {
         this.creatorProfile = creatorProfile;
         this.type = type;
         this.access = access;
-        this.timeoutDate = creationDate.plus(duration, ChronoUnit.HOURS);
+        this.timeoutDate = creationDate.plus(duration, ChronoUnit.SECONDS);
     }
 
     public Challenge(ChallengeType type, ChallengeAccess access, Resources resources, Instant timeoutDate) {
