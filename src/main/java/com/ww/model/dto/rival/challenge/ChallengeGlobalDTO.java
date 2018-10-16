@@ -37,6 +37,7 @@ public class ChallengeGlobalDTO {
             canResponse = challengeProfile.getResponseStatus() == ChallengeProfileResponse.OPEN;
             joined = challengeProfile.getJoined();
         }
-        this.positions = positions.stream().limit(20).map(ChallengePositionDTO::new).collect(Collectors.toList());
+        String tag = optionalChallengeProfile.isPresent() ? optionalChallengeProfile.get().getProfile().getTag() : "";
+        this.positions = positions.stream().limit(20).map((ChallengePosition challengePosition) -> new ChallengePositionDTO(challengePosition, tag)).collect(Collectors.toList());
     }
 }

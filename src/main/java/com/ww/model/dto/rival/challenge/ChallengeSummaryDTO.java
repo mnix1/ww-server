@@ -12,8 +12,8 @@ public class ChallengeSummaryDTO extends ChallengePrivateDTO {
 
     private List<ChallengePositionDTO> positions;
 
-    public ChallengeSummaryDTO(Challenge challenge, List<ChallengePosition> positions) {
+    public ChallengeSummaryDTO(Challenge challenge, List<ChallengePosition> positions, String tag) {
         super(challenge);
-        this.positions = positions.stream().limit(20).map(ChallengePositionDTO::new).collect(Collectors.toList());
+        this.positions = positions.stream().limit(20).map((ChallengePosition challengePosition) -> new ChallengePositionDTO(challengePosition, tag)).collect(Collectors.toList());
     }
 }

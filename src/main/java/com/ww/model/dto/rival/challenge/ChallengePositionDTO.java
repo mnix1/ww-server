@@ -13,14 +13,16 @@ public class ChallengePositionDTO {
 
     private Long position;
     private BaseProfileDTO profile;
+    private Boolean me;
     private Integer score;
     private Long interval;
     private ChallengeProfileResponse status;
     private Resources reward;
 
-    public ChallengePositionDTO(ChallengePosition challengePosition) {
+    public ChallengePositionDTO(ChallengePosition challengePosition, String tag) {
         this.position = challengePosition.getPosition();
         this.profile = new BaseProfileDTO(challengePosition.getProfile());
+        this.me = tag.equals(challengePosition.getProfile().getTag());
         this.status = challengePosition.getStatus();
         this.score = challengePosition.getScore();
         this.interval = challengePosition.getInterval();

@@ -169,7 +169,7 @@ public class ChallengeService {
 
     public ChallengeSummaryDTO summary(ChallengeProfile challengeProfile) {
         Challenge challenge = challengeProfile.getChallenge();
-        return new ChallengeSummaryDTO(challenge, challengeCloseService.preparePositions(challenge));
+        return new ChallengeSummaryDTO(challenge, challengeCloseService.preparePositions(challenge), challengeProfile.getProfile().getTag());
     }
 
 }
