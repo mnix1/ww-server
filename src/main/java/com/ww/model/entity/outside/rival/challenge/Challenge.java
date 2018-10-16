@@ -46,7 +46,7 @@ public class Challenge {
     private Set<ChallengeProfile> profiles = new HashSet<>();
 
     @OneToMany(mappedBy = "challenge", fetch = FetchType.LAZY)
-    private Set<ChallengeQuestion> questions;
+    private Set<ChallengePhase> questions;
 
     public Challenge(Profile creatorProfile, ChallengeType type, ChallengeAccess access, Resources resources, Integer duration) {
         setCostResources(resources);

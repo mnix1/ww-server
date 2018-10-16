@@ -12,7 +12,7 @@ import com.ww.model.container.rival.war.skill.WarTeamSkills;
 import com.ww.model.dto.rival.task.AnswerDTO;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
-import com.ww.model.entity.outside.rival.challenge.ChallengeQuestion;
+import com.ww.model.entity.outside.rival.challenge.ChallengePhase;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
@@ -25,12 +25,12 @@ import java.util.List;
 public class ChallengeManager extends WarManager {
 
     public ChallengeProfile challengeProfile;
-    public List<ChallengeQuestion> challengeQuestions;
+    public List<ChallengePhase> challengePhases;
 
     public ChallengeManager(RivalChallengeInit init, RivalChallengeService rivalService) {
         this.rivalService = rivalService;
         this.challengeProfile = init.getChallengeProfile();
-        this.challengeQuestions = init.getChallengeQuestions();
+        this.challengePhases = init.getChallengePhases();
         WarTeams teams = new WarTeams();
         this.model = new WarModel(init, teams);
         this.modelFactory = new WarModelFactory(this.model);
@@ -47,18 +47,18 @@ public class ChallengeManager extends WarManager {
     @Override
     public void prepareTask(Long id, Category category, DifficultyLevel difficultyLevel) {
         RivalChallengeService rivalChallengeService = (RivalChallengeService) rivalService;
-        Question question;
+        ChallengePhase phase;
         int taskIndex = id.intValue() - 1;
-        if (challengeQuestions.size() > taskIndex) {
-            question = challengeQuestions.get(taskIndex).getQuestion();
+        if (challengePhases.size() > taskIndex) {
+            phase = challengePhases.get(taskIndex);
         } else {
-            question = rivalChallengeService.prepareQuestion(challengeProfile, taskIndex, category, difficultyLevel);
+            phase = rivalChallengeService.preparePhase(challengeProfile, taskIndex, category, difficultyLevel);
         }
-        rivalChallengeService.initTaskWisdomAttributes(question);
+        Question question = rivalChallengeService.getTaskGenerateService().generate(phase.getTaskType(), phase.getDifficultyLevel(), phase.getLanguage());
         question.setId(id);
-        question.rewriteAnswerIds();
+        question.initAnswerIds();
+        rivalChallengeService.initTaskWisdomAttributes(question);
         TaskDTO taskDTO = rivalService.prepareTaskDTO(question);
-        taskDTO.getAnswers().sort(Comparator.comparing(AnswerDTO::getId));
         model.addTask(question, taskDTO);
     }
 

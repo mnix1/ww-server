@@ -62,13 +62,4 @@ public class Question {
             answer.setId(id++);
         }
     }
-
-    public void rewriteAnswerIds() {
-        List<Answer> answers = new ArrayList<>(this.answers);
-        answers.sort(Comparator.comparing(Answer::getId));
-        long id = 0;
-        for (Answer answer : answers) {
-            answer.setId(id++);
-        }
-    }
 }

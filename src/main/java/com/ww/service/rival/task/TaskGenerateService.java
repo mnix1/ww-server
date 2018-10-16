@@ -59,45 +59,49 @@ public class TaskGenerateService {
     @Autowired
     TaskTypeRepository taskTypeRepository;
 
-    public Question generate(Category category, DifficultyLevel difficultyLevel, Language language) {
-        if (category == Category.RANDOM) {
-            category = Category.random();
-        }
-        TaskType taskType = findProperTaskType(category, difficultyLevel);
-        if (category == Category.LYRICS) {
+    public Question generate(TaskType taskType, DifficultyLevel difficultyLevel, Language language) {
+        if (taskType.getCategory() == Category.LYRICS) {
             return lyricsTaskService.generate(taskType, difficultyLevel, language);
         }
-        if (category == Category.COUNTRY) {
+        if (taskType.getCategory() == Category.COUNTRY) {
             return countryTaskService.generate(taskType, difficultyLevel);
         }
-        if (category == Category.EQUATION) {
+        if (taskType.getCategory() == Category.EQUATION) {
             return equationTaskService.generate(taskType, difficultyLevel);
         }
-        if (category == Category.NUMBER) {
+        if (taskType.getCategory() == Category.NUMBER) {
             return numberTaskService.generate(taskType, difficultyLevel);
         }
-        if (category == Category.MEMORY) {
+        if (taskType.getCategory() == Category.MEMORY) {
             return memoryTaskService.generate(taskType, difficultyLevel);
         }
-        if (category == Category.ELEMENT) {
+        if (taskType.getCategory() == Category.ELEMENT) {
             return elementTaskService.generate(taskType, difficultyLevel);
         }
-        if (category == Category.RIDDLE) {
+        if (taskType.getCategory() == Category.RIDDLE) {
             return riddleTaskService.generate(taskType, difficultyLevel);
         }
-        if (category == Category.COLOR) {
+        if (taskType.getCategory() == Category.COLOR) {
             return colorTaskService.generate(taskType, difficultyLevel);
         }
-        if (category == Category.TIME) {
+        if (taskType.getCategory() == Category.TIME) {
             return timeTaskService.generate(taskType, difficultyLevel);
         }
-        if (category == Category.OLYMPIC_GAMES) {
+        if (taskType.getCategory() == Category.OLYMPIC_GAMES) {
             return olympicGamesTaskService.generate(taskType, difficultyLevel);
         }
         return null;
     }
 
-    private TaskType findProperTaskType(Category category, DifficultyLevel difficultyLevel) {
+    public Question generate(Category category, DifficultyLevel difficultyLevel, Language language) {
+        if (category == Category.RANDOM) {
+            category = Category.random();
+        }
+        TaskType taskType = findProperTaskType(category, difficultyLevel);
+        return generate(taskType, difficultyLevel, language);
+    }
+
+    public TaskType findProperTaskType(Category category, DifficultyLevel difficultyLevel) {
         List<TaskType> possibleTaskTypes = taskTypeRepository.findAllByCategory(category)
                 .stream()
                 .filter(taskType -> {
