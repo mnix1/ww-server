@@ -17,14 +17,10 @@ import com.ww.websocket.message.Message;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ww.helper.TeamHelper.isBotProfile;
+
 public class CampaignWarManager extends WarManager {
-    public static final Long BOT_PROFILE_ID = -1L;
-
     public ProfileCampaign profileCampaign;
-
-    public static boolean isBotProfile(Profile profile) {
-        return profile.getId().equals(BOT_PROFILE_ID);
-    }
 
     public CampaignWarManager(RivalCampaignWarInit init, RivalCampaignWarService rivalService) {
         this.rivalService = rivalService;

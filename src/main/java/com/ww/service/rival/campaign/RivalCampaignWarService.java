@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.ww.manager.rival.campaign.CampaignWarManager.BOT_PROFILE_ID;
+import static com.ww.helper.TeamHelper.BOT_PROFILE_ID;
 import static com.ww.model.constant.rival.RivalType.CAMPAIGN_WAR;
 
 @Service
@@ -85,20 +85,16 @@ public class RivalCampaignWarService extends RivalWarService {
 
     public Profile prepareComputerProfile(ProfileCampaign profileCampaign) {
         boolean isLastPhase = profileCampaign.getPhase() == profileCampaign.getCampaign().getPhases() - 1;
-        Profile computerProfile = new Profile();
-        computerProfile.setId(BOT_PROFILE_ID);
-        computerProfile.setName("");
-        computerProfile.setWisorType(WisorType.random());
-        computerProfile.setTag("0");
+        Profile computerProfile = prepareComputerProfile();
         Set<WisieType> wisieTypes = new HashSet<>();
         while (wisieTypes.size() < (Math.max(5 - profileCampaign.getPhase(), isLastPhase ? 5 : 1))) {
             wisieTypes.add(WisieType.random());
         }
         long profileWisieId = -1;
-        Set<ProfileWisie> profileWisies = profileCampaign.getProfile().getWisies();
+        List<ProfileCampaignWisie> profileCampaignWisies = profileCampaign.getWisies();
         double summaryValue = 0;
-        for (ProfileWisie profileWisie : profileWisies) {
-            summaryValue += profileWisie.calculateValue();
+        for (ProfileCampaignWisie profileCampaignWisie : profileCampaignWisies) {
+            summaryValue += profileCampaignWisie.calculateValue();
         }
         int rating = profileCampaign.getCampaign().getDifficultyLevel().getRating();
 

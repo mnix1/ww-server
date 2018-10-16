@@ -28,6 +28,6 @@ public class WisieStateAnsweringPhase6 extends WisieState {
         Answer answer = randomElement(new ArrayList<>(manager.getQuestion().getAnswers()));
         correctAnswer = answer.getCorrect();
         answerId = answer.getId();
-        manager.getWarManager().getFlow().wisieAnswered(manager.getOwnedWisie().getProfile().getId(), answerId);
+        manager.getWarManager().getFlow().wisieAnswered(manager.getProfileId(), answerId);
     }
 }

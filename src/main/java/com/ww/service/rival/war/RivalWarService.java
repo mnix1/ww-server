@@ -3,6 +3,7 @@ package com.ww.service.rival.war;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.DifficultyLevel;
+import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.container.Resources;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.ww.helper.TeamHelper.BOT_PROFILE_ID;
 
 @Service
 @Getter
@@ -44,5 +47,14 @@ public class RivalWarService extends RivalService {
 
     public void initTaskWisdomAttributes(Question question) {
         taskService.initTaskWisdomAttributes(question);
+    }
+
+    public Profile prepareComputerProfile() {
+        Profile computerProfile = new Profile();
+        computerProfile.setId(BOT_PROFILE_ID);
+        computerProfile.setName("");
+        computerProfile.setWisorType(WisorType.random());
+        computerProfile.setTag("0");
+        return computerProfile;
     }
 }

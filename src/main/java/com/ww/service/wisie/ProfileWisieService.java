@@ -8,6 +8,7 @@ import com.ww.model.container.Resources;
 import com.ww.model.dto.social.ExtendedProfileResourcesDTO;
 import com.ww.model.dto.wisie.ProfileWisieDTO;
 import com.ww.model.entity.outside.social.Profile;
+import com.ww.model.entity.outside.wisie.OwnedWisie;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
 import com.ww.model.entity.outside.wisie.Wisie;
 import com.ww.repository.outside.wisie.ProfileWisieRepository;
@@ -165,7 +166,7 @@ public class ProfileWisieService {
         return profileWisie;
     }
 
-    public void initWisieAttributes(ProfileWisie wisie) {
+    public void initWisieAttributes(OwnedWisie wisie) {
         for(WisdomAttribute wisdomAttribute : WisdomAttribute.values()){
             wisie.setWisdomAttributeValue(wisdomAttribute, randomDouble(1, 10));
         }
@@ -174,18 +175,18 @@ public class ProfileWisieService {
         }
     }
 
-    public void initWisieHobbies(ProfileWisie wisie) {
+    public void initWisieHobbies(OwnedWisie wisie) {
         initWisieHobbies(wisie, Arrays.asList(Category.random()));
     }
 
-    public void initWisieHobbies(ProfileWisie wisie, List<Category> hobbies) {
+    public void initWisieHobbies(OwnedWisie wisie, List<Category> hobbies) {
         wisie.setHobbies(new HashSet<>(hobbies));
     }
 
-    public void initWisieSkills(ProfileWisie wisie) {
+    public void initWisieSkills(OwnedWisie wisie) {
         initWisieSkills(wisie, Arrays.asList(Skill.random()));
     }
-    public void initWisieSkills(ProfileWisie wisie, List<Skill> skills) {
+    public void initWisieSkills(OwnedWisie wisie, List<Skill> skills) {
         wisie.setSkills(new HashSet<>(skills));
     }
 }

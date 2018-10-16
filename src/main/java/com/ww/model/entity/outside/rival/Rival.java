@@ -10,7 +10,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.Instant;
 
-import static com.ww.manager.rival.campaign.CampaignWarManager.BOT_PROFILE_ID;
+import static com.ww.helper.TeamHelper.BOT_PROFILE_ID;
 
 @Setter
 @Getter

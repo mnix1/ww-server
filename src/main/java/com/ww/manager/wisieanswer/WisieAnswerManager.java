@@ -30,14 +30,16 @@ public class WisieAnswerManager implements Describe {
 
     private WisieTeamMember wisieMember;
 
+    private WarTeam warTeam;
     private WarManager warManager;
     private Question question;
 
     private int difficulty;
     private int answerCount;
 
-    public WisieAnswerManager(WisieTeamMember wisieMember, Question question, WarManager warManager) {
+    public WisieAnswerManager(WisieTeamMember wisieMember, WarTeam warTeam, Question question, WarManager warManager) {
         this.wisieMember = wisieMember;
+        this.warTeam = warTeam;
         this.warManager = warManager;
         this.question = question;
         this.difficulty = AnswerHelper.difficultyCalibration(question) + 1;
@@ -57,6 +59,10 @@ public class WisieAnswerManager implements Describe {
         return getWarWisie().getWisie();
     }
 
+    public Long getProfileId() {
+        return getWarTeam().getProfileId();
+    }
+
     public WarWisie getWarWisie() {
         return wisieMember.getContent();
     }
@@ -69,7 +75,7 @@ public class WisieAnswerManager implements Describe {
     }
 
     public WarTeam getTeam(WisieAnswerManager manager) {
-        return (WarTeam) warManager.getTeam(manager.getOwnedWisie().getProfile().getId());
+        return (WarTeam) warManager.getTeam(manager.getProfileId());
     }
 
     public WarModelFactory getModelFactory() {
@@ -91,7 +97,7 @@ public class WisieAnswerManager implements Describe {
     public String describe() {
         return "WisieAnswerManager wisieName=" + getOwnedWisie().getWisie().getNamePolish()
                 + ", profileWisieId=" + getOwnedWisie().getId()
-                + ", profileId=" + getOwnedWisie().getProfile().getId()
+                + ", profileId=" + getWarTeam().getProfile().getId()
                 + ", lastAction=" + lastAction().name();
     }
 }

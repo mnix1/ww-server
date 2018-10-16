@@ -12,12 +12,12 @@ import java.util.List;
 
 @Getter
 @Setter
-public class RivalChallengeInit extends RivalOnePlayerInit {
+public class RivalChallengeInit extends RivalTwoPlayerInit {
     private ChallengeProfile challengeProfile;
     private List<ChallengePhase> challengePhases;
 
-    public RivalChallengeInit(RivalType type, RivalImportance importance, Profile creatorProfile, ChallengeProfile challengeProfile, List<ChallengePhase> challengePhases) {
-        super(type, importance, creatorProfile);
+    public RivalChallengeInit(RivalType type, RivalImportance importance, Profile creatorProfile, Profile opponentProfile, ChallengeProfile challengeProfile, List<ChallengePhase> challengePhases) {
+        super(type, importance, creatorProfile, opponentProfile);
         this.challengeProfile = challengeProfile;
         this.challengePhases = challengePhases;
     }

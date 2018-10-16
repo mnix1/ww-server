@@ -20,7 +20,8 @@ import com.ww.service.rival.war.RivalWarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.ww.manager.rival.campaign.CampaignWarManager.BOT_PROFILE_ID;
+import static com.ww.helper.TeamHelper.BOT_PROFILE_ID;
+
 
 @Service
 public class RivalRunService {

@@ -15,6 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TeamHelper {
+    public static final Long BOT_PROFILE_ID = -1L;
+
+    public static boolean isBotProfile(Profile profile) {
+        return profile.getId().equals(BOT_PROFILE_ID);
+    }
+
     public static List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies) {
         List<TeamMember> teamMembers = new ArrayList<>();
         int index = 0;

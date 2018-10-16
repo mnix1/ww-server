@@ -26,17 +26,21 @@ public class WarStateChoosingWhoAnswer extends WarState {
         }
     }
 
+    protected void send(){
+        manager.getModel().getTeams().forEachTeam(team -> {
+            Map<String, Object> model = new HashMap<>();
+            manager.getModelFactory().fillModelChoosingWhoAnswer(model, team);
+            manager.send(model, manager.getMessageContent(), team.getProfileId());
+        });
+    }
+
     @Override
     protected Flowable<Long> processFlowable() {
         this.manager.getModel().setStatus(RivalStatus.CHOOSING_WHO_ANSWER);
         setTeamsDefaultActive();
         long interval = manager.getInterval().getChoosingWhoAnswerInterval();
         manager.getModel().setEndChoosingWhoAnswerDate(Instant.now().plus(interval, ChronoUnit.MILLIS));
-        manager.getModel().getTeams().forEachTeam(team -> {
-            Map<String, Object> model = new HashMap<>();
-            manager.getModelFactory().fillModelChoosingWhoAnswer(model, team);
-            this.manager.send(model, this.manager.getMessageContent(), team.getProfileId());
-        });
+        send();
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

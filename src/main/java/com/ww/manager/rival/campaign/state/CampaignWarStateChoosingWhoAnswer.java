@@ -8,7 +8,8 @@ import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.model.container.rival.war.WisieTeamMember;
 
-import static com.ww.manager.rival.campaign.CampaignWarManager.isBotProfile;
+import static com.ww.helper.TeamHelper.isBotProfile;
+
 
 public class CampaignWarStateChoosingWhoAnswer extends WarStateChoosingWhoAnswer {
 

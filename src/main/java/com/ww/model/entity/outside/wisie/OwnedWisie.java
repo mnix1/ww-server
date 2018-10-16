@@ -33,23 +33,22 @@ public abstract class OwnedWisie extends AbstractWisieAttributes {
     @Convert(converter = WisieSkillConverter.class)
     protected HashSet<Skill> skills;
     @ManyToOne
-    @JoinColumn(name = "profile_id", nullable = false, updatable = false)
-    protected Profile profile;
-    @ManyToOne
     @JoinColumn(name = "wisie_id", nullable = false, updatable = false)
     protected Wisie wisie;
 
-    protected OwnedWisie(Profile profile, Wisie wisie) {
-        this.profile = profile;
+    protected OwnedWisie(Boolean inTeam, HashSet<Category> hobbies, HashSet<Skill> skills, Wisie wisie) {
+        this.inTeam = inTeam;
+        this.hobbies = hobbies;
+        this.skills = skills;
         this.wisie = wisie;
     }
 
-    protected OwnedWisie(OwnedWisie profileWisie) {
-        super(profileWisie);
-        this.hobbies = profileWisie.hobbies;
-        this.skills = profileWisie.skills;
-        this.inTeam = profileWisie.inTeam;
-        this.wisie = profileWisie.wisie;
+    protected OwnedWisie(OwnedWisie ownedWisie) {
+        super(ownedWisie);
+        this.hobbies = ownedWisie.hobbies;
+        this.skills = ownedWisie.skills;
+        this.inTeam = ownedWisie.inTeam;
+        this.wisie = ownedWisie.wisie;
     }
 
     @Override

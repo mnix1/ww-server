@@ -38,6 +38,6 @@ public class WisieStateAnsweringNoUseHint extends WisieSkillState {
         Answer answer = correctAnswer
                 ? manager.getQuestion().getAnswers().stream().filter(Answer::getCorrect).findFirst().get()
                 : randomElement(new ArrayList<>(manager.getQuestion().getAnswers().stream().filter(a -> !a.getId().equals(hintAnswerId)).collect(Collectors.toList())));
-        manager.getWarManager().getFlow().wisieAnswered(manager.getOwnedWisie().getProfile().getId(), answer.getId());
+        manager.getWarManager().getFlow().wisieAnswered(manager.getProfileId(), answer.getId());
     }
 }

@@ -16,7 +16,7 @@ import static com.ww.service.rival.global.RivalMessageService.CHOOSE_WHO_ANSWER;
 
 @Getter
 public class WarFlow extends RivalFlow {
-    private WarManager manager;
+    protected WarManager manager;
     private WarSkillFlow skillFlow;
 
     public WarFlow(WarManager manager) {

@@ -23,6 +23,6 @@ public class WisieStateAnsweringUseHint extends WisieSkillState {
     protected void processVoid() {
         manager.addAndSendAction(WisieAnswerAction.ANSWERED);
         logger.trace(describe() + ", isHintCorrect: " + hintCorrect);
-        manager.getWarManager().getFlow().wisieAnswered(manager.getOwnedWisie().getProfile().getId(), hintAnswerId);
+        manager.getWarManager().getFlow().wisieAnswered(manager.getProfileId(), hintAnswerId);
     }
 }

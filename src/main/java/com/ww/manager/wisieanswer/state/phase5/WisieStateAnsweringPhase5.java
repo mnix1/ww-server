@@ -36,6 +36,6 @@ public class WisieStateAnsweringPhase5 extends WisieState {
                 ? manager.getQuestion().getAnswers().stream().filter(Answer::getCorrect).findFirst().get()
                 : randomElement(new ArrayList<>(manager.getQuestion().getAnswers()));
         answerId = answer.getId();
-        manager.getWarManager().getFlow().wisieAnswered(manager.getOwnedWisie().getProfile().getId(), answerId);
+        manager.getWarManager().getFlow().wisieAnswered(manager.getProfileId(), answerId);
     }
 }

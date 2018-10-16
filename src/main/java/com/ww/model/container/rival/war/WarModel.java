@@ -39,7 +39,7 @@ public class WarModel extends RivalModel {
         for (WarTeam warTeam : teams.getTeams()) {
             TeamMember teamMember = warTeam.getActiveTeamMember();
             if (teamMember.isWisie()) {
-                wisieAnswerManagers.add(new WisieAnswerManager((WisieTeamMember) teamMember, question, manager));
+                wisieAnswerManagers.add(new WisieAnswerManager((WisieTeamMember) teamMember, warTeam, question, manager));
             }
         }
     }
@@ -73,7 +73,7 @@ public class WarModel extends RivalModel {
 
     public WisieAnswerManager getWisieAnswerManager(Long profileId) {
         for (WisieAnswerManager manager : wisieAnswerManagers) {
-            if (manager.getOwnedWisie().getProfile().getId().equals(profileId)) {
+            if (manager.getProfileId().equals(profileId)) {
                 return manager;
             }
         }
