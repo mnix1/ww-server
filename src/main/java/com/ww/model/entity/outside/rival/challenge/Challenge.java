@@ -70,7 +70,7 @@ public class Challenge {
         this.elixirCost = resources.getElixir();
     }
 
-    private void setGainResources(Resources resources) {
+    public void setGainResources(Resources resources) {
         this.goldGain = resources.getGold();
         this.crystalGain = resources.getCrystal();
         this.wisdomGain = resources.getWisdom();

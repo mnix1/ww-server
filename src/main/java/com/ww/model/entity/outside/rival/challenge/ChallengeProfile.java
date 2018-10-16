@@ -2,6 +2,7 @@ package com.ww.model.entity.outside.rival.challenge;
 
 import com.ww.model.constant.rival.challenge.ChallengeProfileResponse;
 import com.ww.model.constant.rival.challenge.ChallengeProfileType;
+import com.ww.model.container.Resources;
 import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,10 @@ public class ChallengeProfile {
     private Instant responseEnd;
     private Integer score;
     private Boolean rewarded = false;
+    private Long goldGain;
+    private Long crystalGain;
+    private Long wisdomGain;
+    private Long elixirGain;
     @ManyToOne
     @JoinColumn(name = "challenge_id", nullable = false, updatable = false)
     private Challenge challenge;
@@ -36,6 +41,17 @@ public class ChallengeProfile {
         this.challenge = challenge;
         this.profile = profile;
         this.type = type;
+    }
+
+    public void setGainResources(Resources resources) {
+        this.goldGain = resources.getGold();
+        this.crystalGain = resources.getCrystal();
+        this.wisdomGain = resources.getWisdom();
+        this.elixirGain = resources.getElixir();
+    }
+
+    public Resources getGainResources() {
+        return new Resources(goldGain, crystalGain, wisdomGain, elixirGain);
     }
 
     public Long responseInterval() {

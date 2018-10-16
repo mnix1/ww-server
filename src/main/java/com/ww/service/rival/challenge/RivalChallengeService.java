@@ -32,11 +32,7 @@ import static com.ww.model.constant.rival.RivalType.CHALLENGE;
 @Service
 public class RivalChallengeService extends RivalWarService {
     @Autowired
-    private ChallengeRepository challengeRepository;
-
-    @Autowired
     private ChallengeProfileRepository challengeProfileRepository;
-
     @Autowired
     private ChallengeQuestionRepository challengeQuestionRepository;
     @Autowired

@@ -1,6 +1,8 @@
 package com.ww.service.rival.challenge;
 
 import com.ww.model.constant.rival.challenge.*;
+import com.ww.model.container.Resources;
+import com.ww.model.container.rival.challenge.ChallengePosition;
 import com.ww.model.dto.rival.challenge.*;
 import com.ww.model.entity.outside.rival.challenge.Challenge;
 import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
@@ -10,6 +12,7 @@ import com.ww.repository.outside.rival.challenge.ChallengeRepository;
 import com.ww.service.rival.init.RivalRunService;
 import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -21,6 +24,8 @@ import static com.ww.helper.ModelHelper.*;
 
 @Service
 public class ChallengeCloseService {
+    private static final int CHALLENGE_CLOSE_JOB_RATE = 60000;
+
     @Autowired
     private ChallengeRepository challengeRepository;
 
@@ -28,22 +33,69 @@ public class ChallengeCloseService {
     private ChallengeProfileRepository challengeProfileRepository;
 
     @Autowired
-    private ChallengeCreateService challengeCreateService;
-
-    @Autowired
-    private RivalChallengeService rivalChallengeService;
-
-    @Autowired
     private ProfileService profileService;
 
-    @Autowired
-    private RivalRunService rivalRunService;
+    @Transactional
+    @Scheduled(fixedRate = CHALLENGE_CLOSE_JOB_RATE)
+    public synchronized void closeChallenges() {
+        Instant closeDate = Instant.now();
+        List<Challenge> challenges = challengeRepository.findAllByStatusAndTimeoutDateLessThanEqual(ChallengeStatus.IN_PROGRESS, closeDate);
+        if (challenges.isEmpty()) {
+            return;
+        }
+        for (Challenge challenge : challenges) {
+            closeChallenge(challenge, closeDate);
+        }
+        challengeRepository.saveAll(challenges);
+        for (Challenge challenge : challenges) {
+            rewardProfiles(challenge);
+        }
+    }
 
-    public List<ChallengePositionDTO> preparePositions(Challenge challenge) {
-        List<ChallengePositionDTO> positions = new ArrayList<>();
-        for (ChallengeProfile cp : challengeProfileRepository.findAllByChallenge_Id(challenge.getId())) {
+    public void rewardProfiles(Challenge challenge) {
+        List<ChallengeProfile> challengeProfiles = challengeProfileRepository.findAllByChallenge_Id(challenge.getId());
+        List<ChallengePosition> challengePositions = preparePositions(challengeProfiles);
+        if (challengePositions.isEmpty()) {
+            return;
+        }
+        List<ChallengeProfile> rewardedChallengeProfiles = new ArrayList<>();
+        int profilesWithReward = Math.max(1, challengePositions.size() / 10);
+        for (int i = profilesWithReward - 1; i >= 0; i--) {
+            ChallengeProfile challengeProfile = challengePositions.get(i).getChallengeProfile();
+            Resources resources = challenge.getCostResources();
+            if (i == 2) {
+                resources.add(challenge.getCostResources());
+            } else if (i == 1) {
+                resources.add(challenge.getCostResources());
+                resources.add(challenge.getCostResources());
+                resources.add(challenge.getCostResources());
+                resources.add(challenge.getCostResources());
+            } else if (i == 0) {
+                resources = challenge.getGainResources();
+            }
+            rewardedChallengeProfiles.add(challengeProfile);
+            challengeProfile.setGainResources(resources);
+            challenge.setGainResources(challenge.getGainResources().subtract(resources));
+        }
+        List<Profile> profiles = new ArrayList<>();
+        for (ChallengeProfile challengeProfile : rewardedChallengeProfiles) {
+            profiles.add(challengeProfile.getProfile());
+            challengeProfile.getProfile().addResources(challengeProfile.getGainResources());
+            challengeProfile.setRewarded(true);
+        }
+        challengeProfileRepository.saveAll(rewardedChallengeProfiles);
+        profileService.save(profiles);
+    }
+
+    public List<ChallengePosition> preparePositions(Challenge challenge) {
+        return preparePositions(challengeProfileRepository.findAllByChallenge_Id(challenge.getId()));
+    }
+
+    public List<ChallengePosition> preparePositions(List<ChallengeProfile> challengeProfiles) {
+        List<ChallengePosition> positions = new ArrayList<>();
+        for (ChallengeProfile cp : challengeProfiles) {
             if (cp.getJoined()) {
-                ChallengePositionDTO position = new ChallengePositionDTO(cp);
+                ChallengePosition position = new ChallengePosition(cp);
                 positions.add(position);
             }
         }
@@ -62,7 +114,16 @@ public class ChallengeCloseService {
             }
             return o2.getScore().compareTo(o1.getScore());
         });
+        for (int i = 0; i < positions.size(); i++) {
+            positions.get(i).setPosition((long) i + 1);
+        }
         return positions;
+    }
+
+    @Transactional
+    public void closeChallenge(Challenge challenge, Instant closeDate) {
+        challenge.setStatus(ChallengeStatus.CLOSED);
+        challenge.setCloseDate(closeDate);
     }
 
     public void maybeCloseChallenge(Challenge challenge, Instant closeDate) {
@@ -73,8 +134,8 @@ public class ChallengeCloseService {
         if (challengeProfiles.stream().anyMatch(challengeProfile -> challengeProfile.getResponseStatus() != ChallengeProfileResponse.CLOSED)) {
             return;
         }
-        challenge.setStatus(ChallengeStatus.CLOSED);
-        challenge.setCloseDate(closeDate);
+        closeChallenge(challenge, closeDate);
         challengeRepository.save(challenge);
+        rewardProfiles(challenge);
     }
 }

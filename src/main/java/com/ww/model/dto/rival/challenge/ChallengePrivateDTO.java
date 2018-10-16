@@ -15,6 +15,7 @@ public class ChallengePrivateDTO {
     private String name;
     private WisorType wisorType;
     private Instant creationDate;
+    private Instant closeDate;
     private Long timeoutInterval;
     private ChallengeAccess access;
     private Long participants;
@@ -26,6 +27,7 @@ public class ChallengePrivateDTO {
         this.name = challenge.getCreatorProfile().getName();
         this.wisorType = challenge.getCreatorProfile().getWisorType();
         this.creationDate = challenge.getCreationDate();
+        this.closeDate = challenge.getCloseDate();
         this.timeoutInterval = challenge.getTimeoutInterval();
         this.access = challenge.getAccess();
         this.participants = challenge.getParticipants();
