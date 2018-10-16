@@ -9,9 +9,9 @@ import lombok.Getter;
 @Getter
 public class ChallengeActiveDTO extends ChallengePrivateDTO {
 
-    Boolean canResponse;
-    Boolean joined;
-    ChallengeProfileType type;
+    private Boolean canResponse;
+    private Boolean joined;
+    private ChallengeProfileType type;
 
     public ChallengeActiveDTO(ChallengeProfile challengeProfile) {
         super(challengeProfile.getChallenge());

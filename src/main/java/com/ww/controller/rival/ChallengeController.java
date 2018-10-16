@@ -3,7 +3,7 @@ package com.ww.controller.rival;
 import com.ww.model.constant.rival.challenge.ChallengeAccess;
 import com.ww.model.constant.rival.challenge.ChallengeStatus;
 import com.ww.model.constant.social.ResourceType;
-import com.ww.model.dto.rival.challenge.ChallengeGlobalInfoDTO;
+import com.ww.model.dto.rival.challenge.ChallengeGlobalDTO;
 import com.ww.model.dto.rival.challenge.ChallengePrivateDTO;
 import com.ww.model.dto.rival.challenge.ChallengeSummaryDTO;
 import com.ww.service.rival.challenge.ChallengeCreateService;
@@ -59,7 +59,7 @@ public class ChallengeController {
     }
 
     @RequestMapping(value = "/global", method = RequestMethod.POST)
-    public ChallengeGlobalInfoDTO global(@RequestBody Map<String, Object> payload) {
+    public ChallengeGlobalDTO global(@RequestBody Map<String, Object> payload) {
         return challengeService.global();
     }
 

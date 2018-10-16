@@ -45,11 +45,11 @@ public class ChallengeService {
     private RivalRunService rivalRunService;
 
     @Transactional
-    public ChallengeGlobalInfoDTO global() {
+    public ChallengeGlobalDTO global() {
         Optional<Challenge> optionalChallenge = challengeRepository.findFirstByTypeAndStatus(ChallengeType.GLOBAL, ChallengeStatus.IN_PROGRESS);
         Challenge challenge = optionalChallenge.orElseGet(challengeCreateService::createGlobal);
-        boolean isPresent = challengeProfileRepository.findByProfile_IdAndChallenge_Id(profileService.getProfileId(), challenge.getId()).isPresent();
-        return new ChallengeGlobalInfoDTO(challenge, !isPresent);
+        Optional<ChallengeProfile> optionalChallengeProfile = challengeProfileRepository.findByProfile_IdAndChallenge_Id(profileService.getProfileId(), challenge.getId());
+        return new ChallengeGlobalDTO(challenge, optionalChallengeProfile, challengeCloseService.preparePositions(challenge));
     }
 
     public Map<String, Object> response(Long challengeId) {

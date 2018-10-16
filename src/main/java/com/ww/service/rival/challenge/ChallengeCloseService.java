@@ -110,7 +110,7 @@ public class ChallengeCloseService {
                 return -1;
             }
             if (o1.getScore().equals(o2.getScore())) {
-                return o2.getInterval().compareTo(o1.getInterval());
+                return o1.getInterval().compareTo(o2.getInterval());
             }
             return o2.getScore().compareTo(o1.getScore());
         });
