@@ -1,8 +1,6 @@
 package com.ww.model.dto.rival.challenge;
 
-import com.ww.model.constant.rival.challenge.ChallengeAccess;
 import com.ww.model.constant.rival.challenge.ChallengeProfileResponse;
-import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.container.Resources;
 import com.ww.model.container.rival.challenge.ChallengePosition;
 import com.ww.model.entity.outside.rival.challenge.Challenge;
@@ -18,10 +16,8 @@ import java.util.stream.Collectors;
 public class ChallengeGlobalDTO {
 
     private Long id;
-    private Instant creationDate;
     private Instant closeDate;
     private Long timeoutInterval;
-    private ChallengeAccess access;
     private Long participants;
     private Resources cost;
     private Resources gain;
@@ -31,10 +27,8 @@ public class ChallengeGlobalDTO {
 
     public ChallengeGlobalDTO(Challenge challenge, Optional<ChallengeProfile> optionalChallengeProfile, List<ChallengePosition> positions) {
         this.id = challenge.getId();
-        this.creationDate = challenge.getCreationDate();
         this.closeDate = challenge.getCloseDate();
         this.timeoutInterval = challenge.getTimeoutInterval();
-        this.access = challenge.getAccess();
         this.participants = challenge.getParticipants();
         this.cost = challenge.getCostResources();
         this.gain = challenge.getGainResources();

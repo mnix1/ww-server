@@ -70,7 +70,7 @@ public class ChallengeService {
                 return putErrorCode(model);
             }
         }
-        if (challengeProfile.getResponseStatus() != ChallengeProfileResponse.OPEN) {
+        if (challengeProfile.getResponseStatus() != ChallengeProfileResponse.OPEN || !challengeProfile.getJoined()) {
             return putErrorCode(model);
         }
         challengeProfile.setResponseStatus(ChallengeProfileResponse.IN_PROGRESS);
@@ -102,14 +102,14 @@ public class ChallengeService {
     }
 
     private List<ChallengePrivateDTO> listActive() {
-        List<ChallengeProfile> challengeProfiles = challengeProfileRepository.findAllByProfile_IdAndChallenge_Status(profileService.getProfileId(), ChallengeStatus.IN_PROGRESS);
+        List<ChallengeProfile> challengeProfiles = challengeProfileRepository.findAllByProfile_IdAndChallenge_TypeAndChallenge_Status(profileService.getProfileId(), ChallengeType.PRIVATE, ChallengeStatus.IN_PROGRESS);
         return challengeProfiles.stream()
                 .map(ChallengeActiveDTO::new)
                 .collect(Collectors.toList());
     }
 
     private List<ChallengePrivateDTO> listHistory() {
-        List<ChallengeProfile> challengeProfiles = challengeProfileRepository.findAllByProfile_IdAndJoinedAndChallenge_StatusOrderByChallenge_CloseDateDesc(profileService.getProfileId(), true, ChallengeStatus.CLOSED);
+        List<ChallengeProfile> challengeProfiles = challengeProfileRepository.findAllByProfile_IdAndChallenge_TypeAndJoinedAndChallenge_StatusOrderByChallenge_CloseDateDesc(profileService.getProfileId(), ChallengeType.PRIVATE, true, ChallengeStatus.CLOSED);
         return challengeProfiles.stream()
                 .limit(10)
                 .map(challengeProfile -> new ChallengePrivateDTO(challengeProfile.getChallenge()))
