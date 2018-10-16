@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 import static com.ww.helper.ModelHelper.putCode;
 import static com.ww.helper.ModelHelper.putErrorCode;
 import static com.ww.helper.ModelHelper.putSuccessCode;
+import static com.ww.helper.RandomHelper.randomElement;
 
 @Service
 public class ChallengeCreateService {
@@ -48,7 +49,7 @@ public class ChallengeCreateService {
         if (!DURATIONS.contains(duration) || !RESOURCE_COSTS.contains(resourceCost)) {
             return putErrorCode(model);
         }
-        if(tags.isEmpty() && access == ChallengeAccess.INVITE){
+        if (tags.isEmpty() && access == ChallengeAccess.INVITE) {
             return putCode(model, -2);
         }
         Profile profile = profileService.getProfile();
@@ -61,8 +62,9 @@ public class ChallengeCreateService {
     @Transactional
     public Challenge createGlobal() {
         LocalDateTime date = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(0, 0));
-        Challenge challenge = new Challenge(ChallengeType.GLOBAL, ChallengeAccess.UNLOCK, new Resources(ResourceType.random(), 10L), date.toInstant(ZoneOffset.UTC));
-        challenge.setGainResources(challenge.getGainResources().add(new Resources(20L,20L,20L,20L)));
+        Long joinCost = randomElement(Arrays.asList(1L, 2L, 5L, 10L));
+        Challenge challenge = new Challenge(ChallengeType.GLOBAL, ChallengeAccess.UNLOCK, new Resources(ResourceType.random(), joinCost), date.toInstant(ZoneOffset.UTC));
+        challenge.setGainResources(challenge.getGainResources().add(new Resources(joinCost * 2, joinCost * 2, joinCost * 2, joinCost * 2)));
         challengeRepository.save(challenge);
         return challenge;
     }
