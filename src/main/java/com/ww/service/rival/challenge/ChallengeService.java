@@ -126,7 +126,7 @@ public class ChallengeService {
         }
         Challenge challenge = optionalChallenge.get();
         Profile profile = profileService.getProfile();
-        if (challenge.getStatus() != ChallengeStatus.IN_PROGRESS) {
+        if (challenge.getStatus() != ChallengeStatus.IN_PROGRESS || challenge.getTimeoutInterval() <= 0) {
             return putCode(model, -2);
         } else if (!profile.hasEnoughResources(challenge.getCostResources())) {
             return putCode(model, -3);
