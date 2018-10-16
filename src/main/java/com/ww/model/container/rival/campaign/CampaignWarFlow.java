@@ -1,11 +1,9 @@
 package com.ww.model.container.rival.campaign;
 
 import com.ww.manager.rival.campaign.CampaignWarManager;
-import com.ww.manager.rival.campaign.state.CampaignWarStateChosenWhoAnswer;
+import com.ww.manager.rival.campaign.state.CampaignWarStateChoosingWhoAnswer;
 import com.ww.manager.rival.war.WarFlow;
 import lombok.Getter;
-
-import java.util.Map;
 
 @Getter
 public class CampaignWarFlow extends WarFlow {
@@ -16,10 +14,9 @@ public class CampaignWarFlow extends WarFlow {
         this.manager = manager;
     }
 
-    public synchronized void chosenWhoAnswer(Long profileId, Map<String, Object> content) {
-        if (new CampaignWarStateChosenWhoAnswer(manager, profileId, content).startBoolean()) {
-            dispose();
+    public synchronized void phase3() {
+        addState(new CampaignWarStateChoosingWhoAnswer(manager)).addOnFlowableEndListener(aLong2 -> {
             phase1();
-        }
+        }).startFlowable();
     }
 }

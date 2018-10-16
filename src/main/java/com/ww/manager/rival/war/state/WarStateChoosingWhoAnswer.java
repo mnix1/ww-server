@@ -18,16 +18,18 @@ public class WarStateChoosingWhoAnswer extends WarState {
         super(manager, STATE_TYPE_FLOWABLE);
     }
 
-    @Override
-    protected Flowable<Long> processFlowable() {
-        this.manager.getModel().setStatus(RivalStatus.CHOOSING_WHO_ANSWER);
-
+    protected void setTeamsDefaultActive(){
         for (RivalTeam team : manager.getModel().getTeams().getTeams()) {
             WarTeam warTeam = (WarTeam) team;
             warTeam.setActiveIndex(warTeam.getPresentIndexes().get(0));
             warTeam.setChosenActiveIndex(false);
         }
+    }
 
+    @Override
+    protected Flowable<Long> processFlowable() {
+        this.manager.getModel().setStatus(RivalStatus.CHOOSING_WHO_ANSWER);
+        setTeamsDefaultActive();
         long interval = manager.getInterval().getChoosingWhoAnswerInterval();
         manager.getModel().setEndChoosingWhoAnswerDate(Instant.now().plus(interval, ChronoUnit.MILLIS));
         manager.getModel().getTeams().forEachTeam(team -> {

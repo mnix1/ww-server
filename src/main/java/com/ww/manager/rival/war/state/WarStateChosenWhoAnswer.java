@@ -31,7 +31,7 @@ public class WarStateChosenWhoAnswer extends WarState {
         } catch (Exception e) {
             logger.error("Wrong content on WarStateChosenWhoAnswer for profileId: {}", profileId);
         }
-        WarTeam warTeam =(WarTeam)  manager.getTeam(profileId);
+        WarTeam warTeam = (WarTeam) manager.getTeam(profileId);
         if (activeIndex != null && !warTeam.isChosenActiveIndex() && warTeam.getPresentIndexes().contains(activeIndex)) {
             warTeam.setChosenActiveIndex(true);
             warTeam.setActiveIndex(activeIndex);
