@@ -64,7 +64,7 @@ public class RivalChallengeService extends RivalWarService {
         if (challengePhases.size() > taskIndex) {
             return challengePhases.get(taskIndex);
         }
-        ChallengePhase challengePhase = new ChallengePhase(challenge, getTaskGenerateService().findProperTaskType(category, difficultyLevel), difficultyLevel, Language.NO_COMMON, preparePhaseWisie(taskIndex));
+        ChallengePhase challengePhase = new ChallengePhase(challenge, getTaskGenerateService().findProperTaskType(category, difficultyLevel), difficultyLevel, preparePhaseWisie(taskIndex));
         challengePhaseRepository.save(challengePhase);
         return challengePhase;
     }

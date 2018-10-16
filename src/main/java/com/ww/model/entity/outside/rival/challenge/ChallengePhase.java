@@ -1,6 +1,5 @@
 package com.ww.model.entity.outside.rival.challenge;
 
-import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.entity.outside.rival.task.TaskType;
 import com.ww.model.entity.outside.wisie.ChallengePhaseWisie;
@@ -28,13 +27,11 @@ public class ChallengePhase {
     @JoinColumn(name = "phase_wisie_id", nullable = false, updatable = false)
     private ChallengePhaseWisie phaseWisie;
     private DifficultyLevel difficultyLevel;
-    private Language language;
 
-    public ChallengePhase(Challenge challenge, TaskType taskType, DifficultyLevel difficultyLevel, Language language, ChallengePhaseWisie phaseWisie) {
+    public ChallengePhase(Challenge challenge, TaskType taskType, DifficultyLevel difficultyLevel, ChallengePhaseWisie phaseWisie) {
         this.challenge = challenge;
         this.taskType = taskType;
         this.difficultyLevel = difficultyLevel;
-        this.language = language;
         this.phaseWisie = phaseWisie;
     }
 }

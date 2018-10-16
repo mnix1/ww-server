@@ -81,7 +81,7 @@ public class ChallengeManager extends WarManager {
     public void prepareTask(Long id, Category category, DifficultyLevel difficultyLevel) {
         RivalChallengeService rivalChallengeService = (RivalChallengeService) rivalService;
         ChallengePhase phase = findPhase(id, category, difficultyLevel);
-        Question question = rivalChallengeService.getTaskGenerateService().generate(phase.getTaskType(), phase.getDifficultyLevel(), phase.getLanguage());
+        Question question = rivalChallengeService.getTaskGenerateService().generate(phase.getTaskType(), phase.getDifficultyLevel(), challengeProfile.getProfile().getLanguage());
         question.setId(id);
         question.initAnswerIds();
         rivalChallengeService.initTaskWisdomAttributes(question);
