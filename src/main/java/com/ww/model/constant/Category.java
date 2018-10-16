@@ -1,7 +1,6 @@
 package com.ww.model.constant;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.ww.helper.RandomHelper.randomElement;
@@ -28,6 +27,14 @@ public enum Category {
 
     public static Category random() {
         return randomElement(list());
+    }
+
+    public static List<Category> random(int count) {
+        Set<Category> categories = new HashSet<>();
+        while (categories.size() < count) {
+            categories.add(random());
+        }
+        return new ArrayList<>(categories);
     }
 
     public static Category fromString(String name) {
