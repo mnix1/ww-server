@@ -10,7 +10,7 @@ public class ChallengeInterval extends WarInterval {
 
     public long getAnsweringInterval() {
         int taskIndex = Math.max(0, container.getCurrentTaskIndex());
-        long interval = super.getAnsweringInterval() - taskIndex * calculateInterval(5);
+        long interval = super.getAnsweringInterval() - taskIndex * calculateInterval(2);
         return Math.max(interval, calculateInterval(15));
     }
 }
