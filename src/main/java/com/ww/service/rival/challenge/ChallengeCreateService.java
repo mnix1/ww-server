@@ -62,6 +62,7 @@ public class ChallengeCreateService {
     public Challenge createGlobal() {
         LocalDateTime date = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(0, 0));
         Challenge challenge = new Challenge(ChallengeType.GLOBAL, ChallengeAccess.UNLOCK, new Resources(ResourceType.random(), 10L), date.toInstant(ZoneOffset.UTC));
+        challenge.setGainResources(challenge.getGainResources().add(new Resources(20L,20L,20L,20L)));
         challengeRepository.save(challenge);
         return challenge;
     }
