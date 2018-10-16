@@ -84,13 +84,14 @@ public class RivalCampaignWarService extends RivalWarService {
     }
 
     public Profile prepareComputerProfile(ProfileCampaign profileCampaign) {
+        boolean isLastPhase = profileCampaign.getPhase() == profileCampaign.getCampaign().getPhases() - 1;
         Profile computerProfile = new Profile();
         computerProfile.setId(BOT_PROFILE_ID);
         computerProfile.setName("");
         computerProfile.setWisorType(WisorType.random());
         computerProfile.setTag("0");
         Set<WisieType> wisieTypes = new HashSet<>();
-        while (wisieTypes.size() < (Math.max(5 - profileCampaign.getPhase(), 1))) {
+        while (wisieTypes.size() < (Math.max(5 - profileCampaign.getPhase(), isLastPhase ? 5 : 1))) {
             wisieTypes.add(WisieType.random());
         }
         long profileWisieId = -1;
@@ -100,13 +101,14 @@ public class RivalCampaignWarService extends RivalWarService {
             summaryValue += profileWisie.calculateValue();
         }
         int rating = profileCampaign.getCampaign().getDifficultyLevel().getRating();
+
         for (WisieType wisieType : wisieTypes) {
             ProfileWisie profileWisie = new ProfileWisie(computerProfile, wisieService.getWisie(wisieType));
             profileWisie.setId(profileWisieId--);
             getProfileWisieService().initWisieAttributes(profileWisie);
             getProfileWisieService().initWisieHobbies(profileWisie, Category.random(((rating - 1) / 2) + 1));
             getProfileWisieService().initWisieSkills(profileWisie);
-            int phaseDifficultyPromo = 10 * profileCampaign.getPhase() * rating;
+            int phaseDifficultyPromo = (isLastPhase ? 20 : 10) * profileCampaign.getPhase() * rating;
             double promo = summaryValue / wisieTypes.size() + phaseDifficultyPromo - 5;
             for (MentalAttribute attribute : MentalAttribute.values()) {
                 profileWisie.setMentalAttributeValue(attribute, Math.pow(profileWisie.getMentalAttributeValue(attribute), 1.1) + promo);
