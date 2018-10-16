@@ -1,16 +1,15 @@
 package com.ww.service.rival.challenge;
 
-import com.ww.model.constant.rival.challenge.*;
-import com.ww.model.constant.social.ResourceType;
+import com.ww.model.constant.rival.challenge.ChallengeAccess;
+import com.ww.model.constant.rival.challenge.ChallengeProfileResponse;
+import com.ww.model.constant.rival.challenge.ChallengeStatus;
 import com.ww.model.container.Resources;
 import com.ww.model.container.rival.challenge.ChallengePosition;
-import com.ww.model.dto.rival.challenge.*;
 import com.ww.model.entity.outside.rival.challenge.Challenge;
 import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.repository.outside.rival.challenge.ChallengeProfileRepository;
 import com.ww.repository.outside.rival.challenge.ChallengeRepository;
-import com.ww.service.rival.init.RivalRunService;
 import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,14 +17,13 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.ww.helper.ModelHelper.*;
 
 @Service
 public class ChallengeCloseService {
-    private static final int CHALLENGE_CLOSE_JOB_RATE = 60000;
+    private static final int CHALLENGE_CLOSE_JOB_RATE = 30000;
 
     @Autowired
     private ChallengeRepository challengeRepository;
@@ -44,17 +42,22 @@ public class ChallengeCloseService {
         if (challenges.isEmpty()) {
             return;
         }
+        List<Challenge> challengesToClose = new ArrayList<>();
         for (Challenge challenge : challenges) {
-            closeChallenge(challenge, closeDate);
+            List<ChallengeProfile> challengeProfiles = challengeProfileRepository.findAllByChallenge_IdAndResponseStatus(challenge.getId(), ChallengeProfileResponse.IN_PROGRESS);
+            if (challengeProfiles.isEmpty()) {
+                closeChallenge(challenge, closeDate);
+                challengesToClose.add(challenge);
+            }
         }
-        challengeRepository.saveAll(challenges);
-        for (Challenge challenge : challenges) {
-            rewardProfiles(challenge);
+        challengeRepository.saveAll(challengesToClose);
+        for (Challenge challenge : challengesToClose) {
+            rewardProfiles(challenge, challengeProfileRepository.findAllByChallenge_Id(challenge.getId()));
         }
     }
 
-    public void rewardProfiles(Challenge challenge) {
-        List<ChallengeProfile> challengeProfiles = challengeProfileRepository.findAllByChallenge_Id(challenge.getId());
+    @Transactional
+    public void rewardProfiles(Challenge challenge, List<ChallengeProfile> challengeProfiles) {
         List<ChallengePosition> challengePositions = filterNotClosedPositions(preparePositions(challengeProfiles));
         if (challengePositions.isEmpty()) {
             return;
@@ -125,10 +128,9 @@ public class ChallengeCloseService {
     }
 
     public List<ChallengePosition> filterNotClosedPositions(List<ChallengePosition> positions) {
-        return positions.stream().filter(challengePosition -> challengePosition.getStatus() != ChallengeProfileResponse.CLOSED).collect(Collectors.toList());
+        return positions.stream().filter(challengePosition -> challengePosition.getStatus() == ChallengeProfileResponse.CLOSED).collect(Collectors.toList());
     }
 
-    @Transactional
     public void closeChallenge(Challenge challenge, Instant closeDate) {
         challenge.setStatus(ChallengeStatus.CLOSED);
         challenge.setCloseDate(closeDate);
@@ -144,6 +146,6 @@ public class ChallengeCloseService {
         }
         closeChallenge(challenge, closeDate);
         challengeRepository.save(challenge);
-        rewardProfiles(challenge);
+        rewardProfiles(challenge, challengeProfiles);
     }
 }
