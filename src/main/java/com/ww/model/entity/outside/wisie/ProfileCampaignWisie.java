@@ -5,8 +5,6 @@ import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Polymorphism;
-import org.hibernate.annotations.PolymorphismType;
 
 import javax.persistence.*;
 
@@ -22,7 +20,7 @@ public class ProfileCampaignWisie extends OwnedWisie {
 
     public ProfileCampaignWisie(ProfileCampaign profileCampaign, ProfileWisie profileWisie) {
         super(profileWisie);
-        this.wisie = profileWisie.wisie;
+        this.type = profileWisie.type;
         this.profileCampaign = profileCampaign;
         this.inTeam = true;
     }

@@ -4,13 +4,13 @@ import com.ww.model.constant.Category;
 import com.ww.model.constant.Skill;
 import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
+import com.ww.model.constant.wisie.WisieType;
 import com.ww.model.container.Resources;
 import com.ww.model.dto.social.ExtendedProfileResourcesDTO;
 import com.ww.model.dto.wisie.ProfileWisieDTO;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.OwnedWisie;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
-import com.ww.model.entity.outside.wisie.Wisie;
 import com.ww.repository.outside.wisie.ProfileWisieRepository;
 import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +35,6 @@ public class ProfileWisieService {
 
     @Autowired
     private ProfileWisieRepository profileWisieRepository;
-
-    @Autowired
-    private WisieService wisieService;
 
     public List<ProfileWisieDTO> list() {
         return profileWisieRepository.findAllByProfile_Id(profileService.getProfileId()).stream()
@@ -111,30 +108,29 @@ public class ProfileWisieService {
             //no resources
             return putCode(model, -3);
         }
-        Wisie wisie = randomWisieForProfile(profile.getId());
-        if (wisie == null) {
+        WisieType type = randomWisieForProfile(profile.getId());
+        if (type == null) {
             //all discovered
             return putCode(model, -2);
         }
-        model.put("wisieType", wisie.getType());
-        addWisie(profile, wisie);
+        model.put("type", type);
+        addWisie(profile, type);
         profile.subtractResources(experimentCostResources);
         profileService.save(profile);
         model.put("profile", new ExtendedProfileResourcesDTO(profile));
         return putSuccessCode(model);
     }
 
-    public Wisie randomWisieForProfile(Long profileId) {
-        List<Wisie> allWisies = wisieService.list();
-        Set<Long> profileWisiesIds = findAll(profileId).stream().map(profileWisie -> profileWisie.getWisie().getId()).collect(Collectors.toSet());
-        if (allWisies.size() == profileWisiesIds.size()) {
+    public WisieType randomWisieForProfile(Long profileId) {
+        Set<WisieType> profileWisieTypes = findAll(profileId).stream().map(OwnedWisie::getType).collect(Collectors.toSet());
+        if (WisieType.values().length == profileWisieTypes.size()) {
             return null;
         }
-        Wisie wisie = randomElement(allWisies);
-        while (profileWisiesIds.contains(wisie.getId())) {
-            wisie = randomElement(allWisies);
+        WisieType type = WisieType.random();
+        while (profileWisieTypes.contains(type)) {
+            type = WisieType.random();
         }
-        return wisie;
+        return type;
     }
 
     private Resources experimentCostResources(List<ProfileWisie> profileWisies) {
@@ -152,16 +148,16 @@ public class ProfileWisieService {
         return (profileWisies.size() - 5) * 10L;
     }
 
-    public ProfileWisie addWisie(Profile profile, Wisie wisie) {
-        ProfileWisie profileWisie = createWisie(profile, wisie);
+    public ProfileWisie addWisie(Profile profile, WisieType type) {
+        ProfileWisie profileWisie = createWisie(profile, type);
         initWisieHobbies(profileWisie);
         initWisieSkills(profileWisie);
         save(profileWisie);
         return profileWisie;
     }
 
-    public ProfileWisie createWisie(Profile profile, Wisie wisie) {
-        ProfileWisie profileWisie = new ProfileWisie(profile, wisie);
+    public ProfileWisie createWisie(Profile profile, WisieType type) {
+        ProfileWisie profileWisie = new ProfileWisie(profile, type);
         initWisieAttributes(profileWisie);
         return profileWisie;
     }

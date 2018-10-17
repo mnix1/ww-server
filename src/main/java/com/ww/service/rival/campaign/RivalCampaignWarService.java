@@ -8,7 +8,6 @@ import com.ww.model.constant.rival.campaign.ProfileCampaignStatus;
 import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.constant.wisie.WisieType;
-import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.container.rival.init.RivalCampaignWarInit;
 import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarTeam;
@@ -18,7 +17,6 @@ import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileCampaignWisie;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
 import com.ww.service.rival.war.RivalWarService;
-import com.ww.service.wisie.WisieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,13 +25,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.ww.helper.TeamHelper.BOT_PROFILE_ID;
 import static com.ww.model.constant.rival.RivalType.CAMPAIGN_WAR;
 
 @Service
 public class RivalCampaignWarService extends RivalWarService {
-    @Autowired
-    private WisieService wisieService;
 
     @Autowired
     private CampaignService campaignService;
@@ -99,7 +94,7 @@ public class RivalCampaignWarService extends RivalWarService {
         int rating = profileCampaign.getCampaign().getDifficultyLevel().getRating();
 
         for (WisieType wisieType : wisieTypes) {
-            ProfileWisie profileWisie = new ProfileWisie(computerProfile, wisieService.getWisie(wisieType));
+            ProfileWisie profileWisie = new ProfileWisie(computerProfile, wisieType);
             profileWisie.setId(profileWisieId--);
             getProfileWisieService().initWisieAttributes(profileWisie);
             getProfileWisieService().initWisieHobbies(profileWisie, Category.random(((rating - 1) / 2) + 1));

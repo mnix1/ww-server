@@ -3,6 +3,7 @@ package com.ww.model.entity.outside.wisie;
 
 import com.ww.model.constant.Category;
 import com.ww.model.constant.Skill;
+import com.ww.model.constant.wisie.WisieType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,10 +19,10 @@ public class ChallengePhaseWisie extends OwnedWisie {
 
 
 
-    public ChallengePhaseWisie(Boolean inTeam, HashSet<Category> hobbies, HashSet<Skill> skills, Wisie wisie) {
+    public ChallengePhaseWisie(Boolean inTeam, HashSet<Category> hobbies, HashSet<Skill> skills, WisieType type) {
         this.inTeam = inTeam;
         this.hobbies = hobbies;
         this.skills = skills;
-        this.wisie = wisie;
+        this.type = type;
     }
 }

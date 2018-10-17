@@ -28,7 +28,7 @@ public class ProfileWisieDTO extends AbstractWisieAttributes {
 
     public ProfileWisieDTO(ProfileWisie profileWisie) {
         this.id = profileWisie.getId();
-        this.type = profileWisie.getWisie().getType();
+        this.type = profileWisie.getType();
         this.inTeam = profileWisie.getInTeam();
         this.hobbies = profileWisie.getHobbies();
         this.skills = profileWisie.getSkills();

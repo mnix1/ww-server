@@ -6,10 +6,8 @@ import com.ww.model.constant.wisie.WisieType;
 import com.ww.model.dto.social.ExtendedProfileResourcesDTO;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
-import com.ww.model.entity.outside.wisie.Wisie;
 import com.ww.service.wisie.ProfileWisieEvolutionService;
 import com.ww.service.wisie.ProfileWisieService;
-import com.ww.service.wisie.WisieService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +33,6 @@ public class IntroService {
 
     @Autowired
     private ProfileWisieService profileWisieService;
-
-    @Autowired
-    private ProfileWisieEvolutionService profileWisieEvolutionService;
-
-    @Autowired
-    private WisieService wisieService;
 
     @Transactional
     public Map<String, Object> changeIntroStepIndex(Integer stepIndex) {
@@ -84,20 +76,18 @@ public class IntroService {
             return putErrorCode(model);
         }
         for (ProfileWisie profileWisie : profile.getWisies()) {
-            if (wisieTypes.contains(profileWisie.getWisie().getType())) {
+            if (wisieTypes.contains(profileWisie.getType())) {
                 logger.error("Trying to add wisie that profile already has, profileId: {}", profile.getId());
                 return putErrorCode(model);
             }
         }
-        List<Wisie> wisies = wisieService.getWisies(wisieTypes);
-        wisies.sort(Comparator.comparingInt(o -> wisieTypes.indexOf(o.getType())));
         List<Category> categories = Category.list();
         Collections.shuffle(categories);
         List<Skill> skills = Skill.list();
         Collections.shuffle(skills);
         List<ProfileWisie> profileWisies = new ArrayList<>(PICK_WISIES_COUNT);
         for (int i = 0; i < PICK_WISIES_COUNT; i++) {
-            ProfileWisie profileWisie = profileWisieService.createWisie(profile, wisies.get(i));
+            ProfileWisie profileWisie = profileWisieService.createWisie(profile, wisieTypes.get(i));
             profileWisieService.initWisieHobbies(profileWisie, Arrays.asList(categories.get(i)));
             profileWisieService.initWisieSkills(profileWisie, Arrays.asList(skills.get(i)));
             profileWisies.add(profileWisie);

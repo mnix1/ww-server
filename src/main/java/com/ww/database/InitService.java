@@ -37,9 +37,6 @@ public class InitService {
     private MemoryTaskHelperService memoryTaskHelperService;
 
     @Autowired
-    private InitWisiesService initWisiesService;
-
-    @Autowired
     private InitTaskTypesService initTaskTypesService;
 
     @Autowired
@@ -66,8 +63,6 @@ public class InitService {
             initBooksService.initBooks();
             logger.debug("INITIALIZING initTaskTypes");
             initTaskTypesService.initTaskTypes();
-            logger.debug("INITIALIZING initWisies");
-            initWisiesService.initWisies();
             logger.debug("INITIALIZING initCampaigns");
             initCampaignsService.initCampaigns();
             logger.debug("INITIALIZING initSeasonGrades");

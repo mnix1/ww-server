@@ -5,7 +5,7 @@ import com.ww.helper.WisieHobbyConverter;
 import com.ww.helper.WisieSkillConverter;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.Skill;
-import com.ww.model.entity.outside.social.Profile;
+import com.ww.model.constant.wisie.WisieType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,15 +32,13 @@ public abstract class OwnedWisie extends AbstractWisieAttributes {
     @Column
     @Convert(converter = WisieSkillConverter.class)
     protected HashSet<Skill> skills;
-    @ManyToOne
-    @JoinColumn(name = "wisie_id", nullable = false, updatable = false)
-    protected Wisie wisie;
+    protected WisieType type;
 
-    protected OwnedWisie(Boolean inTeam, HashSet<Category> hobbies, HashSet<Skill> skills, Wisie wisie) {
+    protected OwnedWisie(Boolean inTeam, HashSet<Category> hobbies, HashSet<Skill> skills, WisieType type) {
         this.inTeam = inTeam;
         this.hobbies = hobbies;
         this.skills = skills;
-        this.wisie = wisie;
+        this.type = type;
     }
 
     protected OwnedWisie(OwnedWisie ownedWisie) {
@@ -48,7 +46,7 @@ public abstract class OwnedWisie extends AbstractWisieAttributes {
         this.hobbies = ownedWisie.hobbies;
         this.skills = ownedWisie.skills;
         this.inTeam = ownedWisie.inTeam;
-        this.wisie = ownedWisie.wisie;
+        this.type = ownedWisie.type;
     }
 
     @Override

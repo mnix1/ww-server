@@ -95,7 +95,7 @@ public class WisieAnswerManager implements Describe {
 
     @Override
     public String describe() {
-        return "WisieAnswerManager wisieName=" + getOwnedWisie().getWisie().getNamePolish()
+        return "WisieAnswerManager wisieType=" + getOwnedWisie().getType()
                 + ", profileWisieId=" + getOwnedWisie().getId()
                 + ", profileId=" + getWarTeam().getProfile().getId()
                 + ", lastAction=" + lastAction().name();

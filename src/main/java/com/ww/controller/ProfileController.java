@@ -6,7 +6,6 @@ import com.ww.model.dto.social.ExtendedProfileResourcesDTO;
 import com.ww.service.book.ProfileBookService;
 import com.ww.service.social.AuthProfileService;
 import com.ww.service.social.ProfileService;
-import com.ww.service.wisie.WisieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,9 +28,6 @@ public class ProfileController {
 
     @Autowired
     ProfileBookService profileBookService;
-
-    @Autowired
-    WisieService wisieService;
 
     @RequestMapping(value = "/changeWisor", method = RequestMethod.POST)
     public Map changeWisor(@RequestBody Map<String, Object> payload) {

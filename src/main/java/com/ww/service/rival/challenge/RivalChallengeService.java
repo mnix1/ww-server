@@ -4,26 +4,22 @@ import com.ww.helper.RandomHelper;
 import com.ww.manager.rival.RivalManager;
 import com.ww.manager.rival.challenge.ChallengeManager;
 import com.ww.model.constant.Category;
-import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.challenge.ChallengeProfileResponse;
 import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.constant.wisie.WisieType;
-import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.container.rival.init.RivalChallengeInit;
 import com.ww.model.entity.outside.rival.challenge.Challenge;
 import com.ww.model.entity.outside.rival.challenge.ChallengePhase;
 import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ChallengePhaseWisie;
-import com.ww.model.entity.outside.wisie.Wisie;
 import com.ww.repository.outside.rival.challenge.ChallengePhaseRepository;
 import com.ww.repository.outside.rival.challenge.ChallengePhaseWisieRepository;
 import com.ww.repository.outside.rival.challenge.ChallengeProfileRepository;
 import com.ww.service.rival.war.RivalWarService;
-import com.ww.service.wisie.WisieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,8 +41,6 @@ public class RivalChallengeService extends RivalWarService {
     private ChallengeCloseService challengeCloseService;
     @Autowired
     private ChallengePhaseWisieRepository challengePhaseWisieRepository;
-    @Autowired
-    private WisieService wisieService;
 
     public RivalChallengeInit init(ChallengeProfile challengeProfile) {
         List<ChallengePhase> challengePhases = new CopyOnWriteArrayList<>(challengeProfile.getChallenge().getPhases());
@@ -70,8 +64,7 @@ public class RivalChallengeService extends RivalWarService {
     }
 
     public ChallengePhaseWisie preparePhaseWisie(int taskIndex) {
-        Wisie wisie = wisieService.getWisie(WisieType.random());
-        ChallengePhaseWisie phaseWisie = new ChallengePhaseWisie(true, new HashSet<>(Category.random(Math.max(1, Math.min(3, taskIndex / 4)))), new HashSet<>(), wisie);
+        ChallengePhaseWisie phaseWisie = new ChallengePhaseWisie(true, new HashSet<>(Category.random(Math.max(1, Math.min(3, taskIndex / 4)))), new HashSet<>(), WisieType.random());
         getProfileWisieService().initWisieAttributes(phaseWisie);
         double promo = RandomHelper.randomDouble(0.8, 1) * taskIndex * 20 + taskIndex * 10;
         for (MentalAttribute attribute : MentalAttribute.values()) {

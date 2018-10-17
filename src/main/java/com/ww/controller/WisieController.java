@@ -2,10 +2,8 @@ package com.ww.controller;
 
 import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
-import com.ww.model.dto.wisie.WisieDTO;
 import com.ww.model.dto.wisie.ProfileWisieDTO;
 import com.ww.service.wisie.ProfileWisieEvolutionService;
-import com.ww.service.wisie.WisieService;
 import com.ww.service.wisie.ProfileWisieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,18 +20,10 @@ import java.util.stream.Collectors;
 public class WisieController {
 
     @Autowired
-    private WisieService wisieService;
-
-    @Autowired
     private  ProfileWisieService profileWisieService;
 
     @Autowired
     private ProfileWisieEvolutionService profileWisieEvolutionService;
-
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public List<WisieDTO> list() {
-        return wisieService.listDTOs();
-    }
 
     @RequestMapping(value = "/experiment", method = RequestMethod.GET)
     public Map<String, Object> experiment() {

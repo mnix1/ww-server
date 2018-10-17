@@ -11,8 +11,6 @@ import java.util.Set;
 
 @Getter
 public class WarProfileWisieDTO {
-    private String namePolish;
-    private String nameEnglish;
     private WisieType type;
     private WisieValueChange valueChange;
     private Double value;
@@ -20,9 +18,7 @@ public class WarProfileWisieDTO {
     private Set<Skill> skills;
 
     public WarProfileWisieDTO(WarWisie warWisie) {
-        this.namePolish = warWisie.getWisie().getWisie().getNamePolish();
-        this.nameEnglish = warWisie.getWisie().getWisie().getNameEnglish();
-        this.type = warWisie.getWisie().getWisie().getType();
+        this.type = warWisie.getWisie().getType();
         this.valueChange = warWisie.getWisieValueChange();
         this.value = warWisie.getValue();
         this.hobbies = warWisie.getWisie().getHobbies();

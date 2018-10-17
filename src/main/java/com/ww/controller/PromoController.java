@@ -2,11 +2,10 @@ package com.ww.controller;
 
 import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
+import com.ww.model.constant.wisie.WisieType;
 import com.ww.model.container.Resources;
-import com.ww.model.entity.outside.wisie.Wisie;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
 import com.ww.model.entity.outside.social.Profile;
-import com.ww.service.wisie.WisieService;
 import com.ww.service.wisie.ProfileWisieService;
 import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +27,13 @@ public class PromoController {
     @Autowired
     ProfileWisieService profileWisieService;
 
-    @Autowired
-    WisieService wisieService;
-
     @RequestMapping(value = "/promo", method = RequestMethod.GET)
     public Map promo() {
         Map<String, Object> model = new HashMap<>();
         Profile profile = profileService.getProfile();
         for (int i = 0; i < 1; i++) {
-            Wisie wisie = profileWisieService.randomWisieForProfile(profile.getId());
-            profileWisieService.addWisie(profile, wisie);
+            WisieType type = profileWisieService.randomWisieForProfile(profile.getId());
+            profileWisieService.addWisie(profile, type);
         }
         profile.addResources(new Resources(100L, 100L, 100L, 100L));
         profileService.save(profile);
@@ -49,8 +45,8 @@ public class PromoController {
         Map<String, Object> model = new HashMap<>();
         Profile profile = profileService.getProfile();
         for (int i = 0; i < 4; i++) {
-            Wisie wisie = profileWisieService.randomWisieForProfile(profile.getId());
-            profileWisieService.addWisie(profile, wisie);
+            WisieType type = profileWisieService.randomWisieForProfile(profile.getId());
+            profileWisieService.addWisie(profile, type);
         }
         profile.addResources(new Resources(1000L, 1000L, 1000L, 1000L));
         profileService.save(profile);
