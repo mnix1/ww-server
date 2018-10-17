@@ -39,7 +39,7 @@ public class WarTeamSkills implements RivalTeamSkills {
 
     private void initFromWisies(List<? extends TeamMember> teamMembers) {
         for (TeamMember teamMember : teamMembers) {
-            if (!teamMember.isWisie()) {
+            if (!teamMember.isWisie() && teamMember.isPresent()) {
                 continue;
             }
             WisieTeamMember wisieTeamMember = (WisieTeamMember) teamMember;

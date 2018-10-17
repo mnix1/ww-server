@@ -8,14 +8,18 @@ import com.ww.model.container.rival.init.RivalCampaignWarInit;
 import com.ww.model.container.rival.war.*;
 import com.ww.model.container.rival.war.skill.EmptyTeamSkills;
 import com.ww.model.container.rival.war.skill.WarTeamSkills;
+import com.ww.model.dto.social.ExtendedProfileDTO;
+import com.ww.model.dto.wisie.WarProfileWisieDTO;
 import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.outside.social.Profile;
+import com.ww.model.entity.outside.wisie.OwnedWisie;
 import com.ww.model.entity.outside.wisie.ProfileCampaignWisie;
 import com.ww.service.rival.campaign.RivalCampaignWarService;
 import com.ww.websocket.message.Message;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.ww.helper.TeamHelper.isBotProfile;
 
@@ -32,8 +36,8 @@ public class CampaignWarManager extends WarManager {
         this.flow = new CampaignWarFlow(this);
 
         Profile creator = init.getCreatorProfile();
-        List<TeamMember> teamMembers =  prepareTeamMembers(creator, profileCampaign);
-        WarTeam creatorTeam = new WarTeam(creator,teamMembers, new WarTeamSkills(1, teamMembers));
+        List<TeamMember> teamMembers = prepareTeamMembers(creator, profileCampaign);
+        WarTeam creatorTeam = new WarTeam(creator, teamMembers, new WarTeamSkills(1, teamMembers));
         teams.addProfile(creator.getId(), creatorTeam);
 
         Profile opponent = init.getOpponentProfile();
@@ -49,17 +53,17 @@ public class CampaignWarManager extends WarManager {
     }
 
     protected List<TeamMember> prepareTeamMembers(ProfileCampaign profileCampaign, List<ProfileCampaignWisie> wisies) {
-        List<TeamMember> teamMembers = TeamHelper.prepareTeamMembers(profileCampaign.getProfile(), wisies);
-        for (TeamMember teamMember : teamMembers) {
-            if (teamMember.isWisie()) {
-                for (ProfileCampaignWisie wisie : wisies) {
-                    if (wisie.equals(((WarWisie)teamMember.getContent()).getWisie())) {
-                        teamMember.setPresent(!wisie.getDisabled());
-                    }
-                }
-            } else {
-                teamMember.setPresent(profileCampaign.getPresent());
+        List<TeamMember> teamMembers = new ArrayList<>();
+        int index = 0;
+        if (profileCampaign.getPresent()) {
+            teamMembers.add(new WisorTeamMember(index++, profileCampaign.getProfile(), new ExtendedProfileDTO(profileCampaign.getProfile())));
+        }
+        for (ProfileCampaignWisie wisie : wisies) {
+            if (wisie.getDisabled()) {
+                continue;
             }
+            WarWisie warWisie = new WarWisie(wisie);
+            teamMembers.add(new WisieTeamMember(index++, warWisie, new WarProfileWisieDTO(warWisie)));
         }
         return teamMembers;
     }

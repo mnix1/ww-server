@@ -87,9 +87,11 @@ public class RivalCampaignWarService extends RivalWarService {
         }
         long profileWisieId = -1;
         List<ProfileCampaignWisie> profileCampaignWisies = profileCampaign.getWisies();
-        double summaryValue = 0;
+        double summaryValue = 10;
         for (ProfileCampaignWisie profileCampaignWisie : profileCampaignWisies) {
-            summaryValue += profileCampaignWisie.calculateValue();
+            if (!profileCampaignWisie.getDisabled()) {
+                summaryValue += profileCampaignWisie.calculateValue();
+            }
         }
         int rating = profileCampaign.getCampaign().getDifficultyLevel().getRating();
 
