@@ -87,7 +87,7 @@ public class RivalCampaignWarService extends RivalWarService {
         }
         long profileWisieId = -1;
         List<ProfileCampaignWisie> profileCampaignWisies = profileCampaign.getWisies();
-        double summaryValue = 10;
+        double summaryValue = 0;
         for (ProfileCampaignWisie profileCampaignWisie : profileCampaignWisies) {
             if (!profileCampaignWisie.getDisabled()) {
                 summaryValue += profileCampaignWisie.calculateValue();
@@ -102,12 +102,12 @@ public class RivalCampaignWarService extends RivalWarService {
             getProfileWisieService().initWisieHobbies(profileWisie, Category.random(((rating - 1) / 2) + 1));
             getProfileWisieService().initWisieSkills(profileWisie);
             int phaseDifficultyPromo = (isLastPhase ? 20 : 10) * profileCampaign.getPhase() * rating;
-            double promo = summaryValue / wisieTypes.size() + phaseDifficultyPromo - 5;
+            double promo = Math.max(0, summaryValue / wisieTypes.size() + phaseDifficultyPromo - 5);
             for (MentalAttribute attribute : MentalAttribute.values()) {
-                profileWisie.setMentalAttributeValue(attribute, Math.pow(profileWisie.getMentalAttributeValue(attribute), 1.1) + promo);
+                profileWisie.setMentalAttributeValue(attribute, profileWisie.getMentalAttributeValue(attribute) + promo);
             }
             for (WisdomAttribute attribute : WisdomAttribute.values()) {
-                profileWisie.setWisdomAttributeValue(attribute, Math.pow(profileWisie.getWisdomAttributeValue(attribute), 1.1) + promo);
+                profileWisie.setWisdomAttributeValue(attribute, profileWisie.getWisdomAttributeValue(attribute) + promo);
             }
             computerProfile.getWisies().add(profileWisie);
         }
