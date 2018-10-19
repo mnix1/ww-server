@@ -28,10 +28,10 @@ import static com.ww.helper.EnvHelper.sslForce;
 @Profile(EnvHelper.SIGN_PROD)
 @Order(2)
 public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
-    public static final String[] ALL = new String[]{"/", "/*.js", "/manifest.json", "/favicon.ico",
+    public static final String[] ALL = new String[]{"/", "/*.js", "/*.html", "/*.json", "/*.ico", "/*.png",
             "/profile", "/classification/war", "/classification/battle", "/play",
             "/war", "/warRanking", "/warFast", "/challenge", "/battle", "/battleRanking", "/battleFast", "/training", "/campaign", "/campaignWar",
-            "/shop", "/friend", "/wisies", "/settings", "/login/**", "/static/**", "/health/**", "/health"};
+            "/shop", "/friend", "/wisies", "/settings", "/_login/**", "/login", "/static/**", "/health/**", "/health"};
     public static final String[] ONLY_ADMIN = new String[]{"/**/*.map", "/h2/**", "/actuator/**", "/cache/**", "/log/**"};
     public static final String[] ONLY_AUTO = new String[]{"/auto/**", "/staticAuto/**"};
 
@@ -68,6 +68,7 @@ public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().fullyAuthenticated()
                 .and()
                 .logout()
+                .logoutUrl("/_logout")
                 .logoutSuccessUrl("/").permitAll()
                 .and()
                 .addFilterAt(filter(), BasicAuthenticationFilter.class);
@@ -78,7 +79,7 @@ public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private OAuth2ClientAuthenticationProcessingFilter filter() {
         OAuth2ClientAuthenticationProcessingFilter oAuth2Filter = new OAuth2ClientAuthenticationProcessingFilter(
-                "/login/google");
+                "/_login/google");
         OAuth2RestTemplate oAuth2RestTemplate = new OAuth2RestTemplate(authorizationCodeResourceDetails,
                 oauth2ClientContext);
         oAuth2Filter.setRestTemplate(oAuth2RestTemplate);
