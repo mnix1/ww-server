@@ -49,12 +49,6 @@ public class Profile {
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
     private Set<ProfileBook> books = new HashSet<>();
 
-    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
-    private Set<ProfileCampaign> campaigns = new HashSet<>();
-
-    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
-    private Set<ProfileSeason> seasons = new HashSet<>();
-
     public Profile(String authId, String name, Language language) {
         this.tag = TagHelper.randomTag();
         this.name = name;

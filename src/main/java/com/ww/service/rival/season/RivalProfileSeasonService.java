@@ -9,8 +9,10 @@ import com.ww.model.entity.outside.rival.season.ProfileSeason;
 import com.ww.model.entity.outside.rival.season.Season;
 import com.ww.model.entity.outside.rival.season.SeasonGrade;
 import com.ww.model.entity.outside.social.Profile;
+import com.ww.model.entity.outside.social.ProfileMail;
 import com.ww.repository.outside.rival.season.ProfileSeasonRepository;
 import com.ww.service.rival.global.RivalGlobalService;
+import com.ww.service.social.MailService;
 import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -41,6 +43,9 @@ public class RivalProfileSeasonService {
 
     @Autowired
     private RivalGlobalService rivalGlobalService;
+
+    @Autowired
+    private MailService mailService;
 
     public List<ProfileSeason> findProfileSeasons(Long seasonId) {
         return profileSeasonRepository.findAllBySeason_IdOrderByEloDescPreviousEloDescUpdateDateAsc(seasonId);
@@ -119,14 +124,15 @@ public class RivalProfileSeasonService {
     }
 
     public void rewardProfiles(List<ProfileSeason> profileSeasons, Map<Grade, SeasonGrade> seasonGrades) {
-        List<Profile> profiles = new ArrayList<>();
+        List<ProfileMail> mails = new ArrayList<>();
         for (ProfileSeason profileSeason : profileSeasons) {
             profileSeason.setRewarded(true);
             SeasonGrade seasonGrade = seasonGrades.get(profileSeason.getGrade());
-            profiles.add(profileSeason.getProfile().addResources(seasonGrade.getResources()));
+            mails.add(mailService.prepareSeasonResultsMail(profileSeason, seasonGrade));
         }
-        profileService.save(profiles);
+        mailService.save(mails);
         save(profileSeasons);
+        mailService.sendNewMailMessage(mails);
     }
 
     @Transactional

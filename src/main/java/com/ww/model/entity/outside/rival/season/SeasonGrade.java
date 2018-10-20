@@ -6,11 +6,15 @@ import com.ww.model.container.Resources;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Setter
 @Getter
@@ -40,7 +44,18 @@ public class SeasonGrade {
         this.elixirGain = resources.getElixir();
     }
 
-    public Resources getResources() {
+    public Resources getGainResources() {
         return new Resources(goldGain, crystalGain, wisdomGain, elixirGain);
+    }
+
+    public String toJson() {
+        Map<Object, Object> map = new HashMap<>();
+        map.put(grade, grade);
+        map.put(type, type);
+        try {
+            return new ObjectMapper().writeValueAsString(map);
+        } catch (IOException e) {
+            return "";
+        }
     }
 }

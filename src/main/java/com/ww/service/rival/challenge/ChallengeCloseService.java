@@ -9,8 +9,10 @@ import com.ww.model.container.rival.challenge.ChallengePosition;
 import com.ww.model.entity.outside.rival.challenge.Challenge;
 import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
 import com.ww.model.entity.outside.social.Profile;
+import com.ww.model.entity.outside.social.ProfileMail;
 import com.ww.repository.outside.rival.challenge.ChallengeProfileRepository;
 import com.ww.repository.outside.rival.challenge.ChallengeRepository;
+import com.ww.service.social.MailService;
 import com.ww.service.social.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -19,7 +21,9 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,7 +37,7 @@ public class ChallengeCloseService {
     private ChallengeProfileRepository challengeProfileRepository;
 
     @Autowired
-    private ProfileService profileService;
+    private MailService mailService;
 
     @Transactional
     @Scheduled(fixedRate = CHALLENGE_CLOSE_JOB_RATE)
@@ -64,6 +68,7 @@ public class ChallengeCloseService {
             return;
         }
         List<ChallengeProfile> rewardedChallengeProfiles = new ArrayList<>();
+        Set<Long> rewardedChallengeProfilesIds = new HashSet<>();
         Resources challengeSummaryGain = challenge.getGainResources();
         int profilesWithReward = Math.max(1, challengePositions.size() / 10);
         for (int i = profilesWithReward - 1; i >= 0; i--) {
@@ -81,18 +86,21 @@ public class ChallengeCloseService {
                 resources = challenge.getGainResources();
             }
             rewardedChallengeProfiles.add(challengeProfile);
+            rewardedChallengeProfilesIds.add(challengeProfile.getProfile().getId());
             challengeProfile.setGainResources(resources);
             challenge.setGainResources(challenge.getGainResources().subtract(resources));
         }
-        List<Profile> profiles = new ArrayList<>();
+        List<ProfileMail> mails = new ArrayList<>();
         for (ChallengeProfile challengeProfile : rewardedChallengeProfiles) {
-            profiles.add(challengeProfile.getProfile());
-            challengeProfile.getProfile().addResources(challengeProfile.getGainResources());
             challengeProfile.setRewarded(true);
         }
+        for (ChallengePosition challengePosition : challengePositions) {
+            mails.add(mailService.prepareChallengeResultsMail(challengePosition));
+        }
         challenge.setGainResources(challengeSummaryGain);
+        mailService.save(mails);
         challengeProfileRepository.saveAll(rewardedChallengeProfiles);
-        profileService.save(profiles);
+        mailService.sendNewMailMessage(mails);
     }
 
     public List<ChallengePosition> preparePositions(Challenge challenge) {

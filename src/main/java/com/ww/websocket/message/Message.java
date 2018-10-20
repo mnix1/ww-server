@@ -14,4 +14,5 @@ public enum Message {
     CAMPAIGN_WAR_CONTENT,
     CHALLENGE_CONTENT,
     REWARD,
+    NEW_MAIL,
 }
