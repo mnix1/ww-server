@@ -70,4 +70,9 @@ public class ProfileMail {
         this.wisdomGain = resources.getWisdom();
         this.elixirGain = resources.getElixir();
     }
+
+    public Resources getGainResources() {
+        return new Resources(goldGain, crystalGain, wisdomGain, elixirGain);
+    }
+
 }

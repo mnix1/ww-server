@@ -8,7 +8,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.ww.helper.EloHelper.*;
 
@@ -58,5 +60,11 @@ public class ProfileSeason {
         elo = Math.max(MIN_ELO, elo + change);
         highestElo = Math.max(elo, previousElo);
         grade = findGrade(elo, seasonGrades);
+    }
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", season.getName());
+        return map;
     }
 }

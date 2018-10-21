@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class RivalSeasonService {
-    public static final Long SEASON_RIVAL_COUNT = 1000L;
+    public static final Long SEASON_RIVAL_COUNT = 100L;
 
     @Autowired
     private SeasonRepository seasonRepository;

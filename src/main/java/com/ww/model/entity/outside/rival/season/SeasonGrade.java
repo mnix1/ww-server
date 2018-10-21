@@ -48,14 +48,10 @@ public class SeasonGrade {
         return new Resources(goldGain, crystalGain, wisdomGain, elixirGain);
     }
 
-    public String toJson() {
-        Map<Object, Object> map = new HashMap<>();
-        map.put(grade, grade);
-        map.put(type, type);
-        try {
-            return new ObjectMapper().writeValueAsString(map);
-        } catch (IOException e) {
-            return "";
-        }
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("grade", grade);
+        map.put("type", type);
+        return map;
     }
 }

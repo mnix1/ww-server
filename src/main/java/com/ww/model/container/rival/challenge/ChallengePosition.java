@@ -33,10 +33,11 @@ public class ChallengePosition {
     }
 
     public String toJson() {
-        Map<Object, Object> map = new HashMap<>();
-        map.put(position, position);
-        map.put(score, score);
-        map.put(interval, interval);
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", challengeProfile.getChallenge().getId());
+        map.put("position", position);
+        map.put("score", score);
+        map.put("interval", interval);
         try {
             return new ObjectMapper().writeValueAsString(map);
         } catch (IOException e) {

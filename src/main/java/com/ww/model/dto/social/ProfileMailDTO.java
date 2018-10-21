@@ -16,11 +16,11 @@ public class ProfileMailDTO {
     private Boolean hasResources;
     private Instant creationDate;
     private String title;
-    private String htmlContent;
-    private Long goldGain;
-    private Long crystalGain;
-    private Long wisdomGain;
-    private Long elixirGain;
+    private String content;
+    private Long gold;
+    private Long crystal;
+    private Long wisdom;
+    private Long elixir;
 
     public ProfileMailDTO(ProfileMail profileMail) {
         this.id = profileMail.getId();
@@ -30,10 +30,10 @@ public class ProfileMailDTO {
         this.hasResources = profileMail.getHasResources();
         this.creationDate = profileMail.getCreationDate();
         this.title = profileMail.getTitle();
-        this.htmlContent = profileMail.getContent();
-        this.goldGain = profileMail.getGoldGain();
-        this.crystalGain = profileMail.getCrystalGain();
-        this.wisdomGain = profileMail.getWisdomGain();
-        this.elixirGain = profileMail.getElixirGain();
+        this.content = profileMail.getContent();
+        this.gold = profileMail.getGoldGain();
+        this.crystal = profileMail.getCrystalGain();
+        this.wisdom = profileMail.getWisdomGain();
+        this.elixir = profileMail.getElixirGain();
     }
 }
