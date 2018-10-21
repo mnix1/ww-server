@@ -21,9 +21,6 @@ public class DevelopmentController {
     private ProfileService profileService;
 
     @Autowired
-    private ProfileWisieService profileWisieService;
-
-    @Autowired
     private FriendService friendService;
 
     @Autowired
