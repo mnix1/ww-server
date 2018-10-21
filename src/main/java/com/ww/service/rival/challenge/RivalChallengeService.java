@@ -10,6 +10,7 @@ import com.ww.model.constant.rival.challenge.ChallengeProfileResponse;
 import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.constant.wisie.WisieType;
+import com.ww.model.container.rival.challenge.ChallengeTeam;
 import com.ww.model.container.rival.init.RivalChallengeInit;
 import com.ww.model.entity.outside.rival.challenge.Challenge;
 import com.ww.model.entity.outside.rival.challenge.ChallengePhase;
@@ -88,7 +89,7 @@ public class RivalChallengeService extends RivalWarService {
         ChallengeProfile challengeProfile = challengeManager.challengeProfile;
         challengeProfile.setResponseEnd(Instant.now());
         challengeProfile.setResponseStatus(ChallengeProfileResponse.CLOSED);
-        challengeProfile.setScore(Math.max(0, manager.getModel().getCurrentTaskIndex()));
+        challengeProfile.setScore(Math.max(0, ((ChallengeTeam) manager.getTeam(challengeProfile.getProfile().getId())).getScore()));
         challengeProfileRepository.save(challengeProfile);
         challengeCloseService.maybeCloseChallenge(challengeProfile.getChallenge(), Instant.now());
     }

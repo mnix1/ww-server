@@ -1,4 +1,4 @@
-package com.ww.manager.rival.battle;
+package com.ww.model.container.rival.battle;
 
 import com.ww.manager.rival.RivalFlow;
 import com.ww.manager.rival.battle.BattleManager;

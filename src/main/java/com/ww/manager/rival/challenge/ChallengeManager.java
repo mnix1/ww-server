@@ -7,6 +7,8 @@ import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.container.rival.campaign.CampaignWarModel;
 import com.ww.model.container.rival.challenge.ChallengeFlow;
 import com.ww.model.container.rival.challenge.ChallengeInterval;
+import com.ww.model.container.rival.challenge.ChallengeModelFactory;
+import com.ww.model.container.rival.challenge.ChallengeTeam;
 import com.ww.model.container.rival.init.RivalChallengeInit;
 import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarModelFactory;
@@ -39,18 +41,18 @@ public class ChallengeManager extends WarManager {
         this.challengePhases = init.getChallengePhases();
         WarTeams teams = new WarTeams();
         this.model = new CampaignWarModel(init, teams);
-        this.modelFactory = new WarModelFactory(this.model);
+        this.modelFactory = new ChallengeModelFactory(this.model);
         this.interval = new ChallengeInterval(this.model);
         this.flow = new ChallengeFlow(this);
 
         Profile creator = init.getCreatorProfile();
         List<ProfileWisie> creatorWisies = rivalService.getProfileWisies(creator);
         List<TeamMember> teamMembers = TeamHelper.prepareTeamMembers(creator, creatorWisies);
-        WarTeam creatorTeam = new WarTeam(creator, teamMembers, new WarTeamSkills(1, teamMembers));
+        ChallengeTeam creatorTeam = new ChallengeTeam(creator, teamMembers, new WarTeamSkills(1, teamMembers));
         teams.addProfile(creator.getId(), creatorTeam);
 
         Profile opponent = init.getOpponentProfile();
-        WarTeam opponentTeam = new WarTeam(opponent, TeamHelper.prepareTeamMembers(Arrays.asList(challengePhases.get(0).getPhaseWisie())), new EmptyTeamSkills());
+        ChallengeTeam opponentTeam = new ChallengeTeam(opponent, TeamHelper.prepareTeamMembers(Arrays.asList(challengePhases.get(0).getPhaseWisie())), new EmptyTeamSkills());
         teams.addProfile(opponent.getId(), opponentTeam);
     }
 

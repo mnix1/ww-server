@@ -24,8 +24,10 @@ public class ChallengeStateChoosingWhoAnswer extends CampaignWarStateChoosingWho
     @Override
     protected Flowable<Long> processFlowable() {
         WarTeam warTeam = (WarTeam) manager.getTeam(BOT_PROFILE_ID);
-        ChallengePhase challengePhase = ((ChallengeManager) manager).currentPhase();
-        warTeam.setTeamMembers(TeamHelper.prepareTeamMembers(Arrays.asList(challengePhase.getPhaseWisie())));
+        if (warTeam.getPresentIndexes().size() == 0) {
+            ChallengePhase challengePhase = ((ChallengeManager) manager).currentPhase();
+            warTeam.setTeamMembers(TeamHelper.prepareTeamMembers(Arrays.asList(challengePhase.getPhaseWisie())));
+        }
         return super.processFlowable();
     }
 

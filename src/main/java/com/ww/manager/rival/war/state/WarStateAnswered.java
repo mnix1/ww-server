@@ -10,8 +10,9 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class WarStateAnswered extends WarState {
-    private Long profileId;
-    private Map<String, Object> content;
+    protected Long profileId;
+    protected Map<String, Object> content;
+    protected Boolean isAnswerCorrect = false;
 
     public WarStateAnswered(WarManager manager, Long profileId, Map<String, Object> content) {
         super(manager, STATE_TYPE_FLOWABLE);
@@ -19,17 +20,7 @@ public class WarStateAnswered extends WarState {
         this.content = content;
     }
 
-    @Override
-    protected Flowable<Long> processFlowable() {
-        manager.getModel().setStatus(RivalStatus.ANSWERED);
-        manager.getModel().stopWisieAnswerManager();
-        manager.getModel().setAnsweredProfileId(profileId);
-        Boolean isAnswerCorrect = false;
-        if (content.containsKey("answerId")) {
-            Long markedAnswerId = ((Integer) content.get("answerId")).longValue();
-            manager.getModel().setMarkedAnswerId(markedAnswerId);
-            isAnswerCorrect = manager.getModel().findCurrentCorrectAnswerId().equals(markedAnswerId);
-        }
+    protected void updateTeamPresent(){
         WarTeam team = (WarTeam) manager.getTeam(profileId);
         if (manager.getModel().isOpponent()) {
             if (isAnswerCorrect) {
@@ -39,6 +30,19 @@ public class WarStateAnswered extends WarState {
         } else if (!isAnswerCorrect) {
             team.setActiveTeamMemberPresentToFalse();
         }
+    }
+
+    @Override
+    protected Flowable<Long> processFlowable() {
+        manager.getModel().setStatus(RivalStatus.ANSWERED);
+        manager.getModel().stopWisieAnswerManager();
+        manager.getModel().setAnsweredProfileId(profileId);
+        if (content.containsKey("answerId")) {
+            Long markedAnswerId = ((Integer) content.get("answerId")).longValue();
+            manager.getModel().setMarkedAnswerId(markedAnswerId);
+            isAnswerCorrect = manager.getModel().findCurrentCorrectAnswerId().equals(markedAnswerId);
+        }
+        updateTeamPresent();
         manager.getModel().getTeams().forEachTeam(rivalTeam -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelAnswered(model, rivalTeam);
