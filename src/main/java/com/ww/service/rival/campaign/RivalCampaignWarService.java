@@ -16,8 +16,17 @@ import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileCampaignWisie;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
+import com.ww.service.rival.global.RivalGlobalService;
+import com.ww.service.rival.season.RivalProfileSeasonService;
+import com.ww.service.rival.season.RivalSeasonService;
+import com.ww.service.rival.task.TaskGenerateService;
+import com.ww.service.rival.task.TaskRendererService;
+import com.ww.service.rival.task.TaskService;
 import com.ww.service.rival.war.RivalWarService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ww.service.social.ProfileConnectionService;
+import com.ww.service.social.ProfileService;
+import com.ww.service.social.RewardService;
+import com.ww.service.wisie.ProfileWisieService;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -30,8 +39,12 @@ import static com.ww.model.constant.rival.RivalType.CAMPAIGN_WAR;
 @Service
 public class RivalCampaignWarService extends RivalWarService {
 
-    @Autowired
-    private CampaignService campaignService;
+    private final CampaignService campaignService;
+
+    public RivalCampaignWarService(ProfileConnectionService profileConnectionService, TaskGenerateService taskGenerateService, TaskRendererService taskRendererService, RewardService rewardService, RivalSeasonService rivalSeasonService, ProfileService profileService, RivalGlobalService rivalGlobalService, RivalProfileSeasonService rivalProfileSeasonService, ProfileWisieService profileWisieService, TaskService taskService, CampaignService campaignService) {
+        super(profileConnectionService, taskGenerateService, taskRendererService, rewardService, rivalSeasonService, profileService, rivalGlobalService, rivalProfileSeasonService, profileWisieService, taskService);
+        this.campaignService = campaignService;
+    }
 
     @Override
     public void disposeManager(RivalManager manager) {

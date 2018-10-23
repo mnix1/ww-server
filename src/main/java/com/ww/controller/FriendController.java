@@ -2,6 +2,7 @@ package com.ww.controller;
 
 import com.ww.model.dto.social.FriendDTOExtended;
 import com.ww.service.social.FriendService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,10 +14,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/friend")
+@AllArgsConstructor
 public class FriendController {
 
-    @Autowired
-    FriendService friendService;
+    private final FriendService friendService;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Map add(@RequestBody Map<String, Object> payload) {

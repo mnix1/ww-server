@@ -6,6 +6,7 @@ import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.repository.outside.social.ProfileRepository;
 import com.ww.service.SessionService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.User;
@@ -23,16 +24,13 @@ import static com.ww.helper.ModelHelper.putCode;
 import static com.ww.helper.ModelHelper.putSuccessCode;
 
 @Service
+@AllArgsConstructor
 public class ProfileService {
-
     public static final int NAME_MIN_LENGTH = 2;
     public static final int NAME_MAX_LENGTH = 20;
 
-    @Autowired
-    private ProfileRepository profileRepository;
-
-    @Autowired
-    private SessionService sessionService;
+    private final ProfileRepository profileRepository;
+    private final   SessionService sessionService;
 
     public Profile getProfile() {
         return getProfile(sessionService.getProfileId());

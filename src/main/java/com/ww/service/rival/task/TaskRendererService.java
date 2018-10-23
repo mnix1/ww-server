@@ -4,8 +4,8 @@ import com.ww.model.constant.rival.task.TaskRenderer;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.service.rival.task.riddle.RiddleClipartService;
+import lombok.AllArgsConstructor;
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
@@ -18,10 +18,10 @@ import java.util.Base64;
 import static com.ww.model.entity.inside.task.Country.MAP_DIRECTORY;
 
 @Service
+@AllArgsConstructor
 public class TaskRendererService {
 
-    @Autowired
-    RiddleClipartService riddleClipartService;
+    private final RiddleClipartService riddleClipartService;
 
     public TaskDTO prepareTaskDTO(Question question) {
         TaskDTO taskDTO = new TaskDTO(question);

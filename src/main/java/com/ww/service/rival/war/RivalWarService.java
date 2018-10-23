@@ -9,10 +9,18 @@ import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
 import com.ww.service.RivalService;
+import com.ww.service.rival.global.RivalGlobalService;
+import com.ww.service.rival.season.RivalProfileSeasonService;
+import com.ww.service.rival.season.RivalSeasonService;
+import com.ww.service.rival.task.TaskGenerateService;
+import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.rival.task.TaskService;
+import com.ww.service.social.ProfileConnectionService;
+import com.ww.service.social.ProfileService;
+import com.ww.service.social.RewardService;
 import com.ww.service.wisie.ProfileWisieService;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,11 +31,14 @@ import static com.ww.helper.TeamHelper.BOT_PROFILE_ID;
 @Getter
 public class RivalWarService extends RivalService {
 
-    @Autowired
-    private ProfileWisieService profileWisieService;
+    private final ProfileWisieService profileWisieService;
+    private final TaskService taskService;
 
-    @Autowired
-    private TaskService taskService;
+    public RivalWarService(ProfileConnectionService profileConnectionService, TaskGenerateService taskGenerateService, TaskRendererService taskRendererService, RewardService rewardService, RivalSeasonService rivalSeasonService, ProfileService profileService, RivalGlobalService rivalGlobalService, RivalProfileSeasonService rivalProfileSeasonService, ProfileWisieService profileWisieService, TaskService taskService) {
+        super(profileConnectionService, taskGenerateService, taskRendererService, rewardService, rivalSeasonService, profileService, rivalGlobalService, rivalProfileSeasonService);
+        this.profileWisieService = profileWisieService;
+        this.taskService = taskService;
+    }
 
     @Override
     public void addRewardFromWin(Profile profile) {

@@ -5,6 +5,7 @@ import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.dto.wisie.ProfileWisieDTO;
 import com.ww.service.wisie.ProfileWisieEvolutionService;
 import com.ww.service.wisie.ProfileWisieService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,12 +18,10 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/wisie")
+@AllArgsConstructor
 public class WisieController {
 
-    @Autowired
     private  ProfileWisieService profileWisieService;
-
-    @Autowired
     private ProfileWisieEvolutionService profileWisieEvolutionService;
 
     @RequestMapping(value = "/experiment", method = RequestMethod.GET)

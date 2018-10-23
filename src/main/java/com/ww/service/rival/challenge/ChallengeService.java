@@ -10,6 +10,7 @@ import com.ww.repository.outside.rival.challenge.ChallengeProfileRepository;
 import com.ww.repository.outside.rival.challenge.ChallengeRepository;
 import com.ww.service.rival.init.RivalRunService;
 import com.ww.service.social.ProfileService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,26 +24,15 @@ import static com.ww.helper.ModelHelper.putErrorCode;
 import static com.ww.helper.ModelHelper.putSuccessCode;
 
 @Service
+@AllArgsConstructor
 public class ChallengeService {
-    @Autowired
-    private ChallengeRepository challengeRepository;
-
-    @Autowired
-    private ChallengeProfileRepository challengeProfileRepository;
-
-    @Autowired
-    private ChallengeCreateService challengeCreateService;
-    @Autowired
-    private ChallengeCloseService challengeCloseService;
-
-    @Autowired
-    private RivalChallengeService rivalChallengeService;
-
-    @Autowired
-    private ProfileService profileService;
-
-    @Autowired
-    private RivalRunService rivalRunService;
+    private final ChallengeRepository challengeRepository;
+    private final ChallengeProfileRepository challengeProfileRepository;
+    private final ChallengeCreateService challengeCreateService;
+    private final ChallengeCloseService challengeCloseService;
+    private final RivalChallengeService rivalChallengeService;
+    private final ProfileService profileService;
+    private final RivalRunService rivalRunService;
 
     @Transactional
     public ChallengeGlobalDTO global() {

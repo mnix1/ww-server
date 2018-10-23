@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jackson.JsonLoader;
 import com.ww.model.entity.inside.task.Country;
 import com.ww.repository.inside.category.CountryRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -17,10 +18,10 @@ import static com.ww.helper.FileHelper.saveToFile;
 import static com.ww.helper.NetworkHelper.downloadContent;
 
 @Service
+@AllArgsConstructor
 public class CountryService {
 
-    @Autowired
-    CountryRepository countryRepository;
+    private final CountryRepository countryRepository;
 
     public void loadAndDownloadResources() {
         try {

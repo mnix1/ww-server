@@ -7,6 +7,7 @@ import com.ww.model.entity.inside.task.Element;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskType;
 import com.ww.repository.inside.category.ElementRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +20,10 @@ import static com.ww.helper.AnswerHelper.isValueDistanceEnough;
 import static com.ww.helper.RandomHelper.randomElement;
 
 @Service
+@AllArgsConstructor
 public class ElementMatchAnswerTaskService {
 
-    @Autowired
-    ElementRepository elementRepository;
+    private final ElementRepository elementRepository;
 
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, ElementTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();

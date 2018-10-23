@@ -14,7 +14,7 @@ import com.ww.repository.outside.rival.season.ProfileSeasonRepository;
 import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.social.MailService;
 import com.ww.service.social.ProfileService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -29,23 +29,14 @@ import java.util.stream.Collectors;
 import static com.ww.helper.EloHelper.*;
 
 @Service
+@AllArgsConstructor
 public class RivalProfileSeasonService {
     private static final int RIVAL_REWARD_JOB_RATE = 300000;
 
-    @Autowired
-    private ProfileSeasonRepository profileSeasonRepository;
-
-    @Autowired
-    private ProfileService profileService;
-
-    @Autowired
-    private RivalSeasonService rivalSeasonService;
-
-    @Autowired
-    private RivalGlobalService rivalGlobalService;
-
-    @Autowired
-    private MailService mailService;
+    private final ProfileSeasonRepository profileSeasonRepository;
+    private final RivalSeasonService rivalSeasonService;
+    private final RivalGlobalService rivalGlobalService;
+    private final MailService mailService;
 
     public List<ProfileSeason> findProfileSeasons(Long seasonId) {
         return profileSeasonRepository.findAllBySeason_IdOrderByEloDescPreviousEloDescUpdateDateAsc(seasonId);

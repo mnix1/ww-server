@@ -2,15 +2,11 @@ package com.ww.service.rival.global;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.manager.rival.RivalManager;
-import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.ProfileConnection;
-import com.ww.service.rival.challenge.RivalChallengeService;
-import com.ww.service.rival.campaign.RivalCampaignWarService;
 import com.ww.service.social.ProfileConnectionService;
-import com.ww.service.social.ProfileService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -19,6 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class RivalMessageService {
     private static Logger logger = LoggerFactory.getLogger(RivalMessageService.class);
 
@@ -35,11 +32,8 @@ public class RivalMessageService {
     public static final String COVERALL = "COVERALL";
     public static final String CHANGE_TASK = "CHANGE_TASK";
 
-    @Autowired
-    private ProfileConnectionService profileConnectionService;
-
-    @Autowired
-    private RivalGlobalService rivalGlobalService;
+    private final ProfileConnectionService profileConnectionService;
+    private final RivalGlobalService rivalGlobalService;
 
     public synchronized Map<String, Object> handleInput(String content) {
         ObjectMapper objectMapper = new ObjectMapper();

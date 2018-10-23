@@ -9,9 +9,9 @@ import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -23,20 +23,12 @@ import static com.ww.helper.ModelHelper.putErrorCode;
 import static com.ww.helper.ModelHelper.putSuccessCode;
 
 @Service
+@AllArgsConstructor
 public class RivalInitRandomOpponentService {
-    private static final Logger logger = LoggerFactory.getLogger(RivalInitRandomOpponentService.class);
-
     private final Map<Long, RivalOnePlayerInit> waitingForRivalProfiles = new ConcurrentHashMap<>();
-    private static final int RIVAL_INIT_JOB_RATE = 2000;
 
-    @Autowired
-    private ProfileService profileService;
-    @Autowired
-    private ProfileConnectionService profileConnectionService;
-    @Autowired
-    private RivalRunService rivalRunService;
-    @Autowired
-    private RivalGlobalService rivalGlobalService;
+    private final ProfileService profileService;
+    private final RivalGlobalService rivalGlobalService;
 
     public Map start(RivalType type, RivalImportance importance) {
         Map<String, Object> model = new HashMap<>();
@@ -64,63 +56,8 @@ public class RivalInitRandomOpponentService {
         waitingForRivalProfiles.remove(profileId);
     }
 
-    @Scheduled(fixedRate = RIVAL_INIT_JOB_RATE)
-    private synchronized void maybeInitRival() {
-        if (waitingForRivalProfiles.isEmpty()) {
-//            logger.debug("No waiting for rival profiles");
-            return;
-        }
-        if (waitingForRivalProfiles.size() == 1) {
-//            logger.debug("Only one waiting for rival profile");
-            return;
-        }
-        Collection<RivalOnePlayerInit> waitingContainers = waitingForRivalProfiles.values();
-        RivalOnePlayerInit waitingContainer = waitingContainers.stream().findFirst().get();
-        Profile profile = waitingContainer.getCreatorProfile();
-        Optional<ProfileConnection> profileConnection = profileConnectionService.findByProfileId(profile.getId());
-        if (!profileConnection.isPresent()) {
-            waitingForRivalProfiles.remove(profile.getId());
-            maybeInitRival();
-            return;
-        }
-        List<Profile> availableOpponentProfiles = waitingContainers.stream()
-                .filter(container -> container.getImportance() == waitingContainer.getImportance()
-                        && container.getType() == waitingContainer.getType()
-                        && !container.getCreatorProfile().equals(profile))
-                .map(RivalOnePlayerInit::getCreatorProfile)
-                .collect(Collectors.toList());
-        if (availableOpponentProfiles.size() < 1) {
-            return;
-        }
-        Profile opponent = findOpponentForRival(availableOpponentProfiles, waitingContainer.getCreatorProfile());
-        Optional<ProfileConnection> opponentConnection = profileConnectionService.findByProfileId(opponent.getId());
-        if (!opponentConnection.isPresent()) {
-            waitingForRivalProfiles.remove(opponent.getId());
-            maybeInitRival();
-            return;
-        }
-        logger.trace("Matched profiles {} and {}, now creating rival warManager", profile.getId(), opponent.getId());
-        waitingForRivalProfiles.remove(profile.getId());
-        waitingForRivalProfiles.remove(opponent.getId());
-        RivalTwoPlayerInit rival = new RivalTwoPlayerInit(waitingContainer.getType(), waitingContainer.getImportance(), profile, opponent);
-        rivalRunService.run(rival);
-        maybeInitRival();
-        return;
+    public Map<Long,RivalOnePlayerInit> getWaitingForRivalProfiles(){
+        return waitingForRivalProfiles;
     }
-
-//    private RivalManager createManager(RivalInit rival) {
-//        if (rival.getType() == RivalType.WAR) {
-//            return new WarManager(rival, rivalWarService, profileConnectionService);
-//        } else if (rival.getType() == RivalType.BATTLE) {
-//            return new BattleManager(rival, rivalBattleService, profileConnectionService);
-//        }
-//        throw new IllegalArgumentException();
-//    }
-
-    private Profile findOpponentForRival(List<Profile> availableOpponentProfiles, Profile profile) {
-        // TODO add more logic
-        return availableOpponentProfiles.get(0);
-    }
-
 
 }

@@ -9,7 +9,6 @@ import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
-import com.ww.service.rival.global.RivalClassificationService;
 import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.rival.season.RivalProfileSeasonService;
 import com.ww.service.rival.season.RivalSeasonService;
@@ -18,36 +17,23 @@ import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
 import com.ww.service.social.RewardService;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @Getter
+@AllArgsConstructor
 public class RivalService {
-    @Autowired
-    private ProfileConnectionService profileConnectionService;
 
-    @Autowired
-    private TaskGenerateService taskGenerateService;
-
-    @Autowired
-    private TaskRendererService taskRendererService;
-
-    @Autowired
-    private RewardService rewardService;
-
-    @Autowired
-    private RivalSeasonService rivalSeasonService;
-
-    @Autowired
-    private ProfileService profileService;
-
-    @Autowired
-    private RivalGlobalService rivalGlobalService;
-
-    @Autowired
-    private RivalProfileSeasonService rivalProfileSeasonService;
+    private final ProfileConnectionService profileConnectionService;
+    private final TaskGenerateService taskGenerateService;
+    private final TaskRendererService taskRendererService;
+    private final RewardService rewardService;
+    private final RivalSeasonService rivalSeasonService;
+    private final ProfileService profileService;
+    private final RivalGlobalService rivalGlobalService;
+    private final RivalProfileSeasonService rivalProfileSeasonService;
 
     public void addRewardFromWin(Profile winner) {
     }

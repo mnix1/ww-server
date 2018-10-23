@@ -8,6 +8,7 @@ import com.ww.model.entity.outside.book.ProfileBook;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.repository.outside.book.ProfileBookRepository;
 import com.ww.service.social.ProfileService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,14 +24,12 @@ import static com.ww.helper.ModelHelper.*;
 import static com.ww.service.book.BookService.BOOK_SHELF_COUNT;
 
 @Service
+@AllArgsConstructor
 public class ProfileBookService {
 
-    @Autowired
-    private ProfileService profileService;
-    @Autowired
-    private ProfileBookRepository profileBookRepository;
-    @Autowired
-    private BookService bookService;
+    private final  ProfileService profileService;
+    private final  ProfileBookRepository profileBookRepository;
+    private final  BookService bookService;
 
     public List<ProfileBookDTO> listBook() {
         return profileService.getProfile().getBooks().stream()

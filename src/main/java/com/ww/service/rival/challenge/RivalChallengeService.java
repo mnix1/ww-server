@@ -20,8 +20,17 @@ import com.ww.model.entity.outside.wisie.ChallengePhaseWisie;
 import com.ww.repository.outside.rival.challenge.ChallengePhaseRepository;
 import com.ww.repository.outside.rival.challenge.ChallengePhaseWisieRepository;
 import com.ww.repository.outside.rival.challenge.ChallengeProfileRepository;
+import com.ww.service.rival.global.RivalGlobalService;
+import com.ww.service.rival.season.RivalProfileSeasonService;
+import com.ww.service.rival.season.RivalSeasonService;
+import com.ww.service.rival.task.TaskGenerateService;
+import com.ww.service.rival.task.TaskRendererService;
+import com.ww.service.rival.task.TaskService;
 import com.ww.service.rival.war.RivalWarService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ww.service.social.ProfileConnectionService;
+import com.ww.service.social.ProfileService;
+import com.ww.service.social.RewardService;
+import com.ww.service.wisie.ProfileWisieService;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -34,14 +43,18 @@ import static com.ww.model.constant.rival.RivalType.CHALLENGE;
 
 @Service
 public class RivalChallengeService extends RivalWarService {
-    @Autowired
-    private ChallengeProfileRepository challengeProfileRepository;
-    @Autowired
-    private ChallengePhaseRepository challengePhaseRepository;
-    @Autowired
-    private ChallengeCloseService challengeCloseService;
-    @Autowired
-    private ChallengePhaseWisieRepository challengePhaseWisieRepository;
+    private final ChallengeProfileRepository challengeProfileRepository;
+    private final ChallengePhaseRepository challengePhaseRepository;
+    private final ChallengeCloseService challengeCloseService;
+    private final ChallengePhaseWisieRepository challengePhaseWisieRepository;
+
+    public RivalChallengeService(ProfileConnectionService profileConnectionService, TaskGenerateService taskGenerateService, TaskRendererService taskRendererService, RewardService rewardService, RivalSeasonService rivalSeasonService, ProfileService profileService, RivalGlobalService rivalGlobalService, RivalProfileSeasonService rivalProfileSeasonService, ProfileWisieService profileWisieService, TaskService taskService, ChallengeProfileRepository challengeProfileRepository, ChallengePhaseRepository challengePhaseRepository, ChallengeCloseService challengeCloseService, ChallengePhaseWisieRepository challengePhaseWisieRepository) {
+        super(profileConnectionService, taskGenerateService, taskRendererService, rewardService, rivalSeasonService, profileService, rivalGlobalService, rivalProfileSeasonService, profileWisieService, taskService);
+        this.challengeProfileRepository = challengeProfileRepository;
+        this.challengePhaseRepository = challengePhaseRepository;
+        this.challengeCloseService = challengeCloseService;
+        this.challengePhaseWisieRepository = challengePhaseWisieRepository;
+    }
 
     public RivalChallengeInit init(ChallengeProfile challengeProfile) {
         List<ChallengePhase> challengePhases = new CopyOnWriteArrayList<>(challengeProfile.getChallenge().getPhases());

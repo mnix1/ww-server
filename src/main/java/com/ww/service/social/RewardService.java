@@ -1,6 +1,5 @@
 package com.ww.service.social;
 
-import com.ww.model.constant.Grade;
 import com.ww.model.container.Resources;
 import com.ww.model.container.Reward;
 import com.ww.model.entity.outside.book.Book;
@@ -8,6 +7,7 @@ import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.book.BookService;
 import com.ww.service.book.ProfileBookService;
 import com.ww.websocket.message.Message;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,15 +15,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@AllArgsConstructor
 public class RewardService {
-    @Autowired
-    private ProfileService profileService;
-    @Autowired
-    private ProfileConnectionService profileConnectionService;
-    @Autowired
-    private BookService bookService;
-    @Autowired
-    private ProfileBookService profileBookService;
+    private final ProfileService profileService;
+    private final ProfileConnectionService profileConnectionService;
+    private final BookService bookService;
+    private final ProfileBookService profileBookService;
 
     public void addSendRewardFromRivalWin(Profile winner, Resources resources) {
         Reward reward = new Reward();

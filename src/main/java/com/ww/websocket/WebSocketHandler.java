@@ -5,6 +5,7 @@ import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.rival.global.RivalMessageService;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.websocket.message.Message;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +18,13 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import java.util.Optional;
 
 @Component
+@AllArgsConstructor
 public class WebSocketHandler extends TextWebSocketHandler {
     private static Logger logger = LoggerFactory.getLogger(WebSocketHandler.class);
 
-    @Autowired
-    private ProfileConnectionService profileConnectionService;
-
-    @Autowired
-    private RivalMessageService rivalMessageService;
-
-    @Autowired
-    private RivalGlobalService rivalGlobalService;
+    private final ProfileConnectionService profileConnectionService;
+    private final RivalMessageService rivalMessageService;
+    private final RivalGlobalService rivalGlobalService;
 
     @Override
     public void handleTransportError(WebSocketSession session, Throwable throwable) {

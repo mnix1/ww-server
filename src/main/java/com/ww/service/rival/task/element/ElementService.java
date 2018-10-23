@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jackson.JsonLoader;
 import com.ww.model.entity.inside.task.Element;
 import com.ww.repository.inside.category.ElementRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -14,10 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class ElementService {
 
-    @Autowired
-    ElementRepository elementRepository;
+    private final ElementRepository elementRepository;
 
     public void loadResource() {
         try {

@@ -8,12 +8,14 @@ import com.ww.model.constant.rival.task.type.MemoryTaskType;
 import com.ww.model.container.rival.task.Memory;
 import com.ww.model.entity.inside.task.Color;
 import com.ww.model.entity.inside.task.MemoryShape;
-import com.ww.model.entity.outside.rival.task.*;
-import com.ww.repository.inside.category.MemoryShapeRepository;
+import com.ww.model.entity.outside.rival.task.Answer;
+import com.ww.model.entity.outside.rival.task.Question;
+import com.ww.model.entity.outside.rival.task.TaskType;
 import com.ww.repository.inside.category.ColorRepository;
+import com.ww.repository.inside.category.MemoryShapeRepository;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.rival.task.TaskService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,19 +24,11 @@ import java.util.stream.Collectors;
 import static com.ww.helper.RandomHelper.*;
 
 @Service
+@AllArgsConstructor
 public class MemoryTaskService {
 
-    @Autowired
-    TaskService taskService;
-
-    @Autowired
-    TaskRendererService taskRendererService;
-
-    @Autowired
-    MemoryShapeRepository memoryShapeRepository;
-
-    @Autowired
-    ColorRepository colorRepository;
+    private final MemoryShapeRepository memoryShapeRepository;
+    private final ColorRepository colorRepository;
 
     public Question generate(TaskType type, DifficultyLevel difficultyLevel) {
         MemoryTaskType typeValue = MemoryTaskType.valueOf(type.getValue());

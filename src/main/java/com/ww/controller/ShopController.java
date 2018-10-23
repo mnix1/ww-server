@@ -2,6 +2,7 @@ package com.ww.controller;
 
 import com.ww.model.dto.book.ShopBookDTO;
 import com.ww.service.shop.ShopService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,10 +14,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/shop")
+@AllArgsConstructor
 public class ShopController {
 
-    @Autowired
-    private ShopService shopService;
+    private final ShopService shopService;
 
     @RequestMapping(value = "/listBook", method = RequestMethod.GET)
     public List<ShopBookDTO> listBook() {

@@ -9,6 +9,7 @@ import com.ww.model.entity.outside.rival.season.SeasonGrade;
 import com.ww.service.rival.season.RivalProfileSeasonService;
 import com.ww.service.rival.season.RivalSeasonService;
 import com.ww.service.social.ProfileService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,17 +18,13 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
+@AllArgsConstructor
 public class RivalClassificationService {
     public static final int CLASSIFICATION_POSITIONS_COUNT = 10;
 
-    @Autowired
-    private ProfileService profileService;
-
-    @Autowired
-    private RivalSeasonService rivalSeasonService;
-
-    @Autowired
-    private RivalProfileSeasonService rivalProfileSeasonService;
+    private final ProfileService profileService;
+    private final RivalSeasonService rivalSeasonService;
+    private final RivalProfileSeasonService rivalProfileSeasonService;
 
     public ClassificationDTO classification(RivalType type) {
         String profileTag = profileService.getProfileTag();

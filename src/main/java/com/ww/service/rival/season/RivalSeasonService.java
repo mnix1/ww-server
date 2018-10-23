@@ -2,16 +2,11 @@ package com.ww.service.rival.season;
 
 import com.ww.model.constant.Grade;
 import com.ww.model.constant.rival.RivalType;
-import com.ww.model.entity.outside.rival.season.ProfileSeason;
 import com.ww.model.entity.outside.rival.season.Season;
 import com.ww.model.entity.outside.rival.season.SeasonGrade;
-import com.ww.model.entity.outside.social.Profile;
-import com.ww.repository.outside.rival.season.ProfileSeasonRepository;
 import com.ww.repository.outside.rival.season.SeasonGradeRepository;
 import com.ww.repository.outside.rival.season.SeasonRepository;
-import com.ww.service.social.ProfileService;
-import com.ww.service.social.RewardService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -22,14 +17,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class RivalSeasonService {
     public static final Long SEASON_RIVAL_COUNT = 100L;
 
-    @Autowired
-    private SeasonRepository seasonRepository;
-
-    @Autowired
-    private SeasonGradeRepository seasonGradeRepository;
+    private final SeasonRepository seasonRepository;
+    private final SeasonGradeRepository seasonGradeRepository;
 
     public List<SeasonGrade> findSeasonGrades(RivalType type) {
         return seasonGradeRepository.findAllByType(type);

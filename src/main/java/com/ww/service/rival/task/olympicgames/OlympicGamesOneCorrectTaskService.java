@@ -9,6 +9,7 @@ import com.ww.model.entity.inside.task.OlympicMedal;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskType;
 import com.ww.repository.inside.category.OlympicMedalRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +22,10 @@ import java.util.stream.Collectors;
 import static com.ww.helper.RandomHelper.randomElement;
 
 @Service
+@AllArgsConstructor
 public class OlympicGamesOneCorrectTaskService {
 
-    @Autowired
-    private OlympicMedalRepository olympicMedalRepository;
+    private final OlympicMedalRepository olympicMedalRepository;
 
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, OlympicGamesTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();

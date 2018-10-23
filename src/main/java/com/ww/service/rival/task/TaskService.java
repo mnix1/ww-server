@@ -8,6 +8,7 @@ import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.repository.outside.rival.task.AnswerRepository;
 import com.ww.repository.outside.rival.task.QuestionRepository;
 import com.ww.repository.outside.rival.task.TaskWisdomAttributeRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,19 +17,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class TaskService {
 
-    @Autowired
-    private QuestionRepository questionRepository;
-
-    @Autowired
-    private AnswerRepository answerRepository;
-
-    @Autowired
-    private TaskGenerateService taskGenerateService;
-
-    @Autowired
-    private TaskWisdomAttributeRepository taskWisdomAttributeRepository;
+    private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
+    private final TaskGenerateService taskGenerateService;
+    private final TaskWisdomAttributeRepository taskWisdomAttributeRepository;
 
     public Question generateQuestion(Category category, DifficultyLevel difficultyLevel, Language language) {
         Question question = taskGenerateService.generate(category, difficultyLevel, language);

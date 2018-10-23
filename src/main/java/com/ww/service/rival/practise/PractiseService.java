@@ -2,8 +2,8 @@ package com.ww.service.rival.practise;
 
 import com.ww.model.constant.Category;
 import com.ww.model.constant.Language;
-import com.ww.model.constant.rival.practise.PractiseResult;
 import com.ww.model.constant.rival.DifficultyLevel;
+import com.ww.model.constant.rival.practise.PractiseResult;
 import com.ww.model.dto.rival.task.PractiseDTO;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.practise.Practise;
@@ -13,7 +13,7 @@ import com.ww.repository.outside.rival.practise.PractiseRepository;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.rival.task.TaskService;
 import com.ww.service.social.ProfileService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -22,19 +22,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class PractiseService {
 
-    @Autowired
-    private PractiseRepository practiseRepository;
-
-    @Autowired
-    private TaskService taskService;
-
-    @Autowired
-    private TaskRendererService taskRendererService;
-
-    @Autowired
-    private ProfileService profileService;
+    private final PractiseRepository practiseRepository;
+    private final TaskService taskService;
+    private final TaskRendererService taskRendererService;
+    private final ProfileService profileService;
 
     public PractiseDTO start(Category category, DifficultyLevel difficultyLevel) {
         Language language = profileService.getProfileLanguage();

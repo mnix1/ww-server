@@ -8,6 +8,7 @@ import com.ww.repository.outside.social.ProfileFriendRepository;
 import com.ww.repository.outside.social.ProfileRepository;
 import com.ww.websocket.message.Message;
 import com.ww.websocket.message.MessageDTO;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,20 +25,14 @@ import static com.ww.helper.TagHelper.isCorrectTag;
 import static com.ww.helper.TagHelper.prepareTag;
 
 @Service
+@AllArgsConstructor
 public class FriendService {
     private static final Logger logger = LoggerFactory.getLogger(FriendService.class);
 
-    @Autowired
-    private ProfileFriendRepository profileFriendRepository;
-
-    @Autowired
-    private ProfileRepository profileRepository;
-
-    @Autowired
-    private ProfileService profileService;
-
-    @Autowired
-    private ProfileConnectionService profileConnectionService;
+    private final ProfileFriendRepository profileFriendRepository;
+    private final ProfileRepository profileRepository;
+    private final ProfileService profileService;
+    private final ProfileConnectionService profileConnectionService;
 
     public Map<String, Object> add(String tag) {
         return add(profileService.getProfileId(), tag);

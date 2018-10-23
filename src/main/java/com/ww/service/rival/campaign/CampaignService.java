@@ -19,6 +19,7 @@ import com.ww.service.book.BookService;
 import com.ww.service.book.ProfileBookService;
 import com.ww.service.social.ProfileService;
 import com.ww.service.wisie.ProfileWisieService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,28 +37,16 @@ import static com.ww.helper.ModelHelper.putSuccessCode;
 import static com.ww.helper.RandomHelper.randomElement;
 
 @Service
+@AllArgsConstructor
 public class CampaignService {
 
-    @Autowired
-    private CampaignRepository campaignRepository;
-
-    @Autowired
-    private ProfileCampaignRepository profileCampaignRepository;
-
-    @Autowired
-    private ProfileCampaignWisieRepository profileCampaignWisieRepository;
-
-    @Autowired
-    private ProfileWisieService profileWisieService;
-
-    @Autowired
-    private ProfileService profileService;
-
-    @Autowired
-    private BookService bookService;
-
-    @Autowired
-    private ProfileBookService profileBookService;
+    private final CampaignRepository campaignRepository;
+    private final ProfileCampaignRepository profileCampaignRepository;
+    private final ProfileCampaignWisieRepository profileCampaignWisieRepository;
+    private final ProfileWisieService profileWisieService;
+    private final ProfileService profileService;
+    private final BookService bookService;
+    private final ProfileBookService profileBookService;
 
     public List<CampaignDTO> list() {
         return campaignRepository.findAll().stream().map(CampaignDTO::new).collect(Collectors.toList());

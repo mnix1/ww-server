@@ -17,6 +17,7 @@ import com.ww.service.rival.challenge.RivalChallengeService;
 import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.rival.season.RivalProfileSeasonService;
 import com.ww.service.rival.war.RivalWarService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,19 +25,14 @@ import static com.ww.helper.TeamHelper.BOT_PROFILE_ID;
 
 
 @Service
+@AllArgsConstructor
 public class RivalRunService {
-    @Autowired
-    private RivalGlobalService rivalGlobalService;
-    @Autowired
-    private RivalWarService rivalWarService;
-    @Autowired
-    private RivalCampaignWarService rivalCampaignWarService;
-    @Autowired
-    private RivalBattleService rivalBattleService;
-    @Autowired
-    private RivalChallengeService rivalChallengeService;
-    @Autowired
-    private RivalProfileSeasonService rivalProfileSeasonService;
+    private final RivalGlobalService rivalGlobalService;
+    private final RivalWarService rivalWarService;
+    private final RivalCampaignWarService rivalCampaignWarService;
+    private final RivalBattleService rivalBattleService;
+    private final RivalChallengeService rivalChallengeService;
+    private final RivalProfileSeasonService rivalProfileSeasonService;
 
     public void run(RivalInit initContainer) {
         addProfileSeasons(initContainer);

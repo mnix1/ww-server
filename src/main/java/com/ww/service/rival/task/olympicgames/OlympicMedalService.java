@@ -7,6 +7,7 @@ import com.ww.model.entity.inside.task.Country;
 import com.ww.model.entity.inside.task.OlympicMedal;
 import com.ww.repository.inside.category.CountryRepository;
 import com.ww.repository.inside.category.OlympicMedalRepository;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class OlympicMedalService {
-    private static final Logger logger = LoggerFactory.getLogger(OlympicMedalService.class);
-
-    @Autowired
-    private OlympicMedalRepository olympicMedalRepository;
-    @Autowired
-    private CountryRepository countryRepository;
+    private final  OlympicMedalRepository olympicMedalRepository;
+    private final  CountryRepository countryRepository;
 
     public void loadResources() {
         loadResource(OlympicGamesType.SUMMER, "summerOlympicMedal.csv");

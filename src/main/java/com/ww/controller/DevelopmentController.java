@@ -5,6 +5,7 @@ import com.ww.repository.outside.wisie.ProfileWisieRepository;
 import com.ww.service.social.FriendService;
 import com.ww.service.social.ProfileService;
 import com.ww.service.wisie.ProfileWisieService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,16 +16,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/dev")
+@AllArgsConstructor
 public class DevelopmentController {
 
-    @Autowired
-    private ProfileService profileService;
-
-    @Autowired
-    private FriendService friendService;
-
-    @Autowired
-    private ProfileWisieRepository profileWisieRepository;
+    private final ProfileService profileService;
+    private final FriendService friendService;
+    private final ProfileWisieRepository profileWisieRepository;
 
     @RequestMapping(value = "/initFriends", method = RequestMethod.GET)
     public Map initFriends() {

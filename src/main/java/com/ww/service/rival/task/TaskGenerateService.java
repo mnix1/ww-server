@@ -7,16 +7,16 @@ import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskType;
 import com.ww.repository.outside.rival.task.TaskTypeRepository;
 import com.ww.service.rival.task.color.ColorTaskService;
-import com.ww.service.rival.task.element.ElementTaskService;
-import com.ww.service.rival.task.number.NumberTaskService;
 import com.ww.service.rival.task.country.CountryTaskService;
+import com.ww.service.rival.task.element.ElementTaskService;
 import com.ww.service.rival.task.equation.EquationTaskService;
-import com.ww.service.rival.task.memory.MemoryTaskService;
 import com.ww.service.rival.task.lyrics.LyricsTaskService;
+import com.ww.service.rival.task.memory.MemoryTaskService;
+import com.ww.service.rival.task.number.NumberTaskService;
 import com.ww.service.rival.task.olympicgames.OlympicGamesTaskService;
 import com.ww.service.rival.task.riddle.RiddleTaskService;
 import com.ww.service.rival.task.time.TimeTaskService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,39 +25,19 @@ import java.util.stream.Collectors;
 import static com.ww.helper.RandomHelper.randomElement;
 
 @Service
+@AllArgsConstructor
 public class TaskGenerateService {
-    @Autowired
-    LyricsTaskService lyricsTaskService;
-
-    @Autowired
-    CountryTaskService countryTaskService;
-
-    @Autowired
-    EquationTaskService equationTaskService;
-
-    @Autowired
-    NumberTaskService numberTaskService;
-
-    @Autowired
-    MemoryTaskService memoryTaskService;
-
-    @Autowired
-    ElementTaskService elementTaskService;
-
-    @Autowired
-    ColorTaskService colorTaskService;
-
-    @Autowired
-    RiddleTaskService riddleTaskService;
-
-    @Autowired
-    TimeTaskService timeTaskService;
-
-    @Autowired
-    OlympicGamesTaskService olympicGamesTaskService;
-
-    @Autowired
-    TaskTypeRepository taskTypeRepository;
+    private final LyricsTaskService lyricsTaskService;
+    private final CountryTaskService countryTaskService;
+    private final EquationTaskService equationTaskService;
+    private final NumberTaskService numberTaskService;
+    private final MemoryTaskService memoryTaskService;
+    private final ElementTaskService elementTaskService;
+    private final ColorTaskService colorTaskService;
+    private final RiddleTaskService riddleTaskService;
+    private final TimeTaskService timeTaskService;
+    private final OlympicGamesTaskService olympicGamesTaskService;
+    private final TaskTypeRepository taskTypeRepository;
 
     public Question generate(TaskType taskType, DifficultyLevel difficultyLevel, Language language) {
         if (taskType.getCategory() == Category.LYRICS) {

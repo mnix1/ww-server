@@ -7,6 +7,7 @@ import com.ww.service.social.FriendService;
 import com.ww.service.social.MailService;
 import com.ww.service.social.ProfileService;
 import com.ww.service.wisie.ProfileWisieService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +20,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/mail")
+@AllArgsConstructor
 public class MailController {
 
-    @Autowired
-    private MailService mailService;
+    private final MailService mailService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public List<ProfileMailDTO> list() {

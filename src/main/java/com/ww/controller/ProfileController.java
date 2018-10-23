@@ -6,6 +6,7 @@ import com.ww.model.dto.social.ExtendedProfileResourcesDTO;
 import com.ww.service.book.ProfileBookService;
 import com.ww.service.social.AuthProfileService;
 import com.ww.service.social.ProfileService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,16 +19,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/profile")
+@AllArgsConstructor
 public class ProfileController {
 
-    @Autowired
-    AuthProfileService authProfileService;
-
-    @Autowired
-    ProfileService profileService;
-
-    @Autowired
-    ProfileBookService profileBookService;
+    private final AuthProfileService authProfileService;
+    private final ProfileService profileService;
+    private final ProfileBookService profileBookService;
 
     @RequestMapping(value = "/changeWisor", method = RequestMethod.POST)
     public Map changeWisor(@RequestBody Map<String, Object> payload) {

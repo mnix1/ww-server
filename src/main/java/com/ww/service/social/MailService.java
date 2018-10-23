@@ -10,6 +10,7 @@ import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.social.ProfileMail;
 import com.ww.repository.outside.social.ProfileMailRepository;
 import com.ww.websocket.message.MessageDTO;
+import lombok.AllArgsConstructor;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,13 +25,11 @@ import static com.ww.helper.ModelHelper.putSuccessCode;
 import static com.ww.websocket.message.Message.NEW_MAIL;
 
 @Service
+@AllArgsConstructor
 public class MailService {
-    @Autowired
-    private ProfileService profileService;
-    @Autowired
-    private ProfileConnectionService profileConnectionService;
-    @Autowired
-    private ProfileMailRepository profileMailRepository;
+    private final ProfileService profileService;
+    private final ProfileConnectionService profileConnectionService;
+    private final ProfileMailRepository profileMailRepository;
 
     public List<ProfileMailDTO> list() {
         return profileMailRepository.findAllByProfile_Id(profileService.getProfileId()).stream().map(ProfileMailDTO::new).collect(Collectors.toList());

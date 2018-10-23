@@ -9,6 +9,7 @@ import com.ww.model.entity.outside.social.ProfileAction;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
 import com.ww.repository.outside.social.ProfileActionRepository;
 import com.ww.service.wisie.ProfileWisieService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,19 +26,13 @@ import static com.ww.service.social.IntroService.PICK_WISIES_COUNT;
 import static com.ww.service.social.IntroService.PICK_WISIES_INTRODUCTION_STEP_INDEX;
 
 @Service
+@AllArgsConstructor
 public class AuthProfileService {
 
-    @Autowired
-    private ProfileService profileService;
-
-    @Autowired
-    private ProfileWisieService profileWisieService;
-
-    @Autowired
-    private IntroService introService;
-
-    @Autowired
-    private ProfileActionRepository profileActionRepository;
+    private final ProfileService profileService;
+    private final ProfileWisieService profileWisieService;
+    private final IntroService introService;
+    private final ProfileActionRepository profileActionRepository;
 
     @Transactional
     public ExtendedProfileResourcesDTO authProfile(Principal user) {

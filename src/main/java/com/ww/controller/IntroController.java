@@ -1,6 +1,7 @@
 package com.ww.controller;
 
 import com.ww.service.social.IntroService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,10 +13,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/intro")
+@AllArgsConstructor
 public class IntroController {
 
-    @Autowired
-    private IntroService introService;
+    private final IntroService introService;
 
     @RequestMapping(value = "/changeStepIndex", method = RequestMethod.POST)
     public Map changeStepIndex(@RequestBody Map<String, Object> payload) {

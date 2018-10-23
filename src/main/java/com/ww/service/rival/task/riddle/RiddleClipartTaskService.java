@@ -7,6 +7,7 @@ import com.ww.model.entity.inside.task.Clipart;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskType;
 import com.ww.repository.inside.category.ClipartRepository;
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class RiddleClipartTaskService {
 
-    @Autowired
-    ClipartRepository clipartRepository;
+    private final ClipartRepository clipartRepository;
 
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, RiddleTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();

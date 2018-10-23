@@ -8,6 +8,7 @@ import com.ww.model.entity.outside.wisie.ProfileWisie;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.wisie.ProfileWisieService;
 import com.ww.service.social.ProfileService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,13 +20,11 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/promo")
+@AllArgsConstructor
 public class PromoController {
 
-    @Autowired
-    ProfileService profileService;
-
-    @Autowired
-    ProfileWisieService profileWisieService;
+    private final ProfileService profileService;
+    private final ProfileWisieService profileWisieService;
 
     @RequestMapping(value = "/promo", method = RequestMethod.GET)
     public Map promo() {

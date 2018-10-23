@@ -7,6 +7,7 @@ import com.ww.model.entity.inside.task.Country;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskType;
 import com.ww.repository.inside.category.CountryRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +18,10 @@ import java.util.List;
 import static com.ww.helper.RandomHelper.randomElement;
 
 @Service
+@AllArgsConstructor
 public class CountryOneCorrectTaskService {
 
-    @Autowired
-    CountryRepository countryRepository;
+    private final CountryRepository countryRepository;
 
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, CountryTaskType typeValue) {
         int remainedDifficulty = difficultyLevel.getLevel() - type.getDifficulty();

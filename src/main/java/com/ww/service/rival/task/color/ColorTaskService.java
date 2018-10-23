@@ -6,6 +6,7 @@ import com.ww.model.container.rival.task.ColorComponents;
 import com.ww.model.entity.outside.rival.task.Answer;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskType;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +17,11 @@ import java.util.stream.Collectors;
 import static com.ww.helper.ColorHelper.colorToHex;
 
 @Service
+@AllArgsConstructor
 public class ColorTaskService {
-    @Autowired
-    ColorMixingTaskService colorMixingTaskService;
-    @Autowired
-    ColorMatchAnswerTaskService colorMatchAnswerTaskService;
+
+    private final ColorMixingTaskService colorMixingTaskService;
+    private final ColorMatchAnswerTaskService colorMatchAnswerTaskService;
 
     public Question generate(TaskType type, DifficultyLevel difficultyLevel) {
         ColorTaskType typeValue = ColorTaskType.valueOf(type.getValue());

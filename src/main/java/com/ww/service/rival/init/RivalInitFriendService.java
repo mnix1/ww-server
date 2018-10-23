@@ -14,9 +14,9 @@ import com.ww.service.social.ProfileConnectionService;
 import com.ww.service.social.ProfileService;
 import com.ww.websocket.message.Message;
 import com.ww.websocket.message.MessageDTO;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -28,21 +28,17 @@ import static com.ww.helper.ModelHelper.putErrorCode;
 import static com.ww.helper.ModelHelper.putSuccessCode;
 
 @Service
+@AllArgsConstructor
 public class RivalInitFriendService {
     private static final Logger logger = LoggerFactory.getLogger(RivalInitFriendService.class);
 
-    private final List<RivalTwoPlayerInit> waitingForActionProfiles = new CopyOnWriteArrayList<>();
+    private static final List<RivalTwoPlayerInit> waitingForActionProfiles = new CopyOnWriteArrayList<>();
 
-    @Autowired
-    private ProfileService profileService;
-    @Autowired
-    private ProfileConnectionService profileConnectionService;
-    @Autowired
-    private RivalRunService rivalRunService;
-    @Autowired
-    private RivalInitRandomOpponentService rivalInitRandomOpponentService;
-    @Autowired
-    private RivalGlobalService rivalGlobalService;
+    private final ProfileService profileService;
+    private final ProfileConnectionService profileConnectionService;
+    private final RivalRunService rivalRunService;
+    private final RivalInitRandomOpponentService rivalInitRandomOpponentService;
+    private final RivalGlobalService rivalGlobalService;
 
     public Map startFriend(String tag, RivalType type) {
         Map<String, Object> model = new HashMap<>();

@@ -4,17 +4,16 @@ import com.ww.model.entity.inside.task.Color;
 import com.ww.model.entity.inside.task.MemoryShape;
 import com.ww.repository.inside.category.ColorRepository;
 import com.ww.repository.inside.category.MemoryShapeRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class MemoryTaskHelperService {
 
-    @Autowired
-    MemoryShapeRepository memoryShapeRepository;
-
-    @Autowired
-    ColorRepository colorRepository;
+    private final MemoryShapeRepository memoryShapeRepository;
+    private final ColorRepository colorRepository;
 
     public void initShapes() {
         memoryShapeRepository.save(new MemoryShape("circle","koło","circle"));

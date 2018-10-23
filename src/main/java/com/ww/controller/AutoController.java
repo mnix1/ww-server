@@ -5,6 +5,7 @@ import com.ww.model.dto.social.ExtendedProfileDTO;
 import com.ww.service.rival.war.RivalWarService;
 import com.ww.service.social.AuthProfileService;
 import com.ww.service.social.ProfileService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,16 +21,12 @@ import static com.ww.helper.ModelHelper.putSuccessCode;
 
 @RequestMapping(value = "/auto")
 @Controller
+@AllArgsConstructor
 public class AutoController {
 
-    @Autowired
-    private RivalWarService rivalWarService;
-
-    @Autowired
-    private ProfileService profileService;
-
-    @Autowired
-    private AuthProfileService authProfileService;
+    private final RivalWarService rivalWarService;
+    private final ProfileService profileService;
+    private final AuthProfileService authProfileService;
 
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     public String page(Model model) {

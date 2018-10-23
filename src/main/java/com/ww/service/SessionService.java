@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class SessionService implements Serializable {
 
-    private Session session = new Session();
+    private final Session session = new Session();
 
     public void storeProfile(Profile profile) {
         setProfileId(profile.getId());

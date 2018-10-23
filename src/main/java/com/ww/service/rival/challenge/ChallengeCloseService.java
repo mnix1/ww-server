@@ -14,6 +14,7 @@ import com.ww.repository.outside.rival.challenge.ChallengeProfileRepository;
 import com.ww.repository.outside.rival.challenge.ChallengeRepository;
 import com.ww.service.social.MailService;
 import com.ww.service.social.ProfileService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -27,17 +28,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class ChallengeCloseService {
     private static final int CHALLENGE_CLOSE_JOB_RATE = 30000;
 
-    @Autowired
-    private ChallengeRepository challengeRepository;
-
-    @Autowired
-    private ChallengeProfileRepository challengeProfileRepository;
-
-    @Autowired
-    private MailService mailService;
+    private final ChallengeRepository challengeRepository;
+    private final ChallengeProfileRepository challengeProfileRepository;
+    private final MailService mailService;
 
     @Transactional
     @Scheduled(fixedRate = CHALLENGE_CLOSE_JOB_RATE)

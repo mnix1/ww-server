@@ -9,6 +9,7 @@ import com.ww.repository.outside.social.ProfileFriendRepository;
 import com.ww.service.rival.init.RivalInitRandomOpponentService;
 import com.ww.websocket.message.Message;
 import com.ww.websocket.message.MessageDTO;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,19 +21,15 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
+@AllArgsConstructor
 public class ProfileConnectionService {
     private static Logger logger = LoggerFactory.getLogger(ProfileConnectionService.class);
-    private final Map<Long, ProfileConnection> profileIdToProfileConnectionMap = new ConcurrentHashMap<>();
-    private final Map<String, ProfileConnection> sessionIdToProfileConnectionMap = new ConcurrentHashMap<>();
+    private static final Map<Long, ProfileConnection> profileIdToProfileConnectionMap = new ConcurrentHashMap<>();
+    private static final Map<String, ProfileConnection> sessionIdToProfileConnectionMap = new ConcurrentHashMap<>();
 
-    @Autowired
-    private ProfileService profileService;
-
-    @Autowired
-    private ProfileFriendRepository profileFriendRepository;
-
-    @Autowired
-    private RivalInitRandomOpponentService rivalInitRandomOpponentService;
+    private final ProfileService profileService;
+    private final ProfileFriendRepository profileFriendRepository;
+    private final RivalInitRandomOpponentService rivalInitRandomOpponentService;
 
     public synchronized ProfileConnection newConnection(WebSocketSession session) {
         Profile profile = profileService.retrieveProfile(profileService.getAuthId(session.getPrincipal()));

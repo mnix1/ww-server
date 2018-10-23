@@ -4,6 +4,7 @@ import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.task.TrackSource;
 import com.ww.model.entity.inside.task.Track;
 import com.ww.repository.inside.category.TrackRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,13 +14,13 @@ import static com.ww.helper.FileHelper.*;
 import static com.ww.helper.NetworkHelper.downloadContent;
 
 @Service
+@AllArgsConstructor
 public class TrackService {
+    public static String VERSE = "_V_";
+    public static String LINE = "_L_";
 
-    @Autowired
-    TrackRepository trackRepository;
+    private final TrackRepository trackRepository;
 
-    private static String VERSE = "_V_";
-    private static String LINE = "_L_";
 
     public Boolean addTrack(String author, String name, String url, Language lang) {
         Track track = new Track();

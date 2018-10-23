@@ -7,6 +7,7 @@ import com.ww.repository.outside.book.BookRepository;
 import com.ww.service.book.ProfileBookService;
 import com.ww.service.social.ProfileService;
 import com.ww.service.social.RewardService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,18 +23,12 @@ import static com.ww.helper.ModelHelper.putErrorCode;
 import static com.ww.helper.ModelHelper.putSuccessCode;
 
 @Service
+@AllArgsConstructor
 public class ShopService {
 
-    @Autowired
-    ProfileService profileService;
-
-    @Autowired
-    RewardService rewardService;
-    @Autowired
-    ProfileBookService profileBookService;
-
-    @Autowired
-    BookRepository bookRepository;
+    private final ProfileService profileService;
+    private final ProfileBookService profileBookService;
+    private final BookRepository bookRepository;
 
     public List<ShopBookDTO> listBook() {
         return bookRepository.findAllByCanBuyByCrystalOrCanBuyByGold(true, true).stream().map(ShopBookDTO::new).collect(Collectors.toList());

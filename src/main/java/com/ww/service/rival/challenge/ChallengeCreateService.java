@@ -18,6 +18,7 @@ import com.ww.repository.outside.rival.challenge.ChallengePhaseRepository;
 import com.ww.repository.outside.rival.challenge.ChallengeProfileRepository;
 import com.ww.repository.outside.rival.challenge.ChallengeRepository;
 import com.ww.service.social.ProfileService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,20 +36,15 @@ import static com.ww.helper.ModelHelper.putSuccessCode;
 import static com.ww.helper.RandomHelper.randomElement;
 
 @Service
+@AllArgsConstructor
 public class ChallengeCreateService {
     private static final List<Integer> DURATIONS = Arrays.asList(4, 8, 24, 48);
     private static final List<Long> RESOURCE_COSTS = Arrays.asList(0L, 1L, 5L, 10L);
 
-    @Autowired
-    private ChallengeRepository challengeRepository;
-
-    @Autowired
-    private ChallengeProfileRepository challengeProfileRepository;
-    @Autowired
-    private RivalChallengeService rivalChallengeService;
-
-    @Autowired
-    private ProfileService profileService;
+    private final ChallengeRepository challengeRepository;
+    private final ChallengeProfileRepository challengeProfileRepository;
+    private final RivalChallengeService rivalChallengeService;
+    private final ProfileService profileService;
 
     @Transactional
     public Map<String, Object> createPrivate(List<String> tags, ChallengeAccess access, ChallengeApproach approach, ResourceType resourceType, Long resourceCost, Integer duration) {
@@ -70,7 +66,7 @@ public class ChallengeCreateService {
     @Transactional
     public Challenge createGlobal() {
         LocalDateTime date = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(0, 0));
-        Long joinCost = randomElement(Arrays.asList(2L, 4L, 6L,  8L, 10L));
+        Long joinCost = randomElement(Arrays.asList(2L, 4L, 6L, 8L, 10L));
         Challenge challenge = new Challenge(ChallengeType.GLOBAL, ChallengeAccess.UNLOCK, ChallengeApproach.MANY, new Resources(ResourceType.random(), joinCost), date.toInstant(ZoneOffset.UTC));
         challenge.setGainResources(challenge.getGainResources().add(new Resources(joinCost * 2, joinCost * 2, joinCost * 2, joinCost * 2)));
         challengeRepository.save(challenge);

@@ -5,6 +5,7 @@ import com.ww.model.container.ProfileConnection;
 import com.ww.model.container.rival.RivalModel;
 import com.ww.model.entity.outside.rival.Rival;
 import com.ww.repository.outside.rival.RivalRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +14,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
+@AllArgsConstructor
 public class RivalGlobalService {
-    private final Map<Long, RivalManager> managerMap = new ConcurrentHashMap<>();
+    private static final Map<Long, RivalManager> managerMap = new ConcurrentHashMap<>();
 
-    @Autowired
-    private RivalRepository rivalRepository;
+    private final RivalRepository rivalRepository;
 
     public void remove(Long profileId) {
         managerMap.remove(profileId);

@@ -9,6 +9,7 @@ import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskType;
 import com.ww.repository.inside.category.TrackRepository;
 import com.ww.service.rival.task.TaskService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,18 +18,13 @@ import java.util.stream.Collectors;
 
 import static com.ww.helper.RandomHelper.randomElement;
 import static com.ww.helper.RandomHelper.randomElementIndex;
+import static com.ww.service.rival.task.lyrics.TrackService.LINE;
+import static com.ww.service.rival.task.lyrics.TrackService.VERSE;
 
 @Service
+@AllArgsConstructor
 public class LyricsTaskService {
-
-    @Autowired
-    TaskService taskService;
-
-    @Autowired
-    TrackRepository trackRepository;
-
-    private static String VERSE = "_V_";
-    private static String LINE = "_L_";
+    private final TrackRepository trackRepository;
 
     public Question generate(TaskType type, DifficultyLevel difficultyLevel, Language language) {
         LyricsTaskTypeValue typeValue = LyricsTaskTypeValue.valueOf(type.getValue());

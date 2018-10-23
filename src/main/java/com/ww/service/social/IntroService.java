@@ -6,11 +6,10 @@ import com.ww.model.constant.wisie.WisieType;
 import com.ww.model.dto.social.ExtendedProfileResourcesDTO;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
-import com.ww.service.wisie.ProfileWisieEvolutionService;
 import com.ww.service.wisie.ProfileWisieService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,18 +20,15 @@ import static com.ww.helper.ModelHelper.putErrorCode;
 import static com.ww.helper.ModelHelper.putSuccessCode;
 
 @Service
+@AllArgsConstructor
 public class IntroService {
     private static final Logger logger = LoggerFactory.getLogger(IntroService.class);
-
     public static final Integer PICK_WISIES_COUNT = 4;
     public static final Integer PROFILE_WISIES_COUNT = 1;
     public static final Integer PICK_WISIES_INTRODUCTION_STEP_INDEX = 11;
 
-    @Autowired
-    private ProfileService profileService;
-
-    @Autowired
-    private ProfileWisieService profileWisieService;
+    private final ProfileService profileService;
+    private final ProfileWisieService profileWisieService;
 
     @Transactional
     public Map<String, Object> changeIntroStepIndex(Integer stepIndex) {
