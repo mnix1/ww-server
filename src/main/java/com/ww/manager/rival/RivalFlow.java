@@ -1,17 +1,11 @@
 package com.ww.manager.rival;
 
 import com.ww.manager.AbstractFlow;
-import com.ww.manager.AbstractState;
 import com.ww.manager.rival.state.StateSurrender;
-import com.ww.manager.rival.war.WarFlow;
 import com.ww.model.constant.rival.RivalStatus;
 import lombok.Getter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.ww.service.rival.global.RivalMessageService.*;
 

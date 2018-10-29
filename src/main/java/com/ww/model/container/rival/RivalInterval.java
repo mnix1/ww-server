@@ -24,11 +24,12 @@ public class RivalInterval {
     public long getAnsweringTimeoutInterval() {
         return calculateInterval(8);
     }
+
     public long getChangingTaskInterval() {
         return calculateInterval(4);
     }
 
-    public long getShowingAnswerInterval() {
+    public long getAnsweredInterval() {
         return calculateInterval(8);
     }
 
@@ -36,7 +37,7 @@ public class RivalInterval {
         return calculateInterval(14);
     }
 
-    public long getRandomChooseTaskPropsInterval() {
+    public long getRandomTaskPropsInterval() {
         return calculateInterval(2.5);
     }
 }

@@ -39,7 +39,7 @@ public class StateChoosingTaskProps extends State {
         long interval;
         if (randomChooseTaskProps || forceRandom) {
             manager.prepareTask((long) manager.getModel().getCurrentTaskIndex() + 1);
-            interval = manager.getInterval().getRandomChooseTaskPropsInterval();
+            interval = manager.getInterval().getRandomTaskPropsInterval();
         } else {
             manager.getModel().setChosenCategory(Category.RANDOM);
             manager.getModel().setIsChosenCategory(false);

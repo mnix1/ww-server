@@ -48,6 +48,6 @@ public class WarStateAnswered extends WarState {
             manager.getModelFactory().fillModelAnswered(model, rivalTeam);
             manager.send(model, manager.getMessageContent(), rivalTeam.getProfileId());
         });
-        return Flowable.intervalRange(0L, 1L, manager.getInterval().getShowingAnswerInterval(), manager.getInterval().getShowingAnswerInterval(), TimeUnit.MILLISECONDS);
+        return Flowable.intervalRange(0L, 1L, manager.getInterval().getAnsweredInterval(), manager.getInterval().getAnsweredInterval(), TimeUnit.MILLISECONDS);
     }
 }

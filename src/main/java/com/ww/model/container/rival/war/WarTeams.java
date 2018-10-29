@@ -7,12 +7,13 @@ import lombok.Setter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
 @Setter
 public class WarTeams extends RivalTeams {
 
-    private final Map<Long, WarTeam> teamMap = new HashMap<>();
+    private final Map<Long, WarTeam> teamMap = new ConcurrentHashMap<>();
 
     public void addProfile(Long id, WarTeam profileContainer) {
         this.getTeamMap().put(id, profileContainer);

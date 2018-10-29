@@ -37,6 +37,6 @@ public class BattleStateAnswered extends State {
             manager.getModelFactory().fillModelAnswered(model, profileContainer);
             manager.send(model, manager.getMessageContent(), profileContainer.getProfileId());
         });
-        return Flowable.intervalRange(0L, 1L, manager.getInterval().getShowingAnswerInterval(), manager.getInterval().getShowingAnswerInterval(), TimeUnit.MILLISECONDS);
+        return Flowable.intervalRange(0L, 1L, manager.getInterval().getAnsweredInterval(), manager.getInterval().getAnsweredInterval(), TimeUnit.MILLISECONDS);
     }
 }

@@ -1,12 +1,25 @@
 package com.ww.helper;
 
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TagHelper {
+    static public String randomUUID() {
+        return UUID.randomUUID().toString();
+    }
+
+    static public String randomUniqueUUID(Map map) {
+        String uuid = randomUUID();
+        while (map.containsKey(uuid)) {
+            uuid = randomUUID();
+        }
+        return uuid;
+    }
+
     static public String randomTag() {
-        return UUID.randomUUID().toString().substring(0, 7);
+        return randomUUID().substring(0, 7);
     }
 
     static public String prepareTag(String tag) {

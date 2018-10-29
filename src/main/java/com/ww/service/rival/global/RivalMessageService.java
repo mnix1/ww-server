@@ -35,7 +35,7 @@ public class RivalMessageService {
     private final ProfileConnectionService profileConnectionService;
     private final RivalGlobalService rivalGlobalService;
 
-    public synchronized Map<String, Object> handleInput(String content) {
+    public Map<String, Object> handleInput(String content) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.readValue(content, HashMap.class);
