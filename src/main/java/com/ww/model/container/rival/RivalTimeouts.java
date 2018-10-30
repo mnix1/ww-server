@@ -1,17 +1,17 @@
 package com.ww.model.container.rival;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
-@Getter
-@Setter
 public class RivalTimeouts {
     protected Instant nextTimeout;
 
     public Long nextInterval() {
         return toInterval(nextTimeout);
+    }
+
+    public void fromInterval(long interval){
+        nextTimeout = Instant.now().plus(interval, ChronoUnit.MILLIS);
     }
 
     private Long toInterval(Instant instant) {

@@ -2,10 +2,7 @@ package com.ww.play.communication;
 
 import com.ww.model.container.rival.RivalTeams;
 import com.ww.play.PlayManager;
-import com.ww.play.action.PlayAnswerAction;
-import com.ww.play.action.PlayChooseTaskPropsAction;
-import com.ww.play.action.PlayAction;
-import com.ww.play.action.PlaySurrenderAction;
+import com.ww.play.action.*;
 import com.ww.play.container.PlayContainer;
 import com.ww.play.state.PlayState;
 import com.ww.service.social.ProfileConnectionService;
@@ -34,7 +31,8 @@ public abstract class PlayCommunication {
     protected void initActionMap() {
         actionMap.put(SURRENDER, new PlaySurrenderAction(manager));
         actionMap.put(ANSWER, new PlayAnswerAction(manager));
-        actionMap.put(CHOOSE_TASK_PROPS, new PlayChooseTaskPropsAction(manager));
+        actionMap.put(CHOOSE_TASK_CATEGORY, new PlayChooseTaskCategoryAction(manager));
+        actionMap.put(CHOOSE_TASK_DIFFICULTY, new PlayChooseTaskDifficultyAction(manager));
     }
 
     public void send() {
@@ -50,10 +48,13 @@ public abstract class PlayCommunication {
     public void sendModelFromBeginning(Long profileId) {
         List<PlayState> states = getContainer().getStates();
         Map<String, Object> model = new HashMap<>();
-        for (int i = states.size() - 1; i >= 0; i--) {
-            PlayState state = states.get(i);
+        for(PlayState state: states){
             state.getStoredModel(profileId).ifPresent(model::putAll);
         }
+//        for (int i = states.size() - 1; i >= 0; i--) {
+//            PlayState state = states.get(i);
+//            state.getStoredModel(profileId).ifPresent(model::putAll);
+//        }
         manager.getProfileConnectionService().send(profileId, model, getMessageContent());
     }
 

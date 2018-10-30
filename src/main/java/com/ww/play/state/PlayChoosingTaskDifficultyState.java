@@ -7,15 +7,14 @@ import com.ww.play.container.PlayContainer;
 
 import java.util.Map;
 
-import static com.ww.play.modelfiller.PlayModelFiller.fillModelChoosingTaskPropsTag;
+import static com.ww.play.modelfiller.PlayModelFiller.fillModelChosenDifficulty;
 import static com.ww.play.modelfiller.PlayModelFiller.fillModelNextInterval;
-import static com.ww.play.modelfiller.PlayModelFiller.fillModelSimpleNextTaskMeta;
 
-public class PlayChoosingTaskPropsState extends PlayState {
+public class PlayChoosingTaskDifficultyState extends PlayState {
     private long interval;
 
-    public PlayChoosingTaskPropsState(PlayContainer container, long interval) {
-        super(container, RivalStatus.CHOOSING_TASK_PROPS);
+    public PlayChoosingTaskDifficultyState(PlayContainer container, long interval) {
+        super(container, RivalStatus.CHOOSING_TASK_DIFFICULTY);
         this.interval = interval;
     }
 
@@ -28,8 +27,7 @@ public class PlayChoosingTaskPropsState extends PlayState {
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = super.prepareModel(team, opponentTeam);
         fillModelNextInterval(model, container);
-        fillModelSimpleNextTaskMeta(model, container);
-        fillModelChoosingTaskPropsTag(model, container);
+        fillModelChosenDifficulty(model, container);
         return model;
     }
 }

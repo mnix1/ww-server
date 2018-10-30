@@ -31,6 +31,6 @@ public class StateSurrender extends State {
             manager.getModelFactory().fillModelEloChanged(model, profileContainer);
             manager.send(model, manager.getMessageContent(), profileContainer.getProfileId());
         });
-        manager.getRivalService().disposeManager(manager);
+//        manager.getRivalService().disposeManager(manager);
     }
 }

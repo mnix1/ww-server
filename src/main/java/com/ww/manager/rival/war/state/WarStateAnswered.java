@@ -26,9 +26,9 @@ public class WarStateAnswered extends WarState {
             if (isAnswerCorrect) {
                 team = (WarTeam) manager.getModel().getTeams().opponent(team.getProfileId());
             }
-            team.setActiveTeamMemberPresentToFalse();
+            team.disableActiveTeamMember();
         } else if (!isAnswerCorrect) {
-            team.setActiveTeamMemberPresentToFalse();
+            team.disableActiveTeamMember();
         }
     }
 

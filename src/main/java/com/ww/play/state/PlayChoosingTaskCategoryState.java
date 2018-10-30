@@ -2,24 +2,25 @@ package com.ww.play.state;
 
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.container.rival.RivalTeam;
+import com.ww.play.command.PlaySetDefaultTaskPropsCommand;
 import com.ww.play.command.PlaySetNextTimeoutCommand;
 import com.ww.play.container.PlayContainer;
 
 import java.util.Map;
 
-import static com.ww.play.modelfiller.PlayModelFiller.fillModelNextInterval;
-import static com.ww.play.modelfiller.PlayModelFiller.fillModelTask;
+import static com.ww.play.modelfiller.PlayModelFiller.*;
 
-public class PlayAnsweringState extends PlayState {
+public class PlayChoosingTaskCategoryState extends PlayState {
     private long interval;
 
-    public PlayAnsweringState(PlayContainer container, long interval) {
-        super(container, RivalStatus.ANSWERING);
+    public PlayChoosingTaskCategoryState(PlayContainer container, long interval) {
+        super(container, RivalStatus.CHOOSING_TASK_CATEGORY);
         this.interval = interval;
     }
 
     @Override
     public void initCommands() {
+        commands.add(new PlaySetDefaultTaskPropsCommand(container));
         commands.add(new PlaySetNextTimeoutCommand(container, interval));
     }
 
@@ -27,7 +28,9 @@ public class PlayAnsweringState extends PlayState {
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = super.prepareModel(team, opponentTeam);
         fillModelNextInterval(model, container);
-        fillModelTask(model, container);
+        fillModelSimpleNextTaskMeta(model, container);
+        fillModelChoosingTaskPropsTag(model, container);
+        fillModelChosenCategory(model, container);
         return model;
     }
 }

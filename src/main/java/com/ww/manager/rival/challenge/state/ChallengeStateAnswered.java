@@ -19,9 +19,9 @@ public class ChallengeStateAnswered extends WarStateAnswered {
                 team.setScore(team.getScore() + 1);
                 team = (ChallengeTeam) manager.getModel().getTeams().opponent(team.getProfileId());
             }
-            team.setActiveTeamMemberPresentToFalse();
+            team.disableActiveTeamMember();
         } else if (!isAnswerCorrect) {
-            team.setActiveTeamMemberPresentToFalse();
+            team.disableActiveTeamMember();
         }
     }
 

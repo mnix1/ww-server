@@ -1,6 +1,5 @@
 package com.ww.model.container.rival;
 
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Collection;
@@ -8,7 +7,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
-@Getter
 @NoArgsConstructor
 public class RivalTeams {
     private final Map<Long, RivalTeam> teamMap = new ConcurrentHashMap<>();

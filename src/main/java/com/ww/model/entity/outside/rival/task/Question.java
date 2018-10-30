@@ -62,4 +62,8 @@ public class Question {
             answer.setId(id++);
         }
     }
+
+    public Long findCorrectAnswerId() {
+        return answers.stream().filter(Answer::getCorrect).findFirst().get().getId();
+    }
 }

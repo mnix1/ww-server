@@ -1,5 +1,7 @@
 package com.ww.play.flow;
 
+import com.ww.model.constant.Category;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.container.rival.RivalInterval;
 import com.ww.play.PlayManager;
 import com.ww.play.communication.PlayCommunication;
@@ -49,7 +51,7 @@ public class PlayFlow {
         send();
     }
 
-    public synchronized void stopAfter() {
+    protected synchronized void stopAfter() {
         for (Disposable disposable : disposableMap.values()) {
             disposable.dispose();
         }
@@ -61,34 +63,25 @@ public class PlayFlow {
         afterIntroPhase();
     }
 
-    public synchronized PlayIntroState createIntroState() {
+    protected synchronized PlayIntroState createIntroState() {
         return new PlayIntroState(manager.getContainer());
     }
 
-    public synchronized void afterIntroPhase() {
+    protected synchronized void afterIntroPhase() {
         after(interval.getIntroInterval(), aLong -> endPhaseOrTaskPropsPhase());
     }
 
-    public synchronized void endPhaseOrTaskPropsPhase() {
+    protected synchronized void endPhaseOrTaskPropsPhase() {
         if (getContainer().isEnd()) {
             endPhase();
         } else if (getContainer().isRandomTaskProps()) {
             randomTaskPropsPhase();
         } else {
-            choosingTaskPropsPhase();
+            choosingTaskCategoryPhase();
         }
     }
 
-    public synchronized void surrenderAction(Long profileId) {
-        addStateAndSend(createSurrenderState(profileId));
-        manager.dispose();
-    }
-
-    protected synchronized PlaySurrenderState createSurrenderState(Long profileId) {
-        return new PlaySurrenderState(getContainer(), profileId);
-    }
-
-    public synchronized void endPhase() {
+    protected synchronized void endPhase() {
         addStateAndSend(createEndState());
         manager.dispose();
     }
@@ -97,34 +90,43 @@ public class PlayFlow {
         return new PlayEndState(getContainer());
     }
 
-    public synchronized void randomTaskPropsPhase() {
+    protected synchronized void randomTaskPropsPhase() {
         addStateAndSend(createRandomTaskPropsState());
         afterRandomTaskPropsPhase();
     }
 
     protected synchronized PlayRandomTaskPropsState createRandomTaskPropsState() {
-        return new PlayRandomTaskPropsState(getContainer(), interval.getRandomTaskPropsInterval());
+        return new PlayRandomTaskPropsState(getContainer());
     }
 
-    public synchronized void afterRandomTaskPropsPhase() {
+    protected synchronized void afterRandomTaskPropsPhase() {
         after(interval.getRandomTaskPropsInterval(), aLong -> preparingNextTaskPhase());
     }
 
-    public synchronized void choosingTaskPropsPhase() {
-        addStateAndSend(createChoosingTaskPropsState());
-        afterChoosingTaskPropsPhase();
+    protected synchronized void choosingTaskCategoryPhase() {
+        addStateAndSend(createChoosingTaskCategoryState());
+        afterChoosingTaskPropsPhase(interval.getChoosingTaskCategoryInterval());
     }
 
-    protected synchronized PlayChoosingTaskPropsState createChoosingTaskPropsState() {
-        return new PlayChoosingTaskPropsState(getContainer(), interval.getChoosingTaskPropsInterval());
+    protected synchronized PlayChoosingTaskCategoryState createChoosingTaskCategoryState() {
+        return new PlayChoosingTaskCategoryState(getContainer(), interval.getChoosingTaskCategoryInterval());
     }
 
-    public synchronized void afterChoosingTaskPropsPhase() {
-        after(interval.getChoosingTaskPropsInterval(), aLong -> choosingTaskPropsTimeoutPhase());
+    protected synchronized void choosingTaskDifficultyPhase() {
+        addStateAndSend(createChoosingTaskDifficultyState());
+        afterChoosingTaskPropsPhase(interval.getChoosingTaskDifficultyInterval());
     }
 
-    public synchronized void choosingTaskPropsTimeoutPhase() {
-        addStateAndSend(createChoosingTaskPropsTimeoutState());
+    protected synchronized PlayChoosingTaskDifficultyState createChoosingTaskDifficultyState() {
+        return new PlayChoosingTaskDifficultyState(getContainer(), interval.getChoosingTaskDifficultyInterval());
+    }
+
+    protected synchronized void afterChoosingTaskPropsPhase(long interval) {
+        after(interval, aLong -> choosingTaskPropsTimeoutPhase());
+    }
+
+    protected synchronized void choosingTaskPropsTimeoutPhase() {
+        addState(createChoosingTaskPropsTimeoutState());
         afterChoosingTaskPropsTimeoutPhase();
     }
 
@@ -132,37 +134,37 @@ public class PlayFlow {
         return new PlayChoosingTaskPropsTimeoutState(getContainer());
     }
 
-    public synchronized void afterChoosingTaskPropsTimeoutPhase() {
+    protected synchronized void afterChoosingTaskPropsTimeoutPhase() {
         preparingNextTaskPhase();
     }
 
-    public synchronized void preparingNextTaskPhase() {
+    protected synchronized void preparingNextTaskPhase() {
         addStateAndSend(createPreparingNextTaskState());
         afterPreparingNextTaskPhase();
     }
 
     protected synchronized PlayPreparingNextTaskState createPreparingNextTaskState() {
-        return new PlayPreparingNextTaskState(getContainer());
+        return new PlayPreparingNextTaskState(getContainer(), interval.getPreparingNextTaskInterval());
     }
 
-    public synchronized void afterPreparingNextTaskPhase() {
+    protected synchronized void afterPreparingNextTaskPhase() {
         after(interval.getPreparingNextTaskInterval(), aLong -> answeringPhase());
     }
 
-    public synchronized void answeringPhase() {
+    protected synchronized void answeringPhase() {
         addStateAndSend(createAnsweringState());
         afterAnsweringPhase();
     }
 
     protected synchronized PlayAnsweringState createAnsweringState() {
-        return new PlayAnsweringState(getContainer());
+        return new PlayAnsweringState(getContainer(), interval.getAnsweringInterval());
     }
 
-    public synchronized void afterAnsweringPhase() {
+    protected synchronized void afterAnsweringPhase() {
         after(interval.getAnsweringInterval(), aLong -> answeringTimeoutPhase());
     }
 
-    public synchronized void answeringTimeoutPhase() {
+    protected synchronized void answeringTimeoutPhase() {
         addStateAndSend(createAnsweringTimeoutState());
         afterAnsweringTimeoutPhase();
     }
@@ -171,43 +173,63 @@ public class PlayFlow {
         return new PlayAnsweringTimeoutState(getContainer());
     }
 
-    public synchronized void afterAnsweringTimeoutPhase() {
+    protected synchronized void afterAnsweringTimeoutPhase() {
         after(interval.getAnsweringTimeoutInterval(), aLong -> endPhaseOrTaskPropsPhase());
     }
 
-    public synchronized void answeredAction(Long profileId, Map<String, Object> content) {
+    public synchronized void surrenderAction(Long profileId) {
         stopAfter();
-        addStateAndSend(createAnsweredState(profileId, content));
+        addStateAndSend(createSurrenderState(profileId));
+        manager.dispose();
+    }
+
+    protected synchronized PlaySurrenderState createSurrenderState(Long profileId) {
+        return new PlaySurrenderState(getContainer(), profileId);
+    }
+
+    public synchronized void answeredAction(Long profileId, Long answerId) {
+        stopAfter();
+        addStateAndSend(createAnsweredState(profileId, answerId));
         afterAnsweredAction();
     }
 
-    protected synchronized PlayAnsweredState createAnsweredState(Long profileId, Map<String, Object> content) {
-        return new PlayAnsweredState(getContainer(), profileId, content);
+    protected synchronized PlayAnsweredState createAnsweredState(Long profileId, Long answerId) {
+        return new PlayAnsweredState(getContainer(), profileId, answerId);
     }
 
     public synchronized void afterAnsweredAction() {
         after(interval.getAnsweredInterval(), aLong -> endPhaseOrTaskPropsPhase());
     }
 
-    public synchronized void chosenTaskPropsAction(Long profileId, Map<String, Object> content) {
-        PlayChosenTaskPropsState state = createChosenTaskPropsState(profileId, content);
-        addState(state);
-        if (state.isDone()) {
-            stopAfter();
-            send();
-            afterChosenTaskPropsAction();
-        }
+    public synchronized void chosenTaskCategoryAction(Category category) {
+        stopAfter();
+        addState(createChosenTaskCategoryState(category));
+        afterChosenTaskCategoryAction();
     }
 
-    protected synchronized PlayChosenTaskPropsState createChosenTaskPropsState(Long profileId, Map<String, Object> content) {
-        return new PlayChosenTaskPropsState(getContainer(), profileId, content);
+    protected synchronized PlayChosenTaskCategoryState createChosenTaskCategoryState(Category category) {
+        return new PlayChosenTaskCategoryState(getContainer(), category);
     }
 
-    public synchronized void afterChosenTaskPropsAction() {
+    protected synchronized void afterChosenTaskCategoryAction() {
+        choosingTaskDifficultyPhase();
+    }
+
+    public synchronized void chosenTaskDifficultyAction(DifficultyLevel difficultyLevel) {
+        stopAfter();
+        addState(createChosenTaskDifficultyState(difficultyLevel));
+        afterChosenTaskDifficultyAction();
+    }
+
+    protected synchronized PlayChosenTaskDifficultyState createChosenTaskDifficultyState(DifficultyLevel difficultyLevel) {
+        return new PlayChosenTaskDifficultyState(getContainer(), difficultyLevel);
+    }
+
+    protected synchronized void afterChosenTaskDifficultyAction() {
         preparingNextTaskPhase();
     }
 
-    private synchronized void after(long interval, Consumer<Long> onNext) {
+    protected synchronized void after(long interval, Consumer<Long> onNext) {
         String uuid = randomUniqueUUID(disposableMap);
         disposableMap.put(uuid, prepareFlowable(interval).subscribe(aLong -> {
             synchronized (this) {

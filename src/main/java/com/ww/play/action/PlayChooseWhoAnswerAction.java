@@ -1,6 +1,7 @@
 package com.ww.play.action;
 
 import com.ww.model.constant.rival.RivalStatus;
+import com.ww.model.container.rival.war.WarTeam;
 import com.ww.play.PlayManager;
 import com.ww.play.flow.PlayWarFlow;
 
@@ -14,9 +15,20 @@ public class PlayChooseWhoAnswerAction extends PlayAction {
 
     @Override
     public void perform(Long profileId, Map<String, Object> content) {
-        if (!container.isStatusEquals(RivalStatus.CHOOSING_WHO_ANSWER)) {
+        if ((!container.isStatusEquals(RivalStatus.CHOOSING_WHO_ANSWER)
+                && !container.isStatusEquals(RivalStatus.CHOSEN_WHO_ANSWER))
+                || !content.containsKey("activeIndex")) {
             return;
         }
-        ((PlayWarFlow) flow).choosingWhoAnswerPhase();
+        try {
+            Integer activeIndex = (Integer) content.get("activeIndex");
+            WarTeam warTeam = (WarTeam) container.getTeams().team(profileId);
+            if (warTeam.isChosenActiveIndex()
+                    || !warTeam.getPresentIndexes().contains(activeIndex)) {
+                return;
+            }
+            ((PlayWarFlow) flow).chosenWhoAnswerAction(profileId, activeIndex);
+        } catch (Exception e) {
+        }
     }
 }

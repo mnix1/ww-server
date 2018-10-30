@@ -7,8 +7,7 @@ import com.ww.play.container.PlayContainer;
 
 import java.util.Map;
 
-import static com.ww.play.modelfiller.PlayModelFiller.fillModelNextInterval;
-import static com.ww.play.modelfiller.PlayModelFiller.fillModelTaskMeta;
+import static com.ww.play.modelfiller.PlayModelFiller.*;
 
 public class PlayPreparingNextTaskState extends PlayState {
     private long interval;
@@ -28,6 +27,7 @@ public class PlayPreparingNextTaskState extends PlayState {
         Map<String, Object> model = super.prepareModel(team, opponentTeam);
         fillModelNextInterval(model, container);
         fillModelTaskMeta(model, container);
+        fillModelNullAnswered(model);
         return model;
     }
 }

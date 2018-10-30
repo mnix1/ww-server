@@ -26,7 +26,7 @@ public class WarTeam extends RivalTeam {
         this.teamSkills = teamSkills;
     }
 
-    public void setActiveTeamMemberPresentToFalse() {
+    public void disableActiveTeamMember() {
         teamMembers.get(activeIndex).setPresent(false);
     }
 

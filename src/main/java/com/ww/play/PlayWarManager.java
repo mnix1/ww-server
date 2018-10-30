@@ -1,6 +1,7 @@
 package com.ww.play;
 
 import com.ww.helper.TeamHelper;
+import com.ww.model.container.rival.RivalResult;
 import com.ww.model.container.rival.RivalTeams;
 import com.ww.model.container.rival.init.RivalTwoInit;
 import com.ww.model.container.rival.war.TeamMember;
@@ -19,7 +20,7 @@ import java.util.List;
 public class PlayWarManager extends PlayManager {
     public PlayWarManager(RivalTwoInit init, RivalWarService rivalService) {
         super(rivalService);
-        this.container = new PlayWarContainer(init, prepareTeams(init), prepareTasks(), prepareTimeouts());
+        this.container = new PlayWarContainer(init, prepareTeams(init), prepareTasks(), prepareTimeouts(), prepareDecisions(), prepareResult());
         this.flow = new PlayWarFlow(this, new WarInterval());
         this.communication = new PlayWarCommunication(this);
     }

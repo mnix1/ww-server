@@ -25,5 +25,6 @@ public class PlayPrepareNextTaskCommand extends PlayCommand {
     @Override
     public void execute() {
         container.getTasks().prepareNext(category, difficultyLevel, language);
+        container.getDecisions().defaultAnswered();
     }
 }

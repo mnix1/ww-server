@@ -26,7 +26,6 @@ public class TaskDTO {
     private String textContentPolish;
     private String textContentEnglish;
     private List<AnswerDTO> answers;
-    private Integer points;
 
     public TaskDTO(Question question) {
         this.id = question.getId();
@@ -41,14 +40,12 @@ public class TaskDTO {
         this.textContentPolish = question.getTextContentPolish();
         this.textContentEnglish = question.getTextContentEnglish();
         this.answers = question.getAnswers().stream().map(AnswerDTO::new).collect(Collectors.toList());
-        this.points = this.difficultyLevel.getPoints();
     }
 
     public TaskDTO(TaskDTO taskDTO) {
         this.id = taskDTO.getId();
         this.category = taskDTO.getCategory();
         this.difficultyLevel = taskDTO.getDifficultyLevel();
-        this.points = this.difficultyLevel.getPoints();
     }
 
     public TaskMetaDTO toTaskMeta(){

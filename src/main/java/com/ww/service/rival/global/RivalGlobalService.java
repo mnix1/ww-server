@@ -4,6 +4,7 @@ import com.ww.model.container.ProfileConnection;
 import com.ww.model.container.rival.RivalModel;
 import com.ww.model.entity.outside.rival.Rival;
 import com.ww.play.PlayManager;
+import com.ww.play.container.PlayContainer;
 import com.ww.repository.outside.rival.RivalRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,8 +45,13 @@ public class RivalGlobalService {
     }
 
     @Transactional
-    public void store(RivalModel rivalModel) {
-        Rival rival = new Rival(rivalModel.getType(), rivalModel.getImportance(), rivalModel.getCreatorProfile(), rivalModel.getOpponentProfile(), rivalModel.getDraw(), rivalModel.getWinner());
+    public void store(PlayContainer container) {
+        Rival rival = new Rival(container.getInit().getType(),
+                container.getInit().getImportance(),
+                container.getInit().getCreatorProfile(),
+                container.getInit().getOpponentProfile(),
+                container.getResult().getDraw(),
+                container.getResult().getWinner());
         save(rival);
     }
 

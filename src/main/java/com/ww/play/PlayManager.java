@@ -1,5 +1,7 @@
 package com.ww.play;
 
+import com.ww.model.container.rival.RivalDecisions;
+import com.ww.model.container.rival.RivalResult;
 import com.ww.model.container.rival.RivalTasks;
 import com.ww.model.container.rival.RivalTimeouts;
 import com.ww.play.communication.PlayCommunication;
@@ -30,6 +32,14 @@ public class PlayManager {
         return new RivalTimeouts();
     }
 
+    protected RivalDecisions prepareDecisions() {
+        return new RivalDecisions();
+    }
+
+    protected RivalResult prepareResult() {
+        return new RivalResult();
+    }
+
     public ProfileConnectionService getProfileConnectionService() {
         return rivalService.getProfileConnectionService();
     }
@@ -47,5 +57,6 @@ public class PlayManager {
     }
 
     public void dispose() {
+        rivalService.disposeManager(this);
     }
 }

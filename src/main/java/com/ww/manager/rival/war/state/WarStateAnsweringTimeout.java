@@ -24,7 +24,7 @@ public class WarStateAnsweringTimeout extends WarState {
         manager.getModel().stopWisieAnswerManager();
         for (RivalTeam team : manager.getModel().getTeams().getTeams()) {
             WarTeam warTeam = (WarTeam) team;
-            warTeam.setActiveTeamMemberPresentToFalse();
+            warTeam.disableActiveTeamMember();
         }
         manager.getModel().setStatus(RivalStatus.ANSWERING_TIMEOUT);
         manager.getModel().getTeams().forEachTeam(team -> {

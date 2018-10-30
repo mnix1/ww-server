@@ -26,6 +26,10 @@ public class RivalTasks {
         return questions.get(currentTaskIndex);
     }
 
+    public Long correctAnswerId(){
+        return question().findCorrectAnswerId();
+    }
+
     public TaskDTO task() {
         return taskDTOs.get(currentTaskIndex);
     }
@@ -35,20 +39,20 @@ public class RivalTasks {
         nextTaskIndex++;
     }
 
-    public void prepareNext(Language language) {
-        prepareNext(Category.random(), DifficultyLevel.random(), language);
-    }
-
     public void prepareNext(Category category, DifficultyLevel difficulty, Language language) {
         nextTaskIndex();
-        questions.add(rivalService.prepareQuestion(category, difficulty, language));
-        taskDTOs.add(rivalService.prepareTaskDTO(question()));
+        Question question = rivalService.prepareQuestion(category, difficulty, language);
+        question.setId((long) nextTaskIndex);
+        question.initAnswerIds();
+        questions.add(question);
+        taskDTOs.add(rivalService.prepareTaskDTO(question));
     }
 
-    public TaskMetaDTO simpleNextTaskMeta(){
+    public TaskMetaDTO simpleNextTaskMeta() {
         return new TaskMetaDTO(nextTaskIndex);
     }
-    public TaskMetaDTO taskMeta(){
+
+    public TaskMetaDTO taskMeta() {
         return new TaskMetaDTO(task());
     }
 }

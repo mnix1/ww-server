@@ -66,8 +66,8 @@ public abstract class RivalModel {
             RivalTwoInit c = (RivalTwoInit) init;
             this.creatorProfile = c.getCreatorProfile();
             this.opponentProfile = c.getOpponentProfile();
-            teams.getOpponentMap().put(creatorProfile.getId(), opponentProfile.getId());
-            teams.getOpponentMap().put(opponentProfile.getId(), creatorProfile.getId());
+//            teams.getOpponentMap().put(creatorProfile.getId(), opponentProfile.getId());
+//            teams.getOpponentMap().put(opponentProfile.getId(), creatorProfile.getId());
             if (importance == RivalImportance.RANKING) {
                 this.season = c.getSeason();
                 this.creatorProfileSeason = c.getCreatorProfileSeason();
@@ -131,7 +131,7 @@ public abstract class RivalModel {
     }
 
     public int getCurrentTaskPoints() {
-        return taskDTOs.get(currentTaskIndex).getPoints();
+        return taskDTOs.get(currentTaskIndex).getDifficultyLevel().getPoints();
     }
 
     public void increaseCurrentTaskIndex() {

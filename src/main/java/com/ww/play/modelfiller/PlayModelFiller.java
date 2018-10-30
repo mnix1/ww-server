@@ -49,6 +49,28 @@ public class PlayModelFiller {
     }
 
     public static void fillModelChoosingTaskPropsTag(Map<String, Object> model, PlayContainer container) {
-        model.put("choosingTaskPropsTag", container.findChoosingTaskPropsTag());
+        model.put("choosingTaskPropsTag", container.findChoosingTaskPropsProfile().getTag());
+    }
+
+    public static void fillModelChosenCategory(Map<String, Object> model, PlayContainer container) {
+        model.put("chosenCategory", container.getDecisions().getCategory());
+        model.put("isChosenCategory", container.getDecisions().isChosenCategory());
+    }
+
+    public static void fillModelChosenDifficulty(Map<String, Object> model, PlayContainer container) {
+        model.put("chosenDifficulty", container.getDecisions().getDifficultyLevel());
+        model.put("isChosenDifficulty", container.getDecisions().isChosenDifficulty());
+    }
+
+    public static void fillModelNullAnswered(Map<String, Object> model) {
+        model.put("correctAnswerId", null);
+        model.put("markedAnswerId", null);
+        model.put("meAnswered", null);
+    }
+
+    public static void fillModelAnswered(Map<String, Object> model, PlayContainer container, RivalTeam team) {
+        model.put("correctAnswerId", container.getTasks().question().findCorrectAnswerId());
+        model.put("markedAnswerId", container.getDecisions().getChosenAnswerId());
+        model.put("meAnswered", team.getProfileId().equals(container.getDecisions().getAnsweredProfileId()));
     }
 }

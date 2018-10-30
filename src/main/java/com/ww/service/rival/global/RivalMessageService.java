@@ -21,7 +21,8 @@ public class RivalMessageService {
     private static Logger logger = LoggerFactory.getLogger(RivalMessageService.class);
 
     public static final String ANSWER = "ANSWER";
-    public static final String CHOOSE_TASK_PROPS = "CHOOSE_TASK_PROPS";
+    public static final String CHOOSE_TASK_CATEGORY = "CHOOSE_TASK_CATEGORY";
+    public static final String CHOOSE_TASK_DIFFICULTY = "CHOOSE_TASK_DIFFICULTY";
     public static final String SURRENDER = "SURRENDER";
     public static final String CHOOSE_WHO_ANSWER = "CHOOSE_WHO_ANSWER";
     public static final String HINT = "HINT";

@@ -16,6 +16,7 @@ import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileCampaignWisie;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
+import com.ww.play.PlayManager;
 import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.rival.season.RivalProfileSeasonService;
 import com.ww.service.rival.season.RivalSeasonService;
@@ -47,39 +48,39 @@ public class RivalCampaignWarService extends RivalWarService {
     }
 
     @Override
-    public void disposeManager(RivalManager manager) {
+    public void disposeManager(PlayManager manager) {
         super.disposeManager(manager);
-        CampaignWarManager campaignWarManager = (CampaignWarManager) manager;
-        Long profileId = manager.getModel().getCreatorProfile().getId();
-        ProfileCampaign profileCampaign = campaignService.active(profileId).orElseThrow(IllegalArgumentException::new);
-        campaignService.setProfileCampaignWisies(profileCampaign);
-        if (profileCampaign.getProfile().equals(manager.getModel().getWinner())) {
-            profileCampaign.setPhase(profileCampaign.getPhase() + 1);
-            profileCampaign.updateResourceGains();
-            if (profileCampaign.getPhase() >= profileCampaign.getCampaign().getPhases()) {
-                profileCampaign.setStatus(ProfileCampaignStatus.FINISHED);
-                profileCampaign.setBookGain(campaignService.getBookGainForCampaign(profileCampaign.getCampaign()));
-            }
-            List<TeamMember> teamMembers = ((WarTeam) campaignWarManager.getTeam(profileId)).getTeamMembers();
-            for (TeamMember teamMember : teamMembers) {
-                if (teamMember.isWisie()) {
-                    for (ProfileCampaignWisie wisie : profileCampaign.getWisies()) {
-                        if (wisie.equals(((WarWisie) teamMember.getContent()).getWisie())) {
-                            wisie.setDisabled(!teamMember.isPresent());
-                        }
-                    }
-                } else {
-                    profileCampaign.setPresent(teamMember.isPresent());
-                }
-            }
-        } else {
-            profileCampaign.setStatus(ProfileCampaignStatus.FINISHED);
-            for (ProfileCampaignWisie wisie : profileCampaign.getWisies()) {
-                wisie.setDisabled(true);
-            }
-            profileCampaign.setPresent(false);
-        }
-        campaignService.save(profileCampaign);
+//        CampaignWarManager campaignWarManager = (CampaignWarManager) manager;
+//        Long profileId = manager.getModel().getCreatorProfile().getId();
+//        ProfileCampaign profileCampaign = campaignService.active(profileId).orElseThrow(IllegalArgumentException::new);
+//        campaignService.setProfileCampaignWisies(profileCampaign);
+//        if (profileCampaign.getProfile().equals(manager.getModel().getWinner())) {
+//            profileCampaign.setPhase(profileCampaign.getPhase() + 1);
+//            profileCampaign.updateResourceGains();
+//            if (profileCampaign.getPhase() >= profileCampaign.getCampaign().getPhases()) {
+//                profileCampaign.setStatus(ProfileCampaignStatus.FINISHED);
+//                profileCampaign.setBookGain(campaignService.getBookGainForCampaign(profileCampaign.getCampaign()));
+//            }
+//            List<TeamMember> teamMembers = ((WarTeam) campaignWarManager.getTeam(profileId)).getTeamMembers();
+//            for (TeamMember teamMember : teamMembers) {
+//                if (teamMember.isWisie()) {
+//                    for (ProfileCampaignWisie wisie : profileCampaign.getWisies()) {
+//                        if (wisie.equals(((WarWisie) teamMember.getContent()).getWisie())) {
+//                            wisie.setDisabled(!teamMember.isPresent());
+//                        }
+//                    }
+//                } else {
+//                    profileCampaign.setPresent(teamMember.isPresent());
+//                }
+//            }
+//        } else {
+//            profileCampaign.setStatus(ProfileCampaignStatus.FINISHED);
+//            for (ProfileCampaignWisie wisie : profileCampaign.getWisies()) {
+//                wisie.setDisabled(true);
+//            }
+//            profileCampaign.setPresent(false);
+//        }
+//        campaignService.save(profileCampaign);
     }
 
     @Override

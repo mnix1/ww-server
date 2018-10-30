@@ -19,7 +19,7 @@ public abstract class RivalFlow extends AbstractFlow  {
         RivalStatus status = getManager().getModel().getStatus();
         if (id.equals(ANSWER) && status == RivalStatus.ANSWERING) {
             answer(profileId, content);
-        } else if (id.equals(CHOOSE_TASK_PROPS) && status == RivalStatus.CHOOSING_TASK_PROPS) {
+        } else if (id.equals(CHOOSE_TASK_CATEGORY) && status == RivalStatus.CHOOSING_TASK_CATEGORY) {
             chosenTaskProps(profileId, content);
         } else if (id.equals(SURRENDER) && status != RivalStatus.CLOSED && status != RivalStatus.DISPOSED) {
             surrender(profileId);

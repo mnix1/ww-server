@@ -5,6 +5,6 @@ import com.ww.play.container.PlayContainer;
 
 public class PlayChoosingTaskPropsTimeoutState extends PlayState {
     public PlayChoosingTaskPropsTimeoutState(PlayContainer container) {
-        super(container, RivalStatus.CHOOSING_TASK_PROPS);
+        super(container, RivalStatus.CHOOSING_TASK_TIMEOUT);
     }
 }

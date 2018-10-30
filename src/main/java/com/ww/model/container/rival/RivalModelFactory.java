@@ -134,7 +134,7 @@ public abstract class RivalModelFactory {
             fillModelClosed(model, team);
         } else if (getModel().status == RivalStatus.CHOOSING_TASK_PROPS) {
             fillModelChoosingTaskProps(model, team, false);
-        } else if (getModel().status == RivalStatus.CHOOSING_TASK_PROPS_TIMEOUT) {
+        } else if (getModel().status == RivalStatus.CHOOSING_TASK_TIMEOUT) {
             fillModelChoosingTaskPropsTimeout(model);
         } else if (getModel().status == RivalStatus.CHOSEN_TASK_PROPS) {
             fillModelChosenTaskProps(model);
