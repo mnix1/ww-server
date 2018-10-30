@@ -4,6 +4,7 @@ import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarWisie;
 import com.ww.model.container.rival.war.WisieTeamMember;
 import com.ww.model.container.rival.war.WisorTeamMember;
+import com.ww.model.dto.rival.TeamMemberDTO;
 import com.ww.model.dto.social.ExtendedProfileDTO;
 import com.ww.model.dto.wisie.WarProfileWisieDTO;
 import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
@@ -13,6 +14,7 @@ import com.ww.model.entity.outside.wisie.ProfileCampaignWisie;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TeamHelper {
     public static final Long BOT_PROFILE_ID = -1L;
@@ -54,5 +56,9 @@ public class TeamHelper {
             }
         }
         return presentIndexes;
+    }
+
+    public static List<TeamMemberDTO> mapToTeamDTOs(List<TeamMember> teamMembers) {
+        return teamMembers.stream().map(TeamMemberDTO::new).collect(Collectors.toList());
     }
 }

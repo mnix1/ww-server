@@ -4,6 +4,7 @@ import com.ww.helper.TeamHelper;
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.container.rival.RivalModel;
 import com.ww.model.container.rival.RivalTeam;
+import com.ww.model.container.rival.RivalTeams;
 import com.ww.model.container.rival.init.RivalTwoPlayerInit;
 import com.ww.model.container.rival.war.*;
 import com.ww.model.container.rival.war.skill.WarTeamSkills;
@@ -28,7 +29,7 @@ public class WarManager extends RivalManager {
 
     public WarManager(RivalTwoPlayerInit init, RivalWarService rivalService) {
         this.rivalService = rivalService;
-        WarTeams teams = new WarTeams();
+        RivalTeams teams = new RivalTeams();
         this.model = new WarModel(init, teams);
         this.modelFactory = new WarModelFactory(this.model);
         this.interval = new WarInterval();
@@ -38,19 +39,19 @@ public class WarManager extends RivalManager {
         List<ProfileWisie> creatorWisies = rivalService.getProfileWisies(creator);
         List<TeamMember> teamMembers = TeamHelper.prepareTeamMembers(creator, creatorWisies);
         WarTeam creatorTeam = new WarTeam(creator, teamMembers, new WarTeamSkills(1, teamMembers));
-        teams.addProfile(creator.getId(), creatorTeam);
 
         Profile opponent = init.getOpponentProfile();
         List<ProfileWisie> opponentWisies = rivalService.getProfileWisies(opponent);
         List<TeamMember> opponentTeamMembers = TeamHelper.prepareTeamMembers(opponent, opponentWisies);
-        WarTeam opponentTeam = new WarTeam(opponent,opponentTeamMembers , new WarTeamSkills(1, opponentTeamMembers));
-        teams.addProfile(opponent.getId(), opponentTeam);
+        WarTeam opponentTeam = new WarTeam(opponent, opponentTeamMembers, new WarTeamSkills(1, opponentTeamMembers));
+        teams.addTeams(creatorTeam, opponentTeam);
     }
 
     @Override
     public boolean isEnd() {
-        for (WarTeam team : this.getModel().getTeams().getTeams()) {
-            if (!team.isAnyPresentMember()) {
+        for (RivalTeam rivalTeam : this.getModel().getTeams().getTeams()) {
+            WarTeam warTeam = (WarTeam) rivalTeam;
+            if (!warTeam.isAnyPresentMember()) {
                 return true;
             }
         }

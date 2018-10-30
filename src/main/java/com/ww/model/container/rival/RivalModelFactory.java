@@ -29,7 +29,7 @@ public abstract class RivalModelFactory {
         model.put("type", getModel().type.name());
         model.put("profile", prepareProfile(team.getProfile()));
         if (getModel().isOpponent()) {
-            model.put("opponent", prepareProfile(getModel().getTeams().opponentTeam(team.getProfileId()).getProfile()));
+            model.put("opponent", prepareProfile(getModel().getTeams().opponent(team.getProfileId()).getProfile()));
         }
     }
 

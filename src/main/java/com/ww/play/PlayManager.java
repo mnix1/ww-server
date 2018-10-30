@@ -1,27 +1,36 @@
 package com.ww.play;
 
-import com.ww.model.container.rival.init.RivalInit;
-import com.ww.play.command.PlayCommand;
+import com.ww.play.communication.PlayCommunication;
+import com.ww.play.container.PlayContainer;
+import com.ww.play.flow.PlayFlow;
 import com.ww.service.RivalService;
-import com.ww.websocket.message.Message;
+import com.ww.service.social.ProfileConnectionService;
+import lombok.Getter;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class PlayManager {
+@Getter
+public class PlayManager {
     protected RivalService rivalService;
-    protected RivalInit initContainer;
-    protected PlayModel model;
+    protected PlayContainer container;
     protected PlayFlow flow;
-    protected Map<String, PlayCommand> commandMap = new ConcurrentHashMap<>();
     protected PlayCommunication communication;
 
-    protected PlayManager(RivalInit initContainer, RivalService rivalService) {
-        this.initContainer = initContainer;
+    protected PlayManager(RivalService rivalService) {
         this.rivalService = rivalService;
     }
 
-    public abstract Message getMessageContent();
+    public ProfileConnectionService getProfileConnectionService() {
+        return rivalService.getProfileConnectionService();
+    }
+
+    public void sendModelFromBeginning(Long profileId) {
+        communication.sendModelFromBeginning(profileId);
+    }
+
+    public boolean processMessage(Long profileId, Map<String, Object> content) {
+        return communication.processMessage(profileId, content);
+    }
 
     public void start() {
         flow.introPhase();
@@ -29,14 +38,4 @@ public abstract class PlayManager {
 
     public void dispose() {
     }
-
-    public synchronized boolean processMessage(Long profileId, Map<String, Object> content) {
-        String id = (String) content.get("id");
-        if (commandMap.containsKey(id)) {
-            commandMap.get(id).execute(profileId, content);
-            return true;
-        }
-        return false;
-    }
-
 }

@@ -2,6 +2,7 @@ package com.ww.manager.rival.campaign;
 
 import com.ww.helper.TeamHelper;
 import com.ww.manager.rival.war.WarManager;
+import com.ww.model.container.rival.RivalTeams;
 import com.ww.model.container.rival.campaign.CampaignWarFlow;
 import com.ww.model.container.rival.campaign.CampaignWarModel;
 import com.ww.model.container.rival.init.RivalCampaignWarInit;
@@ -29,7 +30,7 @@ public class CampaignWarManager extends WarManager {
     public CampaignWarManager(RivalCampaignWarInit init, RivalCampaignWarService rivalService) {
         this.rivalService = rivalService;
         this.profileCampaign = init.getProfileCampaign();
-        WarTeams teams = new WarTeams();
+        RivalTeams teams = new RivalTeams();
         this.model = new CampaignWarModel(init, teams);
         this.modelFactory = new WarModelFactory(this.model);
         this.interval = new WarInterval();
@@ -38,11 +39,10 @@ public class CampaignWarManager extends WarManager {
         Profile creator = init.getCreatorProfile();
         List<TeamMember> teamMembers = prepareTeamMembers(creator, profileCampaign);
         WarTeam creatorTeam = new WarTeam(creator, teamMembers, new WarTeamSkills(1, teamMembers));
-        teams.addProfile(creator.getId(), creatorTeam);
 
         Profile opponent = init.getOpponentProfile();
         WarTeam opponentTeam = new WarTeam(opponent, prepareTeamMembers(opponent, profileCampaign), new EmptyTeamSkills());
-        teams.addProfile(opponent.getId(), opponentTeam);
+        teams.addTeams(creatorTeam, opponentTeam);
     }
 
     protected List<TeamMember> prepareTeamMembers(Profile profile, ProfileCampaign profileCampaign) {

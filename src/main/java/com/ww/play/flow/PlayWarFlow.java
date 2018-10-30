@@ -1,16 +1,16 @@
-package com.ww.play.war;
+package com.ww.play.flow;
 
 import com.ww.model.container.rival.RivalInterval;
-import com.ww.play.PlayFlow;
 import com.ww.play.PlayManager;
-import com.ww.play.PlayModel;
-import com.ww.play.war.state.PlayChoosingWhoAnswerState;
-import com.ww.play.war.state.PlayChosenWhoAnswerState;
+import com.ww.play.state.PlayChoosingWhoAnswerState;
+import com.ww.play.state.PlayChosenWhoAnswerState;
+import com.ww.play.state.PlayIntroState;
+import com.ww.play.state.war.PlayWarIntroState;
 
 public class PlayWarFlow extends PlayFlow {
 
-    public PlayWarFlow(PlayManager manager, PlayModel model, RivalInterval interval) {
-        super(manager, model, interval);
+    public PlayWarFlow(PlayManager manager,RivalInterval interval) {
+        super(manager, interval);
     }
 
     @Override
@@ -18,8 +18,13 @@ public class PlayWarFlow extends PlayFlow {
         choosingWhoAnswerPhase();
     }
 
+    @Override
+    public synchronized PlayIntroState createIntroState() {
+        return new PlayWarIntroState(manager.getContainer());
+    }
+
     public synchronized void choosingWhoAnswerPhase() {
-        model.add(new PlayChoosingWhoAnswerState());
+        getContainer().addState(new PlayChoosingWhoAnswerState(getContainer()));
         afterChoosingWhoAnswerPhase();
     }
 
@@ -29,7 +34,7 @@ public class PlayWarFlow extends PlayFlow {
 
     public synchronized void chosenWhoAnswerAction() {
         stopAfter();
-        model.add(new PlayChosenWhoAnswerState());
+        getContainer().addState(new PlayChosenWhoAnswerState(getContainer()));
         afterChosenWhoAnswerAction();
     }
 

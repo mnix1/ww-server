@@ -23,7 +23,7 @@ public class WarModelFactory extends RivalModelFactory {
     }
 
     protected WarTeam opponentTeam(RivalTeam team) {
-        return this.model.getTeams().opponentTeam(team.getProfileId());
+        return (WarTeam) this.model.getTeams().opponent(team.getProfileId());
     }
 
     public void fillModelBasic(Map<String, Object> model, RivalTeam team) {

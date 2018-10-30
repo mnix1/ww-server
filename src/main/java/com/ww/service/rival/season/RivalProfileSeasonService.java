@@ -104,7 +104,7 @@ public class RivalProfileSeasonService {
             if (!rivalGlobalService.contains(profileSeason.getProfile().getId())) {
                 return true;
             }
-            return rivalGlobalService.get(profileSeason.getProfile().getId()).getModel().getImportance() != RivalImportance.RANKING;
+            return rivalGlobalService.get(profileSeason.getProfile().getId()).getContainer().getInit().getImportance() != RivalImportance.RANKING;
         }).collect(Collectors.toList());
     }
 

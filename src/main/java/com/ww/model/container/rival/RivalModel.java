@@ -100,7 +100,7 @@ public abstract class RivalModel {
     public void setWinnerLooser(Profile winner) {
         this.draw = false;
         this.winner = winner;
-        this.looser = getTeams().opponentTeam(winner.getId()).getProfile();
+        this.looser = getTeams().opponent(winner.getId()).getProfile();
     }
 
     public boolean isRanking() {

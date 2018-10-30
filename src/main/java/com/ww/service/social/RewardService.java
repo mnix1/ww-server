@@ -34,7 +34,7 @@ public class RewardService {
         }
         Map<String, Object> model = new HashMap<>();
         reward.writeToMap(model);
-        profileConnectionService.send(model, Message.REWARD, profile.getId());
+        profileConnectionService.send(profile.getId(), model, Message.REWARD);
     }
 
 //    public void addRewardFromSeason(Profile profile, Grade grade) {

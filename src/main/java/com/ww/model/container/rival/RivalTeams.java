@@ -1,25 +1,47 @@
 package com.ww.model.container.rival;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 @Getter
-public abstract class RivalTeams {
-    private final Map<Long, Long> opponentMap = new HashMap<>();
+@NoArgsConstructor
+public class RivalTeams {
+    private final Map<Long, RivalTeam> teamMap = new ConcurrentHashMap<>();
+    private final Map<Long, Long> opponentMap = new ConcurrentHashMap<>();
 
-    public abstract Map<Long, ? extends RivalTeam> getTeamMap();
+    public RivalTeams(RivalTeam team1, RivalTeam team2) {
+        addTeams(team1, team2);
+    }
 
-    public abstract RivalTeam team(Long profileId);
+    public void addTeams(RivalTeam team1, RivalTeam team2) {
+        teamMap.put(team1.getProfileId(), team1);
+        teamMap.put(team2.getProfileId(), team2);
+        opponentMap.put(team1.getProfileId(), team2.getProfileId());
+        opponentMap.put(team2.getProfileId(), team1.getProfileId());
+    }
 
-    public abstract RivalTeam opponentTeam(Long profileId);
+    public RivalTeam team(Long profileId) {
+        return teamMap.get(profileId);
+    }
 
-    public void forEachTeam(Consumer<? super RivalTeam> action){
+    public RivalTeam opponent(Long profileId) {
+        return team(opponentMap.get(profileId));
+    }
+
+    public RivalTeam opponent(RivalTeam team) {
+        return team(opponentMap.get(team.getProfileId()));
+    }
+
+    public void forEachTeam(Consumer<? super RivalTeam> action) {
         getTeams().parallelStream().forEach(action);
     }
 
-    public abstract Collection<? extends RivalTeam> getTeams();
+    public Collection<RivalTeam> getTeams() {
+        return teamMap.values();
+    }
 }

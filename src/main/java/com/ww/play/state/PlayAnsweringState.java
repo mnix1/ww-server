@@ -1,10 +1,10 @@
 package com.ww.play.state;
 
 import com.ww.model.constant.rival.RivalStatus;
-import com.ww.play.PlayState;
+import com.ww.play.container.PlayContainer;
 
 public class PlayAnsweringState extends PlayState {
-    public PlayAnsweringState() {
-        this.status = RivalStatus.ANSWERING;
+    public PlayAnsweringState(PlayContainer container) {
+        super(container, RivalStatus.ANSWERING);
     }
 }

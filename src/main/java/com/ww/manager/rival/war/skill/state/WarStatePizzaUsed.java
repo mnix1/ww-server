@@ -16,8 +16,8 @@ public class WarStatePizzaUsed extends WarState {
 
     @Override
     protected void processVoid() {
-        WarTeam team =(WarTeam)  manager.getTeam(profileId);
-        WarTeam opponentTeam = manager.getModel().getTeams().opponentTeam(profileId);
+        WarTeam team = (WarTeam) manager.getTeam(profileId);
+        WarTeam opponentTeam = (WarTeam) manager.getModel().getTeams().opponent(profileId);
         if (!team.getTeamSkills().canUse(Skill.PIZZA)
                 || !opponentTeam.getActiveTeamMember().isWisie() || !opponentTeam.istActiveTeamMemberPresent()
                 || !team.getActiveTeamMember().isWisie() || !team.istActiveTeamMemberPresent()) {

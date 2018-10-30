@@ -74,7 +74,7 @@ public abstract class RivalManager implements Describe {
     }
 
     public void send(Map<String, Object> model, Message message, Long profileId) {
-        rivalService.getProfileConnectionService().send(model, message, profileId);
+        rivalService.getProfileConnectionService().send(profileId, model, message);
     }
 
     public boolean isClosed() {

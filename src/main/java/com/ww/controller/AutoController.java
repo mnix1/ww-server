@@ -2,6 +2,7 @@ package com.ww.controller;
 
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.dto.social.ExtendedProfileDTO;
+import com.ww.play.PlayManager;
 import com.ww.service.rival.war.RivalWarService;
 import com.ww.service.social.AuthProfileService;
 import com.ww.service.social.ProfileService;
@@ -44,8 +45,11 @@ public class AutoController {
     @RequestMapping(value = "/correctAnswer", method = RequestMethod.GET)
     public Map<String, Object> correctAnswer() {
         Map<String, Object> model = new HashMap<>();
-        RivalManager manager = rivalWarService.getRivalGlobalService().get(profileService.getProfileId());
-        model.put("id", manager.getModel().findCurrentCorrectAnswerId());
+        PlayManager manager = rivalWarService.getRivalGlobalService().get(profileService.getProfileId());
+        if(true){
+            throw new IllegalArgumentException();
+        }
+//        model.put("id", manager.getModel().findCurrentCorrectAnswerId());
         return putSuccessCode(model);
     }
 }

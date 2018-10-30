@@ -1,18 +1,19 @@
 package com.ww.play.command;
 
-import com.ww.play.PlayFlow;
-import com.ww.play.PlayModel;
+import com.ww.play.flow.PlayFlow;
+import com.ww.play.container.PlayContainer;
+import com.ww.play.PlayManager;
 
 import java.util.Map;
 
 public class PlayCommand {
 
-    protected PlayModel model;
+    protected PlayContainer container;
     protected PlayFlow flow;
 
-    public PlayCommand(PlayModel model, PlayFlow flow) {
-        this.model = model;
-        this.flow = flow;
+    public PlayCommand(PlayManager manager) {
+        this.container = manager.getContainer();
+        this.flow = manager.getFlow();
     }
 
     public void execute(Long profileId, Map<String, Object> content) {

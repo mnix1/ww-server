@@ -1,12 +1,11 @@
 package com.ww.service.rival.global;
 
-import com.ww.manager.rival.RivalManager;
 import com.ww.model.container.ProfileConnection;
 import com.ww.model.container.rival.RivalModel;
 import com.ww.model.entity.outside.rival.Rival;
+import com.ww.play.PlayManager;
 import com.ww.repository.outside.rival.RivalRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 @AllArgsConstructor
 public class RivalGlobalService {
-    private static final Map<Long, RivalManager> managerMap = new ConcurrentHashMap<>();
+    private static final Map<Long, PlayManager> managerMap = new ConcurrentHashMap<>();
 
     private final RivalRepository rivalRepository;
 
@@ -24,11 +23,11 @@ public class RivalGlobalService {
         managerMap.remove(profileId);
     }
 
-    public void put(Long profileId, RivalManager manager) {
+    public void put(Long profileId, PlayManager manager) {
         managerMap.put(profileId, manager);
     }
 
-    public RivalManager get(Long profileId) {
+    public PlayManager get(Long profileId) {
         return managerMap.get(profileId);
     }
 
@@ -40,8 +39,8 @@ public class RivalGlobalService {
         if (!contains(profileConnection.getProfileId())) {
             return;
         }
-        RivalManager manager = managerMap.get(profileConnection.getProfileId());
-        manager.send(manager.actualModel(profileConnection.getProfileId()), manager.getMessageContent(), profileConnection.getProfileId());
+        PlayManager manager = managerMap.get(profileConnection.getProfileId());
+        manager.sendModelFromBeginning(profileConnection.getProfileId());
     }
 
     @Transactional

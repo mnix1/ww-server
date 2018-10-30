@@ -4,6 +4,8 @@ import com.ww.helper.TeamHelper;
 import com.ww.manager.rival.war.WarManager;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
+import com.ww.model.container.rival.RivalTeam;
+import com.ww.model.container.rival.RivalTeams;
 import com.ww.model.container.rival.campaign.CampaignWarModel;
 import com.ww.model.container.rival.challenge.ChallengeFlow;
 import com.ww.model.container.rival.challenge.ChallengeInterval;
@@ -11,9 +13,7 @@ import com.ww.model.container.rival.challenge.ChallengeModelFactory;
 import com.ww.model.container.rival.challenge.ChallengeTeam;
 import com.ww.model.container.rival.init.RivalChallengeInit;
 import com.ww.model.container.rival.war.TeamMember;
-import com.ww.model.container.rival.war.WarModelFactory;
 import com.ww.model.container.rival.war.WarTeam;
-import com.ww.model.container.rival.war.WarTeams;
 import com.ww.model.container.rival.war.skill.EmptyTeamSkills;
 import com.ww.model.container.rival.war.skill.WarTeamSkills;
 import com.ww.model.dto.rival.task.TaskDTO;
@@ -39,7 +39,7 @@ public class ChallengeManager extends WarManager {
         this.rivalService = rivalService;
         this.challengeProfile = init.getChallengeProfile();
         this.challengePhases = init.getChallengePhases();
-        WarTeams teams = new WarTeams();
+        RivalTeams teams = new RivalTeams();
         this.model = new CampaignWarModel(init, teams);
         this.modelFactory = new ChallengeModelFactory(this.model);
         this.interval = new ChallengeInterval(this.model);
@@ -49,17 +49,17 @@ public class ChallengeManager extends WarManager {
         List<ProfileWisie> creatorWisies = rivalService.getProfileWisies(creator);
         List<TeamMember> teamMembers = TeamHelper.prepareTeamMembers(creator, creatorWisies);
         ChallengeTeam creatorTeam = new ChallengeTeam(creator, teamMembers, new WarTeamSkills(1, teamMembers));
-        teams.addProfile(creator.getId(), creatorTeam);
 
         Profile opponent = init.getOpponentProfile();
         ChallengeTeam opponentTeam = new ChallengeTeam(opponent, TeamHelper.prepareTeamMembers(Arrays.asList(challengePhases.get(0).getPhaseWisie())), new EmptyTeamSkills());
-        teams.addProfile(opponent.getId(), opponentTeam);
+        teams.addTeams(creatorTeam, opponentTeam);
     }
 
     @Override
     public boolean isEnd() {
-        for (WarTeam team : getModel().getTeams().getTeams()) {
-            if (!isBotProfile(team.getProfile()) && !team.isAnyPresentMember()) {
+        for (RivalTeam team : getModel().getTeams().getTeams()) {
+            WarTeam warTeam = (WarTeam) team;
+            if (!isBotProfile(team.getProfile()) && !warTeam.isAnyPresentMember()) {
                 return true;
             }
         }

@@ -19,7 +19,7 @@ public class StateSurrender extends State {
     protected void processVoid() {
         manager.getModel().setStatus(RivalStatus.CLOSED);
         if (manager.getModel().isOpponent()) {
-            manager.getModel().setWinnerLooser(manager.getModel().getTeams().opponentTeam(profileId).getProfile());
+            manager.getModel().setWinnerLooser(manager.getModel().getTeams().opponent(profileId).getProfile());
             manager.getModel().setResigned(true);
         } else {
             manager.getModel().setDraw(true);

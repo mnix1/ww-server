@@ -79,7 +79,7 @@ public class ProfileConnectionService {
         return findByProfileId(profileId).map(profileConnection -> profileConnection.sendMessage(msg)).orElse(false);
     }
 
-    public void send(Map<String, Object> model, Message message, Long profileId) {
+    public void send( Long profileId, Map<String, Object> model, Message message) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             sendMessage(profileId, new MessageDTO(message, objectMapper.writeValueAsString(model)).toString());

@@ -5,6 +5,7 @@ import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.model.constant.wisie.WisieAnswerAction;
 import com.ww.model.container.rival.RivalModel;
 import com.ww.model.container.rival.RivalTeam;
+import com.ww.model.container.rival.RivalTeams;
 import com.ww.model.container.rival.init.RivalInit;
 import com.ww.model.dto.rival.TeamMemberDTO;
 import com.ww.model.entity.outside.rival.task.Question;
@@ -26,9 +27,9 @@ public class WarModel extends RivalModel {
 
     private List<WisieAnswerManager> wisieAnswerManagers = new ArrayList<>();
     private Instant endChoosingWhoAnswerDate;
-    private WarTeams teams;
+    private RivalTeams teams;
 
-    public WarModel(RivalInit init, WarTeams teams) {
+    public WarModel(RivalInit init, RivalTeams teams) {
         super(init, teams);
         this.teams = teams;
     }
@@ -36,7 +37,8 @@ public class WarModel extends RivalModel {
     public void updateWisieAnswerManagers(WarManager manager) {
         Question question = findCurrentQuestion();
         wisieAnswerManagers = new CopyOnWriteArrayList<>();
-        for (WarTeam warTeam : teams.getTeams()) {
+        for (RivalTeam rivalTeam : teams.getTeams()) {
+            WarTeam warTeam = (WarTeam) rivalTeam;
             TeamMember teamMember = warTeam.getActiveTeamMember();
             if (teamMember.isWisie()) {
                 wisieAnswerManagers.add(new WisieAnswerManager((WisieTeamMember) teamMember, warTeam, question, manager));
@@ -85,7 +87,7 @@ public class WarModel extends RivalModel {
     }
 
     public String findChoosingTaskPropsTag() {
-        List<WarTeam> profileContainers = new ArrayList<>(this.getTeams().getTeams());
+        List<WarTeam> profileContainers = this.getTeams().getTeams().stream().map(team -> (WarTeam) team).collect(Collectors.toList());
         if (profileContainers.size() < 2) {
             return null;
         }

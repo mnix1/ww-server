@@ -20,11 +20,11 @@ public class WarStateAnswered extends WarState {
         this.content = content;
     }
 
-    protected void updateTeamPresent(){
+    protected void updateTeamPresent() {
         WarTeam team = (WarTeam) manager.getTeam(profileId);
         if (manager.getModel().isOpponent()) {
             if (isAnswerCorrect) {
-                team = manager.getModel().getTeams().opponentTeam(team.getProfileId());
+                team = (WarTeam) manager.getModel().getTeams().opponent(team.getProfileId());
             }
             team.setActiveTeamMemberPresentToFalse();
         } else if (!isAnswerCorrect) {
