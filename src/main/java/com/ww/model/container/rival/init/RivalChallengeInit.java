@@ -12,7 +12,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class RivalChallengeInit extends RivalTwoPlayerInit {
+public class RivalChallengeInit extends RivalTwoInit {
     private ChallengeProfile challengeProfile;
     private List<ChallengePhase> challengePhases;
 

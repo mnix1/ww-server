@@ -1,7 +1,8 @@
 package com.ww.model.container.rival.init;
 
+import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.RivalImportance;
-import com.ww.model.constant.rival.RivalPlayer;
+import com.ww.model.constant.rival.RivalGroup;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.entity.outside.rival.season.ProfileSeason;
 import com.ww.model.entity.outside.rival.season.Season;
@@ -16,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class RivalTwoPlayerInit implements RivalInit {
+public class RivalTwoInit implements RivalInit {
     private RivalType type;
     private RivalImportance importance;
     private Profile creatorProfile;
@@ -24,17 +25,38 @@ public class RivalTwoPlayerInit implements RivalInit {
     private Season season;
     private ProfileSeason creatorProfileSeason;
     private ProfileSeason opponentProfileSeason;
+    private Language commonLanguage;
 
-    public RivalTwoPlayerInit(RivalType type, RivalImportance importance, Profile creatorProfile, Profile opponentProfile) {
+    public RivalTwoInit(RivalType type, RivalImportance importance, Profile creatorProfile, Profile opponentProfile) {
         this.type = type;
         this.importance = importance;
         this.creatorProfile = creatorProfile;
         this.opponentProfile = opponentProfile;
+        this.commonLanguage = prepareCommonLanguage();
+    }
+
+    public ProfileSeason getProfileSeasons(Long profileId) {
+        if (creatorProfile.getId().equals(profileId)) {
+            return creatorProfileSeason;
+        }
+        return opponentProfileSeason;
+    }
+
+    protected Language prepareCommonLanguage() {
+        Language creatorLanguage = creatorProfile.getLanguage();
+        Language opponentLanguage = opponentProfile.getLanguage();
+        if (creatorLanguage == opponentLanguage) {
+            return creatorLanguage;
+        }
+        if (opponentLanguage == Language.NONE) {
+            return creatorLanguage;
+        }
+        return Language.NO_COMMON;
     }
 
     @Override
-    public RivalPlayer getPlayer() {
-        return RivalPlayer.TWO;
+    public RivalGroup getPlayer() {
+        return RivalGroup.TWO;
     }
 
     @Override

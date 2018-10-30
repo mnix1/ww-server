@@ -1,18 +1,18 @@
-package com.ww.play.command;
+package com.ww.play.action;
 
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.play.PlayManager;
 
 import java.util.Map;
 
-public class PlayChooseTaskPropsCommand extends PlayCommand {
+public class PlayChooseTaskPropsAction extends PlayAction {
 
-    public PlayChooseTaskPropsCommand(PlayManager manager) {
+    public PlayChooseTaskPropsAction(PlayManager manager) {
         super(manager);
     }
 
     @Override
-    public void execute(Long profileId, Map<String, Object> content) {
+    public void perform(Long profileId, Map<String, Object> content) {
         if (!container.isStatusEquals(RivalStatus.CHOOSING_TASK_PROPS)) {
             return;
         }

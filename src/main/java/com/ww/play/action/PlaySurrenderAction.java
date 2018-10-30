@@ -1,18 +1,18 @@
-package com.ww.play.command;
+package com.ww.play.action;
 
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.play.PlayManager;
 
 import java.util.Map;
 
-public class PlaySurrenderCommand extends PlayCommand {
+public class PlaySurrenderAction extends PlayAction {
 
-    public PlaySurrenderCommand(PlayManager manager) {
+    public PlaySurrenderAction(PlayManager manager) {
         super(manager);
     }
 
     @Override
-    public void execute(Long profileId, Map<String, Object> content) {
+    public void perform(Long profileId, Map<String, Object> content) {
         if (container.isStatusEquals(RivalStatus.CLOSED) || container.isStatusEquals(RivalStatus.DISPOSED)) {
             return;
         }

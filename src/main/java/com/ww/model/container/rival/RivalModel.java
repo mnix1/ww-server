@@ -3,8 +3,8 @@ package com.ww.model.container.rival;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.*;
 import com.ww.model.container.rival.init.RivalInit;
-import com.ww.model.container.rival.init.RivalOnePlayerInit;
-import com.ww.model.container.rival.init.RivalTwoPlayerInit;
+import com.ww.model.container.rival.init.RivalOneInit;
+import com.ww.model.container.rival.init.RivalTwoInit;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.season.ProfileSeason;
 import com.ww.model.entity.outside.rival.season.Season;
@@ -62,8 +62,8 @@ public abstract class RivalModel {
     protected RivalModel(RivalInit init, RivalTeams teams) {
         this.type = init.getType();
         this.importance = init.getImportance();
-        if (init.getPlayer() == RivalPlayer.TWO) {
-            RivalTwoPlayerInit c = (RivalTwoPlayerInit) init;
+        if (init.getPlayer() == RivalGroup.TWO) {
+            RivalTwoInit c = (RivalTwoInit) init;
             this.creatorProfile = c.getCreatorProfile();
             this.opponentProfile = c.getOpponentProfile();
             teams.getOpponentMap().put(creatorProfile.getId(), opponentProfile.getId());
@@ -73,8 +73,8 @@ public abstract class RivalModel {
                 this.creatorProfileSeason = c.getCreatorProfileSeason();
                 this.opponentProfileSeason = c.getOpponentProfileSeason();
             }
-        } else if (init.getPlayer() == RivalPlayer.ONE) {
-            RivalOnePlayerInit c = (RivalOnePlayerInit) init;
+        } else if (init.getPlayer() == RivalGroup.ONE) {
+            RivalOneInit c = (RivalOneInit) init;
             this.creatorProfile = c.getCreatorProfile();
         }
     }

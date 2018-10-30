@@ -2,10 +2,9 @@ package com.ww.manager.rival.battle;
 
 import com.ww.manager.rival.RivalManager;
 import com.ww.model.container.rival.RivalInterval;
-import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.RivalTeams;
 import com.ww.model.container.rival.battle.*;
-import com.ww.model.container.rival.init.RivalTwoPlayerInit;
+import com.ww.model.container.rival.init.RivalTwoInit;
 import com.ww.service.rival.battle.RivalBattleService;
 import com.ww.websocket.message.Message;
 import lombok.Getter;
@@ -20,7 +19,7 @@ public class BattleManager extends RivalManager {
     public RivalInterval interval;
     public BattleFlow flow;
 
-    public BattleManager(RivalTwoPlayerInit init, RivalBattleService rivalService) {
+    public BattleManager(RivalTwoInit init, RivalBattleService rivalService) {
         this.rivalService = rivalService;
         RivalTeams teams = new RivalTeams();
         this.model = new BattleModel(init, teams);

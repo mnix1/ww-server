@@ -2,18 +2,24 @@ package com.ww.play.state;
 
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.container.rival.RivalTeam;
+import com.ww.play.command.PlayCommand;
 import com.ww.play.container.PlayContainer;
 import lombok.Getter;
 
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import static com.ww.play.modelfiller.PlayModelFiller.fillModelStatus;
 
 @Getter
 public abstract class PlayState {
     protected PlayContainer container;
+    protected List<PlayCommand> commands = new CopyOnWriteArrayList<>();
     protected Map<Long, Map<String, Object>> models = new ConcurrentHashMap<>();
 
     protected RivalStatus status;
@@ -24,12 +30,25 @@ public abstract class PlayState {
         this.status = status;
     }
 
-    public void process() {
+    public void initCommands(){
     }
+
+    public void execute() {
+        for (PlayCommand command : commands) {
+            command.execute();
+        }
+    }
+
+    public void revoke() {
+        for (int i = commands.size() - 1; i >= 0; i--) {
+            commands.get(i).revoke();
+        }
+    }
+
 
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = new HashMap<>();
-        model.put("status", status);
+        fillModelStatus(model, status);
         return model;
     }
 

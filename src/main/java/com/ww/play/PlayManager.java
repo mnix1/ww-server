@@ -1,5 +1,7 @@
 package com.ww.play;
 
+import com.ww.model.container.rival.RivalTasks;
+import com.ww.model.container.rival.RivalTimeouts;
 import com.ww.play.communication.PlayCommunication;
 import com.ww.play.container.PlayContainer;
 import com.ww.play.flow.PlayFlow;
@@ -18,6 +20,14 @@ public class PlayManager {
 
     protected PlayManager(RivalService rivalService) {
         this.rivalService = rivalService;
+    }
+
+    protected RivalTasks prepareTasks() {
+        return new RivalTasks(rivalService);
+    }
+
+    protected RivalTimeouts prepareTimeouts() {
+        return new RivalTimeouts();
     }
 
     public ProfileConnectionService getProfileConnectionService() {

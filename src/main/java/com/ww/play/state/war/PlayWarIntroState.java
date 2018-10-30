@@ -7,7 +7,7 @@ import com.ww.play.state.PlayIntroState;
 
 import java.util.Map;
 
-import static com.ww.helper.TeamHelper.mapToTeamDTOs;
+import static com.ww.play.modelfiller.PlayWarModelFiller.*;
 
 public class PlayWarIntroState extends PlayIntroState {
     public PlayWarIntroState(PlayContainer container) {
@@ -19,15 +19,9 @@ public class PlayWarIntroState extends PlayIntroState {
         Map<String, Object> model = super.prepareModel(team, opponentTeam);
         WarTeam warTeam = (WarTeam) team;
         WarTeam warOpponentTeam = (WarTeam) opponentTeam;
-
-        model.put("presentIndexes", warTeam.getPresentIndexes());
-        model.put("opponentPresentIndexes", warOpponentTeam.getPresentIndexes());
-
-        model.put("skills", warTeam.getTeamSkills().getSkills());
-        model.put("opponentSkills", warOpponentTeam.getTeamSkills().getSkills());
-
-        model.put("team", mapToTeamDTOs(warTeam.getTeamMembers()));
-        model.put("opponentTeam", mapToTeamDTOs(warOpponentTeam.getTeamMembers()));
+        fillModelPresentIndexes(model, warTeam, warOpponentTeam);
+        fillModelSkills(model, warTeam, warOpponentTeam);
+        fillModelTeams(model, warTeam, warOpponentTeam);
         return model;
     }
 }

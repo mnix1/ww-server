@@ -2,14 +2,12 @@ package com.ww.manager.rival.war;
 
 import com.ww.helper.TeamHelper;
 import com.ww.manager.rival.RivalManager;
-import com.ww.model.container.rival.RivalModel;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.RivalTeams;
-import com.ww.model.container.rival.init.RivalTwoPlayerInit;
+import com.ww.model.container.rival.init.RivalTwoInit;
 import com.ww.model.container.rival.war.*;
 import com.ww.model.container.rival.war.skill.WarTeamSkills;
 import com.ww.model.entity.outside.social.Profile;
-import com.ww.model.entity.outside.wisie.OwnedWisie;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
 import com.ww.service.rival.war.RivalWarService;
 import com.ww.websocket.message.Message;
@@ -27,7 +25,7 @@ public class WarManager extends RivalManager {
     protected WarInterval interval;
     protected WarFlow flow;
 
-    public WarManager(RivalTwoPlayerInit init, RivalWarService rivalService) {
+    public WarManager(RivalTwoInit init, RivalWarService rivalService) {
         this.rivalService = rivalService;
         RivalTeams teams = new RivalTeams();
         this.model = new WarModel(init, teams);

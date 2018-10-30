@@ -1,8 +1,8 @@
 package com.ww.service.rival.init;
 
 import com.ww.model.container.ProfileConnection;
-import com.ww.model.container.rival.init.RivalOnePlayerInit;
-import com.ww.model.container.rival.init.RivalTwoPlayerInit;
+import com.ww.model.container.rival.init.RivalOneInit;
+import com.ww.model.container.rival.init.RivalTwoInit;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.social.ProfileConnectionService;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,7 +29,7 @@ public class RivalInitRandomOpponentJobService {
 
     @Scheduled(fixedRate = RIVAL_INIT_JOB_RATE)
     private synchronized void maybeInitRival() {
-        Map<Long, RivalOnePlayerInit> waitingForRivalProfiles = rivalInitRandomOpponentService.getWaitingForRivalProfiles();
+        Map<Long, RivalOneInit> waitingForRivalProfiles = rivalInitRandomOpponentService.getWaitingForRivalProfiles();
         if (waitingForRivalProfiles.isEmpty()) {
 //            logger.debug("No waiting for rival profiles");
             return;
@@ -39,8 +38,8 @@ public class RivalInitRandomOpponentJobService {
 //            logger.debug("Only one waiting for rival profile");
             return;
         }
-        Collection<RivalOnePlayerInit> waitingContainers = waitingForRivalProfiles.values();
-        RivalOnePlayerInit waitingContainer = waitingContainers.stream().findFirst().get();
+        Collection<RivalOneInit> waitingContainers = waitingForRivalProfiles.values();
+        RivalOneInit waitingContainer = waitingContainers.stream().findFirst().get();
         Profile profile = waitingContainer.getCreatorProfile();
         Optional<ProfileConnection> profileConnection = profileConnectionService.findByProfileId(profile.getId());
         if (!profileConnection.isPresent()) {
@@ -52,7 +51,7 @@ public class RivalInitRandomOpponentJobService {
                 .filter(container -> container.getImportance() == waitingContainer.getImportance()
                         && container.getType() == waitingContainer.getType()
                         && !container.getCreatorProfile().equals(profile))
-                .map(RivalOnePlayerInit::getCreatorProfile)
+                .map(RivalOneInit::getCreatorProfile)
                 .collect(Collectors.toList());
         if (availableOpponentProfiles.size() < 1) {
             return;
@@ -67,7 +66,7 @@ public class RivalInitRandomOpponentJobService {
         logger.trace("Matched profiles {} and {}, now creating rival warManager", profile.getId(), opponent.getId());
         waitingForRivalProfiles.remove(profile.getId());
         waitingForRivalProfiles.remove(opponent.getId());
-        RivalTwoPlayerInit rival = new RivalTwoPlayerInit(waitingContainer.getType(), waitingContainer.getImportance(), profile, opponent);
+        RivalTwoInit rival = new RivalTwoInit(waitingContainer.getType(), waitingContainer.getImportance(), profile, opponent);
         rivalRunService.run(rival);
         maybeInitRival();
         return;

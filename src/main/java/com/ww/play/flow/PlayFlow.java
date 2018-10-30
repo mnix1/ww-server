@@ -36,7 +36,8 @@ public class PlayFlow {
 
     protected synchronized void addState(PlayState state) {
         getContainer().addState(state);
-        state.process();
+        state.initCommands();
+        state.execute();
     }
 
     protected synchronized void send() {
@@ -102,7 +103,7 @@ public class PlayFlow {
     }
 
     protected synchronized PlayRandomTaskPropsState createRandomTaskPropsState() {
-        return new PlayRandomTaskPropsState(getContainer());
+        return new PlayRandomTaskPropsState(getContainer(), interval.getRandomTaskPropsInterval());
     }
 
     public synchronized void afterRandomTaskPropsPhase() {
@@ -115,7 +116,7 @@ public class PlayFlow {
     }
 
     protected synchronized PlayChoosingTaskPropsState createChoosingTaskPropsState() {
-        return new PlayChoosingTaskPropsState(getContainer());
+        return new PlayChoosingTaskPropsState(getContainer(), interval.getChoosingTaskPropsInterval());
     }
 
     public synchronized void afterChoosingTaskPropsPhase() {

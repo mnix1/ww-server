@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RivalCampaignWarInit extends RivalTwoPlayerInit {
+public class RivalCampaignWarInit extends RivalTwoInit {
     private ProfileCampaign profileCampaign;
 
     public RivalCampaignWarInit(RivalType type, RivalImportance importance, Profile creatorProfile, Profile opponentProfile, ProfileCampaign profileCampaign) {

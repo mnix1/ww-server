@@ -1,7 +1,7 @@
 package com.ww.model.container.rival.init;
 
 import com.ww.model.constant.rival.RivalImportance;
-import com.ww.model.constant.rival.RivalPlayer;
+import com.ww.model.constant.rival.RivalGroup;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
@@ -14,20 +14,20 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class RivalOnePlayerInit implements RivalInit {
+public class RivalOneInit implements RivalInit {
     private RivalType type;
     private RivalImportance importance;
     private Profile creatorProfile;
 
-    public RivalOnePlayerInit(RivalType type, RivalImportance importance, Profile creatorProfile) {
+    public RivalOneInit(RivalType type, RivalImportance importance, Profile creatorProfile) {
         this.type = type;
         this.importance = importance;
         this.creatorProfile = creatorProfile;
     }
 
     @Override
-    public RivalPlayer getPlayer() {
-        return RivalPlayer.ONE;
+    public RivalGroup getPlayer() {
+        return RivalGroup.ONE;
     }
 
     @Override

@@ -2,10 +2,10 @@ package com.ww.play.communication;
 
 import com.ww.model.container.rival.RivalTeams;
 import com.ww.play.PlayManager;
-import com.ww.play.command.PlayAnswerCommand;
-import com.ww.play.command.PlayChooseTaskPropsCommand;
-import com.ww.play.command.PlayCommand;
-import com.ww.play.command.PlaySurrenderCommand;
+import com.ww.play.action.PlayAnswerAction;
+import com.ww.play.action.PlayChooseTaskPropsAction;
+import com.ww.play.action.PlayAction;
+import com.ww.play.action.PlaySurrenderAction;
 import com.ww.play.container.PlayContainer;
 import com.ww.play.state.PlayState;
 import com.ww.service.social.ProfileConnectionService;
@@ -20,21 +20,21 @@ import static com.ww.service.rival.global.RivalMessageService.*;
 
 public abstract class PlayCommunication {
     protected PlayManager manager;
-    protected Map<String, PlayCommand> commandMap = new ConcurrentHashMap<>();
+    protected Map<String, PlayAction> actionMap = new ConcurrentHashMap<>();
 
     protected PlayCommunication(PlayManager manager) {
         this.manager = manager;
-        initCommandMap();
+        initActionMap();
     }
 
     protected PlayContainer getContainer() {
         return manager.getContainer();
     }
 
-    protected void initCommandMap() {
-        commandMap.put(SURRENDER, new PlaySurrenderCommand(manager));
-        commandMap.put(ANSWER, new PlayAnswerCommand(manager));
-        commandMap.put(CHOOSE_TASK_PROPS, new PlayChooseTaskPropsCommand(manager));
+    protected void initActionMap() {
+        actionMap.put(SURRENDER, new PlaySurrenderAction(manager));
+        actionMap.put(ANSWER, new PlayAnswerAction(manager));
+        actionMap.put(CHOOSE_TASK_PROPS, new PlayChooseTaskPropsAction(manager));
     }
 
     public void send() {
@@ -61,8 +61,8 @@ public abstract class PlayCommunication {
 
     public synchronized boolean processMessage(Long profileId, Map<String, Object> content) {
         String id = (String) content.get("id");
-        if (commandMap.containsKey(id)) {
-            commandMap.get(id).execute(profileId, content);
+        if (actionMap.containsKey(id)) {
+            actionMap.get(id).perform(profileId, content);
             return true;
         }
         return false;

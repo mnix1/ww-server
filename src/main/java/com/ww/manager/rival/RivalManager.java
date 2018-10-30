@@ -48,7 +48,7 @@ public abstract class RivalManager implements Describe {
 
     protected Language findQuestionLanguage() {
         Language creatorLanguage = getModel().getCreatorProfile().getLanguage();
-        Language opponentLanguage = getModel().getOpponentProfile() == null ? Language.NONE : getModel().getOpponentProfile().getLanguage();
+        Language opponentLanguage = getModel().getOpponentProfile().getLanguage();
         if (creatorLanguage == opponentLanguage) {
             return creatorLanguage;
         }

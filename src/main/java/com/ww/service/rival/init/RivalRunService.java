@@ -3,7 +3,7 @@ package com.ww.service.rival.init;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.rival.init.RivalInit;
-import com.ww.model.container.rival.init.RivalTwoPlayerInit;
+import com.ww.model.container.rival.init.RivalTwoInit;
 import com.ww.play.PlayManager;
 import com.ww.play.PlayWarManager;
 import com.ww.service.rival.battle.RivalBattleService;
@@ -40,22 +40,22 @@ public class RivalRunService {
     }
 
     public void addProfileSeasons(RivalInit initContainer) {
-        if (initContainer.getImportance() != RivalImportance.RANKING || !(initContainer instanceof RivalTwoPlayerInit)) {
+        if (initContainer.getImportance() != RivalImportance.RANKING || !(initContainer instanceof RivalTwoInit)) {
             return;
         }
-        rivalProfileSeasonService.addProfileSeasons((RivalTwoPlayerInit) initContainer);
+        rivalProfileSeasonService.addProfileSeasons((RivalTwoInit) initContainer);
     }
 
     private PlayManager createManager(RivalInit initContainer) {
         RivalType type = initContainer.getType();
         if (type == RivalType.WAR) {
-            return new PlayWarManager((RivalTwoPlayerInit) initContainer, rivalWarService);
+            return new PlayWarManager((RivalTwoInit) initContainer, rivalWarService);
         }
 //        if (type == RivalType.CAMPAIGN_WAR) {
 //            return new CampaignWarManager((RivalCampaignWarInit) initContainer, rivalCampaignWarService);
 //        }
 //        if (type == RivalType.BATTLE) {
-//            return new BattleManager((RivalTwoPlayerInit) initContainer, rivalBattleService);
+//            return new BattleManager((RivalTwoInit) initContainer, rivalBattleService);
 //        }
 //        if (type == RivalType.CHALLENGE) {
 //            return new ChallengeManager((RivalChallengeInit) initContainer, rivalChallengeService);

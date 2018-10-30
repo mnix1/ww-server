@@ -4,7 +4,7 @@ import com.ww.model.constant.Grade;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.rival.RivalModel;
-import com.ww.model.container.rival.init.RivalTwoPlayerInit;
+import com.ww.model.container.rival.init.RivalTwoInit;
 import com.ww.model.entity.outside.rival.season.ProfileSeason;
 import com.ww.model.entity.outside.rival.season.Season;
 import com.ww.model.entity.outside.rival.season.SeasonGrade;
@@ -13,7 +13,6 @@ import com.ww.model.entity.outside.social.ProfileMail;
 import com.ww.repository.outside.rival.season.ProfileSeasonRepository;
 import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.social.MailService;
-import com.ww.service.social.ProfileService;
 import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -51,7 +50,7 @@ public class RivalProfileSeasonService {
     }
 
     @Transactional
-    public void addProfileSeasons(RivalTwoPlayerInit init) {
+    public void addProfileSeasons(RivalTwoInit init) {
         Season season = rivalSeasonService.actual(init.getType());
         List<SeasonGrade> seasonGrades = rivalSeasonService.findSeasonGrades(season.getType());
         init.setSeason(season);

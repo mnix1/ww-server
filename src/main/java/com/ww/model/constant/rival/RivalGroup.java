@@ -1,6 +1,6 @@
 package com.ww.model.constant.rival;
 
-public enum RivalPlayer {
+public enum RivalGroup {
     ONE,
     TWO,
 }

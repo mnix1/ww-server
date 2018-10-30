@@ -51,7 +51,7 @@ public class TaskDTO {
         this.points = this.difficultyLevel.getPoints();
     }
 
-    public TaskDTO toTaskMeta(){
-        return new TaskDTO(this);
+    public TaskMetaDTO toTaskMeta(){
+        return new TaskMetaDTO(this);
     }
 }
