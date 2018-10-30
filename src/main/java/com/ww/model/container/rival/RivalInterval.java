@@ -34,11 +34,11 @@ public class RivalInterval {
     }
 
     public long getChoosingTaskCategoryInterval() {
-        return calculateInterval(10);
+        return calculateInterval(9);
     }
 
     public long getChoosingTaskDifficultyInterval() {
-        return calculateInterval(10);
+        return calculateInterval(8);
     }
 
     public long getChoosingTaskPropsInterval() {

@@ -26,7 +26,7 @@ public class RivalTasks {
         return questions.get(currentTaskIndex);
     }
 
-    public Long correctAnswerId(){
+    public Long correctAnswerId() {
         return question().findCorrectAnswerId();
     }
 
@@ -49,7 +49,7 @@ public class RivalTasks {
     }
 
     public TaskMetaDTO simpleNextTaskMeta() {
-        return new TaskMetaDTO(nextTaskIndex);
+        return new TaskMetaDTO(nextTaskIndex + 1);
     }
 
     public TaskMetaDTO taskMeta() {

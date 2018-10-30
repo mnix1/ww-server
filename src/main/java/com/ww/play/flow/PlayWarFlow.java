@@ -4,6 +4,7 @@ import com.ww.model.container.rival.RivalInterval;
 import com.ww.model.container.rival.war.WarInterval;
 import com.ww.play.PlayManager;
 import com.ww.play.state.PlayAnsweredState;
+import com.ww.play.state.PlayAnsweringTimeoutState;
 import com.ww.play.state.PlayIntroState;
 import com.ww.play.state.PlayPreparingNextTaskState;
 import com.ww.play.state.war.*;
@@ -27,6 +28,11 @@ public class PlayWarFlow extends PlayFlow {
     @Override
     protected synchronized PlayAnsweredState createAnsweredState(Long profileId, Long answerId) {
         return new PlayWarAnsweredState(getContainer(), profileId, answerId);
+    }
+
+    @Override
+    protected synchronized PlayAnsweringTimeoutState createAnsweringTimeoutState() {
+        return new PlayWarAnsweringTimeoutState(getContainer());
     }
 
     @Override

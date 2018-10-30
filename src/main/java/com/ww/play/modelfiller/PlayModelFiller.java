@@ -69,8 +69,12 @@ public class PlayModelFiller {
     }
 
     public static void fillModelAnswered(Map<String, Object> model, PlayContainer container, RivalTeam team) {
-        model.put("correctAnswerId", container.getTasks().question().findCorrectAnswerId());
+        fillModelCorrectAnswerId(model, container);
         model.put("markedAnswerId", container.getDecisions().getChosenAnswerId());
         model.put("meAnswered", team.getProfileId().equals(container.getDecisions().getAnsweredProfileId()));
+    }
+
+    public static void fillModelCorrectAnswerId(Map<String, Object> model, PlayContainer container) {
+        model.put("correctAnswerId", container.getTasks().question().findCorrectAnswerId());
     }
 }

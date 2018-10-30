@@ -2,6 +2,7 @@ package com.ww.play.state;
 
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.RivalStatus;
+import com.ww.play.command.PlayPrepareNextTaskCommand;
 import com.ww.play.command.PlaySetTaskDifficultyCommand;
 import com.ww.play.container.PlayContainer;
 
@@ -16,5 +17,6 @@ public class PlayChosenTaskDifficultyState extends PlayState {
     @Override
     public void initCommands() {
         commands.add(new PlaySetTaskDifficultyCommand(container, difficultyLevel));
+        commands.add(new PlayPrepareNextTaskCommand(container, container.getDecisions().getCategory(), container.getDecisions().getDifficultyLevel(), container.getInit().getCommonLanguage()));
     }
 }
