@@ -4,7 +4,7 @@ import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.play.command.PlaySetNextTimeoutCommand;
-import com.ww.play.command.war.PlaySetDefaultActiveIndexCommand;
+import com.ww.play.command.war.PlayWarSetDefaultActiveIndexCommand;
 import com.ww.play.container.PlayContainer;
 import com.ww.play.state.PlayState;
 
@@ -25,8 +25,12 @@ public class PlayWarChoosingWhoAnswerState extends PlayState {
 
     @Override
     public void initCommands() {
-        commands.add(new PlaySetDefaultActiveIndexCommand(container));
         commands.add(new PlaySetNextTimeoutCommand(container, interval));
+        initSetDefaultActiveIndexCommand();
+    }
+
+    protected void initSetDefaultActiveIndexCommand() {
+        commands.add(new PlayWarSetDefaultActiveIndexCommand(container));
     }
 
     @Override

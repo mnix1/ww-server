@@ -3,10 +3,7 @@ package com.ww.play.flow;
 import com.ww.model.container.rival.RivalInterval;
 import com.ww.model.container.rival.war.WarInterval;
 import com.ww.play.PlayManager;
-import com.ww.play.state.PlayAnsweredState;
-import com.ww.play.state.PlayAnsweringTimeoutState;
-import com.ww.play.state.PlayIntroState;
-import com.ww.play.state.PlayPreparingNextTaskState;
+import com.ww.play.state.*;
 import com.ww.play.state.war.*;
 
 public class PlayWarFlow extends PlayFlow {
@@ -51,9 +48,12 @@ public class PlayWarFlow extends PlayFlow {
     }
 
     protected synchronized void choosingWhoAnswerPhase() {
-        WarInterval warInterval = (WarInterval) interval;
-        addStateAndSend(new PlayWarChoosingWhoAnswerState(getContainer(), warInterval.getChoosingWhoAnswerInterval()));
+        addStateAndSend(createChoosingWhoAnswerState());
         afterChoosingWhoAnswerPhase();
+    }
+
+    protected PlayState createChoosingWhoAnswerState() {
+        return new PlayWarChoosingWhoAnswerState(getContainer(), ((WarInterval) interval).getChoosingWhoAnswerInterval());
     }
 
     protected synchronized void afterChoosingWhoAnswerPhase() {

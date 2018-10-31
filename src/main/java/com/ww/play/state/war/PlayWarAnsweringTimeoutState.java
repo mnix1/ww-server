@@ -2,7 +2,7 @@ package com.ww.play.state.war;
 
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.war.WarTeam;
-import com.ww.play.command.war.PlayDisableActiveTeamMemberCommand;
+import com.ww.play.command.war.PlayWarDisableActiveTeamMemberCommand;
 import com.ww.play.container.PlayContainer;
 import com.ww.play.state.PlayAnsweringTimeoutState;
 
@@ -20,7 +20,7 @@ public class PlayWarAnsweringTimeoutState extends PlayAnsweringTimeoutState {
     public void initCommands() {
         super.initCommands();
         for (RivalTeam team : container.getTeams().getTeams()) {
-            commands.add(new PlayDisableActiveTeamMemberCommand(container, team.getProfileId()));
+            commands.add(new PlayWarDisableActiveTeamMemberCommand(container, team.getProfileId()));
         }
     }
 

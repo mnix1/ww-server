@@ -17,10 +17,12 @@ import static com.ww.service.rival.global.RivalMessageService.*;
 
 public abstract class PlayCommunication {
     protected PlayManager manager;
+    private Message messageContent;
     protected Map<String, PlayAction> actionMap = new ConcurrentHashMap<>();
 
-    protected PlayCommunication(PlayManager manager) {
+    protected PlayCommunication(PlayManager manager, Message messageContent) {
         this.manager = manager;
+        this.messageContent = messageContent;
         initActionMap();
     }
 
@@ -48,17 +50,15 @@ public abstract class PlayCommunication {
     public void sendModelFromBeginning(Long profileId) {
         List<PlayState> states = getContainer().getStates();
         Map<String, Object> model = new HashMap<>();
-        for(PlayState state: states){
+        for (PlayState state : states) {
             state.getStoredModel(profileId).ifPresent(model::putAll);
         }
-//        for (int i = states.size() - 1; i >= 0; i--) {
-//            PlayState state = states.get(i);
-//            state.getStoredModel(profileId).ifPresent(model::putAll);
-//        }
         manager.getProfileConnectionService().send(profileId, model, getMessageContent());
     }
 
-    public abstract Message getMessageContent();
+    public Message getMessageContent() {
+        return messageContent;
+    }
 
     public synchronized boolean processMessage(Long profileId, Map<String, Object> content) {
         String id = (String) content.get("id");

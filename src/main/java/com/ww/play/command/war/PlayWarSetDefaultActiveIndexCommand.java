@@ -5,9 +5,9 @@ import com.ww.model.container.rival.war.WarTeam;
 import com.ww.play.command.PlayCommand;
 import com.ww.play.container.PlayContainer;
 
-public class PlaySetDefaultActiveIndexCommand extends PlayCommand {
+public class PlayWarSetDefaultActiveIndexCommand extends PlayCommand {
 
-    public PlaySetDefaultActiveIndexCommand(PlayContainer container) {
+    public PlayWarSetDefaultActiveIndexCommand(PlayContainer container) {
         super(container);
     }
 

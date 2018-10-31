@@ -6,9 +6,9 @@ import com.ww.model.container.rival.war.WarTeam;
 import com.ww.model.entity.outside.social.Profile;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.Optional;
+
+import static com.ww.helper.TeamHelper.*;
 
 public class PlayWarContainer extends PlayContainer {
     public PlayWarContainer(RivalTwoInit init, RivalTeams teams, RivalTasks tasks, RivalTimeouts timeouts, RivalDecisions decisions, RivalResult result) {
@@ -27,17 +27,24 @@ public class PlayWarContainer extends PlayContainer {
 
     @Override
     public boolean isRandomTaskProps() {
-        Set<Integer> presentMemberCounts = teams.getTeams().stream().map(team -> ((WarTeam) team).countPresentMembers()).collect(Collectors.toSet());
-        return presentMemberCounts.size() == 1;
+        return teamsHaveSameCountPresentMembers(teams.getTeams());
     }
 
     @Override
     public Profile findChoosingTaskPropsProfile() {
-        List<WarTeam> presentMemberCounts = teams.getTeams().stream().map(team -> ((WarTeam) team)).collect(Collectors.toList());
-        int minIndex = IntStream.range(0, presentMemberCounts.size())
-                .reduce((i, j) -> presentMemberCounts.get(i).countPresentMembers() > presentMemberCounts.get(j).countPresentMembers() ? j : i)
-                .getAsInt();
-        return presentMemberCounts.get(minIndex).getProfile();
+        List<WarTeam> warTeams = mapToWarTeams(teams.getTeams());
+        return teamWithLowestCountPresentMembers(warTeams).getProfile();
+    }
+
+    @Override
+    public Optional<Profile> findWinner() {
+        boolean isDraw = teamsHaveSameCountPresentMembers(teams.getTeams());
+        if (isDraw) {
+            return Optional.empty();
+        }
+        List<WarTeam> warTeams = mapToWarTeams(teams.getTeams());
+        WarTeam looser = teamWithLowestCountPresentMembers(warTeams);
+        return Optional.of(teams.opponent(looser).getProfile());
     }
 
 }

@@ -9,6 +9,7 @@ import com.ww.play.state.PlayState;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Getter
@@ -35,6 +36,8 @@ public abstract class PlayContainer {
     public abstract boolean isRandomTaskProps();
 
     public abstract Profile findChoosingTaskPropsProfile();
+
+    public abstract Optional<Profile> findWinner();
 
     public PlayState currentState() {
         return states.get(states.size() - 1);

@@ -3,11 +3,9 @@ package com.ww.play.state.war;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.war.WarTeam;
-import com.ww.play.command.war.PlaySetActiveIndexCommand;
+import com.ww.play.command.war.PlayWarSetActiveIndexCommand;
 import com.ww.play.container.PlayContainer;
 import com.ww.play.state.PlayState;
-
-import java.util.Map;
 
 public class PlayWarChosenWhoAnswerState extends PlayState {
     private Long profileId;
@@ -21,7 +19,7 @@ public class PlayWarChosenWhoAnswerState extends PlayState {
 
     @Override
     public void initCommands() {
-        commands.add(new PlaySetActiveIndexCommand(container, profileId, activeIndex));
+        commands.add(new PlayWarSetActiveIndexCommand(container, profileId, activeIndex));
     }
 
     public boolean isDone() {

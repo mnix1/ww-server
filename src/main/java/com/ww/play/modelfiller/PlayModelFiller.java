@@ -77,4 +77,13 @@ public class PlayModelFiller {
     public static void fillModelCorrectAnswerId(Map<String, Object> model, PlayContainer container) {
         model.put("correctAnswerId", container.getTasks().question().findCorrectAnswerId());
     }
+
+    public static void fillModelEnd(Map<String, Object> model, PlayContainer container) {
+        boolean isDraw = container.getResult().getDraw();
+        model.put("isDraw", isDraw);
+        if (!isDraw) {
+            model.put("winnerTag", container.getResult().getWinner().getTag());
+            model.put("resigned", container.getResult().getResigned());
+        }
+    }
 }

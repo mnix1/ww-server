@@ -4,17 +4,20 @@ import com.ww.model.container.rival.war.WarTeam;
 import com.ww.play.command.PlayCommand;
 import com.ww.play.container.PlayContainer;
 
-public class PlayDisableActiveTeamMemberCommand extends PlayCommand {
+public class PlayWarSetActiveIndexCommand extends PlayCommand {
     private Long profileId;
+    private int activeIndex;
 
-    public PlayDisableActiveTeamMemberCommand(PlayContainer container, Long profileId) {
+    public PlayWarSetActiveIndexCommand(PlayContainer container, Long profileId, int activeIndex) {
         super(container);
         this.profileId = profileId;
+        this.activeIndex = activeIndex;
     }
 
     @Override
     public void execute() {
         WarTeam warTeam = (WarTeam) container.getTeams().team(profileId);
-        warTeam.disableActiveTeamMember();
+        warTeam.setChosenActiveIndex(true);
+        warTeam.setActiveIndex(activeIndex);
     }
 }

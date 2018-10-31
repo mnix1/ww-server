@@ -42,6 +42,7 @@ public class CampaignWarManager extends WarManager {
 
         Profile opponent = init.getOpponentProfile();
         WarTeam opponentTeam = new WarTeam(opponent, prepareTeamMembers(opponent, profileCampaign), new EmptyTeamSkills());
+
         teams.addTeams(creatorTeam, opponentTeam);
     }
 
@@ -54,17 +55,17 @@ public class CampaignWarManager extends WarManager {
 
     protected List<TeamMember> prepareTeamMembers(ProfileCampaign profileCampaign, List<ProfileCampaignWisie> wisies) {
         List<TeamMember> teamMembers = new ArrayList<>();
-        int index = 0;
-        if (profileCampaign.getPresent()) {
-            teamMembers.add(new WisorTeamMember(index++, profileCampaign.getProfile(), new ExtendedProfileDTO(profileCampaign.getProfile())));
-        }
-        for (ProfileCampaignWisie wisie : wisies) {
-            if (wisie.getDisabled()) {
-                continue;
-            }
-            WarWisie warWisie = new WarWisie(wisie);
-            teamMembers.add(new WisieTeamMember(index++, warWisie, new WarProfileWisieDTO(warWisie)));
-        }
+//        int index = 0;
+//        if (profileCampaign.getPresent()) {
+//            teamMembers.add(new WisorTeamMember(index++, profileCampaign.getProfile(), new ExtendedProfileDTO(profileCampaign.getProfile())));
+//        }
+//        for (ProfileCampaignWisie wisie : wisies) {
+//            if (wisie.getDisabled()) {
+//                continue;
+//            }
+//            WarWisie warWisie = new WarWisie(wisie);
+//            teamMembers.add(new WisieTeamMember(index++, warWisie, new WarProfileWisieDTO(warWisie)));
+//        }
         return teamMembers;
     }
 

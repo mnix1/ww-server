@@ -10,7 +10,6 @@ import lombok.Setter;
 @Setter
 public class CampaignWarModel extends WarModel {
 
-
     public CampaignWarModel(RivalInit container, RivalTeams teamsContainer) {
         super(container, teamsContainer);
     }
