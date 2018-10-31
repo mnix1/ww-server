@@ -1,6 +1,5 @@
 package com.ww.game.play.state;
 
-import com.ww.game.GameCommand;
 import com.ww.game.GameState;
 import com.ww.game.play.container.PlayContainer;
 import com.ww.model.constant.rival.RivalStatus;
@@ -9,16 +8,15 @@ import lombok.Getter;
 
 import java.time.Instant;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.ww.game.play.modelfiller.PlayModelFiller.fillModelStatus;
 
 @Getter
 public abstract class PlayState extends GameState {
+    protected PlayContainer container;
     protected Map<Long, Map<String, Object>> models = new ConcurrentHashMap<>();
 
     protected RivalStatus status;

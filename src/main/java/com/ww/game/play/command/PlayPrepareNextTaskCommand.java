@@ -1,12 +1,11 @@
 package com.ww.game.play.command;
 
-import com.ww.game.GameCommand;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.game.play.container.PlayContainer;
 
-public class PlayPrepareNextTaskCommand extends GameCommand {
+public class PlayPrepareNextTaskCommand extends PlayCommand {
     private Category category;
     private DifficultyLevel difficultyLevel;
     private Language language;

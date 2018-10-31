@@ -1,12 +1,11 @@
 package com.ww.game.play.command;
 
-import com.ww.game.GameCommand;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.game.play.container.PlayContainer;
 
 import java.util.Optional;
 
-public class PlaySetResultCommand extends GameCommand {
+public class PlaySetResultCommand extends PlayCommand {
     private Long resignedProfileId;
 
     public PlaySetResultCommand(PlayContainer container, Long resignedProfileId) {

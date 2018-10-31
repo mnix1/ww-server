@@ -14,16 +14,8 @@ public class MemberFlow extends GameFlow {
     }
 
     public void recognizingQuestionPhase() {
-        addState(createRecognizingQuestionState());
-        afterRecognizingQuestionPhase();
+//        addState(new MemberRecognizingQuestionState(getContainer()));
     }
 
-    protected GameState createRecognizingQuestionState() {
-
-    }
-
-    protected void afterRecognizingQuestionPhase() {
-
-    }
 
 }

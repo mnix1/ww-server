@@ -1,13 +1,10 @@
 package com.ww.game;
 
-public abstract class GameCommand {
-    protected GameContainer container;
+public class GameCommand {
 
-    protected GameCommand(GameContainer container) {
-        this.container = container;
+    public void execute() {
     }
 
-    public void execute(){}
-
-    public void revoke(){}
+    public void revoke() {
+    }
 }
