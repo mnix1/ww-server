@@ -59,11 +59,11 @@ public class RivalService {
         rivalProfileSeasonService.update(manager.getContainer().getInit().getSeason());
     }
 
-    public void updateProfilesElo(RivalManager manager) {
-        if (!manager.getModel().isRanking()) {
+    public void updateProfilesElo(PlayContainer container) {
+        if (!container.isRanking()) {
             return;
         }
-        rivalProfileSeasonService.updateProfilesElo(manager.getModel());
+        rivalProfileSeasonService.updateProfilesElo(container);
     }
 
     public Question prepareQuestion(Category category, DifficultyLevel difficultyLevel, Language language) {

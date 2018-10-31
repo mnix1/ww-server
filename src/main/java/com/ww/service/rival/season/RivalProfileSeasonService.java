@@ -10,6 +10,7 @@ import com.ww.model.entity.outside.rival.season.Season;
 import com.ww.model.entity.outside.rival.season.SeasonGrade;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.social.ProfileMail;
+import com.ww.play.container.PlayContainer;
 import com.ww.repository.outside.rival.season.ProfileSeasonRepository;
 import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.social.MailService;
@@ -126,14 +127,14 @@ public class RivalProfileSeasonService {
     }
 
     @Transactional
-    public void updateProfilesElo(RivalModel model) {
-        List<SeasonGrade> seasonGrades = rivalSeasonService.findSeasonGrades(model.getType());
-        Profile winner = model.getWinner();
-        ProfileSeason creator = model.getCreatorProfileSeason();
-        ProfileSeason opponent = model.getOpponentProfileSeason();
+    public void updateProfilesElo(PlayContainer container) {
+        List<SeasonGrade> seasonGrades = rivalSeasonService.findSeasonGrades(container.getInit().getType());
+        Profile winner = container.getResult().getWinner();
+        ProfileSeason creator = container.getInit().getCreatorProfileSeason();
+        ProfileSeason opponent = container.getInit().getOpponentProfileSeason();
         Long creatorEloChange;
         Long opponentEloChange;
-        if (model.getDraw()) {
+        if (container.getResult().getDraw()) {
             creatorEloChange = prepareEloChange(creator.getElo(), opponent.getElo(), DRAW);
             opponentEloChange = prepareEloChange(opponent.getElo(), creator.getElo(), DRAW);
         } else {

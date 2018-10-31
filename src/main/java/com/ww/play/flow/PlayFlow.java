@@ -87,7 +87,7 @@ public class PlayFlow {
     }
 
     protected synchronized PlayEndState createEndState() {
-        return new PlayEndState(getContainer());
+        return new PlayEndState(getContainer(), manager);
     }
 
     protected synchronized void randomTaskPropsPhase() {
@@ -184,7 +184,7 @@ public class PlayFlow {
     }
 
     protected synchronized PlaySurrenderState createSurrenderState(Long profileId) {
-        return new PlaySurrenderState(getContainer(), profileId);
+        return new PlaySurrenderState(getContainer(), profileId, manager);
     }
 
     public synchronized void answeredAction(Long profileId, Long answerId) {

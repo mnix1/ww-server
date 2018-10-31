@@ -24,7 +24,7 @@ public class StateSurrender extends State {
         } else {
             manager.getModel().setDraw(true);
         }
-        manager.getRivalService().updateProfilesElo(manager);
+//        manager.getRivalService().updateProfilesElo(manager);
         manager.getModel().getTeams().forEachTeam(profileContainer -> {
             Map<String, Object> model = new HashMap<>();
             manager.getModelFactory().fillModelClosed(model, profileContainer);

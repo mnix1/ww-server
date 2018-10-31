@@ -48,6 +48,10 @@ public class PlayManager {
         communication.sendModelFromBeginning(profileId);
     }
 
+    public void updateProfilesElo(){
+        rivalService.updateProfilesElo(container);
+    }
+
     public boolean processMessage(Long profileId, Map<String, Object> content) {
         return communication.processMessage(profileId, content);
     }
