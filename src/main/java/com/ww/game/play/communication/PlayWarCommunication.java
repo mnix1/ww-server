@@ -1,0 +1,26 @@
+package com.ww.game.play.communication;
+
+import com.ww.game.play.PlayManager;
+import com.ww.game.play.PlayWarManager;
+import com.ww.game.play.action.PlayChooseWhoAnswerAction;
+import com.ww.websocket.message.Message;
+
+import static com.ww.service.rival.global.RivalMessageService.CHOOSE_WHO_ANSWER;
+
+public class PlayWarCommunication extends PlayCommunication {
+
+    public PlayWarCommunication(PlayManager manager) {
+        this(manager, Message.WAR_CONTENT);
+    }
+
+    public PlayWarCommunication(PlayManager manager, Message messageContent) {
+        super(manager, messageContent);
+    }
+
+    @Override
+    protected void initActionMap() {
+        super.initActionMap();
+        actionMap.put(CHOOSE_WHO_ANSWER, new PlayChooseWhoAnswerAction(manager));
+    }
+
+}

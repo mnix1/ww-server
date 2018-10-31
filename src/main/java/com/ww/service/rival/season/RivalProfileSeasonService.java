@@ -10,7 +10,7 @@ import com.ww.model.entity.outside.rival.season.Season;
 import com.ww.model.entity.outside.rival.season.SeasonGrade;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.social.ProfileMail;
-import com.ww.play.container.PlayContainer;
+import com.ww.game.play.container.PlayContainer;
 import com.ww.repository.outside.rival.season.ProfileSeasonRepository;
 import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.social.MailService;

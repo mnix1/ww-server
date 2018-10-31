@@ -1,7 +1,7 @@
 package com.ww.model.container.rival.challenge;
 
 import com.ww.model.container.rival.war.WarInterval;
-import com.ww.play.container.PlayContainer;
+import com.ww.game.play.container.PlayContainer;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

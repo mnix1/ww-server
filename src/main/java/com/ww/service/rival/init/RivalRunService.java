@@ -6,7 +6,7 @@ import com.ww.model.container.rival.init.RivalCampaignWarInit;
 import com.ww.model.container.rival.init.RivalChallengeInit;
 import com.ww.model.container.rival.init.RivalInit;
 import com.ww.model.container.rival.init.RivalTwoInit;
-import com.ww.play.*;
+import com.ww.game.play.*;
 import com.ww.service.rival.battle.RivalBattleService;
 import com.ww.service.rival.campaign.RivalCampaignWarService;
 import com.ww.service.rival.challenge.RivalChallengeService;
