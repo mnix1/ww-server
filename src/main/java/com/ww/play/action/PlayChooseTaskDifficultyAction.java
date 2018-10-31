@@ -19,7 +19,11 @@ public class PlayChooseTaskDifficultyAction extends PlayAction {
                 || !profileId.equals(container.findChoosingTaskPropsProfile().getId())) {
             return;
         }
-        DifficultyLevel difficultyLevel = DifficultyLevel.fromString((String) content.get("difficultyLevel"));
+        DifficultyLevel difficultyLevel = DifficultyLevel.NORMAL;
+        try {
+            difficultyLevel = DifficultyLevel.fromString((String) content.get("difficultyLevel"));
+        } catch (Exception e) {
+        }
         flow.chosenTaskDifficultyAction(difficultyLevel);
     }
 }

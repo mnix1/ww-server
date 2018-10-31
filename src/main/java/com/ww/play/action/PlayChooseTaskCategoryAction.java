@@ -19,7 +19,11 @@ public class PlayChooseTaskCategoryAction extends PlayAction {
                 || !profileId.equals(container.findChoosingTaskPropsProfile().getId())) {
             return;
         }
-        Category category = Category.fromString((String) content.get("category"));
+        Category category = Category.RANDOM;
+        try {
+            category = Category.fromString((String) content.get("category"));
+        } catch (Exception e) {
+        }
         flow.chosenTaskCategoryAction(category);
     }
 }

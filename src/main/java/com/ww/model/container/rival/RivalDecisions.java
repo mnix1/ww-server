@@ -16,9 +16,9 @@ public class RivalDecisions {
     protected Long chosenAnswerId;
 
     public void defaultTaskProps() {
-        this.category = Category.random();
+        this.category = Category.RANDOM;
         this.chosenCategory = false;
-        this.difficultyLevel = DifficultyLevel.random();
+        this.difficultyLevel = DifficultyLevel.NORMAL;
         this.chosenDifficulty = false;
     }
 
@@ -27,8 +27,8 @@ public class RivalDecisions {
         this.chosenCategory = true;
     }
 
-    public void chosenDifficulty(DifficultyLevel difficulty) {
-        this.difficultyLevel = difficulty;
+    public void chosenDifficulty(DifficultyLevel difficultyLevel) {
+        this.difficultyLevel = difficultyLevel;
         this.chosenDifficulty = true;
     }
 

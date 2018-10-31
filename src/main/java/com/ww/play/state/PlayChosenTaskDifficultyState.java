@@ -17,6 +17,6 @@ public class PlayChosenTaskDifficultyState extends PlayState {
     @Override
     public void initCommands() {
         commands.add(new PlaySetTaskDifficultyCommand(container, difficultyLevel));
-        commands.add(new PlayPrepareNextTaskCommand(container, container.getDecisions().getCategory(), container.getDecisions().getDifficultyLevel(), container.getInit().getCommonLanguage()));
+        commands.add(new PlayPrepareNextTaskCommand(container, container.getDecisions().getCategory(), difficultyLevel, container.getInit().getCommonLanguage()));
     }
 }
