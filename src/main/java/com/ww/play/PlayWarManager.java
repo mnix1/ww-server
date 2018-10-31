@@ -1,7 +1,6 @@
 package com.ww.play;
 
 import com.ww.helper.TeamHelper;
-import com.ww.model.container.rival.RivalResult;
 import com.ww.model.container.rival.RivalTeams;
 import com.ww.model.container.rival.init.RivalTwoInit;
 import com.ww.model.container.rival.war.TeamMember;
@@ -26,13 +25,11 @@ public class PlayWarManager extends PlayManager {
     }
 
     protected RivalTeams prepareTeams(RivalTwoInit init) {
-        Profile creatorProfile = init.getCreatorProfile();
-        Profile opponentProfile = init.getOpponentProfile();
-        return new RivalTeams(prepareTeam(creatorProfile), prepareTeam(opponentProfile));
+        return new RivalTeams(prepareTeam(init.getCreatorProfile()), prepareTeam(init.getOpponentProfile()));
     }
 
     protected WarTeam prepareTeam(Profile profile) {
-        List<ProfileWisie> wisies = ((RivalWarService) rivalService).getProfileWisies(profile);
+        List<ProfileWisie> wisies = ((RivalWarService) service).getProfileWisies(profile);
         List<TeamMember> teamMembers = TeamHelper.prepareTeamMembers(profile, wisies);
         return new WarTeam(profile, teamMembers, new WarTeamSkills(1, teamMembers));
     }

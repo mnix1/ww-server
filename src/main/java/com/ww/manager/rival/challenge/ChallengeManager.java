@@ -42,7 +42,7 @@ public class ChallengeManager extends WarManager {
         RivalTeams teams = new RivalTeams();
         this.model = new CampaignWarModel(init, teams);
         this.modelFactory = new ChallengeModelFactory(this.model);
-        this.interval = new ChallengeInterval(this.model);
+//        this.interval = new ChallengeInterval(this.model);
         this.flow = new ChallengeFlow(this);
 
         Profile creator = init.getCreatorProfile();

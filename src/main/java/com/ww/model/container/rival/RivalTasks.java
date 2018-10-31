@@ -12,14 +12,14 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class RivalTasks {
-    protected RivalService rivalService;
+    protected RivalService service;
     protected int currentTaskIndex = -1;
     protected int nextTaskIndex = 0;
     protected List<Question> questions = new CopyOnWriteArrayList<>();
     protected List<TaskDTO> taskDTOs = new CopyOnWriteArrayList<>();
 
-    public RivalTasks(RivalService rivalService) {
-        this.rivalService = rivalService;
+    public RivalTasks(RivalService service) {
+        this.service = service;
     }
 
     public Question question() {
@@ -34,6 +34,10 @@ public class RivalTasks {
         return taskDTOs.get(currentTaskIndex);
     }
 
+    public int taskIndex() {
+        return currentTaskIndex;
+    }
+
     public int nextTaskIndex() {
         return nextTaskIndex;
     }
@@ -43,13 +47,13 @@ public class RivalTasks {
         nextTaskIndex++;
     }
 
-    public void prepareNext(Category category, DifficultyLevel difficulty, Language language) {
+    public void prepareNext(Category category, DifficultyLevel difficultyLevel, Language language) {
         increaseIndexes();
-        Question question = rivalService.prepareQuestion(category, difficulty, language);
+        Question question = service.prepareQuestion(category, difficultyLevel, language);
         question.setId((long) nextTaskIndex);
         question.initAnswerIds();
         questions.add(question);
-        taskDTOs.add(rivalService.prepareTaskDTO(question));
+        taskDTOs.add(service.prepareTaskDTO(question));
     }
 
     public TaskMetaDTO simpleNextTaskMeta() {

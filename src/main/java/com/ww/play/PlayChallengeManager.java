@@ -1,39 +1,56 @@
 package com.ww.play;
 
 import com.ww.helper.TeamHelper;
+import com.ww.model.constant.Category;
+import com.ww.model.constant.rival.DifficultyLevel;
+import com.ww.model.container.rival.RivalChallengeTasks;
+import com.ww.model.container.rival.RivalTasks;
 import com.ww.model.container.rival.RivalTeams;
-import com.ww.model.container.rival.init.RivalTwoInit;
+import com.ww.model.container.rival.challenge.ChallengeInterval;
+import com.ww.model.container.rival.challenge.ChallengeTeam;
+import com.ww.model.container.rival.init.RivalChallengeInit;
 import com.ww.model.container.rival.war.TeamMember;
-import com.ww.model.container.rival.war.WarInterval;
-import com.ww.model.container.rival.war.WarTeam;
+import com.ww.model.container.rival.war.skill.EmptyTeamSkills;
 import com.ww.model.container.rival.war.skill.WarTeamSkills;
+import com.ww.model.entity.outside.rival.challenge.ChallengePhase;
+import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
 import com.ww.play.communication.PlayWarCommunication;
-import com.ww.play.container.PlayWarContainer;
+import com.ww.play.container.PlayChallengeContainer;
+import com.ww.play.flow.PlayChallengeFlow;
 import com.ww.play.flow.PlayWarFlow;
+import com.ww.service.rival.challenge.RivalChallengeService;
 import com.ww.service.rival.war.RivalWarService;
+import com.ww.websocket.message.Message;
+import lombok.Getter;
 
+import java.util.Collections;
 import java.util.List;
 
-public class PlayChallengeManager extends PlayManager {
-    public PlayChallengeManager(RivalTwoInit init, RivalWarService rivalService) {
-        super(rivalService);
-        this.container = new PlayWarContainer(init, prepareTeams(init), prepareTasks(), prepareTimeouts(), prepareDecisions(), prepareResult());
-        this.flow = new PlayWarFlow(this, new WarInterval());
-        this.communication = new PlayWarCommunication(this);
+@Getter
+public class PlayChallengeManager extends PlayWarManager {
+    public PlayChallengeManager(RivalChallengeInit init, RivalChallengeService rivalService) {
+        super(init, rivalService);
+        this.container = new PlayChallengeContainer(init, prepareTeams(init), prepareTasks(init), prepareTimeouts(), prepareDecisions(), prepareResult());
+        this.flow = new PlayChallengeFlow(this, new ChallengeInterval(container));
+        this.communication = new PlayWarCommunication(this, Message.CHALLENGE_CONTENT);
     }
 
-    protected RivalTeams prepareTeams(RivalTwoInit init) {
-        Profile creatorProfile = init.getCreatorProfile();
-        Profile opponentProfile = init.getOpponentProfile();
-        return new RivalTeams(prepareTeam(creatorProfile), prepareTeam(opponentProfile));
+    protected RivalTeams prepareTeams(RivalChallengeInit init) {
+        ChallengeTeam opponentTeam = new ChallengeTeam(init.getOpponentProfile(),
+                TeamHelper.prepareTeamMembers(Collections.singletonList(init.getChallengePhases().get(0).getPhaseWisie())),
+                new EmptyTeamSkills());
+        return new RivalTeams(prepareTeam(init.getCreatorProfile()), opponentTeam);
     }
 
-    protected WarTeam prepareTeam(Profile profile) {
-        List<ProfileWisie> wisies = ((RivalWarService) rivalService).getProfileWisies(profile);
+    protected ChallengeTeam prepareTeam(Profile profile) {
+        List<ProfileWisie> wisies = ((RivalWarService) service).getProfileWisies(profile);
         List<TeamMember> teamMembers = TeamHelper.prepareTeamMembers(profile, wisies);
-        return new WarTeam(profile, teamMembers, new WarTeamSkills(1, teamMembers));
+        return new ChallengeTeam(profile, teamMembers, new WarTeamSkills(1, teamMembers));
     }
 
+    protected RivalTasks prepareTasks(RivalChallengeInit init) {
+        return new RivalChallengeTasks((RivalChallengeService) service, init.getChallengeProfile(), init.getChallengePhases());
+    }
 }

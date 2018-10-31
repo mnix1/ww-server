@@ -1,8 +1,6 @@
 package com.ww.service.rival.challenge;
 
 import com.ww.helper.RandomHelper;
-import com.ww.manager.rival.RivalManager;
-import com.ww.manager.rival.challenge.ChallengeManager;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.RivalImportance;
@@ -17,6 +15,7 @@ import com.ww.model.entity.outside.rival.challenge.ChallengePhase;
 import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ChallengePhaseWisie;
+import com.ww.play.PlayChallengeManager;
 import com.ww.play.PlayManager;
 import com.ww.repository.outside.rival.challenge.ChallengePhaseRepository;
 import com.ww.repository.outside.rival.challenge.ChallengePhaseWisieRepository;
@@ -99,13 +98,13 @@ public class RivalChallengeService extends RivalWarService {
     @Override
     public void disposeManager(PlayManager manager) {
         super.disposeManager(manager);
-//        ChallengeManager challengeManager = (ChallengeManager) manager;
-//        ChallengeProfile challengeProfile = challengeManager.challengeProfile;
-//        challengeProfile.setResponseEnd(Instant.now());
-//        challengeProfile.setResponseStatus(ChallengeProfileResponse.CLOSED);
-//        challengeProfile.setScore(Math.max(0, ((ChallengeTeam) manager.getTeam(challengeProfile.getProfile().getId())).getScore()));
-//        challengeProfileRepository.save(challengeProfile);
-//        challengeCloseService.maybeCloseChallenge(challengeProfile.getChallenge(), Instant.now());
+        PlayChallengeManager challengeManager = (PlayChallengeManager) manager;
+        ChallengeProfile challengeProfile = ((RivalChallengeInit) challengeManager.getContainer().getInit()).getChallengeProfile();
+        challengeProfile.setResponseEnd(Instant.now());
+        challengeProfile.setResponseStatus(ChallengeProfileResponse.CLOSED);
+        challengeProfile.setScore(Math.max(0, ((ChallengeTeam) manager.getContainer().getTeams().team(challengeProfile.getProfile().getId())).getScore()));
+        challengeProfileRepository.save(challengeProfile);
+        challengeCloseService.maybeCloseChallenge(challengeProfile.getChallenge(), Instant.now());
     }
 
 }

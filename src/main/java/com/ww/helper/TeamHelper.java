@@ -22,8 +22,12 @@ import java.util.stream.IntStream;
 public class TeamHelper {
     public static final Long BOT_PROFILE_ID = -1L;
 
+    public static boolean isBotProfile(Long profileId){
+        return BOT_PROFILE_ID.equals(profileId);
+    }
+
     public static boolean isBotProfile(Profile profile) {
-        return profile.getId().equals(BOT_PROFILE_ID);
+        return isBotProfile(profile.getId());
     }
 
     public static List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies) {

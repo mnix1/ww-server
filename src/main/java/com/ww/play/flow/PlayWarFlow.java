@@ -52,7 +52,7 @@ public class PlayWarFlow extends PlayFlow {
         afterChoosingWhoAnswerPhase();
     }
 
-    protected PlayState createChoosingWhoAnswerState() {
+    protected synchronized PlayState createChoosingWhoAnswerState() {
         return new PlayWarChoosingWhoAnswerState(getContainer(), ((WarInterval) interval).getChoosingWhoAnswerInterval());
     }
 

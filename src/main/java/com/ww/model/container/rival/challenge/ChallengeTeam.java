@@ -10,12 +10,15 @@ import lombok.Setter;
 import java.util.List;
 
 @Getter
-@Setter
 public class ChallengeTeam extends WarTeam {
     private Integer score = 0;
 
     public ChallengeTeam(Profile profile, List<TeamMember> teamMembers, RivalTeamSkills teamSkills) {
         super(profile, teamMembers, teamSkills);
+    }
+
+    public void increaseScore(){
+        score++;
     }
 
 

@@ -9,6 +9,7 @@ public class PlayCampaignChoosingWhoAnswerState extends PlayWarChoosingWhoAnswer
         super(container, interval);
     }
 
+    @Override
     protected void initSetDefaultActiveIndexCommand() {
         commands.add(new PlayCampaignSetDefaultActiveIndexCommand(container));
     }

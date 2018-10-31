@@ -11,15 +11,16 @@ import java.util.Map;
 import static com.ww.play.modelfiller.PlayWarModelFiller.fillModelPresentIndexes;
 
 public class PlayWarAnsweredState extends PlayAnsweredState {
+    protected boolean isCorrect;
 
     public PlayWarAnsweredState(PlayContainer container, Long profileId, Long answerId) {
         super(container, profileId, answerId);
+        isCorrect = container.getTasks().correctAnswerId().equals(answerId);
     }
 
     @Override
     public void initCommands() {
         super.initCommands();
-        boolean isCorrect = container.getTasks().correctAnswerId().equals(answerId);
         Long commandProfileId = isCorrect ? container.getTeams().opponent(profileId).getProfileId() : profileId;
         commands.add(new PlayWarDisableActiveTeamMemberCommand(container, commandProfileId));
     }

@@ -14,7 +14,7 @@ public class PlayCampaignFlow extends PlayWarFlow {
     }
 
     @Override
-    protected PlayState createChoosingWhoAnswerState() {
+    protected synchronized PlayState createChoosingWhoAnswerState() {
         return new PlayCampaignChoosingWhoAnswerState(getContainer(), ((WarInterval) interval).getChoosingWhoAnswerInterval());
     }
 }

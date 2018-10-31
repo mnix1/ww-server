@@ -15,17 +15,17 @@ import java.util.Map;
 
 @Getter
 public class PlayManager {
-    protected RivalService rivalService;
+    protected RivalService service;
     protected PlayContainer container;
     protected PlayFlow flow;
     protected PlayCommunication communication;
 
-    protected PlayManager(RivalService rivalService) {
-        this.rivalService = rivalService;
+    protected PlayManager(RivalService service) {
+        this.service = service;
     }
 
     protected RivalTasks prepareTasks() {
-        return new RivalTasks(rivalService);
+        return new RivalTasks(service);
     }
 
     protected RivalTimeouts prepareTimeouts() {
@@ -41,7 +41,7 @@ public class PlayManager {
     }
 
     public ProfileConnectionService getProfileConnectionService() {
-        return rivalService.getProfileConnectionService();
+        return service.getProfileConnectionService();
     }
 
     public void sendModelFromBeginning(Long profileId) {
@@ -49,7 +49,7 @@ public class PlayManager {
     }
 
     public void updateProfilesElo(){
-        rivalService.updateProfilesElo(container);
+        service.updateProfilesElo(container);
     }
 
     public boolean processMessage(Long profileId, Map<String, Object> content) {
@@ -61,6 +61,6 @@ public class PlayManager {
     }
 
     public void dispose() {
-        rivalService.disposeManager(this);
+        service.disposeManager(this);
     }
 }

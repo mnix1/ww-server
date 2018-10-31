@@ -3,12 +3,10 @@ package com.ww.service.rival.init;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.rival.init.RivalCampaignWarInit;
+import com.ww.model.container.rival.init.RivalChallengeInit;
 import com.ww.model.container.rival.init.RivalInit;
 import com.ww.model.container.rival.init.RivalTwoInit;
-import com.ww.play.PlayBattleManager;
-import com.ww.play.PlayCampaignManager;
-import com.ww.play.PlayManager;
-import com.ww.play.PlayWarManager;
+import com.ww.play.*;
 import com.ww.service.rival.battle.RivalBattleService;
 import com.ww.service.rival.campaign.RivalCampaignWarService;
 import com.ww.service.rival.challenge.RivalChallengeService;
@@ -60,9 +58,9 @@ public class RivalRunService {
         if (type == RivalType.BATTLE) {
             return new PlayBattleManager((RivalTwoInit) initContainer, rivalBattleService);
         }
-//        if (type == RivalType.CHALLENGE) {
-//            return new ChallengeManager((RivalChallengeInit) initContainer, rivalChallengeService);
-//        }
+        if (type == RivalType.CHALLENGE) {
+            return new PlayChallengeManager((RivalChallengeInit) initContainer, rivalChallengeService);
+        }
         throw new IllegalArgumentException();
     }
 }
