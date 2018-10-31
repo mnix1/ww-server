@@ -2,6 +2,7 @@ package com.ww.helper;
 
 import com.ww.model.constant.Category;
 import com.ww.model.container.rival.RivalTeam;
+import com.ww.model.container.rival.battle.BattleTeam;
 import com.ww.model.container.rival.war.*;
 import com.ww.model.dto.rival.TeamMemberDTO;
 import com.ww.model.dto.social.ExtendedProfileDTO;
@@ -67,6 +68,9 @@ public class TeamHelper {
     public static List<WarTeam> mapToWarTeams(Collection<RivalTeam> teams){
         return teams.stream().map(team -> ((WarTeam) team)).collect(Collectors.toList());
     }
+    public static List<BattleTeam> mapToBattleTeams(Collection<RivalTeam> teams){
+        return teams.stream().map(team -> ((BattleTeam) team)).collect(Collectors.toList());
+    }
 
     public static WarTeam teamWithLowestCountPresentMembers(List<WarTeam> warTeams){
         int minIndex = IntStream.range(0, warTeams.size())
@@ -75,8 +79,19 @@ public class TeamHelper {
         return warTeams.get(minIndex);
     }
 
+    public static BattleTeam teamWithLowestScore(List<BattleTeam> battleTeams){
+        int minIndex = IntStream.range(0, battleTeams.size())
+                .reduce((i, j) -> battleTeams.get(i).getScore() > battleTeams.get(j).getScore() ? j : i)
+                .getAsInt();
+        return battleTeams.get(minIndex);
+    }
+
     public static boolean teamsHaveSameCountPresentMembers(Collection<RivalTeam> teams){
         Set<Integer> presentMemberCounts = teams.stream().map(team -> ((WarTeam) team).countPresentMembers()).collect(Collectors.toSet());
+        return presentMemberCounts.size() == 1;
+    }
+    public static boolean teamsHaveSameScore(Collection<RivalTeam> teams){
+        Set<Integer> presentMemberCounts = teams.stream().map(team -> ((BattleTeam) team).getScore()).collect(Collectors.toSet());
         return presentMemberCounts.size() == 1;
     }
 

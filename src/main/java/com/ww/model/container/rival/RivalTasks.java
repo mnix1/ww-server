@@ -34,13 +34,17 @@ public class RivalTasks {
         return taskDTOs.get(currentTaskIndex);
     }
 
-    public void nextTaskIndex() {
+    public int nextTaskIndex() {
+        return nextTaskIndex;
+    }
+
+    public void increaseIndexes() {
         currentTaskIndex++;
         nextTaskIndex++;
     }
 
     public void prepareNext(Category category, DifficultyLevel difficulty, Language language) {
-        nextTaskIndex();
+        increaseIndexes();
         Question question = rivalService.prepareQuestion(category, difficulty, language);
         question.setId((long) nextTaskIndex);
         question.initAnswerIds();

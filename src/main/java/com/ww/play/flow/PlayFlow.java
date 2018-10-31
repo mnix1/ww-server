@@ -193,7 +193,7 @@ public class PlayFlow {
         afterAnsweredAction();
     }
 
-    protected synchronized PlayAnsweredState createAnsweredState(Long profileId, Long answerId) {
+    protected synchronized PlayState createAnsweredState(Long profileId, Long answerId) {
         return new PlayAnsweredState(getContainer(), profileId, answerId);
     }
 

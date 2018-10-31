@@ -15,12 +15,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.ww.service.rival.global.RivalMessageService.*;
 
-public abstract class PlayCommunication {
+public class PlayCommunication {
     protected PlayManager manager;
     private Message messageContent;
     protected Map<String, PlayAction> actionMap = new ConcurrentHashMap<>();
 
-    protected PlayCommunication(PlayManager manager, Message messageContent) {
+    public PlayCommunication(PlayManager manager, Message messageContent) {
         this.manager = manager;
         this.messageContent = messageContent;
         initActionMap();
