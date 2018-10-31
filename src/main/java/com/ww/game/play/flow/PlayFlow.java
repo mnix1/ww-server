@@ -31,14 +31,9 @@ public class PlayFlow extends GameFlow {
         return manager.getCommunication();
     }
 
+    @Override
     protected PlayContainer getContainer() {
         return manager.getContainer();
-    }
-
-    protected synchronized void addState(PlayState state) {
-        getContainer().addState(state);
-        state.initCommands();
-        state.execute();
     }
 
     protected synchronized void send() {
@@ -48,13 +43,6 @@ public class PlayFlow extends GameFlow {
     protected synchronized void addStateAndSend(PlayState state) {
         addState(state);
         send();
-    }
-
-    protected synchronized void stopAfter() {
-        for (Disposable disposable : disposableMap.values()) {
-            disposable.dispose();
-        }
-        disposableMap.clear();
     }
 
     public synchronized void introPhase() {
@@ -226,20 +214,5 @@ public class PlayFlow extends GameFlow {
 
     protected synchronized void afterChosenTaskDifficultyAction() {
         preparingNextTaskPhase();
-    }
-
-    protected synchronized void after(long interval, Consumer<Long> onNext) {
-        String uuid = randomUniqueUUID(disposableMap);
-        disposableMap.put(uuid, prepareFlowable(interval).subscribe(aLong -> {
-            synchronized (this) {
-                if (disposableMap.containsKey(uuid)) {
-                    onNext.accept(aLong);
-                }
-            }
-        }));
-    }
-
-    private Flowable<Long> prepareFlowable(long interval) {
-        return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 }

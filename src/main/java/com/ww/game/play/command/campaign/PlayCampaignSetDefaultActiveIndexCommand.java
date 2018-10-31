@@ -3,13 +3,13 @@ package com.ww.game.play.command.campaign;
 import com.ww.model.constant.Category;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.war.WarTeam;
-import com.ww.game.play.command.PlayCommand;
+import com.ww.game.GameCommand;
 import com.ww.game.play.container.PlayContainer;
 
 import static com.ww.helper.TeamHelper.findIndexOfWisieWithHobby;
 import static com.ww.helper.TeamHelper.isBotProfile;
 
-public class PlayCampaignSetDefaultActiveIndexCommand extends PlayCommand {
+public class PlayCampaignSetDefaultActiveIndexCommand extends GameCommand {
 
     public PlayCampaignSetDefaultActiveIndexCommand(PlayContainer container) {
         super(container);

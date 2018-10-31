@@ -1,5 +1,6 @@
 package com.ww.game.play.communication;
 
+import com.ww.game.GameState;
 import com.ww.model.container.rival.RivalTeams;
 import com.ww.game.play.PlayManager;
 import com.ww.game.play.action.*;
@@ -39,7 +40,7 @@ public class PlayCommunication {
 
     public void send() {
         ProfileConnectionService profileConnectionService = manager.getProfileConnectionService();
-        PlayState state = getContainer().currentState();
+        PlayState state = (PlayState) getContainer().currentState();
         RivalTeams teams = getContainer().getTeams();
         teams.forEachTeam(team -> {
             Map<String, Object> model = state.prepareAndStoreModel(team, teams.opponent(team.getProfileId()));
@@ -48,10 +49,9 @@ public class PlayCommunication {
     }
 
     public void sendModelFromBeginning(Long profileId) {
-        List<PlayState> states = getContainer().getStates();
         Map<String, Object> model = new HashMap<>();
-        for (PlayState state : states) {
-            state.getStoredModel(profileId).ifPresent(model::putAll);
+        for (GameState state : getContainer().getStates()) {
+            ((PlayState) state).getStoredModel(profileId).ifPresent(model::putAll);
         }
         manager.getProfileConnectionService().send(profileId, model, getMessageContent());
     }

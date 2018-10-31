@@ -1,5 +1,6 @@
 package com.ww.game.play.container;
 
+import com.ww.game.GameContainer;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.container.rival.*;
@@ -13,9 +14,8 @@ import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Getter
-public abstract class PlayContainer {
+public abstract class PlayContainer extends GameContainer {
     protected RivalTwoInit init;
-    protected List<PlayState> states = new CopyOnWriteArrayList<>();
     protected RivalTeams teams;
     protected RivalTasks tasks;
     protected RivalTimeouts timeouts;
@@ -39,16 +39,8 @@ public abstract class PlayContainer {
 
     public abstract Optional<Profile> findWinner();
 
-    public PlayState currentState() {
-        return states.get(states.size() - 1);
-    }
-
-    public void addState(PlayState state) {
-        states.add(state);
-    }
-
     public boolean isStatusEquals(RivalStatus status) {
-        return currentState().getStatus() == status;
+        return ((PlayState) currentState()).getStatus() == status;
     }
 
     public boolean isRanking() {

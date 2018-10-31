@@ -1,10 +1,10 @@
 package com.ww.game.play.command.war;
 
 import com.ww.model.container.rival.war.WarTeam;
-import com.ww.game.play.command.PlayCommand;
+import com.ww.game.GameCommand;
 import com.ww.game.play.container.PlayContainer;
 
-public class PlayWarDisableActiveTeamMemberCommand extends PlayCommand {
+public class PlayWarDisableActiveTeamMemberCommand extends GameCommand {
     private Long profileId;
 
     public PlayWarDisableActiveTeamMemberCommand(PlayContainer container, Long profileId) {

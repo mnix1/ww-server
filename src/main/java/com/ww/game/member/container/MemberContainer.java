@@ -1,4 +1,6 @@
 package com.ww.game.member.container;
 
-public class MemberContainer {
+import com.ww.game.GameContainer;
+
+public class MemberContainer extends GameContainer {
 }

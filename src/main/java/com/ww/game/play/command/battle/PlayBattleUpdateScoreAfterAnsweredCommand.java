@@ -1,11 +1,10 @@
 package com.ww.game.play.command.battle;
 
 import com.ww.model.container.rival.battle.BattleTeam;
-import com.ww.model.container.rival.war.WarTeam;
-import com.ww.game.play.command.PlayCommand;
+import com.ww.game.GameCommand;
 import com.ww.game.play.container.PlayContainer;
 
-public class PlayBattleUpdateScoreAfterAnsweredCommand extends PlayCommand {
+public class PlayBattleUpdateScoreAfterAnsweredCommand extends GameCommand {
     private Long profileId;
     private boolean isCorrect;
 
