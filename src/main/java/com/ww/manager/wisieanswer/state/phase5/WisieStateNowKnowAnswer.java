@@ -2,10 +2,8 @@ package com.ww.manager.wisieanswer.state.phase5;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import io.reactivex.Flowable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,7 +23,7 @@ public class WisieStateNowKnowAnswer extends WisieState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(WisieAnswerAction.NOW_KNOW_ANSWER);
+        manager.addAndSendAction(MemberWisieStatus.NOW_KNOW_ANSWER);
         interval = (long) ((3 - manager.getWarWisie().getReflexF1() - manager.getWarWisie().getSpeedF1() - manager.getWarWisie().getConcentrationF1()) * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

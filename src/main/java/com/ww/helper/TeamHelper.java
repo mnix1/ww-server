@@ -36,7 +36,7 @@ public class TeamHelper {
         teamMembers.add(new WisorTeamMember(index++, profile, new ExtendedProfileDTO(profile)));
         for (OwnedWisie wisie : wisies) {
             WarWisie warWisie = new WarWisie(wisie);
-            teamMembers.add(new WisieTeamMember(index++, warWisie, new WarProfileWisieDTO(warWisie)));
+            teamMembers.add(new WisieTeamMember(index++, warWisie));
         }
         return teamMembers;
     }
@@ -46,7 +46,7 @@ public class TeamHelper {
         int index = 0;
         for (OwnedWisie wisie : wisies) {
             WarWisie warWisie = new WarWisie(wisie);
-            teamMembers.add(new WisieTeamMember(index++, warWisie, new WarProfileWisieDTO(warWisie)));
+            teamMembers.add(new WisieTeamMember(index++, warWisie));
         }
         return teamMembers;
     }

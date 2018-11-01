@@ -20,7 +20,6 @@ public abstract class PlayState extends GameState {
     protected Map<Long, Map<String, Object>> models = new ConcurrentHashMap<>();
 
     protected RivalStatus status;
-    protected Instant date = Instant.now();
 
     public PlayState(PlayContainer container, RivalStatus status) {
         this.container = container;

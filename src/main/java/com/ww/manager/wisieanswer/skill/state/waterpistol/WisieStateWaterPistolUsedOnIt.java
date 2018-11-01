@@ -3,7 +3,7 @@ package com.ww.manager.wisieanswer.skill.state.waterpistol;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
 import com.ww.model.constant.wisie.DisguiseType;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import io.reactivex.Flowable;
 
 import java.util.concurrent.TimeUnit;
@@ -24,7 +24,7 @@ public class WisieStateWaterPistolUsedOnIt extends WisieSkillState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.addAction(WisieAnswerAction.WATER_PISTOL_USED_ON_IT);
+        manager.addAction(MemberWisieStatus.WATER_PISTOL_USED_ON_IT);
         manager.getWisieMember().addDisguise(DisguiseType.PENGUIN_RAIN);
         manager.getWarManager().sendActiveMemberAndActionsModel();
         interval = (long) (randomDouble(7 - 2 * manager.getWarWisie().getSpeedF1() - 2 * manager.getWarWisie().getReflexF1() - manager.getWarWisie().getConcentrationF1() - manager.getWarWisie().getConfidenceF1(),

@@ -2,11 +2,7 @@ package com.ww.manager.wisieanswer.skill.state.ghost;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
-import com.ww.model.constant.wisie.WisieAnswerAction;
-import com.ww.model.container.rival.war.WarTeam;
 import io.reactivex.Flowable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -27,7 +23,7 @@ public class WisieStateWasNotScared extends WisieSkillState {
     @Override
     protected Flowable<Long> processFlowable() {
         //actions in WisieStateScareSucceeded
-//        warManager.addAction(WisieAnswerAction.WAS_NOT_SCARED);
+//        warManager.addAction(MemberWisieStatus.WAS_NOT_SCARED);
         interval = (long) (randomDouble(3 - manager.getWarWisie().getSpeedF1() - manager.getWarWisie().getReflexF1() - manager.getWarWisie().getConcentrationF1(),
                 4 - manager.getWarWisie().getSpeedF1() - manager.getWarWisie().getReflexF1() - 2 * manager.getWarWisie().getConcentrationF1()) * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);

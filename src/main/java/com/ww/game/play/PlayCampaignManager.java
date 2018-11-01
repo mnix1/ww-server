@@ -60,7 +60,7 @@ public class PlayCampaignManager extends PlayManager {
                 continue;
             }
             WarWisie warWisie = new WarWisie(wisie);
-            teamMembers.add(new WisieTeamMember(index++, warWisie, new WarProfileWisieDTO(warWisie)));
+            teamMembers.add(new WisieTeamMember(index++, warWisie));
         }
         return teamMembers;
     }

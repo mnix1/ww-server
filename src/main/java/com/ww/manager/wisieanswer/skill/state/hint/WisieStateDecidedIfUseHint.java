@@ -2,7 +2,7 @@ package com.ww.manager.wisieanswer.skill.state.hint;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import io.reactivex.Flowable;
 
 import java.util.concurrent.TimeUnit;
@@ -10,10 +10,10 @@ import java.util.concurrent.TimeUnit;
 import static com.ww.helper.RandomHelper.randomDouble;
 
 public class WisieStateDecidedIfUseHint extends WisieSkillState {
-    private WisieAnswerAction action;
+    private MemberWisieStatus action;
     private Long interval;
 
-    public WisieStateDecidedIfUseHint(WisieAnswerManager manager, WisieAnswerAction action) {
+    public WisieStateDecidedIfUseHint(WisieAnswerManager manager, MemberWisieStatus action) {
         super(manager, STATE_TYPE_FLOWABLE);
         this.action = action;
     }

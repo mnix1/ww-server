@@ -46,7 +46,11 @@ public class PlayFlow extends GameFlow {
         send();
     }
 
-    public synchronized void introPhase() {
+    public void start(){
+        introPhase();
+    }
+
+    protected synchronized void introPhase() {
         addStateAndSend(createIntroState());
         afterIntroPhase();
     }
@@ -75,7 +79,7 @@ public class PlayFlow extends GameFlow {
     }
 
     protected synchronized PlayEndState createEndState() {
-        return new PlayEndState(getContainer(), manager);
+        return new PlayEndState(manager);
     }
 
     protected synchronized void randomTaskPropsPhase() {
@@ -172,7 +176,7 @@ public class PlayFlow extends GameFlow {
     }
 
     protected synchronized PlaySurrenderState createSurrenderState(Long profileId) {
-        return new PlaySurrenderState(getContainer(), profileId, manager);
+        return new PlaySurrenderState(manager, profileId);
     }
 
     public synchronized void answeredAction(Long profileId, Long answerId) {

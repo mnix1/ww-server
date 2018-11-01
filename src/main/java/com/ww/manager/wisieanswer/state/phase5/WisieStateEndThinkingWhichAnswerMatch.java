@@ -2,10 +2,8 @@ package com.ww.manager.wisieanswer.state.phase5;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import io.reactivex.Flowable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,7 +23,7 @@ public class WisieStateEndThinkingWhichAnswerMatch extends WisieState {
 
     @Override
     protected Flowable<Long> processFlowable(){
-        manager.addAndSendAction(WisieAnswerAction.THINKING_WHICH_ANSWER_MATCH);
+        manager.addAndSendAction(MemberWisieStatus.THINKING_WHICH_ANSWER_MATCH);
         double sumInterval = manager.getAnswerCount() * (4d - manager.getWarWisie().getWisdomSum() - manager.getWarWisie().getIntuitionF1()) * 100;
         if (manager.getWarWisie().isHobby()) {
             sumInterval /= manager.getWarWisie().getHobbyFactor();

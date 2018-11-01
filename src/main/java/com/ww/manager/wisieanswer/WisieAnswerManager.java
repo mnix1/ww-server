@@ -3,7 +3,7 @@ package com.ww.manager.wisieanswer;
 import com.ww.helper.AnswerHelper;
 import com.ww.helper.Describe;
 import com.ww.manager.rival.war.WarManager;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import com.ww.model.container.rival.war.WarModelFactory;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.model.container.rival.war.WarWisie;
@@ -26,7 +26,7 @@ public class WisieAnswerManager implements Describe {
     private boolean running = false;
     private WisieAnswerFlow flow;
 
-    private List<WisieAnswerAction> actions = new CopyOnWriteArrayList<>();
+    private List<MemberWisieStatus> actions = new CopyOnWriteArrayList<>();
 
     private WisieTeamMember wisieMember;
 
@@ -50,9 +50,9 @@ public class WisieAnswerManager implements Describe {
                 ", questionCategory=" + question.getType().getCategory().name() +
                 ", questionType=" + question.getType().getValue() +
                 ", answerCount=" + answerCount);
-        getWarWisie().setQuestion(question);
-        getWarWisie().cacheAttributes();
-        getWarWisie().cacheHobbies();
+//        getWarWisie().setQuestion(question);
+//        getWarWisie().cacheAttributes();
+//        getWarWisie().cacheHobbies();
     }
 
     public OwnedWisie getOwnedWisie() {
@@ -67,9 +67,9 @@ public class WisieAnswerManager implements Describe {
         return wisieMember.getContent();
     }
 
-    public WisieAnswerAction lastAction() {
+    public MemberWisieStatus lastAction() {
         if (actions.isEmpty()) {
-            return WisieAnswerAction.NONE;
+            return MemberWisieStatus.NONE;
         }
         return actions.get(actions.size() - 1);
     }
@@ -82,11 +82,11 @@ public class WisieAnswerManager implements Describe {
         return warManager.getModelFactory();
     }
 
-    public void addAction(WisieAnswerAction action) {
+    public void addAction(MemberWisieStatus action) {
         actions.add(action);
     }
 
-    public void addAndSendAction(WisieAnswerAction action) {
+    public void addAndSendAction(MemberWisieStatus action) {
         addAction(action);
         warManager.sendModel((m, wT) -> {
             warManager.getModelFactory().fillModelWisieActions(m, wT);

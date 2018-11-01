@@ -4,7 +4,7 @@ import com.ww.manager.AbstractState;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
 import com.ww.model.constant.wisie.DisguiseType;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import io.reactivex.Flowable;
 
 import java.util.concurrent.TimeUnit;
@@ -37,7 +37,7 @@ public class WisieStateCoverallReady extends WisieSkillState {
     }
 
     protected Flowable<Long> processFlowable() {
-        manager.addAction(WisieAnswerAction.COVERALL_READY);
+        manager.addAction(MemberWisieStatus.COVERALL_READY);
         opponentManager.getTeam(opponentManager).getTeamSkills().blockAll();
         manager.getWisieMember().addDisguise(DisguiseType.COVERALL);
         manager.getWarManager().sendNewSkillsModel((m, wT) -> {

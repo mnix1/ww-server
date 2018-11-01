@@ -17,8 +17,8 @@ import static com.ww.game.play.modelfiller.PlayModelFiller.fillModelSeasons;
 public class PlayEndState extends PlayState {
     private PlayManager manager;
 
-    public PlayEndState(PlayContainer container, PlayManager manager) {
-        super(container, RivalStatus.CLOSED);
+    public PlayEndState(PlayManager manager) {
+        super(manager.getContainer(), RivalStatus.CLOSED);
         this.manager = manager;
     }
 

@@ -2,7 +2,7 @@ package com.ww.manager.wisieanswer.skill.state.hint;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 
 public class WisieStateAnsweringUseHint extends WisieSkillState {
     private boolean hintCorrect;
@@ -21,7 +21,7 @@ public class WisieStateAnsweringUseHint extends WisieSkillState {
 
     @Override
     protected void processVoid() {
-        manager.addAndSendAction(WisieAnswerAction.ANSWERED);
+        manager.addAndSendAction(MemberWisieStatus.ANSWERED);
         logger.trace(describe() + ", isHintCorrect: " + hintCorrect);
         manager.getWarManager().getFlow().wisieAnswered(manager.getProfileId(), hintAnswerId);
     }

@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Getter
-
 public abstract class TeamMember {
     private int index;
     private HeroType type;

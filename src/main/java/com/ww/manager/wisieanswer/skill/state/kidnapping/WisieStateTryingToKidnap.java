@@ -3,7 +3,7 @@ package com.ww.manager.wisieanswer.skill.state.kidnapping;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
 import com.ww.model.constant.wisie.DisguiseType;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import io.reactivex.Flowable;
 import lombok.Setter;
 
@@ -38,8 +38,8 @@ public class WisieStateTryingToKidnap extends WisieSkillState {
     protected Flowable<Long> processFlowable() {
         manager.getTeam(manager).getTeamSkills().blockAll();
         manager.getTeam(opponentManager).getTeamSkills().blockAll();
-        manager.addAction(WisieAnswerAction.TRYING_TO_KIDNAP);
-        opponentManager.addAction(WisieAnswerAction.TRYING_TO_DEFEND);
+        manager.addAction(MemberWisieStatus.TRYING_TO_KIDNAP);
+        opponentManager.addAction(MemberWisieStatus.TRYING_TO_DEFEND);
         manager.getWisieMember().addDisguise(DisguiseType.NINJA);
         manager.getWarManager().sendNewSkillsModel((m, wT) -> {
             manager.getModelFactory().fillModelActiveMemberAddOn(m, wT);

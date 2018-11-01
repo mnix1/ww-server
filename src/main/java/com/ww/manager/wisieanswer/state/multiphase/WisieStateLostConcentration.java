@@ -2,10 +2,8 @@ package com.ww.manager.wisieanswer.state.multiphase;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import io.reactivex.Flowable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -13,10 +11,10 @@ import static com.ww.helper.RandomHelper.randomDouble;
 import static com.ww.helper.RandomHelper.randomElement;
 
 public class WisieStateLostConcentration extends WisieState {
-    private WisieAnswerAction noConcentrationAction;
+    private MemberWisieStatus noConcentrationAction;
     private Long interval;
 
-    public WisieStateLostConcentration(WisieAnswerManager manager, WisieAnswerAction noConcentrationAction) {
+    public WisieStateLostConcentration(WisieAnswerManager manager, MemberWisieStatus noConcentrationAction) {
         super(manager, STATE_TYPE_FLOWABLE);
         this.noConcentrationAction = noConcentrationAction;
     }

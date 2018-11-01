@@ -2,7 +2,7 @@ package com.ww.manager.wisieanswer.skill.state.hint;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import com.ww.model.entity.outside.rival.task.Answer;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class WisieStateAnsweringNoUseHint extends WisieSkillState {
 
     @Override
     protected void processVoid() {
-        manager.addAndSendAction(WisieAnswerAction.ANSWERED);
+        manager.addAndSendAction(MemberWisieStatus.ANSWERED);
         double diffPart = (4 - manager.getDifficulty()) * 0.1;
         double attrPart = ((manager.getWarWisie().getWisdomSum() + 2 * manager.getWarWisie().getIntuitionF1()) / 2 - 0.5) * 4 / 5;
         double hobbyPart = manager.getWarWisie().isHobby() ? 0.1 : 0;

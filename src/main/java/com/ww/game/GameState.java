@@ -1,10 +1,12 @@
 package com.ww.game;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameState {
     protected List<GameCommand> commands = new CopyOnWriteArrayList<>();
+    protected Instant date = Instant.now();
 
     public void initCommands() {
     }

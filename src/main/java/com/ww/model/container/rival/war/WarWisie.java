@@ -1,7 +1,10 @@
 package com.ww.model.container.rival.war;
 
 
+import com.ww.model.constant.wisie.MentalAttribute;
+import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.constant.wisie.WisieValueChange;
+import com.ww.model.dto.wisie.WarProfileWisieDTO;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskWisdomAttribute;
 import com.ww.model.entity.outside.wisie.AbstractWisieAttributes;
@@ -74,5 +77,30 @@ public class WarWisie extends AbstractWisieAttributes {
             sum += f1(getWisdomAttributeValue(attribute.getWisdomAttribute())) * attribute.getValue();
         }
         return sum;
+    }
+
+    public void decreaseAttributesByHalf() {
+        for (WisdomAttribute wisdomAttribute : WisdomAttribute.values()) {
+            setWisdomAttributeValue(wisdomAttribute, getWisdomAttributeValue(wisdomAttribute) / 2);
+        }
+        for (MentalAttribute mentalAttribute : MentalAttribute.values()) {
+            setMentalAttributeValue(mentalAttribute, getMentalAttributeValue(mentalAttribute) / 2);
+        }
+    }
+
+    public void increaseWisdomAttributes(WarWisie source, double factor) {
+        for (WisdomAttribute wisdomAttribute : WisdomAttribute.values()) {
+            double actualValue = getWisdomAttributeValue(wisdomAttribute);
+            double changeValue = source.getWisie().getWisdomAttributeValue(wisdomAttribute) * factor;
+            setWisdomAttributeValue(wisdomAttribute, actualValue + changeValue);
+        }
+    }
+
+    public void increaseMentalAttributes(WarWisie source, double factor) {
+        for (MentalAttribute mentalAttribute : MentalAttribute.values()) {
+            double actualValue = getMentalAttributeValue(mentalAttribute);
+            double changeValue = source.getWisie().getMentalAttributeValue(mentalAttribute) * factor;
+            setMentalAttributeValue(mentalAttribute, actualValue + changeValue);
+        }
     }
 }

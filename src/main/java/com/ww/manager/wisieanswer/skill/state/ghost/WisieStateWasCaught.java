@@ -3,7 +3,7 @@ package com.ww.manager.wisieanswer.skill.state.ghost;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
 import com.ww.model.constant.wisie.DisguiseType;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import io.reactivex.Flowable;
 
 import java.util.concurrent.TimeUnit;
@@ -23,7 +23,7 @@ public class WisieStateWasCaught extends WisieSkillState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.addAction(WisieAnswerAction.WAS_CAUGHT);
+        manager.addAction(MemberWisieStatus.WAS_CAUGHT);
         manager.getTeam(manager).activeTeamMemberOutDuringAnswering(DisguiseType.JUDGE);
         manager.getWarManager().sendActiveMemberAndActionsModel();
         interval = intervalMultiply() * 3;

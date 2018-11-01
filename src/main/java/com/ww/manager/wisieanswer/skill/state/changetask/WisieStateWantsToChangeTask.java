@@ -3,7 +3,7 @@ package com.ww.manager.wisieanswer.skill.state.changetask;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
 import com.ww.model.constant.wisie.DisguiseType;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import io.reactivex.Flowable;
 
 import java.util.concurrent.TimeUnit;
@@ -24,7 +24,7 @@ public class WisieStateWantsToChangeTask extends WisieSkillState {
 
     protected Flowable<Long> processFlowable() {
         manager.getWisieMember().addDisguise(DisguiseType.BIRD_RED);
-        manager.addAction(WisieAnswerAction.WANTS_TO_CHANGE_TASK);
+        manager.addAction(MemberWisieStatus.WANTS_TO_CHANGE_TASK);
         manager.getWarManager().sendNewSkillsModel((m, wT) -> {
             manager.getModelFactory().fillModelActiveMemberAddOn(m, wT);
             manager.getModelFactory().fillModelWisieActions(m, wT);

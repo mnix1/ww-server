@@ -57,7 +57,7 @@ public class PlayManager {
     }
 
     public void start() {
-        flow.introPhase();
+        flow.start();
     }
 
     public void dispose() {

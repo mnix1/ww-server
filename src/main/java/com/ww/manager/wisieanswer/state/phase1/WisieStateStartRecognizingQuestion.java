@@ -2,10 +2,8 @@ package com.ww.manager.wisieanswer.state.phase1;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import io.reactivex.Flowable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -24,7 +22,7 @@ public class WisieStateStartRecognizingQuestion extends WisieState {
     }
 
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(WisieAnswerAction.WAITING_FOR_QUESTION);
+        manager.addAndSendAction(MemberWisieStatus.WAITING_FOR_QUESTION);
         interval = (long) (randomDouble(1 - manager.getWarWisie().getReflexF1(), 3 - 2 * manager.getWarWisie().getReflexF1() - manager.getWarWisie().getConcentrationF1()) * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }

@@ -2,7 +2,7 @@ package com.ww.manager.wisieanswer.state.multiphase;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 import static com.ww.helper.RandomHelper.randomElement;
@@ -21,13 +21,13 @@ public class WisieStateCheckNoConcentration extends WisieState {
     }
 
     @Override
-    protected WisieAnswerAction processWisieAnswerAction() {
+    protected MemberWisieStatus processWisieAnswerAction() {
         double hobbyPart = manager.getWarWisie().isHobby() ? 0.1 : 0;
         chance = manager.getWarWisie().getConcentrationF1() + hobbyPart;
         lostConcentration = chance < randomDouble();
         if (lostConcentration) {
-            return randomElement(WisieAnswerAction.getNoConcentrationActions());
+            return randomElement(MemberWisieStatus.getNoConcentrationActions());
         }
-        return WisieAnswerAction.NONE;
+        return MemberWisieStatus.NONE;
     }
 }

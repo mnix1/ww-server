@@ -1,10 +1,11 @@
 package com.ww.game.play.flow;
 
-import com.ww.model.container.rival.RivalInterval;
-import com.ww.model.container.rival.war.WarInterval;
 import com.ww.game.play.PlayManager;
+import com.ww.game.play.PlayWarManager;
 import com.ww.game.play.state.*;
 import com.ww.game.play.state.war.*;
+import com.ww.model.container.rival.RivalInterval;
+import com.ww.model.container.rival.war.WarInterval;
 
 public class PlayWarFlow extends PlayFlow {
 
@@ -14,12 +15,17 @@ public class PlayWarFlow extends PlayFlow {
 
     @Override
     protected synchronized PlayIntroState createIntroState() {
-        return new PlayWarIntroState(manager.getContainer());
+        return new PlayWarIntroState(getContainer());
     }
 
     @Override
     protected synchronized PlayPreparingNextTaskState createPreparingNextTaskState() {
-        return new PlayWarPreparingNextTaskState(manager.getContainer(), interval.getPreparingNextTaskInterval());
+        return new PlayWarPreparingNextTaskState(getContainer(), interval.getPreparingNextTaskInterval());
+    }
+
+    @Override
+    protected synchronized PlayAnsweringState createAnsweringState() {
+        return new PlayWarAnsweringState((PlayWarManager) manager, interval.getAnsweringInterval());
     }
 
     @Override

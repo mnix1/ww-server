@@ -2,10 +2,8 @@ package com.ww.manager.wisieanswer.state.phase4;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import io.reactivex.Flowable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,7 +23,7 @@ public class WisieStateEndRecognizingAnswers extends WisieState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(WisieAnswerAction.RECOGNIZING_ANSWERS);
+        manager.addAndSendAction(MemberWisieStatus.RECOGNIZING_ANSWERS);
         double sumInterval = manager.getAnswerCount() * (3d - manager.getWarWisie().getSpeedF1() - manager.getWarWisie().getConcentrationF1()) * 500;
         if (manager.getWarWisie().isHobby()) {
             sumInterval /= manager.getWarWisie().getHobbyFactor();

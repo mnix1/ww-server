@@ -2,10 +2,7 @@ package com.ww.manager.wisieanswer.skill.state.kidnapping;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
-import com.ww.model.constant.wisie.WisieAnswerAction;
 import io.reactivex.Flowable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -26,7 +23,7 @@ public class WisieStateWasNotKidnapped extends WisieSkillState {
     @Override
     protected Flowable<Long> processFlowable() {
         //actions in WisieStateKidnappingFailed
-//        warManager.addAndSendAction(WisieAnswerAction.WAS_NOT_KIDNAPPED);
+//        warManager.addAndSendAction(MemberWisieStatus.WAS_NOT_KIDNAPPED);
         interval = (long) (randomDouble(1 - manager.getWarWisie().getReflexF1(),
                 2 - manager.getWarWisie().getReflexF1() - manager.getWarWisie().getConcentrationF1()) * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);

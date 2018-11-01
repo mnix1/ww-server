@@ -17,10 +17,8 @@ import com.ww.manager.wisieanswer.state.phase5.*;
 import com.ww.manager.wisieanswer.state.phase5.WisieStateCheckKnowAnswerAfterThinkingWhichMatch;
 import com.ww.manager.wisieanswer.state.phase5.WisieStateEndThinkingWhichAnswerMatch;
 import com.ww.manager.wisieanswer.state.phase6.*;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import lombok.Getter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Getter
 public class WisieAnswerFlow extends AbstractFlow {
@@ -72,8 +70,8 @@ public class WisieAnswerFlow extends AbstractFlow {
 
     private synchronized void phase1() {
         addState(new WisieStateStartRecognizingQuestion(manager)).addOnFlowableEndListener(aLong1 -> {
-            WisieAnswerAction aa1 = addState(new WisieStateCheckNoConcentration(manager)).startWisieAnswerAction();
-            if (WisieAnswerAction.isNoConcentration(aa1)) {
+            MemberWisieStatus aa1 = addState(new WisieStateCheckNoConcentration(manager)).startWisieAnswerAction();
+            if (MemberWisieStatus.isNoConcentration(aa1)) {
                 addState(new WisieStateLostConcentration(manager, aa1)).addOnFlowableEndListener(aLong2 -> {
                     phase2();
                 }).startFlowable();
@@ -86,10 +84,10 @@ public class WisieAnswerFlow extends AbstractFlow {
     private synchronized void phase2() {
         addState(new WisieStateEndRecognizingQuestion(manager)).addOnFlowableEndListener(aLong2 -> {
             addState(new WisieStateStartThinkingAboutQuestion(manager)).addOnFlowableEndListener(aLong3 -> {
-                WisieAnswerAction aa2 = new WisieStateCheckKnowAnswerAfterThinkingAboutQuestion(manager).startWisieAnswerAction();
-                if (aa2 == WisieAnswerAction.THINK_KNOW_ANSWER) {
+                MemberWisieStatus aa2 = new WisieStateCheckKnowAnswerAfterThinkingAboutQuestion(manager).startWisieAnswerAction();
+                if (aa2 == MemberWisieStatus.THINK_KNOW_ANSWER) {
                     phase3();
-                } else if (aa2 == WisieAnswerAction.NOT_SURE_OF_ANSWER) {
+                } else if (aa2 == MemberWisieStatus.NOT_SURE_OF_ANSWER) {
                     phase4();
                 }
             }).startFlowable();
@@ -99,12 +97,12 @@ public class WisieAnswerFlow extends AbstractFlow {
     private synchronized void phase3() {
         addState(new WisieStateStartLookingForAnswer(manager)).addOnFlowableEndListener(aLong4 -> {
             addState(new WisieStateEndLookingForAnswer(manager)).addOnFlowableEndListener(aLong5 -> {
-                WisieAnswerAction aa2 = addState(new WisieStateCheckFoundAnswerLookingFor(manager)).startWisieAnswerAction();
-                if (aa2 == WisieAnswerAction.FOUND_ANSWER_LOOKING_FOR) {
+                MemberWisieStatus aa2 = addState(new WisieStateCheckFoundAnswerLookingFor(manager)).startWisieAnswerAction();
+                if (aa2 == MemberWisieStatus.FOUND_ANSWER_LOOKING_FOR) {
                     addState(new WisieStateFoundAnswerLookingFor(manager)).addOnFlowableEndListener(aLong6 -> {
                         addState(new WisieStateAnsweringPhase3(manager)).startVoid();
                     }).startFlowable();
-                } else if (aa2 == WisieAnswerAction.NO_FOUND_ANSWER_LOOKING_FOR) {
+                } else if (aa2 == MemberWisieStatus.NO_FOUND_ANSWER_LOOKING_FOR) {
                     addState(new WisieStateNoFoundAnswerLookingFor(manager)).addOnFlowableEndListener(aLong7 -> {
                         phase5();
                     }).startFlowable();
@@ -116,8 +114,8 @@ public class WisieAnswerFlow extends AbstractFlow {
     private synchronized void phase4() {
         addState(new WisieStateStartRecognizingAnswers(manager)).addOnFlowableEndListener(aLong5 -> {
             addState(new WisieStateEndRecognizingAnswers(manager)).addOnFlowableEndListener(aLong6 -> {
-                WisieAnswerAction aa3 = new WisieStateCheckNoConcentration(manager).startWisieAnswerAction();
-                if (WisieAnswerAction.isNoConcentration(aa3)) {
+                MemberWisieStatus aa3 = new WisieStateCheckNoConcentration(manager).startWisieAnswerAction();
+                if (MemberWisieStatus.isNoConcentration(aa3)) {
                     addState(new WisieStateLostConcentration(manager, aa3)).addOnFlowableEndListener(aLong7 -> {
                         phase5();
                     }).startFlowable();
@@ -130,12 +128,12 @@ public class WisieAnswerFlow extends AbstractFlow {
 
     private synchronized void phase5() {
         addState(new WisieStateEndThinkingWhichAnswerMatch(manager)).addOnFlowableEndListener(aLong8 -> {
-            WisieAnswerAction aa4 = addState(new WisieStateCheckKnowAnswerAfterThinkingWhichMatch(manager)).startWisieAnswerAction();
-            if (aa4 == WisieAnswerAction.NOW_KNOW_ANSWER) {
+            MemberWisieStatus aa4 = addState(new WisieStateCheckKnowAnswerAfterThinkingWhichMatch(manager)).startWisieAnswerAction();
+            if (aa4 == MemberWisieStatus.NOW_KNOW_ANSWER) {
                 addState(new WisieStateNowKnowAnswer(manager)).addOnFlowableEndListener(aLong9 -> {
                     addState(new WisieStateAnsweringPhase5(manager)).startVoid();
                 }).startFlowable();
-            } else if (aa4 == WisieAnswerAction.DOESNT_KNOW_ANSWER) {
+            } else if (aa4 == MemberWisieStatus.DOESNT_KNOW_ANSWER) {
                 phase6();
             }
         }).startFlowable();
@@ -144,10 +142,10 @@ public class WisieAnswerFlow extends AbstractFlow {
     private synchronized void phase6() {
         addState(new WisieStateDoesntKnowAnswer(manager)).addOnFlowableEndListener(aLong10 -> {
             addState(new WisieStateEndThinkingIfGiveRandomAnswer(manager)).addOnFlowableEndListener(aLong11 -> {
-                WisieAnswerAction aa5 = addState(new WisieStateCheckIfGiveRandomAnswer(manager)).startWisieAnswerAction();
-                if (aa5 == WisieAnswerAction.WILL_GIVE_RANDOM_ANSWER) {
+                MemberWisieStatus aa5 = addState(new WisieStateCheckIfGiveRandomAnswer(manager)).startWisieAnswerAction();
+                if (aa5 == MemberWisieStatus.WILL_GIVE_RANDOM_ANSWER) {
                     addState(new WisieStateAnsweringPhase6(manager)).startVoid();
-                } else if (aa5 == WisieAnswerAction.WONT_GIVE_RANDOM_ANSWER) {
+                } else if (aa5 == MemberWisieStatus.WONT_GIVE_RANDOM_ANSWER) {
                     addState(new WisieStateSurrender(manager)).startVoid();
                 }
             }).startFlowable();

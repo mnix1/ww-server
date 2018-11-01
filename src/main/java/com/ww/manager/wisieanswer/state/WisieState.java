@@ -2,8 +2,7 @@ package com.ww.manager.wisieanswer.state;
 
 import com.ww.manager.AbstractState;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
-import com.ww.model.constant.wisie.WisieAnswerAction;
-import lombok.Getter;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 
 public abstract class WisieState extends AbstractState {
     protected WisieAnswerManager manager;
@@ -23,17 +22,17 @@ public abstract class WisieState extends AbstractState {
         return manager.isRunning();
     }
 
-    public WisieAnswerAction startWisieAnswerAction() {
+    public MemberWisieStatus startWisieAnswerAction() {
         if (!startIfRunning()) {
             logger.trace(describe() + " NO startWisieAnswerAction");
-            return WisieAnswerAction.NONE;
+            return MemberWisieStatus.NONE;
         }
-        WisieAnswerAction result = processWisieAnswerAction();
+        MemberWisieStatus result = processWisieAnswerAction();
         logger.trace(describe() + " startWisieAnswerAction, result=" + result);
         return result;
     }
 
-    protected WisieAnswerAction processWisieAnswerAction() {
-        return WisieAnswerAction.NONE;
+    protected MemberWisieStatus processWisieAnswerAction() {
+        return MemberWisieStatus.NONE;
     }
 }

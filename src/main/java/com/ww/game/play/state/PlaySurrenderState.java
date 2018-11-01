@@ -20,8 +20,8 @@ public class PlaySurrenderState extends PlayState {
     private Long profileId;
     private PlayManager manager;
 
-    public PlaySurrenderState(PlayContainer container, Long profileId, PlayManager manager) {
-        super(container, RivalStatus.CLOSED);
+    public PlaySurrenderState(PlayManager manager, Long profileId) {
+        super(manager.getContainer(), RivalStatus.CLOSED);
         this.profileId = profileId;
         this.manager = manager;
     }

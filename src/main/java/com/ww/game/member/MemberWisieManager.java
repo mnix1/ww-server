@@ -1,13 +1,18 @@
 package com.ww.game.member;
 
 import com.ww.game.member.communication.MemberCommunication;
-import com.ww.game.member.container.MemberContainer;
-import com.ww.game.member.flow.MemberFlow;
+import com.ww.game.member.container.MemberWisieContainer;
+import com.ww.game.member.flow.MemberWisieFlow;
+import com.ww.model.container.rival.war.WisieTeamMember;
 
 public class MemberWisieManager extends MemberManager {
-    public MemberWisieManager() {
-        this.container = new MemberContainer();
-        this.flow = new MemberFlow();
+    public MemberWisieManager(WisieTeamMember member) {
+        this.container = new MemberWisieContainer(member);
+        this.flow = new MemberWisieFlow(this);
         this.communication = new MemberCommunication();
+    }
+
+    public void start() {
+        flow.start();
     }
 }

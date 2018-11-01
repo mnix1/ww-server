@@ -2,9 +2,8 @@ package com.ww.manager.wisieanswer.skill.state.ghost;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
-import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
 import com.ww.model.constant.wisie.DisguiseType;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import io.reactivex.Flowable;
 import lombok.Setter;
 
@@ -38,8 +37,8 @@ public class WisieStateTryingToScare extends WisieSkillState {
     protected Flowable<Long> processFlowable() {
         manager.getTeam(manager).getTeamSkills().blockAll();
         manager.getTeam(opponentManager).getTeamSkills().blockAll();
-        manager.addAction(WisieAnswerAction.TRYING_TO_SCARE);
-        opponentManager.addAction(WisieAnswerAction.SCARING_ON_IT);
+        manager.addAction(MemberWisieStatus.TRYING_TO_SCARE);
+        opponentManager.addAction(MemberWisieStatus.SCARING_ON_IT);
         manager.getWisieMember().addDisguise(DisguiseType.GHOST);
         manager.getWarManager().sendNewSkillsModel((m, wT) -> {
             manager.getModelFactory().fillModelActiveMemberAddOn(m, wT);

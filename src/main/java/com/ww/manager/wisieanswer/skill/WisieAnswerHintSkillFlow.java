@@ -4,10 +4,8 @@ import com.ww.manager.wisieanswer.WisieAnswerFlow;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.phase2.WisieStateStartThinkingAboutQuestion;
 import com.ww.manager.wisieanswer.skill.state.hint.*;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import lombok.Getter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Getter
 public class WisieAnswerHintSkillFlow {
@@ -26,11 +24,11 @@ public class WisieAnswerHintSkillFlow {
     private synchronized void phaseHint() {
         flow.addState(new WisieStateHintReceived(manager)).addOnFlowableEndListener(aLong10 -> {
             flow.addState(new WisieStateEndThinkingIfUseHint(manager, hintCorrect)).addOnFlowableEndListener(aLong11 -> {
-                WisieAnswerAction aa5 = flow.addState(new WisieStateCheckIfUseHint(manager, hintCorrect)).startWisieAnswerAction();
+                MemberWisieStatus aa5 = flow.addState(new WisieStateCheckIfUseHint(manager, hintCorrect)).startWisieAnswerAction();
                 flow.addState(new WisieStateDecidedIfUseHint(manager, aa5)).addOnFlowableEndListener(aLong12 -> {
-                    if (aa5 == WisieAnswerAction.WILL_USE_HINT) {
+                    if (aa5 == MemberWisieStatus.WILL_USE_HINT) {
                         flow.addState(new WisieStateAnsweringUseHint(manager, hintCorrect, hintAnswerId)).startVoid();
-                    } else if (aa5 == WisieAnswerAction.WONT_USE_HINT) {
+                    } else if (aa5 == MemberWisieStatus.WONT_USE_HINT) {
                         flow.addState(new WisieStateStartThinkingAboutQuestion(manager)).addOnFlowableEndListener(aLong3 -> {
                             flow.addState(new WisieStateAnsweringNoUseHint(manager, hintAnswerId)).startVoid();
                         }).startFlowable();

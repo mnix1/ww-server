@@ -1,20 +1,34 @@
 package com.ww.model.container.rival.war;
 
+import com.ww.game.member.MemberWisieManager;
 import com.ww.model.constant.wisie.HeroType;
 import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.dto.wisie.WarProfileWisieDTO;
 import lombok.Getter;
 
-@Getter
-public class WisieTeamMember extends TeamMember {
-    private WarWisie content;
-    private WarProfileWisieDTO contentDTO;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-    public WisieTeamMember(int index, WarWisie content, WarProfileWisieDTO contentDTO) {
+public class WisieTeamMember extends TeamMember {
+    @Getter
+    private WarWisie content;
+    @Getter
+    private WarProfileWisieDTO contentDTO;
+    private List<MemberWisieManager> managers;
+
+    public WisieTeamMember(int index, WarWisie content) {
         super(index, HeroType.WISIE);
         this.content = content;
-        this.contentDTO = contentDTO;
+    }
+
+    public void addManager(MemberWisieManager manager) {
+        managers.add(manager);
+    }
+
+    public MemberWisieManager currentManager() {
+        return managers.get(managers.size() - 1);
     }
 
     private void refreshCache() {
@@ -24,33 +38,15 @@ public class WisieTeamMember extends TeamMember {
     }
 
     public void decreaseAttributesByHalf() {
-        for (WisdomAttribute wisdomAttribute : WisdomAttribute.values()) {
-            content.setWisdomAttributeValue(wisdomAttribute, content.getWisdomAttributeValue(wisdomAttribute) / 2);
-        }
-        for (MentalAttribute mentalAttribute : MentalAttribute.values()) {
-            content.setMentalAttributeValue(mentalAttribute, content.getMentalAttributeValue(mentalAttribute) / 2);
-        }
-        refreshCache();
+        content.decreaseAttributesByHalf();
     }
 
     public void increaseWisdomAttributes(WarWisie source, double factor) {
-        for (WisdomAttribute wisdomAttribute : WisdomAttribute.values()) {
-            double actualValue = content.getWisdomAttributeValue(wisdomAttribute);
-            double changeValue = source.getWisie().getWisdomAttributeValue(wisdomAttribute) * factor;
-            content.setWisdomAttributeValue(wisdomAttribute, actualValue + changeValue);
-        }
-        content.setValue(content.calculateValue());
-        contentDTO = new WarProfileWisieDTO(content);
+        content.increaseWisdomAttributes(source, factor);
     }
 
     public void increaseMentalAttributes(WarWisie source, double factor) {
-        for (MentalAttribute mentalAttribute : MentalAttribute.values()) {
-            double actualValue = content.getMentalAttributeValue(mentalAttribute);
-            double changeValue = source.getWisie().getMentalAttributeValue(mentalAttribute) * factor;
-            content.setMentalAttributeValue(mentalAttribute, actualValue + changeValue);
-        }
-        content.setValue(content.calculateValue());
-        contentDTO = new WarProfileWisieDTO(content);
+        content.increaseMentalAttributes(source, factor);
     }
 
 }

@@ -3,7 +3,7 @@ package com.ww.manager.wisieanswer.skill.state.kidnapping;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
 import com.ww.model.constant.wisie.DisguiseType;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import io.reactivex.Flowable;
 
 import java.util.concurrent.TimeUnit;
@@ -24,8 +24,8 @@ public class WisieStateKidnappingSucceeded extends WisieSkillState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.addAction(WisieAnswerAction.KIDNAPPING_SUCCEEDED);
-        opponent.addAction(WisieAnswerAction.WAS_KIDNAPPED);
+        manager.addAction(MemberWisieStatus.KIDNAPPING_SUCCEEDED);
+        opponent.addAction(MemberWisieStatus.WAS_KIDNAPPED);
         manager.getTeam(opponent).activeTeamMemberOutDuringAnswering(DisguiseType.CHAIR_SIMPLE);
         manager.getTeam(manager).activeTeamMemberOutDuringAnswering(DisguiseType.CHAIR_SIMPLE);
         manager.getWarManager().sendActiveMemberAndActionsModel();

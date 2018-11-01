@@ -1,7 +1,7 @@
 package com.ww.model.container.rival.war;
 
 import com.ww.model.constant.rival.RivalStatus;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import com.ww.model.container.rival.RivalModelFactory;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.dto.rival.ActiveTeamMemberDTO;
@@ -89,12 +89,12 @@ public class WarModelFactory extends RivalModelFactory {
     public void fillModelWisieActions(Map<String, Object> model, RivalTeam team) {
         WarTeam warTeam = (WarTeam) team;
         if (warTeam.getActiveTeamMember().isWisie()) {
-            List<WisieAnswerAction> wisieActions = this.model.getAnsweringWisieActions(warTeam);
+            List<MemberWisieStatus> wisieActions = this.model.getAnsweringWisieActions(warTeam);
             if (wisieActions != null) {
                 model.put("wisieActions", wisieActions);
             }
             if (this.model.isOpponent()) {
-                List<WisieAnswerAction> opponentWisieActions = this.model.getAnsweringWisieActions(opponentTeam(team));
+                List<MemberWisieStatus> opponentWisieActions = this.model.getAnsweringWisieActions(opponentTeam(team));
                 if (opponentWisieActions != null) {
                     model.put("opponentWisieActions", opponentWisieActions);
                 }

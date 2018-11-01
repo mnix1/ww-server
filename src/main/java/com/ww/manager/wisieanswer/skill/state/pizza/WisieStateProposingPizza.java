@@ -3,7 +3,7 @@ package com.ww.manager.wisieanswer.skill.state.pizza;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
 import com.ww.model.constant.wisie.DisguiseType;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import io.reactivex.Flowable;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,8 +37,8 @@ public class WisieStateProposingPizza extends WisieSkillState {
     protected Flowable<Long> processFlowable() {
         manager.getTeam(manager).getTeamSkills().blockAll();
         manager.getTeam(opponentManager).getTeamSkills().blockAll();
-        manager.addAction(WisieAnswerAction.PROPOSING_PIZZA);
-        opponentManager.addAction(WisieAnswerAction.THINKING_IF_GET_PIZZA);
+        manager.addAction(MemberWisieStatus.PROPOSING_PIZZA);
+        opponentManager.addAction(MemberWisieStatus.THINKING_IF_GET_PIZZA);
         manager.getWisieMember().addDisguise(DisguiseType.PIZZA_COOK);
         manager.getWarManager().sendNewSkillsModel((m, wT) -> {
             manager.getModelFactory().fillModelActiveMemberAddOn(m, wT);

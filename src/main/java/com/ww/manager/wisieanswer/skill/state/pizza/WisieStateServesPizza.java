@@ -3,7 +3,7 @@ package com.ww.manager.wisieanswer.skill.state.pizza;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
 import com.ww.model.constant.wisie.DisguiseType;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import io.reactivex.Flowable;
 import lombok.Setter;
 
@@ -32,8 +32,8 @@ public class WisieStateServesPizza extends WisieSkillState {
     }
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.addAction(WisieAnswerAction.SERVES_PIZZA);
-        opponentManager.addAction(WisieAnswerAction.PREPARING_FOR_EAT_PIZZA);
+        manager.addAction(MemberWisieStatus.SERVES_PIZZA);
+        opponentManager.addAction(MemberWisieStatus.PREPARING_FOR_EAT_PIZZA);
         opponentManager.getTeam(opponentManager).getActiveTeamMember().addDisguise(DisguiseType.PIZZA_MAN);
         manager.getWarManager().sendActiveMemberAndActionsModel();
         interval = interval();

@@ -2,7 +2,7 @@ package com.ww.manager.wisieanswer.state.phase6;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import com.ww.model.entity.outside.rival.task.Answer;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class WisieStateAnsweringPhase6 extends WisieState {
 
     @Override
     protected void processVoid() {
-        manager.addAndSendAction(WisieAnswerAction.ANSWERED);
+        manager.addAndSendAction(MemberWisieStatus.ANSWERED);
         Answer answer = randomElement(new ArrayList<>(manager.getQuestion().getAnswers()));
         correctAnswer = answer.getCorrect();
         answerId = answer.getId();

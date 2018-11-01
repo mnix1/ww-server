@@ -2,11 +2,9 @@ package com.ww.manager.wisieanswer.state.phase2;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.state.WisieState;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import com.ww.model.constant.rival.task.TaskRenderer;
 import io.reactivex.Flowable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -28,7 +26,7 @@ public class WisieStateEndRecognizingQuestion extends WisieState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(WisieAnswerAction.RECOGNIZING_QUESTION);
+        manager.addAndSendAction(MemberWisieStatus.RECOGNIZING_QUESTION);
         long readingInterval = manager.getQuestion().getTextContent().length() * ONE_CHAR_READING_SPEED;
         long otherInterval;
         TaskRenderer taskRenderer = manager.getQuestion().getType().getQuestionRenderer();

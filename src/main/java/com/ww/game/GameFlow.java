@@ -13,15 +13,28 @@ import static com.ww.helper.TagHelper.randomUniqueUUID;
 public abstract class GameFlow {
     protected Map<String, Disposable> disposableMap = new ConcurrentHashMap<>();
 
+    public abstract void start();
+
     protected synchronized void after(long interval, Consumer<Long> onNext) {
+        if (interval == 0) {
+            callNext(interval, onNext);
+            return;
+        }
         String uuid = randomUniqueUUID(disposableMap);
         disposableMap.put(uuid, prepareFlowable(interval).subscribe(aLong -> {
             synchronized (this) {
                 if (disposableMap.containsKey(uuid)) {
-                    onNext.accept(aLong);
+                    callNext(interval, onNext);
                 }
             }
         }));
+    }
+
+    private synchronized void callNext(long interval, Consumer<Long> onNext) {
+        try {
+            onNext.accept(interval);
+        } catch (Exception e) {
+        }
     }
 
     private Flowable<Long> prepareFlowable(long interval) {

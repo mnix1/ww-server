@@ -2,7 +2,7 @@ package com.ww.model.container.rival.war;
 
 import com.ww.manager.rival.war.WarManager;
 import com.ww.manager.wisieanswer.WisieAnswerManager;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import com.ww.model.container.rival.RivalModel;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.RivalTeams;
@@ -46,7 +46,7 @@ public class WarModel extends RivalModel {
         }
     }
 
-    public List<WisieAnswerAction> getAnsweringWisieActions(WarTeam warTeam) {
+    public List<MemberWisieStatus> getAnsweringWisieActions(WarTeam warTeam) {
         TeamMember teamMember = warTeam.getActiveTeamMember();
         if (!teamMember.isWisie()) {
             return null;
@@ -54,7 +54,7 @@ public class WarModel extends RivalModel {
         OwnedWisie wisie = ((WisieTeamMember) teamMember).getContent().getWisie();
         for (WisieAnswerManager answerManager : wisieAnswerManagers) {
             if (answerManager.getOwnedWisie().equals(wisie)) {
-                List<WisieAnswerAction> actions = answerManager.getActions();
+                List<MemberWisieStatus> actions = answerManager.getActions();
                 return actions.subList(Math.max(0, actions.size() - 2), actions.size());
             }
         }

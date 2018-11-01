@@ -2,14 +2,14 @@ package com.ww.manager.wisieanswer.skill.state.hint;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 
 public class WisieStateCheckIfUseHint extends WisieSkillState {
     private boolean hintCorrect;
 
-    private WisieAnswerAction action;
+    private MemberWisieStatus action;
     private Double chance;
     private Boolean useHint;
 
@@ -24,9 +24,9 @@ public class WisieStateCheckIfUseHint extends WisieSkillState {
     }
 
     @Override
-    protected WisieAnswerAction processWisieAnswerAction() {
+    protected MemberWisieStatus processWisieAnswerAction() {
         if (hintCorrect) {
-            action = WisieAnswerAction.WILL_USE_HINT;
+            action = MemberWisieStatus.WILL_USE_HINT;
             return action;
         }
         double diffPart = (4 - manager.getDifficulty()) * 0.05;
@@ -35,9 +35,9 @@ public class WisieStateCheckIfUseHint extends WisieSkillState {
         chance = 0.5 + diffPart + attrPart + hobbyPart;
         useHint = chance <= randomDouble();
         if (useHint) {
-            action = WisieAnswerAction.WILL_USE_HINT;
+            action = MemberWisieStatus.WILL_USE_HINT;
         } else {
-            action = WisieAnswerAction.WONT_USE_HINT;
+            action = MemberWisieStatus.WONT_USE_HINT;
         }
         return action;
     }

@@ -2,7 +2,7 @@ package com.ww.manager.wisieanswer.skill.state.pizza;
 
 import com.ww.manager.wisieanswer.WisieAnswerManager;
 import com.ww.manager.wisieanswer.skill.state.WisieSkillState;
-import com.ww.model.constant.wisie.WisieAnswerAction;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import com.ww.model.container.rival.war.WisieTeamMember;
 import io.reactivex.Flowable;
 import lombok.Getter;
@@ -35,8 +35,8 @@ public class WisieStateCleaningAfterPizza extends WisieSkillState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.addAction(WisieAnswerAction.CLEANING_AFTER_PIZZA);
-        opponentManager.addAction(WisieAnswerAction.EATEN_PIZZA);
+        manager.addAction(MemberWisieStatus.CLEANING_AFTER_PIZZA);
+        opponentManager.addAction(MemberWisieStatus.EATEN_PIZZA);
         opponentManager.getTeam(opponentManager).getTeamSkills().unblockAll();
         WisieTeamMember opponentTeamMember = (WisieTeamMember) opponentManager.getTeam(opponentManager).getActiveTeamMember();
         opponentTeamMember.decreaseAttributesByHalf();
