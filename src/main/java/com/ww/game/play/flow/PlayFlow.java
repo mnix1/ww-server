@@ -1,23 +1,14 @@
 package com.ww.game.play.flow;
 
 import com.ww.game.GameFlow;
-import com.ww.model.constant.Category;
-import com.ww.model.constant.rival.DifficultyLevel;
-import com.ww.model.container.rival.RivalInterval;
+import com.ww.game.GameState;
 import com.ww.game.play.PlayManager;
 import com.ww.game.play.communication.PlayCommunication;
 import com.ww.game.play.container.PlayContainer;
 import com.ww.game.play.state.*;
-import io.reactivex.Flowable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
-
-import static com.ww.helper.TagHelper.randomUniqueUUID;
+import com.ww.model.constant.Category;
+import com.ww.model.constant.rival.DifficultyLevel;
+import com.ww.model.container.rival.RivalInterval;
 
 public class PlayFlow extends GameFlow {
     protected PlayManager manager;
@@ -37,16 +28,16 @@ public class PlayFlow extends GameFlow {
         return manager.getContainer();
     }
 
-    protected synchronized void send() {
-        getCommunication().send();
+    public void childStateChanged(){
+        getCommunication().sendChild();
     }
 
     protected synchronized void addStateAndSend(PlayState state) {
         addState(state);
-        send();
+        getCommunication().send();
     }
 
-    public void start(){
+    public void start() {
         introPhase();
     }
 

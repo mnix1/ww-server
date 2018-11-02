@@ -5,22 +5,31 @@ import com.ww.model.constant.wisie.HeroType;
 import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.dto.wisie.WarProfileWisieDTO;
+import com.ww.model.entity.outside.rival.task.Question;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class WisieTeamMember extends TeamMember {
     @Getter
     private WarWisie content;
-    @Getter
     private WarProfileWisieDTO contentDTO;
-    private List<MemberWisieManager> managers;
+    private List<MemberWisieManager> managers = new CopyOnWriteArrayList<>();
 
     public WisieTeamMember(int index, WarWisie content) {
         super(index, HeroType.WISIE);
         this.content = content;
+    }
+
+    public WarProfileWisieDTO getContentDTO() {
+        if (contentDTO == null) {
+            contentDTO = new WarProfileWisieDTO(content);
+        }
+        return contentDTO;
     }
 
     public void addManager(MemberWisieManager manager) {
@@ -31,9 +40,9 @@ public class WisieTeamMember extends TeamMember {
         return managers.get(managers.size() - 1);
     }
 
-    private void refreshCache() {
-        content.cacheAttributes();
-        content.cacheHobbies();
+    private void refreshCache(Question question) {
+        content.cacheAttributes(question);
+        content.cacheHobbies(question);
         contentDTO = new WarProfileWisieDTO(content);
     }
 

@@ -1,11 +1,10 @@
 package com.ww.game.member.flow;
 
 import com.ww.game.GameFlow;
+import com.ww.game.GameState;
 import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.container.MemberWisieContainer;
-import com.ww.game.member.state.wisie.MemberWisieState;
-import com.ww.game.member.state.wisie.MemberWisieRecognizingQuestionState;
-import com.ww.game.member.state.wisie.MemberWisieWaitingForQuestionState;
+import com.ww.game.member.state.wisie.*;
 
 public class MemberWisieFlow extends GameFlow {
     protected MemberWisieManager manager;
@@ -23,22 +22,45 @@ public class MemberWisieFlow extends GameFlow {
         waitingForQuestionPhase();
     }
 
-    protected void waitingForQuestionPhase() {
-        MemberWisieState state = new MemberWisieWaitingForQuestionState(getContainer());
+    protected synchronized void addState(GameState state) {
+        super.addState(state);
+        manager.getPlayManager().getFlow().childStateChanged();
+    }
+
+    protected synchronized void waitingForQuestionPhase() {
+        MemberWisieIntervalState state = new MemberWisieWaitingForQuestionState(getContainer());
         addState(state);
         after(state.getInterval(), aLong -> recognizingQuestionPhase());
     }
 
-    protected void recognizingQuestionPhase() {
-        MemberWisieState state = new MemberWisieRecognizingQuestionState(getContainer());
+    protected synchronized void recognizingQuestionPhase() {
+        MemberWisieIntervalState state = new MemberWisieRecognizingQuestionState(getContainer());
         addState(state);
         after(state.getInterval(), aLong -> thinkingPhase());
     }
 
-    protected void thinkingPhase() {
-//        MemberWisieState state = new MemberWisieRecognizingQuestionState(getContainer());
-//        addState(state);
-//        after(state.interval(), aLong ->);
+    protected synchronized void thinkingPhase() {
+        MemberWisieIntervalState state = new MemberWisieThinkingState(getContainer());
+        addState(state);
+        after(state.getInterval(), aLong -> thinkKnowAnswerPhase());
+    }
+
+    protected synchronized void thinkKnowAnswerPhase() {
+        MemberWisieIntervalState state = new MemberWisieThinkKnowAnswerState(getContainer());
+        addState(state);
+        after(state.getInterval(), aLong -> lookingForAnswerPhase());
+    }
+
+    protected synchronized void lookingForAnswerPhase() {
+        MemberWisieIntervalState state = new MemberWisieLookingForAnswerState(getContainer());
+        addState(state);
+        after(state.getInterval(), aLong -> foundAnswerLookingForPhase());
+    }
+
+    protected synchronized void foundAnswerLookingForPhase() {
+        MemberWisieIntervalState state = new MemberWisieFoundAnswerLookingForState(getContainer());
+        addState(state);
+//        after(state.getInterval(), aLong ->);
     }
 
 

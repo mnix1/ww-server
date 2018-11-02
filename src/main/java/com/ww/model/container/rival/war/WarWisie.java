@@ -21,8 +21,6 @@ public class WarWisie extends AbstractWisieAttributes {
     private OwnedWisie wisie;
     private double originalValue;
 
-    private Question question;
-
     private double wisdomSum;
     private double speedF1;
     private double reflexF1;
@@ -34,7 +32,6 @@ public class WarWisie extends AbstractWisieAttributes {
     private double value;
 
     private boolean isHobby;
-    private int hobbyCount;
     private double hobbyFactor;
 
     public WarWisie(OwnedWisie wisie) {
@@ -44,21 +41,19 @@ public class WarWisie extends AbstractWisieAttributes {
         this.value = calculateValue();
     }
 
-    public void cacheHobbies(){
+    public void cacheHobbies(Question question) {
         this.isHobby = wisie.getHobbies().contains(question.getType().getCategory());
-        this.hobbyCount = wisie.getHobbies().size();
-        this.hobbyFactor = 1 + 1d / hobbyCount;
+        this.hobbyFactor = isHobby ? 2 + (3 - wisie.getHobbies().size()) * 0.5 : 1d;
     }
 
-    public void cacheAttributes() {
-        this.wisdomSum = prepareWisdomSum();
+    public void cacheAttributes(Question question) {
+        this.wisdomSum = prepareWisdomSum(question);
         this.speedF1 = f1(speed);
         this.reflexF1 = f1(reflex);
         this.cunningF1 = f1(cunning);
         this.concentrationF1 = f1(concentration);
         this.confidenceF1 = f1(confidence);
         this.intuitionF1 = f1(intuition);
-        this.value = calculateValue();
     }
 
     public WisieValueChange getWisieValueChange() {
@@ -71,7 +66,7 @@ public class WarWisie extends AbstractWisieAttributes {
         return WisieValueChange.NONE;
     }
 
-    private double prepareWisdomSum() {
+    private double prepareWisdomSum(Question question) {
         double sum = 0;
         for (TaskWisdomAttribute attribute : question.getType().getWisdomAttributes()) {
             sum += f1(getWisdomAttributeValue(attribute.getWisdomAttribute())) * attribute.getValue();
@@ -86,6 +81,7 @@ public class WarWisie extends AbstractWisieAttributes {
         for (MentalAttribute mentalAttribute : MentalAttribute.values()) {
             setMentalAttributeValue(mentalAttribute, getMentalAttributeValue(mentalAttribute) / 2);
         }
+        this.value = calculateValue();
     }
 
     public void increaseWisdomAttributes(WarWisie source, double factor) {
@@ -94,6 +90,7 @@ public class WarWisie extends AbstractWisieAttributes {
             double changeValue = source.getWisie().getWisdomAttributeValue(wisdomAttribute) * factor;
             setWisdomAttributeValue(wisdomAttribute, actualValue + changeValue);
         }
+        this.value = calculateValue();
     }
 
     public void increaseMentalAttributes(WarWisie source, double factor) {
@@ -102,5 +99,6 @@ public class WarWisie extends AbstractWisieAttributes {
             double changeValue = source.getWisie().getMentalAttributeValue(mentalAttribute) * factor;
             setMentalAttributeValue(mentalAttribute, actualValue + changeValue);
         }
+        this.value = calculateValue();
     }
 }

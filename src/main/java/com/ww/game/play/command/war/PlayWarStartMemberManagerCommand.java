@@ -1,7 +1,5 @@
 package com.ww.game.play.command.war;
 
-import com.ww.game.member.MemberWisieManager;
-import com.ww.game.play.PlayWarManager;
 import com.ww.game.play.command.PlayCommand;
 import com.ww.game.play.container.PlayContainer;
 import com.ww.model.container.rival.RivalTeam;
@@ -9,12 +7,10 @@ import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.model.container.rival.war.WisieTeamMember;
 
-public class PlayWarInitMemberManagerCommand extends PlayCommand {
-    private PlayWarManager manager;
+public class PlayWarStartMemberManagerCommand extends PlayCommand {
 
-    public PlayWarInitMemberManagerCommand(PlayWarManager manager) {
-        super(manager.getContainer());
-        this.manager = manager;
+    public PlayWarStartMemberManagerCommand(PlayContainer container) {
+        super(container);
     }
 
     @Override
@@ -24,8 +20,7 @@ public class PlayWarInitMemberManagerCommand extends PlayCommand {
             TeamMember teamMember = warTeam.getActiveTeamMember();
             if (teamMember.isWisie()) {
                 WisieTeamMember wisieTeamMember = (WisieTeamMember) teamMember;
-                MemberWisieManager memberManager = new MemberWisieManager(wisieTeamMember, manager);
-                wisieTeamMember.addManager(memberManager);
+                wisieTeamMember.currentManager().start();
             }
         }
     }

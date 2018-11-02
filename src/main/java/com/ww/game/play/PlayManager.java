@@ -1,5 +1,6 @@
 package com.ww.game.play;
 
+import com.ww.game.GameState;
 import com.ww.model.container.rival.RivalDecisions;
 import com.ww.model.container.rival.RivalResult;
 import com.ww.model.container.rival.RivalTasks;
@@ -45,7 +46,7 @@ public class PlayManager {
     }
 
     public void sendModelFromBeginning(Long profileId) {
-        communication.sendModelFromBeginning(profileId);
+        communication.sendModelFromBeginning(container.getTeams().team(profileId), container.getTeams().opponent(profileId));
     }
 
     public void updateProfilesElo(){

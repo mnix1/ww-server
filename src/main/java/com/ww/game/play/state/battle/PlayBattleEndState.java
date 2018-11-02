@@ -11,8 +11,8 @@ import java.util.Map;
 import static com.ww.game.play.modelfiller.PlayBattleModelFiller.fillModelScores;
 
 public class PlayBattleEndState extends PlayEndState {
-    public PlayBattleEndState(PlayContainer container, PlayManager manager) {
-        super(container, manager);
+    public PlayBattleEndState( PlayManager manager) {
+        super(manager);
     }
 
     @Override

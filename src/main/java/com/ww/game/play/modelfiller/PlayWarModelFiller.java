@@ -1,9 +1,14 @@
 package com.ww.game.play.modelfiller;
 
+import com.ww.game.GameState;
+import com.ww.game.member.state.wisie.MemberWisieState;
 import com.ww.model.container.rival.war.WarTeam;
+import com.ww.model.container.rival.war.WisieTeamMember;
 import com.ww.model.dto.rival.ActiveTeamMemberDTO;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.ww.helper.TeamHelper.mapToTeamDTOs;
 
@@ -27,6 +32,7 @@ public class PlayWarModelFiller {
         model.put("activeIndex", warTeam.getActiveIndex());
         model.put("opponentActiveIndex", warOpponentTeam.getActiveIndex());
     }
+
     public static void fillModelIsChosenActiveIndex(Map<String, Object> model, WarTeam warTeam) {
         model.put("isChosenActiveIndex", warTeam.isChosenActiveIndex());
     }
@@ -37,8 +43,21 @@ public class PlayWarModelFiller {
     }
 
     public static void fillModelWisieActions(Map<String, Object> model, WarTeam warTeam, WarTeam warOpponentTeam) {
-        model.put("wisieActions", null);
-        model.put("opponentWisieActions", null);
+        if (!warTeam.getActiveTeamMember().isWisie()) {
+            return;
+        }
+        model.put("wisieActions", prepareWisieActions((WisieTeamMember) warTeam.getActiveTeamMember()));
+        if (!warOpponentTeam.getActiveTeamMember().isWisie()) {
+            return;
+        }
+        model.put("opponentWisieActions", prepareWisieActions((WisieTeamMember) warOpponentTeam.getActiveTeamMember()));
+    }
+
+    private static List<String> prepareWisieActions(WisieTeamMember wisieTeamMember) {
+        List<GameState> states = wisieTeamMember.currentManager().getContainer().getStates();
+        return states.subList(Math.max(0, states.size() - 2), states.size()).stream()
+                .map(state -> ((MemberWisieState) state).getStatus().toString())
+                .collect(Collectors.toList());
     }
 
     public static void fillModelNullWisieActions(Map<String, Object> model) {

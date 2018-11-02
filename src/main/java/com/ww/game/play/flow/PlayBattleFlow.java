@@ -34,6 +34,6 @@ public class PlayBattleFlow extends PlayFlow {
 
     @Override
     protected synchronized PlayEndState createEndState() {
-        return new PlayBattleEndState(getContainer(), manager);
+        return new PlayBattleEndState(manager);
     }
 }
