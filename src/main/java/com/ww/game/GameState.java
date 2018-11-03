@@ -11,6 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameState {
     protected List<GameCommand> commands = new CopyOnWriteArrayList<>();
+    protected List<GameState> childStates = new CopyOnWriteArrayList<>();
     protected Instant date = Instant.now();
 
     public void initCommands() {
@@ -24,6 +25,10 @@ public class GameState {
         return new HashMap<>();
     }
 
+    public void addChildState(GameState state) {
+        childStates.add(state);
+    }
+
     public void execute() {
         for (GameCommand command : commands) {
             command.execute();
@@ -34,9 +39,5 @@ public class GameState {
         for (int i = commands.size() - 1; i >= 0; i--) {
             commands.get(i).revoke();
         }
-    }
-
-    protected List<GameState> childStates() {
-        return Collections.emptyList();
     }
 }

@@ -56,4 +56,10 @@ public abstract class GameFlow {
         state.initCommands();
         state.execute();
     }
+
+    protected synchronized void addChildState(GameState state) {
+        getContainer().currentState().addChildState(state);
+        state.initCommands();
+        state.execute();
+    }
 }
