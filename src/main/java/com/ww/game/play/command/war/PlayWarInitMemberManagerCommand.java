@@ -26,7 +26,7 @@ public class PlayWarInitMemberManagerCommand extends PlayCommand {
             if (teamMember.isWisie()) {
                 WisieTeamMember wisieTeamMember = (WisieTeamMember) teamMember;
                 wisieTeamMember.refreshCache(container.getTasks().question());
-                MemberWisieManager memberManager = new MemberWisieManager(wisieTeamMember, manager);
+                MemberWisieManager memberManager = new MemberWisieManager(warTeam, wisieTeamMember, manager);
                 wisieTeamMember.addManager(memberManager);
             }
         }
