@@ -59,7 +59,7 @@ public class PlayCommunication {
 
     public void sendModelFromBeginning(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = new HashMap<>();
-        for (int i = getContainer().getStates().size() - 1; i >= 0; i++) {
+        for (int i = getContainer().getStates().size() - 1; i >= 0; i--) {
             GameState state = getContainer().getStates().get(i);
             Map<String, Object> stateModel = state.prepareModel(team, opponentTeam);
             for (String key : stateModel.keySet()) {

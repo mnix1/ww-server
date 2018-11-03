@@ -1,5 +1,6 @@
 package com.ww.game.play.state.war;
 
+import com.ww.game.play.PlayManager;
 import com.ww.game.play.PlayWarManager;
 import com.ww.game.play.command.war.PlayWarInitMemberManagerCommand;
 import com.ww.game.play.command.war.PlayWarStartMemberManagerCommand;
@@ -15,9 +16,9 @@ import java.util.stream.Collectors;
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelWisieActions;
 
 public class PlayWarAnsweringState extends PlayAnsweringState {
-    private PlayWarManager manager;
+    private PlayManager manager;
 
-    public PlayWarAnsweringState(PlayWarManager manager, long interval) {
+    public PlayWarAnsweringState(PlayManager manager, long interval) {
         super(manager.getContainer(), interval);
         this.manager = manager;
     }

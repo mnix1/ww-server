@@ -40,7 +40,7 @@ public class WisieTeamMember extends TeamMember {
         return managers.get(managers.size() - 1);
     }
 
-    private void refreshCache(Question question) {
+    public void refreshCache(Question question) {
         content.cacheAttributes(question);
         content.cacheHobbies(question);
         contentDTO = new WarProfileWisieDTO(content);

@@ -25,7 +25,7 @@ public class PlayWarFlow extends PlayFlow {
 
     @Override
     protected synchronized PlayAnsweringState createAnsweringState() {
-        return new PlayWarAnsweringState((PlayWarManager) manager, interval.getAnsweringInterval());
+        return new PlayWarAnsweringState(manager, interval.getAnsweringInterval());
     }
 
     @Override

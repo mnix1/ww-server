@@ -34,6 +34,7 @@ public abstract class GameFlow {
         try {
             onNext.accept(interval);
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
