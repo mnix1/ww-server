@@ -1,6 +1,7 @@
-package com.ww.game.member.state.wisie;
+package com.ww.game.member.state.wisie.interval;
 
 import com.ww.game.member.container.MemberWisieContainer;
+import com.ww.game.member.state.wisie.MemberWisieState;
 import com.ww.model.constant.wisie.MemberWisieStatus;
 import lombok.Getter;
 

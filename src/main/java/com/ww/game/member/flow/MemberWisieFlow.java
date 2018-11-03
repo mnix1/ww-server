@@ -4,7 +4,7 @@ import com.ww.game.GameFlow;
 import com.ww.game.GameState;
 import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.container.MemberWisieContainer;
-import com.ww.game.member.state.wisie.*;
+import com.ww.game.member.state.wisie.interval.*;
 
 public class MemberWisieFlow extends GameFlow {
     protected MemberWisieManager manager;
