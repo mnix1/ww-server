@@ -3,65 +3,37 @@ package com.ww.game.member.flow;
 import com.ww.game.GameFlow;
 import com.ww.game.GameState;
 import com.ww.game.member.MemberWisieManager;
-import com.ww.game.member.container.MemberWisieContainer;
+import com.ww.game.member.state.wisie.MemberWisieState;
 import com.ww.game.member.state.wisie.interval.*;
+
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MemberWisieFlow extends GameFlow {
     protected MemberWisieManager manager;
+    protected Map<String, MemberWisieState> stateMap = new ConcurrentHashMap<>();
+    protected List<MemberWisieState> states = new CopyOnWriteArrayList<>();
 
     public MemberWisieFlow(MemberWisieManager manager) {
         this.manager = manager;
+        initStateMap();
     }
 
-    @Override
-    protected MemberWisieContainer getContainer() {
-        return (MemberWisieContainer) manager.getContainer();
+    private void initStateMap() {
+        stateMap.put("WAITING_FOR_QUESTION", new MemberWisieWaitingForQuestionState(manager));
+        stateMap.put("RECOGNIZING_QUESTION", new MemberWisieRecognizingQuestionState(manager));
+        stateMap.put("THINKING", new MemberWisieThinkingState(manager));
+        stateMap.put("THINK_KNOW_ANSWER", new MemberWisieThinkKnowAnswerState(manager));
+        stateMap.put("LOOKING_FOR_ANSWER", new MemberWisieLookingForAnswerState(manager));
+        stateMap.put("FOUND_ANSWER_LOOKING_FOR", new MemberWisieFoundAnswerLookingForState(manager));
     }
 
-    public void start() {
-        waitingForQuestionPhase();
+    public synchronized void run(String stateName) {
+        MemberWisieState state = stateMap.get(stateName);
+        states.add(state);
+        state.initCommands();
+        state.execute();
     }
-
-    protected synchronized void addState(GameState state) {
-        super.addState(state);
-        manager.getPlayManager().getFlow().childStateChanged();
-    }
-
-    protected synchronized void waitingForQuestionPhase() {
-        MemberWisieIntervalState state = new MemberWisieWaitingForQuestionState(getContainer());
-        addState(state);
-        after(state.getInterval(), aLong -> recognizingQuestionPhase());
-    }
-
-    protected synchronized void recognizingQuestionPhase() {
-        MemberWisieIntervalState state = new MemberWisieRecognizingQuestionState(getContainer());
-        addState(state);
-        after(state.getInterval(), aLong -> thinkingPhase());
-    }
-
-    protected synchronized void thinkingPhase() {
-        MemberWisieIntervalState state = new MemberWisieThinkingState(getContainer());
-        addState(state);
-        after(state.getInterval(), aLong -> thinkKnowAnswerPhase());
-    }
-
-    protected synchronized void thinkKnowAnswerPhase() {
-        MemberWisieIntervalState state = new MemberWisieThinkKnowAnswerState(getContainer());
-        addState(state);
-        after(state.getInterval(), aLong -> lookingForAnswerPhase());
-    }
-
-    protected synchronized void lookingForAnswerPhase() {
-        MemberWisieIntervalState state = new MemberWisieLookingForAnswerState(getContainer());
-        addState(state);
-        after(state.getInterval(), aLong -> foundAnswerLookingForPhase());
-    }
-
-    protected synchronized void foundAnswerLookingForPhase() {
-        MemberWisieIntervalState state = new MemberWisieFoundAnswerLookingForState(getContainer());
-        addState(state);
-//        after(state.getInterval(), aLong ->);
-    }
-
-
 }

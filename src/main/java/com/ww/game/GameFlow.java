@@ -13,8 +13,6 @@ import static com.ww.helper.TagHelper.randomUniqueUUID;
 public abstract class GameFlow {
     protected Map<String, Disposable> disposableMap = new ConcurrentHashMap<>();
 
-    public abstract void start();
-
     protected synchronized void after(long interval, Consumer<Long> onNext) {
         if (interval == 0) {
             callNext(interval, onNext);
@@ -47,19 +45,5 @@ public abstract class GameFlow {
             disposable.dispose();
         }
         disposableMap.clear();
-    }
-
-    protected abstract GameContainer getContainer();
-
-    protected synchronized void addState(GameState state) {
-        getContainer().addState(state);
-        state.initCommands();
-        state.execute();
-    }
-
-    protected synchronized void addChildState(GameState state) {
-        getContainer().currentState().addChildState(state);
-        state.initCommands();
-        state.execute();
     }
 }

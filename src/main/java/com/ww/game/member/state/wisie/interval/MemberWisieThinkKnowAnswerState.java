@@ -1,11 +1,12 @@
 package com.ww.game.member.state.wisie.interval;
 
+import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.container.MemberWisieContainer;
 import com.ww.model.constant.wisie.MemberWisieStatus;
 
 public class MemberWisieThinkKnowAnswerState extends MemberWisieIntervalState {
-    public MemberWisieThinkKnowAnswerState(MemberWisieContainer container) {
-        super(container, MemberWisieStatus.THINK_KNOW_ANSWER);
+    public MemberWisieThinkKnowAnswerState(MemberWisieManager manager) {
+        super(manager, MemberWisieStatus.THINK_KNOW_ANSWER);
     }
 
     @Override

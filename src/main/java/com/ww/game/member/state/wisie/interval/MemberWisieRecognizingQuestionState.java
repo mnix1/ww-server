@@ -1,5 +1,6 @@
 package com.ww.game.member.state.wisie.interval;
 
+import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.container.MemberWisieContainer;
 import com.ww.model.constant.rival.task.TaskRenderer;
 import com.ww.model.constant.wisie.MemberWisieStatus;
@@ -9,15 +10,15 @@ import static com.ww.helper.RandomHelper.randomDouble;
 public class MemberWisieRecognizingQuestionState extends MemberWisieIntervalState {
     private static final double ONE_CHAR_READING_SPEED = 0.040;//40ms
 
-    public MemberWisieRecognizingQuestionState(MemberWisieContainer container) {
-        super(container, MemberWisieStatus.RECOGNIZING_QUESTION);
+    public MemberWisieRecognizingQuestionState(MemberWisieManager manager) {
+        super(manager, MemberWisieStatus.RECOGNIZING_QUESTION);
     }
 
     @Override
     protected double prepareInterval() {
-        double readingInterval = container.getQuestion().getTextContent().length() * ONE_CHAR_READING_SPEED;
+        double readingInterval = manager.getContainer().getQuestion().getTextContent().length() * ONE_CHAR_READING_SPEED;
         double otherInterval;
-        TaskRenderer taskRenderer = container.getQuestion().getType().getQuestionRenderer();
+        TaskRenderer taskRenderer = manager.getContainer().getQuestion().getType().getQuestionRenderer();
         if (taskRenderer == TaskRenderer.TEXT) {
             otherInterval = 0;
 //        } else if (taskRenderer == TaskRenderer.TEXT_ANIMATION) {
@@ -35,7 +36,7 @@ public class MemberWisieRecognizingQuestionState extends MemberWisieIntervalStat
 //        } else if (taskRenderer == TaskRenderer.TEXT_DIGITAL_CLOCK) {
 //            otherInterval = warManager.getDifficulty() * 500;
         } else {
-            otherInterval = container.getDifficulty() * 0.5;
+            otherInterval = manager.getContainer().getDifficulty() * 0.5;
         }
         double sumInterval = hobbyImpact(readingInterval + randomDouble(otherInterval / 0.5, otherInterval));
         return sumInterval * (1 - getWisie().getSpeedF1());

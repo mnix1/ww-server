@@ -5,8 +5,15 @@ import com.ww.game.member.flow.MemberWisieFlow;
 import com.ww.game.play.PlayManager;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.model.container.rival.war.WisieTeamMember;
+import lombok.Getter;
 
-public class MemberWisieManager extends MemberManager {
+@Getter
+public class MemberWisieManager {
+    protected PlayManager playManager;
+
+    protected MemberWisieContainer container;
+    protected MemberWisieFlow flow;
+
     public MemberWisieManager(WarTeam team, WisieTeamMember member, PlayManager playManager) {
         this.playManager = playManager;
         this.container = new MemberWisieContainer(team, member, playManager.getContainer().getTasks().question());
@@ -14,6 +21,6 @@ public class MemberWisieManager extends MemberManager {
     }
 
     public void start() {
-        flow.start();
+        flow.run("WAITING_FOR_QUESTION");
     }
 }

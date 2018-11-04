@@ -1,5 +1,6 @@
 package com.ww.game.member.state.wisie.interval;
 
+import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.container.MemberWisieContainer;
 import com.ww.game.member.state.wisie.MemberWisieState;
 import com.ww.model.constant.wisie.MemberWisieStatus;
@@ -11,8 +12,8 @@ public abstract class MemberWisieIntervalState extends MemberWisieState {
     @Getter
     protected long interval;
 
-    public MemberWisieIntervalState(MemberWisieContainer container, MemberWisieStatus status) {
-        super(container, status);
+    public MemberWisieIntervalState(MemberWisieManager manager, MemberWisieStatus status) {
+        super(manager, status);
         this.interval = (long) (prepareInterval() * intervalMultiply());
     }
 

@@ -1,5 +1,6 @@
 package com.ww.game.play.flow;
 
+import com.ww.game.GameContainer;
 import com.ww.game.GameFlow;
 import com.ww.game.GameState;
 import com.ww.game.play.PlayManager;
@@ -23,7 +24,19 @@ public class PlayFlow extends GameFlow {
         return manager.getCommunication();
     }
 
-    @Override
+
+    protected synchronized void addState(GameState state) {
+        getContainer().addState(state);
+        state.initCommands();
+        state.execute();
+    }
+
+    protected synchronized void addChildState(GameState state) {
+        getContainer().currentState().addChildState(state);
+        state.initCommands();
+        state.execute();
+    }
+
     protected PlayContainer getContainer() {
         return manager.getContainer();
     }

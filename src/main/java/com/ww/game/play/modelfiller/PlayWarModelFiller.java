@@ -2,6 +2,7 @@ package com.ww.game.play.modelfiller;
 
 import com.ww.game.GameState;
 import com.ww.game.member.state.wisie.MemberWisieState;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.model.container.rival.war.WisieTeamMember;
 import com.ww.model.dto.rival.ActiveTeamMemberDTO;
@@ -54,9 +55,9 @@ public class PlayWarModelFiller {
     }
 
     private static List<String> prepareWisieActions(WisieTeamMember wisieTeamMember) {
-        List<GameState> states = wisieTeamMember.currentManager().getContainer().getStates();
-        return states.subList(Math.max(0, states.size() - 2), states.size()).stream()
-                .map(state -> ((MemberWisieState) state).getStatus().toString())
+        List<MemberWisieStatus> actions = wisieTeamMember.currentManager().getContainer().getActions();
+        return actions.subList(Math.max(0, actions.size() - 2), actions.size()).stream()
+                .map(Enum::name)
                 .collect(Collectors.toList());
     }
 

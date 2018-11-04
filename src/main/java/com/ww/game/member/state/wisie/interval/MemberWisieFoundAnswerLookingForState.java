@@ -1,11 +1,12 @@
 package com.ww.game.member.state.wisie.interval;
 
+import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.container.MemberWisieContainer;
 import com.ww.model.constant.wisie.MemberWisieStatus;
 
 public class MemberWisieFoundAnswerLookingForState extends MemberWisieIntervalState {
-    public MemberWisieFoundAnswerLookingForState(MemberWisieContainer container) {
-        super(container, MemberWisieStatus.FOUND_ANSWER_LOOKING_FOR);
+    public MemberWisieFoundAnswerLookingForState(MemberWisieManager manager) {
+        super(manager, MemberWisieStatus.FOUND_ANSWER_LOOKING_FOR);
     }
 
     @Override
