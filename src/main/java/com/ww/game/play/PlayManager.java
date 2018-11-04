@@ -3,10 +3,7 @@ package com.ww.game.play;
 import com.ww.game.play.communication.PlayCommunication;
 import com.ww.game.play.container.PlayContainer;
 import com.ww.game.play.flow.PlayFlow;
-import com.ww.model.container.rival.RivalDecisions;
-import com.ww.model.container.rival.RivalResult;
-import com.ww.model.container.rival.RivalTasks;
-import com.ww.model.container.rival.RivalTimeouts;
+import com.ww.model.container.rival.*;
 import com.ww.service.RivalService;
 import com.ww.service.social.ProfileConnectionService;
 import lombok.Getter;
@@ -16,6 +13,7 @@ import java.util.Map;
 @Getter
 public class PlayManager {
     protected RivalService service;
+    protected RivalInterval interval;
     protected PlayContainer container;
     protected PlayFlow flow;
     protected PlayCommunication communication;
@@ -48,7 +46,7 @@ public class PlayManager {
         communication.sendModelFromBeginning(container.getTeams().team(profileId), container.getTeams().opponent(profileId));
     }
 
-    public void updateProfilesElo(){
+    public void updateProfilesElo() {
         service.updateProfilesElo(container);
     }
 
@@ -57,7 +55,7 @@ public class PlayManager {
     }
 
     public void start() {
-        flow.start();
+        flow.run("INTRO");
     }
 
     public void dispose() {

@@ -16,11 +16,8 @@ import java.util.stream.Collectors;
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelWisieActions;
 
 public class PlayWarAnsweringState extends PlayAnsweringState {
-    private PlayManager manager;
-
-    public PlayWarAnsweringState(PlayManager manager, long interval) {
-        super(manager.getContainer(), interval);
-        this.manager = manager;
+    public PlayWarAnsweringState(PlayManager manager) {
+        super(manager);
     }
 
     @Override

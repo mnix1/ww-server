@@ -1,5 +1,6 @@
 package com.ww.game.play.state.war;
 
+import com.ww.game.play.PlayManager;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.game.play.command.war.PlayWarDisableActiveTeamMemberCommand;
@@ -12,15 +13,15 @@ import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelPresentIn
 
 public class PlayWarAnsweringTimeoutState extends PlayAnsweringTimeoutState {
 
-    public PlayWarAnsweringTimeoutState(PlayContainer container) {
-        super(container);
+    public PlayWarAnsweringTimeoutState(PlayManager manager) {
+        super(manager);
     }
 
     @Override
     public void initCommands() {
         super.initCommands();
-        for (RivalTeam team : container.getTeams().getTeams()) {
-            commands.add(new PlayWarDisableActiveTeamMemberCommand(container, team.getProfileId()));
+        for (RivalTeam team : getContainer().getTeams().getTeams()) {
+            commands.add(new PlayWarDisableActiveTeamMemberCommand(getContainer(), team.getProfileId()));
         }
     }
 

@@ -1,5 +1,6 @@
 package com.ww.game.play.state.war;
 
+import com.ww.game.play.PlayManager;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.game.play.command.war.PlayWarDisableActiveTeamMemberCommand;
@@ -13,16 +14,16 @@ import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelPresentIn
 public class PlayWarAnsweredState extends PlayAnsweredState {
     protected boolean isCorrect;
 
-    public PlayWarAnsweredState(PlayContainer container, Long profileId, Long answerId) {
-        super(container, profileId, answerId);
-        isCorrect = container.getTasks().correctAnswerId().equals(answerId);
+    public PlayWarAnsweredState(PlayManager manager, Long profileId, Long answerId) {
+        super(manager, profileId, answerId);
+        isCorrect = getContainer().getTasks().correctAnswerId().equals(answerId);
     }
 
     @Override
     public void initCommands() {
         super.initCommands();
-        Long commandProfileId = isCorrect ? container.getTeams().opponent(profileId).getProfileId() : profileId;
-        commands.add(new PlayWarDisableActiveTeamMemberCommand(container, commandProfileId));
+        Long commandProfileId = isCorrect ? getContainer().getTeams().opponent(profileId).getProfileId() : profileId;
+        commands.add(new PlayWarDisableActiveTeamMemberCommand(getContainer(), commandProfileId));
     }
 
     @Override

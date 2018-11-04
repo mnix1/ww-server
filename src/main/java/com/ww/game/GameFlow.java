@@ -14,10 +14,6 @@ public abstract class GameFlow {
     protected Map<String, Disposable> disposableMap = new ConcurrentHashMap<>();
 
     protected synchronized void after(long interval, Consumer<Long> onNext) {
-        if (interval == 0) {
-            callNext(interval, onNext);
-            return;
-        }
         String uuid = randomUniqueUUID(disposableMap);
         disposableMap.put(uuid, prepareFlowable(interval).subscribe(aLong -> {
             synchronized (this) {

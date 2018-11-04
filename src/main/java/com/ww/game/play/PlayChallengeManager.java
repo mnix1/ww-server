@@ -10,6 +10,7 @@ import com.ww.model.container.rival.challenge.ChallengeInterval;
 import com.ww.model.container.rival.challenge.ChallengeTeam;
 import com.ww.model.container.rival.init.RivalChallengeInit;
 import com.ww.model.container.rival.war.TeamMember;
+import com.ww.model.container.rival.war.WarInterval;
 import com.ww.model.container.rival.war.skill.EmptyTeamSkills;
 import com.ww.model.container.rival.war.skill.WarTeamSkills;
 import com.ww.model.entity.outside.rival.challenge.ChallengePhase;
@@ -32,8 +33,9 @@ import java.util.List;
 public class PlayChallengeManager extends PlayWarManager {
     public PlayChallengeManager(RivalChallengeInit init, RivalChallengeService rivalService) {
         super(init, rivalService);
+        this.interval =  new ChallengeInterval(container);
         this.container = new PlayChallengeContainer(init, prepareTeams(init), prepareTasks(init), prepareTimeouts(), prepareDecisions(), prepareResult());
-        this.flow = new PlayChallengeFlow(this, new ChallengeInterval(container));
+        this.flow = new PlayChallengeFlow(this);
         this.communication = new PlayWarCommunication(this, Message.CHALLENGE_CONTENT);
     }
 

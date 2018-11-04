@@ -1,5 +1,6 @@
 package com.ww.game.play.state.challenge;
 
+import com.ww.game.play.PlayManager;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.battle.BattleTeam;
 import com.ww.model.container.rival.challenge.ChallengeTeam;
@@ -16,13 +17,13 @@ import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelPresentIn
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelTeams;
 
 public class PlayChallengeChoosingWhoAnswerState extends PlayCampaignChoosingWhoAnswerState {
-    public PlayChallengeChoosingWhoAnswerState(PlayContainer container, long interval) {
-        super(container, interval);
+    public PlayChallengeChoosingWhoAnswerState(PlayManager manager) {
+        super(manager);
     }
 
     @Override
     public void initCommands() {
-        commands.add(new PlayChallengeSwapBotTeamCommand(container));
+        commands.add(new PlayChallengeSwapBotTeamCommand(getContainer()));
         super.initCommands();
     }
 

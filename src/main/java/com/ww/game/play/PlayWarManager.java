@@ -21,8 +21,9 @@ import java.util.List;
 public class PlayWarManager extends PlayManager {
     public PlayWarManager(RivalTwoInit init, RivalWarService rivalService) {
         super(rivalService);
+        this.interval = new WarInterval();
         this.container = new PlayWarContainer(init, prepareTeams(init), prepareTasks(), prepareTimeouts(), prepareDecisions(), prepareResult());
-        this.flow = new PlayWarFlow(this, new WarInterval());
+        this.flow = new PlayWarFlow(this);
         this.communication = new PlayWarCommunication(this);
     }
 
@@ -32,7 +33,7 @@ public class PlayWarManager extends PlayManager {
             WarTeam warTeam = (WarTeam) team;
             new PassiveSkillsInit(warTeam).init();
         }
-        flow.start();
+        super.start();
     }
 
     protected RivalTeams prepareTeams(RivalTwoInit init) {

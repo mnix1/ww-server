@@ -1,5 +1,6 @@
 package com.ww.game.play.state.war;
 
+import com.ww.game.play.PlayManager;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.game.play.container.PlayContainer;
@@ -10,8 +11,8 @@ import java.util.Map;
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.*;
 
 public class PlayWarIntroState extends PlayIntroState {
-    public PlayWarIntroState(PlayContainer container) {
-        super(container);
+    public PlayWarIntroState(PlayManager manager) {
+        super(manager);
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.ww.model.container.rival.RivalInterval;
 import com.ww.model.container.rival.RivalTeams;
 import com.ww.model.container.rival.battle.BattleTeam;
 import com.ww.model.container.rival.init.RivalTwoInit;
+import com.ww.model.container.rival.war.WarInterval;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.game.play.communication.PlayCommunication;
 import com.ww.game.play.container.PlayBattleContainer;
@@ -17,8 +18,9 @@ public class PlayBattleManager extends PlayManager {
 
     public PlayBattleManager(RivalTwoInit init, RivalBattleService rivalService) {
         super(rivalService);
+        this.interval =  new RivalInterval();
         this.container = new PlayBattleContainer(init, prepareTeams(init), prepareTasks(), prepareTimeouts(), prepareDecisions(), prepareResult());
-        this.flow = new PlayBattleFlow(this, new RivalInterval());
+        this.flow = new PlayBattleFlow(this);
         this.communication = new PlayCommunication(this, Message.BATTLE_CONTENT);
     }
 

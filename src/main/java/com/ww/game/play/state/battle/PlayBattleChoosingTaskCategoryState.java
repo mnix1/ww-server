@@ -1,5 +1,6 @@
 package com.ww.game.play.state.battle;
 
+import com.ww.game.play.PlayManager;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.battle.BattleTeam;
 import com.ww.game.play.container.PlayContainer;
@@ -11,8 +12,8 @@ import static com.ww.game.play.modelfiller.PlayBattleModelFiller.fillModelScores
 
 public class PlayBattleChoosingTaskCategoryState extends PlayChoosingTaskCategoryState {
 
-    public PlayBattleChoosingTaskCategoryState(PlayContainer container, long interval) {
-        super(container, interval);
+    public PlayBattleChoosingTaskCategoryState(PlayManager manager) {
+        super(manager);
     }
 
     @Override

@@ -15,24 +15,25 @@ import static com.ww.game.play.modelfiller.PlayModelFiller.fillModelEnd;
 import static com.ww.game.play.modelfiller.PlayModelFiller.fillModelSeasons;
 
 public class PlayEndState extends PlayState {
-    private PlayManager manager;
-
     public PlayEndState(PlayManager manager) {
-        super(manager.getContainer(), RivalStatus.CLOSED);
-        this.manager = manager;
+        super(manager, RivalStatus.CLOSED);
     }
 
     @Override
     public void initCommands() {
-        commands.add(new PlaySetResultCommand(container));
+        commands.add(new PlaySetResultCommand(getContainer()));
         commands.add(new PlayUpdateEloCommand(manager));
     }
 
     @Override
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = super.prepareModel(team, opponentTeam);
-        fillModelEnd(model, container);
-        fillModelSeasons(model, container, team, opponentTeam);
+        fillModelEnd(model, getContainer());
+        fillModelSeasons(model, getContainer(), team, opponentTeam);
         return model;
+    }
+
+    public void after() {
+        manager.dispose();
     }
 }

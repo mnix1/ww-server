@@ -1,5 +1,6 @@
 package com.ww.game.play.state.war;
 
+import com.ww.game.play.PlayManager;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.game.play.container.PlayContainer;
@@ -10,8 +11,8 @@ import java.util.Map;
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelActiveIndexes;
 
 public class PlayWarPreparingNextTaskState extends PlayPreparingNextTaskState {
-    public PlayWarPreparingNextTaskState(PlayContainer container, long interval) {
-        super(container, interval);
+    public PlayWarPreparingNextTaskState(PlayManager manager) {
+        super(manager);
     }
 
     @Override

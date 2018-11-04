@@ -1,5 +1,6 @@
 package com.ww.game.play.state.battle;
 
+import com.ww.game.play.PlayManager;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.battle.BattleTeam;
 import com.ww.game.play.container.PlayContainer;
@@ -11,8 +12,8 @@ import static com.ww.game.play.modelfiller.PlayBattleModelFiller.fillModelScores
 import static com.ww.game.play.modelfiller.PlayBattleModelFiller.fillModelTaskCount;
 
 public class PlayBattleIntroState extends PlayIntroState {
-    public PlayBattleIntroState(PlayContainer container) {
-        super(container);
+    public PlayBattleIntroState(PlayManager manager) {
+        super(manager);
     }
 
     @Override

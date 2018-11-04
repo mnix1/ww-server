@@ -21,22 +21,27 @@ public class PlaySurrenderState extends PlayState {
     private PlayManager manager;
 
     public PlaySurrenderState(PlayManager manager, Long profileId) {
-        super(manager.getContainer(), RivalStatus.CLOSED);
+        super(manager, RivalStatus.CLOSED);
         this.profileId = profileId;
         this.manager = manager;
     }
 
     @Override
     public void initCommands() {
-        commands.add(new PlaySetResultCommand(container, profileId));
+        commands.add(new PlaySetResultCommand(getContainer(), profileId));
         commands.add(new PlayUpdateEloCommand(manager));
     }
 
     @Override
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = super.prepareModel(team, opponentTeam);
-        fillModelEnd(model, container);
-        fillModelSeasons(model, container, team, opponentTeam);
+        fillModelEnd(model, getContainer());
+        fillModelSeasons(model, getContainer(), team, opponentTeam);
         return model;
+    }
+
+    @Override
+    public void after() {
+        manager.dispose();
     }
 }

@@ -2,6 +2,7 @@ package com.ww.game.play;
 
 import com.ww.helper.TeamHelper;
 import com.ww.model.container.rival.RivalTeams;
+import com.ww.model.container.rival.challenge.ChallengeInterval;
 import com.ww.model.container.rival.init.RivalCampaignWarInit;
 import com.ww.model.container.rival.war.*;
 import com.ww.model.container.rival.war.skill.EmptyTeamSkills;
@@ -27,8 +28,9 @@ import static com.ww.helper.TeamHelper.isBotProfile;
 public class PlayCampaignManager extends PlayManager {
     public PlayCampaignManager(RivalCampaignWarInit init, RivalCampaignWarService rivalService) {
         super(rivalService);
+        this.interval =  new WarInterval();
         this.container = new PlayCampaignContainer(init, prepareTeams(init), prepareTasks(), prepareTimeouts(), prepareDecisions(), prepareResult());
-        this.flow = new PlayCampaignFlow(this, new WarInterval());
+        this.flow = new PlayCampaignFlow(this);
         this.communication = new PlayWarCommunication(this, Message.CAMPAIGN_WAR_CONTENT);
     }
 
