@@ -13,7 +13,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MemberWisieFlow extends GameFlow {
     protected MemberWisieManager manager;
-    protected Map<String, MemberWisieState> stateMap = new ConcurrentHashMap<>();
 
     public MemberWisieFlow(MemberWisieManager manager) {
         this.manager = manager;

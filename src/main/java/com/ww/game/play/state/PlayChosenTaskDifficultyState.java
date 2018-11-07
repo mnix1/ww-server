@@ -24,6 +24,10 @@ public class PlayChosenTaskDifficultyState extends PlayState {
     }
 
     @Override
+    public void updateNotify(){
+    }
+
+    @Override
     public void after() {
         manager.getFlow().run("PREPARING_NEXT_TASK");
     }

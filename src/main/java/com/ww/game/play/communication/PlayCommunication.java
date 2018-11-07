@@ -36,6 +36,9 @@ public class PlayCommunication {
     }
 
     public void sendAndUpdateModel(Long profileId, Map<String, Object> model) {
+        if (model.isEmpty()) {
+            return;
+        }
         send(profileId, model);
         Map<String, Object> actualProfileModel;
         if (!modelMap.containsKey(profileId)) {

@@ -3,6 +3,7 @@ package com.ww.game.play.flow;
 import com.ww.game.play.PlayManager;
 import com.ww.game.play.state.*;
 import com.ww.game.play.state.war.*;
+import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.container.rival.war.WarTeam;
 
 public class PlayWarFlow extends PlayFlow {
@@ -29,6 +30,11 @@ public class PlayWarFlow extends PlayFlow {
     @Override
     protected PlayRandomTaskPropsState createRandomTaskPropsState() {
         return new PlayWarRandomTaskPropsState(manager);
+    }
+
+    @Override
+    protected PlayChoosingTaskDifficultyState createChoosingTaskDifficultyState() {
+        return new PlayChoosingTaskDifficultyState(manager);
     }
 
     @Override
@@ -62,6 +68,11 @@ public class PlayWarFlow extends PlayFlow {
 
     public PlayWarChosenWhoAnswerState createChosenWhoAnswerState(Long profileId, int activeIndex) {
         return new PlayWarChosenWhoAnswerState(manager, profileId, activeIndex);
+    }
+
+    @Override
+    protected PlayChosenTaskDifficultyState createChosenTaskDifficultyState(DifficultyLevel difficultyLevel) {
+        return new PlayWarChosenTaskDifficultyState(manager, difficultyLevel);
     }
 
     public synchronized void hintSkillAction(WarTeam warTeam, Long answerId) {

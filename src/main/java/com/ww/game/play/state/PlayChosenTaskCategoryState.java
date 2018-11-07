@@ -23,6 +23,10 @@ public class PlayChosenTaskCategoryState extends PlayState {
     }
 
     @Override
+    public void updateNotify(){
+    }
+
+    @Override
     public void after() {
         manager.getFlow().run("CHOOSING_TASK_DIFFICULTY");
     }
