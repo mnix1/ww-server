@@ -41,4 +41,9 @@ public class MemberWisieRecognizingQuestionState extends MemberWisieIntervalStat
         double sumInterval = hobbyImpact(readingInterval + randomDouble(otherInterval / 0.5, otherInterval));
         return sumInterval * (1 - getWisie().getSpeedF1());
     }
+
+    @Override
+    public void after() {
+        manager.getFlow().run("THINKING");
+    }
 }

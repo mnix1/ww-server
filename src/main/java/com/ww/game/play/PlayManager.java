@@ -43,7 +43,7 @@ public class PlayManager {
     }
 
     public void sendModelFromBeginning(Long profileId) {
-        communication.sendModelFromBeginning(container.getTeams().team(profileId), container.getTeams().opponent(profileId));
+//        communication.sendModelFromBeginning(container.getTeams().team(profileId), container.getTeams().opponent(profileId));
     }
 
     public void updateProfilesElo() {

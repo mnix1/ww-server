@@ -3,6 +3,7 @@ package com.ww.game.play.state;
 import com.ww.game.play.PlayManager;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.container.rival.RivalTeam;
+import com.ww.model.container.rival.RivalTeams;
 
 import java.util.Map;
 

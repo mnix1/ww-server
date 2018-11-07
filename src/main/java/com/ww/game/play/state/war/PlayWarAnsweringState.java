@@ -23,21 +23,21 @@ public class PlayWarAnsweringState extends PlayAnsweringState {
     @Override
     public void initCommands() {
         super.initCommands();
-        commands.add(new PlayWarInitMemberManagerCommand(manager));
-        commands.add(new PlayWarStartMemberManagerCommand(getContainer()));
+//        commands.add(new PlayWarInitMemberManagerCommand(manager));
+//        commands.add(new PlayWarStartMemberManagerCommand(getContainer()));
     }
 
     @Override
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = super.prepareModel(team, opponentTeam);
-        model.putAll(prepareChildModel(team, opponentTeam));
+//        model.putAll(prepareChildModel(team, opponentTeam));
         return model;
     }
 
     @Override
     public Map<String, Object> prepareChildModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = super.prepareChildModel(team, opponentTeam);
-        fillModelWisieActions(model, (WarTeam) team, (WarTeam) opponentTeam);
+//        fillModelWisieActions(model, (WarTeam) team, (WarTeam) opponentTeam);
         return model;
     }
 }

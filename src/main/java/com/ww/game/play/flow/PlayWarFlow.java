@@ -17,7 +17,7 @@ public class PlayWarFlow extends PlayFlow {
         stateMap.put("CHOOSING_WHO_ANSWER", createChoosingWhoAnswerState());
     }
 
-    protected synchronized PlayState createChoosingWhoAnswerState() {
+    protected PlayState createChoosingWhoAnswerState() {
         return new PlayWarChoosingWhoAnswerState(manager);
     }
 

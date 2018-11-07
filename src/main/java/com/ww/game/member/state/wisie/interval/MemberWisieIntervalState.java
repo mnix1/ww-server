@@ -32,4 +32,9 @@ public abstract class MemberWisieIntervalState extends MemberWisieState {
     protected double prepareInterval() {
         return randomDouble(minInterval(), maxInterval());
     }
+
+    @Override
+    public long afterInterval(){
+        return interval;
+    }
 }

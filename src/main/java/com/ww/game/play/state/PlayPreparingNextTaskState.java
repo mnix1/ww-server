@@ -30,6 +30,7 @@ public class PlayPreparingNextTaskState extends PlayState {
 
     @Override
     public long afterInterval() {
+        System.out.println("PlayPreparingNextTaskState afterInterval");
         return manager.getInterval().getPreparingNextTaskInterval();
     }
 

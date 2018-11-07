@@ -3,15 +3,47 @@ package com.ww.game;
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
 import static com.ww.helper.TagHelper.randomUniqueUUID;
 
 public abstract class GameFlow {
+    private static Logger logger = LoggerFactory.getLogger(GameFlow.class);
+    protected Map<String, GameState> stateMap = new ConcurrentHashMap<>();
     protected Map<String, Disposable> disposableMap = new ConcurrentHashMap<>();
+
+    protected abstract void initStateMap();
+
+    protected abstract void addState(GameState state);
+
+    public synchronized void run(String stateName) {
+        GameState state = stateMap.get(stateName);
+        run(state);
+    }
+
+    public synchronized void run(GameState state) {
+        logger.trace("run " + state.toString());
+        addState(state);
+        state.initCommands();
+        state.execute();
+        if (state.afterReady()) {
+            stopAfter();
+            state.updateNotify();
+            long afterInterval = state.afterInterval();
+            if (afterInterval == 0) {
+                state.after();
+            } else {
+                after(afterInterval, aLong -> state.after());
+            }
+        }
+    }
 
     protected synchronized void after(long interval, Consumer<Long> onNext) {
         String uuid = randomUniqueUUID(disposableMap);

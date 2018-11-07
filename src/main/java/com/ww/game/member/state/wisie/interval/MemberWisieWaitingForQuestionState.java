@@ -22,8 +22,7 @@ public class MemberWisieWaitingForQuestionState extends MemberWisieIntervalState
     }
 
     @Override
-    public Optional<String> afterStateName() {
-        return Optional.of("RECOGNIZING_QUESTION");
+    public void after() {
+        manager.getFlow().run("RECOGNIZING_QUESTION");
     }
-
 }

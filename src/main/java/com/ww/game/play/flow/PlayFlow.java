@@ -1,6 +1,7 @@
 package com.ww.game.play.flow;
 
 import com.ww.game.GameFlow;
+import com.ww.game.GameState;
 import com.ww.game.play.PlayManager;
 import com.ww.game.play.state.*;
 import com.ww.model.constant.Category;
@@ -11,7 +12,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayFlow extends GameFlow {
     protected PlayManager manager;
-    protected Map<String, PlayState> stateMap = new ConcurrentHashMap<>();
 
     public PlayFlow(PlayManager manager) {
         this.manager = manager;
@@ -30,25 +30,9 @@ public class PlayFlow extends GameFlow {
         stateMap.put("END", createEndState());
     }
 
-    public synchronized void run(String stateName) {
-        PlayState state = stateMap.get(stateName);
-        run(state);
-    }
-
-    public synchronized void run(PlayState state) {
-        state.initCommands();
-        state.execute();
-        if (state.afterReady()) {
-            stopAfter();
-            if (state.hasAfter()) {
-                long afterInterval = state.afterInterval();
-                if (afterInterval == 0) {
-                    state.after();
-                } else {
-                    after(afterInterval, aLong -> state.after());
-                }
-            }
-        }
+    @Override
+    protected void addState(GameState state) {
+        manager.getContainer().addState(state);
     }
 
     protected PlayIntroState createIntroState() {
@@ -87,35 +71,35 @@ public class PlayFlow extends GameFlow {
         return new PlayEndState(manager);
     }
 
-    public synchronized void surrenderAction(Long profileId) {
+    public void surrenderAction(Long profileId) {
         run(createSurrenderState(profileId));
     }
 
-    protected synchronized PlaySurrenderState createSurrenderState(Long profileId) {
+    protected PlaySurrenderState createSurrenderState(Long profileId) {
         return new PlaySurrenderState(manager, profileId);
     }
 
-    public synchronized void answeredAction(Long profileId, Long answerId) {
+    public void answeredAction(Long profileId, Long answerId) {
         run(createAnsweredState(profileId, answerId));
     }
 
-    protected synchronized PlayState createAnsweredState(Long profileId, Long answerId) {
+    protected PlayState createAnsweredState(Long profileId, Long answerId) {
         return new PlayAnsweredState(manager, profileId, answerId);
     }
 
-    public synchronized void chosenTaskCategoryAction(Category category) {
+    public void chosenTaskCategoryAction(Category category) {
         run(createChosenTaskCategoryState(category));
     }
 
-    protected synchronized PlayChosenTaskCategoryState createChosenTaskCategoryState(Category category) {
+    protected PlayChosenTaskCategoryState createChosenTaskCategoryState(Category category) {
         return new PlayChosenTaskCategoryState(manager, category);
     }
 
-    public synchronized void chosenTaskDifficultyAction(DifficultyLevel difficultyLevel) {
+    public void chosenTaskDifficultyAction(DifficultyLevel difficultyLevel) {
         run(createChosenTaskDifficultyState(difficultyLevel));
     }
 
-    protected synchronized PlayChosenTaskDifficultyState createChosenTaskDifficultyState(DifficultyLevel difficultyLevel) {
+    protected PlayChosenTaskDifficultyState createChosenTaskDifficultyState(DifficultyLevel difficultyLevel) {
         return new PlayChosenTaskDifficultyState(manager, difficultyLevel);
     }
 }

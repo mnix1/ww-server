@@ -23,4 +23,9 @@ public class MemberWisieThinkingState extends MemberWisieIntervalState {
     protected double prepareInterval() {
         return hobbyImpact(super.prepareInterval());
     }
+
+    @Override
+    public void after() {
+        manager.getFlow().run("THINK_KNOW_ANSWER");
+    }
 }

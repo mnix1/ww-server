@@ -30,8 +30,4 @@ public class MemberWisieState extends GameState {
         return interval / wisie.getHobbyFactor();
     }
 
-    protected Optional<String> afterStateName(){
-        return Optional.empty();
-    }
-
 }

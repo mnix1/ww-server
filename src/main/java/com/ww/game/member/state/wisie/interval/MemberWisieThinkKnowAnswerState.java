@@ -18,4 +18,9 @@ public class MemberWisieThinkKnowAnswerState extends MemberWisieIntervalState {
     protected double maxInterval() {
         return 2 - getWisie().getReflexF1() - getWisie().getConcentrationF1();
     }
+
+    @Override
+    public void after() {
+        manager.getFlow().run("LOOKING_FOR_ANSWER");
+    }
 }

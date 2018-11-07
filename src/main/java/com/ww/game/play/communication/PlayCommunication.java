@@ -1,13 +1,8 @@
 package com.ww.game.play.communication;
 
-import com.ww.game.GameState;
-import com.ww.game.member.state.wisie.MemberWisieState;
 import com.ww.game.play.PlayManager;
 import com.ww.game.play.action.*;
 import com.ww.game.play.container.PlayContainer;
-import com.ww.game.play.state.PlayState;
-import com.ww.model.container.rival.RivalTeam;
-import com.ww.model.container.rival.RivalTeams;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.websocket.message.Message;
 
@@ -21,6 +16,7 @@ public class PlayCommunication {
     protected PlayManager manager;
     private Message messageContent;
     protected Map<String, PlayAction> actionMap = new ConcurrentHashMap<>();
+    protected Map<Long, Map<String, Object>> modelMap = new ConcurrentHashMap<>();
 
     public PlayCommunication(PlayManager manager, Message messageContent) {
         this.manager = manager;
@@ -39,39 +35,48 @@ public class PlayCommunication {
         actionMap.put(CHOOSE_TASK_DIFFICULTY, new PlayChooseTaskDifficultyAction(manager));
     }
 
-    public void send() {
-        ProfileConnectionService profileConnectionService = manager.getProfileConnectionService();
-        GameState state = getContainer().currentState();
-        RivalTeams teams = getContainer().getTeams();
-        teams.forEachTeam(team -> {
-            Map<String, Object> model = state.prepareModel(team, teams.opponent(team.getProfileId()));
-            profileConnectionService.send(team.getProfileId(), model, getMessageContent());
-        });
-    }
-
-    public void sendChild() {
-        ProfileConnectionService profileConnectionService = manager.getProfileConnectionService();
-        GameState state = getContainer().currentState();
-        RivalTeams teams = getContainer().getTeams();
-        teams.forEachTeam(team -> {
-            Map<String, Object> model = state.prepareChildModel(team, teams.opponent(team.getProfileId()));
-            profileConnectionService.send(team.getProfileId(), model, getMessageContent());
-        });
-    }
-
-    public void sendModelFromBeginning(RivalTeam team, RivalTeam opponentTeam) {
-        Map<String, Object> model = new HashMap<>();
-        for (int i = getContainer().getStates().size() - 1; i >= 0; i--) {
-            GameState state = getContainer().getStates().get(i);
-            Map<String, Object> stateModel = state.prepareModel(team, opponentTeam);
-            for (String key : stateModel.keySet()) {
-                if (!model.containsKey(key)) {
-                    model.put(key, stateModel.get(key));
-                }
-            }
+    public void sendAndUpdateModel(Long profileId, Map<String, Object> model) {
+        send(profileId, model);
+        Map<String, Object> actualProfileModel;
+        if (!modelMap.containsKey(profileId)) {
+            actualProfileModel = new HashMap<>();
+            modelMap.put(profileId, actualProfileModel);
+        } else {
+            actualProfileModel = modelMap.get(profileId);
         }
-        manager.getProfileConnectionService().send(team.getProfileId(), model, getMessageContent());
+        for (String key : model.keySet()) {
+            actualProfileModel.put(key, model.get(key));
+        }
     }
+
+    public void send(Long profileId, Map<String, Object> model) {
+        ProfileConnectionService profileConnectionService = manager.getProfileConnectionService();
+        profileConnectionService.send(profileId, model, getMessageContent());
+    }
+
+//    public void sendChild() {
+//        ProfileConnectionService profileConnectionService = manager.getProfileConnectionService();
+//        GameState state = getContainer().currentState();
+//        RivalTeams teams = getContainer().getTeams();
+//        teams.forEachTeam(team -> {
+//            Map<String, Object> model = state.prepareChildModel(team, teams.opponent(team.getProfileId()));
+//            profileConnectionService.send(team.getProfileId(), model, getMessageContent());
+//        });
+//    }
+
+//    public void sendModelFromBeginning(RivalTeam team, RivalTeam opponentTeam) {
+//        Map<String, Object> model = new HashMap<>();
+//        for (int i = getContainer().getStates().size() - 1; i >= 0; i--) {
+//            GameState state = getContainer().getStates().get(i);
+//            Map<String, Object> stateModel = state.prepareModel(team, opponentTeam);
+//            for (String key : stateModel.keySet()) {
+//                if (!model.containsKey(key)) {
+//                    model.put(key, stateModel.get(key));
+//                }
+//            }
+//        }
+//        manager.getProfileConnectionService().send(team.getProfileId(), model, getMessageContent());
+//    }
 
     public Message getMessageContent() {
         return messageContent;

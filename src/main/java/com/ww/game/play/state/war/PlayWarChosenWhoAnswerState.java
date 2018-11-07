@@ -3,6 +3,7 @@ package com.ww.game.play.state.war;
 import com.ww.game.play.PlayManager;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.container.rival.RivalTeam;
+import com.ww.model.container.rival.RivalTeams;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.game.play.command.war.PlayWarSetActiveIndexCommand;
 import com.ww.game.play.container.PlayContainer;
@@ -24,6 +25,10 @@ public class PlayWarChosenWhoAnswerState extends PlayState {
     }
 
     @Override
+    public void updateNotify() {
+    }
+
+    @Override
     public boolean afterReady() {
         for (RivalTeam team : getContainer().getTeams().getTeams()) {
             WarTeam warTeam = (WarTeam) team;
@@ -32,5 +37,10 @@ public class PlayWarChosenWhoAnswerState extends PlayState {
             }
         }
         return true;
+    }
+
+    @Override
+    public void after() {
+        manager.getFlow().run("PREPARING_NEXT_TASK");
     }
 }

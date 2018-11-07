@@ -14,4 +14,9 @@ public class MemberWisieLookingForAnswerState extends MemberWisieIntervalState {
         double sumInterval = manager.getContainer().getAnswerCount() * (2 - getWisie().getSpeedF1() - getWisie().getWisdomSum());
         return hobbyImpact(sumInterval * (5 - getWisie().getSpeedF1() - getWisie().getIntuitionF1() - getWisie().getCunningF1() - getWisie().getWisdomSum()));
     }
+
+    @Override
+    public void after() {
+        manager.getFlow().run("FOUND_ANSWER_LOOKING_FOR");
+    }
 }
