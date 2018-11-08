@@ -6,6 +6,7 @@ import com.ww.game.play.PlayManager;
 import com.ww.game.play.state.*;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
+import com.ww.model.constant.rival.RivalStatus;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,9 +31,8 @@ public class PlayFlow extends GameFlow {
         stateMap.put("END", createEndState());
     }
 
-    @Override
-    protected void addState(GameState state) {
-        manager.getContainer().addState(state);
+    public boolean isStatusEquals(RivalStatus status) {
+        return ((PlayState) currentState()).getStatus() == status;
     }
 
     protected PlayIntroState createIntroState() {

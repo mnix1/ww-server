@@ -16,12 +16,19 @@ import static com.ww.helper.TagHelper.randomUniqueUUID;
 
 public abstract class GameFlow {
     private static Logger logger = LoggerFactory.getLogger(GameFlow.class);
+    protected List<GameState> states = new CopyOnWriteArrayList<>();
     protected Map<String, GameState> stateMap = new ConcurrentHashMap<>();
     protected Map<String, Disposable> disposableMap = new ConcurrentHashMap<>();
 
     protected abstract void initStateMap();
 
-    protected abstract void addState(GameState state);
+    public void addState(GameState state) {
+        states.add(state);
+    }
+
+    public GameState currentState() {
+        return states.get(states.size() - 1);
+    }
 
     public synchronized void run(String stateName) {
         GameState state = stateMap.get(stateName);
@@ -36,12 +43,7 @@ public abstract class GameFlow {
         if (state.afterReady()) {
             stopAfter();
             state.updateNotify();
-            long afterInterval = state.afterInterval();
-            if (afterInterval == 0) {
-                state.after();
-            } else {
-                after(afterInterval, aLong -> state.after());
-            }
+            startAfter(state);
         }
     }
 
@@ -68,7 +70,20 @@ public abstract class GameFlow {
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 
-    protected synchronized void stopAfter() {
+    public synchronized void startAfter() {
+        startAfter(currentState());
+    }
+
+    public synchronized void startAfter(GameState state) {
+        long afterInterval = state.afterInterval();
+        if (afterInterval == 0) {
+            state.after();
+        } else {
+            after(afterInterval, aLong -> state.after());
+        }
+    }
+
+    public synchronized void stopAfter() {
         for (Disposable disposable : disposableMap.values()) {
             disposable.dispose();
         }

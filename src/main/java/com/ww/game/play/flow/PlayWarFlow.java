@@ -1,7 +1,9 @@
 package com.ww.game.play.flow;
 
+import com.ww.game.GameState;
 import com.ww.game.play.PlayManager;
 import com.ww.game.play.state.*;
+import com.ww.game.play.state.skill.hint.PlaySkillHintActionState;
 import com.ww.game.play.state.war.*;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.container.rival.war.WarTeam;
@@ -76,7 +78,9 @@ public class PlayWarFlow extends PlayFlow {
     }
 
     public synchronized void hintSkillAction(WarTeam warTeam, Long answerId) {
-//        GameState state = new PlaySkillHintState(manager, warTeam, answerId);
+        GameState state = new PlaySkillHintActionState(manager, warTeam, answerId);
+        state.initCommands();
+        state.execute();
 //        addChildState(state);
     }
 }

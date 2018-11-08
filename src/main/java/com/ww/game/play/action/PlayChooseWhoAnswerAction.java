@@ -15,8 +15,8 @@ public class PlayChooseWhoAnswerAction extends PlayAction {
 
     @Override
     public void perform(Long profileId, Map<String, Object> content) {
-        if ((!container.isStatusEquals(RivalStatus.CHOOSING_WHO_ANSWER)
-                && !container.isStatusEquals(RivalStatus.CHOSEN_WHO_ANSWER))
+        if ((!flow.isStatusEquals(RivalStatus.CHOOSING_WHO_ANSWER)
+                && !flow.isStatusEquals(RivalStatus.CHOSEN_WHO_ANSWER))
                 || !content.containsKey("activeIndex")) {
             return;
         }
@@ -29,6 +29,7 @@ public class PlayChooseWhoAnswerAction extends PlayAction {
             }
             ((PlayWarFlow) flow).chosenWhoAnswerAction(profileId, activeIndex);
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

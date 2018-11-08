@@ -17,7 +17,7 @@ public class PlayHintSkillAction extends PlayAction {
 
     @Override
     public void perform(Long profileId, Map<String, Object> content) {
-        if (!container.isStatusEquals(RivalStatus.ANSWERING)
+        if (!flow.isStatusEquals(RivalStatus.ANSWERING)
                 || !content.containsKey("answerId")) {
             return;
         }
@@ -30,6 +30,7 @@ public class PlayHintSkillAction extends PlayAction {
             Long answerId = ((Integer) content.get("answerId")).longValue();
             ((PlayWarFlow) flow).hintSkillAction(warTeam, answerId);
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.ww.game.play.container;
 
-import com.ww.game.GameContainer;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.container.rival.*;
@@ -9,12 +8,10 @@ import com.ww.model.entity.outside.social.Profile;
 import com.ww.game.play.state.PlayState;
 import lombok.Getter;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @Getter
-public abstract class PlayContainer extends GameContainer {
+public abstract class PlayContainer {
     protected RivalTwoInit init;
     protected RivalTeams teams;
     protected RivalTasks tasks;
@@ -38,10 +35,6 @@ public abstract class PlayContainer extends GameContainer {
     public abstract Profile findChoosingTaskPropsProfile();
 
     public abstract Optional<Profile> findWinner();
-
-    public boolean isStatusEquals(RivalStatus status) {
-        return ((PlayState) currentState()).getStatus() == status;
-    }
 
     public boolean isRanking() {
         return init.getImportance() == RivalImportance.RANKING;

@@ -1,11 +1,13 @@
-package com.ww.game.member.state.wisie;
+package com.ww.game.play.state.skill;
 
 import com.ww.game.GameState;
 import com.ww.game.member.MemberWisieManager;
-import com.ww.game.member.command.MemberWisieAddStatusCommand;
 import com.ww.game.member.container.MemberWisieContainer;
-import com.ww.game.play.container.PlayContainer;
-import com.ww.model.constant.wisie.MemberWisieStatus;
+import com.ww.game.play.PlayManager;
+import com.ww.game.play.command.skill.PlaySkillStartHintFlowCommand;
+import com.ww.game.play.command.skill.PlaySkillUseCommand;
+import com.ww.game.play.flow.skill.PlaySkillFlow;
+import com.ww.model.constant.Skill;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.RivalTeams;
 import com.ww.model.container.rival.war.WarTeam;
@@ -14,31 +16,56 @@ import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
-import static com.ww.game.play.modelfiller.PlayModelFiller.fillModelStatus;
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelWisieActions;
+import static com.ww.helper.RandomHelper.randomDouble;
 
-public class MemberWisieState extends GameState {
+public class PlaySkillState extends GameState {
+    protected PlaySkillFlow flow;
     protected MemberWisieManager manager;
     @Getter
-    protected MemberWisieStatus status;
-    @Getter
     private WarWisie wisie;
+    protected long interval;
 
-    public MemberWisieState(MemberWisieManager manager, MemberWisieStatus status) {
+    public PlaySkillState(PlaySkillFlow flow, MemberWisieManager manager) {
+        this.flow = flow;
         this.manager = manager;
-        this.status = status;
         this.wisie = manager.getContainer().getMember().getContent();
     }
 
-    @Override
-    public void initCommands() {
-        commands.add(new MemberWisieAddStatusCommand(manager, status));
+    protected MemberWisieContainer getContainer() {
+        return manager.getContainer();
     }
 
     protected double hobbyImpact(double interval) {
         return interval / wisie.getHobbyFactor();
+    }
+
+    protected long intervalMultiply() {
+        return 1000;
+    }
+
+    protected double minInterval() {
+        return 0;
+    }
+
+    protected double maxInterval() {
+        return 0;
+    }
+
+    protected double prepareInterval() {
+        return randomDouble(minInterval(), maxInterval());
+    }
+
+    @Override
+    public void execute(){
+        interval = (long) (prepareInterval() * intervalMultiply());
+        super.execute();
+    }
+
+    @Override
+    public long afterInterval() {
+        return interval;
     }
 
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
@@ -55,4 +82,8 @@ public class MemberWisieState extends GameState {
         });
     }
 
+    @Override
+    public String toString() {
+        return super.toString() + ", interval=" + interval;
+    }
 }

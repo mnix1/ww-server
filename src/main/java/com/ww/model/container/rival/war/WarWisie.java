@@ -33,6 +33,7 @@ public class WarWisie extends AbstractWisieAttributes {
 
     private boolean isHobby;
     private double hobbyFactor;
+    private double hobbyPart;
 
     public WarWisie(OwnedWisie wisie) {
         super(wisie);
@@ -44,6 +45,7 @@ public class WarWisie extends AbstractWisieAttributes {
     public void cacheHobbies(Question question) {
         this.isHobby = wisie.getHobbies().contains(question.getType().getCategory());
         this.hobbyFactor = isHobby ? 2 + (3 - wisie.getHobbies().size()) * 0.5 : 1d;
+        this.hobbyPart = isHobby ? 10 : 0;
     }
 
     public void cacheAttributes(Question question) {

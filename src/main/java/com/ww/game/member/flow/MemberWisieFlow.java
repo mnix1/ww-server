@@ -19,11 +19,6 @@ public class MemberWisieFlow extends GameFlow {
         initStateMap();
     }
 
-    @Override
-    protected void addState(GameState state) {
-        manager.getContainer().addAction(((MemberWisieState) state).getStatus());
-    }
-
     protected void initStateMap() {
         stateMap.put("WAITING_FOR_QUESTION", new MemberWisieWaitingForQuestionState(manager));
         stateMap.put("RECOGNIZING_QUESTION", new MemberWisieRecognizingQuestionState(manager));

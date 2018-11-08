@@ -1,6 +1,7 @@
 package com.ww.game.member.state.wisie.interval;
 
 import com.ww.game.member.MemberWisieManager;
+import com.ww.game.member.command.MemberWisieAddStatusCommand;
 import com.ww.game.member.container.MemberWisieContainer;
 import com.ww.model.constant.wisie.MemberWisieStatus;
 
