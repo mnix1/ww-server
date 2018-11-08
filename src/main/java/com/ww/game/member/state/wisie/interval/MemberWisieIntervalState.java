@@ -14,7 +14,6 @@ public abstract class MemberWisieIntervalState extends MemberWisieState {
 
     public MemberWisieIntervalState(MemberWisieManager manager, MemberWisieStatus status) {
         super(manager, status);
-        this.interval = (long) (prepareInterval() * intervalMultiply());
     }
 
     protected long intervalMultiply() {
@@ -31,6 +30,12 @@ public abstract class MemberWisieIntervalState extends MemberWisieState {
 
     protected double prepareInterval() {
         return randomDouble(minInterval(), maxInterval());
+    }
+
+    @Override
+    public void execute(){
+        interval = (long) (prepareInterval() * intervalMultiply());
+        super.execute();
     }
 
     @Override

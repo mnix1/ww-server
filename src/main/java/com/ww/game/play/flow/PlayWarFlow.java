@@ -4,6 +4,7 @@ import com.ww.game.GameState;
 import com.ww.game.play.PlayManager;
 import com.ww.game.play.state.*;
 import com.ww.game.play.state.skill.hint.PlaySkillHintActionState;
+import com.ww.game.play.state.skill.lifebuoy.PlaySkillLifebuoyActionState;
 import com.ww.game.play.state.war.*;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.container.rival.war.WarTeam;
@@ -77,10 +78,9 @@ public class PlayWarFlow extends PlayFlow {
         return new PlayWarChosenTaskDifficultyState(manager, difficultyLevel);
     }
 
-    public synchronized void hintSkillAction(WarTeam warTeam, Long answerId) {
-        GameState state = new PlaySkillHintActionState(manager, warTeam, answerId);
+    public synchronized void skillAction(GameState state){
         state.initCommands();
         state.execute();
-//        addChildState(state);
+        state.updateNotify();
     }
 }

@@ -14,9 +14,9 @@ public class PlayChooseTaskDifficultyAction extends PlayAction {
 
     @Override
     public void perform(Long profileId, Map<String, Object> content) {
-        if (!flow.isStatusEquals(RivalStatus.CHOOSING_TASK_DIFFICULTY)
+        if (!getFlow().isStatusEquals(RivalStatus.CHOOSING_TASK_DIFFICULTY)
                 || !content.containsKey("difficultyLevel")
-                || !profileId.equals(container.findChoosingTaskPropsProfile().getId())) {
+                || !profileId.equals(getContainer().findChoosingTaskPropsProfile().getId())) {
             return;
         }
         DifficultyLevel difficultyLevel = DifficultyLevel.NORMAL;
@@ -25,6 +25,6 @@ public class PlayChooseTaskDifficultyAction extends PlayAction {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        flow.chosenTaskDifficultyAction(difficultyLevel);
+        getFlow().chosenTaskDifficultyAction(difficultyLevel);
     }
 }

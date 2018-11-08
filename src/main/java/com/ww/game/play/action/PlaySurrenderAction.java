@@ -13,9 +13,9 @@ public class PlaySurrenderAction extends PlayAction {
 
     @Override
     public void perform(Long profileId, Map<String, Object> content) {
-        if (flow.isStatusEquals(RivalStatus.CLOSED) || flow.isStatusEquals(RivalStatus.DISPOSED)) {
+        if (getFlow().isStatusEquals(RivalStatus.CLOSED) || getFlow().isStatusEquals(RivalStatus.DISPOSED)) {
             return;
         }
-        flow.surrenderAction(profileId);
+        getFlow().surrenderAction(profileId);
     }
 }

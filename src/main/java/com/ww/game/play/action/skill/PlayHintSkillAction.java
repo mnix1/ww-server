@@ -3,6 +3,7 @@ package com.ww.game.play.action.skill;
 import com.ww.game.play.PlayManager;
 import com.ww.game.play.action.PlayAction;
 import com.ww.game.play.flow.PlayWarFlow;
+import com.ww.game.play.state.skill.hint.PlaySkillHintActionState;
 import com.ww.model.constant.Skill;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.container.rival.war.WarTeam;
@@ -17,18 +18,18 @@ public class PlayHintSkillAction extends PlayAction {
 
     @Override
     public void perform(Long profileId, Map<String, Object> content) {
-        if (!flow.isStatusEquals(RivalStatus.ANSWERING)
+        if (!getFlow().isStatusEquals(RivalStatus.ANSWERING)
                 || !content.containsKey("answerId")) {
             return;
         }
-        WarTeam warTeam = (WarTeam) container.getTeams().team(profileId);
+        WarTeam warTeam = (WarTeam) getContainer().getTeams().team(profileId);
         if (!warTeam.getTeamSkills().canUse(Skill.HINT)
                 || !warTeam.getActiveTeamMember().isWisie()) {
             return;
         }
         try {
             Long answerId = ((Integer) content.get("answerId")).longValue();
-            ((PlayWarFlow) flow).hintSkillAction(warTeam, answerId);
+            ((PlayWarFlow) getFlow()).skillAction(new PlaySkillHintActionState(manager, warTeam, answerId));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -15,19 +15,19 @@ public class PlayChooseWhoAnswerAction extends PlayAction {
 
     @Override
     public void perform(Long profileId, Map<String, Object> content) {
-        if ((!flow.isStatusEquals(RivalStatus.CHOOSING_WHO_ANSWER)
-                && !flow.isStatusEquals(RivalStatus.CHOSEN_WHO_ANSWER))
+        if ((!getFlow().isStatusEquals(RivalStatus.CHOOSING_WHO_ANSWER)
+                && !getFlow().isStatusEquals(RivalStatus.CHOSEN_WHO_ANSWER))
                 || !content.containsKey("activeIndex")) {
             return;
         }
         try {
             Integer activeIndex = (Integer) content.get("activeIndex");
-            WarTeam warTeam = (WarTeam) container.getTeams().team(profileId);
+            WarTeam warTeam = (WarTeam) getContainer().getTeams().team(profileId);
             if (warTeam.isChosenActiveIndex()
                     || !warTeam.getPresentIndexes().contains(activeIndex)) {
                 return;
             }
-            ((PlayWarFlow) flow).chosenWhoAnswerAction(profileId, activeIndex);
+            ((PlayWarFlow) getFlow()).chosenWhoAnswerAction(profileId, activeIndex);
         } catch (Exception e) {
             e.printStackTrace();
         }

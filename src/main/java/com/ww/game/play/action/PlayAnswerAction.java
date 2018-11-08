@@ -13,7 +13,7 @@ public class PlayAnswerAction extends PlayAction {
 
     @Override
     public void perform(Long profileId, Map<String, Object> content) {
-        if (!flow.isStatusEquals(RivalStatus.ANSWERING)
+        if (!getFlow().isStatusEquals(RivalStatus.ANSWERING)
                 || !content.containsKey("answerId")) {
             return;
         }
@@ -23,6 +23,6 @@ public class PlayAnswerAction extends PlayAction {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        flow.answeredAction(profileId, answerId);
+        getFlow().answeredAction(profileId, answerId);
     }
 }

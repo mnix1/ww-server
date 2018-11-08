@@ -14,9 +14,9 @@ public class PlayChooseTaskCategoryAction extends PlayAction {
 
     @Override
     public void perform(Long profileId, Map<String, Object> content) {
-        if (!flow.isStatusEquals(RivalStatus.CHOOSING_TASK_CATEGORY)
+        if (!getFlow().isStatusEquals(RivalStatus.CHOOSING_TASK_CATEGORY)
                 || !content.containsKey("category")
-                || !profileId.equals(container.findChoosingTaskPropsProfile().getId())) {
+                || !profileId.equals(getContainer().findChoosingTaskPropsProfile().getId())) {
             return;
         }
         Category category = Category.RANDOM;
@@ -25,6 +25,6 @@ public class PlayChooseTaskCategoryAction extends PlayAction {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        flow.chosenTaskCategoryAction(category);
+        getFlow().chosenTaskCategoryAction(category);
     }
 }

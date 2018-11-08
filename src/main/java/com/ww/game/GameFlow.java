@@ -3,6 +3,7 @@ package com.ww.game;
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +20,8 @@ public abstract class GameFlow {
     protected List<GameState> states = new CopyOnWriteArrayList<>();
     protected Map<String, GameState> stateMap = new ConcurrentHashMap<>();
     protected Map<String, Disposable> disposableMap = new ConcurrentHashMap<>();
+    @Setter
+    private Consumer<Long> onDone;
 
     protected abstract void initStateMap();
 
@@ -47,6 +50,18 @@ public abstract class GameFlow {
         }
     }
 
+    public synchronized void done() {
+        if (onDone != null) {
+            callNext(0, onDone);
+        }
+    }
+
+    public synchronized void innerFlow(GameFlow flow) {
+        stopAfter();
+        GameState state = currentState();
+        flow.setOnDone(aLong -> state.after());
+    }
+
     protected synchronized void after(long interval, Consumer<Long> onNext) {
         String uuid = randomUniqueUUID(disposableMap);
         disposableMap.put(uuid, prepareFlowable(interval).subscribe(aLong -> {
@@ -68,10 +83,6 @@ public abstract class GameFlow {
 
     private Flowable<Long> prepareFlowable(long interval) {
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
-    }
-
-    public synchronized void startAfter() {
-        startAfter(currentState());
     }
 
     public synchronized void startAfter(GameState state) {

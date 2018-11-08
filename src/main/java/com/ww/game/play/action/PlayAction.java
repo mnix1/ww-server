@@ -1,19 +1,25 @@
 package com.ww.game.play.action;
 
-import com.ww.game.play.flow.PlayFlow;
-import com.ww.game.play.container.PlayContainer;
 import com.ww.game.play.PlayManager;
+import com.ww.game.play.container.PlayContainer;
+import com.ww.game.play.flow.PlayFlow;
 
 import java.util.Map;
 
 public class PlayAction {
 
-    protected PlayContainer container;
-    protected PlayFlow flow;
+    protected PlayManager manager;
 
     public PlayAction(PlayManager manager) {
-        this.container = manager.getContainer();
-        this.flow = manager.getFlow();
+        this.manager = manager;
+    }
+
+    protected PlayContainer getContainer(){
+        return manager.getContainer();
+    }
+
+    protected PlayFlow getFlow(){
+        return manager.getFlow();
     }
 
     public void perform(Long profileId, Map<String, Object> content) {
