@@ -47,7 +47,7 @@ public abstract class GameFlow {
     }
 
     public synchronized void run(GameState state, Map<String, Object> params) {
-        logger.trace("run " + state.toString());
+        logger.trace("run " + toString() + ", " + state.toString());
         state.setParams(params);
         addState(state);
         state.execute();
@@ -127,5 +127,10 @@ public abstract class GameFlow {
         if (innerFlow != null) {
             innerFlow.stopAfter();
         }
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getName();
     }
 }

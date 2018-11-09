@@ -37,6 +37,7 @@ public class PlayWarFlow extends PlayFlow {
     protected PlayChoosingTaskCategoryState createChoosingTaskCategoryState() {
         return new PlayWarChoosingTaskCategoryState(manager);
     }
+
     @Override
     protected PlayChoosingTaskDifficultyState createChoosingTaskDifficultyState() {
         return new PlayChoosingTaskDifficultyState(manager);
@@ -86,7 +87,7 @@ public class PlayWarFlow extends PlayFlow {
     }
 
     public synchronized void skillAction(GameState state) {
-        logger.trace("skillAction " + state.toString());
+        logger.trace("skillAction " + toString() + ", " + state.toString());
         state.execute();
         state.updateNotify();
     }
