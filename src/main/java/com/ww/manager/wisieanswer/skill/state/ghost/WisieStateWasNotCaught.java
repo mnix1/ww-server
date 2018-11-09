@@ -23,7 +23,7 @@ public class WisieStateWasNotCaught extends WisieSkillState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.addAction(MemberWisieStatus.WAS_NOT_CAUGHT);
+        manager.addAction(MemberWisieStatus.NO_DISQUALIFICATION);
         manager.getWisieMember().removeDisguise();
         manager.getTeam(manager).getTeamSkills().unblockAll();
         manager.getWarManager().sendNewSkillsModel((m, wT) -> {

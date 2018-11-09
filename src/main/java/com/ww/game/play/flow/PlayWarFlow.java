@@ -3,11 +3,9 @@ package com.ww.game.play.flow;
 import com.ww.game.GameState;
 import com.ww.game.play.PlayManager;
 import com.ww.game.play.state.*;
-import com.ww.game.play.state.skill.hint.PlaySkillHintActionState;
-import com.ww.game.play.state.skill.lifebuoy.PlaySkillLifebuoyActionState;
 import com.ww.game.play.state.war.*;
 import com.ww.model.constant.rival.DifficultyLevel;
-import com.ww.model.container.rival.war.WarTeam;
+import com.ww.model.constant.rival.RivalStatus;
 
 public class PlayWarFlow extends PlayFlow {
 
@@ -78,9 +76,17 @@ public class PlayWarFlow extends PlayFlow {
         return new PlayWarChosenTaskDifficultyState(manager, difficultyLevel);
     }
 
-    public synchronized void skillAction(GameState state){
+    public synchronized void skillAction(GameState state) {
         state.initCommands();
         state.execute();
         state.updateNotify();
+    }
+
+    public synchronized void wisiesWontAnswer() {
+        PlayState state = (PlayState) currentState();
+        if (state.getStatus() == RivalStatus.ANSWERING) {
+            stopAfter();
+            state.after();
+        }
     }
 }

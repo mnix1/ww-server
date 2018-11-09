@@ -3,6 +3,7 @@ package com.ww.game.play.action.skill;
 import com.ww.game.play.PlayManager;
 import com.ww.game.play.action.PlayAction;
 import com.ww.game.play.flow.PlayWarFlow;
+import com.ww.game.play.state.skill.ghost.PlaySkillGhostActionState;
 import com.ww.game.play.state.skill.hint.PlaySkillHintActionState;
 import com.ww.model.constant.Skill;
 import com.ww.model.constant.rival.RivalStatus;
@@ -10,29 +11,25 @@ import com.ww.model.container.rival.war.WarTeam;
 
 import java.util.Map;
 
-public class PlayHintSkillAction extends PlayAction {
+public class PlayGhostSkillAction extends PlayAction {
 
-    public PlayHintSkillAction(PlayManager manager) {
+    public PlayGhostSkillAction(PlayManager manager) {
         super(manager);
     }
 
     @Override
     public void perform(Long profileId, Map<String, Object> content) {
-        if (!getFlow().isStatusEquals(RivalStatus.ANSWERING)
-                || !content.containsKey("answerId")) {
+        if (!getFlow().isStatusEquals(RivalStatus.ANSWERING)) {
             return;
         }
         WarTeam warTeam = (WarTeam) getContainer().getTeams().team(profileId);
-        if (!warTeam.getTeamSkills().canUse(Skill.HINT)
+        WarTeam warOpponentTeam = (WarTeam) getContainer().getTeams().opponent(warTeam);
+        if (!warTeam.getTeamSkills().canUse(Skill.GHOST)
+                || !warOpponentTeam.getActiveTeamMember().isWisie()
                 || !warTeam.getActiveTeamMember().isWisie()
-                || !warTeam.getActiveTeamMember().isPresent()) {
+                || !warOpponentTeam.getActiveTeamMember().isPresent()) {
             return;
         }
-        try {
-            Long answerId = ((Integer) content.get("answerId")).longValue();
-            ((PlayWarFlow) getFlow()).skillAction(new PlaySkillHintActionState(manager, warTeam, answerId));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ((PlayWarFlow) getFlow()).skillAction(new PlaySkillGhostActionState(manager, warTeam, warOpponentTeam));
     }
 }

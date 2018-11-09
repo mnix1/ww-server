@@ -23,7 +23,7 @@ public class WisieStateWasCaught extends WisieSkillState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.addAction(MemberWisieStatus.WAS_CAUGHT);
+        manager.addAction(MemberWisieStatus.DISQUALIFICATION);
         manager.getTeam(manager).activeTeamMemberOutDuringAnswering(DisguiseType.JUDGE);
         manager.getWarManager().sendActiveMemberAndActionsModel();
         interval = intervalMultiply() * 3;

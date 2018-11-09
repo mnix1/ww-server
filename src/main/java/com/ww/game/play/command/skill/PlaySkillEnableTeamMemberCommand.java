@@ -1,8 +1,7 @@
 package com.ww.game.play.command.skill;
 
 import com.ww.game.play.PlayManager;
-import com.ww.game.play.command.PlayCommand;
-import com.ww.game.play.container.PlayContainer;
+import com.ww.game.play.command.skill.flow.PlaySkillFlowCommand;
 import com.ww.model.container.rival.war.WarTeam;
 
 public class PlaySkillEnableTeamMemberCommand extends PlaySkillFlowCommand {

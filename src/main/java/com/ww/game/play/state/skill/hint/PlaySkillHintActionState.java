@@ -2,8 +2,7 @@ package com.ww.game.play.state.skill.hint;
 
 import com.ww.game.GameState;
 import com.ww.game.play.PlayManager;
-import com.ww.game.play.command.skill.PlaySkillStartHintFlowCommand;
-import com.ww.game.play.container.PlayContainer;
+import com.ww.game.play.command.skill.flow.PlaySkillStartHintFlowCommand;
 import com.ww.game.play.command.skill.PlaySkillUseCommand;
 import com.ww.model.constant.Skill;
 import com.ww.model.container.rival.war.WarTeam;

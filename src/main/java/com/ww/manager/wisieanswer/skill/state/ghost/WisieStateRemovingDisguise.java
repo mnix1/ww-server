@@ -24,7 +24,7 @@ public class WisieStateRemovingDisguise extends WisieSkillState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(MemberWisieStatus.REMOVING_DISGUISE);
+        manager.addAndSendAction(MemberWisieStatus.REMOVING_GHOST);
         interval = (long) (randomDouble(3 - manager.getWarWisie().getSpeedF1(),
                 6 - 4 * manager.getWarWisie().getSpeedF1()) * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);

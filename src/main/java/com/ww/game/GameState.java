@@ -1,12 +1,17 @@
 package com.ww.game;
 
+import lombok.Setter;
+
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameState {
     protected List<GameCommand> commands = new CopyOnWriteArrayList<>();
     protected Instant date = Instant.now();
+    @Setter
+    protected Map<String, Object> params;
 
     public void initCommands() {
     }
@@ -35,6 +40,10 @@ public class GameState {
     }
 
     public void after() {
+    }
+
+    public boolean stopAfter(){
+        return true;
     }
 
     @Override

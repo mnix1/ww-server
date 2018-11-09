@@ -1,4 +1,4 @@
-package com.ww.game.play.command.skill;
+package com.ww.game.play.command.skill.flow;
 
 import com.ww.game.GameCommand;
 import com.ww.game.play.PlayManager;

@@ -1,4 +1,4 @@
-package com.ww.game.play.command.skill;
+package com.ww.game.play.command.skill.flow;
 
 import com.ww.game.member.MemberWisieManager;
 import com.ww.game.play.PlayManager;
@@ -20,8 +20,8 @@ public class PlaySkillStartHintFlowCommand extends PlaySkillFlowCommand {
     public void execute() {
         WisieTeamMember member = (WisieTeamMember) warTeam.getActiveTeamMember();
         MemberWisieManager memberManager = member.currentManager();
-        memberManager.getFlow().stopAfter();
         PlaySkillHintFlow flow = new PlaySkillHintFlow(memberManager, answerId);
+        memberManager.getFlow().innerFlow(flow);
         flow.start();
     }
 }

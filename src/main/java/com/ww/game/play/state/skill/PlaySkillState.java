@@ -3,11 +3,7 @@ package com.ww.game.play.state.skill;
 import com.ww.game.GameState;
 import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.container.MemberWisieContainer;
-import com.ww.game.play.PlayManager;
-import com.ww.game.play.command.skill.PlaySkillStartHintFlowCommand;
-import com.ww.game.play.command.skill.PlaySkillUseCommand;
 import com.ww.game.play.flow.skill.PlaySkillFlow;
-import com.ww.model.constant.Skill;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.RivalTeams;
 import com.ww.model.container.rival.war.WarTeam;
@@ -80,10 +76,5 @@ public class PlaySkillState extends GameState {
         teams.forEachTeam(team -> {
             manager.getPlayManager().getCommunication().sendAndUpdateModel(team.getProfileId(), this.prepareModel(team, teams.opponent(team)));
         });
-    }
-
-    @Override
-    public String toString() {
-        return super.toString() + ", interval=" + interval;
     }
 }

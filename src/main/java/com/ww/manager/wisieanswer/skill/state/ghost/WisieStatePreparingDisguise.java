@@ -22,7 +22,7 @@ public class WisieStatePreparingDisguise extends WisieSkillState {
     }
 
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(MemberWisieStatus.PREPARING_DISGUISE);
+        manager.addAndSendAction(MemberWisieStatus.PREPARING_GHOST);
         interval = (long) (randomDouble(2 - manager.getWarWisie().getSpeedF1() - manager.getWarWisie().getReflexF1(),
                 4 - 2 * manager.getWarWisie().getSpeedF1() - 2 * manager.getWarWisie().getReflexF1()) * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);

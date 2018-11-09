@@ -3,7 +3,6 @@ package com.ww.game;
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,8 +19,9 @@ public abstract class GameFlow {
     protected List<GameState> states = new CopyOnWriteArrayList<>();
     protected Map<String, GameState> stateMap = new ConcurrentHashMap<>();
     protected Map<String, Disposable> disposableMap = new ConcurrentHashMap<>();
-    @Setter
-    private Consumer<Long> onDone;
+    private List<Consumer<GameFlow>> outerFlowConsumers = new CopyOnWriteArrayList<>();
+    private List<GameFlow> outerFlows = new CopyOnWriteArrayList<>();
+    private GameFlow innerFlow;
 
     protected abstract void initStateMap();
 
@@ -34,32 +34,62 @@ public abstract class GameFlow {
     }
 
     public synchronized void run(String stateName) {
+        run(stateName, null);
+    }
+
+    public synchronized void run(String stateName, Map<String, Object> params) {
         GameState state = stateMap.get(stateName);
-        run(state);
+        run(state, params);
     }
 
     public synchronized void run(GameState state) {
+        run(state, null);
+    }
+
+    public synchronized void run(GameState state, Map<String, Object> params) {
         logger.trace("run " + state.toString());
+        state.setParams(params);
         addState(state);
         state.initCommands();
         state.execute();
         if (state.afterReady()) {
-            stopAfter();
+            if (state.stopAfter()) {
+                stopAfter();
+            }
             state.updateNotify();
             startAfter(state);
         }
     }
 
-    public synchronized void done() {
-        if (onDone != null) {
-            callNext(0, onDone);
+    public synchronized void notifyOuter(GameFlow flow) {
+        try {
+            for (int i = 0; i < outerFlows.size(); i++) {
+                if (outerFlows.get(i) == flow) {
+                    outerFlowConsumers.get(i).accept(this);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     public synchronized void innerFlow(GameFlow flow) {
+        if (innerFlow != null) {
+            innerFlow.innerFlow(flow);
+            return;
+        }
+        innerFlow = flow;
         stopAfter();
         GameState state = currentState();
-        flow.setOnDone(aLong -> state.after());
+        flow.addOuterFlow(this, f -> {
+            innerFlow = null;
+            state.after();
+        });
+    }
+
+    public void addOuterFlow(GameFlow flow, Consumer<GameFlow> consumer) {
+        outerFlows.add(flow);
+        outerFlowConsumers.add(consumer);
     }
 
     protected synchronized void after(long interval, Consumer<Long> onNext) {
