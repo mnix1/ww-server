@@ -14,6 +14,7 @@ import com.ww.model.container.rival.war.WarTeam;
 
 import java.util.Map;
 
+import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelActiveMemberAddOns;
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelSkills;
 import static com.ww.helper.RandomHelper.randomDouble;
 
@@ -42,6 +43,7 @@ public class PlaySkillScaringState extends PlaySkillOpponentState {
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = super.prepareModel(team, opponentTeam);
         fillModelSkills(model, (WarTeam) team, (WarTeam) opponentTeam);
+        fillModelActiveMemberAddOns(model, (WarTeam) team, (WarTeam) opponentTeam);
         return model;
     }
 

@@ -9,6 +9,13 @@ import com.ww.game.play.flow.skill.PlaySkillFlow;
 import com.ww.game.play.state.skill.PlaySkillState;
 import com.ww.model.constant.wisie.DisguiseType;
 import com.ww.model.constant.wisie.MemberWisieStatus;
+import com.ww.model.container.rival.RivalTeam;
+import com.ww.model.container.rival.war.WarTeam;
+
+import java.util.Map;
+
+import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelActiveMemberAddOns;
+import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelPresentIndexes;
 
 public class PlaySkillDisqualificationState extends PlaySkillState {
     private boolean scareSuccess;
@@ -22,6 +29,13 @@ public class PlaySkillDisqualificationState extends PlaySkillState {
         commands.add(new MemberWisieAddStatusCommand(manager, MemberWisieStatus.DISQUALIFICATION));
         commands.add(new MemberWisieAddDisguiseCommand(manager, DisguiseType.JUDGE));
         commands.add(new PlayWarDisableActiveTeamMemberCommand(manager.getContainer().getTeam()));
+    }
+
+    @Override
+    public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
+        Map<String, Object> model = super.prepareModel(team, opponentTeam);
+        fillModelActiveMemberAddOns(model, (WarTeam) team, (WarTeam) opponentTeam);
+        return model;
     }
 
     @Override

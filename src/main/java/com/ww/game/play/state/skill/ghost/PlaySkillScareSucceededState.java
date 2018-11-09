@@ -8,9 +8,13 @@ import com.ww.game.play.flow.skill.PlaySkillFlow;
 import com.ww.game.play.state.skill.PlaySkillOpponentState;
 import com.ww.model.constant.wisie.DisguiseType;
 import com.ww.model.constant.wisie.MemberWisieStatus;
+import com.ww.model.container.rival.RivalTeam;
+import com.ww.model.container.rival.war.WarTeam;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelActiveMemberAddOns;
 
 public class PlaySkillScareSucceededState extends PlaySkillOpponentState {
     public PlaySkillScareSucceededState(PlaySkillFlow flow, MemberWisieManager manager, MemberWisieManager opponentManager) {
@@ -23,6 +27,13 @@ public class PlaySkillScareSucceededState extends PlaySkillOpponentState {
         commands.add(new MemberWisieAddStatusCommand(opponentManager, MemberWisieStatus.RUN_AWAY));
         commands.add(new MemberWisieAddDisguiseCommand(opponentManager, DisguiseType.CHAIR_RED));
         commands.add(new PlayWarDisableActiveTeamMemberCommand(opponentManager.getContainer().getTeam()));
+    }
+
+    @Override
+    public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
+        Map<String, Object> model = super.prepareModel(team, opponentTeam);
+        fillModelActiveMemberAddOns(model, (WarTeam) team, (WarTeam) opponentTeam);
+        return model;
     }
 
     @Override
