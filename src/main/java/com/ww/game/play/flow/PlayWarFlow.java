@@ -34,6 +34,10 @@ public class PlayWarFlow extends PlayFlow {
     }
 
     @Override
+    protected PlayChoosingTaskCategoryState createChoosingTaskCategoryState() {
+        return new PlayWarChoosingTaskCategoryState(manager);
+    }
+    @Override
     protected PlayChoosingTaskDifficultyState createChoosingTaskDifficultyState() {
         return new PlayChoosingTaskDifficultyState(manager);
     }
@@ -76,7 +80,13 @@ public class PlayWarFlow extends PlayFlow {
         return new PlayWarChosenTaskDifficultyState(manager, difficultyLevel);
     }
 
+    @Override
+    protected PlaySurrenderState createSurrenderState(Long profileId) {
+        return new PlayWarSurrenderState(manager, profileId);
+    }
+
     public synchronized void skillAction(GameState state) {
+        logger.trace("skillAction " + state.toString());
         state.execute();
         state.updateNotify();
     }

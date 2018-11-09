@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 import static com.ww.helper.TagHelper.randomUniqueUUID;
 
 public abstract class GameFlow {
-    private static Logger logger = LoggerFactory.getLogger(GameFlow.class);
+    public static Logger logger = LoggerFactory.getLogger(GameFlow.class);
     protected List<GameState> states = new CopyOnWriteArrayList<>();
     protected Map<String, GameState> stateMap = new ConcurrentHashMap<>();
     protected Map<String, Disposable> disposableMap = new ConcurrentHashMap<>();

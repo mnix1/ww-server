@@ -1,19 +1,18 @@
 package com.ww.game.play.state.skill.hint;
 
-import com.ww.game.GameState;
 import com.ww.game.play.PlayManager;
-import com.ww.game.play.command.skill.flow.PlaySkillStartHintFlowCommand;
 import com.ww.game.play.command.skill.PlaySkillUseCommand;
+import com.ww.game.play.command.skill.flow.PlaySkillStartHintFlowCommand;
+import com.ww.game.play.state.skill.PlaySkillActionState;
 import com.ww.model.constant.Skill;
 import com.ww.model.container.rival.war.WarTeam;
 
-public class PlaySkillHintActionState extends GameState {
-    protected PlayManager manager;
+public class PlaySkillHintActionState extends PlaySkillActionState {
     protected WarTeam warTeam;
     protected Long answerId;
 
     public PlaySkillHintActionState(PlayManager manager, WarTeam warTeam, Long answerId) {
-        this.manager = manager;
+        super(manager);
         this.warTeam = warTeam;
         this.answerId = answerId;
     }

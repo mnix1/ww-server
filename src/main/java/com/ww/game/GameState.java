@@ -13,13 +13,15 @@ public class GameState {
     @Setter
     protected Map<String, Object> params;
 
-    public void initCommands() {
+    protected void initCommands() {
     }
 
     public void execute() {
-        initCommands();
+        if (commands.isEmpty()) {
+            initCommands();
+        }
         for (GameCommand command : commands) {
-            command.execute();
+            command.logAndExecute();
         }
     }
 
@@ -43,7 +45,7 @@ public class GameState {
     public void after() {
     }
 
-    public boolean stopAfter(){
+    public boolean stopAfter() {
         return true;
     }
 

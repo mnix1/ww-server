@@ -14,11 +14,11 @@ public class PlayAction {
         this.manager = manager;
     }
 
-    protected PlayContainer getContainer(){
+    protected PlayContainer getContainer() {
         return manager.getContainer();
     }
 
-    protected PlayFlow getFlow(){
+    protected PlayFlow getFlow() {
         return manager.getFlow();
     }
 

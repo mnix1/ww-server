@@ -1,13 +1,10 @@
 package com.ww.game.play.state;
 
-import com.ww.model.constant.rival.RivalStatus;
-import com.ww.model.container.rival.RivalTeam;
 import com.ww.game.play.PlayManager;
-import com.ww.game.play.command.PlayPrepareNextTaskCommand;
 import com.ww.game.play.command.PlaySetResultCommand;
 import com.ww.game.play.command.PlayUpdateEloCommand;
-import com.ww.game.play.container.PlayContainer;
-import com.ww.service.RivalService;
+import com.ww.model.constant.rival.RivalStatus;
+import com.ww.model.container.rival.RivalTeam;
 import lombok.Getter;
 
 import java.util.Map;

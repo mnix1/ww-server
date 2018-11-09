@@ -7,6 +7,12 @@ import com.ww.game.play.command.skill.PlaySkillUnblockAllCommand;
 import com.ww.game.play.flow.skill.PlaySkillFlow;
 import com.ww.game.play.state.skill.PlaySkillState;
 import com.ww.model.constant.wisie.MemberWisieStatus;
+import com.ww.model.container.rival.RivalTeam;
+import com.ww.model.container.rival.war.WarTeam;
+
+import java.util.Map;
+
+import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelSkills;
 
 public class PlaySkillNoDisqualificationState extends PlaySkillState {
     public PlaySkillNoDisqualificationState(PlaySkillFlow flow, MemberWisieManager manager) {
@@ -18,6 +24,13 @@ public class PlaySkillNoDisqualificationState extends PlaySkillState {
         commands.add(new MemberWisieAddStatusCommand(manager, MemberWisieStatus.NO_DISQUALIFICATION));
         commands.add(new MemberWisieRemoveDisguiseCommand(manager));
         commands.add(new PlaySkillUnblockAllCommand(manager.getContainer().getTeam()));
+    }
+
+    @Override
+    public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
+        Map<String, Object> model = super.prepareModel(team, opponentTeam);
+        fillModelSkills(model, (WarTeam) team, (WarTeam) opponentTeam);
+        return model;
     }
 
     @Override

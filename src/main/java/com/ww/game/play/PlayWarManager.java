@@ -10,6 +10,7 @@ import com.ww.model.container.rival.init.RivalTwoInit;
 import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarInterval;
 import com.ww.model.container.rival.war.WarTeam;
+import com.ww.model.container.rival.war.WisieTeamMember;
 import com.ww.model.container.rival.war.skill.PassiveSkillsInit;
 import com.ww.model.container.rival.war.skill.WarTeamSkills;
 import com.ww.model.entity.outside.social.Profile;
