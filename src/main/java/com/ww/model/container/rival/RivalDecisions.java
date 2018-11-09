@@ -3,9 +3,11 @@ package com.ww.model.container.rival;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
 import lombok.Getter;
+import lombok.ToString;
 import org.apache.xpath.operations.Bool;
 
 @Getter
+@ToString
 public class RivalDecisions {
     protected Category category;
     protected boolean chosenCategory;

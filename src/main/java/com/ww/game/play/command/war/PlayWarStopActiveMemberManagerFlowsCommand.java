@@ -7,9 +7,8 @@ import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.model.container.rival.war.WisieTeamMember;
 
-public class PlayWarStartMemberManagerCommand extends PlayCommand {
-
-    public PlayWarStartMemberManagerCommand(PlayContainer container) {
+public class PlayWarStopActiveMemberManagerFlowsCommand extends PlayCommand {
+    public PlayWarStopActiveMemberManagerFlowsCommand(PlayContainer container) {
         super(container);
     }
 
@@ -20,7 +19,7 @@ public class PlayWarStartMemberManagerCommand extends PlayCommand {
             TeamMember member = warTeam.getActiveTeamMember();
             if (member.isWisie()) {
                 WisieTeamMember wisieMember = (WisieTeamMember) member;
-                wisieMember.currentManager().start();
+                wisieMember.currentManager().stop();
             }
         }
     }

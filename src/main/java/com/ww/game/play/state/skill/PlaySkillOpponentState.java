@@ -16,4 +16,9 @@ public class PlaySkillOpponentState extends PlaySkillState {
         this.opponentManager = opponentManager;
         this.opponentWisie = opponentManager.getContainer().getMember().getContent();
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + ", " + manager.getContainer().getMember();
+    }
 }

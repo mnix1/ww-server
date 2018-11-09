@@ -7,10 +7,12 @@ import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.dto.rival.task.TaskMetaDTO;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.service.RivalService;
+import lombok.ToString;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+@ToString
 public class RivalTasks {
     protected RivalService service;
     protected int currentTaskIndex = -1;

@@ -7,10 +7,12 @@ import com.ww.model.container.rival.init.RivalTwoInit;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.game.play.state.PlayState;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.Optional;
 
 @Getter
+@ToString
 public abstract class PlayContainer {
     protected RivalTwoInit init;
     protected RivalTeams teams;

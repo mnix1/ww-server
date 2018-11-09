@@ -4,11 +4,13 @@ import com.ww.model.constant.wisie.DisguiseType;
 import com.ww.model.constant.wisie.HeroType;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Getter
+@ToString
 public abstract class TeamMember {
     private int index;
     private HeroType type;

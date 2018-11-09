@@ -11,11 +11,13 @@ import com.ww.model.entity.outside.wisie.AbstractWisieAttributes;
 import com.ww.model.entity.outside.wisie.OwnedWisie;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import static com.ww.helper.WisieHelper.f1;
 
 @Setter
 @Getter
+@ToString
 public class WarWisie extends AbstractWisieAttributes {
 
     private OwnedWisie wisie;

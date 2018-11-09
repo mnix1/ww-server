@@ -1,6 +1,7 @@
 package com.ww.game.play.state.war;
 
 import com.ww.game.play.PlayManager;
+import com.ww.game.play.command.war.PlayWarStopActiveMemberManagerFlowsCommand;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.game.play.command.war.PlayWarDisableActiveTeamMemberCommand;
@@ -24,6 +25,7 @@ public class PlayWarAnsweredState extends PlayAnsweredState {
         super.initCommands();
         Long commandProfileId = isCorrect ? getContainer().getTeams().opponent(profileId).getProfileId() : profileId;
         commands.add(new PlayWarDisableActiveTeamMemberCommand(getContainer(), commandProfileId));
+        commands.add(new PlayWarStopActiveMemberManagerFlowsCommand(getContainer()));
     }
 
     @Override

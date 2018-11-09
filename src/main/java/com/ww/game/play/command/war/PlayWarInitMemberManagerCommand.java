@@ -22,12 +22,12 @@ public class PlayWarInitMemberManagerCommand extends PlayCommand {
     public void execute() {
         for (RivalTeam team : container.getTeams().getTeams()) {
             WarTeam warTeam = (WarTeam) team;
-            TeamMember teamMember = warTeam.getActiveTeamMember();
-            if (teamMember.isWisie()) {
-                WisieTeamMember wisieTeamMember = (WisieTeamMember) teamMember;
-                wisieTeamMember.refreshCache(container.getTasks().question());
-                MemberWisieManager memberManager = new MemberWisieManager(warTeam, wisieTeamMember, manager);
-                wisieTeamMember.addManager(memberManager);
+            TeamMember member = warTeam.getActiveTeamMember();
+            if (member.isWisie()) {
+                WisieTeamMember wisieMember = (WisieTeamMember) member;
+                wisieMember.refreshCache(container.getTasks().question());
+                MemberWisieManager memberManager = new MemberWisieManager(warTeam, wisieMember, manager);
+                wisieMember.addManager(memberManager);
             }
         }
     }

@@ -77,7 +77,6 @@ public class PlayWarFlow extends PlayFlow {
     }
 
     public synchronized void skillAction(GameState state) {
-        state.initCommands();
         state.execute();
         state.updateNotify();
     }

@@ -2,16 +2,11 @@ package com.ww.model.container.rival.war;
 
 import com.ww.game.member.MemberWisieManager;
 import com.ww.model.constant.wisie.HeroType;
-import com.ww.model.constant.wisie.MentalAttribute;
-import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.dto.wisie.WarProfileWisieDTO;
 import com.ww.model.entity.outside.rival.task.Question;
 import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class WisieTeamMember extends TeamMember {
@@ -56,6 +51,11 @@ public class WisieTeamMember extends TeamMember {
 
     public void increaseMentalAttributes(WarWisie source, double factor) {
         content.increaseMentalAttributes(source, factor);
+    }
+
+    @Override
+    public String toString() {
+        return content.toString() + ", " + super.toString();
     }
 
 }

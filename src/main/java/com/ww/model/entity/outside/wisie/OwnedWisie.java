@@ -9,6 +9,7 @@ import com.ww.model.constant.wisie.WisieType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -18,6 +19,7 @@ import java.util.HashSet;
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@ToString
 public abstract class OwnedWisie extends AbstractWisieAttributes {
     public static final int MAX_HOBBY_COUNT = 3;
     public static final int MAX_SKILL_COUNT = 1;

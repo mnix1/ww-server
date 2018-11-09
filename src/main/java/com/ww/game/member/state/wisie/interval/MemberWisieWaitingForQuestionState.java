@@ -23,6 +23,10 @@ public class MemberWisieWaitingForQuestionState extends MemberWisieIntervalState
     }
 
     @Override
+    public void updateNotify(){
+    }
+
+    @Override
     public void after() {
         manager.getFlow().run("RECOGNIZING_QUESTION");
     }

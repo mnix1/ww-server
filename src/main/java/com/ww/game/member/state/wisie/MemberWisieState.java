@@ -55,4 +55,9 @@ public class MemberWisieState extends GameState {
         });
     }
 
+    @Override
+    public String toString() {
+        return super.toString() + ", " + manager.getContainer().getMember();
+    }
+
 }

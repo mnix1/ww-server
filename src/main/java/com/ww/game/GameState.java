@@ -17,6 +17,7 @@ public class GameState {
     }
 
     public void execute() {
+        initCommands();
         for (GameCommand command : commands) {
             command.execute();
         }

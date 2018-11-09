@@ -1,8 +1,11 @@
 package com.ww.model.container.rival;
 
+import lombok.ToString;
+
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
+@ToString
 public class RivalTimeouts {
     protected Instant nextTimeout;
 

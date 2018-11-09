@@ -51,4 +51,9 @@ public abstract class PlayState extends GameState {
     public void addChildState(GameState state) {
         childStates.add(state);
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + ", " + manager.getContainer().toString();
+    }
 }

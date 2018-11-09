@@ -10,6 +10,7 @@ import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class RivalTwoInit implements RivalInit {
     private RivalType type;
     private RivalImportance importance;

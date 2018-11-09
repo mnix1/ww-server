@@ -50,7 +50,6 @@ public abstract class GameFlow {
         logger.trace("run " + state.toString());
         state.setParams(params);
         addState(state);
-        state.initCommands();
         state.execute();
         if (state.afterReady()) {
             if (state.stopAfter()) {
@@ -97,18 +96,10 @@ public abstract class GameFlow {
         disposableMap.put(uuid, prepareFlowable(interval).subscribe(aLong -> {
             synchronized (this) {
                 if (disposableMap.containsKey(uuid)) {
-                    callNext(interval, onNext);
+                    onNext.accept(interval);
                 }
             }
         }));
-    }
-
-    private synchronized void callNext(long interval, Consumer<Long> onNext) {
-        try {
-            onNext.accept(interval);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private Flowable<Long> prepareFlowable(long interval) {
@@ -129,5 +120,12 @@ public abstract class GameFlow {
             disposable.dispose();
         }
         disposableMap.clear();
+    }
+
+    public synchronized void stop() {
+        stopAfter();
+        if (innerFlow != null) {
+            innerFlow.stopAfter();
+        }
     }
 }
