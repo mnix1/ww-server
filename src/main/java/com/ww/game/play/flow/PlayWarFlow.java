@@ -96,6 +96,7 @@ public class PlayWarFlow extends PlayFlow {
         PlayState state = (PlayState) currentState();
         if (state.getStatus() == RivalStatus.ANSWERING) {
             stopAfter();
+            logger.trace("state after " + toString() +", " + state.toString());
             state.after();
         }
     }

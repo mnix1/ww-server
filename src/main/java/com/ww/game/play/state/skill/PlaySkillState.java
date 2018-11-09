@@ -60,6 +60,11 @@ public class PlaySkillState extends GameState {
     }
 
     @Override
+    public boolean stopAfter() {
+        return false;
+    }
+
+    @Override
     public long afterInterval() {
         return interval;
     }

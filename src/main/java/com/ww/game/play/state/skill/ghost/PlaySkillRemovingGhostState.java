@@ -54,11 +54,6 @@ public class PlaySkillRemovingGhostState extends PlaySkillState {
     }
 
     @Override
-    public boolean stopAfter(){
-        return false;
-    }
-
-    @Override
     public void after() {
         if (disqualification) {
             Map<String,Object> params = new HashMap<>();

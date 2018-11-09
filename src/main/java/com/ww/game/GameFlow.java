@@ -64,9 +64,12 @@ public abstract class GameFlow {
         try {
             for (int i = 0; i < outerFlows.size(); i++) {
                 if (outerFlows.get(i) == flow) {
+                    logger.trace("notifyOuter " + toString());
                     outerFlowConsumers.get(i).accept(this);
+                    return;
                 }
             }
+            logger.trace("notifyOuter no consumer" + toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -82,6 +85,7 @@ public abstract class GameFlow {
         GameState state = currentState();
         flow.addOuterFlow(this, f -> {
             innerFlow = null;
+            logger.trace("state after " + toString() + ", " + state.toString());
             state.after();
         });
     }
@@ -109,9 +113,13 @@ public abstract class GameFlow {
     public synchronized void startAfter(GameState state) {
         long afterInterval = state.afterInterval();
         if (afterInterval == 0) {
+            logger.trace("state after " + toString() + ", " + state.toString());
             state.after();
         } else {
-            after(afterInterval, aLong -> state.after());
+            after(afterInterval, aLong -> {
+                logger.trace("state after " + toString() + ", " + state.toString());
+                state.after();
+            });
         }
     }
 
