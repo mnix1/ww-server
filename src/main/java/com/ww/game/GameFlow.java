@@ -60,16 +60,28 @@ public abstract class GameFlow {
         }
     }
 
+    public boolean isOrHasOuterFlow(GameFlow flow) {
+        if (this == flow) {
+            return true;
+        }
+        for (int i = 0; i < outerFlows.size(); i++) {
+            if (outerFlows.get(i).isOrHasOuterFlow(flow)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public synchronized void notifyOuter(GameFlow flow) {
         try {
             for (int i = 0; i < outerFlows.size(); i++) {
-                if (outerFlows.get(i) == flow) {
+                if (outerFlows.get(i).isOrHasOuterFlow(flow)) {
                     logger.trace("notifyOuter " + toString());
                     outerFlowConsumers.get(i).accept(this);
                     return;
                 }
             }
-            logger.trace("notifyOuter no consumer" + toString());
+            logger.trace("notifyOuter no consumer " + toString() + " " + flow.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -135,10 +147,5 @@ public abstract class GameFlow {
         if (innerFlow != null) {
             innerFlow.stopAfter();
         }
-    }
-
-    @Override
-    public String toString() {
-        return this.getClass().getName();
     }
 }

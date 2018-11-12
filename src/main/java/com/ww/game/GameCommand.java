@@ -17,9 +17,4 @@ public class GameCommand {
 
     public void revoke() {
     }
-
-    @Override
-    public String toString() {
-        return this.getClass().getName();
-    }
 }
