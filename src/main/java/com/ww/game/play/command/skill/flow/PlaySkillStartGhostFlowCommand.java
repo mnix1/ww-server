@@ -19,9 +19,9 @@ public class PlaySkillStartGhostFlowCommand extends PlaySkillFlowCommand {
     @Override
     public void execute() {
         WisieTeamMember member = (WisieTeamMember) warTeam.getActiveTeamMember();
-        MemberWisieManager memberManager = member.currentManager();
+        MemberWisieManager memberManager = member.currentManager().get();
         WisieTeamMember opponentMember = (WisieTeamMember) warOpponentTeam.getActiveTeamMember();
-        MemberWisieManager opponentMemberManager = opponentMember.currentManager();
+        MemberWisieManager opponentMemberManager = opponentMember.currentManager().get();
         PlaySkillGhostFlow flow = new PlaySkillGhostFlow(memberManager, opponentMemberManager);
         memberManager.getFlow().innerFlow(flow);
         flow.start();

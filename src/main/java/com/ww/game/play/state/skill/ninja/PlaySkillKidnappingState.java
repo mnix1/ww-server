@@ -49,7 +49,7 @@ public class PlaySkillKidnappingState extends PlaySkillOpponentState {
 
     @Override
     protected double minInterval() {
-        return 1;
+        return 2;
     }
 
     @Override

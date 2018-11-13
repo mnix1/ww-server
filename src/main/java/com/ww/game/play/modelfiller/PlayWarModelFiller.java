@@ -55,7 +55,7 @@ public class PlayWarModelFiller {
     }
 
     private static List<String> prepareWisieActions(WisieTeamMember wisieTeamMember) {
-        List<MemberWisieStatus> actions = wisieTeamMember.currentManager().getContainer().getActions();
+        List<MemberWisieStatus> actions = wisieTeamMember.currentManager().get().getContainer().getActions();
         return actions.subList(Math.max(0, actions.size() - 2), actions.size()).stream()
                 .map(Enum::name)
                 .collect(Collectors.toList());

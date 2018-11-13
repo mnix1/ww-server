@@ -7,6 +7,7 @@ import com.ww.model.entity.outside.rival.task.Question;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class WisieTeamMember extends TeamMember {
@@ -31,8 +32,11 @@ public class WisieTeamMember extends TeamMember {
         managers.add(manager);
     }
 
-    public MemberWisieManager currentManager() {
-        return managers.get(managers.size() - 1);
+    public Optional<MemberWisieManager> currentManager() {
+        if (managers.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(managers.get(managers.size() - 1));
     }
 
     public void refreshCache(Question question) {

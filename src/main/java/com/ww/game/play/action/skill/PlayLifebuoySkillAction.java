@@ -20,7 +20,8 @@ public class PlayLifebuoySkillAction extends PlayAction {
 
     @Override
     public void perform(Long profileId, Map<String, Object> content) {
-        if (!getFlow().isStatusEquals(RivalStatus.CHOOSING_WHO_ANSWER)
+        if ((!getFlow().isStatusEquals(RivalStatus.CHOOSING_WHO_ANSWER)
+                && !getFlow().isStatusEquals(RivalStatus.CHOSEN_WHO_ANSWER))
                 || !content.containsKey("index")) {
             return;
         }

@@ -20,7 +20,7 @@ public class PlayWarStartMemberManagerCommand extends PlayCommand {
             TeamMember member = warTeam.getActiveTeamMember();
             if (member.isWisie()) {
                 WisieTeamMember wisieMember = (WisieTeamMember) member;
-                wisieMember.currentManager().start();
+                wisieMember.currentManager().get().start();
             }
         }
     }

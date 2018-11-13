@@ -19,12 +19,12 @@ public class PlaySkillPreparingGhostState extends PlaySkillState {
 
     @Override
     protected double minInterval() {
-        return 2 - getWisie().getSpeedF1() - getWisie().getCunningF1();
+        return 3 - getWisie().getSpeedF1() - getWisie().getCunningF1();
     }
 
     @Override
     protected double maxInterval() {
-        return 3 - getWisie().getSpeedF1() - 2 * getWisie().getCunningF1();
+        return 4 - getWisie().getSpeedF1() - 2 * getWisie().getCunningF1();
     }
 
     @Override

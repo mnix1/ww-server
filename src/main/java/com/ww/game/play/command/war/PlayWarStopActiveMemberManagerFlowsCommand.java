@@ -1,5 +1,6 @@
 package com.ww.game.play.command.war;
 
+import com.ww.game.member.MemberWisieManager;
 import com.ww.game.play.command.PlayCommand;
 import com.ww.game.play.container.PlayContainer;
 import com.ww.model.container.rival.RivalTeam;
@@ -19,7 +20,7 @@ public class PlayWarStopActiveMemberManagerFlowsCommand extends PlayCommand {
             TeamMember member = warTeam.getActiveTeamMember();
             if (member.isWisie()) {
                 WisieTeamMember wisieMember = (WisieTeamMember) member;
-                wisieMember.currentManager().stop();
+                wisieMember.currentManager().ifPresent(MemberWisieManager::stop);
             }
         }
     }

@@ -18,7 +18,7 @@ public class PlaySkillStartWaterPistolFlowCommand extends PlaySkillFlowCommand {
     @Override
     public void execute() {
         WisieTeamMember opponentMember = (WisieTeamMember) warOpponentTeam.getActiveTeamMember();
-        MemberWisieManager opponentMemberManager = opponentMember.currentManager();
+        MemberWisieManager opponentMemberManager = opponentMember.currentManager().get();
         PlaySkillWaterPistolFlow flow = new PlaySkillWaterPistolFlow(opponentMemberManager);
         opponentMemberManager.getFlow().innerFlow(flow);
         flow.start();

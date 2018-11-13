@@ -19,7 +19,7 @@ public class PlaySkillStartHintFlowCommand extends PlaySkillFlowCommand {
     @Override
     public void execute() {
         WisieTeamMember member = (WisieTeamMember) warTeam.getActiveTeamMember();
-        MemberWisieManager memberManager = member.currentManager();
+        MemberWisieManager memberManager = member.currentManager().get();
         PlaySkillHintFlow flow = new PlaySkillHintFlow(memberManager, answerId);
         memberManager.getFlow().innerFlow(flow);
         flow.start();
