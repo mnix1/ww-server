@@ -125,17 +125,18 @@ public abstract class GameFlow {
     public synchronized void startAfter(GameState state) {
         long afterInterval = state.afterInterval();
         if (afterInterval == 0) {
-            logger.trace("state after " + toString() + ", " + state.toString());
+            logger.trace("startAfter " + toString() + ", " + state.toString());
             state.after();
         } else {
             after(afterInterval, aLong -> {
-                logger.trace("state after " + toString() + ", " + state.toString());
+                logger.trace("startAfter " + toString() + ", " + state.toString());
                 state.after();
             });
         }
     }
 
     public synchronized void stopAfter() {
+        logger.trace("stopAfter " + toString());
         for (Disposable disposable : disposableMap.values()) {
             disposable.dispose();
         }
@@ -143,9 +144,10 @@ public abstract class GameFlow {
     }
 
     public synchronized void stop() {
+        logger.trace("stop " + toString());
         stopAfter();
         if (innerFlow != null) {
-            innerFlow.stopAfter();
+            innerFlow.stop();
         }
     }
 }

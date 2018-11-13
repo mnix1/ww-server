@@ -23,6 +23,7 @@ public class MemberWisieManager {
     public void start() {
         flow.run("WAITING_FOR_QUESTION");
     }
+
     public void stop() {
         flow.stop();
     }
