@@ -2,10 +2,7 @@ package com.ww.game.play.communication;
 
 import com.ww.game.play.PlayManager;
 import com.ww.game.play.action.PlayChooseWhoAnswerAction;
-import com.ww.game.play.action.skill.PlayGhostSkillAction;
-import com.ww.game.play.action.skill.PlayHintSkillAction;
-import com.ww.game.play.action.skill.PlayNinjaSkillAction;
-import com.ww.game.play.action.skill.PlayLifebuoySkillAction;
+import com.ww.game.play.action.skill.*;
 import com.ww.websocket.message.Message;
 
 import static com.ww.service.rival.global.RivalMessageService.*;
@@ -28,6 +25,7 @@ public class PlayWarCommunication extends PlayCommunication {
         actionMap.put(LIFEBUOY, new PlayLifebuoySkillAction(manager));
         actionMap.put(GHOST, new PlayGhostSkillAction(manager));
         actionMap.put(NINJA, new PlayNinjaSkillAction(manager));
+        actionMap.put(WATER_PISTOL, new PlayWaterPistolSkillAction(manager));
     }
 
 }
