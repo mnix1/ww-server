@@ -3,6 +3,7 @@ package com.ww.game.play.state.war;
 import com.ww.game.play.PlayManager;
 import com.ww.game.play.command.PlayPrepareNextTaskCommand;
 import com.ww.game.play.command.war.PlayWarSetActiveIndexCommand;
+import com.ww.game.play.command.war.PlayWarStopActiveMemberManagerFlowsCommand;
 import com.ww.game.play.state.PlayState;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.container.rival.RivalTeam;
@@ -15,6 +16,7 @@ public class PlayChangingTaskState extends PlayState {
 
     @Override
     public void initCommands() {
+        commands.add(new PlayWarStopActiveMemberManagerFlowsCommand(getContainer()));
     }
 
     @Override

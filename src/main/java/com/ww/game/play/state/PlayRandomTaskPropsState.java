@@ -2,6 +2,7 @@ package com.ww.game.play.state;
 
 import com.ww.game.play.PlayManager;
 import com.ww.game.play.command.PlayPrepareNextTaskCommand;
+import com.ww.game.play.command.PlayPrepareRandomNextTaskCommand;
 import com.ww.game.play.command.PlaySetDefaultTaskPropsCommand;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
@@ -19,7 +20,7 @@ public class PlayRandomTaskPropsState extends PlayState {
 
     @Override
     public void initCommands() {
-        commands.add(new PlayPrepareNextTaskCommand(getContainer(), Category.random(), DifficultyLevel.random(), getContainer().getInit().getCommonLanguage()));
+        commands.add(new PlayPrepareRandomNextTaskCommand(getContainer()));
     }
 
     @Override

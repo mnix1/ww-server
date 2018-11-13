@@ -18,17 +18,4 @@ public class PlaySkillActionState extends GameState {
         this.manager = manager;
     }
 
-    public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
-        Map<String, Object> model = new HashMap<>();
-        fillModelSkills(model, (WarTeam) team, (WarTeam) opponentTeam);
-        return model;
-    }
-
-    @Override
-    public void updateNotify() {
-        RivalTeams teams = manager.getContainer().getTeams();
-        teams.forEachTeam(team -> {
-            manager.getCommunication().sendAndUpdateModel(team.getProfileId(), this.prepareModel(team, teams.opponent(team)));
-        });
-    }
 }

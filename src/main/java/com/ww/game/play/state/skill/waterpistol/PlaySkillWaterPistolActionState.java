@@ -24,8 +24,4 @@ public class PlaySkillWaterPistolActionState extends PlaySkillActionState {
         commands.add(new PlaySkillUseCommand(manager.getContainer(), warTeam, Skill.WATER_PISTOL));
         commands.add(new PlaySkillStartWaterPistolFlowCommand(manager, warOpponentTeam));
     }
-
-    @Override
-    public void updateNotify() {
-    }
 }

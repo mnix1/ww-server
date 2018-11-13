@@ -31,6 +31,7 @@ public class PlaySkillWantChangeTaskState extends PlaySkillState {
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = super.prepareModel(team, opponentTeam);
         fillModelActiveMemberAddOns(model, (WarTeam) team, (WarTeam) opponentTeam);
+        fillModelSkills(model, (WarTeam) team, (WarTeam) opponentTeam);
         return model;
     }
 
