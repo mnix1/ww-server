@@ -27,7 +27,7 @@ public class WarSkillFlow {
             waterPistol(profileId);
         } else if (id.equals(LIFEBUOY) && status == RivalStatus.CHOOSING_WHO_ANSWER) {
             lifebuoy(profileId, content);
-        } else if (id.equals(KIDNAPPING) && status == RivalStatus.ANSWERING) {
+        } else if (id.equals(NINJA) && status == RivalStatus.ANSWERING) {
             kidnapping(profileId);
         } else if (id.equals(GHOST) && status == RivalStatus.ANSWERING) {
             ghost(profileId);

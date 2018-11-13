@@ -81,13 +81,13 @@ public enum MemberWisieStatus {
     SCARING_ON_IT,
     RUN_AWAY,
     WAS_NOT_SCARED,
-    //KIDNAPPING
+    //NINJA
         //kidnapper
-    PREPARING_KIDNAPPING,
+    PREPARING_NINJA,
     TRYING_TO_KIDNAP,
     KIDNAPPING_SUCCEEDED,
     KIDNAPPING_FAILED,
-    CHANGING_CLOTHES,
+    REMOVING_NINJA,
         //victim
     TRYING_TO_DEFEND,
     WAS_KIDNAPPED,

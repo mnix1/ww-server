@@ -18,12 +18,12 @@ public class WarStateKidnappingUsed extends WarState {
     protected void processVoid() {
         WarTeam team = (WarTeam) manager.getTeam(profileId);
         WarTeam opponentTeam = (WarTeam) manager.getModel().getTeams().opponent(profileId);
-        if (!team.getTeamSkills().canUse(Skill.KIDNAPPING)
+        if (!team.getTeamSkills().canUse(Skill.NINJA)
                 || !opponentTeam.getActiveTeamMember().isWisie() || !opponentTeam.istActiveTeamMemberPresent()
                 || !team.getActiveTeamMember().isWisie() || !team.istActiveTeamMemberPresent()) {
             return;
         }
-        team.getTeamSkills().use(Skill.KIDNAPPING);
+        team.getTeamSkills().use(Skill.NINJA);
         WisieAnswerManager wisieAnswerManager = manager.getModel().getWisieAnswerManager(team.getProfileId());
         WisieAnswerManager opponentWisieAnswerManager = manager.getModel().getWisieAnswerManager(opponentTeam.getProfileId());
         wisieAnswerManager.getFlow().getKidnappingSkillFlow().kidnapping(opponentWisieAnswerManager);

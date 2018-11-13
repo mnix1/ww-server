@@ -11,7 +11,7 @@ public enum Skill {
     HINT,
     WATER_PISTOL,
     LIFEBUOY,
-    KIDNAPPING,
+    NINJA,
     GHOST,
     COVERALL,
     CHANGE_TASK,
@@ -22,7 +22,7 @@ public enum Skill {
     }
 
     public static List<Skill> optionalAvailableSkills() {
-        return Arrays.asList(KIDNAPPING, GHOST, CHANGE_TASK, PIZZA);
+        return Arrays.asList(NINJA, GHOST, CHANGE_TASK, PIZZA);
     }
 
     public static List<Skill> list() {

@@ -1,13 +1,10 @@
-package com.ww.game.play.state.skill.ghost;
+package com.ww.game.play.state.skill.ninja;
 
 import com.ww.game.member.MemberWisieManager;
-import com.ww.game.member.command.MemberWisieAddDisguiseCommand;
 import com.ww.game.member.command.MemberWisieAddStatusCommand;
 import com.ww.game.play.command.skill.PlaySkillUnblockAllCommand;
-import com.ww.game.play.command.war.PlayWarDisableActiveTeamMemberCommand;
 import com.ww.game.play.flow.skill.PlaySkillFlow;
 import com.ww.game.play.state.skill.PlaySkillOpponentState;
-import com.ww.model.constant.wisie.DisguiseType;
 import com.ww.model.constant.wisie.MemberWisieStatus;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.war.WarTeam;
@@ -17,15 +14,15 @@ import java.util.Map;
 
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelSkills;
 
-public class PlaySkillScareFailedState extends PlaySkillOpponentState {
-    public PlaySkillScareFailedState(PlaySkillFlow flow, MemberWisieManager manager, MemberWisieManager opponentManager) {
+public class PlaySkillKidnapFailedState extends PlaySkillOpponentState {
+    public PlaySkillKidnapFailedState(PlaySkillFlow flow, MemberWisieManager manager, MemberWisieManager opponentManager) {
         super(flow, manager, opponentManager);
     }
 
     @Override
     public void initCommands() {
-        commands.add(new MemberWisieAddStatusCommand(manager, MemberWisieStatus.SCARE_FAILED));
-        commands.add(new MemberWisieAddStatusCommand(opponentManager, MemberWisieStatus.WAS_NOT_SCARED));
+        commands.add(new MemberWisieAddStatusCommand(manager, MemberWisieStatus.KIDNAPPING_FAILED));
+        commands.add(new MemberWisieAddStatusCommand(opponentManager, MemberWisieStatus.WAS_NOT_KIDNAPPED));
         commands.add(new PlaySkillUnblockAllCommand(opponentManager.getContainer().getTeam()));
     }
 
@@ -38,19 +35,16 @@ public class PlaySkillScareFailedState extends PlaySkillOpponentState {
 
     @Override
     protected double minInterval() {
-        return 1;
+        return 2 - getWisie().getReflexF1() - getWisie().getConcentrationF1();
     }
 
     @Override
     protected double maxInterval() {
-        return 2;
+        return 4 - 2 * getWisie().getReflexF1() - 2 * getWisie().getConcentrationF1();
     }
 
     @Override
     public void after() {
-        flow.run("WAS_NOT_SCARED");
-        Map<String, Object> params = new HashMap<>();
-        params.put("scareSuccess", false);
-        flow.run("REMOVING_GHOST", params);
+        flow.run("REMOVING_NINJA");
     }
 }

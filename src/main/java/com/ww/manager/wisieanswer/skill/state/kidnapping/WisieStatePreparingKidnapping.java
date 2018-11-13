@@ -23,7 +23,7 @@ public class WisieStatePreparingKidnapping extends WisieSkillState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(MemberWisieStatus.PREPARING_KIDNAPPING);
+        manager.addAndSendAction(MemberWisieStatus.PREPARING_NINJA);
         interval = (long) (randomDouble(3 - manager.getWarWisie().getSpeedF1() - manager.getWarWisie().getReflexF1() - manager.getWarWisie().getConfidenceF1(),
                 6 - 2 * manager.getWarWisie().getSpeedF1() - 2 * manager.getWarWisie().getReflexF1() - 2 * manager.getWarWisie().getConfidenceF1()) * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);

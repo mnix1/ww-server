@@ -23,7 +23,7 @@ public class WisieStateChangingClothes extends WisieSkillState {
 
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.addAndSendAction(MemberWisieStatus.CHANGING_CLOTHES);
+        manager.addAndSendAction(MemberWisieStatus.REMOVING_NINJA);
         interval = (long) (randomDouble(2 - manager.getWarWisie().getSpeedF1(),
                 4 - 3 * manager.getWarWisie().getSpeedF1()) * intervalMultiply());
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
