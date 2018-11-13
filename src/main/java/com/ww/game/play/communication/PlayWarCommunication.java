@@ -26,6 +26,7 @@ public class PlayWarCommunication extends PlayCommunication {
         actionMap.put(GHOST, new PlayGhostSkillAction(manager));
         actionMap.put(NINJA, new PlayNinjaSkillAction(manager));
         actionMap.put(WATER_PISTOL, new PlayWaterPistolSkillAction(manager));
+        actionMap.put(CHANGE_TASK, new PlayChangeTaskSkillAction(manager));
     }
 
 }

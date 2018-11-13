@@ -17,6 +17,7 @@ public class PlayWarFlow extends PlayFlow {
     protected void initStateMap() {
         super.initStateMap();
         stateMap.put("CHOOSING_WHO_ANSWER", createChoosingWhoAnswerState());
+        stateMap.put("CHANGING_TASK", createChangingTaskState());
     }
 
     protected PlayState createChoosingWhoAnswerState() {
@@ -86,6 +87,10 @@ public class PlayWarFlow extends PlayFlow {
         return new PlayWarSurrenderState(manager, profileId);
     }
 
+    protected PlayChangingTaskState createChangingTaskState() {
+        return new PlayChangingTaskState(manager);
+    }
+
     public synchronized void skillAction(GameState state) {
         logger.trace("skillAction " + toString() + ", " + state.toString());
         state.execute();
@@ -99,5 +104,9 @@ public class PlayWarFlow extends PlayFlow {
             logger.trace("state after " + toString() +", " + state.toString());
             state.after();
         }
+    }
+
+    public synchronized void changeTask() {
+        run("CHANGING_TASK");
     }
 }

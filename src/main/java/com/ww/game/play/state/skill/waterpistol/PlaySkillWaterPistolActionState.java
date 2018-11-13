@@ -6,6 +6,7 @@ import com.ww.game.play.command.skill.flow.PlaySkillStartNinjaFlowCommand;
 import com.ww.game.play.command.skill.flow.PlaySkillStartWaterPistolFlowCommand;
 import com.ww.game.play.state.skill.PlaySkillActionState;
 import com.ww.model.constant.Skill;
+import com.ww.model.container.rival.RivalTeams;
 import com.ww.model.container.rival.war.WarTeam;
 
 public class PlaySkillWaterPistolActionState extends PlaySkillActionState {
@@ -22,5 +23,9 @@ public class PlaySkillWaterPistolActionState extends PlaySkillActionState {
     public void initCommands() {
         commands.add(new PlaySkillUseCommand(manager.getContainer(), warTeam, Skill.WATER_PISTOL));
         commands.add(new PlaySkillStartWaterPistolFlowCommand(manager, warOpponentTeam));
+    }
+
+    @Override
+    public void updateNotify() {
     }
 }

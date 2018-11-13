@@ -2,6 +2,7 @@ package com.ww.game.play.state;
 
 import com.ww.game.play.PlayManager;
 import com.ww.game.play.command.PlayPrepareNextTaskCommand;
+import com.ww.game.play.command.PlaySetDefaultTaskPropsCommand;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.RivalStatus;
