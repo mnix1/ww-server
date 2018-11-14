@@ -11,7 +11,7 @@ import static com.ww.helper.RandomHelper.randomDouble;
 public class PlaySkillThinkingIfUseHintState extends PlaySkillState {
     private Long hintAnswerId;
     private boolean hintCorrect;
-    private double chanceToUseHint;
+    private double chanceNotUseIncorrectHint;
     private double difficultyPart;
     private double attributePart;
     private boolean useHint;
@@ -25,12 +25,12 @@ public class PlaySkillThinkingIfUseHintState extends PlaySkillState {
         hintCorrect = getContainer().getQuestion().findCorrectAnswerId().equals(hintAnswerId);
         if (hintCorrect) {
             useHint = true;
-            chanceToUseHint = 1;
+            chanceNotUseIncorrectHint = 1;
         } else {
             difficultyPart = (4 - getContainer().getDifficulty()) * 0.05;
             attributePart = ((getWisie().getWisdomSum() + getWisie().getIntuitionF1() + getWisie().getConfidenceF1()) / 3 - 0.5) * 4 / 5;
-            chanceToUseHint = 0.5 + difficultyPart + attributePart + getWisie().getHobbyPart();
-            useHint = chanceToUseHint <= randomDouble();
+            chanceNotUseIncorrectHint = 0.5 + difficultyPart + attributePart + getWisie().getHobbyPart();
+            useHint = chanceNotUseIncorrectHint <= randomDouble();
         }
     }
 

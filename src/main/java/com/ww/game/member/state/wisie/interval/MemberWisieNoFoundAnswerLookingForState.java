@@ -1,12 +1,11 @@
 package com.ww.game.member.state.wisie.interval;
 
 import com.ww.game.member.MemberWisieManager;
-import com.ww.game.member.container.MemberWisieContainer;
 import com.ww.model.constant.wisie.MemberWisieStatus;
 
-public class MemberWisieFoundAnswerLookingForState extends MemberWisieIntervalState {
-    public MemberWisieFoundAnswerLookingForState(MemberWisieManager manager) {
-        super(manager, MemberWisieStatus.FOUND_ANSWER_LOOKING_FOR);
+public class MemberWisieNoFoundAnswerLookingForState extends MemberWisieIntervalState {
+    public MemberWisieNoFoundAnswerLookingForState(MemberWisieManager manager) {
+        super(manager, MemberWisieStatus.NO_FOUND_ANSWER_LOOKING_FOR);
     }
 
     @Override
@@ -16,6 +15,6 @@ public class MemberWisieFoundAnswerLookingForState extends MemberWisieIntervalSt
 
     @Override
     public void after() {
-        manager.getFlow().run("ANSWERED");
+        manager.getFlow().run("THINKING_WHICH_ANSWER_MATCH");
     }
 }

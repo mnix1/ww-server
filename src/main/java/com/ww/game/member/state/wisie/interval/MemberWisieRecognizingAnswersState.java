@@ -6,20 +6,17 @@ import com.ww.model.constant.wisie.MemberWisieStatus;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 
-public class MemberWisieRecognizingQuestionState extends MemberWisieIntervalState {
-    private static final double ONE_CHAR_READING_SPEED = 0.040;//40ms
-
-    public MemberWisieRecognizingQuestionState(MemberWisieManager manager) {
-        super(manager, MemberWisieStatus.RECOGNIZING_QUESTION);
+public class MemberWisieRecognizingAnswersState extends MemberWisieIntervalState {
+    public MemberWisieRecognizingAnswersState(MemberWisieManager manager) {
+        super(manager, MemberWisieStatus.RECOGNIZING_ANSWERS);
     }
 
     @Override
     protected double prepareInterval() {
-        double readingInterval = manager.getContainer().getQuestion().getTextContent().length() * ONE_CHAR_READING_SPEED;
-        double otherInterval;
-        TaskRenderer taskRenderer = manager.getContainer().getQuestion().getType().getQuestionRenderer();
+        double oneAnswerInterval;
+        TaskRenderer taskRenderer = manager.getContainer().getQuestion().getType().getAnswerRenderer();
         if (taskRenderer == TaskRenderer.TEXT) {
-            otherInterval = 0;
+            oneAnswerInterval = 0.4;
 //        } else if (taskRenderer == TaskRenderer.TEXT_ANIMATION) {
 //            otherInterval = warManager.getDifficulty() * 500;
 //        } else if (taskRenderer == TaskRenderer.TEXT_EQUATION) {
@@ -35,14 +32,14 @@ public class MemberWisieRecognizingQuestionState extends MemberWisieIntervalStat
 //        } else if (taskRenderer == TaskRenderer.TEXT_DIGITAL_CLOCK) {
 //            otherInterval = warManager.getDifficulty() * 500;
         } else {
-            otherInterval = manager.getContainer().getDifficulty() * 0.5;
+            oneAnswerInterval = 0.7;
         }
-        double sumInterval = hobbyImpact(readingInterval + randomDouble(otherInterval / 0.5, otherInterval));
+        double sumInterval = hobbyImpact(randomDouble(oneAnswerInterval / 2, oneAnswerInterval) * manager.getContainer().getAnswerCount());
         return sumInterval * (4 - getWisie().getSpeedF1() - getWisie().getConcentrationF1() - getWisie().getIntuitionF1() - getWisie().getCunningF1());
     }
 
     @Override
     public void after() {
-        manager.getFlow().run("THINKING");
+        manager.getFlow().run("THINKING_WHICH_ANSWER_MATCH");
     }
 }

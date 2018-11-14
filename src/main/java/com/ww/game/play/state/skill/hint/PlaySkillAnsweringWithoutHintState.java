@@ -18,7 +18,7 @@ public class PlaySkillAnsweringWithoutHintState extends PlaySkillState {
     private Long hintAnswerId;
     private double difficultyPart;
     private double attributePart;
-    private double chanceToCorrect;
+    private double chanceCorrect;
     private boolean correctAnswer;
     private Long answerId;
 
@@ -30,8 +30,8 @@ public class PlaySkillAnsweringWithoutHintState extends PlaySkillState {
     private void init() {
         difficultyPart = (4 - getContainer().getDifficulty()) * 0.1;
         attributePart = ((getWisie().getWisdomSum() + 2 * getWisie().getIntuitionF1()) / 2 - 0.5) * 4 / 5;
-        chanceToCorrect = 0.5 + difficultyPart + attributePart + getWisie().getHobbyPart();
-        correctAnswer = chanceToCorrect > randomDouble();
+        chanceCorrect = 0.5 + difficultyPart + attributePart + getWisie().getHobbyPart();
+        correctAnswer = chanceCorrect > randomDouble();
         answerId = findAnswerId();
     }
 
