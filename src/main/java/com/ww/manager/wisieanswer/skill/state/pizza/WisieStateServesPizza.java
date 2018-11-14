@@ -32,7 +32,7 @@ public class WisieStateServesPizza extends WisieSkillState {
     }
     @Override
     protected Flowable<Long> processFlowable() {
-        manager.addAction(MemberWisieStatus.SERVES_PIZZA);
+        manager.addAction(MemberWisieStatus.SERVING_PIZZA);
         opponentManager.addAction(MemberWisieStatus.PREPARING_FOR_EAT_PIZZA);
         opponentManager.getTeam(opponentManager).getActiveTeamMember().addDisguise(DisguiseType.PIZZA_MAN);
         manager.getWarManager().sendActiveMemberAndActionsModel();
