@@ -72,6 +72,14 @@ public abstract class GameFlow {
         return false;
     }
 
+    public synchronized void cancelInnerMaybeStartAfter() {
+        if (innerFlow == null) {
+            return;
+        }
+        innerFlow.stop();
+        currentState().after();
+    }
+
     public synchronized void notifyOuter(GameFlow flow) {
         try {
             for (int i = 0; i < outerFlows.size(); i++) {
@@ -97,7 +105,7 @@ public abstract class GameFlow {
         GameState state = currentState();
         flow.addOuterFlow(this, f -> {
             innerFlow = null;
-            logger.trace("state after " + toString() + ", " + state.toString());
+            logger.trace("innerFlow state after " + toString() + ", " + state.toString());
             state.after();
         });
     }

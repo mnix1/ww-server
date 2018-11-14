@@ -39,7 +39,7 @@ public class PlaySkillEatenPizzaState extends PlaySkillState {
 
     @Override
     protected double prepareInterval() {
-        return 1;
+        return 2;
     }
 
     @Override
