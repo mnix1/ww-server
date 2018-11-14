@@ -2,7 +2,9 @@ package com.ww.game.member.command;
 
 import com.ww.game.GameCommand;
 import com.ww.game.member.MemberWisieManager;
+import lombok.ToString;
 
+@ToString
 public class MemberWisieDecreaseAttributesCommand extends GameCommand {
     private MemberWisieManager manager;
 

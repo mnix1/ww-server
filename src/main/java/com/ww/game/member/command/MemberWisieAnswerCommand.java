@@ -3,12 +3,14 @@ package com.ww.game.member.command;
 import com.ww.game.GameCommand;
 import com.ww.game.member.MemberWisieManager;
 import com.ww.model.constant.wisie.MemberWisieStatus;
+import lombok.ToString;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.ww.service.rival.global.RivalMessageService.ANSWER;
 
+@ToString
 public class MemberWisieAnswerCommand extends GameCommand {
     private MemberWisieManager manager;
     private Long answerId;
@@ -23,6 +25,6 @@ public class MemberWisieAnswerCommand extends GameCommand {
         Map<String, Object> model = new HashMap<>();
         model.put("answerId", answerId.intValue());
         model.put("id", ANSWER);
-        manager.getPlayManager().getCommunication().processMessage(manager.getContainer().getTeam().getProfileId(), model);
+        manager.getPlayManager().processMessage(manager.getContainer().getTeam().getProfileId(), model);
     }
 }

@@ -50,8 +50,10 @@ public class PlayManager {
         service.updateProfilesElo(container);
     }
 
-    public boolean processMessage(Long profileId, Map<String, Object> content) {
-        return communication.processMessage(profileId, content);
+    public void processMessage(Long profileId, Map<String, Object> content) {
+        synchronized (flow) {
+            communication.processMessage(profileId, content);
+        }
     }
 
     public void start() {

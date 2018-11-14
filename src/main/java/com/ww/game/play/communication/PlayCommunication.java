@@ -85,12 +85,10 @@ public class PlayCommunication {
         return messageContent;
     }
 
-    public synchronized boolean processMessage(Long profileId, Map<String, Object> content) {
+    public void processMessage(Long profileId, Map<String, Object> content) {
         String id = (String) content.get("id");
         if (actionMap.containsKey(id)) {
             actionMap.get(id).perform(profileId, content);
-            return true;
         }
-        return false;
     }
 }

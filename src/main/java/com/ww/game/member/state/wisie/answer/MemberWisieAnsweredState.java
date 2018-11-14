@@ -33,7 +33,7 @@ public class MemberWisieAnsweredState extends MemberWisieState {
     public void answer() {
         Map<String, Object> content = new HashMap<>();
         content.put("answerId", prepareAnswerId());
-        playManager.getCommunication().processMessage(manager.getContainer().getTeam().getProfileId(), content);
+        playManager.processMessage(manager.getContainer().getTeam().getProfileId(), content);
     }
 
 }

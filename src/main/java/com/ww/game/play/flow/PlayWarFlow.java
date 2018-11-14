@@ -91,7 +91,7 @@ public class PlayWarFlow extends PlayFlow {
         return new PlayChangingTaskState(manager);
     }
 
-    public synchronized void skillAction(GameState state) {
+    public void skillAction(GameState state) {
         logger.trace("skillAction " + toString() + ", " + state.toString());
         state.execute();
         state.updateNotify();

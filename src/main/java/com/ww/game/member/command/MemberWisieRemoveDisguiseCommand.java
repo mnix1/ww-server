@@ -3,7 +3,9 @@ package com.ww.game.member.command;
 import com.ww.game.GameCommand;
 import com.ww.game.member.MemberWisieManager;
 import com.ww.model.constant.wisie.DisguiseType;
+import lombok.ToString;
 
+@ToString
 public class MemberWisieRemoveDisguiseCommand extends GameCommand {
     private MemberWisieManager manager;
 
