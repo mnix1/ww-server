@@ -19,6 +19,7 @@ public class MemberWisieAnsweredState extends MemberWisieState {
     private double chanceCorrect;
     private double attributePart;
     private double paramsPart;
+    private double random;
 
     public MemberWisieAnsweredState(MemberWisieManager manager) {
         super(manager, MemberWisieStatus.ANSWERED);
@@ -41,13 +42,14 @@ public class MemberWisieAnsweredState extends MemberWisieState {
         paramsPart =(double) params.get("paramsPart");
         attributePart = (paramsPart / 2 - 0.5) * 4 / 5;
         chanceCorrect = 0.5 + manager.getContainer().difficultyPart(0.1) + attributePart + getWisie().getHobbyPart();
-        correct = chanceCorrect >= randomDouble();
+        random = randomDouble();
+        correct = chanceCorrect >= random;
         answerId = prepareAnswerId();
     }
 
     @Override
     public String toString() {
-        return super.toString() + ", correct=" + correct + ", answerId=" + answerId + ", chanceCorrect=" + chanceCorrect + ", attributePart=" + attributePart;
+        return super.toString() + ", correct=" + correct + ", answerId=" + answerId + ", chanceCorrect=" + chanceCorrect + ", attributePart=" + attributePart + ", random=" + random;
     }
 
     @Override
