@@ -35,6 +35,10 @@ public class MemberWisieContainer {
         return (WarTeam) team;
     }
 
+    public double difficultyPart(double factor) {
+        return (4 - difficulty) * factor;
+    }
+
     public WisieTeamMember getMember() {
         return (WisieTeamMember) member;
     }

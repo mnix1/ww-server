@@ -9,7 +9,6 @@ import static com.ww.helper.RandomHelper.randomDouble;
 public class MemberWisieThinkingWhichAnswerMatchState extends MemberWisieIntervalState {
     private boolean thinkKnowAnswer;
     private double chanceKnowAnswer;
-    private double difficultyPart;
     private double attributePart;
 
     public MemberWisieThinkingWhichAnswerMatchState(MemberWisieManager manager) {
@@ -17,15 +16,14 @@ public class MemberWisieThinkingWhichAnswerMatchState extends MemberWisieInterva
     }
 
     private void init() {
-        difficultyPart = (4 - manager.getContainer().getDifficulty()) * 0.05;
         attributePart = ((getWisie().getWisdomSum() + getWisie().getIntuitionF1() + getWisie().getConfidenceF1()) / 3 - 0.5) * 4 / 5;
-        chanceKnowAnswer = 0.5 + difficultyPart + attributePart + getWisie().getHobbyPart();
+        chanceKnowAnswer = 0.5 + manager.getContainer().difficultyPart(0.05) + attributePart + getWisie().getHobbyPart();
         thinkKnowAnswer = chanceKnowAnswer >= randomDouble();
     }
 
     @Override
     public String toString() {
-        return super.toString() + ", thinkKnowAnswer=" + thinkKnowAnswer + ", chanceKnowAnswer=" + chanceKnowAnswer + ", difficultyPart=" + difficultyPart + ", attributePart=" + attributePart;
+        return super.toString() + ", thinkKnowAnswer=" + thinkKnowAnswer + ", chanceKnowAnswer=" + chanceKnowAnswer + ", attributePart=" + attributePart;
     }
 
     @Override
@@ -39,7 +37,7 @@ public class MemberWisieThinkingWhichAnswerMatchState extends MemberWisieInterva
         double oneAnswerInterval;
         TaskRenderer taskRenderer = manager.getContainer().getQuestion().getType().getAnswerRenderer();
         if (taskRenderer == TaskRenderer.TEXT) {
-            oneAnswerInterval = 0.25;
+            oneAnswerInterval = 0.1;
 //        } else if (taskRenderer == TaskRenderer.TEXT_ANIMATION) {
 //            otherInterval = warManager.getDifficulty() * 500;
 //        } else if (taskRenderer == TaskRenderer.TEXT_EQUATION) {
@@ -55,9 +53,9 @@ public class MemberWisieThinkingWhichAnswerMatchState extends MemberWisieInterva
 //        } else if (taskRenderer == TaskRenderer.TEXT_DIGITAL_CLOCK) {
 //            otherInterval = warManager.getDifficulty() * 500;
         } else {
-            oneAnswerInterval = 0.5;
+            oneAnswerInterval = 0.2;
         }
-        double sumInterval = hobbyImpact(randomDouble(oneAnswerInterval / 2, oneAnswerInterval) * manager.getContainer().getAnswerCount());
+        double sumInterval = hobbyImpact(oneAnswerInterval * manager.getContainer().getAnswerCount());
         return sumInterval * (4 - getWisie().getSpeedF1() - getWisie().getConcentrationF1() - getWisie().getIntuitionF1() - getWisie().getCunningF1());
     }
 

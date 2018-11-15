@@ -16,7 +16,6 @@ import static com.ww.helper.RandomHelper.randomElement;
 
 public class PlaySkillAnsweringWithoutHintState extends PlaySkillState {
     private Long hintAnswerId;
-    private double difficultyPart;
     private double attributePart;
     private double chanceCorrect;
     private boolean correctAnswer;
@@ -28,9 +27,8 @@ public class PlaySkillAnsweringWithoutHintState extends PlaySkillState {
     }
 
     private void init() {
-        difficultyPart = (4 - getContainer().getDifficulty()) * 0.1;
         attributePart = ((getWisie().getWisdomSum() + 2 * getWisie().getIntuitionF1()) / 2 - 0.5) * 4 / 5;
-        chanceCorrect = 0.5 + difficultyPart + attributePart + getWisie().getHobbyPart();
+        chanceCorrect = 0.5 + getContainer().difficultyPart(0.1) + attributePart + getWisie().getHobbyPart();
         correctAnswer = chanceCorrect > randomDouble();
         answerId = findAnswerId();
     }

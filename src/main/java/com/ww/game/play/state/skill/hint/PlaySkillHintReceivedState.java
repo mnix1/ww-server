@@ -10,9 +10,7 @@ import com.ww.model.container.rival.war.WarTeam;
 
 import java.util.Map;
 
-import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelActiveMemberAddOns;
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelSkills;
-import static com.ww.helper.RandomHelper.randomDouble;
 
 public class PlaySkillHintReceivedState extends PlaySkillState {
 
@@ -33,18 +31,8 @@ public class PlaySkillHintReceivedState extends PlaySkillState {
     }
 
     @Override
-    protected double minInterval() {
-        return 2 - getWisie().getReflexF1() - getWisie().getCunningF1();
-    }
-
-    @Override
-    protected double maxInterval() {
-        return 4 - 2 * getWisie().getReflexF1() - 2 * getWisie().getCunningF1();
-    }
-
-    @Override
     protected double prepareInterval() {
-        return hobbyImpact(super.prepareInterval());
+        return hobbyImpact(3 - getWisie().getReflexF1() - getWisie().getConcentrationF1() - getWisie().getCunningF1());
     }
 
     @Override

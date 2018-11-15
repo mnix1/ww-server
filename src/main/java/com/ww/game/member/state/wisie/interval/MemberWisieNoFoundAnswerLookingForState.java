@@ -10,7 +10,7 @@ public class MemberWisieNoFoundAnswerLookingForState extends MemberWisieInterval
 
     @Override
     protected double prepareInterval() {
-        return 3 - getWisie().getSpeedF1() - getWisie().getReflexF1() - getWisie().getConcentrationF1();
+        return 2 - getWisie().getReflexF1() - getWisie().getConcentrationF1();
     }
 
     @Override

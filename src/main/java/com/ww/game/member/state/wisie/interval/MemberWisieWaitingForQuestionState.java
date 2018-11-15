@@ -2,7 +2,6 @@ package com.ww.game.member.state.wisie.interval;
 
 import com.ww.game.member.MemberWisieManager;
 import com.ww.model.constant.wisie.MemberWisieStatus;
-import lombok.ToString;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,12 +17,7 @@ public class MemberWisieWaitingForQuestionState extends MemberWisieIntervalState
     }
 
     @Override
-    protected double minInterval() {
-        return 1 - getWisie().getReflexF1();
-    }
-
-    @Override
-    protected double maxInterval() {
+    protected double prepareInterval() {
         return 2 - getWisie().getReflexF1() - getWisie().getConcentrationF1();
     }
 

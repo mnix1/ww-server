@@ -84,12 +84,12 @@ public abstract class GameFlow {
         try {
             for (int i = 0; i < outerFlows.size(); i++) {
                 if (outerFlows.get(i).isOrHasOuterFlow(flow)) {
-                    logger.trace("notifyOuter " + toString());
+//                    logger.trace("notifyOuter " + toString());
                     outerFlowConsumers.get(i).accept(this);
                     return;
                 }
             }
-            logger.trace("notifyOuter no consumer " + toString() + " " + flow.toString());
+//            logger.trace("notifyOuter no consumer " + toString() + " " + flow.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -105,7 +105,7 @@ public abstract class GameFlow {
         GameState state = currentState();
         flow.addOuterFlow(this, f -> {
             innerFlow = null;
-            logger.trace("innerFlow state after " + toString() + ", " + state.toString());
+//            logger.trace("innerFlow state after " + toString() + ", " + state.toString());
             state.after();
         });
     }
@@ -133,18 +133,18 @@ public abstract class GameFlow {
     public synchronized void startAfter(GameState state) {
         long afterInterval = state.afterInterval();
         if (afterInterval == 0) {
-            logger.trace("startAfter " + toString() + ", " + state.toString());
+//            logger.trace("startAfter " + toString() + ", " + state.toString());
             state.after();
         } else {
             after(afterInterval, aLong -> {
-                logger.trace("startAfter " + toString() + ", " + state.toString());
+//                logger.trace("startAfter " + toString() + ", " + state.toString());
                 state.after();
             });
         }
     }
 
     public synchronized void stopAfter() {
-        logger.trace("stopAfter " + toString());
+//        logger.trace("stopAfter " + toString());
         for (Disposable disposable : disposableMap.values()) {
             disposable.dispose();
         }
@@ -152,7 +152,7 @@ public abstract class GameFlow {
     }
 
     public synchronized void stop() {
-        logger.trace("stop " + toString());
+//        logger.trace("stop " + toString());
         stopAfter();
         if (innerFlow != null) {
             innerFlow.stop();

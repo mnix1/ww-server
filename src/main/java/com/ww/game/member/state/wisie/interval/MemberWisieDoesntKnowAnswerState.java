@@ -9,13 +9,8 @@ public class MemberWisieDoesntKnowAnswerState extends MemberWisieIntervalState {
     }
 
     @Override
-    protected double minInterval() {
-        return 2 - getWisie().getIntuitionF1();
-    }
-
-    @Override
-    protected double maxInterval() {
-        return 4 - getWisie().getIntuitionF1() - getWisie().getReflexF1() - getWisie().getConcentrationF1();
+    protected double prepareInterval() {
+        return 2 - getWisie().getReflexF1() - getWisie().getConcentrationF1();
     }
 
     @Override

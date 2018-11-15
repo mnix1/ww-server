@@ -19,14 +19,14 @@ public class PlaySkillThinkingState extends PlaySkillState {
 
     @Override
     protected double minInterval() {
-        double difficultyPart = (getContainer().getDifficulty() - 4) * 0.5;
-        return 4 + difficultyPart - getWisie().getSpeedF1() - getWisie().getIntuitionF1() - getWisie().getWisdomSum();
+        double difficultyPart = manager.getContainer().getDifficulty() * (1 - Math.max(getWisie().getWisdomSum(), getWisie().getConfidenceF1()));
+        return 1 - getWisie().getWisdomSum() + difficultyPart;
     }
 
     @Override
     protected double maxInterval() {
-        double difficultyPart = (getContainer().getDifficulty() - 4) * 0.5;
-        return 8 + difficultyPart - 2 * getWisie().getSpeedF1() - 2 * getWisie().getIntuitionF1() - 2 * getWisie().getWisdomSum();
+        double difficultyPart = manager.getContainer().getDifficulty() * (1 - Math.max(getWisie().getWisdomSum(), getWisie().getConfidenceF1()));
+        return 2 - getWisie().getWisdomSum() - getWisie().getConfidenceF1() + difficultyPart;
     }
 
     @Override

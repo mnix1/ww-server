@@ -8,7 +8,6 @@ import static com.ww.helper.RandomHelper.randomDouble;
 public class MemberWisieThinkingState extends MemberWisieIntervalState {
     private boolean thinkKnowAnswer;
     private double chanceKnowAnswer;
-    private double difficultyPart;
     private double attributePart;
 
     public MemberWisieThinkingState(MemberWisieManager manager) {
@@ -17,24 +16,25 @@ public class MemberWisieThinkingState extends MemberWisieIntervalState {
 
     @Override
     protected double minInterval() {
-        return 1.75 + (manager.getContainer().getDifficulty() - 4) * 0.25 - getWisie().getWisdomSum();
+        double difficultyPart = manager.getContainer().getDifficulty() * (1 - Math.max(getWisie().getWisdomSum(), getWisie().getConfidenceF1()));
+        return 1 - getWisie().getWisdomSum() + difficultyPart;
     }
 
     @Override
     protected double maxInterval() {
-        return 5.75 + (manager.getContainer().getDifficulty() - 4) * 0.25 - getWisie().getWisdomSum() * 5;
+        double difficultyPart = manager.getContainer().getDifficulty() * (1 - Math.max(getWisie().getWisdomSum(), getWisie().getConfidenceF1()));
+        return 2 - getWisie().getWisdomSum() - getWisie().getConfidenceF1() + difficultyPart;
     }
 
     private void init() {
-        difficultyPart = (4 - manager.getContainer().getDifficulty()) * 0.05;
         attributePart = ((getWisie().getWisdomSum() + getWisie().getConfidenceF1()) / 2 - 0.5) * 4 / 5;
-        chanceKnowAnswer = 0.5 + difficultyPart + attributePart + getWisie().getHobbyPart();
+        chanceKnowAnswer = 0.5 + manager.getContainer().difficultyPart(0.05) + attributePart + getWisie().getHobbyPart();
         thinkKnowAnswer = chanceKnowAnswer >= randomDouble();
     }
 
     @Override
     public String toString() {
-        return super.toString() + ", thinkKnowAnswer=" + thinkKnowAnswer + ", chanceKnowAnswer=" + chanceKnowAnswer + ", difficultyPart=" + difficultyPart + ", attributePart=" + attributePart;
+        return super.toString() + ", thinkKnowAnswer=" + thinkKnowAnswer + ", chanceKnowAnswer=" + chanceKnowAnswer + ", attributePart=" + attributePart;
     }
 
     @Override

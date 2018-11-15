@@ -86,9 +86,13 @@ public class PlayCommunication {
     }
 
     public void processMessage(Long profileId, Map<String, Object> content) {
-        String id = (String) content.get("id");
-        if (actionMap.containsKey(id)) {
-            actionMap.get(id).perform(profileId, content);
+        try {
+            String id = (String) content.get("id");
+            if (actionMap.containsKey(id)) {
+                actionMap.get(id).perform(profileId, content);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

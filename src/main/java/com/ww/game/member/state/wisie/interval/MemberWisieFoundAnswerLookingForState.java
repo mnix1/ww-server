@@ -4,6 +4,9 @@ import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.container.MemberWisieContainer;
 import com.ww.model.constant.wisie.MemberWisieStatus;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MemberWisieFoundAnswerLookingForState extends MemberWisieIntervalState {
     public MemberWisieFoundAnswerLookingForState(MemberWisieManager manager) {
         super(manager, MemberWisieStatus.FOUND_ANSWER_LOOKING_FOR);
@@ -11,11 +14,13 @@ public class MemberWisieFoundAnswerLookingForState extends MemberWisieIntervalSt
 
     @Override
     protected double prepareInterval() {
-        return 3 - getWisie().getSpeedF1() - getWisie().getReflexF1() - getWisie().getConcentrationF1();
+        return 2 - getWisie().getReflexF1() - getWisie().getConcentrationF1();
     }
 
     @Override
     public void after() {
-        manager.getFlow().run("ANSWERED");
+        Map<String, Object> params = new HashMap<>();
+        params.put("paramsPart", 2 * getWisie().getWisdomSum() + 0.4 * getWisie().getIntuitionF1());
+        manager.getFlow().run("ANSWERED", params);
     }
 }

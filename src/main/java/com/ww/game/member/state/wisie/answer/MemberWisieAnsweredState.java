@@ -1,6 +1,8 @@
 package com.ww.game.member.state.wisie.answer;
 
 import com.ww.game.member.MemberWisieManager;
+import com.ww.game.member.command.MemberWisieAddStatusCommand;
+import com.ww.game.member.command.MemberWisieAnswerCommand;
 import com.ww.game.member.state.wisie.MemberWisieState;
 import com.ww.model.constant.wisie.MemberWisieStatus;
 
@@ -15,7 +17,6 @@ public class MemberWisieAnsweredState extends MemberWisieState {
     private Long answerId;
     private boolean correct;
     private double chanceCorrect;
-    private double difficultyPart;
     private double attributePart;
     private double paramsPart;
 
@@ -30,30 +31,28 @@ public class MemberWisieAnsweredState extends MemberWisieState {
         return randomElement(new ArrayList<>(manager.getContainer().getQuestion().getAnswers())).getId();
     }
 
-    public void answer() {
-        Map<String, Object> content = new HashMap<>();
-        content.put("answerId", answerId);
-        manager.getPlayManager().processMessage(manager.getContainer().getTeam().getProfileId(), content);
+    @Override
+    public void initCommands() {
+        super.initCommands();
+        commands.add(new MemberWisieAnswerCommand(manager, answerId));
     }
 
     private void init() {
-        difficultyPart = (4 - manager.getContainer().getDifficulty()) * 0.1;
-        paramsPart = params.containsKey("paramsPart") ? (double) params.get("paramsPart") : 2 * getWisie().getWisdomSum() + 2 * getWisie().getIntuitionF1();
+        paramsPart =(double) params.get("paramsPart");
         attributePart = (paramsPart / 2 - 0.5) * 4 / 5;
-        chanceCorrect = 0.5 + difficultyPart + attributePart + getWisie().getHobbyPart();
+        chanceCorrect = 0.5 + manager.getContainer().difficultyPart(0.1) + attributePart + getWisie().getHobbyPart();
         correct = chanceCorrect >= randomDouble();
         answerId = prepareAnswerId();
     }
 
     @Override
     public String toString() {
-        return super.toString() + ", correct=" + correct + ", answerId=" + answerId + ", chanceCorrect=" + chanceCorrect + ", difficultyPart=" + difficultyPart + ", attributePart=" + attributePart;
+        return super.toString() + ", correct=" + correct + ", answerId=" + answerId + ", chanceCorrect=" + chanceCorrect + ", attributePart=" + attributePart;
     }
 
     @Override
     public void execute() {
         init();
         super.execute();
-        answer();
     }
 }

@@ -11,7 +11,7 @@ public class GameCommand {
     }
 
     public void logAndExecute() {
-        logger.trace("execute " + toString());
+//        logger.trace("execute " + toString());
         execute();
     }
 

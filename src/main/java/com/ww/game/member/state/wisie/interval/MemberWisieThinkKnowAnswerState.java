@@ -10,12 +10,7 @@ public class MemberWisieThinkKnowAnswerState extends MemberWisieIntervalState {
     }
 
     @Override
-    protected double minInterval() {
-        return 1 - getWisie().getReflexF1();
-    }
-
-    @Override
-    protected double maxInterval() {
+    protected double prepareInterval() {
         return 2 - getWisie().getReflexF1() - getWisie().getConcentrationF1();
     }
 

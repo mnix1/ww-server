@@ -16,7 +16,7 @@ public class MemberWisieRecognizingAnswersState extends MemberWisieIntervalState
         double oneAnswerInterval;
         TaskRenderer taskRenderer = manager.getContainer().getQuestion().getType().getAnswerRenderer();
         if (taskRenderer == TaskRenderer.TEXT) {
-            oneAnswerInterval = 0.4;
+            oneAnswerInterval = 0.2;
 //        } else if (taskRenderer == TaskRenderer.TEXT_ANIMATION) {
 //            otherInterval = warManager.getDifficulty() * 500;
 //        } else if (taskRenderer == TaskRenderer.TEXT_EQUATION) {
@@ -32,9 +32,9 @@ public class MemberWisieRecognizingAnswersState extends MemberWisieIntervalState
 //        } else if (taskRenderer == TaskRenderer.TEXT_DIGITAL_CLOCK) {
 //            otherInterval = warManager.getDifficulty() * 500;
         } else {
-            oneAnswerInterval = 0.7;
+            oneAnswerInterval = 0.4;
         }
-        double sumInterval = hobbyImpact(randomDouble(oneAnswerInterval / 2, oneAnswerInterval) * manager.getContainer().getAnswerCount());
+        double sumInterval = hobbyImpact(oneAnswerInterval * manager.getContainer().getAnswerCount());
         return sumInterval * (4 - getWisie().getSpeedF1() - getWisie().getConcentrationF1() - getWisie().getIntuitionF1() - getWisie().getCunningF1());
     }
 

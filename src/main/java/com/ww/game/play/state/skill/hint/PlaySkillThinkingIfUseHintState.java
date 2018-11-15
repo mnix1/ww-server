@@ -12,7 +12,6 @@ public class PlaySkillThinkingIfUseHintState extends PlaySkillState {
     private Long hintAnswerId;
     private boolean hintCorrect;
     private double chanceNotUseIncorrectHint;
-    private double difficultyPart;
     private double attributePart;
     private boolean useHint;
 
@@ -27,15 +26,14 @@ public class PlaySkillThinkingIfUseHintState extends PlaySkillState {
             useHint = true;
             chanceNotUseIncorrectHint = 1;
         } else {
-            difficultyPart = (4 - getContainer().getDifficulty()) * 0.05;
             attributePart = ((getWisie().getWisdomSum() + getWisie().getIntuitionF1() + getWisie().getConfidenceF1()) / 3 - 0.5) * 4 / 5;
-            chanceNotUseIncorrectHint = 0.5 + difficultyPart + attributePart + getWisie().getHobbyPart();
+            chanceNotUseIncorrectHint = 0.5 + getContainer().difficultyPart(0.05) + attributePart + getWisie().getHobbyPart();
             useHint = chanceNotUseIncorrectHint <= randomDouble();
         }
     }
 
     @Override
-    public void execute(){
+    public void execute() {
         init();
         super.execute();
     }
@@ -47,12 +45,19 @@ public class PlaySkillThinkingIfUseHintState extends PlaySkillState {
 
     @Override
     protected double prepareInterval() {
-        double interval = getContainer().getAnswerCount() * 0.25
-                + hobbyImpact(4 - getWisie().getWisdomSum() - getWisie().getConfidenceF1() - getWisie().getCunningF1() - getWisie().getIntuitionF1());
+        double interval = hobbyImpact(getContainer().getAnswerCount() * 0.25
+                + 4 - getWisie().getWisdomSum() - getWisie().getConfidenceF1() - getWisie().getCunningF1() - getWisie().getIntuitionF1());
         if (hintCorrect) {
             return interval / 2;
         }
         return interval;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + ", hintAnswerId=" + hintAnswerId + ", hintCorrect=" + hintCorrect
+                + ", chanceNotUseIncorrectHint=" + chanceNotUseIncorrectHint
+                + ", attributePart=" + attributePart + ", useHint=" + useHint;
     }
 
     @Override

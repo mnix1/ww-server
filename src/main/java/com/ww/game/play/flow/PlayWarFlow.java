@@ -92,7 +92,7 @@ public class PlayWarFlow extends PlayFlow {
     }
 
     public void skillAction(GameState state) {
-        logger.trace("skillAction " + toString() + ", " + state.toString());
+//        logger.trace("skillAction " + toString() + ", " + state.toString());
         state.execute();
         state.updateNotify();
     }
@@ -101,7 +101,7 @@ public class PlayWarFlow extends PlayFlow {
         PlayState state = (PlayState) currentState();
         if (state.getStatus() == RivalStatus.ANSWERING) {
             stopAfter();
-            logger.trace("wisiesWontAnswer state after " + toString() +", " + state.toString());
+//            logger.trace("wisiesWontAnswer state after " + toString() +", " + state.toString());
             state.after();
         }
     }

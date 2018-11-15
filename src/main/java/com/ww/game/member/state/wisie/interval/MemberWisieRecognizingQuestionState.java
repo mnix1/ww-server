@@ -35,9 +35,9 @@ public class MemberWisieRecognizingQuestionState extends MemberWisieIntervalStat
 //        } else if (taskRenderer == TaskRenderer.TEXT_DIGITAL_CLOCK) {
 //            otherInterval = warManager.getDifficulty() * 500;
         } else {
-            otherInterval = manager.getContainer().getDifficulty() * 0.5;
+            otherInterval = manager.getContainer().getDifficulty() * 0.25;
         }
-        double sumInterval = hobbyImpact(readingInterval + randomDouble(otherInterval / 0.5, otherInterval));
+        double sumInterval = hobbyImpact(readingInterval + otherInterval);
         return sumInterval * (4 - getWisie().getSpeedF1() - getWisie().getConcentrationF1() - getWisie().getIntuitionF1() - getWisie().getCunningF1());
     }
 

@@ -18,18 +18,8 @@ public class PlaySkillWillUseHintState extends PlaySkillState {
     }
 
     @Override
-    protected double minInterval() {
-        return 1 - getWisie().getSpeedF1();
-    }
-
-    @Override
-    protected double maxInterval() {
-        return 2 - getWisie().getSpeedF1() - getWisie().getCunningF1();
-    }
-
-    @Override
     protected double prepareInterval() {
-        return hobbyImpact(super.prepareInterval());
+        return hobbyImpact(2 - getWisie().getReflexF1() - getWisie().getConcentrationF1());
     }
 
     @Override

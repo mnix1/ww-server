@@ -1,7 +1,6 @@
 package com.ww.game.member.state.wisie.interval;
 
 import com.ww.game.member.MemberWisieManager;
-import com.ww.game.member.container.MemberWisieContainer;
 import com.ww.model.constant.wisie.MemberWisieStatus;
 
 import static com.ww.helper.RandomHelper.randomDouble;
@@ -9,7 +8,6 @@ import static com.ww.helper.RandomHelper.randomDouble;
 public class MemberWisieLookingForAnswerState extends MemberWisieIntervalState {
     private boolean foundAnswer;
     private double chanceFoundAnswer;
-    private double difficultyPart;
     private double attributePart;
 
     public MemberWisieLookingForAnswerState(MemberWisieManager manager) {
@@ -18,20 +16,28 @@ public class MemberWisieLookingForAnswerState extends MemberWisieIntervalState {
 
     @Override
     protected double prepareInterval() {
-        double sumInterval = manager.getContainer().getAnswerCount() * (2 - getWisie().getSpeedF1() - getWisie().getWisdomSum());
-        return hobbyImpact(sumInterval * (5 - getWisie().getSpeedF1() - getWisie().getIntuitionF1() - getWisie().getCunningF1() - getWisie().getWisdomSum()));
+        return hobbyImpact(super.prepareInterval());
+    }
+
+    @Override
+    protected double minInterval() {
+        return manager.getContainer().getAnswerCount() * (1 - Math.max(Math.max(getWisie().getSpeedF1(), getWisie().getWisdomSum()), getWisie().getIntuitionF1())) / 2;
+    }
+
+    @Override
+    protected double maxInterval() {
+        return manager.getContainer().getAnswerCount() * (1 - Math.min(Math.min(getWisie().getSpeedF1(), getWisie().getWisdomSum()), getWisie().getIntuitionF1())) / 2;
     }
 
     private void init() {
-        difficultyPart = (4 - manager.getContainer().getDifficulty()) * 0.05;
         attributePart = (getWisie().getWisdomSum() - 0.5) * 4 / 5;
-        chanceFoundAnswer = 0.5 + difficultyPart + attributePart + getWisie().getHobbyPart();
+        chanceFoundAnswer = 0.5 + manager.getContainer().difficultyPart(0.05) + attributePart + getWisie().getHobbyPart();
         foundAnswer = chanceFoundAnswer >= randomDouble();
     }
 
     @Override
     public String toString() {
-        return super.toString() + ", foundAnswer=" + foundAnswer + ", chanceFoundAnswer=" + chanceFoundAnswer + ", difficultyPart=" + difficultyPart + ", attributePart=" + attributePart;
+        return super.toString() + ", foundAnswer=" + foundAnswer + ", chanceFoundAnswer=" + chanceFoundAnswer + ", attributePart=" + attributePart;
     }
 
     @Override
@@ -39,6 +45,7 @@ public class MemberWisieLookingForAnswerState extends MemberWisieIntervalState {
         init();
         super.execute();
     }
+
     @Override
     public void after() {
         if (foundAnswer) {
