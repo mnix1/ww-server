@@ -38,7 +38,7 @@ public class ProfileConnection {
 
     public boolean sendMessage(String msg) {
         try {
-            logger.trace("Send message to {}: {}", profileId, msg);
+//            logger.trace("Send message to {}: {}", profileId, msg);
             webSocketSession.sendMessage(new TextMessage(msg));
             return true;
         } catch (Exception e) {

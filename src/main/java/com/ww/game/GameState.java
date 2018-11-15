@@ -22,22 +22,16 @@ public class GameState {
     }
 
     public void logBeforeExecute(){
-//        logger.trace("execute " + toString());
+        logger.trace("execute " + toString());
     }
 
     public void execute() {
-//        logBeforeExecute();
+        logBeforeExecute();
         if (commands.isEmpty()) {
             initCommands();
         }
         for (GameCommand command : commands) {
             command.logAndExecute();
-        }
-    }
-
-    public void revoke() {
-        for (int i = commands.size() - 1; i >= 0; i--) {
-            commands.get(i).revoke();
         }
     }
 
