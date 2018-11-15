@@ -9,6 +9,7 @@ public class MemberWisieThinkingState extends MemberWisieIntervalState {
     private boolean thinkKnowAnswer;
     private double chanceKnowAnswer;
     private double attributePart;
+    private double random;
 
     public MemberWisieThinkingState(MemberWisieManager manager) {
         super(manager, MemberWisieStatus.THINKING);
@@ -29,12 +30,13 @@ public class MemberWisieThinkingState extends MemberWisieIntervalState {
     private void init() {
         attributePart = ((getWisie().getWisdomSum() + getWisie().getConfidenceF1()) / 2 - 0.5) * 4 / 5;
         chanceKnowAnswer = 0.5 + manager.getContainer().difficultyPart(0.05) + attributePart + getWisie().getHobbyPart();
-        thinkKnowAnswer = chanceKnowAnswer >= randomDouble();
+        random = randomDouble();
+        thinkKnowAnswer = chanceKnowAnswer >= random;
     }
 
     @Override
     public String toString() {
-        return super.toString() + ", thinkKnowAnswer=" + thinkKnowAnswer + ", chanceKnowAnswer=" + chanceKnowAnswer + ", attributePart=" + attributePart;
+        return super.toString() + ", thinkKnowAnswer=" + thinkKnowAnswer + ", chanceKnowAnswer=" + chanceKnowAnswer + ", attributePart=" + attributePart + ", random=" + random;
     }
 
     @Override

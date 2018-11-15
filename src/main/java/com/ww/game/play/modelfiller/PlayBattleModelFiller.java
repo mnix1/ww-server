@@ -1,13 +1,13 @@
 package com.ww.game.play.modelfiller;
 
-import com.ww.manager.rival.battle.BattleManager;
+import com.ww.game.play.PlayBattleManager;
 import com.ww.model.container.rival.battle.BattleTeam;
 
 import java.util.Map;
 
 public class PlayBattleModelFiller {
     public static void fillModelTaskCount(Map<String, Object> model) {
-        model.put("taskCount", BattleManager.TASK_COUNT);
+        model.put("taskCount", PlayBattleManager.TASK_COUNT);
     }
 
     public static void fillModelScores(Map<String, Object> model, BattleTeam battleTeam, BattleTeam battleOpponentTeam) {

@@ -1,7 +1,6 @@
 package com.ww.service.rival.global;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ww.manager.rival.RivalManager;
 import com.ww.model.container.ProfileConnection;
 import com.ww.game.play.PlayManager;
 import com.ww.service.social.ProfileConnectionService;

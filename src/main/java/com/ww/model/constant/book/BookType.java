@@ -32,9 +32,4 @@ public enum BookType {
     //6
     MYSTERIOUS_BOOK,
     SECRET_BOOK;
-
-    public static BookType random() {
-        List<BookType> possible = Arrays.asList(values());
-        return randomElement(possible);
-    }
 }

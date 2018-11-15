@@ -4,12 +4,14 @@ import com.ww.game.member.MemberWisieManager;
 import com.ww.model.constant.rival.task.TaskRenderer;
 import com.ww.model.constant.wisie.MemberWisieStatus;
 
+import static com.ww.helper.RandomHelper.random;
 import static com.ww.helper.RandomHelper.randomDouble;
 
 public class MemberWisieThinkingWhichAnswerMatchState extends MemberWisieIntervalState {
     private boolean thinkKnowAnswer;
     private double chanceKnowAnswer;
     private double attributePart;
+    private double random;
 
     public MemberWisieThinkingWhichAnswerMatchState(MemberWisieManager manager) {
         super(manager, MemberWisieStatus.THINKING_WHICH_ANSWER_MATCH);
@@ -18,12 +20,13 @@ public class MemberWisieThinkingWhichAnswerMatchState extends MemberWisieInterva
     private void init() {
         attributePart = ((getWisie().getWisdomSum() + getWisie().getIntuitionF1() + getWisie().getConfidenceF1()) / 3 - 0.5) * 4 / 5;
         chanceKnowAnswer = 0.5 + manager.getContainer().difficultyPart(0.05) + attributePart + getWisie().getHobbyPart();
-        thinkKnowAnswer = chanceKnowAnswer >= randomDouble();
+        random = randomDouble();
+        thinkKnowAnswer = chanceKnowAnswer >= random;
     }
 
     @Override
     public String toString() {
-        return super.toString() + ", thinkKnowAnswer=" + thinkKnowAnswer + ", chanceKnowAnswer=" + chanceKnowAnswer + ", attributePart=" + attributePart;
+        return super.toString() + ", thinkKnowAnswer=" + thinkKnowAnswer + ", chanceKnowAnswer=" + chanceKnowAnswer + ", attributePart=" + attributePart + ", random=" + random;
     }
 
     @Override

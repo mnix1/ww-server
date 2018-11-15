@@ -9,6 +9,7 @@ public class MemberWisieLookingForAnswerState extends MemberWisieIntervalState {
     private boolean foundAnswer;
     private double chanceFoundAnswer;
     private double attributePart;
+    private double random;
 
     public MemberWisieLookingForAnswerState(MemberWisieManager manager) {
         super(manager, MemberWisieStatus.LOOKING_FOR_ANSWER);
@@ -32,12 +33,13 @@ public class MemberWisieLookingForAnswerState extends MemberWisieIntervalState {
     private void init() {
         attributePart = (getWisie().getWisdomSum() - 0.5) * 4 / 5;
         chanceFoundAnswer = 0.5 + manager.getContainer().difficultyPart(0.05) + attributePart + getWisie().getHobbyPart();
-        foundAnswer = chanceFoundAnswer >= randomDouble();
+        random = randomDouble();
+        foundAnswer = chanceFoundAnswer >= random;
     }
 
     @Override
     public String toString() {
-        return super.toString() + ", foundAnswer=" + foundAnswer + ", chanceFoundAnswer=" + chanceFoundAnswer + ", attributePart=" + attributePart;
+        return super.toString() + ", foundAnswer=" + foundAnswer + ", chanceFoundAnswer=" + chanceFoundAnswer + ", attributePart=" + attributePart+ ", random=" + random;
     }
 
     @Override

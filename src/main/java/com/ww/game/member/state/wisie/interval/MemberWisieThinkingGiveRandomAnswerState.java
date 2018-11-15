@@ -11,6 +11,7 @@ import static com.ww.helper.RandomHelper.randomDouble;
 public class MemberWisieThinkingGiveRandomAnswerState extends MemberWisieIntervalState {
     private boolean giveRandomAnswer;
     private double chanceGiveRandomAnswer;
+    private double random;
 
     public MemberWisieThinkingGiveRandomAnswerState(MemberWisieManager manager) {
         super(manager, MemberWisieStatus.THINKING_GIVE_RANDOM_ANSWER);
@@ -28,13 +29,14 @@ public class MemberWisieThinkingGiveRandomAnswerState extends MemberWisieInterva
 
 
     private void init() {
-        chanceGiveRandomAnswer = Math.min(Math.min(getWisie().getConfidenceF1(), getWisie().getWisdomSum()), getWisie().getIntuitionF1());
-        giveRandomAnswer = chanceGiveRandomAnswer >= randomDouble();
+        chanceGiveRandomAnswer = (getWisie().getConfidenceF1() + getWisie().getWisdomSum() + getWisie().getIntuitionF1()) / 3 + getWisie().getHobbyPart();
+        random = randomDouble();
+        giveRandomAnswer = chanceGiveRandomAnswer >= random;
     }
 
     @Override
     public String toString() {
-        return super.toString() + ", giveRandomAnswer=" + giveRandomAnswer + ", chanceGiveRandomAnswer=" + chanceGiveRandomAnswer;
+        return super.toString() + ", giveRandomAnswer=" + giveRandomAnswer + ", chanceGiveRandomAnswer=" + chanceGiveRandomAnswer + ", random=" + random;
     }
 
     @Override

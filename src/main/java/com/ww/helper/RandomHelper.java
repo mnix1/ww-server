@@ -30,14 +30,6 @@ public class RandomHelper {
         return random.nextDouble();
     }
 
-    public static int[] randomIntegers(int count, int from, int to) {
-        int[] numbers = new int[count];
-        for (int i = 0; i < count; i++) {
-            numbers[i] = randomInteger(from, to);
-        }
-        return numbers;
-    }
-
     public static int[] randomDistinctIntegers(int count, int from, int to) {
         Set<Integer> numbers = new HashSet<>();
         while (numbers.size() < count) {

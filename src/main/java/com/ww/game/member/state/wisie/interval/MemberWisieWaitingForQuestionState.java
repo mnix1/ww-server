@@ -11,6 +11,7 @@ import static com.ww.helper.RandomHelper.randomDouble;
 public class MemberWisieWaitingForQuestionState extends MemberWisieIntervalState {
     private boolean lostConcentration;
     private double chanceNotLostConcentration;
+    private double random;
 
     public MemberWisieWaitingForQuestionState(MemberWisieManager manager) {
         super(manager, MemberWisieStatus.WAITING_FOR_QUESTION);
@@ -26,12 +27,13 @@ public class MemberWisieWaitingForQuestionState extends MemberWisieIntervalState
     }
 
     private void init() {
+        random = randomDouble();
         if (getWisie().isHobby()) {
             chanceNotLostConcentration = 1;
             lostConcentration = false;
         } else {
             chanceNotLostConcentration = getWisie().getConcentrationF1();
-            lostConcentration = chanceNotLostConcentration <= randomDouble();
+            lostConcentration = chanceNotLostConcentration <= random;
         }
     }
 
@@ -43,7 +45,7 @@ public class MemberWisieWaitingForQuestionState extends MemberWisieIntervalState
 
     @Override
     public String toString() {
-        return super.toString() + ", lostConcentration=" + lostConcentration + ", chanceNotLostConcentration=" + chanceNotLostConcentration;
+        return super.toString() + ", lostConcentration=" + lostConcentration + ", chanceNotLostConcentration=" + chanceNotLostConcentration + ", random=" + random;
     }
 
     @Override

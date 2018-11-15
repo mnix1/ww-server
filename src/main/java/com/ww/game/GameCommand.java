@@ -14,7 +14,4 @@ public class GameCommand {
 //        logger.trace("execute " + toString());
         execute();
     }
-
-    public void revoke() {
-    }
 }

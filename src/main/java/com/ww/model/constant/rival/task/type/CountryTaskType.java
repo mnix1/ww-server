@@ -1,9 +1,5 @@
 package com.ww.model.constant.rival.task.type;
 
-import java.util.Arrays;
-
-import static com.ww.helper.RandomHelper.randomElement;
-
 public enum CountryTaskType {
     COUNTRY_NAME_FROM_ALPHA_2,
     COUNTRY_NAME_FROM_CAPITAL_NAME,
@@ -17,10 +13,6 @@ public enum CountryTaskType {
     MIN_POPULATION,
     MAX_AREA,
     MIN_AREA;
-
-    public static CountryTaskType random() {
-        return randomElement(Arrays.asList(values()));
-    }
 
     public static boolean aboutPopulation(CountryTaskType type) {
         return type == MAX_POPULATION || type == MIN_POPULATION;

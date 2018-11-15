@@ -22,10 +22,6 @@ public class ActiveAvailableSkill extends AvailableSkill {
         return disabled == 0 && !used && count > 0;
     }
 
-    public boolean getUsed() {
-        return used;
-    }
-
     public ActiveAvailableSkill disable() {
         disabled++;
         return this;

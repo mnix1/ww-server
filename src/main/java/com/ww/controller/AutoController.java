@@ -1,13 +1,11 @@
 package com.ww.controller;
 
-import com.ww.manager.rival.RivalManager;
 import com.ww.model.dto.social.ExtendedProfileDTO;
 import com.ww.game.play.PlayManager;
 import com.ww.service.rival.war.RivalWarService;
 import com.ww.service.social.AuthProfileService;
 import com.ww.service.social.ProfileService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
