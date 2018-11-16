@@ -1,11 +1,11 @@
 package com.ww.game.play.modelfiller;
 
+import com.ww.game.play.container.PlayContainer;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.init.RivalTwoInit;
 import com.ww.model.dto.social.ExtendedProfileDTO;
 import com.ww.model.dto.social.RivalProfileSeasonDTO;
-import com.ww.game.play.container.PlayContainer;
 
 import java.util.Map;
 
@@ -32,8 +32,9 @@ public class PlayModelFiller {
         }
     }
 
-    public static void fillModelNextInterval(Map<String, Object> model, PlayContainer container) {
-        model.put("nextInterval", container.getTimeouts().nextInterval());
+    public static void fillModelNextTimeout(Map<String, Object> model, PlayContainer container) {
+        model.put("nextTimeout", container.getTimeouts().getNextTimeout().toEpochMilli());
+        model.put("currentTimeout", container.getTimeouts().getCurrentTimeout().toEpochMilli());
     }
 
     public static void fillModelSimpleNextTaskMeta(Map<String, Object> model, PlayContainer container) {

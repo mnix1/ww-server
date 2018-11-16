@@ -24,7 +24,7 @@ public class PlayChoosingTaskCategoryState extends PlayState {
     @Override
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = super.prepareModel(team, opponentTeam);
-        fillModelNextInterval(model, getContainer());
+        fillModelNextTimeout(model, getContainer());
         fillModelSimpleNextTaskMeta(model, getContainer());
         fillModelChoosingTaskPropsTag(model, getContainer());
         fillModelChosenCategory(model, getContainer());

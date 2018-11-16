@@ -6,6 +6,7 @@ import com.ww.game.play.container.PlayContainer;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.websocket.message.Message;
 
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,7 +40,7 @@ public class PlayCommunication {
         if (model.isEmpty()) {
             return;
         }
-        send(profileId, model);
+        sendWithCurrentTime(profileId, model);
         Map<String, Object> actualProfileModel;
         if (!modelMap.containsKey(profileId)) {
             actualProfileModel = new HashMap<>();
@@ -52,13 +53,18 @@ public class PlayCommunication {
         }
     }
 
+    public void sendWithCurrentTime(Long profileId, Map<String, Object> model) {
+        model.put("now", Instant.now().toEpochMilli());
+        send(profileId, model);
+    }
+
     public void send(Long profileId, Map<String, Object> model) {
         ProfileConnectionService profileConnectionService = manager.getProfileConnectionService();
         profileConnectionService.send(profileId, model, getMessageContent());
     }
 
     public void sendModelFromBeginning(Long profileId) {
-        send(profileId, modelMap.get(profileId));
+        sendWithCurrentTime(profileId, modelMap.get(profileId));
     }
 
     public Message getMessageContent() {

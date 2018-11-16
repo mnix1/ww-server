@@ -8,7 +8,7 @@ import com.ww.model.container.rival.RivalTeam;
 import java.util.Map;
 
 import static com.ww.game.play.modelfiller.PlayModelFiller.fillModelChosenDifficulty;
-import static com.ww.game.play.modelfiller.PlayModelFiller.fillModelNextInterval;
+import static com.ww.game.play.modelfiller.PlayModelFiller.fillModelNextTimeout;
 
 public class PlayChoosingTaskDifficultyState extends PlayState {
 
@@ -24,7 +24,7 @@ public class PlayChoosingTaskDifficultyState extends PlayState {
     @Override
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = super.prepareModel(team, opponentTeam);
-        fillModelNextInterval(model, getContainer());
+        fillModelNextTimeout(model, getContainer());
         fillModelChosenDifficulty(model, getContainer());
         return model;
     }

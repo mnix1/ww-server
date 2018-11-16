@@ -22,7 +22,7 @@ public class PlayPreparingNextTaskState extends PlayState {
     @Override
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = super.prepareModel(team, opponentTeam);
-        fillModelNextInterval(model, getContainer());
+        fillModelNextTimeout(model, getContainer());
         fillModelTaskMeta(model, getContainer());
         fillModelNullAnswered(model);
         return model;

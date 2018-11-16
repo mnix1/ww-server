@@ -4,14 +4,10 @@ import com.ww.game.play.PlayManager;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.game.play.command.PlayAnswerCommand;
-import com.ww.game.play.command.PlaySetNextTimeoutCommand;
-import com.ww.game.play.container.PlayContainer;
 
 import java.util.Map;
 
 import static com.ww.game.play.modelfiller.PlayModelFiller.fillModelAnswered;
-import static com.ww.game.play.modelfiller.PlayModelFiller.fillModelNextInterval;
-import static com.ww.game.play.modelfiller.PlayModelFiller.fillModelTask;
 
 public class PlayAnsweredState extends PlayState {
     protected Long profileId;
