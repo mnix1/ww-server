@@ -57,29 +57,9 @@ public class PlayCommunication {
         profileConnectionService.send(profileId, model, getMessageContent());
     }
 
-//    public void sendChild() {
-//        ProfileConnectionService profileConnectionService = manager.getProfileConnectionService();
-//        GameState state = getContainer().currentState();
-//        RivalTeams teams = getContainer().getTeams();
-//        teams.forEachTeam(team -> {
-//            Map<String, Object> model = state.prepareChildModel(team, teams.opponent(team.getProfileId()));
-//            profileConnectionService.send(team.getProfileId(), model, getMessageContent());
-//        });
-//    }
-
-//    public void sendModelFromBeginning(RivalTeam team, RivalTeam opponentTeam) {
-//        Map<String, Object> model = new HashMap<>();
-//        for (int i = getContainer().getStates().size() - 1; i >= 0; i--) {
-//            GameState state = getContainer().getStates().get(i);
-//            Map<String, Object> stateModel = state.prepareModel(team, opponentTeam);
-//            for (String key : stateModel.keySet()) {
-//                if (!model.containsKey(key)) {
-//                    model.put(key, stateModel.get(key));
-//                }
-//            }
-//        }
-//        manager.getProfileConnectionService().send(team.getProfileId(), model, getMessageContent());
-//    }
+    public void sendModelFromBeginning(Long profileId) {
+        send(profileId, modelMap.get(profileId));
+    }
 
     public Message getMessageContent() {
         return messageContent;
