@@ -24,6 +24,7 @@ public class MemberWisieLostConcentrationState extends MemberWisieIntervalState 
 
     @Override
     public void initProps() {
+        super.initProps();
         afterStateName = (String) params.get("afterStateName");
     }
 

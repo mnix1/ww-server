@@ -32,6 +32,7 @@ public class MemberWisieLookingForAnswerState extends MemberWisieIntervalState {
 
     @Override
     public void initProps() {
+        super.initProps();
         attributePart = (getWisie().getWisdomSum() - 0.5) * 4 / 5;
         chanceFoundAnswer = 0.5 + manager.getContainer().difficultyPart(0.05) + attributePart + getWisie().getHobbyPart();
         random = randomDouble();

@@ -40,6 +40,7 @@ public class MemberWisieAnsweredState extends MemberWisieState {
 
     @Override
     public void initProps() {
+        super.initProps();
         paramsPart =(double) params.get("paramsPart");
         attributePart = (paramsPart / 2 - 0.5) * 4 / 5;
         chanceCorrect = 0.5 + manager.getContainer().difficultyPart(0.1) + attributePart + getWisie().getHobbyPart();

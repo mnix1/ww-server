@@ -24,6 +24,7 @@ public class MemberWisieWaitingForQuestionState extends MemberWisieSimpleInterva
 
     @Override
     public void initProps() {
+        super.initProps();
         random = randomDouble();
         if (getWisie().isHobby()) {
             chanceNotLostConcentration = 1;

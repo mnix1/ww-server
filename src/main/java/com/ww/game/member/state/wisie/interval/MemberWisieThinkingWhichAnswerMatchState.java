@@ -19,6 +19,7 @@ public class MemberWisieThinkingWhichAnswerMatchState extends MemberWisieInterva
 
     @Override
     public void initProps() {
+        super.initProps();
         attributePart = ((getWisie().getWisdomSum() + getWisie().getIntuitionF1() + getWisie().getConfidenceF1()) / 3 - 0.5) * 4 / 5;
         chanceKnowAnswer = 0.5 + manager.getContainer().difficultyPart(0.05) + attributePart + getWisie().getHobbyPart();
         random = randomDouble();

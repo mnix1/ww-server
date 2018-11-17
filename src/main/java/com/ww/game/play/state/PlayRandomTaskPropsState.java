@@ -25,6 +25,7 @@ public class PlayRandomTaskPropsState extends PlayState {
 
     @Override
     public void initProps() {
+        super.initProps();
         category = Category.random();
         difficultyLevel = DifficultyLevel.random();
         language = getContainer().getInit().getCommonLanguage();

@@ -29,6 +29,7 @@ public class MemberWisieThinkingGiveRandomAnswerState extends MemberWisieInterva
 
     @Override
     public void initProps() {
+        super.initProps();
         chanceGiveRandomAnswer = (getWisie().getConfidenceF1() + getWisie().getWisdomSum() + getWisie().getIntuitionF1()) / 3 + getWisie().getHobbyPart();
         random = randomDouble();
         giveRandomAnswer = chanceGiveRandomAnswer >= random;
