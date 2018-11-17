@@ -22,14 +22,9 @@ public class MemberWisieLostConcentrationState extends MemberWisieIntervalState 
         return 6 - 6 * getWisie().getConcentrationF1();
     }
 
-    private void init() {
-        afterStateName = (String) params.get("afterStateName");
-    }
-
     @Override
-    public void execute() {
-        init();
-        super.execute();
+    public void initProps() {
+        afterStateName = (String) params.get("afterStateName");
     }
 
     @Override

@@ -27,8 +27,8 @@ public class MemberWisieThinkingGiveRandomAnswerState extends MemberWisieInterva
         return 3 - 3 * getWisie().getConfidenceF1();
     }
 
-
-    private void init() {
+    @Override
+    public void initProps() {
         chanceGiveRandomAnswer = (getWisie().getConfidenceF1() + getWisie().getWisdomSum() + getWisie().getIntuitionF1()) / 3 + getWisie().getHobbyPart();
         random = randomDouble();
         giveRandomAnswer = chanceGiveRandomAnswer >= random;
@@ -37,12 +37,6 @@ public class MemberWisieThinkingGiveRandomAnswerState extends MemberWisieInterva
     @Override
     public String toString() {
         return super.toString() + ", giveRandomAnswer=" + giveRandomAnswer + ", chanceGiveRandomAnswer=" + chanceGiveRandomAnswer + ", random=" + random;
-    }
-
-    @Override
-    public void execute() {
-        init();
-        super.execute();
     }
 
     @Override

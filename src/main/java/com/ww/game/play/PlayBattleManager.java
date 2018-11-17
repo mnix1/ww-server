@@ -29,4 +29,9 @@ public class PlayBattleManager extends PlayManager {
         Profile opponentProfile = init.getOpponentProfile();
         return new RivalTeams(new BattleTeam(creatorProfile), new BattleTeam(opponentProfile));
     }
+
+    @Override
+    public PlayManager toReplay() {
+        return null;
+    }
 }

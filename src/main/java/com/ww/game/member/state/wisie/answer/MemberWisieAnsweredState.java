@@ -38,7 +38,8 @@ public class MemberWisieAnsweredState extends MemberWisieState {
         commands.add(new MemberWisieAnswerCommand(manager, answerId));
     }
 
-    private void init() {
+    @Override
+    public void initProps() {
         paramsPart =(double) params.get("paramsPart");
         attributePart = (paramsPart / 2 - 0.5) * 4 / 5;
         chanceCorrect = 0.5 + manager.getContainer().difficultyPart(0.1) + attributePart + getWisie().getHobbyPart();
@@ -50,11 +51,5 @@ public class MemberWisieAnsweredState extends MemberWisieState {
     @Override
     public String toString() {
         return super.toString() + ", correct=" + correct + ", answerId=" + answerId + ", chanceCorrect=" + chanceCorrect + ", attributePart=" + attributePart + ", random=" + random;
-    }
-
-    @Override
-    public void execute() {
-        init();
-        super.execute();
     }
 }

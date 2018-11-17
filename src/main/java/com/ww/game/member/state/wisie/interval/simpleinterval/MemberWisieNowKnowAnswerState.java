@@ -1,12 +1,13 @@
-package com.ww.game.member.state.wisie.interval;
+package com.ww.game.member.state.wisie.interval.simpleinterval;
 
 import com.ww.game.member.MemberWisieManager;
+import com.ww.game.member.state.wisie.interval.MemberWisieIntervalState;
 import com.ww.model.constant.wisie.MemberWisieStatus;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class MemberWisieNowKnowAnswerState extends MemberWisieIntervalState {
+public class MemberWisieNowKnowAnswerState extends MemberWisieSimpleIntervalState {
     public MemberWisieNowKnowAnswerState(MemberWisieManager manager) {
         super(manager, MemberWisieStatus.NOW_KNOW_ANSWER);
     }

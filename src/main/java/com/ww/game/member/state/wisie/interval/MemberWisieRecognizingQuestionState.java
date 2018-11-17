@@ -1,12 +1,13 @@
 package com.ww.game.member.state.wisie.interval;
 
 import com.ww.game.member.MemberWisieManager;
+import com.ww.game.member.state.wisie.interval.simpleinterval.MemberWisieSimpleIntervalState;
 import com.ww.model.constant.rival.task.TaskRenderer;
 import com.ww.model.constant.wisie.MemberWisieStatus;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 
-public class MemberWisieRecognizingQuestionState extends MemberWisieIntervalState {
+public class MemberWisieRecognizingQuestionState extends MemberWisieSimpleIntervalState {
     private static final double ONE_CHAR_READING_SPEED = 0.040;//40ms
 
     public MemberWisieRecognizingQuestionState(MemberWisieManager manager) {

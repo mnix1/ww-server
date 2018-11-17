@@ -27,7 +27,8 @@ public class MemberWisieThinkingState extends MemberWisieIntervalState {
         return 2 - getWisie().getWisdomSum() - getWisie().getConfidenceF1() + difficultyPart;
     }
 
-    private void init() {
+    @Override
+    public void initProps() {
         attributePart = ((getWisie().getWisdomSum() + getWisie().getConfidenceF1()) / 2 - 0.5) * 4 / 5;
         chanceKnowAnswer = 0.5 + manager.getContainer().difficultyPart(0.05) + attributePart + getWisie().getHobbyPart();
         random = randomDouble();
@@ -37,12 +38,6 @@ public class MemberWisieThinkingState extends MemberWisieIntervalState {
     @Override
     public String toString() {
         return super.toString() + ", thinkKnowAnswer=" + thinkKnowAnswer + ", chanceKnowAnswer=" + chanceKnowAnswer + ", attributePart=" + attributePart + ", random=" + random;
-    }
-
-    @Override
-    public void execute() {
-        init();
-        super.execute();
     }
 
     @Override

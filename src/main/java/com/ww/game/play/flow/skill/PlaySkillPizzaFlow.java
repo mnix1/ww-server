@@ -15,13 +15,13 @@ public class PlaySkillPizzaFlow extends PlaySkillFlow {
     }
 
     protected void initStateMap() {
-        stateMap.put("ORDERING_PIZZA", new PlaySkillOrderingPizzaState(this, manager));
-        stateMap.put("PROPOSING_PIZZA", new PlaySkillProposingPizzaState(this, manager, opponentManager));
-        stateMap.put("SERVING_PIZZA", new PlaySkillServingPizzaState(this, manager, opponentManager));
-        stateMap.put("CLEANING_PIZZA", new PlaySkillCleaningPizzaState(this, manager, opponentManager));
-        stateMap.put("CLEANED_PIZZA", new PlaySkillCleanedPizzaState(this, manager));
-        stateMap.put("EATING_PIZZA", new PlaySkillEatingPizzaState(this, opponentManager));
-        stateMap.put("EATEN_PIZZA", new PlaySkillEatenPizzaState(this, opponentManager));
+        stateMap.put("ORDERING_PIZZA",() ->  new PlaySkillOrderingPizzaState(this, manager));
+        stateMap.put("PROPOSING_PIZZA",() ->  new PlaySkillProposingPizzaState(this, manager, opponentManager));
+        stateMap.put("SERVING_PIZZA",() ->  new PlaySkillServingPizzaState(this, manager, opponentManager));
+        stateMap.put("CLEANING_PIZZA",() ->  new PlaySkillCleaningPizzaState(this, manager, opponentManager));
+        stateMap.put("CLEANED_PIZZA",() ->  new PlaySkillCleanedPizzaState(this, manager));
+        stateMap.put("EATING_PIZZA", () -> new PlaySkillEatingPizzaState(this, opponentManager));
+        stateMap.put("EATEN_PIZZA", () -> new PlaySkillEatenPizzaState(this, opponentManager));
     }
 
     public void start() {

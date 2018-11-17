@@ -10,7 +10,6 @@ import com.ww.model.container.rival.init.RivalTwoInit;
 import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarInterval;
 import com.ww.model.container.rival.war.WarTeam;
-import com.ww.model.container.rival.war.WisieTeamMember;
 import com.ww.model.container.rival.war.skill.PassiveSkillsInit;
 import com.ww.model.container.rival.war.skill.WarTeamSkills;
 import com.ww.model.entity.outside.social.Profile;
@@ -29,12 +28,10 @@ public class PlayWarManager extends PlayManager {
     }
 
     @Override
-    public void start() {
-        for (RivalTeam team : container.getTeams().getTeams()) {
-            WarTeam warTeam = (WarTeam) team;
-            new PassiveSkillsInit(warTeam).init();
-        }
-        super.start();
+    public PlayManager toReplay() {
+        PlayManager manager = new PlayWarManager(container.getInit(), (RivalWarService) service);
+        manager.getFlow().setStates(flow.getStates());
+        return manager;
     }
 
     protected RivalTeams prepareTeams(RivalTwoInit init) {

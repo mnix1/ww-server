@@ -1,11 +1,13 @@
 package com.ww.game;
 
 import com.ww.game.member.state.wisie.interval.MemberWisieIntervalState;
+import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -14,14 +16,25 @@ public class GameState {
     public static Logger logger = LoggerFactory.getLogger(MemberWisieIntervalState.class);
 
     protected List<GameCommand> commands = new CopyOnWriteArrayList<>();
+    @Getter
     protected Instant date = Instant.now();
     @Setter
     protected Map<String, Object> params;
 
+    public void initProps() {
+    }
+
+    public Map<String, Object> exportProps() {
+        return new HashMap<>();
+    }
+
+    public void loadProps(Map<String, Object> props) {
+    }
+
     protected void initCommands() {
     }
 
-    public void logBeforeExecute(){
+    public void logBeforeExecute() {
         logger.trace("execute " + toString());
     }
 

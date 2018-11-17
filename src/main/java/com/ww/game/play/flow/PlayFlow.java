@@ -20,15 +20,15 @@ public class PlayFlow extends GameFlow {
     }
 
     protected void initStateMap() {
-        stateMap.put("INTRO", createIntroState());
-        stateMap.put("RANDOM_TASK_PROPS", createRandomTaskPropsState());
-        stateMap.put("CHOOSING_TASK_CATEGORY", createChoosingTaskCategoryState());
-        stateMap.put("CHOOSING_TASK_DIFFICULTY", createChoosingTaskDifficultyState());
-        stateMap.put("CHOOSING_TASK_PROPS_TIMEOUT", createChoosingTaskPropsTimeoutState());
-        stateMap.put("PREPARING_NEXT_TASK", createPreparingNextTaskState());
-        stateMap.put("ANSWERING", createAnsweringState());
-        stateMap.put("ANSWERING_TIMEOUT", createAnsweringTimeoutState());
-        stateMap.put("END", createEndState());
+        stateMap.put("INTRO", this::createIntroState);
+        stateMap.put("RANDOM_TASK_PROPS", this::createRandomTaskPropsState);
+        stateMap.put("CHOOSING_TASK_CATEGORY", this::createChoosingTaskCategoryState);
+        stateMap.put("CHOOSING_TASK_DIFFICULTY", this::createChoosingTaskDifficultyState);
+        stateMap.put("CHOOSING_TASK_PROPS_TIMEOUT", this::createChoosingTaskPropsTimeoutState);
+        stateMap.put("PREPARING_NEXT_TASK", this::createPreparingNextTaskState);
+        stateMap.put("ANSWERING", this::createAnsweringState);
+        stateMap.put("ANSWERING_TIMEOUT", this::createAnsweringTimeoutState);
+        stateMap.put("END", this::createEndState);
     }
 
     public boolean isStatusEquals(RivalStatus status) {

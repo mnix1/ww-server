@@ -67,4 +67,8 @@ public class PlayCampaignManager extends PlayManager {
         return teamMembers;
     }
 
+    @Override
+    public PlayManager toReplay() {
+        return null;
+    }
 }

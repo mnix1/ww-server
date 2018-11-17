@@ -1,13 +1,14 @@
-package com.ww.game.member.state.wisie.interval;
+package com.ww.game.member.state.wisie.interval.simpleinterval;
 
 import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.container.MemberWisieContainer;
+import com.ww.game.member.state.wisie.interval.simpleinterval.MemberWisieSimpleIntervalState;
 import com.ww.model.constant.wisie.MemberWisieStatus;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class MemberWisieFoundAnswerLookingForState extends MemberWisieIntervalState {
+public class MemberWisieFoundAnswerLookingForState extends MemberWisieSimpleIntervalState {
     public MemberWisieFoundAnswerLookingForState(MemberWisieManager manager) {
         super(manager, MemberWisieStatus.FOUND_ANSWER_LOOKING_FOR);
     }

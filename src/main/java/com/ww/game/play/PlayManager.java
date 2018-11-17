@@ -11,7 +11,7 @@ import lombok.Getter;
 import java.util.Map;
 
 @Getter
-public class PlayManager {
+public abstract class PlayManager {
     protected RivalService service;
     protected RivalInterval interval;
     protected PlayContainer container;
@@ -63,4 +63,6 @@ public class PlayManager {
     public void dispose() {
         service.disposeManager(this);
     }
+
+    public abstract PlayManager toReplay();
 }

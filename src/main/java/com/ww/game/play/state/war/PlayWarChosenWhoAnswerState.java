@@ -1,13 +1,17 @@
 package com.ww.game.play.state.war;
 
 import com.ww.game.play.PlayManager;
+import com.ww.game.play.command.war.PlayWarSetActiveIndexCommand;
+import com.ww.game.play.state.PlayState;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.container.rival.RivalTeam;
-import com.ww.model.container.rival.RivalTeams;
 import com.ww.model.container.rival.war.WarTeam;
-import com.ww.game.play.command.war.PlayWarSetActiveIndexCommand;
-import com.ww.game.play.container.PlayContainer;
-import com.ww.game.play.state.PlayState;
+
+import java.util.Collections;
+import java.util.Map;
+
+import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelActiveIndex;
+import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelIsChosenActiveIndex;
 
 public class PlayWarChosenWhoAnswerState extends PlayState {
     private Long profileId;
@@ -25,7 +29,14 @@ public class PlayWarChosenWhoAnswerState extends PlayState {
     }
 
     @Override
-    public void updateNotify() {
+    public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
+        if (!profileId.equals(team.getProfileId())) {
+            return Collections.emptyMap();
+        }
+        Map<String, Object> model = super.prepareModel(team, opponentTeam);
+        fillModelActiveIndex(model, (WarTeam) team);
+        fillModelIsChosenActiveIndex(model, (WarTeam) team);
+        return model;
     }
 
     @Override

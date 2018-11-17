@@ -1,5 +1,6 @@
 package com.ww.service;
 
+import com.ww.game.replay.Replay;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.DifficultyLevel;
@@ -48,6 +49,11 @@ public class RivalService {
             addRewardFromWin(container.getResult().getWinner());
         }
         updateSeason(manager);
+        replay(manager);
+    }
+
+    public void replay(PlayManager manager) {
+        new Replay(manager.toReplay()).play();
     }
 
     public void updateSeason(PlayManager manager) {

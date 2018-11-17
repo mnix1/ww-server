@@ -15,8 +15,8 @@ public class PlaySkillCoverallFlow extends PlaySkillFlow {
     }
 
     protected void initStateMap() {
-        stateMap.put("PREPARING_COVERALL", new PlaySkillPreparingCoverallState(this, manager));
-        stateMap.put("COVERALL", new PlaySkillCoverallState(this, manager, opponentManager));
+        stateMap.put("PREPARING_COVERALL", () -> new PlaySkillPreparingCoverallState(this, manager));
+        stateMap.put("COVERALL", () -> new PlaySkillCoverallState(this, manager, opponentManager));
     }
 
     public void start() {

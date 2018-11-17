@@ -49,8 +49,8 @@ public class PlayModelFiller {
         model.put("task", container.getTasks().task());
     }
 
-    public static void fillModelChoosingTaskPropsTag(Map<String, Object> model, PlayContainer container) {
-        model.put("choosingTaskPropsTag", container.findChoosingTaskPropsProfile().getTag());
+    public static void fillModelMeChoosingTaskProps(Map<String, Object> model, boolean meChoosingTaskProps) {
+        model.put("meChoosingTaskProps", meChoosingTaskProps);
     }
 
     public static void fillModelChosenCategory(Map<String, Object> model, PlayContainer container) {

@@ -26,8 +26,11 @@ public class PlayChoosingTaskCategoryState extends PlayState {
         Map<String, Object> model = super.prepareModel(team, opponentTeam);
         fillModelNextTimeout(model, getContainer());
         fillModelSimpleNextTaskMeta(model, getContainer());
-        fillModelChoosingTaskPropsTag(model, getContainer());
-        fillModelChosenCategory(model, getContainer());
+        boolean meChoosingTaskProps = getContainer().findChoosingTaskPropsProfile().getId().equals(team.getProfileId());
+        fillModelMeChoosingTaskProps(model, meChoosingTaskProps);
+        if (meChoosingTaskProps) {
+            fillModelChosenCategory(model, getContainer());
+        }
         return model;
     }
 

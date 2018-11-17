@@ -12,7 +12,6 @@ import com.ww.model.container.rival.war.WarTeam;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelActiveIndexes;
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelPresentIndexes;
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelSkills;
 

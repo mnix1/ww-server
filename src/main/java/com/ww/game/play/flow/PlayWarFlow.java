@@ -16,8 +16,8 @@ public class PlayWarFlow extends PlayFlow {
     @Override
     protected void initStateMap() {
         super.initStateMap();
-        stateMap.put("CHOOSING_WHO_ANSWER", createChoosingWhoAnswerState());
-        stateMap.put("CHANGING_TASK", createChangingTaskState());
+        stateMap.put("CHOOSING_WHO_ANSWER", this::createChoosingWhoAnswerState);
+        stateMap.put("CHANGING_TASK", this::createChangingTaskState);
     }
 
     protected PlayState createChoosingWhoAnswerState() {

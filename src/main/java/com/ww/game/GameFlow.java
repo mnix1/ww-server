@@ -3,6 +3,8 @@ package com.ww.game;
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import lombok.Getter;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,13 +13,16 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 import static com.ww.helper.TagHelper.randomUniqueUUID;
 
 public abstract class GameFlow {
     public static Logger logger = LoggerFactory.getLogger(GameFlow.class);
+    @Getter
+    @Setter
     protected List<GameState> states = new CopyOnWriteArrayList<>();
-    protected Map<String, GameState> stateMap = new ConcurrentHashMap<>();
+    protected Map<String, Supplier<GameState>> stateMap = new ConcurrentHashMap<>();
     protected Map<String, Disposable> disposableMap = new ConcurrentHashMap<>();
     private List<Consumer<GameFlow>> outerFlowConsumers = new CopyOnWriteArrayList<>();
     private List<GameFlow> outerFlows = new CopyOnWriteArrayList<>();
@@ -38,7 +43,7 @@ public abstract class GameFlow {
     }
 
     public synchronized void run(String stateName, Map<String, Object> params) {
-        GameState state = stateMap.get(stateName);
+        GameState state = stateMap.get(stateName).get();
         run(state, params);
     }
 
@@ -49,6 +54,7 @@ public abstract class GameFlow {
     public synchronized void run(GameState state, Map<String, Object> params) {
 //        logger.trace("run " + toString() + ", " + state.toString());
         state.setParams(params);
+        state.initProps();
         addState(state);
         state.execute();
         if (state.afterReady()) {

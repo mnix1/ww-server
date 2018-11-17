@@ -1,7 +1,5 @@
 package com.ww.game.play.modelfiller;
 
-import com.ww.game.GameState;
-import com.ww.game.member.state.wisie.MemberWisieState;
 import com.ww.model.constant.wisie.MemberWisieStatus;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.model.container.rival.war.WisieTeamMember;
@@ -32,6 +30,10 @@ public class PlayWarModelFiller {
     public static void fillModelActiveIndexes(Map<String, Object> model, WarTeam warTeam, WarTeam warOpponentTeam) {
         model.put("activeIndex", warTeam.getActiveIndex());
         model.put("opponentActiveIndex", warOpponentTeam.getActiveIndex());
+    }
+
+    public static void fillModelActiveIndex(Map<String, Object> model, WarTeam warTeam) {
+        model.put("activeIndex", warTeam.getActiveIndex());
     }
 
     public static void fillModelIsChosenActiveIndex(Map<String, Object> model, WarTeam warTeam) {

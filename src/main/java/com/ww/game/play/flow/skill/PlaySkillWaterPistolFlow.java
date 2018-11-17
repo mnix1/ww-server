@@ -13,9 +13,9 @@ public class PlaySkillWaterPistolFlow extends PlaySkillFlow {
     }
 
     protected void initStateMap() {
-        stateMap.put("WATER_PISTOL_USED", new PlaySkillWaterPistolUsedState(this, manager));
-        stateMap.put("CLEANING", new PlaySkillCleaningState(this, manager));
-        stateMap.put("CLEANED", new PlaySkillCleanedState(this, manager));
+        stateMap.put("WATER_PISTOL_USED", () -> new PlaySkillWaterPistolUsedState(this, manager));
+        stateMap.put("CLEANING", () -> new PlaySkillCleaningState(this, manager));
+        stateMap.put("CLEANED", () -> new PlaySkillCleanedState(this, manager));
     }
 
     public void start() {

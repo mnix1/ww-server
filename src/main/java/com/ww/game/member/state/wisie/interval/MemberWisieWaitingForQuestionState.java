@@ -1,6 +1,7 @@
 package com.ww.game.member.state.wisie.interval;
 
 import com.ww.game.member.MemberWisieManager;
+import com.ww.game.member.state.wisie.interval.simpleinterval.MemberWisieSimpleIntervalState;
 import com.ww.model.constant.wisie.MemberWisieStatus;
 
 import java.util.HashMap;
@@ -8,7 +9,7 @@ import java.util.Map;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 
-public class MemberWisieWaitingForQuestionState extends MemberWisieIntervalState {
+public class MemberWisieWaitingForQuestionState extends MemberWisieSimpleIntervalState {
     private boolean lostConcentration;
     private double chanceNotLostConcentration;
     private double random;
@@ -18,15 +19,11 @@ public class MemberWisieWaitingForQuestionState extends MemberWisieIntervalState
     }
 
     @Override
-    protected double prepareInterval() {
-        return 2 - getWisie().getReflexF1() - getWisie().getConcentrationF1();
-    }
-
-    @Override
     public void updateNotify() {
     }
 
-    private void init() {
+    @Override
+    public void initProps() {
         random = randomDouble();
         if (getWisie().isHobby()) {
             chanceNotLostConcentration = 1;
@@ -35,12 +32,6 @@ public class MemberWisieWaitingForQuestionState extends MemberWisieIntervalState
             chanceNotLostConcentration = getWisie().getConcentrationF1();
             lostConcentration = chanceNotLostConcentration <= random;
         }
-    }
-
-    @Override
-    public void execute() {
-        init();
-        super.execute();
     }
 
     @Override

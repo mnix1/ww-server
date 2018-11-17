@@ -20,7 +20,7 @@ public enum MemberWisieStatus {
     RECOGNIZING_ANSWERS,
 
     NOW_KNOW_ANSWER,
-    DOESNT_KNOW_ANSWER,
+    NO_KNOW_ANSWER,
 
     ANSWERED,
     SURRENDER,

@@ -14,13 +14,13 @@ public class PlaySkillNinjaFlow extends PlaySkillFlow {
     }
 
     protected void initStateMap() {
-        stateMap.put("PREPARING_NINJA", new PlaySkillPreparingNinjaState(this, manager));
-        stateMap.put("KIDNAPPING", new PlaySkillKidnappingState(this, manager, opponentManager));
-        stateMap.put("KIDNAP_SUCCEEDED", new PlaySkillKidnapSucceededState(this, manager, opponentManager));
-        stateMap.put("KIDNAP_FAILED", new PlaySkillKidnapFailedState(this, manager, opponentManager));
-        stateMap.put("WAS_NOT_KIDNAPPED", new PlaySkillWasNotKidnappedState(this, opponentManager));
-        stateMap.put("REMOVING_NINJA", new PlaySkillRemovingNinjaState(this, manager));
-        stateMap.put("REMOVED_NINJA", new PlaySkillRemovedNinjaState(this, manager));
+        stateMap.put("PREPARING_NINJA", () -> new PlaySkillPreparingNinjaState(this, manager));
+        stateMap.put("KIDNAPPING",() ->  new PlaySkillKidnappingState(this, manager, opponentManager));
+        stateMap.put("KIDNAP_SUCCEEDED",() ->  new PlaySkillKidnapSucceededState(this, manager, opponentManager));
+        stateMap.put("KIDNAP_FAILED",() ->  new PlaySkillKidnapFailedState(this, manager, opponentManager));
+        stateMap.put("WAS_NOT_KIDNAPPED",() ->  new PlaySkillWasNotKidnappedState(this, opponentManager));
+        stateMap.put("REMOVING_NINJA",() ->  new PlaySkillRemovingNinjaState(this, manager));
+        stateMap.put("REMOVED_NINJA", () -> new PlaySkillRemovedNinjaState(this, manager));
     }
 
     public void start() {

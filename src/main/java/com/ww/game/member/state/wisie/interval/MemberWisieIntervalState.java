@@ -2,6 +2,7 @@ package com.ww.game.member.state.wisie.interval;
 
 import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.state.wisie.MemberWisieState;
+import com.ww.game.member.state.wisie.interval.simpleinterval.MemberWisieSimpleIntervalState;
 import com.ww.model.constant.wisie.MemberWisieStatus;
 import lombok.Getter;
 import lombok.ToString;
@@ -10,9 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import static com.ww.helper.RandomHelper.randomDouble;
 
-public abstract class MemberWisieIntervalState extends MemberWisieState {
-    @Getter
-    protected long interval;
+public abstract class MemberWisieIntervalState extends MemberWisieSimpleIntervalState {
     protected double minInterval;
     protected double maxInterval;
 
@@ -20,8 +19,11 @@ public abstract class MemberWisieIntervalState extends MemberWisieState {
         super(manager, status);
     }
 
-    protected long intervalMultiply() {
-        return 1000;
+    @Override
+    public void initProps() {
+        minInterval = minInterval();
+        maxInterval = maxInterval();
+        super.initProps();
     }
 
     protected double minInterval() {
@@ -37,20 +39,7 @@ public abstract class MemberWisieIntervalState extends MemberWisieState {
     }
 
     @Override
-    public void execute() {
-        minInterval = minInterval();
-        maxInterval = maxInterval();
-        interval = (long) (prepareInterval() * intervalMultiply());
-        super.execute();
-    }
-
-    @Override
     public String toString() {
-        return super.toString() + ", interval=" + interval + ", minInterval=" + minInterval + ", maxInterval=" + maxInterval;
-    }
-
-    @Override
-    public long afterInterval() {
-        return interval;
+        return super.toString() + ", minInterval=" + minInterval + ", maxInterval=" + maxInterval;
     }
 }

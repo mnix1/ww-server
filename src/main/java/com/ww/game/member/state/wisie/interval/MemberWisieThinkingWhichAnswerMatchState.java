@@ -17,7 +17,8 @@ public class MemberWisieThinkingWhichAnswerMatchState extends MemberWisieInterva
         super(manager, MemberWisieStatus.THINKING_WHICH_ANSWER_MATCH);
     }
 
-    private void init() {
+    @Override
+    public void initProps() {
         attributePart = ((getWisie().getWisdomSum() + getWisie().getIntuitionF1() + getWisie().getConfidenceF1()) / 3 - 0.5) * 4 / 5;
         chanceKnowAnswer = 0.5 + manager.getContainer().difficultyPart(0.05) + attributePart + getWisie().getHobbyPart();
         random = randomDouble();
@@ -27,12 +28,6 @@ public class MemberWisieThinkingWhichAnswerMatchState extends MemberWisieInterva
     @Override
     public String toString() {
         return super.toString() + ", thinkKnowAnswer=" + thinkKnowAnswer + ", chanceKnowAnswer=" + chanceKnowAnswer + ", attributePart=" + attributePart + ", random=" + random;
-    }
-
-    @Override
-    public void execute() {
-        init();
-        super.execute();
     }
 
     @Override
@@ -68,7 +63,7 @@ public class MemberWisieThinkingWhichAnswerMatchState extends MemberWisieInterva
         if (thinkKnowAnswer) {
             manager.getFlow().run("NOW_KNOW_ANSWER");
         } else {
-            manager.getFlow().run("DOESNT_KNOW_ANSWER");
+            manager.getFlow().run("NO_KNOW_ANSWER");
         }
     }
 }

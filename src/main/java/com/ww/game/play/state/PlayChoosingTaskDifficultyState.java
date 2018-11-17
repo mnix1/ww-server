@@ -25,7 +25,10 @@ public class PlayChoosingTaskDifficultyState extends PlayState {
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = super.prepareModel(team, opponentTeam);
         fillModelNextTimeout(model, getContainer());
-        fillModelChosenDifficulty(model, getContainer());
+        boolean meChoosingTaskProps = getContainer().findChoosingTaskPropsProfile().getId().equals(team.getProfileId());
+        if (meChoosingTaskProps) {
+            fillModelChosenDifficulty(model, getContainer());
+        }
         return model;
     }
 

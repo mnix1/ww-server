@@ -1,10 +1,9 @@
 package com.ww.game.play.state.war;
 
 import com.ww.game.play.PlayManager;
+import com.ww.game.play.state.PlayPreparingNextTaskState;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.war.WarTeam;
-import com.ww.game.play.container.PlayContainer;
-import com.ww.game.play.state.PlayPreparingNextTaskState;
 
 import java.util.Map;
 

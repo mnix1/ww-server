@@ -1,11 +1,12 @@
-package com.ww.game.member.state.wisie.interval;
+package com.ww.game.member.state.wisie.interval.simpleinterval;
 
 import com.ww.game.member.MemberWisieManager;
+import com.ww.game.member.state.wisie.interval.MemberWisieIntervalState;
 import com.ww.model.constant.wisie.MemberWisieStatus;
 
-public class MemberWisieDoesntKnowAnswerState extends MemberWisieIntervalState {
-    public MemberWisieDoesntKnowAnswerState(MemberWisieManager manager) {
-        super(manager, MemberWisieStatus.DOESNT_KNOW_ANSWER);
+public class MemberWisieNoKnowAnswerState extends MemberWisieSimpleIntervalState {
+    public MemberWisieNoKnowAnswerState(MemberWisieManager manager) {
+        super(manager, MemberWisieStatus.NO_KNOW_ANSWER);
     }
 
     @Override

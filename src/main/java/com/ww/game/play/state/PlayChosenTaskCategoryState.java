@@ -30,5 +30,4 @@ public class PlayChosenTaskCategoryState extends PlayState {
     public void after() {
         manager.getFlow().run("CHOOSING_TASK_DIFFICULTY");
     }
-
 }

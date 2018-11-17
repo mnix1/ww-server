@@ -1,9 +1,10 @@
-package com.ww.game.member.state.wisie.interval;
+package com.ww.game.member.state.wisie.interval.simpleinterval;
 
 import com.ww.game.member.MemberWisieManager;
+import com.ww.game.member.state.wisie.interval.MemberWisieIntervalState;
 import com.ww.model.constant.wisie.MemberWisieStatus;
 
-public class MemberWisieNoFoundAnswerLookingForState extends MemberWisieIntervalState {
+public class MemberWisieNoFoundAnswerLookingForState extends MemberWisieSimpleIntervalState {
     public MemberWisieNoFoundAnswerLookingForState(MemberWisieManager manager) {
         super(manager, MemberWisieStatus.NO_FOUND_ANSWER_LOOKING_FOR);
     }

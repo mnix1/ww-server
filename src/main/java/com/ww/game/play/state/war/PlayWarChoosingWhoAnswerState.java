@@ -1,19 +1,19 @@
 package com.ww.game.play.state.war;
 
 import com.ww.game.play.PlayManager;
+import com.ww.game.play.command.PlaySetNextTimeoutCommand;
+import com.ww.game.play.command.war.PlayWarSetDefaultActiveIndexCommand;
+import com.ww.game.play.state.PlayState;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.war.WarInterval;
 import com.ww.model.container.rival.war.WarTeam;
-import com.ww.game.play.command.PlaySetNextTimeoutCommand;
-import com.ww.game.play.command.war.PlayWarSetDefaultActiveIndexCommand;
-import com.ww.game.play.state.PlayState;
 
 import java.util.Map;
 
 import static com.ww.game.play.modelfiller.PlayModelFiller.fillModelNextTimeout;
 import static com.ww.game.play.modelfiller.PlayModelFiller.fillModelTaskMeta;
-import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelActiveIndexes;
+import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelActiveIndex;
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelIsChosenActiveIndex;
 
 public class PlayWarChoosingWhoAnswerState extends PlayState {
@@ -37,7 +37,7 @@ public class PlayWarChoosingWhoAnswerState extends PlayState {
         Map<String, Object> model = super.prepareModel(team, opponentTeam);
         fillModelNextTimeout(model, getContainer());
         fillModelTaskMeta(model, getContainer());
-        fillModelActiveIndexes(model, (WarTeam) team, (WarTeam) opponentTeam);
+        fillModelActiveIndex(model, (WarTeam) team);
         fillModelIsChosenActiveIndex(model, (WarTeam) team);
         return model;
     }

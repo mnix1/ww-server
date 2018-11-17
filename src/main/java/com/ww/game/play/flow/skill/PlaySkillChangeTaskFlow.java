@@ -14,8 +14,8 @@ public class PlaySkillChangeTaskFlow extends PlaySkillFlow {
     }
 
     protected void initStateMap() {
-        stateMap.put("WANT_CHANGE_TASK", new PlaySkillWantChangeTaskState(this, manager));
-        stateMap.put("SUBMIT_APPLICATION", new PlaySkillSubmitApplicationState(this, manager));
+        stateMap.put("WANT_CHANGE_TASK", () -> new PlaySkillWantChangeTaskState(this, manager));
+        stateMap.put("SUBMIT_APPLICATION", () -> new PlaySkillSubmitApplicationState(this, manager));
     }
 
     public void start() {
