@@ -23,13 +23,13 @@ public class PlaySkillKidnapFailedState extends PlaySkillOpponentState {
     public void initCommands() {
         commands.add(new MemberWisieAddStatusCommand(manager, MemberWisieStatus.KIDNAPPING_FAILED));
         commands.add(new MemberWisieAddStatusCommand(opponentManager, MemberWisieStatus.WAS_NOT_KIDNAPPED));
-        commands.add(new PlaySkillUnblockAllCommand(opponentManager.getContainer().getTeam()));
+        commands.add(new PlaySkillUnblockAllCommand(opponentWarTeam));
     }
 
     @Override
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = super.prepareModel(team, opponentTeam);
-        fillModelSkills(model, (WarTeam) team, (WarTeam) opponentTeam);
+        fillModelSkills(model, opponentWarTeam, (WarTeam) team, (WarTeam) opponentTeam);
         return model;
     }
 

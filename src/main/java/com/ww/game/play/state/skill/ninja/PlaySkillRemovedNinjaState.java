@@ -10,6 +10,7 @@ import com.ww.model.constant.wisie.MemberWisieStatus;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.war.WarTeam;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelActiveMemberAddOns;
@@ -23,14 +24,14 @@ public class PlaySkillRemovedNinjaState extends PlaySkillState {
     @Override
     public void initCommands() {
         commands.add(new MemberWisieRemoveDisguiseCommand(manager));
-        commands.add(new PlaySkillUnblockAllCommand(manager.getContainer().getTeam()));
+        commands.add(new PlaySkillUnblockAllCommand(warTeam));
     }
 
     @Override
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
-        Map<String, Object> model = super.prepareModel(team, opponentTeam);
-        fillModelSkills(model, (WarTeam) team, (WarTeam) opponentTeam);
-        fillModelActiveMemberAddOns(model, (WarTeam) team, (WarTeam) opponentTeam);
+        Map<String, Object> model = new HashMap<>();
+        fillModelSkills(model, warTeam, (WarTeam) team, (WarTeam) opponentTeam);
+        fillModelActiveMemberAddOns(model, warTeam, (WarTeam) team, (WarTeam) opponentTeam);
         return model;
     }
 

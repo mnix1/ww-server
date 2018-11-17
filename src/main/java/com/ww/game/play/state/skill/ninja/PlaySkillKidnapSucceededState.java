@@ -28,8 +28,8 @@ public class PlaySkillKidnapSucceededState extends PlaySkillOpponentState {
         commands.add(new MemberWisieAddStatusCommand(opponentManager, MemberWisieStatus.WAS_KIDNAPPED));
         commands.add(new MemberWisieAddDisguiseCommand(manager, DisguiseType.CHAIR_SIMPLE));
         commands.add(new MemberWisieAddDisguiseCommand(opponentManager, DisguiseType.CHAIR_SIMPLE));
-        commands.add(new PlayWarDisableActiveTeamMemberCommand(manager.getContainer().getTeam()));
-        commands.add(new PlayWarDisableActiveTeamMemberCommand(opponentManager.getContainer().getTeam()));
+        commands.add(new PlayWarDisableActiveTeamMemberCommand(warTeam));
+        commands.add(new PlayWarDisableActiveTeamMemberCommand(opponentWarTeam));
     }
 
     @Override

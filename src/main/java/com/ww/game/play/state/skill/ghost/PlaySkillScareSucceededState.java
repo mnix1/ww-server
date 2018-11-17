@@ -26,13 +26,13 @@ public class PlaySkillScareSucceededState extends PlaySkillOpponentState {
         commands.add(new MemberWisieAddStatusCommand(manager, MemberWisieStatus.SCARE_SUCCEEDED));
         commands.add(new MemberWisieAddStatusCommand(opponentManager, MemberWisieStatus.RUN_AWAY));
         commands.add(new MemberWisieAddDisguiseCommand(opponentManager, DisguiseType.CHAIR_RED));
-        commands.add(new PlayWarDisableActiveTeamMemberCommand(opponentManager.getContainer().getTeam()));
+        commands.add(new PlayWarDisableActiveTeamMemberCommand(opponentWarTeam));
     }
 
     @Override
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = super.prepareModel(team, opponentTeam);
-        fillModelActiveMemberAddOns(model, (WarTeam) team, (WarTeam) opponentTeam);
+        fillModelActiveMemberAddOns(model, opponentWarTeam, (WarTeam) team, (WarTeam) opponentTeam);
         return model;
     }
 

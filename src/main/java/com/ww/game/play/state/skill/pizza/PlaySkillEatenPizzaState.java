@@ -25,15 +25,15 @@ public class PlaySkillEatenPizzaState extends PlaySkillState {
         commands.add(new MemberWisieRemoveDisguiseCommand(manager));
         commands.add(new MemberWisieDecreaseAttributesCommand(manager));
         commands.add(new MemberWisieAddStatusCommand(manager, MemberWisieStatus.EATEN_PIZZA));
-        commands.add(new PlaySkillUnblockAllCommand(manager.getContainer().getTeam()));
+        commands.add(new PlaySkillUnblockAllCommand(warTeam));
     }
 
     @Override
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
-        Map<String, Object> model = super.prepareModel(team, opponentTeam);
-        fillModelActiveMemberAddOns(model, (WarTeam) team, (WarTeam) opponentTeam);
-        fillModelSkills(model, (WarTeam) team, (WarTeam) opponentTeam);
-        fillModelTeams(model, (WarTeam) team, (WarTeam) opponentTeam);
+        Map<String, Object> model = super.prepareModel(warTeam, team, opponentTeam);
+        fillModelActiveMemberAddOns(model, warTeam, (WarTeam) team, (WarTeam) opponentTeam);
+        fillModelSkills(model, warTeam, (WarTeam) team, (WarTeam) opponentTeam);
+        fillModelTeams(model, warTeam, (WarTeam) team, (WarTeam) opponentTeam);
         return model;
     }
 

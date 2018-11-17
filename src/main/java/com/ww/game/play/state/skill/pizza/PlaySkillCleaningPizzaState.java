@@ -25,13 +25,6 @@ public class PlaySkillCleaningPizzaState extends PlaySkillOpponentState {
     }
 
     @Override
-    public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
-        Map<String, Object> model = super.prepareModel(team, opponentTeam);
-        fillModelActiveMemberAddOns(model, (WarTeam) team, (WarTeam) opponentTeam);
-        return model;
-    }
-
-    @Override
     protected double minInterval() {
         return 2 - getWisie().getSpeedF1();
     }

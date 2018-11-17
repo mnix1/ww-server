@@ -21,12 +21,14 @@ public class PlaySkillState extends GameState {
     protected MemberWisieManager manager;
     @Getter
     private WarWisie wisie;
+    protected WarTeam warTeam;
     protected long interval;
 
     public PlaySkillState(PlaySkillFlow flow, MemberWisieManager manager) {
         this.flow = flow;
         this.manager = manager;
         this.wisie = manager.getContainer().getMember().getContent();
+        this.warTeam = manager.getContainer().getTeam();
     }
 
     protected MemberWisieContainer getContainer() {
@@ -54,7 +56,7 @@ public class PlaySkillState extends GameState {
     }
 
     @Override
-    public void execute(){
+    public void execute() {
         interval = (long) (prepareInterval() * intervalMultiply());
         super.execute();
     }
@@ -72,6 +74,12 @@ public class PlaySkillState extends GameState {
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = new HashMap<>();
         fillModelWisieActions(model, (WarTeam) team, (WarTeam) opponentTeam);
+        return model;
+    }
+
+    public Map<String, Object> prepareModel(WarTeam changedTeam, RivalTeam team, RivalTeam opponentTeam) {
+        Map<String, Object> model = new HashMap<>();
+        fillModelWisieActions(model, changedTeam, (WarTeam) team, (WarTeam) opponentTeam);
         return model;
     }
 

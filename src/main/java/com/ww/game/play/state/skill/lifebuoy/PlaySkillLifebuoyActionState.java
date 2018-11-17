@@ -33,7 +33,7 @@ public class PlaySkillLifebuoyActionState extends PlaySkillActionState {
 
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = new HashMap<>();
-        fillModelSkills(model, (WarTeam) team, (WarTeam) opponentTeam);
+        fillModelSkills(model, warTeam,(WarTeam) team, (WarTeam) opponentTeam);
         fillModelPresentIndexes(model, (WarTeam) team, (WarTeam) opponentTeam);
         return model;
     }

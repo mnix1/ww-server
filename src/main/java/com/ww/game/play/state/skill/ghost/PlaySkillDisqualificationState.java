@@ -28,13 +28,13 @@ public class PlaySkillDisqualificationState extends PlaySkillState {
     public void initCommands() {
         commands.add(new MemberWisieAddStatusCommand(manager, MemberWisieStatus.DISQUALIFICATION));
         commands.add(new MemberWisieAddDisguiseCommand(manager, DisguiseType.JUDGE));
-        commands.add(new PlayWarDisableActiveTeamMemberCommand(manager.getContainer().getTeam()));
+        commands.add(new PlayWarDisableActiveTeamMemberCommand(warTeam));
     }
 
     @Override
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
-        Map<String, Object> model = super.prepareModel(team, opponentTeam);
-        fillModelActiveMemberAddOns(model, (WarTeam) team, (WarTeam) opponentTeam);
+        Map<String, Object> model = super.prepareModel(warTeam, team, opponentTeam);
+        fillModelActiveMemberAddOns(model, warTeam, (WarTeam) team, (WarTeam) opponentTeam);
         return model;
     }
 

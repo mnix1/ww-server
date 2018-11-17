@@ -26,14 +26,14 @@ public class PlaySkillWaterPistolUsedState extends PlaySkillState {
     public void initCommands() {
         commands.add(new MemberWisieAddStatusCommand(manager, MemberWisieStatus.WATER_PISTOL_USED_ON_IT));
         commands.add(new MemberWisieAddDisguiseCommand(manager, DisguiseType.PENGUIN_RAIN));
-        commands.add(new PlaySkillBlockAllCommand(manager.getContainer().getTeam()));
+        commands.add(new PlaySkillBlockAllCommand(warTeam));
     }
 
     @Override
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = super.prepareModel(team, opponentTeam);
         fillModelSkills(model, (WarTeam) team, (WarTeam) opponentTeam);
-        fillModelActiveMemberAddOns(model, (WarTeam) team, (WarTeam) opponentTeam);
+        fillModelActiveMemberAddOns(model, warTeam, (WarTeam) team, (WarTeam) opponentTeam);
         return model;
     }
 

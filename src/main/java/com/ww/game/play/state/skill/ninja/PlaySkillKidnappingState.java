@@ -34,8 +34,8 @@ public class PlaySkillKidnappingState extends PlaySkillOpponentState {
         commands.add(new MemberWisieAddStatusCommand(manager, MemberWisieStatus.TRYING_TO_KIDNAP));
         commands.add(new MemberWisieAddStatusCommand(opponentManager, MemberWisieStatus.TRYING_TO_DEFEND));
         commands.add(new MemberWisieRunInnerFlowCommand(opponentManager, flow));
-        commands.add(new PlaySkillBlockAllCommand(manager.getContainer().getTeam()));
-        commands.add(new PlaySkillBlockAllCommand(opponentManager.getContainer().getTeam()));
+        commands.add(new PlaySkillBlockAllCommand(warTeam));
+        commands.add(new PlaySkillBlockAllCommand(opponentWarTeam));
         commands.add(new MemberWisieAddDisguiseCommand(manager, DisguiseType.NINJA));
     }
 
@@ -43,7 +43,7 @@ public class PlaySkillKidnappingState extends PlaySkillOpponentState {
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = super.prepareModel(team, opponentTeam);
         fillModelSkills(model, (WarTeam) team, (WarTeam) opponentTeam);
-        fillModelActiveMemberAddOns(model, (WarTeam) team, (WarTeam) opponentTeam);
+        fillModelActiveMemberAddOns(model, warTeam, (WarTeam) team, (WarTeam) opponentTeam);
         return model;
     }
 

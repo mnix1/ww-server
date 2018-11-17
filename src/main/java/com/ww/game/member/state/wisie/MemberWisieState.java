@@ -3,8 +3,6 @@ package com.ww.game.member.state.wisie;
 import com.ww.game.GameState;
 import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.command.MemberWisieAddStatusCommand;
-import com.ww.game.member.container.MemberWisieContainer;
-import com.ww.game.play.container.PlayContainer;
 import com.ww.model.constant.wisie.MemberWisieStatus;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.RivalTeams;
@@ -14,9 +12,7 @@ import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
-import static com.ww.game.play.modelfiller.PlayModelFiller.fillModelStatus;
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelWisieActions;
 
 public class MemberWisieState extends GameState {
@@ -43,7 +39,7 @@ public class MemberWisieState extends GameState {
 
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = new HashMap<>();
-        fillModelWisieActions(model, (WarTeam) team, (WarTeam) opponentTeam);
+        fillModelWisieActions(model, manager.getContainer().getTeam(), (WarTeam) team, (WarTeam) opponentTeam);
         return model;
     }
 

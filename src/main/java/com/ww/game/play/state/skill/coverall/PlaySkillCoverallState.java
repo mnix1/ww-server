@@ -25,16 +25,16 @@ public class PlaySkillCoverallState extends PlaySkillOpponentState {
     @Override
     public void initCommands() {
         commands.add(new MemberWisieAddStatusCommand(manager, MemberWisieStatus.COVERALL_READY));
-        commands.add(new PlaySkillBlockAllCommand(opponentManager.getContainer().getTeam()));
+        commands.add(new PlaySkillBlockAllCommand(opponentWarTeam));
         commands.add(new MemberWisieAddDisguiseCommand(manager, DisguiseType.COVERALL));
         commands.add(new MemberWisieMaybeRunOuterFlowCommand(opponentManager));
     }
 
     @Override
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
-        Map<String, Object> model = super.prepareModel(team, opponentTeam);
+        Map<String, Object> model = super.prepareModel(warTeam, team, opponentTeam);
         fillModelSkills(model, (WarTeam) team, (WarTeam) opponentTeam);
-        fillModelActiveMemberAddOns(model, (WarTeam) team, (WarTeam) opponentTeam);
+        fillModelActiveMemberAddOns(model, warTeam, (WarTeam) team, (WarTeam) opponentTeam);
         return model;
     }
 
