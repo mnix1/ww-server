@@ -1,7 +1,6 @@
 package com.ww.game.replay;
 
 import com.ww.service.social.ProfileConnectionService;
-import com.ww.websocket.message.Message;
 import io.reactivex.Flowable;
 
 import java.util.List;
@@ -9,17 +8,17 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import static com.ww.websocket.message.Message.RIVAL_CONTENT;
+
 public class Replay {
     private final ProfileConnectionService profileConnectionService;
     private final List<Map<String, Object>> allModels;
-    private final Message message;
     private final Long profileId;
 
-    public Replay(ProfileConnectionService profileConnectionService, Message message, List<Map<String, Object>> allModels, Long profileId) {
+    public Replay(ProfileConnectionService profileConnectionService, List<Map<String, Object>> allModels, Long profileId) {
         this.profileConnectionService = profileConnectionService;
         this.profileId = profileId;
         this.allModels = allModels;
-        this.message = message;
     }
 
     public void play() {
@@ -28,7 +27,7 @@ public class Replay {
     }
 
     public void run(Map<String, Object> model, Map<String, Object> nextModel) {
-        profileConnectionService.send(profileId, model, message);
+        profileConnectionService.send(profileId, model, RIVAL_CONTENT);
         if (nextModel == null) {
             return;
         }

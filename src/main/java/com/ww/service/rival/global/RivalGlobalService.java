@@ -1,7 +1,6 @@
 package com.ww.service.rival.global;
 
 import com.ww.model.container.ProfileConnection;
-import com.ww.model.container.rival.RivalModel;
 import com.ww.model.entity.outside.rival.Rival;
 import com.ww.game.play.PlayManager;
 import com.ww.game.play.container.PlayContainer;

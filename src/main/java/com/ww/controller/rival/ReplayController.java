@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/replay")
+@RequestMapping(value = "/_replay")
 @AllArgsConstructor
 public class ReplayController {
 

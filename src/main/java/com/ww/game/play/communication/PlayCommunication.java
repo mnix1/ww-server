@@ -19,12 +19,10 @@ import static com.ww.service.rival.global.RivalMessageService.*;
 
 public class PlayCommunication {
     protected PlayManager manager;
-    private Message messageContent;
     protected Map<String, PlayAction> actionMap = new ConcurrentHashMap<>();
 
-    public PlayCommunication(PlayManager manager, Message messageContent) {
+    public PlayCommunication(PlayManager manager) {
         this.manager = manager;
-        this.messageContent = messageContent;
         initActionMap();
     }
 
@@ -55,15 +53,11 @@ public class PlayCommunication {
 
     public void send(Long profileId, Map<String, Object> model) {
         ProfileConnectionService profileConnectionService = manager.getProfileConnectionService();
-        profileConnectionService.send(profileId, model, getMessageContent());
+        profileConnectionService.send(profileId, model, Message.RIVAL_CONTENT);
     }
 
     public void sendModelFromBeginning(Long profileId) {
         sendWithCurrentTime(profileId, getContainer().getActualModelMap().get(profileId));
-    }
-
-    public Message getMessageContent() {
-        return messageContent;
     }
 
     public void processMessage(Long profileId, Map<String, Object> content) {

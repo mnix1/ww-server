@@ -10,11 +10,7 @@ import static com.ww.service.rival.global.RivalMessageService.*;
 public class PlayWarCommunication extends PlayCommunication {
 
     public PlayWarCommunication(PlayManager manager) {
-        this(manager, Message.WAR_CONTENT);
-    }
-
-    public PlayWarCommunication(PlayManager manager, Message messageContent) {
-        super(manager, messageContent);
+        super(manager);
     }
 
     @Override

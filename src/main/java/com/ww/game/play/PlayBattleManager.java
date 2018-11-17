@@ -21,7 +21,7 @@ public class PlayBattleManager extends PlayManager {
         this.interval =  new RivalInterval();
         this.container = new PlayBattleContainer(init, prepareTeams(init), prepareTasks(), prepareTimeouts(), prepareDecisions(), prepareResult());
         this.flow = new PlayBattleFlow(this);
-        this.communication = new PlayCommunication(this, Message.BATTLE_CONTENT);
+        this.communication = new PlayCommunication(this);
     }
 
     protected RivalTeams prepareTeams(RivalTwoInit init) {

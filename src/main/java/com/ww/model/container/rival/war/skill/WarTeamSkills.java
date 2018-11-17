@@ -1,5 +1,7 @@
 package com.ww.model.container.rival.war.skill;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.model.constant.Skill;
 import com.ww.model.constant.SkillType;
 import com.ww.model.container.rival.RivalTeamSkills;
@@ -88,5 +90,4 @@ public class WarTeamSkills implements RivalTeamSkills {
     public void resetUsedAll() {
         activeSkills.forEach((skill, availableSkill) -> availableSkill.reset());
     }
-
 }

@@ -32,7 +32,7 @@ public class PlayCampaignManager extends PlayManager {
         this.interval =  new WarInterval();
         this.container = new PlayCampaignContainer(init, prepareTeams(init), prepareTasks(), prepareTimeouts(), prepareDecisions(), prepareResult());
         this.flow = new PlayCampaignFlow(this);
-        this.communication = new PlayWarCommunication(this, Message.CAMPAIGN_WAR_CONTENT);
+        this.communication = new PlayWarCommunication(this);
     }
 
     protected RivalTeams prepareTeams(RivalCampaignWarInit init) {

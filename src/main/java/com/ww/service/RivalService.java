@@ -51,12 +51,6 @@ public class RivalService {
         rivalGlobalService.store(container);
     }
 
-    public void replay(PlayManager manager) {
-        RivalTeam team = manager.getContainer().getTeams().getTeams().stream().findFirst().get();
-        Long profileId = team.getProfileId();
-        new Replay(profileConnectionService, manager.getCommunication().getMessageContent(), manager.getContainer().getAllModelMap().get(profileId), profileId).play();
-    }
-
     public void updateSeason(PlayManager manager) {
         if (!manager.getContainer().isRanking()) {
             return;

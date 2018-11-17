@@ -23,7 +23,7 @@ public abstract class PlayContainer {
     protected RivalResult result;
 
     protected Map<Long, Map<String, Object>> actualModelMap = new ConcurrentHashMap<>();
-    protected Map<Long, List<Map<String, Object>>> allModelMap = new ConcurrentHashMap<>();
+    protected Map<Long, List<String>> allModelMap = new ConcurrentHashMap<>();
 
     public PlayContainer(RivalTwoInit init, RivalTeams teams, RivalTasks tasks, RivalTimeouts timeouts, RivalDecisions decisions, RivalResult result) {
         this.init = init;
@@ -60,7 +60,11 @@ public abstract class PlayContainer {
         for (String key : model.keySet()) {
             actualProfileModel.put(key, model.get(key));
         }
-        allModelMap.get(profileId).add(model);
+        try {
+            allModelMap.get(profileId).add(new ObjectMapper().writeValueAsString(model));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
 
     public String modelsToJSON() {

@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/dev")
+@RequestMapping(value = "/_dev")
 @AllArgsConstructor
 public class DevelopmentController {
 

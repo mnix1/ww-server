@@ -3,7 +3,6 @@ package com.ww.service.rival.season;
 import com.ww.model.constant.Grade;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
-import com.ww.model.container.rival.RivalModel;
 import com.ww.model.container.rival.init.RivalTwoInit;
 import com.ww.model.entity.outside.rival.season.ProfileSeason;
 import com.ww.model.entity.outside.rival.season.Season;

@@ -36,7 +36,7 @@ public class PlayChallengeManager extends PlayWarManager {
         this.interval =  new ChallengeInterval(container);
         this.container = new PlayChallengeContainer(init, prepareTeams(init), prepareTasks(init), prepareTimeouts(), prepareDecisions(), prepareResult());
         this.flow = new PlayChallengeFlow(this);
-        this.communication = new PlayWarCommunication(this, Message.CHALLENGE_CONTENT);
+        this.communication = new PlayWarCommunication(this);
     }
 
     protected RivalTeams prepareTeams(RivalChallengeInit init) {
