@@ -4,6 +4,7 @@ import com.ww.game.play.container.PlayContainer;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.entity.outside.social.Profile;
+import com.ww.websocket.message.Message;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
