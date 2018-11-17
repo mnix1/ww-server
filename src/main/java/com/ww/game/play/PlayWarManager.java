@@ -4,13 +4,11 @@ import com.ww.game.play.communication.PlayWarCommunication;
 import com.ww.game.play.container.PlayWarContainer;
 import com.ww.game.play.flow.PlayWarFlow;
 import com.ww.helper.TeamHelper;
-import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.RivalTeams;
 import com.ww.model.container.rival.init.RivalTwoInit;
 import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarInterval;
 import com.ww.model.container.rival.war.WarTeam;
-import com.ww.model.container.rival.war.skill.PassiveSkillsInit;
 import com.ww.model.container.rival.war.skill.WarTeamSkills;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
@@ -25,13 +23,6 @@ public class PlayWarManager extends PlayManager {
         this.container = new PlayWarContainer(init, prepareTeams(init), prepareTasks(), prepareTimeouts(), prepareDecisions(), prepareResult());
         this.flow = new PlayWarFlow(this);
         this.communication = new PlayWarCommunication(this);
-    }
-
-    @Override
-    public PlayManager toReplay() {
-        PlayManager manager = new PlayWarManager(container.getInit(), (RivalWarService) service);
-        manager.getFlow().setStates(flow.getStates());
-        return manager;
     }
 
     protected RivalTeams prepareTeams(RivalTwoInit init) {

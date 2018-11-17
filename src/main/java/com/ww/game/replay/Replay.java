@@ -1,47 +1,55 @@
 package com.ww.game.replay;
 
-import com.ww.game.GameState;
-import com.ww.game.play.PlayManager;
+import com.ww.service.social.ProfileConnectionService;
+import com.ww.websocket.message.Message;
 import io.reactivex.Flowable;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 public class Replay {
-    private PlayManager manager;
-    private List<GameState> states;
+    private final ProfileConnectionService profileConnectionService;
+    private final List<Map<String, Object>> allModels;
+    private final Message message;
+    private final Long profileId;
 
-    public Replay(PlayManager manager) {
-        this.manager = manager;
-        this.states = manager.getFlow().getStates();
+    public Replay(ProfileConnectionService profileConnectionService, Message message, List<Map<String, Object>> allModels, Long profileId) {
+        this.profileConnectionService = profileConnectionService;
+        this.profileId = profileId;
+        this.allModels = allModels;
+        this.message = message;
     }
 
     public void play() {
-        GameState firstState = states.get(0);
-        run(firstState, findNextState(firstState).orElse(null));
+        Map<String, Object> firstModel = allModels.get(0);
+        run(firstModel, findNextState(firstModel).orElse(null));
     }
 
-    public void run(GameState state, GameState nextState) {
-        state.execute();
-        state.updateNotify();
-        if (nextState == null) {
+    public void run(Map<String, Object> model, Map<String, Object> nextModel) {
+        profileConnectionService.send(profileId, model, message);
+        if (nextModel == null) {
             return;
         }
-        long interval = nextState.getDate().toEpochMilli() - state.getDate().toEpochMilli();
+        long interval = getModelNow(nextModel) - getModelNow(model);
         if (interval <= 0) {
-            run(nextState, findNextState(nextState).orElse(null));
+            run(nextModel, findNextState(nextModel).orElse(null));
         } else {
             Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS).subscribe(aLong -> {
-                run(nextState, findNextState(nextState).orElse(null));
+                run(nextModel, findNextState(nextModel).orElse(null));
             });
         }
     }
 
-    private Optional<GameState> findNextState(GameState state) {
-        for (int i = 0; i < states.size(); i++) {
-            if (states.get(i) == state && i + 1 < states.size()) {
-                return Optional.of(states.get(i + 1));
+    private long getModelNow(Map<String, Object> model) {
+        return (long) model.get("now");
+    }
+
+    private Optional<Map<String, Object>> findNextState(Map<String, Object> model) {
+        for (int i = 0; i < allModels.size(); i++) {
+            if (allModels.get(i) == model && i + 1 < allModels.size()) {
+                return Optional.of(allModels.get(i + 1));
             }
         }
         return Optional.empty();

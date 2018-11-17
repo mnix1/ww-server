@@ -24,13 +24,6 @@ public class GameState {
     public void initProps() {
     }
 
-    public Map<String, Object> exportProps() {
-        return new HashMap<>();
-    }
-
-    public void loadProps(Map<String, Object> props) {
-    }
-
     protected void initCommands() {
     }
 

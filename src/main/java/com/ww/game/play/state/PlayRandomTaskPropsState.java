@@ -31,22 +31,6 @@ public class PlayRandomTaskPropsState extends PlayState {
     }
 
     @Override
-    public Map<String, Object> exportProps() {
-        Map<String, Object> props = super.exportProps();
-        props.put("category", category);
-        props.put("difficultyLevel", difficultyLevel);
-        props.put("language", language);
-        return props;
-    }
-
-    @Override
-    public void loadProps(Map<String, Object> props) {
-        this.category = (Category) props.get("category");
-        this.difficultyLevel = (DifficultyLevel) props.get("difficultyLevel");
-        this.language = (Language) props.get("language");
-    }
-
-    @Override
     public void initCommands() {
         commands.add(new PlayPrepareNextTaskCommand(getContainer(), category, difficultyLevel, language));
     }

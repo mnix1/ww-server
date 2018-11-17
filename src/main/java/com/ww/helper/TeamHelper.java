@@ -5,8 +5,7 @@ import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.battle.BattleTeam;
 import com.ww.model.container.rival.war.*;
 import com.ww.model.dto.rival.TeamMemberDTO;
-import com.ww.model.dto.social.ExtendedProfileDTO;
-import com.ww.model.dto.wisie.WarProfileWisieDTO;
+import com.ww.model.dto.social.BaseProfileDTO;
 import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.OwnedWisie;
@@ -22,7 +21,7 @@ import java.util.stream.IntStream;
 public class TeamHelper {
     public static final Long BOT_PROFILE_ID = -1L;
 
-    public static boolean isBotProfile(Long profileId){
+    public static boolean isBotProfile(Long profileId) {
         return BOT_PROFILE_ID.equals(profileId);
     }
 
@@ -33,7 +32,7 @@ public class TeamHelper {
     public static List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies) {
         List<TeamMember> teamMembers = new ArrayList<>();
         int index = 0;
-        teamMembers.add(new WisorTeamMember(index++, profile, new ExtendedProfileDTO(profile)));
+        teamMembers.add(new WisorTeamMember(index++, profile, new BaseProfileDTO(profile)));
         for (OwnedWisie wisie : wisies) {
             WarWisie warWisie = new WarWisie(wisie);
             teamMembers.add(new WisieTeamMember(index++, warWisie));
@@ -69,37 +68,39 @@ public class TeamHelper {
         return teamMembers.stream().map(TeamMemberDTO::new).collect(Collectors.toList());
     }
 
-    public static List<WarTeam> mapToWarTeams(Collection<RivalTeam> teams){
+    public static List<WarTeam> mapToWarTeams(Collection<RivalTeam> teams) {
         return teams.stream().map(team -> ((WarTeam) team)).collect(Collectors.toList());
     }
-    public static List<BattleTeam> mapToBattleTeams(Collection<RivalTeam> teams){
+
+    public static List<BattleTeam> mapToBattleTeams(Collection<RivalTeam> teams) {
         return teams.stream().map(team -> ((BattleTeam) team)).collect(Collectors.toList());
     }
 
-    public static WarTeam teamWithLowestCountPresentMembers(List<WarTeam> warTeams){
+    public static WarTeam teamWithLowestCountPresentMembers(List<WarTeam> warTeams) {
         int minIndex = IntStream.range(0, warTeams.size())
                 .reduce((i, j) -> warTeams.get(i).countPresentMembers() > warTeams.get(j).countPresentMembers() ? j : i)
                 .getAsInt();
         return warTeams.get(minIndex);
     }
 
-    public static BattleTeam teamWithLowestScore(List<BattleTeam> battleTeams){
+    public static BattleTeam teamWithLowestScore(List<BattleTeam> battleTeams) {
         int minIndex = IntStream.range(0, battleTeams.size())
                 .reduce((i, j) -> battleTeams.get(i).getScore() > battleTeams.get(j).getScore() ? j : i)
                 .getAsInt();
         return battleTeams.get(minIndex);
     }
 
-    public static boolean teamsHaveSameCountPresentMembers(Collection<RivalTeam> teams){
+    public static boolean teamsHaveSameCountPresentMembers(Collection<RivalTeam> teams) {
         Set<Integer> presentMemberCounts = teams.stream().map(team -> ((WarTeam) team).countPresentMembers()).collect(Collectors.toSet());
         return presentMemberCounts.size() == 1;
     }
-    public static boolean teamsHaveSameScore(Collection<RivalTeam> teams){
+
+    public static boolean teamsHaveSameScore(Collection<RivalTeam> teams) {
         Set<Integer> presentMemberCounts = teams.stream().map(team -> ((BattleTeam) team).getScore()).collect(Collectors.toSet());
         return presentMemberCounts.size() == 1;
     }
 
-    public static int findIndexOfWisieWithHobby(WarTeam warTeam, Category category){
+    public static int findIndexOfWisieWithHobby(WarTeam warTeam, Category category) {
         for (TeamMember teamMember : warTeam.getTeamMembers()) {
             if (!teamMember.isWisie() || !teamMember.isPresent()) {
                 continue;

@@ -46,12 +46,7 @@ public class RivalGlobalService {
 
     @Transactional
     public void store(PlayContainer container) {
-        Rival rival = new Rival(container.getInit().getType(),
-                container.getInit().getImportance(),
-                container.getInit().getCreatorProfile(),
-                container.getInit().getOpponentProfile(),
-                container.getResult().getDraw(),
-                container.getResult().getWinner());
+        Rival rival = new Rival(container);
         save(rival);
     }
 

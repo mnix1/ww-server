@@ -63,6 +63,4 @@ public abstract class PlayManager {
     public void dispose() {
         service.disposeManager(this);
     }
-
-    public abstract PlayManager toReplay();
 }

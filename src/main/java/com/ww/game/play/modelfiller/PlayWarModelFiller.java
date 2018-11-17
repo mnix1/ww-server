@@ -62,9 +62,4 @@ public class PlayWarModelFiller {
                 .map(Enum::name)
                 .collect(Collectors.toList());
     }
-
-    public static void fillModelNullWisieActions(Map<String, Object> model) {
-        model.put("wisieActions", null);
-        model.put("opponentWisieActions", null);
-    }
 }

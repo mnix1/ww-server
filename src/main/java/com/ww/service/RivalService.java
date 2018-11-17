@@ -1,5 +1,7 @@
 package com.ww.service;
 
+import com.ww.game.play.PlayManager;
+import com.ww.game.play.container.PlayContainer;
 import com.ww.game.replay.Replay;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.Language;
@@ -8,8 +10,6 @@ import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
-import com.ww.game.play.PlayManager;
-import com.ww.game.play.container.PlayContainer;
 import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.rival.season.RivalProfileSeasonService;
 import com.ww.service.rival.season.RivalSeasonService;
@@ -44,16 +44,17 @@ public class RivalService {
             rivalGlobalService.remove(profileContainer.getProfileId());
         }
         PlayContainer container = manager.getContainer();
-        rivalGlobalService.store(container);
         if (!container.getResult().getDraw()) {
             addRewardFromWin(container.getResult().getWinner());
         }
         updateSeason(manager);
-        replay(manager);
+        rivalGlobalService.store(container);
     }
 
     public void replay(PlayManager manager) {
-        new Replay(manager.toReplay()).play();
+        RivalTeam team = manager.getContainer().getTeams().getTeams().stream().findFirst().get();
+        Long profileId = team.getProfileId();
+        new Replay(profileConnectionService, manager.getCommunication().getMessageContent(), manager.getContainer().getAllModelMap().get(profileId), profileId).play();
     }
 
     public void updateSeason(PlayManager manager) {

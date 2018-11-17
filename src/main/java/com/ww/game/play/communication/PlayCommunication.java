@@ -3,21 +3,24 @@ package com.ww.game.play.communication;
 import com.ww.game.play.PlayManager;
 import com.ww.game.play.action.*;
 import com.ww.game.play.container.PlayContainer;
+import com.ww.model.container.rival.RivalTeam;
 import com.ww.service.social.ProfileConnectionService;
 import com.ww.websocket.message.Message;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.ww.game.play.modelfiller.PlayModelFiller.fillModelNow;
 import static com.ww.service.rival.global.RivalMessageService.*;
 
 public class PlayCommunication {
     protected PlayManager manager;
     private Message messageContent;
     protected Map<String, PlayAction> actionMap = new ConcurrentHashMap<>();
-    protected Map<Long, Map<String, Object>> modelMap = new ConcurrentHashMap<>();
 
     public PlayCommunication(PlayManager manager, Message messageContent) {
         this.manager = manager;
@@ -40,21 +43,13 @@ public class PlayCommunication {
         if (model.isEmpty()) {
             return;
         }
-        sendWithCurrentTime(profileId, model);
-        Map<String, Object> actualProfileModel;
-        if (!modelMap.containsKey(profileId)) {
-            actualProfileModel = new HashMap<>();
-            modelMap.put(profileId, actualProfileModel);
-        } else {
-            actualProfileModel = modelMap.get(profileId);
-        }
-        for (String key : model.keySet()) {
-            actualProfileModel.put(key, model.get(key));
-        }
+        fillModelNow(model);
+        send(profileId, model);
+        manager.getContainer().updateModels(profileId, model);
     }
 
     public void sendWithCurrentTime(Long profileId, Map<String, Object> model) {
-        model.put("now", Instant.now().toEpochMilli());
+        fillModelNow(model);
         send(profileId, model);
     }
 
@@ -64,7 +59,7 @@ public class PlayCommunication {
     }
 
     public void sendModelFromBeginning(Long profileId) {
-        sendWithCurrentTime(profileId, modelMap.get(profileId));
+        sendWithCurrentTime(profileId, getContainer().getActualModelMap().get(profileId));
     }
 
     public Message getMessageContent() {

@@ -7,6 +7,7 @@ import com.ww.model.container.rival.init.RivalCampaignWarInit;
 import com.ww.model.container.rival.war.*;
 import com.ww.model.container.rival.war.skill.EmptyTeamSkills;
 import com.ww.model.container.rival.war.skill.WarTeamSkills;
+import com.ww.model.dto.social.BaseProfileDTO;
 import com.ww.model.dto.social.ExtendedProfileDTO;
 import com.ww.model.dto.wisie.WarProfileWisieDTO;
 import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
@@ -55,7 +56,7 @@ public class PlayCampaignManager extends PlayManager {
         List<TeamMember> teamMembers = new ArrayList<>();
         int index = 0;
         if (profileCampaign.getPresent()) {
-            teamMembers.add(new WisorTeamMember(index++, profileCampaign.getProfile(), new ExtendedProfileDTO(profileCampaign.getProfile())));
+            teamMembers.add(new WisorTeamMember(index++, profileCampaign.getProfile(), new BaseProfileDTO(profileCampaign.getProfile())));
         }
         for (ProfileCampaignWisie wisie : wisies) {
             if (wisie.getDisabled()) {
@@ -65,10 +66,5 @@ public class PlayCampaignManager extends PlayManager {
             teamMembers.add(new WisieTeamMember(index++, warWisie));
         }
         return teamMembers;
-    }
-
-    @Override
-    public PlayManager toReplay() {
-        return null;
     }
 }

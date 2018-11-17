@@ -7,11 +7,16 @@ import com.ww.model.container.rival.init.RivalTwoInit;
 import com.ww.model.dto.social.ExtendedProfileDTO;
 import com.ww.model.dto.social.RivalProfileSeasonDTO;
 
+import java.time.Instant;
 import java.util.Map;
 
 public class PlayModelFiller {
     public static void fillModelStatus(Map<String, Object> model, RivalStatus status) {
         model.put("status", status);
+    }
+
+    public static void fillModelNow(Map<String, Object> model){
+        model.put("now", Instant.now().toEpochMilli());
     }
 
     public static void fillModelImportanceType(Map<String, Object> model, PlayContainer container) {
