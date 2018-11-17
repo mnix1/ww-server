@@ -18,7 +18,6 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 public class RivalTwoInit implements RivalInit {
     private RivalType type;
     private RivalImportance importance;
@@ -35,6 +34,16 @@ public class RivalTwoInit implements RivalInit {
         this.creatorProfile = creatorProfile;
         this.opponentProfile = opponentProfile;
         this.commonLanguage = prepareCommonLanguage();
+    }
+
+    @Override
+    public String toString() {
+        return "RivalTwoInit{" +
+                "type=" + type +
+                ", importance=" + importance +
+                ", creatorProfile=" + creatorProfile +
+                ", opponentProfile=" + opponentProfile +
+                '}';
     }
 
     public ProfileSeason getProfileSeasons(Long profileId) {

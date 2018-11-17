@@ -13,7 +13,6 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
-@ToString
 public abstract class PlayContainer {
     protected RivalTwoInit init;
     protected RivalTeams teams;
@@ -33,6 +32,11 @@ public abstract class PlayContainer {
         this.decisions = decisions;
         this.result = result;
         initModelMaps();
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + ", " + init.toString();
     }
 
     public abstract boolean isEnd();

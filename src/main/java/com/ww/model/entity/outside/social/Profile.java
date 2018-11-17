@@ -100,4 +100,13 @@ public class Profile {
         }
         return id.equals(((Profile) obj).id);
     }
+
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "id=" + id +
+                ", tag='" + tag + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
