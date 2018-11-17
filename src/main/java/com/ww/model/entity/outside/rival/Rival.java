@@ -1,6 +1,7 @@
 package com.ww.model.entity.outside.rival;
 
 import com.ww.game.play.container.PlayContainer;
+import com.ww.helper.CompressHelper;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.entity.outside.social.Profile;
@@ -36,7 +37,7 @@ public class Rival {
     private Profile winner;
     private Instant closeDate = Instant.now();
     @Lob
-    private String modelsJSON;
+    private byte[] modelsJSONCompressed;
 
     public Rival(PlayContainer container) {
         this.type = container.getInit().getType();
@@ -46,9 +47,10 @@ public class Rival {
         if (type != RivalType.CAMPAIGN_WAR && type != RivalType.CHALLENGE) {
             this.opponent = container.getInit().getOpponentProfile();
         }
+        Profile winner = container.getResult().getWinner();
         if (winner != null && !winner.getId().equals(BOT_PROFILE_ID)) {
-            this.winner = container.getResult().getWinner();
+            this.winner = winner;
         }
-        this.modelsJSON = container.modelsToJSON();
+        this.modelsJSONCompressed = CompressHelper.compress(container.modelsToJSON());
     }
 }

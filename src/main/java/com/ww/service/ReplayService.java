@@ -2,6 +2,7 @@ package com.ww.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.game.replay.Replay;
+import com.ww.helper.CompressHelper;
 import com.ww.model.entity.outside.rival.Rival;
 import com.ww.repository.outside.rival.RivalRepository;
 import com.ww.service.social.ProfileConnectionService;
@@ -37,7 +38,7 @@ public class ReplayService {
 
     private List prepareModels(Rival rival, Long profileId) {
         try {
-            Map<String, List<String>> map = new ObjectMapper().readValue(rival.getModelsJSON(), HashMap.class);
+            Map<String, List<String>> map = new ObjectMapper().readValue(CompressHelper.decompress(rival.getModelsJSONCompressed()), HashMap.class);
             return map.get(profileId.toString()).stream().map(s -> {
                 try {
                     return new ObjectMapper().readValue(s, HashMap.class);
