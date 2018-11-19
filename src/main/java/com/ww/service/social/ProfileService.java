@@ -1,6 +1,6 @@
 package com.ww.service.social;
 
-import com.ww.config.security.AuthorizationServer;
+import com.ww.config.security.AuthIdProvider;
 import com.ww.model.constant.Language;
 import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.entity.outside.social.Profile;
@@ -88,10 +88,10 @@ public class ProfileService {
         }
         if (user instanceof OAuth2Authentication) {
             Map<String, Object> details = (Map<String, Object>) ((OAuth2Authentication) user).getUserAuthentication().getDetails();
-            AuthorizationServer authorizationServer = (AuthorizationServer) details.get(AuthorizationServer.key);
-            if (authorizationServer.equals(AuthorizationServer.GOOGLE)) {
+            AuthIdProvider authIdProvider = (AuthIdProvider) details.get(AuthIdProvider.key);
+            if (authIdProvider.equals(AuthIdProvider.GOOGLE)) {
                 return getGoogleAuthId(details);
-            } else if (authorizationServer.equals(AuthorizationServer.FACEBOOK)) {
+            } else if (authIdProvider.equals(AuthIdProvider.FACEBOOK)) {
                 return getFacebookAuthId(details);
             }
         } else if (user instanceof UsernamePasswordAuthenticationToken) {
@@ -101,11 +101,11 @@ public class ProfileService {
     }
 
     public String getGoogleAuthId(Map<String, Object> details) {
-        return AuthorizationServer.GOOGLE + "^" + details.get("sub");
+        return AuthIdProvider.GOOGLE + AuthIdProvider.sepparator + details.get("sub");
     }
 
     public String getFacebookAuthId(Map<String, Object> details) {
-        return AuthorizationServer.FACEBOOK + "^" + details.get("id");
+        return AuthIdProvider.FACEBOOK + AuthIdProvider.sepparator + details.get("id");
     }
 
     public void storeInSession(Profile profile) {
@@ -120,10 +120,10 @@ public class ProfileService {
         Profile profile = null;
         if (user instanceof OAuth2Authentication) {
             Map<String, Object> details = (Map<String, Object>) ((OAuth2Authentication) user).getUserAuthentication().getDetails();
-            AuthorizationServer authorizationServer = (AuthorizationServer) details.get(AuthorizationServer.key);
-            if (authorizationServer == AuthorizationServer.GOOGLE) {
+            AuthIdProvider authIdProvider = (AuthIdProvider) details.get(AuthIdProvider.key);
+            if (authIdProvider == AuthIdProvider.GOOGLE) {
                 profile = createProfileGoogle(details, authId);
-            } else if (authorizationServer == AuthorizationServer.FACEBOOK) {
+            } else if (authIdProvider == AuthIdProvider.FACEBOOK) {
                 profile = createProfileFacebook(details, authId);
             }
         } else if (user instanceof UsernamePasswordAuthenticationToken) {

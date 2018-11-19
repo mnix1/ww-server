@@ -3,6 +3,7 @@ package com.ww.model.entity.inside.social;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,9 +28,10 @@ public class Auto {
         this.password = password;
         this.admin = admin;
     }
-    public Auto(String username, String password) {
+
+    public Auto(String username, BCryptPasswordEncoder encoder) {
         this.username = username;
-        this.password = password;
+        this.password = encoder.encode("1" + username + "auto");
         this.auto = true;
     }
 }

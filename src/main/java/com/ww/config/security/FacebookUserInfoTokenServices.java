@@ -16,7 +16,7 @@ public class FacebookUserInfoTokenServices extends UserInfoTokenServices {
     public OAuth2Authentication loadAuthentication(String accessToken)
             throws AuthenticationException, InvalidTokenException {
         OAuth2Authentication authentication = super.loadAuthentication(accessToken);
-        ((Map) authentication.getUserAuthentication().getDetails()).put(AuthorizationServer.key, AuthorizationServer.FACEBOOK);
+        ((Map) authentication.getUserAuthentication().getDetails()).put(AuthIdProvider.key, AuthIdProvider.FACEBOOK);
         return authentication;
     }
 }
