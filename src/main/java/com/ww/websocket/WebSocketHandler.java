@@ -1,14 +1,14 @@
 package com.ww.websocket;
 
+import com.ww.model.container.Connection;
 import com.ww.model.container.ProfileConnection;
 import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.rival.global.RivalMessageService;
-import com.ww.service.social.ProfileConnectionService;
+import com.ww.service.social.ConnectionService;
 import com.ww.websocket.message.Message;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -22,7 +22,7 @@ import java.util.Optional;
 public class WebSocketHandler extends TextWebSocketHandler {
     private static Logger logger = LoggerFactory.getLogger(WebSocketHandler.class);
 
-    private final ProfileConnectionService profileConnectionService;
+    private final ConnectionService connectionService;
     private final RivalMessageService rivalMessageService;
     private final RivalGlobalService rivalGlobalService;
 
@@ -34,20 +34,20 @@ public class WebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         logger.debug(String.format("Session %s closed because of %s", session.getId(), status.getReason()));
-        Optional<ProfileConnection> optionalProfileConnection = profileConnectionService.findBySessionId(session.getId());
+        Optional<Connection> optionalProfileConnection = connectionService.findBySessionId(session.getId());
         if (!optionalProfileConnection.isPresent()) {
             return;
         }
-        ProfileConnection profileConnection = optionalProfileConnection.get();
-        profileConnectionService.deleteConnection(profileConnection);
-        profileConnectionService.sendFriendConnectionChanged(profileConnection.getProfileTag(), Message.FRIEND_SIGN_OUT);
+        Connection profileConnection = optionalProfileConnection.get();
+        connectionService.deleteConnection(profileConnection);
+        connectionService.sendFriendConnectionChanged(profileConnection.getProfileTag(), Message.FRIEND_SIGN_OUT);
     }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
         logger.debug("Connected: sessionId: " + session.getId());
-        ProfileConnection profileConnection = profileConnectionService.newConnection(session);
-        profileConnectionService.sendFriendConnectionChanged(profileConnection.getProfileTag(), Message.FRIEND_SIGN_IN);
+        ProfileConnection profileConnection = connectionService.newProfileConnection(session);
+        connectionService.sendFriendConnectionChanged(profileConnection.getProfileTag(), Message.FRIEND_SIGN_IN);
         rivalGlobalService.sendActualRivalModelToNewProfileConnection(profileConnection);
     }
 

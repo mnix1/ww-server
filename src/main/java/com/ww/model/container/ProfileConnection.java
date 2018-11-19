@@ -10,8 +10,7 @@ import org.springframework.web.socket.WebSocketSession;
 import java.io.IOException;
 
 @Getter
-@Setter
-public class ProfileConnection {
+public class ProfileConnection implements Connection{
     private static final Logger logger = LoggerFactory.getLogger(ProfileConnection.class);
 
     private Long profileId;
@@ -36,20 +35,18 @@ public class ProfileConnection {
         }
     }
 
-    public boolean sendMessage(String msg) {
+    public void sendMessage(String msg) {
         try {
 //            logger.trace("Send message to {}: {}", profileId, msg);
             webSocketSession.sendMessage(new TextMessage(msg));
-            return true;
         } catch (Exception e) {
             logger.error("Error on websocket sending to {}: {}", profileId, msg);
-            return false;
         }
     }
 
     @Override
     public boolean equals(Object obj) {
-        return profileId.equals(((ProfileConnection) obj).profileId);
+        return getProfileId().equals(((Connection) obj).getProfileId());
     }
 
 }

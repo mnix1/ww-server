@@ -12,7 +12,6 @@ import com.ww.repository.outside.social.ProfileMailRepository;
 import com.ww.websocket.message.MessageDTO;
 import lombok.AllArgsConstructor;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -28,7 +27,7 @@ import static com.ww.websocket.message.Message.NEW_MAIL;
 @AllArgsConstructor
 public class MailService {
     private final ProfileService profileService;
-    private final ProfileConnectionService profileConnectionService;
+    private final ConnectionService connectionService;
     private final ProfileMailRepository profileMailRepository;
 
     public List<ProfileMailDTO> list() {
@@ -41,7 +40,7 @@ public class MailService {
 
     public void sendNewMailMessage(List<ProfileMail> mails) {
         for (ProfileMail mail : mails) {
-            profileConnectionService.sendMessage(mail.getProfile().getId(), new MessageDTO(NEW_MAIL, "").toString());
+            connectionService.sendMessage(mail.getProfile().getId(), new MessageDTO(NEW_MAIL, "").toString());
         }
     }
 

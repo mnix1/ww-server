@@ -23,7 +23,7 @@ import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.rival.task.TaskService;
 import com.ww.service.rival.war.RivalWarService;
-import com.ww.service.social.ProfileConnectionService;
+import com.ww.service.social.ConnectionService;
 import com.ww.service.social.ProfileService;
 import com.ww.service.social.RewardService;
 import com.ww.service.wisie.ProfileWisieService;
@@ -42,8 +42,8 @@ public class RivalCampaignWarService extends RivalWarService {
 
     private final CampaignService campaignService;
 
-    public RivalCampaignWarService(ProfileConnectionService profileConnectionService, TaskGenerateService taskGenerateService, TaskRendererService taskRendererService, RewardService rewardService, RivalSeasonService rivalSeasonService, ProfileService profileService, RivalGlobalService rivalGlobalService, RivalProfileSeasonService rivalProfileSeasonService, ProfileWisieService profileWisieService, TaskService taskService, CampaignService campaignService) {
-        super(profileConnectionService, taskGenerateService, taskRendererService, rewardService, rivalSeasonService, profileService, rivalGlobalService, rivalProfileSeasonService, profileWisieService, taskService);
+    public RivalCampaignWarService(ConnectionService connectionService, TaskGenerateService taskGenerateService, TaskRendererService taskRendererService, RewardService rewardService, RivalSeasonService rivalSeasonService, ProfileService profileService, RivalGlobalService rivalGlobalService, RivalProfileSeasonService rivalProfileSeasonService, ProfileWisieService profileWisieService, TaskService taskService, CampaignService campaignService) {
+        super(connectionService, taskGenerateService, taskRendererService, rewardService, rivalSeasonService, profileService, rivalGlobalService, rivalProfileSeasonService, profileWisieService, taskService);
         this.campaignService = campaignService;
     }
 

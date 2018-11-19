@@ -8,7 +8,6 @@ import com.ww.service.book.BookService;
 import com.ww.service.book.ProfileBookService;
 import com.ww.websocket.message.Message;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -18,7 +17,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class RewardService {
     private final ProfileService profileService;
-    private final ProfileConnectionService profileConnectionService;
+    private final ConnectionService connectionService;
     private final BookService bookService;
     private final ProfileBookService profileBookService;
 
@@ -34,7 +33,7 @@ public class RewardService {
         }
         Map<String, Object> model = new HashMap<>();
         reward.writeToMap(model);
-        profileConnectionService.send(profile.getId(), model, Message.REWARD);
+        connectionService.send(profile.getId(), model, Message.REWARD);
     }
 
 //    public void addRewardFromSeason(Profile profile, Grade grade) {

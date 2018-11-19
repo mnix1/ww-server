@@ -27,7 +27,7 @@ import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.rival.task.TaskService;
 import com.ww.service.rival.war.RivalWarService;
-import com.ww.service.social.ProfileConnectionService;
+import com.ww.service.social.ConnectionService;
 import com.ww.service.social.ProfileService;
 import com.ww.service.social.RewardService;
 import com.ww.service.wisie.ProfileWisieService;
@@ -48,8 +48,8 @@ public class RivalChallengeService extends RivalWarService {
     private final ChallengeCloseService challengeCloseService;
     private final ChallengePhaseWisieRepository challengePhaseWisieRepository;
 
-    public RivalChallengeService(ProfileConnectionService profileConnectionService, TaskGenerateService taskGenerateService, TaskRendererService taskRendererService, RewardService rewardService, RivalSeasonService rivalSeasonService, ProfileService profileService, RivalGlobalService rivalGlobalService, RivalProfileSeasonService rivalProfileSeasonService, ProfileWisieService profileWisieService, TaskService taskService, ChallengeProfileRepository challengeProfileRepository, ChallengePhaseRepository challengePhaseRepository, ChallengeCloseService challengeCloseService, ChallengePhaseWisieRepository challengePhaseWisieRepository) {
-        super(profileConnectionService, taskGenerateService, taskRendererService, rewardService, rivalSeasonService, profileService, rivalGlobalService, rivalProfileSeasonService, profileWisieService, taskService);
+    public RivalChallengeService(ConnectionService connectionService, TaskGenerateService taskGenerateService, TaskRendererService taskRendererService, RewardService rewardService, RivalSeasonService rivalSeasonService, ProfileService profileService, RivalGlobalService rivalGlobalService, RivalProfileSeasonService rivalProfileSeasonService, ProfileWisieService profileWisieService, TaskService taskService, ChallengeProfileRepository challengeProfileRepository, ChallengePhaseRepository challengePhaseRepository, ChallengeCloseService challengeCloseService, ChallengePhaseWisieRepository challengePhaseWisieRepository) {
+        super(connectionService, taskGenerateService, taskRendererService, rewardService, rivalSeasonService, profileService, rivalGlobalService, rivalProfileSeasonService, profileWisieService, taskService);
         this.challengeProfileRepository = challengeProfileRepository;
         this.challengePhaseRepository = challengePhaseRepository;
         this.challengeCloseService = challengeCloseService;

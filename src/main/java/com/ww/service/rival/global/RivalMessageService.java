@@ -1,9 +1,10 @@
 package com.ww.service.rival.global;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ww.model.container.Connection;
 import com.ww.model.container.ProfileConnection;
 import com.ww.game.play.PlayManager;
-import com.ww.service.social.ProfileConnectionService;
+import com.ww.service.social.ConnectionService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +34,7 @@ public class RivalMessageService {
     public static final String COVERALL = "COVERALL";
     public static final String CHANGE_TASK = "CHANGE_TASK";
 
-    private final ProfileConnectionService profileConnectionService;
+    private final ConnectionService connectionService;
     private final RivalGlobalService rivalGlobalService;
 
     public Map<String, Object> handleInput(String content) {
@@ -48,11 +49,11 @@ public class RivalMessageService {
 
     public void handleMessage(String sessionId, String message) {
         logger.trace("Message received sessionId: {}, content: {}", sessionId, message);
-        Optional<ProfileConnection> optionalProfileConnection = profileConnectionService.findBySessionId(sessionId);
-        if (!optionalProfileConnection.isPresent()) {
+        Optional<Connection> optionalConnection = connectionService.findBySessionId(sessionId);
+        if (!optionalConnection.isPresent()) {
             return;
         }
-        Long profileId = optionalProfileConnection.get().getProfileId();
+        Long profileId = optionalConnection.get().getProfileId();
         if (!rivalGlobalService.contains(profileId)) {
             return;
         }

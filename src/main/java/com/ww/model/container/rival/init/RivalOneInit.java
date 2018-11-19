@@ -8,16 +8,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
-@NoArgsConstructor
 @Getter
-@Setter
 public class RivalOneInit implements RivalInit {
     private RivalType type;
     private RivalImportance importance;
     private Profile creatorProfile;
+    private Instant date = Instant.now();
 
     public RivalOneInit(RivalType type, RivalImportance importance, Profile creatorProfile) {
         this.type = type;

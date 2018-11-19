@@ -1,10 +1,11 @@
 package com.ww.service.rival.init;
 
+import com.ww.model.container.Connection;
 import com.ww.model.container.ProfileConnection;
 import com.ww.model.container.rival.init.RivalOneInit;
 import com.ww.model.container.rival.init.RivalTwoInit;
 import com.ww.model.entity.outside.social.Profile;
-import com.ww.service.social.ProfileConnectionService;
+import com.ww.service.social.ConnectionService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +22,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class RivalInitRandomOpponentJobService {
     private static final Logger logger = LoggerFactory.getLogger(RivalInitRandomOpponentJobService.class);
-    private static final int RIVAL_INIT_JOB_RATE = 2000;
+    public static final int RIVAL_INIT_JOB_RATE = 2000;
 
-    private final ProfileConnectionService profileConnectionService;
+    private final ConnectionService connectionService;
     private final RivalRunService rivalRunService;
     private final RivalInitRandomOpponentService rivalInitRandomOpponentService;
 
@@ -41,8 +42,8 @@ public class RivalInitRandomOpponentJobService {
         Collection<RivalOneInit> waitingContainers = waitingForRivalProfiles.values();
         RivalOneInit waitingContainer = waitingContainers.stream().findFirst().get();
         Profile profile = waitingContainer.getCreatorProfile();
-        Optional<ProfileConnection> profileConnection = profileConnectionService.findByProfileId(profile.getId());
-        if (!profileConnection.isPresent()) {
+        Optional<Connection> optionalConnection = connectionService.findByProfileId(profile.getId());
+        if (!optionalConnection.isPresent()) {
             waitingForRivalProfiles.remove(profile.getId());
             maybeInitRival();
             return;
@@ -57,8 +58,8 @@ public class RivalInitRandomOpponentJobService {
             return;
         }
         Profile opponent = findOpponentForRival(availableOpponentProfiles, waitingContainer.getCreatorProfile());
-        Optional<ProfileConnection> opponentConnection = profileConnectionService.findByProfileId(opponent.getId());
-        if (!opponentConnection.isPresent()) {
+        Optional<Connection> optionalOpponentConnection = connectionService.findByProfileId(opponent.getId());
+        if (!optionalOpponentConnection.isPresent()) {
             waitingForRivalProfiles.remove(opponent.getId());
             maybeInitRival();
             return;

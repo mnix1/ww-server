@@ -9,11 +9,13 @@ import com.ww.service.social.ProfileService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.ww.helper.ModelHelper.putErrorCode;
 import static com.ww.helper.ModelHelper.putSuccessCode;
+import static com.ww.service.rival.init.RivalInitRandomOpponentJobService.RIVAL_INIT_JOB_RATE;
 
 @Service
 @AllArgsConstructor
@@ -49,8 +51,19 @@ public class RivalInitRandomOpponentService {
         waitingForRivalProfiles.remove(profileId);
     }
 
-    public Map<Long, RivalOneInit> getWaitingForRivalProfiles(){
+    public Map<Long, RivalOneInit> getWaitingForRivalProfiles() {
         return waitingForRivalProfiles;
+    }
+
+    public Optional<RivalOneInit> maybeGetRivalInitWaitingLong() {
+        if (waitingForRivalProfiles.size() != 1) {
+            return Optional.empty();
+        }
+        RivalOneInit onlyRivalOneInit = waitingForRivalProfiles.values().iterator().next();
+        if (Instant.now().toEpochMilli() - onlyRivalOneInit.getDate().toEpochMilli() > RIVAL_INIT_JOB_RATE * 2) {
+            return Optional.of(onlyRivalOneInit);
+        }
+        return Optional.empty();
     }
 
 }

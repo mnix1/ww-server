@@ -8,17 +8,16 @@ import com.ww.service.rival.season.RivalProfileSeasonService;
 import com.ww.service.rival.season.RivalSeasonService;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
-import com.ww.service.social.ProfileConnectionService;
+import com.ww.service.social.ConnectionService;
 import com.ww.service.social.ProfileService;
 import com.ww.service.social.RewardService;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RivalBattleService extends RivalService {
 
-    public RivalBattleService(ProfileConnectionService profileConnectionService, TaskGenerateService taskGenerateService, TaskRendererService taskRendererService, RewardService rewardService, RivalSeasonService rivalSeasonService, ProfileService profileService, RivalGlobalService rivalGlobalService, RivalProfileSeasonService rivalProfileSeasonService) {
-        super(profileConnectionService, taskGenerateService, taskRendererService, rewardService, rivalSeasonService, profileService, rivalGlobalService, rivalProfileSeasonService);
+    public RivalBattleService(ConnectionService connectionService, TaskGenerateService taskGenerateService, TaskRendererService taskRendererService, RewardService rewardService, RivalSeasonService rivalSeasonService, ProfileService profileService, RivalGlobalService rivalGlobalService, RivalProfileSeasonService rivalProfileSeasonService) {
+        super(connectionService, taskGenerateService, taskRendererService, rewardService, rivalSeasonService, profileService, rivalGlobalService, rivalProfileSeasonService);
     }
 
     @Override

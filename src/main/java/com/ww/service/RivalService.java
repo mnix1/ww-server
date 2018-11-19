@@ -2,7 +2,6 @@ package com.ww.service;
 
 import com.ww.game.play.PlayManager;
 import com.ww.game.play.container.PlayContainer;
-import com.ww.game.replay.Replay;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.DifficultyLevel;
@@ -15,7 +14,7 @@ import com.ww.service.rival.season.RivalProfileSeasonService;
 import com.ww.service.rival.season.RivalSeasonService;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
-import com.ww.service.social.ProfileConnectionService;
+import com.ww.service.social.ConnectionService;
 import com.ww.service.social.ProfileService;
 import com.ww.service.social.RewardService;
 import lombok.AllArgsConstructor;
@@ -27,7 +26,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class RivalService {
 
-    private final ProfileConnectionService profileConnectionService;
+    private final ConnectionService connectionService;
     private final TaskGenerateService taskGenerateService;
     private final TaskRendererService taskRendererService;
     private final RewardService rewardService;

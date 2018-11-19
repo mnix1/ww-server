@@ -11,7 +11,6 @@ import com.ww.websocket.message.MessageDTO;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +31,7 @@ public class FriendService {
     private final ProfileFriendRepository profileFriendRepository;
     private final ProfileRepository profileRepository;
     private final ProfileService profileService;
-    private final ProfileConnectionService profileConnectionService;
+    private final ConnectionService connectionService;
 
     public Map<String, Object> add(String tag) {
         return add(profileService.getProfileId(), tag);
@@ -87,11 +86,11 @@ public class FriendService {
 
     public void sendWebSocketFriendAdd(ProfileFriend profileFriend) {
         FriendDTOExtended friendDTO = new FriendDTOExtended(profileFriend.getFriendProfile(), profileFriend.getStatus(), profileFriend.getStatus() == FriendStatus.ACCEPTED ? true : null);
-        profileConnectionService.sendMessage(profileFriend.getProfile().getId(), new MessageDTO(Message.FRIEND_ADD, friendDTO.toString()).toString());
+        connectionService.sendMessage(profileFriend.getProfile().getId(), new MessageDTO(Message.FRIEND_ADD, friendDTO.toString()).toString());
     }
 
     public void sendWebSocketFriendDelete(Long profileId, String tag) {
-        profileConnectionService.sendMessage(profileId, new MessageDTO(Message.FRIEND_DELETE, tag).toString());
+        connectionService.sendMessage(profileId, new MessageDTO(Message.FRIEND_DELETE, tag).toString());
     }
 
     public List<FriendDTOExtended> list() {
@@ -100,7 +99,7 @@ public class FriendService {
                 .map(profileFriend -> {
                     Boolean isOnline = null;
                     if (profileFriend.getStatus() == FriendStatus.ACCEPTED) {
-                        isOnline = profileConnectionService.findByProfileId(profileFriend.getFriendProfile().getId()).isPresent();
+                        isOnline = connectionService.findByProfileId(profileFriend.getFriendProfile().getId()).isPresent();
                     }
                     return new FriendDTOExtended(profileFriend, isOnline);
                 })

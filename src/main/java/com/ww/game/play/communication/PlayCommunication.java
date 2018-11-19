@@ -3,14 +3,9 @@ package com.ww.game.play.communication;
 import com.ww.game.play.PlayManager;
 import com.ww.game.play.action.*;
 import com.ww.game.play.container.PlayContainer;
-import com.ww.model.container.rival.RivalTeam;
-import com.ww.service.social.ProfileConnectionService;
+import com.ww.service.social.ConnectionService;
 import com.ww.websocket.message.Message;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -52,8 +47,8 @@ public class PlayCommunication {
     }
 
     public void send(Long profileId, Map<String, Object> model) {
-        ProfileConnectionService profileConnectionService = manager.getProfileConnectionService();
-        profileConnectionService.send(profileId, model, Message.RIVAL_CONTENT);
+        ConnectionService connectionService = manager.getProfileConnectionService();
+        connectionService.send(profileId, model, Message.RIVAL_CONTENT);
     }
 
     public void sendModelFromBeginning(Long profileId) {

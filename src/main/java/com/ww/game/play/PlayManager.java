@@ -5,7 +5,7 @@ import com.ww.game.play.container.PlayContainer;
 import com.ww.game.play.flow.PlayFlow;
 import com.ww.model.container.rival.*;
 import com.ww.service.RivalService;
-import com.ww.service.social.ProfileConnectionService;
+import com.ww.service.social.ConnectionService;
 import lombok.Getter;
 
 import java.util.Map;
@@ -38,8 +38,8 @@ public abstract class PlayManager {
         return new RivalResult();
     }
 
-    public ProfileConnectionService getProfileConnectionService() {
-        return service.getProfileConnectionService();
+    public ConnectionService getProfileConnectionService() {
+        return service.getConnectionService();
     }
 
     public void sendModelFromBeginning(Long profileId) {

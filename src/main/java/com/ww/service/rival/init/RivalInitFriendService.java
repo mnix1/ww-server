@@ -5,12 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.constant.social.FriendStatus;
+import com.ww.model.container.Connection;
 import com.ww.model.container.ProfileConnection;
 import com.ww.model.container.rival.init.RivalTwoInit;
 import com.ww.model.dto.social.FriendDTOExtended;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.rival.global.RivalGlobalService;
-import com.ww.service.social.ProfileConnectionService;
+import com.ww.service.social.ConnectionService;
 import com.ww.service.social.ProfileService;
 import com.ww.websocket.message.Message;
 import com.ww.websocket.message.MessageDTO;
@@ -35,7 +36,7 @@ public class RivalInitFriendService {
     private static final List<RivalTwoInit> waitingForActionProfiles = new CopyOnWriteArrayList<>();
 
     private final ProfileService profileService;
-    private final ProfileConnectionService profileConnectionService;
+    private final ConnectionService connectionService;
     private final RivalRunService rivalRunService;
     private final RivalInitRandomOpponentService rivalInitRandomOpponentService;
     private final RivalGlobalService rivalGlobalService;
@@ -102,8 +103,8 @@ public class RivalInitFriendService {
 
     private RivalTwoInit prepareContainer(Profile opponentProfile, RivalType type) {
         Profile creatorProfile = profileService.getProfile();
-        ProfileConnection opponentProfileConnection = profileConnectionService.findByProfileId(opponentProfile.getId()).orElseGet(null);
-        if (opponentProfileConnection == null) {
+        Connection opponentConnection = connectionService.findByProfileId(opponentProfile.getId()).orElseGet(null);
+        if (opponentConnection == null) {
             logger.error("Not connected profile with tag: {}, sessionProfileId: {}", opponentProfile.getTag(), profileService.getProfileId());
             return null;
         }
@@ -113,7 +114,7 @@ public class RivalInitFriendService {
     }
 
     private void sendInvite(RivalTwoInit rivalInitContainer) {
-        profileConnectionService.findByProfileId(rivalInitContainer.getOpponentProfile().getId()).ifPresent(profileConnection -> {
+        connectionService.findByProfileId(rivalInitContainer.getOpponentProfile().getId()).ifPresent(profileConnection -> {
             FriendDTOExtended friendDTO = new FriendDTOExtended(rivalInitContainer.getCreatorProfile(), FriendStatus.ACCEPTED, true);
             Map<String, Object> model = new HashMap<>();
             model.put("friend", friendDTO);
@@ -129,19 +130,19 @@ public class RivalInitFriendService {
     }
 
     private void sendCancelInvite(RivalTwoInit rivalInitContainer) {
-        profileConnectionService.findByProfileId(rivalInitContainer.getOpponentProfile().getId()).ifPresent(profileConnection -> {
+        connectionService.findByProfileId(rivalInitContainer.getOpponentProfile().getId()).ifPresent(profileConnection -> {
             profileConnection.sendMessage(new MessageDTO(Message.RIVAL_CANCEL_INVITE, "").toString());
         });
     }
 
     private void sendRejectInvite(RivalTwoInit rivalInitContainer) {
-        profileConnectionService.findByProfileId(rivalInitContainer.getCreatorProfile().getId()).ifPresent(profileConnection -> {
+        connectionService.findByProfileId(rivalInitContainer.getCreatorProfile().getId()).ifPresent(profileConnection -> {
             profileConnection.sendMessage(new MessageDTO(Message.RIVAL_REJECT_INVITE, "").toString());
         });
     }
 
     private void sendAcceptInvite(RivalTwoInit rivalInitContainer) {
-        profileConnectionService.findByProfileId(rivalInitContainer.getCreatorProfile().getId()).ifPresent(profileConnection -> {
+        connectionService.findByProfileId(rivalInitContainer.getCreatorProfile().getId()).ifPresent(profileConnection -> {
             profileConnection.sendMessage(new MessageDTO(Message.RIVAL_ACCEPT_INVITE, rivalInitContainer.getType().name()).toString());
         });
     }

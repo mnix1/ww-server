@@ -5,7 +5,7 @@ import com.ww.game.replay.Replay;
 import com.ww.helper.CompressHelper;
 import com.ww.model.entity.outside.rival.Rival;
 import com.ww.repository.outside.rival.RivalRepository;
-import com.ww.service.social.ProfileConnectionService;
+import com.ww.service.social.ConnectionService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Service;
@@ -17,14 +17,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.emptyMap;
-
 @Service
 @Getter
 @AllArgsConstructor
 public class ReplayService {
 
-    private final ProfileConnectionService profileConnectionService;
+    private final ConnectionService connectionService;
     private final RivalRepository rivalRepository;
 
     public void replay(Long rivalId, Long perspectiveProfileId, Long targetProfileId) {
@@ -33,7 +31,7 @@ public class ReplayService {
             return;
         }
         Rival rival = optionalRival.get();
-        new Replay(profileConnectionService, prepareModels(rival, perspectiveProfileId), targetProfileId).play();
+        new Replay(connectionService, prepareModels(rival, perspectiveProfileId), targetProfileId).play();
     }
 
     private List prepareModels(Rival rival, Long profileId) {
