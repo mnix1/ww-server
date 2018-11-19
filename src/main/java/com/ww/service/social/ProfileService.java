@@ -1,5 +1,6 @@
 package com.ww.service.social;
 
+import com.ww.config.security.AuthorizationServer;
 import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.constant.wisie.WisorType;
@@ -88,8 +89,8 @@ public class ProfileService {
             return null;
         }
         if (user instanceof OAuth2Authentication) {
-            Map<String, String> details = (Map<String, String>) ((OAuth2Authentication) user).getUserAuthentication().getDetails();
-            return details.get("sub");
+            Map<String, Object> details = (Map<String, Object>) ((OAuth2Authentication) user).getUserAuthentication().getDetails();
+            return details.get(AuthorizationServer.key) + "^" +details.get("sub");
         } else if (user instanceof UsernamePasswordAuthenticationToken) {
             return ((User) ((UsernamePasswordAuthenticationToken) user).getPrincipal()).getUsername();
         }
