@@ -29,9 +29,9 @@ public class ProfileWisieEvolutionService {
     @Autowired
     private ProfileWisieService profileWisieService;
 
-    public synchronized Map<String, Object> upgradeAttribute(Long profileWisieId, WisdomAttribute wisdomAttribute, MentalAttribute mentalAttribute) {
+    public synchronized Map<String, Object> upgradeAttribute(Long profileWisieId, Long profileId, WisdomAttribute wisdomAttribute, MentalAttribute mentalAttribute) {
         Map<String, Object> model = new HashMap<>();
-        Profile profile = profileService.getProfile();
+        Profile profile = profileService.getProfile(profileId);
         if (wisdomAttribute != null && profile.hasEnoughResources(WisdomAttribute.UPGRADE_COST)) {
             profile.subtractResources(WisdomAttribute.UPGRADE_COST);
         } else if (mentalAttribute != null && profile.hasEnoughResources(MentalAttribute.UPGRADE_COST)) {

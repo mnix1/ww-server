@@ -5,6 +5,8 @@ import com.ww.model.container.AutoProfileConnection;
 import com.ww.model.container.Connection;
 import com.ww.model.container.rival.init.RivalOneInit;
 import com.ww.model.entity.outside.social.Profile;
+import com.ww.service.auto.command.AutoManageBooksService;
+import com.ww.service.auto.command.AutoUpgradeWisiesService;
 import com.ww.service.rival.init.RivalInitRandomOpponentService;
 import com.ww.service.social.ConnectionService;
 import lombok.AllArgsConstructor;
@@ -22,6 +24,8 @@ public class AutoService {
     private final AutoProfileService autoProfileService;
     private final ConnectionService connectionService;
     private final RivalInitRandomOpponentService rivalInitRandomOpponentService;
+    private final AutoManageBooksService autoManageBooksService;
+    private final AutoUpgradeWisiesService autoUpgradeWisiesService;
 
     public Optional<AutoManager> createAutoManager() {
         Optional<Profile> optionalProfile = autoProfileService.getNotLoggedAutoProfile();
@@ -53,6 +57,14 @@ public class AutoService {
 
     public Optional<RivalOneInit> maybeNeedStartRival() {
         return rivalInitRandomOpponentService.maybeGetRivalInitWaitingLong();
+    }
+
+    public void manageBooks(Profile profile){
+        autoManageBooksService.manage(profile);
+    }
+
+    public void upgradeWisies(Profile profile){
+        autoUpgradeWisiesService.upgrade(profile);
     }
 
 }

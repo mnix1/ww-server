@@ -2,6 +2,7 @@ package com.ww.controller;
 
 import com.ww.model.dto.book.ShopBookDTO;
 import com.ww.service.shop.ShopService;
+import com.ww.service.social.ProfileService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +19,7 @@ import java.util.Map;
 public class ShopController {
 
     private final ShopService shopService;
+    private final ProfileService profileService;
 
     @RequestMapping(value = "/listBook", method = RequestMethod.GET)
     public List<ShopBookDTO> listBook() {
@@ -30,6 +32,6 @@ public class ShopController {
             throw new IllegalArgumentException();
         }
         Long bookId = ((Integer) payload.get("id")).longValue();
-        return shopService.buyBook(bookId);
+        return shopService.buyBook(bookId, profileService.getProfileId());
     }
 }

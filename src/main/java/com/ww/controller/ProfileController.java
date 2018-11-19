@@ -65,7 +65,7 @@ public class ProfileController {
             throw new IllegalArgumentException();
         }
         Long profileBookId = ((Integer) payload.get("id")).longValue();
-        return profileBookService.startReadBook(profileBookId);
+        return profileBookService.startReadBook(profileBookId, profileService.getProfileId());
     }
 
     @RequestMapping(value = "/stopReadBook", method = RequestMethod.POST)
@@ -92,7 +92,7 @@ public class ProfileController {
             throw new IllegalArgumentException();
         }
         Long profileBookId = ((Integer) payload.get("id")).longValue();
-        return profileBookService.claimRewardBook(profileBookId);
+        return profileBookService.claimRewardBook(profileBookId, profileService.getProfileId());
     }
 
     @RequestMapping(value = "/speedUpBook", method = RequestMethod.POST)

@@ -9,7 +9,6 @@ import com.ww.model.entity.outside.social.Profile;
 import com.ww.repository.outside.book.ProfileBookRepository;
 import com.ww.service.social.ProfileService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,27 +26,30 @@ import static com.ww.service.book.BookService.BOOK_SHELF_COUNT;
 @AllArgsConstructor
 public class ProfileBookService {
 
-    private final  ProfileService profileService;
-    private final  ProfileBookRepository profileBookRepository;
-    private final  BookService bookService;
+    private final ProfileService profileService;
+    private final ProfileBookRepository profileBookRepository;
+    private final BookService bookService;
+
+    public List<ProfileBook> list(Long profileId){
+        return profileBookRepository.findByProfile_Id(profileId);
+    }
 
     public List<ProfileBookDTO> listBook() {
-        return profileService.getProfile().getBooks().stream()
+        return list(profileService.getProfileId()).stream()
                 .filter(profileBook -> !profileBook.isRewardClaimed())
                 .map(ProfileBookDTO::new)
                 .collect(Collectors.toList());
     }
 
-    public boolean checkIfProfileReadingBook(List<ProfileBook> profileBooks) {
-        return profileBooks.stream().noneMatch(profileBook -> profileBook.isInProgress() && !profileBook.canClaimReward());
+    public boolean readingInProgress(List<ProfileBook> profileBooks) {
+        return profileBooks.stream().anyMatch(profileBook -> profileBook.isInProgress() && !profileBook.canClaimReward());
     }
 
     @Transactional
-    public Map<String, Object> startReadBook(Long profileBookId) {
+    public Map<String, Object> startReadBook(Long profileBookId, Long profileId) {
         Map<String, Object> model = new HashMap<>();
-        List<ProfileBook> profileBooks = profileBookRepository.findByProfile_Id(profileService.getProfileId());
-        if (!checkIfProfileReadingBook(profileBooks)) {
-            //reading another book
+        List<ProfileBook> profileBooks = list(profileId);
+        if (readingInProgress(profileBooks)) {
             return putCode(model, -2);
         }
         Optional<ProfileBook> optionalProfileBook = profileBooks.stream().filter(profileBook -> profileBook.getId().equals(profileBookId)).findFirst();
@@ -88,13 +90,13 @@ public class ProfileBookService {
     }
 
     @Transactional
-    public Map<String, Object> claimRewardBook(Long profileBookId) {
+    public Map<String, Object> claimRewardBook(Long profileBookId, Long profileId) {
         Map<String, Object> model = new HashMap<>();
-        Optional<ProfileBook> optionalProfileChest = profileBookRepository.findByIdAndProfile_Id(profileBookId, profileService.getProfileId());
-        if (!optionalProfileChest.isPresent()) {
+        Optional<ProfileBook> optionalProfileBook = profileBookRepository.findByIdAndProfile_Id(profileBookId, profileId);
+        if (!optionalProfileBook.isPresent()) {
             return putErrorCode(model);
         }
-        ProfileBook profileBook = optionalProfileChest.get();
+        ProfileBook profileBook = optionalProfileBook.get();
         if (!profileBook.canClaimReward()) {
             return putErrorCode(model);
         }

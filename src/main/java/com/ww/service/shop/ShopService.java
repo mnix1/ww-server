@@ -31,18 +31,21 @@ public class ShopService {
     private final BookRepository bookRepository;
 
     public List<ShopBookDTO> listBook() {
-        return bookRepository.findAllByCanBuyByCrystalOrCanBuyByGold(true, true).stream().map(ShopBookDTO::new).collect(Collectors.toList());
+        return list().stream().map(ShopBookDTO::new).collect(Collectors.toList());
+    }
+    public List<Book> list() {
+        return bookRepository.findAllByCanBuyByCrystalOrCanBuyByGold(true, true);
     }
 
     @Transactional
-    public Map<String, Object> buyBook(Long id) {
+    public Map<String, Object> buyBook(Long id, Long profileId) {
         Map<String, Object> model = new HashMap<>();
         Optional<Book> optionalBook = bookRepository.findOneById(id);
         if (!optionalBook.isPresent()) {
             return putErrorCode(model);
         }
         Book book = optionalBook.get();
-        Profile profile = profileService.getProfile();
+        Profile profile = profileService.getProfile(profileId);
         if (!profile.hasEnoughResources(book.getCostResources())) {
             return putCode(model, -3);//no resources
         }

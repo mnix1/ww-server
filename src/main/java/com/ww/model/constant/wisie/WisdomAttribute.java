@@ -1,6 +1,13 @@
 package com.ww.model.constant.wisie;
 
+import com.ww.model.constant.Category;
 import com.ww.model.container.Resources;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.ww.helper.RandomHelper.randomElement;
 
 public enum WisdomAttribute {
     MEMORY,
@@ -17,6 +24,10 @@ public enum WisdomAttribute {
         } catch (IllegalArgumentException e) {
             return null;
         }
+    }
+
+    public static WisdomAttribute random() {
+        return randomElement(Arrays.asList(values()));
     }
 
     public static Resources UPGRADE_COST = new Resources(null, null,1L);

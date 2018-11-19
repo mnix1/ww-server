@@ -3,6 +3,7 @@ package com.ww.controller;
 import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.dto.wisie.ProfileWisieDTO;
+import com.ww.service.social.ProfileService;
 import com.ww.service.wisie.ProfileWisieEvolutionService;
 import com.ww.service.wisie.ProfileWisieService;
 import lombok.AllArgsConstructor;
@@ -21,8 +22,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class WisieController {
 
-    private  ProfileWisieService profileWisieService;
-    private ProfileWisieEvolutionService profileWisieEvolutionService;
+    private final ProfileService profileService;
+    private final ProfileWisieService profileWisieService;
+    private final ProfileWisieEvolutionService profileWisieEvolutionService;
 
     @RequestMapping(value = "/experiment", method = RequestMethod.GET)
     public Map<String, Object> experiment() {
@@ -52,7 +54,7 @@ public class WisieController {
         Long profileWisieId = ((Integer) payload.get("id")).longValue();
         WisdomAttribute wisdomAttribute = WisdomAttribute.fromString(attribute);
         MentalAttribute mentalAttribute = MentalAttribute.fromString(attribute);
-        return profileWisieEvolutionService.upgradeAttribute(profileWisieId, wisdomAttribute, mentalAttribute);
+        return profileWisieEvolutionService.upgradeAttribute(profileWisieId, profileService.getProfileId(), wisdomAttribute, mentalAttribute);
     }
 
     @RequestMapping(value = "/changeHobby", method = RequestMethod.POST)
