@@ -2,13 +2,11 @@ package com.ww.service.social;
 
 import com.ww.config.security.AuthorizationServer;
 import com.ww.model.constant.Language;
-import com.ww.model.constant.rival.RivalType;
 import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.repository.outside.social.ProfileRepository;
 import com.ww.service.SessionService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -31,7 +29,7 @@ public class ProfileService {
     public static final int NAME_MAX_LENGTH = 20;
 
     private final ProfileRepository profileRepository;
-    private final   SessionService sessionService;
+    private final SessionService sessionService;
 
     public Profile getProfile() {
         return getProfile(sessionService.getProfileId());
@@ -90,14 +88,27 @@ public class ProfileService {
         }
         if (user instanceof OAuth2Authentication) {
             Map<String, Object> details = (Map<String, Object>) ((OAuth2Authentication) user).getUserAuthentication().getDetails();
-            return details.get(AuthorizationServer.key) + "^" +details.get("sub");
+            AuthorizationServer authorizationServer = (AuthorizationServer) details.get(AuthorizationServer.key);
+            if (authorizationServer.equals(AuthorizationServer.GOOGLE)) {
+                return getGoogleAuthId(details);
+            } else if (authorizationServer.equals(AuthorizationServer.FACEBOOK)) {
+                return getFacebookAuthId(details);
+            }
         } else if (user instanceof UsernamePasswordAuthenticationToken) {
             return ((User) ((UsernamePasswordAuthenticationToken) user).getPrincipal()).getUsername();
         }
         return null;
     }
 
-    public void storeInSession(Profile profile){
+    public String getGoogleAuthId(Map<String, Object> details) {
+        return AuthorizationServer.GOOGLE + "^" + details.get("sub");
+    }
+
+    public String getFacebookAuthId(Map<String, Object> details) {
+        return AuthorizationServer.FACEBOOK + "^" + details.get("id");
+    }
+
+    public void storeInSession(Profile profile) {
         sessionService.storeProfile(profile);
     }
 
@@ -108,14 +119,30 @@ public class ProfileService {
     public Profile createProfile(Principal user, String authId) {
         Profile profile = null;
         if (user instanceof OAuth2Authentication) {
-            Map<String, String> details = (Map<String, String>) ((OAuth2Authentication) user).getUserAuthentication().getDetails();
-            String name = details.get("name");
-            profile = new Profile(authId, name.substring(0, Math.min(name.length(), NAME_MAX_LENGTH)), Language.fromLocale(details.get("locale")));
+            Map<String, Object> details = (Map<String, Object>) ((OAuth2Authentication) user).getUserAuthentication().getDetails();
+            AuthorizationServer authorizationServer = (AuthorizationServer) details.get(AuthorizationServer.key);
+            if (authorizationServer == AuthorizationServer.GOOGLE) {
+                profile = createProfileGoogle(details, authId);
+            } else if (authorizationServer == AuthorizationServer.FACEBOOK) {
+                profile = createProfileFacebook(details, authId);
+            }
         } else if (user instanceof UsernamePasswordAuthenticationToken) {
-            profile = new Profile(authId, authId, Language.POLISH);
+            profile = new Profile(authId, authId, null, Language.POLISH);
         }
         profileRepository.save(profile);
         return profile;
+    }
+
+    public Profile createProfileGoogle(Map<String, Object> details, String authId) {
+        String name = (String) details.get("name");
+        name = name.substring(0, Math.min(name.length(), NAME_MAX_LENGTH));
+        return new Profile(authId, name, (String) details.get("email"), Language.fromLocale((String) details.get("locale")));
+    }
+
+    public Profile createProfileFacebook(Map<String, Object> details, String authId) {
+        String name = (String) details.get("name");
+        name = name.substring(0, Math.min(name.length(), NAME_MAX_LENGTH));
+        return new Profile(authId, name, (String) details.get("email"), Language.ENGLISH);
     }
 
     public void save(Profile profile) {

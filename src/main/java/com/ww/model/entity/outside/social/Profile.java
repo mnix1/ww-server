@@ -28,6 +28,7 @@ public class Profile {
     private Long id;
     private String authId;
     private String tag;
+    private String email;
     private String name;
     private WisorType wisorType;
     private Language language = Language.NONE;
@@ -49,10 +50,11 @@ public class Profile {
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
     private Set<ProfileBook> books = new HashSet<>();
 
-    public Profile(String authId, String name, Language language) {
+    public Profile(String authId, String name, String email, Language language) {
         this.tag = TagHelper.randomTag();
         this.name = name;
         this.authId = authId;
+        this.email = email;
         this.language = language;
         this.level = 0L;
         this.experience = 0L;

@@ -4,9 +4,7 @@ import com.ww.model.entity.outside.social.Profile;
 import com.ww.repository.outside.wisie.ProfileWisieRepository;
 import com.ww.service.social.FriendService;
 import com.ww.service.social.ProfileService;
-import com.ww.service.wisie.ProfileWisieService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,7 +47,7 @@ public class DevelopmentController {
     @RequestMapping(value = "/cleanProfile", method = RequestMethod.GET)
     public Map cleanProfile() {
         Profile profile = profileService.getProfile();
-        Profile newProfile = new Profile(profile.getAuthId(), profile.getName(), profile.getLanguage());
+        Profile newProfile = new Profile(profile.getAuthId(), profile.getName(), profile.getEmail(), profile.getLanguage());
         newProfile.setId(profile.getId());
         profileWisieRepository.deleteAll(profile.getWisies());
         profileService.save(newProfile);

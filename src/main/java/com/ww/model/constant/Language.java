@@ -7,7 +7,7 @@ public enum Language {
     NO_COMMON;
 
     public static Language fromLocale(String locale) {
-        if (locale.equals("pl")) {
+        if (locale.contains("pl")) {
             return POLISH;
         }
         return ENGLISH;

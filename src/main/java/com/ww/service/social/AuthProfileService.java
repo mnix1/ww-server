@@ -1,5 +1,7 @@
 package com.ww.service.social;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.config.security.Roles;
 import com.ww.model.constant.social.ProfileActionType;
 import com.ww.model.constant.wisie.WisieType;
@@ -39,7 +41,11 @@ public class AuthProfileService {
     @Transactional
     public ExtendedProfileResourcesDTO authProfile(Principal user) {
         String authId = profileService.getAuthId(user);
-        logger.trace("authProfile authId=" + authId + ", " + user.toString());
+        try {
+            logger.trace("authProfile authId=" + authId + ", string=" + user.toString() + ", json=" + new ObjectMapper().writeValueAsString(user));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         if (authId != null) {
             Profile profile = profileService.retrieveProfile(authId);
             ProfileAction profileAction;
