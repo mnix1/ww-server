@@ -49,6 +49,10 @@ public class WisieTeamMember extends TeamMember {
         content.decreaseAttributesByHalf();
     }
 
+    public void increaseAttributesByHalf() {
+        content.increaseAttributesByHalf();
+    }
+
     public void increaseWisdomAttributes(WarWisie source, double factor) {
         content.increaseWisdomAttributes(source, factor);
     }

@@ -88,6 +88,16 @@ public class WarWisie extends AbstractWisieAttributes {
         this.value = calculateValue();
     }
 
+    public void increaseAttributesByHalf() {
+        for (WisdomAttribute wisdomAttribute : WisdomAttribute.values()) {
+            setWisdomAttributeValue(wisdomAttribute, getWisdomAttributeValue(wisdomAttribute) * 2);
+        }
+        for (MentalAttribute mentalAttribute : MentalAttribute.values()) {
+            setMentalAttributeValue(mentalAttribute, getMentalAttributeValue(mentalAttribute) * 2);
+        }
+        this.value = calculateValue();
+    }
+
     public void increaseWisdomAttributes(WarWisie source, double factor) {
         for (WisdomAttribute wisdomAttribute : WisdomAttribute.values()) {
             double actualValue = getWisdomAttributeValue(wisdomAttribute);

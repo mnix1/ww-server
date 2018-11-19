@@ -3,6 +3,7 @@ package com.ww.game.play.state.skill.coverall;
 import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.command.MemberWisieAddDisguiseCommand;
 import com.ww.game.member.command.MemberWisieAddStatusCommand;
+import com.ww.game.member.command.MemberWisieIncreaseAttributesCommand;
 import com.ww.game.member.command.MemberWisieMaybeRunOuterFlowCommand;
 import com.ww.game.play.command.skill.PlaySkillBlockAllCommand;
 import com.ww.game.play.flow.skill.PlaySkillFlow;
@@ -16,6 +17,7 @@ import java.util.Map;
 
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelActiveMemberAddOns;
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelSkills;
+import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelTeams;
 
 public class PlaySkillCoverallState extends PlaySkillOpponentState {
     public PlaySkillCoverallState(PlaySkillFlow flow, MemberWisieManager manager, MemberWisieManager opponentManager) {
@@ -27,6 +29,7 @@ public class PlaySkillCoverallState extends PlaySkillOpponentState {
         commands.add(new MemberWisieAddStatusCommand(manager, MemberWisieStatus.COVERALL_READY));
         commands.add(new PlaySkillBlockAllCommand(opponentWarTeam));
         commands.add(new MemberWisieAddDisguiseCommand(manager, DisguiseType.COVERALL));
+        commands.add(new MemberWisieIncreaseAttributesCommand(manager));
         commands.add(new MemberWisieMaybeRunOuterFlowCommand(opponentManager));
     }
 
@@ -35,6 +38,7 @@ public class PlaySkillCoverallState extends PlaySkillOpponentState {
         Map<String, Object> model = super.prepareModel(warTeam, team, opponentTeam);
         fillModelSkills(model, (WarTeam) team, (WarTeam) opponentTeam);
         fillModelActiveMemberAddOns(model, warTeam, (WarTeam) team, (WarTeam) opponentTeam);
+        fillModelTeams(model, warTeam, (WarTeam) team, (WarTeam) opponentTeam);
         return model;
     }
 
