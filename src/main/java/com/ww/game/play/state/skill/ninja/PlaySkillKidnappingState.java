@@ -19,12 +19,6 @@ import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelSkills;
 import static com.ww.helper.RandomHelper.randomDouble;
 
 public class PlaySkillKidnappingState extends PlaySkillOpponentState {
-    private double skillValue;
-    private double value;
-    private double skillOpponentValue;
-    private double opponentValue;
-    private boolean success;
-
     public PlaySkillKidnappingState(PlaySkillFlow flow, MemberWisieManager manager, MemberWisieManager opponentManager) {
         super(flow, manager, opponentManager);
     }
@@ -57,27 +51,8 @@ public class PlaySkillKidnappingState extends PlaySkillOpponentState {
         return 3;
     }
 
-    private void init() {
-        skillValue = getWisie().getWisdomSum() + getWisie().getCunningF1();
-        skillOpponentValue = getOpponentWisie().getWisdomSum() + getOpponentWisie().getCunningF1();
-        value = randomDouble(skillValue, 2 * skillValue) + skillValue;
-        opponentValue = randomDouble(skillOpponentValue, 2 * skillOpponentValue);
-        success = value >= opponentValue;
-    }
-
-    @Override
-    public void execute() {
-        init();
-        super.execute();
-    }
-
     @Override
     public void after() {
-        if (success) {
-            flow.run("KIDNAP_SUCCEEDED");
-        } else {
-            flow.run("KIDNAP_FAILED");
-            flow.run("WAS_NOT_KIDNAPPED");
-        }
+        flow.run("KIDNAP_SUCCEEDED");
     }
 }
