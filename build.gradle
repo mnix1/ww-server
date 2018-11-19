@@ -44,7 +44,7 @@ dependencies {
 
     compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
 
-    compile 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.0.BUILD-SNAPSHOT'
+    compile 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.0.RELEASE'
 
     compile group: 'com.github.fge', name: 'jackson-coreutils', version: '1.8'
 

@@ -10,7 +10,8 @@ import com.ww.model.entity.outside.wisie.ProfileWisie;
 import com.ww.repository.outside.social.ProfileActionRepository;
 import com.ww.service.wisie.ProfileWisieService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ import static com.ww.service.social.IntroService.PICK_WISIES_INTRODUCTION_STEP_I
 @Service
 @AllArgsConstructor
 public class AuthProfileService {
+    private static final Logger logger = LoggerFactory.getLogger(AuthProfileService.class);
 
     private final ProfileService profileService;
     private final ProfileWisieService profileWisieService;
@@ -37,6 +39,7 @@ public class AuthProfileService {
     @Transactional
     public ExtendedProfileResourcesDTO authProfile(Principal user) {
         String authId = profileService.getAuthId(user);
+        logger.trace("authProfile authId=" + authId + ", " + user.toString());
         if (authId != null) {
             Profile profile = profileService.retrieveProfile(authId);
             ProfileAction profileAction;

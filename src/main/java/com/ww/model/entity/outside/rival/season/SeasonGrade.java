@@ -6,13 +6,11 @@ import com.ww.model.container.Resources;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 

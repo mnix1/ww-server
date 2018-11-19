@@ -4,6 +4,9 @@ import com.ww.helper.EnvHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
@@ -15,8 +18,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
+import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.filter.CompositeFilter;
+
+import javax.servlet.Filter;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.ww.config.security.Roles.ADMIN;
 import static com.ww.config.security.Roles.AUTO;
@@ -39,22 +48,19 @@ public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
     private Environment env;
 
     private OAuth2ClientContext oauth2ClientContext;
-    private AuthorizationCodeResourceDetails authorizationCodeResourceDetails;
-    private ResourceServerProperties resourceServerProperties;
 
     @Autowired
     public void setOauth2ClientContext(OAuth2ClientContext oauth2ClientContext) {
         this.oauth2ClientContext = oauth2ClientContext;
     }
 
-    @Autowired
-    public void setAuthorizationCodeResourceDetails(AuthorizationCodeResourceDetails authorizationCodeResourceDetails) {
-        this.authorizationCodeResourceDetails = authorizationCodeResourceDetails;
-    }
-
-    @Autowired
-    public void setResourceServerProperties(ResourceServerProperties resourceServerProperties) {
-        this.resourceServerProperties = resourceServerProperties;
+    @Bean
+    public FilterRegistrationBean oauth2ClientFilterRegistration(
+            OAuth2ClientContextFilter filter) {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(filter);
+        registration.setOrder(-100);
+        return registration;
     }
 
     @Override
@@ -77,15 +83,51 @@ public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
         }
     }
 
-    private OAuth2ClientAuthenticationProcessingFilter filter() {
-        OAuth2ClientAuthenticationProcessingFilter oAuth2Filter = new OAuth2ClientAuthenticationProcessingFilter(
-                "/_login/google");
-        OAuth2RestTemplate oAuth2RestTemplate = new OAuth2RestTemplate(authorizationCodeResourceDetails,
-                oauth2ClientContext);
-        oAuth2Filter.setRestTemplate(oAuth2RestTemplate);
-        UserInfoTokenServices tokenServices = new UserInfoTokenServices(resourceServerProperties.getUserInfoUri(), resourceServerProperties.getClientId());
-//        tokenServices.setAuthoritiesExtractor(new CustomAuthoritiesExtractor());
-        oAuth2Filter.setTokenServices(tokenServices);
-        return oAuth2Filter;
+    private Filter filter() {
+        CompositeFilter filter = new CompositeFilter();
+        List<Filter> filters = new ArrayList<>();
+
+        OAuth2ClientAuthenticationProcessingFilter facebookFilter = new OAuth2ClientAuthenticationProcessingFilter("/_login/facebook");
+        OAuth2RestTemplate facebookTemplate = new OAuth2RestTemplate(facebook(), oauth2ClientContext);
+        facebookFilter.setRestTemplate(facebookTemplate);
+        UserInfoTokenServices tokenServices = new UserInfoTokenServices(facebookResource().getUserInfoUri(), facebook().getClientId());
+        tokenServices.setRestTemplate(facebookTemplate);
+        facebookFilter.setTokenServices(tokenServices);
+        filters.add(facebookFilter);
+
+        OAuth2ClientAuthenticationProcessingFilter githubFilter = new OAuth2ClientAuthenticationProcessingFilter("/_login/google");
+        OAuth2RestTemplate githubTemplate = new OAuth2RestTemplate(google(), oauth2ClientContext);
+        githubFilter.setRestTemplate(githubTemplate);
+        tokenServices = new UserInfoTokenServices(googleResource().getUserInfoUri(), google().getClientId());
+        tokenServices.setRestTemplate(githubTemplate);
+        githubFilter.setTokenServices(tokenServices);
+        filters.add(githubFilter);
+
+        filter.setFilters(filters);
+        return filter;
+    }
+
+    @Bean
+    @ConfigurationProperties("google.client")
+    public AuthorizationCodeResourceDetails google() {
+        return new AuthorizationCodeResourceDetails();
+    }
+
+    @Bean
+    @ConfigurationProperties("google.resource")
+    public ResourceServerProperties googleResource() {
+        return new ResourceServerProperties();
+    }
+
+    @Bean
+    @ConfigurationProperties("facebook.client")
+    public AuthorizationCodeResourceDetails facebook() {
+        return new AuthorizationCodeResourceDetails();
+    }
+
+    @Bean
+    @ConfigurationProperties("facebook.resource")
+    public ResourceServerProperties facebookResource() {
+        return new ResourceServerProperties();
     }
 }
