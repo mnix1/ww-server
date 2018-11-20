@@ -52,7 +52,7 @@ public abstract class GameFlow {
     }
 
     public synchronized void run(GameState state, Map<String, Object> params) {
-//        logger.trace("run " + toString() + ", " + state.toString());
+        logger.trace("run " + toString() + ", " + state.toString());
         state.setParams(params);
         state.initProps();
         addState(state);

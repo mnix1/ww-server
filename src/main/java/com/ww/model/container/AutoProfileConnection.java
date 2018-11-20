@@ -38,7 +38,7 @@ public class AutoProfileConnection implements Connection {
     }
 
     public void sendMessage(String msg) {
-        logger.trace("AutoProfileConnection " + toString() + ", " + msg);
+//        logger.trace(toString() + ", " + msg);
         manager.getCommunication().handleMessage(parseMessage(msg));
     }
 

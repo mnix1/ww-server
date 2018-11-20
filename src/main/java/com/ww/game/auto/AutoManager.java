@@ -3,7 +3,6 @@ package com.ww.game.auto;
 import com.ww.game.auto.communication.AutoCommunication;
 import com.ww.game.auto.container.AutoPlayContainer;
 import com.ww.game.auto.flow.AutoFlow;
-import com.ww.game.play.PlayManager;
 import com.ww.model.container.AutoProfileConnection;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.auto.AutoService;

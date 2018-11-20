@@ -5,10 +5,7 @@ import com.ww.game.auto.AutoManager;
 import com.ww.game.auto.state.AutoManageBooksState;
 import com.ww.game.auto.state.AutoStartRivalState;
 import com.ww.game.auto.state.AutoUpgradeWisiesState;
-import com.ww.game.auto.state.rival.AutoRivalChoosingTaskCategoryState;
-import com.ww.game.auto.state.rival.AutoRivalChoosingTaskDifficultyState;
-import com.ww.game.auto.state.rival.AutoRivalChoosingWhoAnswerState;
-import com.ww.game.auto.state.rival.AutoRivalIntroState;
+import com.ww.game.auto.state.rival.*;
 
 public class AutoFlow extends GameFlow {
     private AutoManager manager;
@@ -27,5 +24,6 @@ public class AutoFlow extends GameFlow {
         stateMap.put("RIVAL_CHOOSING_WHO_ANSWER", () -> new AutoRivalChoosingWhoAnswerState(manager));
         stateMap.put("RIVAL_CHOOSING_TASK_CATEGORY", () -> new AutoRivalChoosingTaskCategoryState(manager));
         stateMap.put("RIVAL_CHOOSING_TASK_DIFFICULTY", () -> new AutoRivalChoosingTaskDifficultyState(manager));
+        stateMap.put("RIVAL_CLOSED", () -> new AutoRivalClosedState(manager));
     }
 }

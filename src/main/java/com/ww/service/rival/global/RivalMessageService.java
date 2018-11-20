@@ -34,19 +34,20 @@ public class RivalMessageService {
     private final ConnectionService connectionService;
     private final RivalGlobalService rivalGlobalService;
 
-
-
     public void handleMessage(String sessionId, String message) {
-        logger.trace("Message received sessionId: {}, content: {}", sessionId, message);
-        Optional<Connection> optionalConnection = connectionService.findBySessionId(sessionId);
-        if (!optionalConnection.isPresent()) {
-            return;
-        }
-        Long profileId = optionalConnection.get().getProfileId();
-        if (!rivalGlobalService.contains(profileId)) {
-            return;
-        }
-        PlayManager manager = rivalGlobalService.get(profileId);
-        manager.processMessage(profileId, parseMessage(message));
+        new Thread(() -> {
+            logger.trace("Message received sessionId: {}, content: {}", sessionId, message);
+            Optional<Connection> optionalConnection = connectionService.findBySessionId(sessionId);
+            if (!optionalConnection.isPresent()) {
+                return;
+            }
+            Long profileId = optionalConnection.get().getProfileId();
+            if (!rivalGlobalService.contains(profileId)) {
+                return;
+            }
+
+            PlayManager manager = rivalGlobalService.get(profileId);
+            manager.processMessage(profileId, parseMessage(message));
+        }).run();
     }
 }

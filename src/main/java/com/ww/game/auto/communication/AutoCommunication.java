@@ -53,6 +53,8 @@ public class AutoCommunication {
             manager.getFlow().run("RIVAL_CHOOSING_TASK_CATEGORY");
         } else if (status == RivalStatus.CHOOSING_TASK_DIFFICULTY) {
             manager.getFlow().run("RIVAL_CHOOSING_TASK_DIFFICULTY");
+        } else if (status == RivalStatus.CLOSED) {
+            manager.getFlow().run("RIVAL_CLOSED");
         }
         return true;
     }

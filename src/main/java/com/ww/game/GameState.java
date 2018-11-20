@@ -32,7 +32,7 @@ public class GameState {
     }
 
     public void execute() {
-        logBeforeExecute();
+//        logBeforeExecute();
         if (commands.isEmpty()) {
             initCommands();
         }

@@ -2,11 +2,13 @@ package com.ww.service.auto;
 
 import com.ww.game.auto.AutoManager;
 import com.ww.game.play.PlayManager;
+import com.ww.model.container.Connection;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.auto.command.AutoManageBooksService;
 import com.ww.service.auto.command.AutoStartRivalService;
 import com.ww.service.auto.command.AutoUpgradeWisiesService;
 import com.ww.service.rival.global.RivalGlobalService;
+import com.ww.service.social.ConnectionService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ public class AutoService {
     private final AutoUpgradeWisiesService autoUpgradeWisiesService;
     private final AutoStartRivalService autoStartRivalService;
     private final RivalGlobalService rivalGlobalService;
+    private final ConnectionService connectionService;
 
     public Optional<AutoManager> createAutoManager() {
         Optional<Profile> optionalProfile = autoProfileService.getNotLoggedAutoProfile();
@@ -45,23 +48,24 @@ public class AutoService {
         manager.start();
     }
 
-    public PlayManager getPlayManager(Profile profile){
+    public PlayManager getPlayManager(Profile profile) {
         return rivalGlobalService.get(profile.getId());
     }
 
-//    public void removeAutoProfileConnection(Connection connection) {
-//        connectionService.deleteConnection(connection);
-//    }
+    public void disposeManager(AutoManager manager) {
+        connectionService.deleteConnection(manager.getConnection());
+        activeAutoManagers.remove(manager);
+    }
 
-    public void manageBooks(Profile profile){
+    public void manageBooks(Profile profile) {
         autoManageBooksService.manage(profile);
     }
 
-    public void upgradeWisies(Profile profile){
+    public void upgradeWisies(Profile profile) {
         autoUpgradeWisiesService.upgrade(profile);
     }
 
-    public void startRival(AutoManager manager){
+    public void startRival(AutoManager manager) {
         autoStartRivalService.start(manager);
     }
 
