@@ -132,7 +132,7 @@ public abstract class GameFlow {
         }));
     }
 
-    private Flowable<Long> prepareFlowable(long interval) {
+    public static Flowable<Long> prepareFlowable(long interval) {
         return Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS);
     }
 

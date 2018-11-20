@@ -15,6 +15,10 @@ public class RandomHelper {
         return random.nextInt(to - from + 1) + from;
     }
 
+    public static long randomLong(long from, long to) {
+        return randomInteger((int) from, (int) to);
+    }
+
     public static double randomDouble(int from, int to) {
         return random.nextDouble() * (to - from) + from;
     }

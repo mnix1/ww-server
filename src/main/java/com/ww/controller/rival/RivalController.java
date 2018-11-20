@@ -7,6 +7,8 @@ import com.ww.model.dto.social.ClassificationPositionDTO;
 import com.ww.service.rival.global.RivalClassificationService;
 import com.ww.service.rival.init.RivalInitFriendService;
 import com.ww.service.rival.init.RivalInitRandomOpponentService;
+import com.ww.service.social.ProfileService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,16 +20,13 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/rival")
+@AllArgsConstructor
 public class RivalController {
 
-    @Autowired
-    private RivalInitFriendService rivalInitFriendService;
-
-    @Autowired
-    private RivalInitRandomOpponentService rivalInitRandomOpponentService;
-
-    @Autowired
-    private RivalClassificationService rivalClassificationService;
+    private final RivalInitFriendService rivalInitFriendService;
+    private final RivalInitRandomOpponentService rivalInitRandomOpponentService;
+    private final RivalClassificationService rivalClassificationService;
+    private final ProfileService profileService;
 
     @RequestMapping(value = "/classification", method = RequestMethod.POST)
     public ClassificationDTO classification(@RequestBody Map<String, Object> payload) {
@@ -45,7 +44,7 @@ public class RivalController {
         }
         RivalType type = RivalType.valueOf((String) payload.get("type"));
         RivalImportance importance = RivalImportance.valueOf((String) payload.get("importance"));
-        return rivalInitRandomOpponentService.start(type, importance);
+        return rivalInitRandomOpponentService.start(type, importance, profileService.getProfileId());
     }
 
     @RequestMapping(value = "/cancelRandomOpponent", method = RequestMethod.POST)

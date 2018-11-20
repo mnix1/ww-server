@@ -1,19 +1,16 @@
 package com.ww.service.rival.global;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ww.model.container.Connection;
-import com.ww.model.container.ProfileConnection;
 import com.ww.game.play.PlayManager;
+import com.ww.model.container.Connection;
 import com.ww.service.social.ConnectionService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
+
+import static com.ww.helper.ModelHelper.parseMessage;
 
 @Service
 @AllArgsConstructor
@@ -37,15 +34,7 @@ public class RivalMessageService {
     private final ConnectionService connectionService;
     private final RivalGlobalService rivalGlobalService;
 
-    public Map<String, Object> handleInput(String content) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.readValue(content, HashMap.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new HashMap<>();
-    }
+
 
     public void handleMessage(String sessionId, String message) {
         logger.trace("Message received sessionId: {}, content: {}", sessionId, message);
@@ -58,6 +47,6 @@ public class RivalMessageService {
             return;
         }
         PlayManager manager = rivalGlobalService.get(profileId);
-        manager.processMessage(profileId, handleInput(message));
+        manager.processMessage(profileId, parseMessage(message));
     }
 }

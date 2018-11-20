@@ -7,7 +7,6 @@ import com.ww.model.container.rival.*;
 import com.ww.model.container.rival.init.RivalTwoInit;
 import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
-import lombok.ToString;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

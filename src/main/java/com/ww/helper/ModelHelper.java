@@ -1,5 +1,9 @@
 package com.ww.helper;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ModelHelper {
@@ -21,5 +25,15 @@ public class ModelHelper {
             return false;
         }
         return ((int) model.get("code")) == 1;
+    }
+
+    public static Map<String, Object> parseMessage(String json) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(json, HashMap.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new HashMap<>();
     }
 }

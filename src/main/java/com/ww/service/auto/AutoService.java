@@ -1,14 +1,12 @@
 package com.ww.service.auto;
 
 import com.ww.game.auto.AutoManager;
-import com.ww.model.container.AutoProfileConnection;
-import com.ww.model.container.Connection;
-import com.ww.model.container.rival.init.RivalOneInit;
+import com.ww.game.play.PlayManager;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.auto.command.AutoManageBooksService;
+import com.ww.service.auto.command.AutoStartRivalService;
 import com.ww.service.auto.command.AutoUpgradeWisiesService;
-import com.ww.service.rival.init.RivalInitRandomOpponentService;
-import com.ww.service.social.ConnectionService;
+import com.ww.service.rival.global.RivalGlobalService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +20,10 @@ public class AutoService {
     private static final List<AutoManager> activeAutoManagers = new CopyOnWriteArrayList<>();
 
     private final AutoProfileService autoProfileService;
-    private final ConnectionService connectionService;
-    private final RivalInitRandomOpponentService rivalInitRandomOpponentService;
     private final AutoManageBooksService autoManageBooksService;
     private final AutoUpgradeWisiesService autoUpgradeWisiesService;
+    private final AutoStartRivalService autoStartRivalService;
+    private final RivalGlobalService rivalGlobalService;
 
     public Optional<AutoManager> createAutoManager() {
         Optional<Profile> optionalProfile = autoProfileService.getNotLoggedAutoProfile();
@@ -47,17 +45,13 @@ public class AutoService {
         manager.start();
     }
 
-    public AutoProfileConnection addAutoProfileConnection(Profile profile) {
-        return connectionService.newAutoProfileConnection(profile);
+    public PlayManager getPlayManager(Profile profile){
+        return rivalGlobalService.get(profile.getId());
     }
 
-    public void removeAutoProfileConnection(Connection connection) {
-        connectionService.deleteConnection(connection);
-    }
-
-    public Optional<RivalOneInit> maybeNeedStartRival() {
-        return rivalInitRandomOpponentService.maybeGetRivalInitWaitingLong();
-    }
+//    public void removeAutoProfileConnection(Connection connection) {
+//        connectionService.deleteConnection(connection);
+//    }
 
     public void manageBooks(Profile profile){
         autoManageBooksService.manage(profile);
@@ -65,6 +59,10 @@ public class AutoService {
 
     public void upgradeWisies(Profile profile){
         autoUpgradeWisiesService.upgrade(profile);
+    }
+
+    public void startRival(AutoManager manager){
+        autoStartRivalService.start(manager);
     }
 
 }

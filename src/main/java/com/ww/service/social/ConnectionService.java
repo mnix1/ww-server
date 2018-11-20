@@ -2,12 +2,14 @@ package com.ww.service.social;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ww.game.auto.AutoManager;
 import com.ww.model.constant.social.FriendStatus;
 import com.ww.model.container.AutoProfileConnection;
 import com.ww.model.container.Connection;
 import com.ww.model.container.ProfileConnection;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.repository.outside.social.ProfileFriendRepository;
+import com.ww.service.rival.global.RivalMessageService;
 import com.ww.service.rival.init.RivalInitRandomOpponentService;
 import com.ww.websocket.message.Message;
 import com.ww.websocket.message.MessageDTO;
@@ -42,9 +44,10 @@ public class ConnectionService {
         return connection;
     }
 
-    public synchronized AutoProfileConnection newAutoProfileConnection(Profile profile) {
+    public synchronized AutoProfileConnection newAutoProfileConnection(RivalMessageService messageService, AutoManager manager) {
+        Profile profile = manager.getProfile();
         deleteConnection(profile.getId());
-        AutoProfileConnection connection = new AutoProfileConnection(profile.getId(), profile.getTag());
+        AutoProfileConnection connection = new AutoProfileConnection(messageService, manager);
         profileIdToConnectionMap.put(profile.getId(), connection);
         sessionIdToConnectionMap.put(connection.getSessionId(), connection);
         logger.debug("auto profile connection newConnection: profileId: " + profile.getId() + ", sessionId: " + connection.getSessionId());

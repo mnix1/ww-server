@@ -59,10 +59,10 @@ public class AutoProfileService {
             Profile profile = new Profile(authId, auto.getUsername(), null, Language.POLISH);
             profileService.save(profile);
             authProfileService.completeIntroductionForAuto(profile);
-            logger.error("Created new auto profile=" + profile.toString());
+            logger.debug("Created new auto profile=" + profile.toString());
             return Optional.of(profile);
         }
-        logger.error("Can't create new auto profile, all are used");
+        logger.debug("Can't create new auto profile, all are used");
         return Optional.empty();
     }
 

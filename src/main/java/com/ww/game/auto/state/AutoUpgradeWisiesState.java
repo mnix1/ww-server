@@ -13,4 +13,9 @@ public class AutoUpgradeWisiesState extends AutoState {
         super.execute();
         manager.getAutoService().upgradeWisies(manager.getProfile());
     }
+
+    @Override
+    public void after(){
+        manager.getFlow().run("START_RIVAL");
+    }
 }
