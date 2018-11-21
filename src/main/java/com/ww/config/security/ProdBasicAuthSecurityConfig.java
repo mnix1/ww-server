@@ -22,7 +22,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Optional;
 
 import static com.ww.config.security.ProdOAuthSecurityConfig.ONLY_ADMIN;
-import static com.ww.config.security.ProdOAuthSecurityConfig.ONLY_AUTO;
 import static com.ww.config.security.Roles.*;
 
 @Configuration
@@ -41,11 +40,9 @@ public class ProdBasicAuthSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .requestMatchers()
                 .antMatchers(ONLY_ADMIN)
-                .antMatchers(ONLY_AUTO)
                 .and()
                 .authorizeRequests()
                 .antMatchers(ONLY_ADMIN).hasAnyRole(ADMIN)
-                .antMatchers(ONLY_AUTO).hasAnyRole(AUTO)
                 .anyRequest().fullyAuthenticated()
                 .and()
                 .httpBasic()

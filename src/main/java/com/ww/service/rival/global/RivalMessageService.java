@@ -37,7 +37,7 @@ public class RivalMessageService {
 
     @Async
     public void handleMessage(String sessionId, String message) {
-        logger.trace("Message received sessionId: {}, content: {}, thread: {}", sessionId, message, Thread.currentThread().getName());
+//        logger.trace("Message received sessionId: {}, content: {}", sessionId, message);
         Optional<Connection> optionalConnection = connectionService.findBySessionId(sessionId);
         if (!optionalConnection.isPresent()) {
             return;

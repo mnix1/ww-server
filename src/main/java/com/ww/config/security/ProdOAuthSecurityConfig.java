@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ww.config.security.Roles.ADMIN;
-import static com.ww.config.security.Roles.AUTO;
 import static com.ww.helper.EnvHelper.sslForce;
 
 @Configuration
@@ -41,8 +40,7 @@ public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
             "/profile", "/classification/war", "/classification/battle", "/play",
             "/war", "/warRanking", "/warFast", "/challenge", "/battle", "/battleRanking", "/battleFast", "/training", "/campaign", "/campaignWar",
             "/shop", "/friend", "/wisies", "/settings", "/_login/**", "/login", "/static/**", "/health/**", "/health"};
-    public static final String[] ONLY_ADMIN = new String[]{"/**/*.map", "/h2/**", "/actuator/**", "/cache/**", "/log/**"};
-    public static final String[] ONLY_AUTO = new String[]{"/auto/**", "/staticAuto/**"};
+    public static final String[] ONLY_ADMIN = new String[]{"/**/*.map", "/_h2/**","/_replay/**", "/_manage/**", "/_cache/**", "/_log/**", "/_auto/**"};
 
     @Autowired
     private Environment env;
@@ -70,7 +68,6 @@ public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(ALL).permitAll()
                 .antMatchers(ONLY_ADMIN).hasAnyRole(ADMIN)
-                .antMatchers(ONLY_AUTO).hasAnyRole(AUTO)
                 .anyRequest().fullyAuthenticated()
                 .and()
                 .logout()

@@ -18,7 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @RestController
-@RequestMapping(value = "/log")
+@RequestMapping(value = "/_log")
 public class LogController {
 
     @RequestMapping(value = "/download", method = RequestMethod.GET)

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/cache")
+@RequestMapping(value = "/_cache")
 @AllArgsConstructor
 public class CacheController {
 
