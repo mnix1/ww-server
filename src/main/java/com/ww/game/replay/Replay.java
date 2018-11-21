@@ -1,7 +1,9 @@
 package com.ww.game.replay;
 
+import com.ww.service.ReplayService;
 import com.ww.service.social.ConnectionService;
 import io.reactivex.Flowable;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.Map;
@@ -11,24 +13,35 @@ import java.util.concurrent.TimeUnit;
 import static com.ww.websocket.message.Message.RIVAL_CONTENT;
 
 public class Replay {
-    private final ConnectionService connectionService;
+    private final ReplayService replayService;
     private final List<Map<String, Object>> allModels;
+    @Getter
     private final Long profileId;
+    private boolean inProgress = false;
 
-    public Replay(ConnectionService connectionService, List<Map<String, Object>> allModels, Long profileId) {
-        this.connectionService = connectionService;
+    public Replay(ReplayService replayService, List<Map<String, Object>> allModels, Long profileId) {
+        this.replayService = replayService;
         this.profileId = profileId;
         this.allModels = allModels;
     }
 
     public void play() {
+        inProgress = true;
         Map<String, Object> firstModel = allModels.get(0);
         run(firstModel, findNextState(firstModel).orElse(null));
     }
 
+    public void stop() {
+        inProgress = false;
+    }
+
     public void run(Map<String, Object> model, Map<String, Object> nextModel) {
-        connectionService.send(profileId, model, RIVAL_CONTENT);
+        if (!inProgress) {
+            return;
+        }
+        replayService.getConnectionService().send(profileId, model, RIVAL_CONTENT);
         if (nextModel == null) {
+            replayService.disposeReplay(this);
             return;
         }
         long interval = getModelNow(nextModel) - getModelNow(model);

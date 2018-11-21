@@ -1,10 +1,12 @@
 package com.ww.controller.rival;
 
 import com.ww.service.ReplayService;
-import com.ww.service.social.FriendService;
 import com.ww.service.social.ProfileService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 import java.util.Map;
@@ -18,8 +20,20 @@ public class ReplayController {
     private final ProfileService profileService;
 
     @RequestMapping(value = "/play", method = RequestMethod.GET)
-    public Map play(@RequestParam Long rivalId, @RequestParam Long perspectiveProfileId) {
-        replayService.replay(rivalId, perspectiveProfileId, profileService.getProfileId());
+    public Map play(@RequestParam Long rivalId, @RequestParam(required = false) Long perspectiveProfileId, @RequestParam(required = false) Long targetProfileId) {
+        if (targetProfileId == null) {
+            targetProfileId = profileService.getProfileId();
+        }
+        replayService.replay(rivalId, perspectiveProfileId, targetProfileId);
+        return Collections.emptyMap();
+    }
+
+    @RequestMapping(value = "/cancel", method = RequestMethod.GET)
+    public Map cancel(@RequestParam(required = false) Long targetProfileId) {
+        if (targetProfileId == null) {
+            targetProfileId = profileService.getProfileId();
+        }
+        replayService.cancel(targetProfileId);
         return Collections.emptyMap();
     }
 

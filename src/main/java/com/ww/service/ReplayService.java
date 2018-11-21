@@ -15,12 +15,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 @Service
 @Getter
 @AllArgsConstructor
 public class ReplayService {
+    private static final List<Replay> activeReplays = new CopyOnWriteArrayList<>();
 
     private final ConnectionService connectionService;
     private final RivalRepository rivalRepository;
@@ -30,8 +32,14 @@ public class ReplayService {
         if (!optionalRival.isPresent()) {
             return;
         }
+        cancel(targetProfileId);
         Rival rival = optionalRival.get();
-        new Replay(connectionService, prepareModels(rival, perspectiveProfileId), targetProfileId).play();
+        if (perspectiveProfileId == null) {
+            perspectiveProfileId = rival.getCreator().getId();
+        }
+        Replay replay = new Replay(this, prepareModels(rival, perspectiveProfileId), targetProfileId);
+        activeReplays.add(replay);
+        replay.play();
     }
 
     private List prepareModels(Rival rival, Long profileId) {
@@ -49,5 +57,18 @@ public class ReplayService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void cancel(Long profileId) {
+        findReplayFromProfileId(profileId).ifPresent(this::disposeReplay);
+    }
+
+    public void disposeReplay(Replay replay) {
+        replay.stop();
+        activeReplays.remove(replay);
+    }
+
+    public Optional<Replay> findReplayFromProfileId(Long profileId) {
+        return activeReplays.stream().filter(replay -> replay.getProfileId().equals(profileId)).findFirst();
     }
 }
