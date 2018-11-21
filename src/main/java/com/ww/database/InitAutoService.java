@@ -30,13 +30,13 @@ public class InitAutoService {
         autos.add(new Auto("rapid", encoder));
         autos.add(new Auto("Stefan", encoder));
         autos.add(new Auto("Paździoch", encoder));
-        autos.add(new Auto("#mistrz", encoder));
+        autos.add(new Auto("mistrzu", encoder));
         autos.add(new Auto("łuki", encoder));
         autos.add(new Auto("szybkiPL", encoder));
         autos.add(new Auto("fred", encoder));
         autos.add(new Auto("wredny89", encoder));
-        autos.add(new Auto("sympatyk Piłki 82", encoder));
-        autos.add(new Auto("nie wiem kto", encoder));
+        autos.add(new Auto("sympatyk futbolu 82", encoder));
+        autos.add(new Auto("niewiadomy", encoder));
         autos.add(new Auto("samuel L", encoder));
         autos.add(new Auto("bandzior", encoder));
         autos.add(new Auto("karaTEKA", encoder));
@@ -44,7 +44,12 @@ public class InitAutoService {
         autos.add(new Auto("SMERFny", encoder));
         autos.add(new Auto("bond007", encoder));
         autos.add(new Auto("strike", encoder));
-        autos.add(new Auto("UWAŻNY!", encoder));
+        autos.add(new Auto("UWAŻNY", encoder));
+        autos.add(new Auto("suzuki", encoder));
+        autos.add(new Auto("Robert", encoder));
+        autos.add(new Auto("qwerty", encoder));
+        autos.add(new Auto("gdańszcznin123", encoder));
+        autos.add(new Auto("niepoważny2002", encoder));
         autoRepository.saveAll(autos);
     }
 

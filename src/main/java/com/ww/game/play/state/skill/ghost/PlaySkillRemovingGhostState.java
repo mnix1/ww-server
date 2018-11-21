@@ -36,9 +36,9 @@ public class PlaySkillRemovingGhostState extends PlaySkillState {
         scareSuccess = (boolean) params.get("scareSuccess");
         value = (getWisie().getConfidenceF1() + getWisie().getCunningF1() + getWisie().getSpeedF1()) / 3;
         if (scareSuccess) {
-            noDisqualificationChance = value + 0.2;
+            noDisqualificationChance = value + 0.25;
         } else {
-            noDisqualificationChance = value - 0.2;
+            noDisqualificationChance = value - 0.25;
         }
         disqualification = noDisqualificationChance <= randomDouble();
     }

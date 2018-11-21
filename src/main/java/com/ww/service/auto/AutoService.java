@@ -7,6 +7,7 @@ import com.ww.service.auto.command.AutoManageBooksService;
 import com.ww.service.auto.command.AutoStartRivalService;
 import com.ww.service.auto.command.AutoUpgradeWisiesService;
 import com.ww.service.rival.global.RivalGlobalService;
+import com.ww.service.rival.init.RivalInitRandomOpponentService;
 import com.ww.service.social.ConnectionService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Service
 @AllArgsConstructor
 public class AutoService {
+    public static int MAX_ACTIVE_AUTO_MANAGERS = 5;
     private static final List<AutoManager> activeAutoManagers = new CopyOnWriteArrayList<>();
 
     private final AutoProfileService autoProfileService;
@@ -26,6 +28,7 @@ public class AutoService {
     private final AutoStartRivalService autoStartRivalService;
     private final RivalGlobalService rivalGlobalService;
     private final ConnectionService connectionService;
+    private final RivalInitRandomOpponentService rivalInitRandomOpponentService;
 
     public Optional<AutoManager> createAutoManager() {
         Optional<Profile> optionalProfile = autoProfileService.getNotLoggedAutoProfile();
@@ -38,6 +41,20 @@ public class AutoService {
     }
 
     public void perform() {
+        if (needAutoRival()) {
+            startManager();
+        }
+        if (activeAutoManagers.size() >= MAX_ACTIVE_AUTO_MANAGERS) {
+            return;
+        }
+        startManager();
+    }
+
+    private boolean needAutoRival() {
+        return rivalInitRandomOpponentService.maybeGetRivalInitWaitingLong().isPresent();
+    }
+
+    private void startManager() {
         Optional<AutoManager> optionalManager = createAutoManager();
         if (!optionalManager.isPresent()) {
             return;

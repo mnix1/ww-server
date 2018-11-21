@@ -1,6 +1,7 @@
 package com.ww.game.auto.container;
 
 import com.ww.game.GameFlow;
+import com.ww.game.member.MemberWisieManager;
 import com.ww.game.play.PlayManager;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.constant.wisie.HeroType;
@@ -14,7 +15,11 @@ import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+
+import static com.ww.model.constant.wisie.HeroType.isWisie;
 
 @Getter
 public class AutoPlayContainer {
@@ -66,15 +71,22 @@ public class AutoPlayContainer {
         if (isBattle()) {
             return HeroType.WISOR;
         }
-        return ((WarTeam) team()).getActiveTeamMember().getType();
+        return warTeam().getActiveTeamMember().getType();
     }
 
     public WisieTeamMember activeWisieMember() {
-        return (WisieTeamMember) ((WarTeam) team()).getActiveTeamMember();
+        return (WisieTeamMember) warTeam().getActiveTeamMember();
     }
 
     public List<MemberWisieStatus> activeWisieMemberActions() {
-        return activeWisieMember().currentManager().get().getContainer().getActions();
+        if (!isWisie(activeMemberType())) {
+            return Collections.emptyList();
+        }
+        Optional<MemberWisieManager> manager = activeWisieMember().currentManager();
+        if (manager.isPresent()) {
+            return manager.get().getContainer().getActions();
+        }
+        return Collections.emptyList();
     }
 
     public HeroType opponentActiveMemberType() {
