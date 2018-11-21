@@ -22,7 +22,7 @@ public enum Skill {
     }
 
     public static List<Skill> optionalAvailableSkills() {
-        return Arrays.asList(NINJA, GHOST, CHANGE_TASK, PIZZA);
+        return Arrays.asList(NINJA, GHOST, CHANGE_TASK, PIZZA, COVERALL);
     }
 
     public static List<Skill> list() {

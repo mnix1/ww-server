@@ -4,13 +4,17 @@ import com.ww.game.GameFlow;
 import com.ww.game.play.PlayManager;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.constant.wisie.HeroType;
+import com.ww.model.constant.wisie.MemberWisieStatus;
 import com.ww.model.container.rival.RivalInterval;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.war.WarTeam;
+import com.ww.model.container.rival.war.WisieTeamMember;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 public class AutoPlayContainer {
@@ -19,6 +23,8 @@ public class AutoPlayContainer {
 
     @Setter
     private GameFlow flow;
+    @Setter
+    private AutoSkillContainer skillContainer;
 
     public AutoPlayContainer(PlayManager manager, Profile profile) {
         this.manager = manager;
@@ -29,6 +35,9 @@ public class AutoPlayContainer {
         if (flow != null) {
             flow.stop();
             setFlow(null);
+        }
+        if (skillContainer != null) {
+            setSkillContainer(null);
         }
     }
 
@@ -45,6 +54,10 @@ public class AutoPlayContainer {
         return manager.getContainer().getTeams().team(profile.getId());
     }
 
+    public WarTeam warTeam() {
+        return (WarTeam) team();
+    }
+
     public RivalTeam opponentTeam() {
         return manager.getContainer().getTeams().opponent(profile.getId());
     }
@@ -54,6 +67,14 @@ public class AutoPlayContainer {
             return HeroType.WISOR;
         }
         return ((WarTeam) team()).getActiveTeamMember().getType();
+    }
+
+    public WisieTeamMember activeWisieMember() {
+        return (WisieTeamMember) ((WarTeam) team()).getActiveTeamMember();
+    }
+
+    public List<MemberWisieStatus> activeWisieMemberActions() {
+        return activeWisieMember().currentManager().get().getContainer().getActions();
     }
 
     public HeroType opponentActiveMemberType() {

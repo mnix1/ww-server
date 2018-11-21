@@ -46,4 +46,8 @@ public class MemberWisieContainer {
     public void addAction(MemberWisieStatus action) {
         actions.add(action);
     }
+
+    public MemberWisieStatus currectAction() {
+        return actions.get(actions.size() - 1);
+    }
 }

@@ -28,9 +28,11 @@ public class AutoRivalChoosingWhoAnswerState extends AutoRivalState {
     @Override
     public void execute() {
         super.execute();
-        long interval = RandomHelper.randomLong(1, (long) (((WarInterval) container.interval()).getChoosingWhoAnswerInterval() * 0.75));
+        long maxInterval = (long) (((WarInterval) container.interval()).getChoosingWhoAnswerInterval() * 0.75);
+        long minInterval = maxInterval / 4;
+        long interval = RandomHelper.randomLong(minInterval, maxInterval);
         WarTeam team = (WarTeam) container.team();
-        maybeUseLifebuoy(interval, team);
+        maybeUseLifebuoy(interval / 2, team);
         int index = findIndexOfWisieWithHobby(team, container.question().getType().getCategory());
         sendAfter(interval, CHOOSE_WHO_ANSWER, new MapModel("activeIndex", index).get());
     }

@@ -48,7 +48,8 @@ public class AutoCommunication {
         }
         Map<String, Object> content = parseMessage((String) model.get("content"));
         if (!content.containsKey("status")) {
-            return false;
+            manager.getFlow().run("RIVAL_MAYBE_SKILL");
+            return true;
         }
         RivalStatus status = RivalStatus.valueOf((String) content.get("status"));
         if (status == RivalStatus.INTRO) {

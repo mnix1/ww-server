@@ -1,7 +1,7 @@
 package com.ww.game.auto.state.rival;
 
 import com.ww.game.auto.AutoManager;
-import com.ww.game.auto.flow.AutoWisieFlow;
+import com.ww.game.auto.container.AutoSkillContainer;
 import com.ww.game.auto.flow.AutoWisorFlow;
 import com.ww.model.constant.wisie.HeroType;
 
@@ -18,10 +18,10 @@ public class AutoRivalAnsweringState extends AutoRivalState {
         super.execute();
         HeroType heroType = container.activeMemberType();
         if (isWisie(heroType)) {
-            container.setFlow(new AutoWisieFlow(manager));
+            container.setSkillContainer(new AutoSkillContainer());
         } else {
             container.setFlow(new AutoWisorFlow(manager));
+            container.getFlow().start();
         }
-        container.getFlow().start();
     }
 }
