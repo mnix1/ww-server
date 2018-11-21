@@ -3,6 +3,7 @@ package com.ww.game.play.state.skill.pizza;
 import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.command.MemberWisieAddStatusCommand;
 import com.ww.game.member.command.MemberWisieDecreaseAttributesCommand;
+import com.ww.game.member.command.MemberWisieNotifyOuterFlowCommand;
 import com.ww.game.member.command.MemberWisieRemoveDisguiseCommand;
 import com.ww.game.play.command.skill.PlaySkillUnblockAllCommand;
 import com.ww.game.play.flow.skill.PlaySkillFlow;
@@ -26,6 +27,7 @@ public class PlaySkillEatenPizzaState extends PlaySkillState {
         commands.add(new MemberWisieDecreaseAttributesCommand(manager));
         commands.add(new MemberWisieAddStatusCommand(manager, MemberWisieStatus.EATEN_PIZZA));
         commands.add(new PlaySkillUnblockAllCommand(warTeam));
+        commands.add(new MemberWisieNotifyOuterFlowCommand(flow, manager));
     }
 
     @Override
@@ -44,6 +46,8 @@ public class PlaySkillEatenPizzaState extends PlaySkillState {
 
     @Override
     public void after() {
-        flow.notifyOuter(manager.getFlow());
+        if (!manager.getFlow().hasNext()) {
+            manager.getFlow().get().currentState().after();
+        }
     }
 }

@@ -54,6 +54,6 @@ public class PlaySkillCoverallState extends PlaySkillOpponentState {
 
     @Override
     public void after() {
-        flow.notifyOuter(manager.getFlow());
+        flow.notifyOuter(manager.getFlow(), true);
     }
 }

@@ -1,19 +1,19 @@
 package com.ww.game.play.state.skill.ghost;
 
 import com.ww.game.member.MemberWisieManager;
-import com.ww.game.member.command.MemberWisieAddStatusCommand;
-import com.ww.game.play.command.skill.PlaySkillUnblockAllCommand;
+import com.ww.game.member.command.MemberWisieNotifyOuterFlowCommand;
 import com.ww.game.play.flow.skill.PlaySkillFlow;
 import com.ww.game.play.state.skill.PlaySkillState;
-import com.ww.model.constant.wisie.MemberWisieStatus;
-import com.ww.model.container.rival.RivalTeam;
-
-import java.util.Map;
 
 public class PlaySkillWasNotScaredState extends PlaySkillState {
 
     public PlaySkillWasNotScaredState(PlaySkillFlow flow, MemberWisieManager manager) {
         super(flow, manager);
+    }
+
+    @Override
+    public void initCommands() {
+        commands.add(new MemberWisieNotifyOuterFlowCommand(flow, manager));
     }
 
     @Override
@@ -32,6 +32,8 @@ public class PlaySkillWasNotScaredState extends PlaySkillState {
 
     @Override
     public void after() {
-        flow.notifyOuter(manager.getFlow());
+        if (!manager.getFlow().hasNext()) {
+            manager.getFlow().get().currentState().after();
+        }
     }
 }
