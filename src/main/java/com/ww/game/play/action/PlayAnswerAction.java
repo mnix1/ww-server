@@ -1,7 +1,7 @@
 package com.ww.game.play.action;
 
-import com.ww.model.constant.rival.RivalStatus;
 import com.ww.game.play.PlayManager;
+import com.ww.model.constant.rival.RivalStatus;
 
 import java.util.Map;
 
@@ -13,8 +13,7 @@ public class PlayAnswerAction extends PlayAction {
 
     @Override
     public void perform(Long profileId, Map<String, Object> content) {
-        if (!getFlow().isStatusEquals(RivalStatus.ANSWERING)
-                || !content.containsKey("answerId")) {
+        if (!correct(profileId, content)) {
             return;
         }
         Long answerId = null;
@@ -24,5 +23,10 @@ public class PlayAnswerAction extends PlayAction {
             e.printStackTrace();
         }
         getFlow().answeredAction(profileId, answerId);
+    }
+
+    protected boolean correct(Long profileId, Map<String, Object> content) {
+        return getFlow().isStatusEquals(RivalStatus.ANSWERING)
+                && content.containsKey("answerId");
     }
 }

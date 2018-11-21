@@ -19,7 +19,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Service
 @AllArgsConstructor
 public class AutoService {
-    public static int MAX_ACTIVE_AUTO_MANAGERS = 5;
+    public static int MAX_ACTIVE_AUTO_MANAGERS = 20;
     private static final List<AutoManager> activeAutoManagers = new CopyOnWriteArrayList<>();
 
     private final AutoProfileService autoProfileService;

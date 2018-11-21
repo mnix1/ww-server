@@ -2,6 +2,7 @@ package com.ww.game.member.command;
 
 import com.ww.game.GameCommand;
 import com.ww.game.member.MemberWisieManager;
+import com.ww.game.play.flow.PlayWarFlow;
 import com.ww.model.constant.wisie.MemberWisieStatus;
 import lombok.ToString;
 
@@ -25,6 +26,6 @@ public class MemberWisieAnswerCommand extends GameCommand {
         Map<String, Object> model = new HashMap<>();
         model.put("answerId", answerId.intValue());
         model.put("id", ANSWER);
-        manager.getPlayManager().processMessage(manager.getContainer().getTeam().getProfileId(), model);
+        ((PlayWarFlow)manager.getPlayManager().getFlow()).wisieAnswered(manager.getContainer().getTeam().getProfileId(), answerId);
     }
 }

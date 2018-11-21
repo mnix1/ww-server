@@ -106,6 +106,12 @@ public class PlayWarFlow extends PlayFlow {
         }
     }
 
+    public synchronized void wisieAnswered(Long profileId, Long answerId) {
+        if(isStatusEquals(RivalStatus.ANSWERING)){
+            answeredAction(profileId, answerId);
+        }
+    }
+
     public synchronized void changeTask() {
         run("CHANGING_TASK");
     }
