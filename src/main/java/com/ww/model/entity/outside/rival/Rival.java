@@ -58,4 +58,19 @@ public class Rival {
         }
         this.modelsJSONCompressed = CompressHelper.compress(container.modelsToJSON());
     }
+
+    @Override
+    public String toString() {
+        return "Rival{" +
+                "id=" + id +
+                ", type=" + type +
+                ", importance=" + importance +
+                ", creator=" + creator +
+                ", opponent=" + opponent +
+                ", draw=" + draw +
+                ", winner=" + winner +
+                ", openDate=" + openDate +
+                ", closeDate=" + closeDate +
+                '}';
+    }
 }

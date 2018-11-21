@@ -6,6 +6,7 @@ import com.ww.model.container.Resources;
 import com.ww.model.container.rival.challenge.ChallengePosition;
 import com.ww.model.entity.outside.rival.challenge.Challenge;
 import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
+import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 
 import java.time.Instant;
@@ -26,9 +27,10 @@ public class ChallengeGlobalDTO {
     private Boolean canResponse = false;
     private Boolean canTryAgain = false;
     private Boolean joined = false;
+    private Boolean canJoin;
     private List<ChallengePositionDTO> positions;
 
-    public ChallengeGlobalDTO(Challenge challenge, Optional<ChallengeProfile> optionalChallengeProfile, List<ChallengePosition> positions) {
+    public ChallengeGlobalDTO(Challenge challenge, Optional<ChallengeProfile> optionalChallengeProfile, List<ChallengePosition> positions, Profile profile) {
         this.id = challenge.getId();
         this.closeDate = challenge.getCloseDate();
         this.timeoutInterval = challenge.getTimeoutInterval();
@@ -42,6 +44,7 @@ public class ChallengeGlobalDTO {
             canResponse = joined && challengeProfile.getResponseStatus() == ChallengeProfileResponse.OPEN;
             canTryAgain = joined && approach == ChallengeApproach.MANY && challengeProfile.getResponseStatus() == ChallengeProfileResponse.CLOSED;
         }
+        this.canJoin = !joined && profile.hasEnoughResources(cost);
         String tag = optionalChallengeProfile.isPresent() ? optionalChallengeProfile.get().getProfile().getTag() : "";
         this.positions = positions.stream().limit(20).map((ChallengePosition challengePosition) -> new ChallengePositionDTO(challengePosition, tag)).collect(Collectors.toList());
     }

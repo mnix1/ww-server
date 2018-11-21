@@ -67,7 +67,7 @@ public class ChallengeCreateService {
     public Challenge createGlobal() {
         LocalDateTime date = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(0, 0));
         Long joinCost = randomElement(Arrays.asList(2L, 4L, 6L, 8L, 10L));
-        Challenge challenge = new Challenge(ChallengeType.GLOBAL, ChallengeAccess.UNLOCK, ChallengeApproach.MANY, new Resources(ResourceType.random(), joinCost), date.toInstant(ZoneOffset.UTC));
+        Challenge challenge = new Challenge(ChallengeType.GLOBAL, ChallengeAccess.UNLOCK, ChallengeApproach.MANY, new Resources(ResourceType.CRYSTAL, joinCost), date.toInstant(ZoneOffset.UTC));
         challenge.setGainResources(challenge.getGainResources().add(new Resources(joinCost * 2, joinCost * 2, joinCost * 2, joinCost * 2)));
         challengeRepository.save(challenge);
         rivalChallengeService.preparePhase(challenge, 0, Category.random(), DifficultyLevel.random());

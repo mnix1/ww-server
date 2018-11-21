@@ -10,6 +10,7 @@ import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.rival.global.RivalGlobalService;
+import com.ww.service.rival.init.RivalRunService;
 import com.ww.service.rival.season.RivalProfileSeasonService;
 import com.ww.service.rival.season.RivalSeasonService;
 import com.ww.service.rival.task.TaskGenerateService;
@@ -19,12 +20,15 @@ import com.ww.service.social.ProfileService;
 import com.ww.service.social.RewardService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 @Getter
 @AllArgsConstructor
 public class RivalService {
+    private static Logger logger = LoggerFactory.getLogger(RivalService.class);
 
     private final ConnectionService connectionService;
     private final TaskGenerateService taskGenerateService;
@@ -49,6 +53,7 @@ public class RivalService {
         updateSeason(manager);
         manager.getRival().update(container);
         rivalGlobalService.save(manager.getRival());
+        logger.debug("rival disposeManager {}", manager.getRival().toString());
     }
 
     public void updateSeason(PlayManager manager) {

@@ -9,6 +9,8 @@ import com.ww.model.dto.rival.challenge.ChallengePrivateDTO;
 import com.ww.model.dto.rival.challenge.ChallengeSummaryDTO;
 import com.ww.service.rival.challenge.ChallengeCreateService;
 import com.ww.service.rival.challenge.ChallengeService;
+import com.ww.service.social.ProfileService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +22,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/challenge")
+@AllArgsConstructor
 public class ChallengeController {
 
-    @Autowired
-    private ChallengeService challengeService;
-    @Autowired
-    private ChallengeCreateService challengeCreateService;
+    private final ChallengeService challengeService;
+    private final ChallengeCreateService challengeCreateService;
+    private final ProfileService profileService;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public Map create(@RequestBody Map<String, Object> payload) {
@@ -47,7 +49,7 @@ public class ChallengeController {
             throw new IllegalArgumentException();
         }
         Long challengeId = ((Integer) payload.get("id")).longValue();
-        return challengeService.response(challengeId);
+        return challengeService.response(challengeId, profileService.getProfileId());
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.POST)
@@ -57,12 +59,12 @@ public class ChallengeController {
         }
         ChallengeStatus status = ChallengeStatus.valueOf((String) payload.get("status"));
         Boolean participant = (Boolean) payload.get("participant");
-        return challengeService.list(status, participant);
+        return challengeService.list(status, participant, profileService.getProfileId());
     }
 
     @RequestMapping(value = "/global", method = RequestMethod.POST)
-    public ChallengeGlobalDTO global(@RequestBody Map<String, Object> payload) {
-        return challengeService.global();
+    public ChallengeGlobalDTO global() {
+        return challengeService.global(profileService.getProfileId());
     }
 
     @RequestMapping(value = "/summary", method = RequestMethod.POST)
@@ -71,7 +73,7 @@ public class ChallengeController {
             throw new IllegalArgumentException();
         }
         Long challengeId = ((Integer) payload.get("id")).longValue();
-        return challengeService.summary(challengeId);
+        return challengeService.summary(challengeId, profileService.getProfileId());
     }
 
     @RequestMapping(value = "/join", method = RequestMethod.POST)
@@ -81,7 +83,7 @@ public class ChallengeController {
         }
         String creatorTag = payload.containsKey("creatorTag") ? (String) payload.get("creatorTag") : "";
         Long challengeId = ((Integer) payload.get("id")).longValue();
-        return challengeService.join(challengeId, creatorTag);
+        return challengeService.join(challengeId, creatorTag, profileService.getProfileId());
     }
 
     @RequestMapping(value = "/tryAgain", method = RequestMethod.POST)
@@ -90,6 +92,6 @@ public class ChallengeController {
             throw new IllegalArgumentException();
         }
         Long challengeId = ((Integer) payload.get("id")).longValue();
-        return challengeService.tryAgain(challengeId);
+        return challengeService.tryAgain(challengeId, profileService.getProfileId());
     }
 }

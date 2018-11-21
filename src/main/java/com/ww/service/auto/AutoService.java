@@ -10,6 +10,8 @@ import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.rival.init.RivalInitRandomOpponentService;
 import com.ww.service.social.ConnectionService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +21,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Service
 @AllArgsConstructor
 public class AutoService {
-    public static int MAX_ACTIVE_AUTO_MANAGERS = 0;
+    private static Logger logger = LoggerFactory.getLogger(AutoService.class);
+    public static int MAX_ACTIVE_AUTO_MANAGERS = 3;
     private static final List<AutoManager> activeAutoManagers = new CopyOnWriteArrayList<>();
 
     private final AutoProfileService autoProfileService;
@@ -43,8 +46,10 @@ public class AutoService {
     public void perform() {
         if (needAutoRival()) {
             startManager();
+            return;
         }
         if (activeAutoManagers.size() >= MAX_ACTIVE_AUTO_MANAGERS) {
+            logger.debug("Already have max active auto managers: {}", activeAutoManagers.size());
             return;
         }
         startManager();
@@ -69,6 +74,7 @@ public class AutoService {
     }
 
     public void disposeManager(AutoManager manager) {
+        logger.debug("Disposed auto profile=" + manager.getProfile().toString());
         manager.disposeContainer();
         connectionService.deleteConnection(manager.getConnection());
         activeAutoManagers.remove(manager);
