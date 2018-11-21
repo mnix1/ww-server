@@ -1,9 +1,8 @@
 package com.ww.service.rival.global;
 
+import com.ww.game.play.PlayManager;
 import com.ww.model.container.ProfileConnection;
 import com.ww.model.entity.outside.rival.Rival;
-import com.ww.game.play.PlayManager;
-import com.ww.game.play.container.PlayContainer;
 import com.ww.repository.outside.rival.RivalRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,11 +43,6 @@ public class RivalGlobalService {
     }
 
     @Transactional
-    public void store(PlayContainer container) {
-        Rival rival = new Rival(container);
-        save(rival);
-    }
-
     public void save(Rival rival) {
         rivalRepository.save(rival);
     }

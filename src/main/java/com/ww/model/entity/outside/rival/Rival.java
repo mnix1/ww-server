@@ -5,7 +5,6 @@ import com.ww.helper.CompressHelper;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.entity.outside.social.Profile;
-import com.ww.websocket.message.Message;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -35,18 +34,24 @@ public class Rival {
     @ManyToOne
     @JoinColumn(name = "winner_id", updatable = false)
     private Profile winner;
-    private Instant closeDate = Instant.now();
+    private Instant openDate;
+    private Instant closeDate;
     @Lob
     private byte[] modelsJSONCompressed;
 
     public Rival(PlayContainer container) {
+        this.openDate = Instant.now();
         this.type = container.getInit().getType();
         this.importance = container.getInit().getImportance();
         this.creator = container.getInit().getCreatorProfile();
-        this.draw = container.getResult().getDraw();
         if (type != RivalType.CAMPAIGN_WAR && type != RivalType.CHALLENGE) {
             this.opponent = container.getInit().getOpponentProfile();
         }
+    }
+
+    public void update(PlayContainer container) {
+        this.closeDate = Instant.now();
+        this.draw = container.getResult().getDraw();
         Profile winner = container.getResult().getWinner();
         if (winner != null && !winner.getId().equals(BOT_PROFILE_ID)) {
             this.winner = winner;

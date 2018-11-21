@@ -4,9 +4,11 @@ import com.ww.game.play.communication.PlayCommunication;
 import com.ww.game.play.container.PlayContainer;
 import com.ww.game.play.flow.PlayFlow;
 import com.ww.model.container.rival.*;
+import com.ww.model.entity.outside.rival.Rival;
 import com.ww.service.RivalService;
 import com.ww.service.social.ConnectionService;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Map;
 
@@ -17,6 +19,8 @@ public abstract class PlayManager {
     protected PlayContainer container;
     protected PlayFlow flow;
     protected PlayCommunication communication;
+    @Setter
+    protected Rival rival;
 
     protected PlayManager(RivalService service) {
         this.service = service;

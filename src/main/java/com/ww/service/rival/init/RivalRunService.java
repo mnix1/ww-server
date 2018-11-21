@@ -7,6 +7,7 @@ import com.ww.model.container.rival.init.RivalCampaignWarInit;
 import com.ww.model.container.rival.init.RivalChallengeInit;
 import com.ww.model.container.rival.init.RivalInit;
 import com.ww.model.container.rival.init.RivalTwoInit;
+import com.ww.model.entity.outside.rival.Rival;
 import com.ww.service.rival.battle.RivalBattleService;
 import com.ww.service.rival.campaign.RivalCampaignWarService;
 import com.ww.service.rival.challenge.RivalChallengeService;
@@ -37,6 +38,9 @@ public class RivalRunService {
                 rivalGlobalService.put(profile.getId(), manager);
             }
         });
+        Rival rival = new Rival(manager.getContainer());
+        rivalGlobalService.save(rival);
+        manager.setRival(rival);
         manager.getFlow().start();
     }
 

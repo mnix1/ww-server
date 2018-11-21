@@ -47,7 +47,8 @@ public class RivalService {
             addRewardFromWin(container.getResult().getWinner());
         }
         updateSeason(manager);
-        rivalGlobalService.store(container);
+        manager.getRival().update(container);
+        rivalGlobalService.save(manager.getRival());
     }
 
     public void updateSeason(PlayManager manager) {
