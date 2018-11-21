@@ -36,7 +36,7 @@ public class AutoCommunication {
     @Async
     public void handleMessage(Map<String, Object> model) {
         Message id = Message.valueOf((String) model.get("id"));
-        logger.trace(toString() + " handleMessage, id={} thread={}", id, Thread.currentThread().getName());
+//        logger.trace(toString() + " handleMessage, id={} thread={}", id, Thread.currentThread().getName());
         if (handleRivalContent(id, model)) {
             return;
         }

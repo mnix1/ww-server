@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class RivalSeasonService {
-    public static final Long SEASON_RIVAL_COUNT = 100L;
+    public static final Long SEASON_RIVAL_COUNT = 5000L;
 
     private final SeasonRepository seasonRepository;
     private final SeasonGradeRepository seasonGradeRepository;

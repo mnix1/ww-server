@@ -41,7 +41,7 @@ public class AutoWisorThinkingState extends AutoWisorState {
 
     private long prepareInterval() {
         int difficulty = manager.getAutoPlayContainer().question().getDifficultyLevel().getPoints();
-        double betweenInterval = randomDouble(1, 6) * difficulty;
+        double betweenInterval = randomDouble(randomDouble(1.5, 3.0), randomDouble(3.5, 6.0)) * difficulty;
         if (isHobby) {
             betweenInterval /= 2;
         }
