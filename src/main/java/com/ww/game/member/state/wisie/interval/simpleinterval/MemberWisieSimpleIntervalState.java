@@ -21,7 +21,7 @@ public abstract class MemberWisieSimpleIntervalState extends MemberWisieState {
     }
 
     protected long intervalMultiply() {
-        return 1000;
+        return manager.getPlayManager().getInterval().intervalMultiply();
     }
 
     protected double prepareInterval() {

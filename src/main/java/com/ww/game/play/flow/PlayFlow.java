@@ -19,6 +19,7 @@ public class PlayFlow extends GameFlow {
         initStateMap();
     }
 
+    @Override
     protected void initStateMap() {
         stateMap.put("INTRO", this::createIntroState);
         stateMap.put("RANDOM_TASK_PROPS", this::createRandomTaskPropsState);
@@ -29,6 +30,11 @@ public class PlayFlow extends GameFlow {
         stateMap.put("ANSWERING", this::createAnsweringState);
         stateMap.put("ANSWERING_TIMEOUT", this::createAnsweringTimeoutState);
         stateMap.put("END", this::createEndState);
+    }
+
+    @Override
+    public void start(){
+        run("INTRO");
     }
 
     public boolean isStatusEquals(RivalStatus status) {

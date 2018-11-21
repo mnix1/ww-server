@@ -1,12 +1,12 @@
 package com.ww.service.rival.init;
 
+import com.ww.game.play.*;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.container.rival.init.RivalCampaignWarInit;
 import com.ww.model.container.rival.init.RivalChallengeInit;
 import com.ww.model.container.rival.init.RivalInit;
 import com.ww.model.container.rival.init.RivalTwoInit;
-import com.ww.game.play.*;
 import com.ww.service.rival.battle.RivalBattleService;
 import com.ww.service.rival.campaign.RivalCampaignWarService;
 import com.ww.service.rival.challenge.RivalChallengeService;
@@ -37,7 +37,7 @@ public class RivalRunService {
                 rivalGlobalService.put(profile.getId(), manager);
             }
         });
-        manager.start();
+        manager.getFlow().start();
     }
 
     public void addProfileSeasons(RivalInit initContainer) {

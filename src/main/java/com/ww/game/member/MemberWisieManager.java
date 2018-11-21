@@ -19,12 +19,4 @@ public class MemberWisieManager {
         this.container = new MemberWisieContainer(team, member, playManager.getContainer().getTasks().question());
         this.flow = new MemberWisieFlow(this);
     }
-
-    public void start() {
-        flow.run("WAITING_FOR_QUESTION");
-    }
-
-    public void stop() {
-        flow.stop();
-    }
 }

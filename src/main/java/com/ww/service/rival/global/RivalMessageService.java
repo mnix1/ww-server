@@ -6,6 +6,7 @@ import com.ww.service.social.ConnectionService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -34,20 +35,19 @@ public class RivalMessageService {
     private final ConnectionService connectionService;
     private final RivalGlobalService rivalGlobalService;
 
+    @Async
     public void handleMessage(String sessionId, String message) {
-        new Thread(() -> {
-            logger.trace("Message received sessionId: {}, content: {}", sessionId, message);
-            Optional<Connection> optionalConnection = connectionService.findBySessionId(sessionId);
-            if (!optionalConnection.isPresent()) {
-                return;
-            }
-            Long profileId = optionalConnection.get().getProfileId();
-            if (!rivalGlobalService.contains(profileId)) {
-                return;
-            }
+        logger.trace("Message received sessionId: {}, content: {}, thread: {}", sessionId, message, Thread.currentThread().getName());
+        Optional<Connection> optionalConnection = connectionService.findBySessionId(sessionId);
+        if (!optionalConnection.isPresent()) {
+            return;
+        }
+        Long profileId = optionalConnection.get().getProfileId();
+        if (!rivalGlobalService.contains(profileId)) {
+            return;
+        }
 
-            PlayManager manager = rivalGlobalService.get(profileId);
-            manager.processMessage(profileId, parseMessage(message));
-        }).run();
+        PlayManager manager = rivalGlobalService.get(profileId);
+        manager.processMessage(profileId, parseMessage(message));
     }
 }

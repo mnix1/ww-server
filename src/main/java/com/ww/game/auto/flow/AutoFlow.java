@@ -24,6 +24,12 @@ public class AutoFlow extends GameFlow {
         stateMap.put("RIVAL_CHOOSING_WHO_ANSWER", () -> new AutoRivalChoosingWhoAnswerState(manager));
         stateMap.put("RIVAL_CHOOSING_TASK_CATEGORY", () -> new AutoRivalChoosingTaskCategoryState(manager));
         stateMap.put("RIVAL_CHOOSING_TASK_DIFFICULTY", () -> new AutoRivalChoosingTaskDifficultyState(manager));
+        stateMap.put("RIVAL_ANSWERING", () -> new AutoRivalAnsweringState(manager));
         stateMap.put("RIVAL_CLOSED", () -> new AutoRivalClosedState(manager));
+    }
+
+    @Override
+    public void start(){
+        run("MANAGE_BOOKS");
     }
 }

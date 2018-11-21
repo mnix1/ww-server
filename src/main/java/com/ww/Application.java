@@ -12,6 +12,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
@@ -23,6 +24,7 @@ import java.util.concurrent.Executors;
 @SpringBootApplication
 @EnableScheduling
 @EnableOAuth2Client
+@EnableAsync
 public class Application {
 
     @Autowired

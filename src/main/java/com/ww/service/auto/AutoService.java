@@ -2,7 +2,6 @@ package com.ww.service.auto;
 
 import com.ww.game.auto.AutoManager;
 import com.ww.game.play.PlayManager;
-import com.ww.model.container.Connection;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.auto.command.AutoManageBooksService;
 import com.ww.service.auto.command.AutoStartRivalService;
@@ -45,7 +44,7 @@ public class AutoService {
         }
         AutoManager manager = optionalManager.get();
         activeAutoManagers.add(manager);
-        manager.start();
+        manager.getFlow().start();
     }
 
     public PlayManager getPlayManager(Profile profile) {
@@ -53,6 +52,7 @@ public class AutoService {
     }
 
     public void disposeManager(AutoManager manager) {
+        manager.disposeContainer();
         connectionService.deleteConnection(manager.getConnection());
         activeAutoManagers.remove(manager);
     }

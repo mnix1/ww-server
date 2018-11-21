@@ -5,7 +5,7 @@ public class RivalInterval {
         return (long) (intervalMultiply() * interval);
     }
 
-    protected long intervalMultiply() {
+    public long intervalMultiply() {
         return 1000;
     }
 

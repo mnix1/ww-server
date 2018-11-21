@@ -14,6 +14,7 @@ public class MemberWisieFlow extends GameFlow {
         initStateMap();
     }
 
+    @Override
     protected void initStateMap() {
         stateMap.put("LOST_CONCENTRATION", () -> new MemberWisieLostConcentrationState(manager));
         stateMap.put("WAITING_FOR_QUESTION", () -> new MemberWisieWaitingForQuestionState(manager));
@@ -31,5 +32,10 @@ public class MemberWisieFlow extends GameFlow {
         stateMap.put("NO_KNOW_ANSWER", () -> new MemberWisieNoKnowAnswerState(manager));
         stateMap.put("THINKING_GIVE_RANDOM_ANSWER", () -> new MemberWisieThinkingGiveRandomAnswerState(manager));
         stateMap.put("SURRENDER", () -> new MemberWisieSurrenderState(manager));
+    }
+
+    @Override
+    public void start(){
+        run("WAITING_FOR_QUESTION");
     }
 }

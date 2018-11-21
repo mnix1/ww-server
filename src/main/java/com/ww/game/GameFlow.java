@@ -38,6 +38,8 @@ public abstract class GameFlow {
         return states.get(states.size() - 1);
     }
 
+    public abstract void start();
+
     public synchronized void run(String stateName) {
         run(stateName, null);
     }

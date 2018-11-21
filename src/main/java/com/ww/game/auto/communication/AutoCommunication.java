@@ -6,6 +6,9 @@ import com.ww.game.auto.AutoManager;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.websocket.message.Message;
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 
 import java.util.Map;
 
@@ -13,6 +16,7 @@ import static com.ww.helper.ModelHelper.parseMessage;
 
 @Getter
 public class AutoCommunication {
+    public static Logger logger = LoggerFactory.getLogger(AutoCommunication.class);
     private AutoManager manager;
 
     public AutoCommunication(AutoManager manager) {
@@ -29,8 +33,10 @@ public class AutoCommunication {
         }
     }
 
+    @Async
     public void handleMessage(Map<String, Object> model) {
         Message id = Message.valueOf((String) model.get("id"));
+        logger.trace(toString() + " handleMessage, id={} thread={}", id, Thread.currentThread().getName());
         if (handleRivalContent(id, model)) {
             return;
         }
@@ -53,9 +59,18 @@ public class AutoCommunication {
             manager.getFlow().run("RIVAL_CHOOSING_TASK_CATEGORY");
         } else if (status == RivalStatus.CHOOSING_TASK_DIFFICULTY) {
             manager.getFlow().run("RIVAL_CHOOSING_TASK_DIFFICULTY");
+        } else if (status == RivalStatus.ANSWERING) {
+            manager.getFlow().run("RIVAL_ANSWERING");
         } else if (status == RivalStatus.CLOSED) {
             manager.getFlow().run("RIVAL_CLOSED");
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "AutoCommunication{" +
+                "manager=" + manager +
+                '}';
     }
 }

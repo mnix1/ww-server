@@ -56,10 +56,6 @@ public abstract class PlayManager {
         }
     }
 
-    public void start() {
-        flow.run("INTRO");
-    }
-
     public void dispose() {
         service.disposeManager(this);
     }

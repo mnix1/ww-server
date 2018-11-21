@@ -20,7 +20,7 @@ public class PlayWarStopActiveMemberManagerFlowsCommand extends PlayCommand {
             TeamMember member = warTeam.getActiveTeamMember();
             if (member.isWisie()) {
                 WisieTeamMember wisieMember = (WisieTeamMember) member;
-                wisieMember.currentManager().ifPresent(MemberWisieManager::stop);
+                wisieMember.currentManager().ifPresent(manager -> manager.getFlow().stop());
             }
         }
     }

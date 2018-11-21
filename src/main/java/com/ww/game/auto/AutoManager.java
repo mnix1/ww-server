@@ -30,8 +30,17 @@ public class AutoManager {
         this.communication = new AutoCommunication(this);
     }
 
-    public void start() {
-        flow.run("MANAGE_BOOKS");
+    public void disposeContainer() {
+        if (autoPlayContainer != null) {
+            autoPlayContainer.dispose();
+            setAutoPlayContainer(null);
+        }
     }
 
+    @Override
+    public String toString() {
+        return "AutoManager{" +
+                "profile=" + profile +
+                '}';
+    }
 }
