@@ -49,7 +49,6 @@ public class ChallengeService {
 
     @Transactional
     public Map<String, Object> response(Long challengeId, Long profileId) {
-        logger.debug("response id={}, profileId={}", challengeId, profileId);
         Map<String, Object> model = new HashMap<>();
         Optional<ChallengeProfile> optionalChallengeProfile = challengeProfileRepository.findByProfile_IdAndChallenge_Id(profileId, challengeId);
         ChallengeProfile challengeProfile;
@@ -70,7 +69,6 @@ public class ChallengeService {
         if (challengeProfile.getResponseStatus() != ChallengeProfileResponse.OPEN || !challengeProfile.getJoined()) {
             return putErrorCode(model);
         }
-        logger.debug("response success id={}, profileId={}", challengeId, profileId);
         challengeProfile.setResponseStatus(ChallengeProfileResponse.IN_PROGRESS);
         challengeProfile.setResponseStart(Instant.now());
         challengeProfileRepository.save(challengeProfile);
@@ -151,7 +149,6 @@ public class ChallengeService {
 
     @Transactional
     public Map<String, Object> join(Long challengeId, String creatorTag, Long profileId) {
-        logger.debug("join id={}, profileId={}", challengeId, profileId);
         Map<String, Object> model = new HashMap<>();
         Optional<Challenge> optionalChallenge = challengeRepository.findById(challengeId);
         if (!optionalChallenge.isPresent()) {
@@ -186,7 +183,6 @@ public class ChallengeService {
         if (challengeProfile.getJoined()) {
             return putErrorCode(model);
         }
-        logger.debug("join success id={}, profileId={}", challengeId, profileId);
         challengeProfile.join();
         challengeProfileRepository.save(challengeProfile);
         challenge.joined();

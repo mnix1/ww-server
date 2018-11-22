@@ -32,7 +32,7 @@ public class Rival {
     private Profile opponent;
     private Boolean draw;
     @ManyToOne
-    @JoinColumn(name = "winner_id", updatable = false)
+    @JoinColumn(name = "winner_id")
     private Profile winner;
     private Instant openDate;
     private Instant closeDate;

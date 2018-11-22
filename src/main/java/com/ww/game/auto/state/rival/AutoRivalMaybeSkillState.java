@@ -19,7 +19,7 @@ import static com.ww.helper.RandomHelper.randomDouble;
 import static com.ww.helper.RandomHelper.randomElement;
 
 public class AutoRivalMaybeSkillState extends AutoRivalState {
-    private static List<Skill> withOpponentWisieSkills = Arrays.asList(Skill.NINJA, Skill.WATER_PISTOL, Skill.GHOST, Skill.PIZZA, Skill.HINT, Skill.CHANGE_TASK);
+    private static List<Skill> withOpponentWisieSkills = Arrays.asList(Skill.NINJA, Skill.WATER_PISTOL, Skill.GHOST, Skill.PIZZA, Skill.HINT, Skill.CHANGE_TASK, Skill.COVERALL);
     private static List<Skill> withoutOpponentWisieSkills = Arrays.asList(Skill.HINT, Skill.CHANGE_TASK);
 
     public AutoRivalMaybeSkillState(AutoManager manager) {
