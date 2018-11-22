@@ -95,6 +95,12 @@ public class Challenge {
 
     public void joined() {
         participants++;
+        Long highest = new Resources(getCostResources()).highest();
+        int max = 5;
+        Resources maxGain = new Resources(highest * max, highest * max, highest * max, highest * max);
+        if (!maxGain.hasNotLessThan(getGainResources())) {
+            return;
+        }
         setGainResources(getGainResources().add(getCostResources()));
     }
 }
