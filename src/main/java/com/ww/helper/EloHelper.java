@@ -32,7 +32,7 @@ public class EloHelper {
 
     public static Grade findGrade(Long elo, List<SeasonGrade> seasonGrades) {
         for (SeasonGrade seasonGrade : seasonGrades) {
-            if (elo >= seasonGrade.getRangeFrom() && seasonGrade.getRangeTo() != null && elo < seasonGrade.getRangeTo()) {
+            if (elo >= seasonGrade.getRangeFrom() && seasonGrade.getRangeTo() != null && elo <= seasonGrade.getRangeTo()) {
                 return seasonGrade.getGrade();
             } else if (elo >= seasonGrade.getRangeFrom() && seasonGrade.getRangeTo() == null) {
                 return seasonGrade.getGrade();
