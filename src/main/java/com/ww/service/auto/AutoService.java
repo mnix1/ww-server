@@ -22,7 +22,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @AllArgsConstructor
 public class AutoService {
     private static Logger logger = LoggerFactory.getLogger(AutoService.class);
-    public static int MAX_ACTIVE_AUTO_MANAGERS = 0;
+    public static int MAX_ACTIVE_AUTO_MANAGERS = 3;
     private static final List<AutoManager> activeAutoManagers = new CopyOnWriteArrayList<>();
 
     private final AutoProfileService autoProfileService;

@@ -1,6 +1,7 @@
 package com.ww.model.container.rival;
 
 import lombok.NoArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 
 import java.util.Collection;
 import java.util.Map;
@@ -35,6 +36,7 @@ public class RivalTeams {
         return team(opponentMap.get(team.getProfileId()));
     }
 
+    @Async
     public void forEachTeam(Consumer<? super RivalTeam> action) {
         getTeams().parallelStream().forEach(action);
     }

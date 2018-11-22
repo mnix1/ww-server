@@ -33,7 +33,6 @@ public class AutoCommunication {
         }
     }
 
-    @Async
     public void handleMessage(Map<String, Object> model) {
         Message id = Message.valueOf((String) model.get("id"));
 //        logger.trace(toString() + " handleMessage, id={} thread={}", id, Thread.currentThread().getName());
@@ -64,6 +63,10 @@ public class AutoCommunication {
             manager.getFlow().run("RIVAL_ANSWERING");
         } else if (status == RivalStatus.CLOSED) {
             manager.getFlow().run("RIVAL_CLOSED");
+        } else if (status == RivalStatus.ANSWERED
+                || status == RivalStatus.ANSWERING_TIMEOUT
+                || status == RivalStatus.CHANGING_TASK) {
+            manager.getFlow().run("RIVAL_STOP_ANSWERING");
         }
         return true;
     }

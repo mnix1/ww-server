@@ -9,6 +9,7 @@ import com.ww.service.RivalService;
 import com.ww.service.social.ConnectionService;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.scheduling.annotation.Async;
 
 import java.util.Map;
 
@@ -54,6 +55,7 @@ public abstract class PlayManager {
         service.updateProfilesElo(container);
     }
 
+    @Async
     public void processMessage(Long profileId, Map<String, Object> content) {
         synchronized (flow) {
             communication.processMessage(profileId, content);

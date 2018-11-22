@@ -25,6 +25,7 @@ public class AutoFlow extends GameFlow {
         stateMap.put("RIVAL_CHOOSING_TASK_CATEGORY", () -> new AutoRivalChoosingTaskCategoryState(manager));
         stateMap.put("RIVAL_CHOOSING_TASK_DIFFICULTY", () -> new AutoRivalChoosingTaskDifficultyState(manager));
         stateMap.put("RIVAL_ANSWERING", () -> new AutoRivalAnsweringState(manager));
+        stateMap.put("RIVAL_STOP_ANSWERING", () -> new AutoRivalStopAnsweringState(manager));
         stateMap.put("RIVAL_CLOSED", () -> new AutoRivalClosedState(manager));
         stateMap.put("RIVAL_MAYBE_SKILL", () -> new AutoRivalMaybeSkillState(manager));
     }

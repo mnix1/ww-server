@@ -35,7 +35,6 @@ public class RivalMessageService {
     private final ConnectionService connectionService;
     private final RivalGlobalService rivalGlobalService;
 
-    @Async
     public void handleMessage(String sessionId, String message) {
 //        logger.trace("Message received sessionId: {}, content: {}", sessionId, message);
         Optional<Connection> optionalConnection = connectionService.findBySessionId(sessionId);
@@ -46,7 +45,6 @@ public class RivalMessageService {
         if (!rivalGlobalService.contains(profileId)) {
             return;
         }
-
         PlayManager manager = rivalGlobalService.get(profileId);
         manager.processMessage(profileId, parseMessage(message));
     }
