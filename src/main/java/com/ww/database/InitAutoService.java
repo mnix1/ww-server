@@ -57,6 +57,7 @@ public class InitAutoService {
         autos.add(new Auto("walet", encoder));
         autos.add(new Auto("florence", encoder));
         autos.add(new Auto("giewont88", encoder));
+        autos.add(new Auto("Natasha", encoder));
         autos.add(new Auto("kris", encoder));
         autos.add(new Auto("ooolelele09", encoder));
         autos.add(new Auto("jejku88", encoder));

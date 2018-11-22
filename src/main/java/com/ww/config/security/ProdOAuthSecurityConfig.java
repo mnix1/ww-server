@@ -40,7 +40,7 @@ public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
             "/profile", "/classification/war", "/classification/battle", "/play",
             "/war", "/warRanking", "/warFast", "/challenge", "/battle", "/battleRanking", "/battleFast", "/training", "/campaign", "/campaignWar",
             "/shop", "/friend", "/wisies", "/settings", "/_login/**", "/login", "/static/**", "/health/**", "/health"};
-    public static final String[] ONLY_ADMIN = new String[]{"/**/*.map", "/_h2/**","/_replay/**", "/_manage/**", "/_cache/**", "/_log/**", "/_auto/**"};
+    public static final String[] ONLY_ADMIN = new String[]{"/**/*.map", "/_h2/**","/_replay/**", "/_manage/**", "/_cache/**", "/_log/**", "/_auto/**", "/_dev/**"};
 
     @Autowired
     private Environment env;

@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 @AllArgsConstructor
 public class RivalGlobalService {
-    private static final Map<Long, PlayManager> managerMap = new ConcurrentHashMap<>();
+    public static final Map<Long, PlayManager> managerMap = new ConcurrentHashMap<>();
 
     private final RivalRepository rivalRepository;
 

@@ -65,4 +65,13 @@ public abstract class PlayManager {
     public void dispose() {
         service.disposeManager(this);
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "{" +
+                "container=" + container +
+                ", flow=" + flow +
+                ", rival=" + rival +
+                '}';
+    }
 }

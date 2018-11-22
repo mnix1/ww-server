@@ -38,7 +38,7 @@ public class RivalTwoInit implements RivalInit {
 
     @Override
     public String toString() {
-        return "RivalTwoInit{" +
+        return super.toString() + "{" +
                 "type=" + type +
                 ", importance=" + importance +
                 ", creatorProfile=" + creatorProfile +

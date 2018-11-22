@@ -35,7 +35,14 @@ public abstract class PlayContainer {
 
     @Override
     public String toString() {
-        return super.toString() + ", " + init.toString();
+        return super.toString() + "{" +
+                "init=" + init +
+                ", teams=" + teams +
+                ", tasks=" + tasks +
+                ", timeouts=" + timeouts +
+                ", decisions=" + decisions +
+                ", result=" + result +
+                '}';
     }
 
     public abstract boolean isEnd();

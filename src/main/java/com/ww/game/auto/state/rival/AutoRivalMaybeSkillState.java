@@ -56,7 +56,6 @@ public class AutoRivalMaybeSkillState extends AutoRivalState {
         if (!opponentWisieHeroType) {
             interval /= 3;
         }
-        logger.error("used {}, {}, {}, {}", opponentWisieHeroType, skill, interval, wisieActions.size());
         sendAfter(interval, skill.name(), prepareSkillProps(skill));
     }
 

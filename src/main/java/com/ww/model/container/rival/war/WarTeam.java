@@ -5,12 +5,14 @@ import com.ww.model.container.rival.RivalTeamSkills;
 import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
+@ToString
 public class WarTeam extends RivalTeam {
     private List<TeamMember> teamMembers;
     private int activeIndex;

@@ -19,7 +19,6 @@ import static com.ww.game.play.modelfiller.PlayModelFiller.fillModelStatus;
 public abstract class PlayState extends GameState {
     protected PlayManager manager;
     protected RivalStatus status;
-    protected List<GameState> childStates = new CopyOnWriteArrayList<>();
 
     public PlayState(PlayManager manager, RivalStatus status) {
         this.manager = manager;
@@ -46,14 +45,5 @@ public abstract class PlayState extends GameState {
 
     public Map<String, Object> prepareChildModel(RivalTeam team, RivalTeam opponentTeam) {
         return new HashMap<>();
-    }
-
-    public void addChildState(GameState state) {
-        childStates.add(state);
-    }
-
-    @Override
-    public String toString() {
-        return super.toString() + ", " + manager.getContainer().toString();
     }
 }

@@ -5,9 +5,11 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -150,7 +152,7 @@ public abstract class GameFlow {
             state.after();
         } else {
             after(afterInterval, aLong -> {
-             //   logger.trace("startAfter " + toString() + ", " + state.toString());
+                //   logger.trace("startAfter " + toString() + ", " + state.toString());
                 state.after();
             });
         }
@@ -160,12 +162,12 @@ public abstract class GameFlow {
         if (innerFlow != null) {
             return innerFlow.hasNext();
         }
-       // logger.trace("hasNext " + toString() + " result=" + !disposableMap.isEmpty());
+        // logger.trace("hasNext " + toString() + " result=" + !disposableMap.isEmpty());
         return !disposableMap.isEmpty();
     }
 
     public synchronized void stopAfter() {
-     //   logger.trace("stopAfter " + toString());
+        //   logger.trace("stopAfter " + toString());
         for (Disposable disposable : disposableMap.values()) {
             disposable.dispose();
         }
@@ -173,7 +175,7 @@ public abstract class GameFlow {
     }
 
     public synchronized void stop() {
-      //  logger.trace("stop " + toString());
+        //  logger.trace("stop " + toString());
         stopAfter();
         if (innerFlow != null) {
             innerFlow.stop();
@@ -185,5 +187,12 @@ public abstract class GameFlow {
             return innerFlow.get();
         }
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "{" +
+                "states=" + StringUtils.join(states, ",") +
+                '}';
     }
 }

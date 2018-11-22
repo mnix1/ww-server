@@ -58,4 +58,11 @@ public class GameState {
     public boolean stopAfter() {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "{" +
+                " date=" + date +
+                '}';
+    }
 }

@@ -1,6 +1,7 @@
 package com.ww.model.container.rival;
 
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.annotation.Async;
 
 import java.util.Collection;
@@ -43,5 +44,12 @@ public class RivalTeams {
 
     public Collection<RivalTeam> getTeams() {
         return teamMap.values();
+    }
+
+    @Override
+    public String toString() {
+        return "RivalTeams{" +
+                "teams=" + StringUtils.join(getTeams(), ",") +
+                '}';
     }
 }
