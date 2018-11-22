@@ -49,7 +49,7 @@ public class RivalTeams {
     @Override
     public String toString() {
         return "RivalTeams{" +
-                "teams=" + StringUtils.join(getTeams(), ",") +
+                "teams=" + StringUtils.join(getTeams(), ",^_^") +
                 '}';
     }
 }

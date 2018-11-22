@@ -4,6 +4,7 @@ import com.ww.game.play.PlayManager;
 import com.ww.model.container.MapModel;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.repository.outside.wisie.ProfileWisieRepository;
+import com.ww.service.auto.AutoService;
 import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.social.ProfileService;
 import lombok.AllArgsConstructor;
@@ -46,6 +47,10 @@ public class DevelopmentController {
     @RequestMapping(value = "/status", method = RequestMethod.GET)
     public Map status() {
         Set<PlayManager> managers = new HashSet<>(RivalGlobalService.managerMap.values());
-        return new MapModel("rivals", StringUtils.join(managers)).put("count", managers.size()).get();
+        return new MapModel("rivals", StringUtils.join(managers, ",^_^"))
+                .put("rivalCount", managers.size())
+                .put("autos", StringUtils.join(AutoService.activeAutoManagers, ",^_^"))
+                .put("autoCount", AutoService.activeAutoManagers.size())
+                .get();
     }
 }

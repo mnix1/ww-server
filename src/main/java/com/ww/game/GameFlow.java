@@ -192,7 +192,7 @@ public abstract class GameFlow {
     @Override
     public String toString() {
         return super.toString() + "{" +
-                "states=" + StringUtils.join(states, ",") +
+                "states=" + StringUtils.join(states, ",^_^") +
                 '}';
     }
 }

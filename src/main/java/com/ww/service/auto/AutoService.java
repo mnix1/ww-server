@@ -23,7 +23,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class AutoService {
     private static Logger logger = LoggerFactory.getLogger(AutoService.class);
     public static int MAX_ACTIVE_AUTO_MANAGERS = 10;
-    private static final List<AutoManager> activeAutoManagers = new CopyOnWriteArrayList<>();
+    public static final List<AutoManager> activeAutoManagers = new CopyOnWriteArrayList<>();
 
     private final AutoProfileService autoProfileService;
     private final AutoManageBooksService autoManageBooksService;
@@ -49,7 +49,7 @@ public class AutoService {
             return;
         }
         if (activeAutoManagers.size() >= MAX_ACTIVE_AUTO_MANAGERS) {
-            logger.debug("Already have max active auto managers: {}", activeAutoManagers.size());
+//            logger.debug("Already have max active auto managers: {}", activeAutoManagers.size());
             return;
         }
         startManager();

@@ -39,7 +39,7 @@ public class AutoManager {
 
     @Override
     public String toString() {
-        return "AutoManager{" +
+        return super.toString() + "{" +
                 "profile=" + profile +
                 '}';
     }
