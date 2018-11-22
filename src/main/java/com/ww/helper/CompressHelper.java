@@ -27,8 +27,7 @@ public class CompressHelper {
             }
             outputStream.close();
             byte[] output = outputStream.toByteArray();
-            logger.debug("Original: " + data.length / 1024 + " Kb");
-            logger.debug("Compressed: " + output.length / 1024 + " Kb");
+            logger.debug("Original: " + data.length / 1024 + " Kb, Compressed: " + output.length / 1024 + " Kb");
             return output;
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,8 +52,6 @@ public class CompressHelper {
             }
             outputStream.close();
             byte[] output = outputStream.toByteArray();
-            logger.debug("Compressed: " + data.length);
-            logger.debug("Original: " + output.length);
             return new String(output);
         } catch (Exception e) {
             e.printStackTrace();
