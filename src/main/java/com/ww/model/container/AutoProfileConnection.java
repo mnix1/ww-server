@@ -2,13 +2,14 @@ package com.ww.model.container;
 
 import com.ww.game.auto.AutoManager;
 import com.ww.helper.TagHelper;
-import com.ww.model.entity.inside.social.Auto;
 import com.ww.service.rival.global.RivalMessageService;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.ww.game.GameFlow.prepareFlowable;
 import static com.ww.helper.ModelHelper.parseMessage;
+import static com.ww.helper.RandomHelper.randomLong;
 
 @Getter
 public class AutoProfileConnection implements Connection {
@@ -39,7 +40,9 @@ public class AutoProfileConnection implements Connection {
 
     public void sendMessage(String msg) {
 //        logger.trace(toString() + ", " + msg);
-        manager.getCommunication().handleMessage(parseMessage(msg));
+        prepareFlowable(randomLong(10, 100)).subscribe(aLong -> {
+            manager.getCommunication().handleMessage(parseMessage(msg));
+        });
     }
 
     public void handleMessage(String msg) {

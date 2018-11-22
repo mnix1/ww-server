@@ -17,7 +17,7 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'docker'
 
 group = 'gcr.io/wisiemania-2018'
-project.version = '1.0.144'
+project.version = '1.0.146'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
