@@ -26,6 +26,7 @@ public class AutoUpgradeWisiesService {
         List<ProfileWisie> wisies = profileWisieService.findAllInTeam(profile.getId());
         while (upgrade(randomElement(wisies))) {
         }
+        addHobby(randomElement(wisies));
     }
 
     public boolean upgrade(ProfileWisie wisie) {
@@ -37,5 +38,11 @@ public class AutoUpgradeWisiesService {
             wisdomAttribute = null;
         }
         return success(profileWisieEvolutionService.upgradeAttribute(wisie.getId(), wisie.getProfile().getId(), wisdomAttribute, mentalAttribute));
+    }
+
+    public void addHobby(ProfileWisie wisie) {
+        if (wisie.getHobbies().size() < 3) {
+            profileWisieEvolutionService.changeHobby(wisie.getId(), null, wisie.getProfile().getId());
+        }
     }
 }

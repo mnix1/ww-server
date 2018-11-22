@@ -42,9 +42,9 @@ public class AutoStartRivalService {
 
     private RivalOneInit prepareRandomRivalInit(AutoManager manager) {
         RivalType type = RivalType.WAR;
-        if (randomDouble() > 0) {
+        if (randomDouble() > 0.7) {
             type = RivalType.BATTLE;
-            if (randomDouble() > 0) {
+            if (randomDouble() > 0.5) {
                 ChallengeGlobalDTO globalChallenge = challengeService.global(manager.getProfile().getId());
                 if (globalChallenge.getCanJoin()) {
                     type = RivalType.CHALLENGE;

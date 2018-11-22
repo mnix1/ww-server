@@ -58,19 +58,6 @@ public class ProfileWisieEvolutionService {
         return putSuccessCode(model);
     }
 
-    public void upgradeAttribute(ProfileWisie wisie, double value) {
-        if (value <= 0) {
-            return;
-        }
-        for (WisdomAttribute attribute : WisdomAttribute.values()) {
-            wisie.setWisdomAttributeValue(attribute, wisie.getWisdomAttributeValue(attribute) + value);
-        }
-        for (MentalAttribute attribute : MentalAttribute.values()) {
-            wisie.setMentalAttributeValue(attribute, wisie.getMentalAttributeValue(attribute) + value);
-        }
-        profileWisieService.save(wisie);
-    }
-
     private double calculateAttributeChange(ProfileWisie profileWisie, WisdomAttribute wisdomAttribute, MentalAttribute mentalAttribute) {
         double value = 0;
         if (wisdomAttribute != null) {
@@ -83,10 +70,10 @@ public class ProfileWisieEvolutionService {
         return value * Math.pow(k, 6) + k;
     }
 
-    public synchronized Map<String, Object> changeHobby(Long profileWisieId, String hobby) {
+    public synchronized Map<String, Object> changeHobby(Long profileWisieId, String hobby, Long profileId) {
         Map<String, Object> model = new HashMap<>();
-        Profile profile = profileService.getProfile();
-        Optional<ProfileWisie> optionalProfileWisie = profileWisieService.findByIdAndProfileId(profileWisieId, profile.getId());
+        Profile profile = profileService.getProfile(profileId);
+        Optional<ProfileWisie> optionalProfileWisie = profileWisieService.findByIdAndProfileId(profileWisieId, profileId);
         if (!optionalProfileWisie.isPresent()) {
             return putErrorCode(model);
         }
@@ -112,7 +99,7 @@ public class ProfileWisieEvolutionService {
             return putErrorCode(model);
         }
         ProfileWisie profileWisie = optionalProfileWisie.get();
-        Resources changeSkillCostResources = changeSkillCostResources(profileWisie);
+        Resources changeSkillCostResources = changeSkillCostResources();
         if (!profile.hasEnoughResources(changeSkillCostResources)) {
             return putErrorCode(model);
         }
@@ -129,7 +116,7 @@ public class ProfileWisieEvolutionService {
         return new Resources(null, (long) profleWisie.getHobbies().size() * 20, null, (long) profleWisie.getHobbies().size() * 10);
     }
 
-    private Resources changeSkillCostResources(ProfileWisie profleWisie) {
+    private Resources changeSkillCostResources() {
         return new Resources(null, 50L, null, 25L);
     }
 

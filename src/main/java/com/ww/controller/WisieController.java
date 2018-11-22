@@ -7,7 +7,6 @@ import com.ww.service.social.ProfileService;
 import com.ww.service.wisie.ProfileWisieEvolutionService;
 import com.ww.service.wisie.ProfileWisieService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -64,7 +63,7 @@ public class WisieController {
         }
         String hobby = (String) payload.get("hobby");
         Long profileWisieId = ((Integer) payload.get("id")).longValue();
-        return profileWisieEvolutionService.changeHobby(profileWisieId,hobby);
+        return profileWisieEvolutionService.changeHobby(profileWisieId, hobby, profileService.getProfileId());
     }
 
     @RequestMapping(value = "/changeSkill", method = RequestMethod.POST)
@@ -74,7 +73,7 @@ public class WisieController {
         }
         String skill = (String) payload.get("skill");
         Long profileWisieId = ((Integer) payload.get("id")).longValue();
-        return profileWisieEvolutionService.changeSkill(profileWisieId,skill);
+        return profileWisieEvolutionService.changeSkill(profileWisieId, skill);
     }
 
 }
