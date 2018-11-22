@@ -1,6 +1,7 @@
 package com.ww.service.social;
 
 import com.ww.config.security.AuthIdProvider;
+import com.ww.config.security.Roles;
 import com.ww.model.constant.Language;
 import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.entity.outside.social.Profile;
@@ -95,7 +96,12 @@ public class ProfileService {
                 return getFacebookAuthId(details);
             }
         } else if (user instanceof UsernamePasswordAuthenticationToken) {
-            return ((User) ((UsernamePasswordAuthenticationToken) user).getPrincipal()).getUsername();
+            String username = ((User) ((UsernamePasswordAuthenticationToken) user).getPrincipal()).getUsername();
+            String authId = username;
+            if (((UsernamePasswordAuthenticationToken) user).getAuthorities().contains(Roles.AUTO)) {
+                authId = AuthIdProvider.AUTO + AuthIdProvider.sepparator + username;
+            }
+            return authId;
         }
         return null;
     }
