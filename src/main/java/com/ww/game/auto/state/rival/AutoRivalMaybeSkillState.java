@@ -39,15 +39,24 @@ public class AutoRivalMaybeSkillState extends AutoRivalState {
             return;
         }
         List<MemberWisieStatus> wisieActions = container.activeWisieMemberActions();
-        if (wisieActions.size() < 2 || randomDouble() < randomDouble(0.5, 1)) {
+        if (wisieActions.isEmpty()) {
             return;
         }
-        Skill skill = randomElement(skillsCanUse());
+        HeroType opponentHeroType = container.opponentActiveMemberType();
+        boolean opponentWisieHeroType = HeroType.isWisie(opponentHeroType);
+        if (opponentWisieHeroType && (wisieActions.size() < 2 || randomDouble() < randomDouble(0.5, 1))) {
+            return;
+        }
+        Skill skill = randomElement(skillsCanUse(opponentWisieHeroType));
         if (skill == null) {
             return;
         }
         skillContainer.getUsed().add(skill);
         long interval = (long) (randomDouble(1, 3) * container.getManager().getInterval().intervalMultiply());
+        if (!opponentWisieHeroType) {
+            interval /= 3;
+        }
+        logger.error("used {}, {}, {}, {}", opponentWisieHeroType, skill, interval, wisieActions.size());
         sendAfter(interval, skill.name(), prepareSkillProps(skill));
     }
 
@@ -55,20 +64,22 @@ public class AutoRivalMaybeSkillState extends AutoRivalState {
         if (skill != Skill.HINT) {
             return new HashMap<>();
         }
-        return new MapModel("answerId", container.question().findCorrectAnswerId()).get();
+        Long answerId = randomDouble() > 0.5
+                ? container.question().findCorrectAnswerId()
+                : container.question().randomAnswerId();
+        return new MapModel("answerId", answerId).get();
     }
 
-    private List<Skill> possibleSkillsToUse() {
-        HeroType opponentHeroType = container.opponentActiveMemberType();
-        if (HeroType.isWisie(opponentHeroType)) {
+    private List<Skill> possibleSkillsToUse(boolean opponentWisieHeroType) {
+        if (opponentWisieHeroType) {
             return withOpponentWisieSkills;
         }
         return withoutOpponentWisieSkills;
     }
 
-    private List<Skill> skillsCanUse() {
+    private List<Skill> skillsCanUse(boolean opponentWisieHeroType) {
         WarTeam warTeam = container.warTeam();
         RivalTeamSkills teamSkills = warTeam.getTeamSkills();
-        return possibleSkillsToUse().stream().filter(teamSkills::canUse).collect(Collectors.toList());
+        return possibleSkillsToUse(opponentWisieHeroType).stream().filter(teamSkills::canUse).collect(Collectors.toList());
     }
 }

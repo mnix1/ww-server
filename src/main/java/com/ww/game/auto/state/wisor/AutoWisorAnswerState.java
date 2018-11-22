@@ -47,7 +47,7 @@ public class AutoWisorAnswerState extends AutoWisorState {
         if (correct) {
             return manager.getAutoPlayContainer().question().findCorrectAnswerId();
         }
-        return randomElement(new ArrayList<>(manager.getAutoPlayContainer().question().getAnswers())).getId();
+        return manager.getAutoPlayContainer().question().randomAnswerId();
     }
 
     @Override

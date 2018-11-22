@@ -62,7 +62,7 @@ public class PractiseService {
             updatePractiseResult(practise, false, closeDate);
             return null;
         }
-        Answer correctAnswer = taskService.findCorrectAnswer(question);
+        Answer correctAnswer = question.findCorrectAnswer();
         boolean result = correctAnswer.getId().equals(answerId);
         updatePractiseResult(practise, result, closeDate);
         Map<String, Object> model = new HashMap<>();

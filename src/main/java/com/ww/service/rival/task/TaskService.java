@@ -31,10 +31,6 @@ public class TaskService {
         return question;
     }
 
-    public Answer findCorrectAnswer(Question question) {
-        return question.getAnswers().stream().filter(answer -> answer.getCorrect()).findFirst().orElseThrow(() -> new IllegalArgumentException("No correct answers"));
-    }
-
     public void save(Question question) {
         questionRepository.save(question);
         question.getAnswers().forEach(answer -> answer.setQuestion(question));

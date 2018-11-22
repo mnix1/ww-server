@@ -8,6 +8,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static com.ww.helper.RandomHelper.randomElement;
 
 @Setter
 @Getter
@@ -64,6 +67,14 @@ public class Question {
     }
 
     public Long findCorrectAnswerId() {
-        return answers.stream().filter(Answer::getCorrect).findFirst().get().getId();
+        return findCorrectAnswer().getId();
+    }
+
+    public Answer findCorrectAnswer() {
+        return answers.stream().filter(Answer::getCorrect).findFirst().get();
+    }
+
+    public Long randomAnswerId() {
+        return randomElement(answers.stream().map(Answer::getId).collect(Collectors.toList()));
     }
 }

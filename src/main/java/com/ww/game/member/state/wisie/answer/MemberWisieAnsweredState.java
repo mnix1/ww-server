@@ -29,7 +29,7 @@ public class MemberWisieAnsweredState extends MemberWisieState {
         if (correct) {
             return manager.getContainer().getQuestion().findCorrectAnswerId();
         }
-        return randomElement(new ArrayList<>(manager.getContainer().getQuestion().getAnswers())).getId();
+        return manager.getContainer().getQuestion().randomAnswerId();
     }
 
     @Override
