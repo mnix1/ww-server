@@ -50,10 +50,4 @@ public class MemberWisieState extends GameState {
             manager.getPlayManager().getCommunication().sendAndUpdateModel(team.getProfileId(), this.prepareModel(team, teams.opponent(team)));
         });
     }
-
-    @Override
-    public String toString() {
-        return super.toString() + ", " + manager.getContainer().getMember();
-    }
-
 }

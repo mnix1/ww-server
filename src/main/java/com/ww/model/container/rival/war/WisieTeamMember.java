@@ -5,6 +5,7 @@ import com.ww.model.constant.wisie.HeroType;
 import com.ww.model.dto.wisie.WarProfileWisieDTO;
 import com.ww.model.entity.outside.rival.task.Question;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -63,7 +64,9 @@ public class WisieTeamMember extends TeamMember {
 
     @Override
     public String toString() {
-        return content.toString() + ", " + super.toString();
+        return super.toString() +
+                ", content=" + content.toString() +
+                ", managers=" + StringUtils.join(managers,",^_^");
     }
 
 }

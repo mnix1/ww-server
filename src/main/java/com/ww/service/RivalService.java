@@ -10,7 +10,6 @@ import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.rival.global.RivalGlobalService;
-import com.ww.service.rival.init.RivalRunService;
 import com.ww.service.rival.season.RivalProfileSeasonService;
 import com.ww.service.rival.season.RivalSeasonService;
 import com.ww.service.rival.task.TaskGenerateService;
@@ -47,10 +46,12 @@ public class RivalService {
             rivalGlobalService.remove(profileContainer.getProfileId());
         }
         PlayContainer container = manager.getContainer();
-        if (!container.getResult().getDraw()) {
-            addRewardFromWin(container.getResult().getWinner());
+        if (container.getResult().getDraw() != null) {
+            if (!container.getResult().getDraw()) {
+                addRewardFromWin(container.getResult().getWinner());
+            }
+            updateSeason(manager);
         }
-        updateSeason(manager);
         manager.getRival().update(container);
         rivalGlobalService.save(manager.getRival());
         logger.debug("rival disposeManager {}", manager.getRival().toString());

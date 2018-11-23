@@ -8,6 +8,7 @@ import com.ww.model.container.rival.war.WarTeam;
 import com.ww.model.container.rival.war.WisieTeamMember;
 import com.ww.model.entity.outside.rival.task.Question;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -47,7 +48,10 @@ public class MemberWisieContainer {
         actions.add(action);
     }
 
-    public MemberWisieStatus currectAction() {
-        return actions.get(actions.size() - 1);
+    @Override
+    public String toString() {
+        return "MemberWisieContainer{" +
+                "actions=" + StringUtils.join(actions, ",^_^") +
+                '}';
     }
 }

@@ -19,4 +19,12 @@ public class MemberWisieManager {
         this.container = new MemberWisieContainer(team, member, playManager.getContainer().getTasks().question());
         this.flow = new MemberWisieFlow(this);
     }
+
+    @Override
+    public String toString() {
+        return "MemberWisieManager{" +
+                "container=" + container +
+                ", flow=" + flow +
+                '}';
+    }
 }

@@ -44,6 +44,12 @@ public class DevelopmentController {
         return null;
     }
 
+    @RequestMapping(value = "/stop", method = RequestMethod.GET)
+    public Map stop(@RequestParam Long profileId) {
+        RivalGlobalService.managerMap.get(profileId).dispose();
+        return null;
+    }
+
     @RequestMapping(value = "/status", method = RequestMethod.GET)
     public Map status() {
         Set<PlayManager> managers = new HashSet<>(RivalGlobalService.managerMap.values());
