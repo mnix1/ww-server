@@ -1,17 +1,11 @@
 package com.ww.game.member.state.wisie.answer;
 
 import com.ww.game.member.MemberWisieManager;
-import com.ww.game.member.command.MemberWisieAddStatusCommand;
 import com.ww.game.member.command.MemberWisieAnswerCommand;
 import com.ww.game.member.state.wisie.MemberWisieState;
 import com.ww.model.constant.wisie.MemberWisieStatus;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import static com.ww.helper.RandomHelper.randomDouble;
-import static com.ww.helper.RandomHelper.randomElement;
 
 public class MemberWisieAnsweredState extends MemberWisieState {
     private Long answerId;
@@ -33,6 +27,10 @@ public class MemberWisieAnsweredState extends MemberWisieState {
     }
 
     @Override
+    public void updateNotify() {
+    }
+
+    @Override
     public void initCommands() {
         super.initCommands();
         commands.add(new MemberWisieAnswerCommand(manager, answerId));
@@ -41,7 +39,7 @@ public class MemberWisieAnsweredState extends MemberWisieState {
     @Override
     public void initProps() {
         super.initProps();
-        paramsPart =(double) params.get("paramsPart");
+        paramsPart = (double) params.get("paramsPart");
         attributePart = (paramsPart / 2 - 0.5) * 4 / 5;
         chanceCorrect = 0.5 + manager.getContainer().difficultyPart(0.1) + attributePart + getWisie().getHobbyPart();
         random = randomDouble();

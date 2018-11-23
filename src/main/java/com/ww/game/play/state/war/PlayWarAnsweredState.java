@@ -5,12 +5,12 @@ import com.ww.game.play.command.war.PlayWarStopActiveMemberManagerFlowsCommand;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.game.play.command.war.PlayWarDisableActiveTeamMemberCommand;
-import com.ww.game.play.container.PlayContainer;
 import com.ww.game.play.state.PlayAnsweredState;
 
 import java.util.Map;
 
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelPresentIndexes;
+import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelWisieActions;
 
 public class PlayWarAnsweredState extends PlayAnsweredState {
     protected boolean isCorrect;
@@ -32,6 +32,7 @@ public class PlayWarAnsweredState extends PlayAnsweredState {
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = super.prepareModel(team, opponentTeam);
         fillModelPresentIndexes(model, (WarTeam) team, (WarTeam) opponentTeam);
+        fillModelWisieActions(model, (WarTeam) team, (WarTeam) opponentTeam);
         return model;
     }
 }
