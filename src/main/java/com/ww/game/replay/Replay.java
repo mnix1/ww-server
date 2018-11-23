@@ -1,7 +1,6 @@
 package com.ww.game.replay;
 
 import com.ww.service.ReplayService;
-import com.ww.service.social.ConnectionService;
 import io.reactivex.Flowable;
 import lombok.Getter;
 
@@ -25,17 +24,17 @@ public class Replay {
         this.allModels = allModels;
     }
 
-    public void play() {
+    public void play(double speed) {
         inProgress = true;
         Map<String, Object> firstModel = allModels.get(0);
-        run(firstModel, findNextState(firstModel).orElse(null));
+        run(firstModel, findNextState(firstModel).orElse(null), speed);
     }
 
     public void stop() {
         inProgress = false;
     }
 
-    public void run(Map<String, Object> model, Map<String, Object> nextModel) {
+    public void run(Map<String, Object> model, Map<String, Object> nextModel, double speed) {
         if (!inProgress) {
             return;
         }
@@ -44,12 +43,12 @@ public class Replay {
             replayService.disposeReplay(this);
             return;
         }
-        long interval = getModelNow(nextModel) - getModelNow(model);
+        long interval = (long) ((getModelNow(nextModel) - getModelNow(model)) / speed);
         if (interval <= 0) {
-            run(nextModel, findNextState(nextModel).orElse(null));
+            run(nextModel, findNextState(nextModel).orElse(null), speed);
         } else {
             Flowable.intervalRange(0L, 1L, interval, interval, TimeUnit.MILLISECONDS).subscribe(aLong -> {
-                run(nextModel, findNextState(nextModel).orElse(null));
+                run(nextModel, findNextState(nextModel).orElse(null), speed);
             });
         }
     }

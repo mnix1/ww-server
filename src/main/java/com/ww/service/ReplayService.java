@@ -27,7 +27,7 @@ public class ReplayService {
     private final ConnectionService connectionService;
     private final RivalRepository rivalRepository;
 
-    public void replay(Long rivalId, Long perspectiveProfileId, Long targetProfileId) {
+    public void replay(Long rivalId, Double speed, Long perspectiveProfileId, Long targetProfileId) {
         Optional<Rival> optionalRival = rivalRepository.findById(rivalId);
         if (!optionalRival.isPresent()) {
             return;
@@ -39,7 +39,7 @@ public class ReplayService {
         }
         Replay replay = new Replay(this, prepareModels(rival, perspectiveProfileId), targetProfileId);
         activeReplays.add(replay);
-        replay.play();
+        replay.play(speed);
     }
 
     private List prepareModels(Rival rival, Long profileId) {

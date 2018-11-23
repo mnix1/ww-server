@@ -20,11 +20,17 @@ public class ReplayController {
     private final ProfileService profileService;
 
     @RequestMapping(value = "/play", method = RequestMethod.GET)
-    public Map play(@RequestParam Long rivalId, @RequestParam(required = false) Long perspectiveProfileId, @RequestParam(required = false) Long targetProfileId) {
+    public Map play(@RequestParam Long rivalId,
+                    @RequestParam(required = false) Double speed,
+                    @RequestParam(required = false) Long perspectiveProfileId,
+                    @RequestParam(required = false) Long targetProfileId) {
         if (targetProfileId == null) {
             targetProfileId = profileService.getProfileId();
         }
-        replayService.replay(rivalId, perspectiveProfileId, targetProfileId);
+        if(speed == null){
+            speed = 1.0;
+        }
+        replayService.replay(rivalId, speed, perspectiveProfileId, targetProfileId);
         return Collections.emptyMap();
     }
 
