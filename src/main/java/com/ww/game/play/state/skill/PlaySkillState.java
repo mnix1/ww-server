@@ -72,14 +72,17 @@ public class PlaySkillState extends GameState {
     }
 
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
-        Map<String, Object> model = new HashMap<>();
-        fillModelWisieActions(model, (WarTeam) team, (WarTeam) opponentTeam);
-        return model;
+        return prepareModel(null, team, opponentTeam);
     }
 
     public Map<String, Object> prepareModel(WarTeam changedTeam, RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = new HashMap<>();
-        fillModelWisieActions(model, changedTeam, (WarTeam) team, (WarTeam) opponentTeam);
+        try {
+            fillModelWisieActions(model, changedTeam, (WarTeam) team, (WarTeam) opponentTeam);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(toString() + ", " + manager.getPlayManager().toString());
+        }
         return model;
     }
 

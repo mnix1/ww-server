@@ -3,6 +3,7 @@ package com.ww.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.game.replay.Replay;
 import com.ww.helper.CompressHelper;
+import com.ww.model.container.MapModel;
 import com.ww.model.entity.outside.rival.Rival;
 import com.ww.repository.outside.rival.RivalRepository;
 import com.ww.service.social.ConnectionService;
@@ -11,10 +12,7 @@ import lombok.Getter;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
@@ -27,10 +25,10 @@ public class ReplayService {
     private final ConnectionService connectionService;
     private final RivalRepository rivalRepository;
 
-    public void replay(Long rivalId, Double speed, Long perspectiveProfileId, Long targetProfileId) {
+    public Map<String, Object> replay(Long rivalId, Double speed, Long perspectiveProfileId, Long targetProfileId) {
         Optional<Rival> optionalRival = rivalRepository.findById(rivalId);
         if (!optionalRival.isPresent()) {
-            return;
+            return Collections.emptyMap();
         }
         cancel(targetProfileId);
         Rival rival = optionalRival.get();
@@ -40,6 +38,7 @@ public class ReplayService {
         Replay replay = new Replay(this, prepareModels(rival, perspectiveProfileId), targetProfileId);
         activeReplays.add(replay);
         replay.play(speed);
+        return new MapModel("manager", CompressHelper.decompress(rival.getManagerStringCompressed())).get();
     }
 
     private List prepareModels(Rival rival, Long profileId) {

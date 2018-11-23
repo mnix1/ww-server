@@ -52,7 +52,7 @@ public class RivalService {
             }
             updateSeason(manager);
         }
-        manager.getRival().update(container);
+        manager.getRival().update(manager);
         rivalGlobalService.save(manager.getRival());
         logger.debug("rival disposeManager {}", manager.getRival().toString());
     }

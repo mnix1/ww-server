@@ -1,5 +1,6 @@
 package com.ww.model.entity.outside.rival;
 
+import com.ww.game.play.PlayManager;
 import com.ww.game.play.container.PlayContainer;
 import com.ww.helper.CompressHelper;
 import com.ww.model.constant.rival.RivalImportance;
@@ -19,7 +20,7 @@ import static com.ww.helper.TeamHelper.BOT_PROFILE_ID;
 @NoArgsConstructor
 @Entity
 public class Rival {
-    public static boolean storeModel = true;
+    public static boolean storeInfo = true;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -39,6 +40,8 @@ public class Rival {
     private Instant closeDate;
     @Lob
     private byte[] modelsJSONCompressed;
+    @Lob
+    private byte[] managerStringCompressed;
 
     public Rival(PlayContainer container) {
         this.openDate = Instant.now();
@@ -50,15 +53,17 @@ public class Rival {
         }
     }
 
-    public void update(PlayContainer container) {
+    public void update(PlayManager manager) {
+        PlayContainer container = manager.getContainer();
         this.closeDate = Instant.now();
         this.draw = container.getResult().getDraw();
         Profile winner = container.getResult().getWinner();
         if (winner != null && !winner.getId().equals(BOT_PROFILE_ID)) {
             this.winner = winner;
         }
-        if (storeModel) {
+        if (storeInfo) {
             this.modelsJSONCompressed = CompressHelper.compress(container.modelsToJSON());
+            this.managerStringCompressed = CompressHelper.compress(manager.toString());
         }
     }
 

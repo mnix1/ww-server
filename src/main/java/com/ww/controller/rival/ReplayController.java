@@ -1,5 +1,6 @@
 package com.ww.controller.rival;
 
+import com.ww.model.container.MapModel;
 import com.ww.service.ReplayService;
 import com.ww.service.social.ProfileService;
 import lombok.AllArgsConstructor;
@@ -20,27 +21,26 @@ public class ReplayController {
     private final ProfileService profileService;
 
     @RequestMapping(value = "/play", method = RequestMethod.GET)
-    public Map play(@RequestParam Long rivalId,
-                    @RequestParam(required = false) Double speed,
-                    @RequestParam(required = false) Long perspectiveProfileId,
-                    @RequestParam(required = false) Long targetProfileId) {
+    public Map<String, Object> play(@RequestParam Long rivalId,
+                                    @RequestParam(required = false) Double speed,
+                                    @RequestParam(required = false) Long perspectiveProfileId,
+                                    @RequestParam(required = false) Long targetProfileId) {
         if (targetProfileId == null) {
             targetProfileId = profileService.getProfileId();
         }
-        if(speed == null){
+        if (speed == null) {
             speed = 1.0;
         }
-        replayService.replay(rivalId, speed, perspectiveProfileId, targetProfileId);
-        return Collections.emptyMap();
+        return replayService.replay(rivalId, speed, perspectiveProfileId, targetProfileId);
     }
 
     @RequestMapping(value = "/cancel", method = RequestMethod.GET)
-    public Map cancel(@RequestParam(required = false) Long targetProfileId) {
+    public Map<String, Object> cancel(@RequestParam(required = false) Long targetProfileId) {
         if (targetProfileId == null) {
             targetProfileId = profileService.getProfileId();
         }
         replayService.cancel(targetProfileId);
-        return Collections.emptyMap();
+        return new MapModel("canceled", true).get();
     }
 
 }

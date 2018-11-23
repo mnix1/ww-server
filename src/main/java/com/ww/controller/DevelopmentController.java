@@ -1,5 +1,6 @@
 package com.ww.controller;
 
+import com.ww.game.auto.AutoManager;
 import com.ww.game.play.PlayManager;
 import com.ww.model.container.MapModel;
 import com.ww.model.entity.outside.rival.Rival;
@@ -26,6 +27,7 @@ public class DevelopmentController {
 
     private final ProfileService profileService;
     private final ProfileWisieRepository profileWisieRepository;
+    private final AutoService autoService;
 
     @RequestMapping(value = "/zeroStepIndex", method = RequestMethod.GET)
     public Map zeroStepIndex(@RequestParam Long profileId) {
@@ -45,24 +47,32 @@ public class DevelopmentController {
         return null;
     }
 
-    @RequestMapping(value = "/storeRivalModel", method = RequestMethod.GET)
-    public Map storeRivalModel(@RequestParam(required = false) Boolean store) {
-        boolean was = Rival.storeModel;
+    @RequestMapping(value = "/storeRivalInfo", method = RequestMethod.GET)
+    public Map storeRivalInfo(@RequestParam(required = false) Boolean store) {
+        boolean was = Rival.storeInfo;
         if (store == null) {
             store = true;
         }
-        Rival.storeModel = store;
+        Rival.storeInfo = store;
         return new MapModel("was", was).put("now", store).get();
     }
 
-    @RequestMapping(value = "/stop", method = RequestMethod.GET)
-    public Map stop(@RequestParam Long profileId) {
+    @RequestMapping(value = "/stopRival", method = RequestMethod.GET)
+    public Map stopRival(@RequestParam Long profileId) {
         RivalGlobalService.managerMap.get(profileId).dispose();
         return new MapModel("stopped", true).get();
     }
 
-    @RequestMapping(value = "/status", method = RequestMethod.GET)
-    public Map status() {
+    @RequestMapping(value = "/cleanAutos", method = RequestMethod.GET)
+    public Map cleanAutos() {
+        for (AutoManager manager : AutoService.activeAutoManagers) {
+            autoService.disposeManager(manager);
+        }
+        return new MapModel("cleaned", true).get();
+    }
+
+    @RequestMapping(value = "/rivalStatus", method = RequestMethod.GET)
+    public Map rivalStatus() {
         Set<PlayManager> managers = new HashSet<>(RivalGlobalService.managerMap.values());
         return new MapModel("rivals", StringUtils.join(managers, ",^_^"))
                 .put("rivalCount", managers.size())

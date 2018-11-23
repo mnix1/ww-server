@@ -1,6 +1,7 @@
 package com.ww.game.play.modelfiller;
 
 import com.ww.model.constant.wisie.MemberWisieStatus;
+import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.model.container.rival.war.WisieTeamMember;
 import com.ww.model.dto.rival.ActiveTeamMemberDTO;
@@ -89,12 +90,13 @@ public class PlayWarModelFiller {
         model.put(key, new ActiveTeamMemberDTO(warTeam.getActiveTeamMember()));
     }
 
-    public static void fillModelWisieActions(Map<String, Object> model, WarTeam warTeam, WarTeam warOpponentTeam) {
+    public static void fillModelWisieActions(Map<String, Object> model, WarTeam warTeam, WarTeam warOpponentTeam) throws IllegalArgumentException  {
         fillModelWisieActions(model, null, warTeam, warOpponentTeam);
     }
 
-    public static void fillModelWisieActions(Map<String, Object> model, WarTeam changedTeam, WarTeam warTeam, WarTeam warOpponentTeam) {
-        if (!warTeam.getActiveTeamMember().isWisie()) {
+    public static void fillModelWisieActions(Map<String, Object> model, WarTeam changedTeam, WarTeam warTeam, WarTeam warOpponentTeam) throws IllegalArgumentException {
+        TeamMember activeTeamMember = warTeam.getActiveTeamMember();
+        if (!activeTeamMember.isWisie()) {
             return;
         }
         if (changedTeam == null) {
@@ -113,8 +115,8 @@ public class PlayWarModelFiller {
         }
     }
 
-    private static List<String> prepareWisieActions(WisieTeamMember wisieTeamMember) {
-        List<MemberWisieStatus> actions = wisieTeamMember.currentManager().get().getContainer().getActions();
+    private static List<String> prepareWisieActions(WisieTeamMember wisieTeamMember) throws IllegalArgumentException {
+        List<MemberWisieStatus> actions = wisieTeamMember.currentManager().orElseThrow(IllegalArgumentException::new).getContainer().getActions();
         return actions.subList(Math.max(0, actions.size() - 2), actions.size()).stream()
                 .map(Enum::name)
                 .collect(Collectors.toList());
