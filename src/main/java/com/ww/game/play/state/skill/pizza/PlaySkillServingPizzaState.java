@@ -43,7 +43,7 @@ public class PlaySkillServingPizzaState extends PlaySkillOpponentState {
 
     @Override
     protected double maxInterval() {
-        return 4;
+        return 3;
     }
 
     @Override

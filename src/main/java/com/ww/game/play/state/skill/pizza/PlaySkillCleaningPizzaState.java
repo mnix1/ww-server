@@ -26,12 +26,12 @@ public class PlaySkillCleaningPizzaState extends PlaySkillOpponentState {
 
     @Override
     protected double minInterval() {
-        return 2 - getWisie().getSpeedF1();
+        return 1 - getWisie().getSpeedF1();
     }
 
     @Override
     protected double maxInterval() {
-        return 4 - 2 * getWisie().getSpeedF1();
+        return 3 - 3 * getWisie().getSpeedF1();
     }
 
     @Override
