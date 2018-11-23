@@ -12,13 +12,16 @@ public class PlaySkillWaterPistolFlow extends PlaySkillFlow {
         initStateMap();
     }
 
+    @Override
     protected void initStateMap() {
         stateMap.put("WATER_PISTOL_USED", () -> new PlaySkillWaterPistolUsedState(this, manager));
         stateMap.put("CLEANING", () -> new PlaySkillCleaningState(this, manager));
         stateMap.put("CLEANED", () -> new PlaySkillCleanedState(this, manager));
     }
 
+    @Override
     public void start() {
+        super.start();
         run("WATER_PISTOL_USED");
     }
 }

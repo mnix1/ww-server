@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class AutoJobService {
-    private static final int AUTO_JOB_RATE = 10000;
+    private static final int AUTO_JOB_RATE = 2000;
 
     private final AutoService autoService;
 

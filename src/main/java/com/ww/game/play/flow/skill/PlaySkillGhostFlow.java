@@ -2,7 +2,6 @@ package com.ww.game.play.flow.skill;
 
 import com.ww.game.member.MemberWisieManager;
 import com.ww.game.play.state.skill.ghost.*;
-import com.ww.game.play.state.skill.hint.*;
 
 public class PlaySkillGhostFlow extends PlaySkillFlow {
     protected MemberWisieManager opponentManager;
@@ -13,6 +12,7 @@ public class PlaySkillGhostFlow extends PlaySkillFlow {
         initStateMap();
     }
 
+    @Override
     protected void initStateMap() {
         stateMap.put("PREPARING_GHOST", () -> new PlaySkillPreparingGhostState(this, manager));
         stateMap.put("SCARING", () -> new PlaySkillScaringState(this, manager, opponentManager));
@@ -24,7 +24,9 @@ public class PlaySkillGhostFlow extends PlaySkillFlow {
         stateMap.put("NO_DISQUALIFICATION", () -> new PlaySkillNoDisqualificationState(this, manager));
     }
 
+    @Override
     public void start() {
+        super.start();
         run("PREPARING_GHOST");
     }
 }

@@ -113,6 +113,15 @@ public class InitAutoService {
         autos.add(new Auto("Szanowny Ziomek", encoder));
         autos.add(new Auto("mieszkaniec metropolii", encoder));
         autos.add(new Auto("Jankes", encoder));
+        autos.add(new Auto("Gringo", encoder));
+        autos.add(new Auto("rudy", encoder));
+        autos.add(new Auto("Asior", encoder));
+        autos.add(new Auto("ChłopakNaOpak", encoder));
+        autos.add(new Auto("Krysia z Gdyni", encoder));
+        autos.add(new Auto("Albercik", encoder));
+        autos.add(new Auto("Irys", encoder));
+        autos.add(new Auto("edek sprzedawca", encoder));
+        autos.add(new Auto("lelum polerum", encoder));
         autoRepository.saveAll(autos);
     }
 

@@ -34,6 +34,7 @@ public class PlayFlow extends GameFlow {
 
     @Override
     public void start(){
+        super.start();
         run("INTRO");
     }
 

@@ -1,7 +1,6 @@
 package com.ww.game.play.flow.skill;
 
 import com.ww.game.member.MemberWisieManager;
-import com.ww.game.play.state.skill.ghost.PlaySkillScareSucceededState;
 import com.ww.game.play.state.skill.ninja.*;
 
 public class PlaySkillNinjaFlow extends PlaySkillFlow {
@@ -13,6 +12,7 @@ public class PlaySkillNinjaFlow extends PlaySkillFlow {
         initStateMap();
     }
 
+    @Override
     protected void initStateMap() {
         stateMap.put("PREPARING_NINJA", () -> new PlaySkillPreparingNinjaState(this, manager));
         stateMap.put("KIDNAPPING",() ->  new PlaySkillKidnappingState(this, manager, opponentManager));
@@ -21,7 +21,9 @@ public class PlaySkillNinjaFlow extends PlaySkillFlow {
         stateMap.put("REMOVED_NINJA", () -> new PlaySkillRemovedNinjaState(this, manager));
     }
 
+    @Override
     public void start() {
+        super.start();
         run("PREPARING_NINJA");
     }
 }

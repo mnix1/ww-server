@@ -29,6 +29,7 @@ public abstract class GameFlow {
     private List<Consumer<Boolean>> outerFlowConsumers = new CopyOnWriteArrayList<>();
     private List<GameFlow> outerFlows = new CopyOnWriteArrayList<>();
     private GameFlow innerFlow;
+    private boolean active = false;
 
     protected abstract void initStateMap();
 
@@ -40,7 +41,9 @@ public abstract class GameFlow {
         return states.get(states.size() - 1);
     }
 
-    public abstract void start();
+    public void start() {
+        active = true;
+    }
 
     public synchronized void run(String stateName) {
         run(stateName, null);
@@ -56,6 +59,9 @@ public abstract class GameFlow {
     }
 
     public synchronized void run(GameState state, Map<String, Object> params) {
+        if (!active) {
+            return;
+        }
 //        logger.trace("run " + toString() + ", " + state.toString());
         state.setParams(params);
         state.initProps();
@@ -175,6 +181,7 @@ public abstract class GameFlow {
     }
 
     public synchronized void stop() {
+        active = false;
         //  logger.trace("stop " + toString());
         stopAfter();
         if (innerFlow != null) {

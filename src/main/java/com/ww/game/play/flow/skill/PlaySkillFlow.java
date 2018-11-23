@@ -10,6 +10,4 @@ public abstract class PlaySkillFlow extends GameFlow {
     public PlaySkillFlow(MemberWisieManager manager) {
         this.manager = manager;
     }
-
-    public abstract void start();
 }

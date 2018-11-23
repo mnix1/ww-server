@@ -12,6 +12,7 @@ public class PlaySkillHintFlow extends PlaySkillFlow {
         initStateMap();
     }
 
+    @Override
     protected void initStateMap() {
         stateMap.put("HINT_RECEIVED", () -> new PlaySkillHintReceivedState(this, manager));
         stateMap.put("THINKING_IF_USE_HINT", () -> new PlaySkillThinkingIfUseHintState(this, manager, answerId));
@@ -22,7 +23,9 @@ public class PlaySkillHintFlow extends PlaySkillFlow {
         stateMap.put("ANSWERING_WITHOUT_HINT", () -> new PlaySkillAnsweringWithoutHintState(this, manager, answerId));
     }
 
+    @Override
     public void start() {
+        super.start();
         run("HINT_RECEIVED");
     }
 }

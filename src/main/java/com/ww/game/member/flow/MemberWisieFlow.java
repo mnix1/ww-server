@@ -36,6 +36,7 @@ public class MemberWisieFlow extends GameFlow {
 
     @Override
     public void start(){
+        super.start();
         run("WAITING_FOR_QUESTION");
     }
 }

@@ -32,6 +32,7 @@ public class AutoFlow extends GameFlow {
 
     @Override
     public void start(){
+        super.start();
         run("MANAGE_BOOKS");
     }
 }
