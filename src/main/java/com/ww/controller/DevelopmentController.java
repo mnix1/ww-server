@@ -80,4 +80,12 @@ public class DevelopmentController {
                 .put("autoCount", AutoService.activeAutoManagers.size())
                 .get();
     }
+
+    @RequestMapping(value = "/simpleRivalStatus", method = RequestMethod.GET)
+    public Map simpleRivalStatus() {
+        Set<PlayManager> managers = new HashSet<>(RivalGlobalService.managerMap.values());
+        return new MapModel("rivalCount", managers.size())
+                .put("autoCount", AutoService.activeAutoManagers.size())
+                .get();
+    }
 }
