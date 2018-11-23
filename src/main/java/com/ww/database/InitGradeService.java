@@ -31,10 +31,10 @@ public class InitGradeService {
         seasonGrades.add(new SeasonGrade(Grade.F, RivalType.WAR, 0L, 99L, new Resources(0L, 0L, 0L, 0L)));
 
         seasonGrades.add(new SeasonGrade(Grade.A, RivalType.BATTLE, 2000L, null, new Resources(60L, 40L, 40L, 60L)));
-        seasonGrades.add(new SeasonGrade(Grade.B, RivalType.BATTLE, 1000L, 1099L, new Resources(30L, 20L, 20L, 30L)));
+        seasonGrades.add(new SeasonGrade(Grade.B, RivalType.BATTLE, 1000L, 1999L, new Resources(30L, 20L, 20L, 30L)));
         seasonGrades.add(new SeasonGrade(Grade.C, RivalType.BATTLE, 500L, 999L, new Resources(15L, 10L, 10L, 15L)));
         seasonGrades.add(new SeasonGrade(Grade.D, RivalType.BATTLE, 250L, 499L, new Resources(8L, 5L, 5L, 8L)));
-        seasonGrades.add(new SeasonGrade(Grade.E, RivalType.BATTLE, 125L, 124L, new Resources(4L, 3L, 3L, 4L)));
+        seasonGrades.add(new SeasonGrade(Grade.E, RivalType.BATTLE, 125L, 249L, new Resources(4L, 3L, 3L, 4L)));
         seasonGrades.add(new SeasonGrade(Grade.F, RivalType.BATTLE, 0L, 124L, new Resources(0L, 0L, 0L, 0L)));
         seasonGradeRepository.saveAll(seasonGrades);
     }
