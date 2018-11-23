@@ -19,6 +19,7 @@ import static com.ww.helper.TeamHelper.BOT_PROFILE_ID;
 @NoArgsConstructor
 @Entity
 public class Rival {
+    public static boolean storeModel = true;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -56,7 +57,9 @@ public class Rival {
         if (winner != null && !winner.getId().equals(BOT_PROFILE_ID)) {
             this.winner = winner;
         }
-        this.modelsJSONCompressed = CompressHelper.compress(container.modelsToJSON());
+        if (storeModel) {
+            this.modelsJSONCompressed = CompressHelper.compress(container.modelsToJSON());
+        }
     }
 
     @Override

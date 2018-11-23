@@ -2,6 +2,7 @@ package com.ww.controller;
 
 import com.ww.game.play.PlayManager;
 import com.ww.model.container.MapModel;
+import com.ww.model.entity.outside.rival.Rival;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.repository.outside.wisie.ProfileWisieRepository;
 import com.ww.service.auto.AutoService;
@@ -44,10 +45,20 @@ public class DevelopmentController {
         return null;
     }
 
+    @RequestMapping(value = "/storeRivalModel", method = RequestMethod.GET)
+    public Map storeRivalModel(@RequestParam(required = false) Boolean store) {
+        boolean was = Rival.storeModel;
+        if (store == null) {
+            store = true;
+        }
+        Rival.storeModel = store;
+        return new MapModel("was", was).put("now", store).get();
+    }
+
     @RequestMapping(value = "/stop", method = RequestMethod.GET)
     public Map stop(@RequestParam Long profileId) {
         RivalGlobalService.managerMap.get(profileId).dispose();
-        return null;
+        return new MapModel("stopped", true).get();
     }
 
     @RequestMapping(value = "/status", method = RequestMethod.GET)
