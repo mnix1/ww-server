@@ -6,6 +6,7 @@ import com.ww.game.play.state.*;
 import com.ww.game.play.state.war.*;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.RivalStatus;
+import org.springframework.scheduling.annotation.Async;
 
 public class PlayWarFlow extends PlayFlow {
 
@@ -97,22 +98,29 @@ public class PlayWarFlow extends PlayFlow {
         state.updateNotify();
     }
 
-    public synchronized void wisiesWontAnswer() {
-        PlayState state = (PlayState) currentState();
-        if (state.getStatus() == RivalStatus.ANSWERING) {
-            stopAfter();
+    @Async
+    public void wisiesWontAnswer() {
+        synchronized (this) {
+            PlayState state = (PlayState) currentState();
+            if (state.getStatus() == RivalStatus.ANSWERING) {
+                stopAfter();
 //            logger.trace("wisiesWontAnswer state after " + toString() +", " + state.toString());
-            state.after();
+                state.after();
+            }
         }
     }
 
-    public synchronized void wisieAnswered(Long profileId, Long answerId) {
-        if(isStatusEquals(RivalStatus.ANSWERING)){
-            answeredAction(profileId, answerId);
+    @Async
+    public void wisieAnswered(Long profileId, Long answerId) {
+        synchronized (this) {
+            if (isStatusEquals(RivalStatus.ANSWERING)) {
+                answeredAction(profileId, answerId);
+            }
         }
     }
 
-    public synchronized void changeTask() {
+    @Async
+    public void changeTask() {
         run("CHANGING_TASK");
     }
 }
