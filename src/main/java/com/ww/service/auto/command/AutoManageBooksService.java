@@ -56,9 +56,8 @@ public class AutoManageBooksService {
     public void maybeSpeedUp(List<ProfileBook> books, Profile profile) {
         books = books.stream().filter(ProfileBook::isInProgress).collect(Collectors.toList());
         for (ProfileBook book : books) {
-            Resources costResources = book.speedUpCost();
-            if (profile.hasEnoughResources(costResources)) {
-                speedUp(book.getId(), profile, costResources, book.getBook().getGainResources());
+            if (profile.hasEnoughResources(book.speedUpCost())) {
+                speedUp(book.getId(), profile, book.speedUpCost(), book.getBook().getGainResources());
             }
         }
     }
@@ -74,7 +73,7 @@ public class AutoManageBooksService {
             return;
         }
         Book crystalBook = findBestForCrystalsBook();
-        while (profile.getResources().getGold() >= crystalBook.getGoldCost()) {
+        while (profile.hasEnoughResources(crystalBook.getCostResources())) {
             Map<String, Object> result = shopService.buyBook(crystalBook.getId(), profile.getId());
             if (!success(result)) {
                 logger.error("maybeBuyAndSpeedUp error profile={}, profileResources={}, bookCost={}", profile, profile.getResources(), crystalBook.getCostResources());
@@ -82,19 +81,43 @@ public class AutoManageBooksService {
             }
             profile.subtractResources(crystalBook.getCostResources());
             Long profileBookId = (Long) result.get("id");
-            Resources costResources = new Resources(null, crystalBook.getReadTime(), null);
-            if (profile.hasEnoughResources(costResources)) {
-                speedUp(profileBookId, profile, costResources, crystalBook.getGainResources());
+            if (profile.hasEnoughResources(crystalBook.speedUpCost())) {
+                speedUp(profileBookId, profile, crystalBook.speedUpCost(), crystalBook.getGainResources());
             }
+        }
+        Book elixirBook = findBestForElixirBook();
+        if (!profile.hasEnoughResources(new Resources(elixirBook.getCostResources()).multiply(2))) {
+            return;
+        }
+        Map<String, Object> result = shopService.buyBook(elixirBook.getId(), profile.getId());
+        if (!success(result)) {
+            logger.error("maybeBuyAndSpeedUp error profile={}, profileResources={}, bookCost={}", profile, profile.getResources(), elixirBook.getCostResources());
+            return;
+        }
+        profile.subtractResources(elixirBook.getCostResources());
+        Long profileBookId = (Long) result.get("id");
+        if (profile.hasEnoughResources(elixirBook.speedUpCost())) {
+            speedUp(profileBookId, profile, elixirBook.speedUpCost(), elixirBook.getGainResources());
         }
     }
 
     private Book findBestForCrystalsBook() {
         List<Book> books = shopService.list();
         return books.stream().filter(Book::getCanBuyByGold).max(Comparator.comparing(book -> {
-            double readTime = book.getReadTime().doubleValue();
+            double speedUpCost = book.speedUpCost().getCrystal().doubleValue();
             double crystalGain = book.getCrystalGain().doubleValue();
-            return crystalGain / readTime;
+            double wisdomGain = book.getWisdomGain().doubleValue();
+            return (crystalGain + wisdomGain * 0.85) / speedUpCost;
+        })).get();
+    }
+
+    private Book findBestForElixirBook() {
+        List<Book> books = shopService.list();
+        return books.stream().filter(Book::getCanBuyByCrystal).max(Comparator.comparing(book -> {
+            double speedUpCost = book.speedUpCost().getCrystal().doubleValue();
+            double elixirGain = book.getElixirGain().doubleValue();
+            double wisdomGain = book.getWisdomGain().doubleValue();
+            return (elixirGain + wisdomGain * 0.85) / speedUpCost;
         })).get();
     }
 

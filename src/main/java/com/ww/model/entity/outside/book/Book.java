@@ -63,6 +63,11 @@ public class Book {
         throw new IllegalArgumentException("no cost resources");
     }
 
+    public Resources speedUpCost() {
+        long crystalCost = (long) Math.ceil((getReadTime() - 1) / 1000d / 3600d);
+        return new Resources(null, crystalCost, null, null);
+    }
+
     @Override
     public boolean equals(Object obj) {
         return id.equals(((Book) obj).id);

@@ -105,7 +105,7 @@ public class Resources {
 
     public Resources multiply(int multiplier) {
         for (ResourceType type : ResourceType.values()) {
-            if (!check(type)) {
+            if (check(type)) {
                 write(type, read(type) * multiplier);
             }
         }
