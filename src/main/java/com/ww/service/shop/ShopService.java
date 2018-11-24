@@ -2,13 +2,12 @@ package com.ww.service.shop;
 
 import com.ww.model.dto.book.ShopBookDTO;
 import com.ww.model.entity.outside.book.Book;
+import com.ww.model.entity.outside.book.ProfileBook;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.repository.outside.book.BookRepository;
 import com.ww.service.book.ProfileBookService;
 import com.ww.service.social.ProfileService;
-import com.ww.service.social.RewardService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +32,7 @@ public class ShopService {
     public List<ShopBookDTO> listBook() {
         return list().stream().map(ShopBookDTO::new).collect(Collectors.toList());
     }
+
     public List<Book> list() {
         return bookRepository.findAllByCanBuyByCrystalOrCanBuyByGold(true, true);
     }
@@ -54,8 +54,9 @@ public class ShopService {
         }
         profile.subtractResources(book.getCostResources());
         profileService.save(profile);
-        profileBookService.giveBook(profile, book);
+        ProfileBook profileBook = profileBookService.giveBook(profile, book);
         model.put("bookType", book.getType());
+        model.put("id", profileBook.getId());
         return putSuccessCode(model);
     }
 

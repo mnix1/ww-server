@@ -101,7 +101,7 @@ public class ProfileController {
             throw new IllegalArgumentException();
         }
         Long profileBookId = ((Integer) payload.get("id")).longValue();
-        return profileBookService.speedUpBook(profileBookId);
+        return profileBookService.speedUpBook(profileBookId, profileService.getProfileId());
     }
 
 }

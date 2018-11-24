@@ -139,4 +139,13 @@ public class Resources {
                 || (elixir != null && elixir > 0));
     }
 
+    @Override
+    public String toString() {
+        return "Resources{" +
+                "gold=" + gold +
+                ", crystal=" + crystal +
+                ", wisdom=" + wisdom +
+                ", elixir=" + elixir +
+                '}';
+    }
 }

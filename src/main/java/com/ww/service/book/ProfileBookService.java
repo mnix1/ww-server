@@ -107,9 +107,9 @@ public class ProfileBookService {
     }
 
     @Transactional
-    public Map<String, Object> speedUpBook(Long profileBookId) {
+    public Map<String, Object> speedUpBook(Long profileBookId, Long profileId) {
         Map<String, Object> model = new HashMap<>();
-        Optional<ProfileBook> optionalProfileChest = profileBookRepository.findByIdAndProfile_Id(profileBookId, profileService.getProfileId());
+        Optional<ProfileBook> optionalProfileChest = profileBookRepository.findByIdAndProfile_Id(profileBookId, profileId);
         if (!optionalProfileChest.isPresent()) {
             return putErrorCode(model);
         }
@@ -117,9 +117,8 @@ public class ProfileBookService {
         if (profileBook.isReadingFinished()) {
             return putErrorCode(model);
         }
-        Profile profile = profileService.getProfile();
-        long crystalCost = (long) Math.ceil((profileBook.timeToRead() - 1) / 1000d / 3600d);
-        Resources costResources = new Resources(null, crystalCost, null, null);
+        Profile profile = profileService.getProfile(profileId);
+        Resources costResources = profileBook.speedUpCost();
         if (!profile.hasEnoughResources(costResources)) {
             return putCode(model, -2);
         }
@@ -141,13 +140,14 @@ public class ProfileBookService {
         profileBookRepository.delete(profileBook);
     }
 
-    public void giveBook(Profile profile, Book book) {
+    public ProfileBook giveBook(Profile profile, Book book) {
         ProfileBook profileBook = new ProfileBook(profile, book);
         profileBookRepository.save(profileBook);
+        return profileBook;
     }
 
-    public void giveBook(Profile profile, BookType bookType) {
-        giveBook(profile, bookService.findBookByType(bookType));
+    public ProfileBook giveBook(Profile profile, BookType bookType) {
+        return giveBook(profile, bookService.findBookByType(bookType));
     }
 
     public boolean isProfileBookShelfFull(Long profileId) {

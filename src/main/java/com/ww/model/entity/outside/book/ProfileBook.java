@@ -1,5 +1,6 @@
 package com.ww.model.entity.outside.book;
 
+import com.ww.model.container.Resources;
 import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -59,8 +60,13 @@ public class ProfileBook {
         return isReadingFinished();
     }
 
-    public long timeToRead(){
+    public long timeToRead() {
         return book.getReadTime() - inProgressInterval() - alreadyReadInterval;
+    }
+
+    public Resources speedUpCost() {
+        long crystalCost = (long) Math.ceil((timeToRead() - 1) / 1000d / 3600d);
+        return new Resources(null, crystalCost, null, null);
     }
 
     @Override

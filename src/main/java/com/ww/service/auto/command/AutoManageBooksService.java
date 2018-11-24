@@ -1,32 +1,47 @@
 package com.ww.service.auto.command;
 
+import com.ww.model.container.Resources;
 import com.ww.model.entity.outside.book.Book;
 import com.ww.model.entity.outside.book.ProfileBook;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.book.ProfileBookService;
 import com.ww.service.shop.ShopService;
+import com.ww.service.social.ProfileService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import static com.ww.helper.ModelHelper.success;
 import static com.ww.helper.RandomHelper.randomElement;
 
 @Service
 @AllArgsConstructor
 public class AutoManageBooksService {
+    private static Logger logger = LoggerFactory.getLogger(AutoManageBooksService.class);
 
     private final ProfileBookService profileBookService;
     private final ShopService shopService;
+    private final ProfileService profileService;
 
     public void manage(Profile profile) {
         List<ProfileBook> books = profileBookService.list(profile.getId());
-        if (profileBookService.readingInProgress(books)) {
-            return;
-        }
         if (collectReward(books)) {
             books = profileBookService.list(profile.getId());
+            profile = profileService.getProfile(profile.getId());
+        }
+        if (books.size() > 2) {
+            maybeSpeedUp(books, profile);
+        }
+        maybeBuyAndSpeedUp(profile);
+        if (profileBookService.readingInProgress(books)) {
+            return;
         }
         if (books.isEmpty()) {
             if (buyBook(profile)) {
@@ -36,6 +51,51 @@ public class AutoManageBooksService {
             }
         }
         profileBookService.startReadBook(randomElement(books).getId(), profile.getId());
+    }
+
+    public void maybeSpeedUp(List<ProfileBook> books, Profile profile) {
+        books = books.stream().filter(ProfileBook::isInProgress).collect(Collectors.toList());
+        for (ProfileBook book : books) {
+            Resources costResources = book.speedUpCost();
+            if (profile.hasEnoughResources(costResources)) {
+                speedUp(book.getId(), profile, costResources, book.getBook().getGainResources());
+            }
+        }
+    }
+
+    private void speedUp(Long profileBookId, Profile profile, Resources costResources, Resources gainResources) {
+        profileBookService.speedUpBook(profileBookId, profile.getId());
+        profile.subtractResources(costResources);
+        profile.addResources(gainResources);
+    }
+
+    public void maybeBuyAndSpeedUp(Profile profile) {
+        if (profile.getResources().getGold() < 20 || profile.getResources().getCrystal() < 10) {
+            return;
+        }
+        Book crystalBook = findBestForCrystalsBook();
+        while (profile.getResources().getGold() >= crystalBook.getGoldCost()) {
+            Map<String, Object> result = shopService.buyBook(crystalBook.getId(), profile.getId());
+            if (!success(result)) {
+                logger.error("maybeBuyAndSpeedUp error profile={}, profileResources={}, bookCost={}", profile, profile.getResources(), crystalBook.getCostResources());
+                return;
+            }
+            profile.subtractResources(crystalBook.getCostResources());
+            Long profileBookId = (Long) result.get("id");
+            Resources costResources = new Resources(null, crystalBook.getReadTime(), null);
+            if (profile.hasEnoughResources(costResources)) {
+                speedUp(profileBookId, profile, costResources, crystalBook.getGainResources());
+            }
+        }
+    }
+
+    private Book findBestForCrystalsBook() {
+        List<Book> books = shopService.list();
+        return books.stream().filter(Book::getCanBuyByGold).max(Comparator.comparing(book -> {
+            double readTime = book.getReadTime().doubleValue();
+            double crystalGain = book.getCrystalGain().doubleValue();
+            return crystalGain / readTime;
+        })).get();
     }
 
     public boolean collectReward(List<ProfileBook> books) {
