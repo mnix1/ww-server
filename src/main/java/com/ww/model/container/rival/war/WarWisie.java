@@ -4,7 +4,6 @@ package com.ww.model.container.rival.war;
 import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.constant.wisie.WisieValueChange;
-import com.ww.model.dto.wisie.WarProfileWisieDTO;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskWisdomAttribute;
 import com.ww.model.entity.outside.wisie.AbstractWisieAttributes;
@@ -46,7 +45,7 @@ public class WarWisie extends AbstractWisieAttributes {
 
     public void cacheHobbies(Question question) {
         this.isHobby = wisie.getHobbies().contains(question.getType().getCategory());
-        this.hobbyFactor = isHobby ? 2 + (3 - wisie.getHobbies().size()) * 0.5 : 1d;
+        this.hobbyFactor = isHobby ? 3 : 1;
         this.hobbyPart = isHobby ? 0.25 : 0;
     }
 
