@@ -4,6 +4,7 @@ import com.ww.game.auto.AutoManager;
 import com.ww.game.play.PlayManager;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.auto.command.AutoManageBooksService;
+import com.ww.service.auto.command.AutoManageMailService;
 import com.ww.service.auto.command.AutoStartRivalService;
 import com.ww.service.auto.command.AutoUpgradeWisiesService;
 import com.ww.service.rival.global.RivalGlobalService;
@@ -27,6 +28,7 @@ public class AutoService {
 
     private final AutoProfileService autoProfileService;
     private final AutoManageBooksService autoManageBooksService;
+    private final AutoManageMailService autoManageMailService;
     private final AutoUpgradeWisiesService autoUpgradeWisiesService;
     private final AutoStartRivalService autoStartRivalService;
     private final RivalGlobalService rivalGlobalService;
@@ -84,6 +86,10 @@ public class AutoService {
         autoManageBooksService.manage(profile);
     }
 
+    public void manageMails(Profile profile) {
+        autoManageMailService.manage(profile);
+    }
+
     public void upgradeWisies(Profile profile) {
         autoUpgradeWisiesService.upgrade(profile);
     }
@@ -91,5 +97,7 @@ public class AutoService {
     public void startRival(AutoManager manager) {
         autoStartRivalService.start(manager);
     }
+
+
 
 }

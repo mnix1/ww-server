@@ -34,27 +34,12 @@ public class ProfileMail {
     @JoinColumn(name = "profile_id", nullable = false, updatable = false)
     protected Profile profile;
 
-    public ProfileMail(Profile profile, Resources resources, String title, String content) {
-        this.hasResources = true;
-        this.profile = profile;
-        this.title = title;
-        this.content = content;
-        setGainResources(resources);
-    }
-
     public ProfileMail(Profile profile, MailType type, Resources resources, String content) {
         this.hasResources = true;
         this.profile = profile;
         this.type = type;
         this.content = content;
         setGainResources(resources);
-    }
-
-    public ProfileMail(Profile profile, String title, String content) {
-        this.hasResources = false;
-        this.profile = profile;
-        this.title = title;
-        this.content = content;
     }
 
     public ProfileMail(Profile profile, MailType type, String content) {

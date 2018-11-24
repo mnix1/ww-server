@@ -16,6 +16,6 @@ public class AutoUpgradeWisiesState extends AutoState {
 
     @Override
     public void after(){
-        manager.getFlow().run("START_RIVAL");
+        manager.getFlow().run("MANAGE_MAILS");
     }
 }

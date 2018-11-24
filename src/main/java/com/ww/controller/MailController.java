@@ -1,20 +1,14 @@
 package com.ww.controller;
 
 import com.ww.model.dto.social.ProfileMailDTO;
-import com.ww.model.entity.outside.social.Profile;
-import com.ww.repository.outside.wisie.ProfileWisieRepository;
-import com.ww.service.social.FriendService;
 import com.ww.service.social.MailService;
 import com.ww.service.social.ProfileService;
-import com.ww.service.wisie.ProfileWisieService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +18,7 @@ import java.util.Map;
 public class MailController {
 
     private final MailService mailService;
+    private final ProfileService profileService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public List<ProfileMailDTO> list() {
@@ -36,7 +31,7 @@ public class MailController {
             throw new IllegalArgumentException();
         }
         Long deleteId = ((Integer) payload.get("id")).longValue();
-        return mailService.delete(deleteId);
+        return mailService.delete(deleteId, profileService.getProfileId());
     }
 
     @RequestMapping(value = "/claimReward", method = RequestMethod.POST)
@@ -45,8 +40,9 @@ public class MailController {
             throw new IllegalArgumentException();
         }
         Long claimRewardId = ((Integer) payload.get("id")).longValue();
-        return mailService.claimReward(claimRewardId);
+        return mailService.claimReward(claimRewardId, profileService.getProfileId());
     }
+
     @RequestMapping(value = "/displayed", method = RequestMethod.GET)
     public Map<String, Object> displayed() {
         return mailService.displayed();

@@ -31,7 +31,11 @@ public class MailService {
     private final ProfileMailRepository profileMailRepository;
 
     public List<ProfileMailDTO> list() {
-        return profileMailRepository.findAllByProfile_Id(profileService.getProfileId()).stream().map(ProfileMailDTO::new).collect(Collectors.toList());
+        return list(profileService.getProfileId()).stream().map(ProfileMailDTO::new).collect(Collectors.toList());
+    }
+
+    public List<ProfileMail> list(Long profileId) {
+        return profileMailRepository.findAllByProfile_Id(profileId);
     }
 
     public void save(List<ProfileMail> mails) {
@@ -45,13 +49,17 @@ public class MailService {
     }
 
     @Transactional
-    public Map<String, Object> delete(Long deleteId) {
+    public Map<String, Object> delete(Long deleteId, Long profileId) {
         Map<String, Object> model = new HashMap<>();
         Optional<ProfileMail> optionalProfileMail = profileMailRepository.findById(deleteId);
         if (!optionalProfileMail.isPresent()) {
             return putErrorCode(model);
         }
-        profileMailRepository.delete(optionalProfileMail.get());
+        ProfileMail profileMail = optionalProfileMail.get();
+        if (!profileMail.getProfile().getId().equals(profileId)) {
+            return putErrorCode(model);
+        }
+        profileMailRepository.delete(profileMail);
         return putSuccessCode(model);
     }
 
@@ -71,17 +79,17 @@ public class MailService {
     }
 
     @Transactional
-    public Map<String, Object> claimReward(Long claimRewardId) {
+    public Map<String, Object> claimReward(Long claimRewardId, Long profileId) {
         Map<String, Object> model = new HashMap<>();
         Optional<ProfileMail> optionalProfileMail = profileMailRepository.findById(claimRewardId);
         if (!optionalProfileMail.isPresent()) {
             return putErrorCode(model);
         }
         ProfileMail profileMail = optionalProfileMail.get();
-        if (profileMail.getClaimed() || !profileMail.getHasResources()) {
+        if (profileMail.getClaimed() || !profileMail.getHasResources() || !profileMail.getProfile().getId().equals(profileId)) {
             return putErrorCode(model);
         }
-        Profile profile = profileService.getProfile();
+        Profile profile = profileService.getProfile(profileId);
         profile.addResources(profileMail.getGainResources());
         profileService.save(profile);
         profileMail.setClaimed(true);

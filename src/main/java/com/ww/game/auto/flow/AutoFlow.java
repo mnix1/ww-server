@@ -3,6 +3,7 @@ package com.ww.game.auto.flow;
 import com.ww.game.GameFlow;
 import com.ww.game.auto.AutoManager;
 import com.ww.game.auto.state.AutoManageBooksState;
+import com.ww.game.auto.state.AutoManageMailsState;
 import com.ww.game.auto.state.AutoStartRivalState;
 import com.ww.game.auto.state.AutoUpgradeWisiesState;
 import com.ww.game.auto.state.rival.*;
@@ -10,7 +11,7 @@ import com.ww.game.auto.state.rival.*;
 public class AutoFlow extends GameFlow {
     private AutoManager manager;
 
-    public AutoFlow(AutoManager manager){
+    public AutoFlow(AutoManager manager) {
         this.manager = manager;
         initStateMap();
     }
@@ -19,6 +20,7 @@ public class AutoFlow extends GameFlow {
     protected void initStateMap() {
         stateMap.put("MANAGE_BOOKS", () -> new AutoManageBooksState(manager));
         stateMap.put("UPGRADE_WISIES", () -> new AutoUpgradeWisiesState(manager));
+        stateMap.put("MANAGE_MAILS", () -> new AutoManageMailsState(manager));
         stateMap.put("START_RIVAL", () -> new AutoStartRivalState(manager));
         stateMap.put("RIVAL_INTRO", () -> new AutoRivalIntroState(manager));
         stateMap.put("RIVAL_CHOOSING_WHO_ANSWER", () -> new AutoRivalChoosingWhoAnswerState(manager));
@@ -31,7 +33,7 @@ public class AutoFlow extends GameFlow {
     }
 
     @Override
-    public void start(){
+    public void start() {
         super.start();
         run("MANAGE_BOOKS");
     }
