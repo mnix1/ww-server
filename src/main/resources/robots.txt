@@ -1,0 +1,42 @@
+User-agent: Applebot
+Disallow: /login/
+
+User-agent: baiduspider
+Disallow: /login/
+
+User-agent: Bingbot
+Disallow: /login/
+
+User-agent: Googlebot
+Disallow: /login/
+
+User-agent: ia_archiver
+Disallow: /login/
+
+User-agent: msnbot
+Disallow: /login/
+
+User-agent: Naverbot
+Disallow: /login/
+
+User-agent: seznambot
+Disallow: /login/
+
+User-agent: Slurp
+Disallow: /login/
+
+User-agent: teoma
+Disallow: /login/
+
+User-agent: Twitterbot
+Disallow: /login/
+
+User-agent: Yandex
+Disallow: /login/
+
+User-agent: Yeti
+Disallow: /login/
+
+User-agent: *
+Disallow: /
+

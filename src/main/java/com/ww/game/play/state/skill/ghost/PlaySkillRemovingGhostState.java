@@ -1,6 +1,5 @@
 package com.ww.game.play.state.skill.ghost;
 
-import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.command.MemberWisieAddStatusCommand;
 import com.ww.game.play.flow.skill.PlaySkillFlow;
 import com.ww.game.play.state.skill.PlaySkillState;
@@ -56,7 +55,7 @@ public class PlaySkillRemovingGhostState extends PlaySkillState {
     @Override
     public void after() {
         if (disqualification) {
-            Map<String,Object> params = new HashMap<>();
+            Map<String, Object> params = new HashMap<>();
             params.put("scareSuccess", scareSuccess);
             flow.run("DISQUALIFICATION", params);
         } else {

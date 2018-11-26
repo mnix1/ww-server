@@ -5,7 +5,9 @@ import com.ww.game.play.state.PlayAnsweredState;
 import com.ww.game.play.state.PlayState;
 import com.ww.game.play.state.challenge.PlayChallengeAnsweredState;
 import com.ww.game.play.state.challenge.PlayChallengeAnsweringTimeoutState;
+import com.ww.game.play.state.challenge.PlayChallengeChangingTaskState;
 import com.ww.game.play.state.challenge.PlayChallengeChoosingWhoAnswerState;
+import com.ww.game.play.state.war.PlayChangingTaskState;
 
 public class PlayChallengeFlow extends PlayWarFlow {
 
@@ -26,5 +28,10 @@ public class PlayChallengeFlow extends PlayWarFlow {
     @Override
     protected synchronized PlayChallengeAnsweringTimeoutState createAnsweringTimeoutState() {
         return new PlayChallengeAnsweringTimeoutState(manager);
+    }
+
+    @Override
+    protected PlayChangingTaskState createChangingTaskState() {
+        return new PlayChallengeChangingTaskState(manager);
     }
 }
