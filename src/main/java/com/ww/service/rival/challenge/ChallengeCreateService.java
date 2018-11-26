@@ -10,16 +10,13 @@ import com.ww.model.constant.social.FriendStatus;
 import com.ww.model.constant.social.ResourceType;
 import com.ww.model.container.Resources;
 import com.ww.model.entity.outside.rival.challenge.Challenge;
-import com.ww.model.entity.outside.rival.challenge.ChallengePhase;
 import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.social.ProfileFriend;
-import com.ww.repository.outside.rival.challenge.ChallengePhaseRepository;
 import com.ww.repository.outside.rival.challenge.ChallengeProfileRepository;
 import com.ww.repository.outside.rival.challenge.ChallengeRepository;
 import com.ww.service.social.ProfileService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -30,16 +27,14 @@ import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.ww.helper.ModelHelper.putCode;
-import static com.ww.helper.ModelHelper.putErrorCode;
-import static com.ww.helper.ModelHelper.putSuccessCode;
+import static com.ww.helper.ModelHelper.*;
 import static com.ww.helper.RandomHelper.randomElement;
 
 @Service
 @AllArgsConstructor
 public class ChallengeCreateService {
     private static final List<Integer> DURATIONS = Arrays.asList(4, 8, 24, 48);
-    private static final List<Long> RESOURCE_COSTS = Arrays.asList(0L, 1L, 5L, 10L);
+    private static final List<Long> RESOURCE_COSTS = Arrays.asList(0L, 2L, 4L, 6L);
 
     private final ChallengeRepository challengeRepository;
     private final ChallengeProfileRepository challengeProfileRepository;
@@ -66,9 +61,10 @@ public class ChallengeCreateService {
     @Transactional
     public Challenge createGlobal() {
         LocalDateTime date = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(0, 0));
-        Long joinCost = randomElement(Arrays.asList(1L, 2L, 3L, 4L, 5L, 6L, 8L, 10L));
+        Long joinCost = randomElement(RESOURCE_COSTS);
+        Long reward = (joinCost + 5) * 3;
         Challenge challenge = new Challenge(ChallengeType.GLOBAL, ChallengeAccess.UNLOCK, ChallengeApproach.MANY, new Resources(ResourceType.CRYSTAL, joinCost), date.toInstant(ZoneOffset.UTC));
-        challenge.setGainResources(challenge.getGainResources().add(new Resources(joinCost * 2, joinCost * 2, joinCost * 2, joinCost * 2)));
+        challenge.setGainResources(challenge.getGainResources().add(new Resources(reward, reward, reward, reward)));
         challengeRepository.save(challenge);
         rivalChallengeService.preparePhase(challenge, 0, Category.random(), DifficultyLevel.random());
         return challenge;

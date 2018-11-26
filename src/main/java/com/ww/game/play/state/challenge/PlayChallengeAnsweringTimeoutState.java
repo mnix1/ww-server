@@ -1,7 +1,7 @@
 package com.ww.game.play.state.challenge;
 
 import com.ww.game.play.PlayManager;
-import com.ww.game.play.state.war.PlayWarAnsweredState;
+import com.ww.game.play.state.war.PlayWarAnsweringTimeoutState;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.challenge.ChallengeTeam;
 
@@ -9,23 +9,17 @@ import java.util.Map;
 
 import static com.ww.game.play.modelfiller.PlayChallengeModelFiller.fillModelNewScore;
 import static com.ww.helper.TeamHelper.BOT_PROFILE_ID;
-import static com.ww.helper.TeamHelper.isBotProfile;
 
-public class PlayChallengeAnsweredState extends PlayWarAnsweredState {
+public class PlayChallengeAnsweringTimeoutState extends PlayWarAnsweringTimeoutState {
 
-    public PlayChallengeAnsweredState(PlayManager manager, Long profileId, Long answerId) {
-        super(manager, profileId, answerId);
+    public PlayChallengeAnsweringTimeoutState(PlayManager manager) {
+        super(manager);
     }
 
     @Override
     public void initCommands() {
         super.initCommands();
-        ChallengeTeam team = (ChallengeTeam) getContainer().getTeams().team(BOT_PROFILE_ID);
-        if (!team.getActiveTeamMember().isPresent()
-                || (!isBotProfile(profileId) && isCorrect)
-                || (isBotProfile(profileId) && !isCorrect)) {
-            ((ChallengeTeam) getContainer().getTeams().opponent(BOT_PROFILE_ID)).increaseScore();
-        }
+        ((ChallengeTeam) getContainer().getTeams().opponent(BOT_PROFILE_ID)).increaseScore();
     }
 
     @Override

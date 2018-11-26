@@ -39,6 +39,16 @@ public class Resources {
         }
     }
 
+    public long sum() {
+        long sum = 0;
+        for (ResourceType type : ResourceType.values()) {
+            if (check(type)) {
+                sum += read(type);
+            }
+        }
+        return sum;
+    }
+
     public Resources write(ResourceType type, Long value) {
         if (type == ResourceType.GOLD) {
             this.gold = value;
@@ -103,10 +113,10 @@ public class Resources {
         return this;
     }
 
-    public Resources multiply(int multiplier) {
+    public Resources multiply(double multiplier) {
         for (ResourceType type : ResourceType.values()) {
             if (check(type)) {
-                write(type, read(type) * multiplier);
+                write(type, (long) (read(type) * multiplier));
             }
         }
         return this;

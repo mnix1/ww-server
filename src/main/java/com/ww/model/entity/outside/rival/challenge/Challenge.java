@@ -2,8 +2,8 @@ package com.ww.model.entity.outside.rival.challenge;
 
 import com.ww.model.constant.rival.challenge.ChallengeAccess;
 import com.ww.model.constant.rival.challenge.ChallengeApproach;
-import com.ww.model.constant.rival.challenge.ChallengeType;
 import com.ww.model.constant.rival.challenge.ChallengeStatus;
+import com.ww.model.constant.rival.challenge.ChallengeType;
 import com.ww.model.container.Resources;
 import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
@@ -93,14 +93,25 @@ public class Challenge {
         return timeoutDate.toEpochMilli() - Instant.now().toEpochMilli();
     }
 
+    private Resources addToPoolResources() {
+        if (getGainResources().getEmpty()) {
+            return getCostResources();
+        }
+        double gainHighest = getGainResources().highest();
+        double costHighest = getCostResources().highest();
+        if (type == ChallengeType.GLOBAL) {
+            return getCostResources().multiply(Math.min(1, costHighest * 20 / gainHighest));
+        }
+        if (type == ChallengeType.PRIVATE) {
+            if (access == ChallengeAccess.UNLOCK) {
+                return getCostResources().multiply(Math.min(1, costHighest * 10 / gainHighest));
+            }
+        }
+        return getCostResources().multiply(Math.min(1, costHighest * 5 / gainHighest));
+    }
+
     public void joined() {
         participants++;
-        Long highest = new Resources(getCostResources()).highest();
-        int max = 5;
-        Resources maxGain = new Resources(highest * max, highest * max, highest * max, highest * max);
-        if (!maxGain.hasNotLessThan(getGainResources())) {
-            return;
-        }
-        setGainResources(getGainResources().add(getCostResources()));
+        setGainResources(getGainResources().add(addToPoolResources()));
     }
 }

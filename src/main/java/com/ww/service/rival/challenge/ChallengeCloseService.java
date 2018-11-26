@@ -8,14 +8,11 @@ import com.ww.model.container.Resources;
 import com.ww.model.container.rival.challenge.ChallengePosition;
 import com.ww.model.entity.outside.rival.challenge.Challenge;
 import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
-import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.social.ProfileMail;
 import com.ww.repository.outside.rival.challenge.ChallengeProfileRepository;
 import com.ww.repository.outside.rival.challenge.ChallengeRepository;
 import com.ww.service.social.MailService;
-import com.ww.service.social.ProfileService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -67,20 +64,19 @@ public class ChallengeCloseService {
         List<ChallengeProfile> rewardedChallengeProfiles = new ArrayList<>();
         Set<Long> rewardedChallengeProfilesIds = new HashSet<>();
         Resources challengeSummaryGain = challenge.getGainResources();
-        int profilesWithReward = Math.max(1, challengePositions.size() / 10);
+        int profilesWithReward = Math.min(10, (challengePositions.size() - 1) / 5 + 1);
         for (int i = profilesWithReward - 1; i >= 0; i--) {
             ChallengeProfile challengeProfile = challengePositions.get(i).getChallengeProfile();
-            Resources resources = challenge.getCostResources();
+            Resources resources = null;
             if (i == 2) {
-                for (int k = 1; k < challengePositions.size() / 6; k++) {
-                    resources.add(challenge.getCostResources());
-                }
+                resources = challenge.getGainResources().multiply(.1);
             } else if (i == 1) {
-                for (int k = 1; k < challengePositions.size() / 3; k++) {
-                    resources.add(challenge.getCostResources());
-                }
+                resources = challenge.getGainResources().multiply(.25);
             } else if (i == 0) {
                 resources = challenge.getGainResources();
+            }
+            if (resources == null || resources.getEmpty() || resources.sum() < challenge.getCostResources().sum()) {
+                resources = challenge.getCostResources();
             }
             rewardedChallengeProfiles.add(challengeProfile);
             rewardedChallengeProfilesIds.add(challengeProfile.getProfile().getId());
