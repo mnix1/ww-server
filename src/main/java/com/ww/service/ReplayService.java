@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Getter
 @AllArgsConstructor
 public class ReplayService {
-    private static final List<Replay> activeReplays = new CopyOnWriteArrayList<>();
+    public static final List<Replay> activeReplays = new CopyOnWriteArrayList<>();
 
     private final ConnectionService connectionService;
     private final RivalRepository rivalRepository;
