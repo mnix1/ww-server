@@ -3,7 +3,7 @@ package com.ww.game.play.state.skill.coverall;
 import com.ww.game.member.command.MemberWisieAddDisguiseCommand;
 import com.ww.game.member.command.MemberWisieAddStatusCommand;
 import com.ww.game.member.command.MemberWisieIncreaseAttributesCommand;
-import com.ww.game.member.command.MemberWisieMaybeRunOuterFlowCommand;
+import com.ww.game.member.command.MemberWisieCancelAllSkillFlowCommand;
 import com.ww.game.play.command.skill.PlaySkillBlockAllCommand;
 import com.ww.game.play.flow.skill.PlaySkillFlowOpponent;
 import com.ww.game.play.state.skill.PlaySkillOpponentState;
@@ -27,7 +27,7 @@ public class PlaySkillCoverallState extends PlaySkillOpponentState {
         commands.add(new PlaySkillBlockAllCommand(opponentWarTeam));
         commands.add(new MemberWisieAddDisguiseCommand(manager, DisguiseType.COVERALL));
         commands.add(new MemberWisieIncreaseAttributesCommand(manager));
-        commands.add(new MemberWisieMaybeRunOuterFlowCommand(flow, opponentWarTeam.getProfileId()));
+        commands.add(new MemberWisieCancelAllSkillFlowCommand(flow, opponentWarTeam.getProfileId()));
     }
 
     @Override
@@ -51,6 +51,6 @@ public class PlaySkillCoverallState extends PlaySkillOpponentState {
 
     @Override
     public void after() {
-        flow.getFlowContainer().runPrevious(warTeam.getProfileId());
+        flow.run("DONE_COVERALL");
     }
 }

@@ -3,9 +3,9 @@ package com.ww.game.member.state.wisie;
 import com.ww.game.GameState;
 import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.command.MemberWisieAddStatusCommand;
+import com.ww.game.play.modelfiller.PlayModelPreparer;
 import com.ww.model.constant.wisie.MemberWisieStatus;
 import com.ww.model.container.rival.RivalTeam;
-import com.ww.model.container.rival.RivalTeams;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.model.container.rival.war.WarWisie;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import java.util.Map;
 
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelWisieActions;
 
-public class MemberWisieState extends GameState {
+public class MemberWisieState extends GameState implements PlayModelPreparer {
     protected MemberWisieManager manager;
     @Getter
     protected MemberWisieStatus status;
@@ -50,9 +50,7 @@ public class MemberWisieState extends GameState {
 
     @Override
     public void updateNotify() {
-        RivalTeams teams = manager.getPlayManager().getContainer().getTeams();
-        teams.forEachTeam(team -> {
-            manager.getPlayManager().getCommunication().sendAndUpdateModel(team.getProfileId(), this.prepareModel(team, teams.opponent(team)));
-        });
+        manager.getPlayManager().getCommunication().prepareModel(this);
+        manager.getPlayManager().getCommunication().sendPreparedModel();
     }
 }

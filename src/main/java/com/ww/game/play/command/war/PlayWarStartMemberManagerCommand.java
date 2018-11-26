@@ -4,17 +4,13 @@ import com.ww.game.GameFlow;
 import com.ww.game.member.flow.MemberWisieFlow;
 import com.ww.game.play.command.PlayCommand;
 import com.ww.game.play.container.PlayContainer;
-import com.ww.model.container.rival.RivalTeam;
-import com.ww.model.container.rival.war.TeamMember;
-import com.ww.model.container.rival.war.WarTeam;
-import com.ww.model.container.rival.war.WisieTeamMember;
 
-import java.util.List;
+import java.util.Collection;
 
 public class PlayWarStartMemberManagerCommand extends PlayCommand {
-    private List<MemberWisieFlow> flows;
+    private Collection<MemberWisieFlow> flows;
 
-    public PlayWarStartMemberManagerCommand(PlayContainer container, List<MemberWisieFlow> flows) {
+    public PlayWarStartMemberManagerCommand(PlayContainer container, Collection<MemberWisieFlow> flows) {
         super(container);
         this.flows = flows;
     }

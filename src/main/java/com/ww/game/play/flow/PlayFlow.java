@@ -39,7 +39,7 @@ public class PlayFlow extends GameFlow {
     }
 
     public boolean isStatusEquals(RivalStatus status) {
-        return ((PlayState) currentState()).getStatus() == status;
+        return ((PlayState) currentState().get()).getStatus() == status;
     }
 
     protected PlayIntroState createIntroState() {

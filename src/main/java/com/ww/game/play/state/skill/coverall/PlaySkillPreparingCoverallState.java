@@ -1,6 +1,8 @@
 package com.ww.game.play.state.skill.coverall;
 
 import com.ww.game.member.command.MemberWisieAddStatusCommand;
+import com.ww.game.member.command.MemberWisieRunInnerFlowCommand;
+import com.ww.game.play.command.skill.PlaySkillBlockAllCommand;
 import com.ww.game.play.flow.skill.PlaySkillFlowOpponent;
 import com.ww.game.play.state.skill.PlaySkillOpponentState;
 import com.ww.model.constant.wisie.MemberWisieStatus;
@@ -20,6 +22,8 @@ public class PlaySkillPreparingCoverallState extends PlaySkillOpponentState {
     @Override
     public void initCommands() {
         commands.add(new MemberWisieAddStatusCommand(manager, MemberWisieStatus.PUTTING_ON_COVERALL));
+        commands.add(new MemberWisieRunInnerFlowCommand(flow, warTeam.getProfileId()));
+        commands.add(new PlaySkillBlockAllCommand(warTeam));
     }
 
     @Override

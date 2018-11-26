@@ -87,12 +87,9 @@ public enum MemberWisieStatus {
     PREPARING_NINJA,
     TRYING_TO_KIDNAP,
     KIDNAPPING_SUCCEEDED,
-    KIDNAPPING_FAILED,
-    REMOVING_NINJA,
         //victim
     TRYING_TO_DEFEND,
     WAS_KIDNAPPED,
-    WAS_NOT_KIDNAPPED,
     //WATER PISTOL
     WATER_PISTOL_USED_ON_IT,
     CLEANING;
@@ -100,10 +97,6 @@ public enum MemberWisieStatus {
     public static List<MemberWisieStatus> getNoConcentrationActions() {
         return Arrays.asList(DREAMING_ABOUT_VACATION, SCRATCHING, YAWNING, HUNG_UP, NEED_GO_TO_TOILET, HUMMING_A_SONG,
                 WATCHES_THE_AUDIENCE, HAS_MUSCLE_SPASM, DRINKING_JUICE, WOULD_EAT_SOMETHING, WRITING_AN_SMS, TALKING_ON_THE_PHONE);
-    }
-
-    public static boolean isNoConcentration(MemberWisieStatus action) {
-        return getNoConcentrationActions().contains(action);
     }
 
 }

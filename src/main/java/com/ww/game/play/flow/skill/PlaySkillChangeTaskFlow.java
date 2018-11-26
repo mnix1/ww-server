@@ -1,6 +1,5 @@
 package com.ww.game.play.flow.skill;
 
-import com.ww.game.GameFlow;
 import com.ww.game.play.container.skill.PlayWarAnsweringFlowContainer;
 import com.ww.game.play.state.skill.changetask.PlaySkillSubmitApplicationState;
 import com.ww.game.play.state.skill.changetask.PlaySkillWantChangeTaskState;

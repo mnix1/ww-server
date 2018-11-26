@@ -17,6 +17,7 @@ public class PlaySkillPizzaFlow extends PlaySkillFlowOpponent {
         stateMap.put("CLEANED_PIZZA",() ->  new PlaySkillCleanedPizzaState(this));
         stateMap.put("EATING_PIZZA", () -> new PlaySkillEatingPizzaState(this));
         stateMap.put("EATEN_PIZZA", () -> new PlaySkillEatenPizzaState(this));
+        stateMap.put("DONE_PIZZA", () -> new PlaySkillDonePizzaState(this));
     }
 
     @Override

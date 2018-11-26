@@ -1,20 +1,15 @@
 package com.ww.game.play.state.skill.ghost;
 
-import com.ww.game.member.command.MemberWisieRemoveMostOuterFlowCommand;
-import com.ww.game.play.flow.skill.PlaySkillFlow;
 import com.ww.game.play.flow.skill.PlaySkillFlowOpponent;
 import com.ww.game.play.state.skill.PlaySkillOpponentState;
-import com.ww.game.play.state.skill.PlaySkillState;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class PlaySkillWasNotScaredState extends PlaySkillOpponentState {
 
     public PlaySkillWasNotScaredState(PlaySkillFlowOpponent flow) {
         super(flow);
-    }
-
-    @Override
-    public void initCommands() {
-        commands.add(new MemberWisieRemoveMostOuterFlowCommand(flow, opponentWarTeam.getProfileId()));
     }
 
     @Override
@@ -33,6 +28,8 @@ public class PlaySkillWasNotScaredState extends PlaySkillOpponentState {
 
     @Override
     public void after() {
-        flow.getFlowContainer().runMostOuter(opponentWarTeam.getProfileId());
+        Map<String, Object> params = new HashMap<>();
+        params.put("profileId", opponentWarTeam.getProfileId());
+        flow.run("DONE_GHOST", params);
     }
 }

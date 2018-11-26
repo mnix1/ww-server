@@ -2,7 +2,6 @@ package com.ww.game.play.state.war;
 
 import com.ww.game.play.PlayManager;
 import com.ww.game.play.command.war.PlayWarDisableActiveTeamMemberCommand;
-import com.ww.game.play.command.war.PlayWarStopActiveMemberManagerFlowsCommand;
 import com.ww.game.play.state.PlayAnsweringTimeoutState;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.war.WarTeam;
@@ -23,7 +22,6 @@ public class PlayWarAnsweringTimeoutState extends PlayAnsweringTimeoutState {
         for (RivalTeam team : getContainer().getTeams().getTeams()) {
             commands.add(new PlayWarDisableActiveTeamMemberCommand(getContainer(), team.getProfileId()));
         }
-        commands.add(new PlayWarStopActiveMemberManagerFlowsCommand(getContainer()));
     }
 
     @Override

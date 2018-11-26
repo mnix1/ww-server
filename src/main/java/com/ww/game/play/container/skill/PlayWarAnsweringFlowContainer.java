@@ -5,42 +5,46 @@ import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.flow.MemberWisieFlow;
 import lombok.Getter;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @Getter
 public class PlayWarAnsweringFlowContainer {
-    private List<MemberWisieFlow> wisieFlows = new CopyOnWriteArrayList<>();
     private Map<Long, MemberWisieFlow> profileIdWisieFlowMap = new ConcurrentHashMap<>();
     private Map<String, GameFlow> flowMap = new ConcurrentHashMap<>();
     private Map<String, String> outerToInnerMap = new ConcurrentHashMap<>();
 
+    public void stopAll() {
+        for (GameFlow flow : flowMap.values()) {
+            flow.stop();
+        }
+    }
+
     public void addWisieFlow(MemberWisieFlow flow) {
         flowMap.put(flow.getId(), flow);
-        wisieFlows.add(flow);
         profileIdWisieFlowMap.put(flow.getManager().getContainer().getTeam().getProfileId(), flow);
     }
 
-    public void addInner(GameFlow inner, GameFlow outer) {
+    public void addAndRunInner(GameFlow inner, Long profileId) {
+        GameFlow outer = stopMostOuter(profileId);
+        addInner(inner, outer);
+    }
+
+    private void addInner(GameFlow inner, GameFlow outer) {
         flowMap.put(inner.getId(), inner);
         outerToInnerMap.put(outer.getId(), inner.getId());
     }
 
-    public void removeAllOuters(Long profileId) {
-        String id = profileIdWisieFlowMap.get(profileId).getId();
-        GameFlow outer = findMostOuterByProfileId(profileId);
-        while (!id.equals(outer.getId())) {
-            outer.stop();
-            removeMostOuter(profileId);
+    public void removeAllOutersAndRun(Long profileId) {
+        MemberWisieFlow flow = profileIdWisieFlowMap.get(profileId);
+        String id = flow.getId();
+        while (outerToInnerMap.containsKey(id)) {
+            String nextId = outerToInnerMap.get(id);
+            flowMap.get(nextId).stop();
+            outerToInnerMap.remove(id);
+            id = nextId;
         }
-    }
-
-    public void addAndRunInner(GameFlow inner, Long profileId) {
-        GameFlow outer = findMostOuterByProfileId(profileId);
-        outer.stop();
-        addInner(inner, outer);
+        flow.resume();
     }
 
     public void runPrevious(Long profileId) {
@@ -48,14 +52,14 @@ public class PlayWarAnsweringFlowContainer {
         flowMap.get(previous).resume();
     }
 
-    public void runMostOuter(Long profileId) {
-        GameFlow outer = findMostOuterByProfileId(profileId);
-        outer.resume();
-    }
-
-    public String removeMostOuter(Long profileId) {
+    private GameFlow stopMostOuter(Long profileId) {
         GameFlow outer = findMostOuterByProfileId(profileId);
         outer.stop();
+        return outer;
+    }
+
+
+    private String removeMostOuter(Long profileId) {
         String previous = findInnerOfMostOuter(findWisieFlowByProfileId(profileId).getId());
         if (outerToInnerMap.containsKey(previous)) {
             outerToInnerMap.remove(previous);

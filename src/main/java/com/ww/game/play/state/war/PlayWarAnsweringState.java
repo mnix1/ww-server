@@ -22,12 +22,16 @@ public class PlayWarAnsweringState extends PlayAnsweringState {
         this.flowContainer = new PlayWarAnsweringFlowContainer();
     }
 
+    @Override
+    public void dispose() {
+        flowContainer.stopAll();
+    }
 
     @Override
     public void initCommands() {
         super.initCommands();
         commands.add(new PlayWarInitMemberManagerCommand(flowContainer, manager));
-        commands.add(new PlayWarStartMemberManagerCommand(getContainer(), flowContainer.getWisieFlows()));
+        commands.add(new PlayWarStartMemberManagerCommand(getContainer(), flowContainer.getProfileIdWisieFlowMap().values()));
     }
 
     @Override

@@ -26,7 +26,6 @@ public class PlaySkillProposingPizzaState extends PlaySkillOpponentState {
         commands.add(new MemberWisieAddStatusCommand(manager, MemberWisieStatus.PROPOSING_PIZZA));
         commands.add(new MemberWisieRunInnerFlowCommand(flow, opponentWarTeam.getProfileId()));
         commands.add(new MemberWisieAddStatusCommand(opponentManager, MemberWisieStatus.THINKING_IF_GET_PIZZA));
-        commands.add(new PlaySkillBlockAllCommand(warTeam));
         commands.add(new PlaySkillBlockAllCommand(opponentWarTeam));
         commands.add(new MemberWisieAddDisguiseCommand(manager, DisguiseType.PIZZA_COOK));
     }

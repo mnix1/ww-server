@@ -18,6 +18,6 @@ public class MemberWisieRunInnerFlowCommand extends GameCommand {
     @Override
     public void execute() {
         PlayWarAnsweringFlowContainer flowContainer = flow.getFlowContainer();
-        flowContainer.addAndRunInner( flow, profileId);
+        flowContainer.addAndRunInner(flow, profileId);
     }
 }

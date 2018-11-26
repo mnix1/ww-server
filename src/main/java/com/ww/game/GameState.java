@@ -59,6 +59,9 @@ public class GameState {
         return true;
     }
 
+    public void dispose(){
+    }
+
     @Override
     public String toString() {
         return super.toString() + "{" +

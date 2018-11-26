@@ -13,7 +13,7 @@ public class PlaySkillActionState extends GameState {
 
     public PlaySkillActionState(PlayManager manager) {
         this.manager = manager;
-        this.flowContainer = ((PlayWarAnsweringState) manager.getFlow().currentState()).getFlowContainer();
+        this.flowContainer = ((PlayWarAnsweringState) manager.getFlow().currentState().get()).getFlowContainer();
     }
 
 }

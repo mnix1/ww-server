@@ -4,10 +4,9 @@ import com.ww.game.GameState;
 import com.ww.game.play.PlayManager;
 import com.ww.game.play.command.skill.PlaySkillEnableTeamMemberCommand;
 import com.ww.game.play.command.skill.PlaySkillUseCommand;
-import com.ww.game.play.state.skill.PlaySkillActionState;
+import com.ww.game.play.modelfiller.PlayModelPreparer;
 import com.ww.model.constant.Skill;
 import com.ww.model.container.rival.RivalTeam;
-import com.ww.model.container.rival.RivalTeams;
 import com.ww.model.container.rival.war.WarTeam;
 
 import java.util.HashMap;
@@ -16,7 +15,7 @@ import java.util.Map;
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelPresentIndexes;
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelSkills;
 
-public class PlaySkillLifebuoyActionState extends GameState {
+public class PlaySkillLifebuoyActionState extends GameState implements PlayModelPreparer {
     protected PlayManager manager;
     protected WarTeam warTeam;
     protected Integer index;
@@ -33,6 +32,7 @@ public class PlaySkillLifebuoyActionState extends GameState {
         commands.add(new PlaySkillEnableTeamMemberCommand(warTeam, index));
     }
 
+    @Override
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = new HashMap<>();
         fillModelSkills(model, warTeam, (WarTeam) team, (WarTeam) opponentTeam);
@@ -42,9 +42,7 @@ public class PlaySkillLifebuoyActionState extends GameState {
 
     @Override
     public void updateNotify() {
-        RivalTeams teams = manager.getContainer().getTeams();
-        teams.forEachTeam(team -> {
-            manager.getCommunication().sendAndUpdateModel(team.getProfileId(), this.prepareModel(team, teams.opponent(team)));
-        });
+        manager.getCommunication().prepareModel(this);
+        manager.getCommunication().sendPreparedModel();
     }
 }

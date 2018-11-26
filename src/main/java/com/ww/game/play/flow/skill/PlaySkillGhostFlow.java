@@ -19,6 +19,7 @@ public class PlaySkillGhostFlow extends PlaySkillFlowOpponent {
         stateMap.put("REMOVING_GHOST", () -> new PlaySkillRemovingGhostState(this));
         stateMap.put("DISQUALIFICATION", () -> new PlaySkillDisqualificationState(this));
         stateMap.put("NO_DISQUALIFICATION", () -> new PlaySkillNoDisqualificationState(this));
+        stateMap.put("DONE_GHOST", () -> new PlaySkillDoneGhostState(this));
     }
 
     @Override

@@ -41,10 +41,6 @@ public class RivalInterval {
         return calculateInterval(8);
     }
 
-    public long getChoosingTaskPropsInterval() {
-        return calculateInterval(14);
-    }
-
     public long getRandomTaskPropsInterval() {
         return calculateInterval(2.5);
     }

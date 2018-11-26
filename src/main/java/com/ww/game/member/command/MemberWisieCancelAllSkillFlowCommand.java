@@ -1,18 +1,16 @@
 package com.ww.game.member.command;
 
 import com.ww.game.GameCommand;
-import com.ww.game.GameFlow;
-import com.ww.game.member.MemberWisieManager;
 import com.ww.game.play.container.skill.PlayWarAnsweringFlowContainer;
 import com.ww.game.play.flow.skill.PlaySkillFlow;
 import lombok.ToString;
 
 @ToString
-public class MemberWisieMaybeRunOuterFlowCommand extends GameCommand {
+public class MemberWisieCancelAllSkillFlowCommand extends GameCommand {
     private PlaySkillFlow flow;
     private Long profileId;
 
-    public MemberWisieMaybeRunOuterFlowCommand(PlaySkillFlow flow, Long profileId) {
+    public MemberWisieCancelAllSkillFlowCommand(PlaySkillFlow flow, Long profileId) {
         this.flow = flow;
         this.profileId = profileId;
     }
@@ -20,7 +18,6 @@ public class MemberWisieMaybeRunOuterFlowCommand extends GameCommand {
     @Override
     public void execute() {
         PlayWarAnsweringFlowContainer flowContainer = flow.getFlowContainer();
-        flowContainer.removeAllOuters(profileId);
-        flowContainer.runMostOuter(profileId);
+        flowContainer.removeAllOutersAndRun(profileId);
     }
 }

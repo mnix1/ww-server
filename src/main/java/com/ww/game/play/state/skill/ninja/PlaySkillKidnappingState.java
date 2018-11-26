@@ -26,7 +26,6 @@ public class PlaySkillKidnappingState extends PlaySkillOpponentState {
         commands.add(new MemberWisieAddStatusCommand(manager, MemberWisieStatus.TRYING_TO_KIDNAP));
         commands.add(new MemberWisieAddStatusCommand(opponentManager, MemberWisieStatus.TRYING_TO_DEFEND));
         commands.add(new MemberWisieRunInnerFlowCommand(flow, opponentWarTeam.getProfileId()));
-        commands.add(new PlaySkillBlockAllCommand(warTeam));
         commands.add(new PlaySkillBlockAllCommand(opponentWarTeam));
         commands.add(new MemberWisieAddDisguiseCommand(manager, DisguiseType.NINJA));
     }

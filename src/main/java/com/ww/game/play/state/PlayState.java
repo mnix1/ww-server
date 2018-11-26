@@ -3,9 +3,9 @@ package com.ww.game.play.state;
 import com.ww.game.GameState;
 import com.ww.game.play.PlayManager;
 import com.ww.game.play.container.PlayContainer;
+import com.ww.game.play.modelfiller.PlayModelPreparer;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.container.rival.RivalTeam;
-import com.ww.model.container.rival.RivalTeams;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import static com.ww.game.play.modelfiller.PlayModelFiller.fillModelStatus;
 
 @Getter
-public abstract class PlayState extends GameState {
+public abstract class PlayState extends GameState implements PlayModelPreparer {
     protected PlayManager manager;
     protected RivalStatus status;
 
@@ -29,6 +29,7 @@ public abstract class PlayState extends GameState {
         return manager.getContainer();
     }
 
+    @Override
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = new HashMap<>();
         fillModelStatus(model, status);
@@ -37,10 +38,8 @@ public abstract class PlayState extends GameState {
 
     @Override
     public void updateNotify() {
-        RivalTeams teams = getContainer().getTeams();
-        teams.forEachTeam(team -> {
-            manager.getCommunication().sendAndUpdateModel(team.getProfileId(), this.prepareModel(team, teams.opponent(team)));
-        });
+        manager.getCommunication().prepareModel(this);
+        manager.getCommunication().sendPreparedModel();
     }
 
     public Map<String, Object> prepareChildModel(RivalTeam team, RivalTeam opponentTeam) {

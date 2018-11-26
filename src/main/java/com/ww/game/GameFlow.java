@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
@@ -41,8 +42,11 @@ public abstract class GameFlow {
         states.add(state);
     }
 
-    public GameState currentState() {
-        return states.get(states.size() - 1);
+    public Optional<GameState> currentState() {
+        if (states.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(states.get(states.size() - 1));
     }
 
     public void start() {
@@ -66,6 +70,7 @@ public abstract class GameFlow {
         if (!active) {
             return;
         }
+        currentState().ifPresent(GameState::dispose);
 //        logger.trace("run " + toString() + ", " + state.toString());
         state.setParams(params);
         state.initProps();
@@ -136,7 +141,7 @@ public abstract class GameFlow {
         }
         active = true;
         //  logger.trace("stop " + toString());
-        currentState().after();
+        currentState().get().after();
     }
 
     @Override

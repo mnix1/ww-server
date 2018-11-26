@@ -14,8 +14,6 @@ public class PlaySkillNinjaFlow extends PlaySkillFlowOpponent {
         stateMap.put("PREPARING_NINJA", () -> new PlaySkillPreparingNinjaState(this));
         stateMap.put("KIDNAPPING",() ->  new PlaySkillKidnappingState(this));
         stateMap.put("KIDNAP_SUCCEEDED",() ->  new PlaySkillKidnapSucceededState(this));
-        stateMap.put("REMOVING_NINJA",() ->  new PlaySkillRemovingNinjaState(this));
-        stateMap.put("REMOVED_NINJA", () -> new PlaySkillRemovedNinjaState(this));
     }
 
     @Override

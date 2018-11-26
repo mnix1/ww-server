@@ -3,6 +3,9 @@ package com.ww.game.play.communication;
 import com.ww.game.play.PlayManager;
 import com.ww.game.play.action.*;
 import com.ww.game.play.container.PlayContainer;
+import com.ww.game.play.modelfiller.PlayModelPreparer;
+import com.ww.model.container.rival.RivalTeam;
+import com.ww.model.container.rival.RivalTeams;
 import com.ww.service.social.ConnectionService;
 import com.ww.websocket.message.Message;
 
@@ -32,13 +35,28 @@ public class PlayCommunication {
         actionMap.put(CHOOSE_TASK_DIFFICULTY, new PlayChooseTaskDifficultyAction(manager));
     }
 
-    public void sendAndUpdateModel(Long profileId, Map<String, Object> model) {
-        if (model.isEmpty()) {
-            return;
+    public void prepareModel(PlayModelPreparer modelPreparer) {
+        RivalTeams teams = getContainer().getTeams();
+        for (RivalTeam team : teams.getTeams()) {
+            Map<String, Object> model = modelPreparer.prepareModel(team, teams.opponent(team));
+            if (model.isEmpty()) {
+                continue;
+            }
+            fillModelNow(model);
+            getContainer().updateModels(team.getProfileId(), model);
         }
-        fillModelNow(model);
-        send(profileId, model);
-        manager.getContainer().updateModels(profileId, model);
+    }
+
+    public void sendPreparedModel() {
+        RivalTeams teams = getContainer().getTeams();
+        teams.forEachTeam(team -> {
+            Map<String, Object> model = getContainer().modelToSend(team.getProfileId());
+            if (model.isEmpty()) {
+                return;
+            }
+            send(team.getProfileId(), model);
+            getContainer().cleanModelToSend(team.getProfileId());
+        });
     }
 
     public void sendWithCurrentTime(Long profileId, Map<String, Object> model) {

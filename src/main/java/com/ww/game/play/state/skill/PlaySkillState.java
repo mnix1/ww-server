@@ -3,10 +3,9 @@ package com.ww.game.play.state.skill;
 import com.ww.game.GameState;
 import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.container.MemberWisieContainer;
-import com.ww.game.play.container.skill.PlayWarAnsweringFlowContainer;
 import com.ww.game.play.flow.skill.PlaySkillFlow;
+import com.ww.game.play.modelfiller.PlayModelPreparer;
 import com.ww.model.container.rival.RivalTeam;
-import com.ww.model.container.rival.RivalTeams;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.model.container.rival.war.WarWisie;
 import lombok.Getter;
@@ -17,7 +16,7 @@ import java.util.Map;
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelWisieActions;
 import static com.ww.helper.RandomHelper.randomDouble;
 
-public class PlaySkillState extends GameState {
+public class PlaySkillState extends GameState implements PlayModelPreparer {
     protected PlaySkillFlow flow;
     protected MemberWisieManager manager;
     @Getter
@@ -72,6 +71,7 @@ public class PlaySkillState extends GameState {
         return interval;
     }
 
+    @Override
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         return prepareModel(null, team, opponentTeam);
     }
@@ -89,10 +89,8 @@ public class PlaySkillState extends GameState {
 
     @Override
     public void updateNotify() {
-        RivalTeams teams = manager.getPlayManager().getContainer().getTeams();
-        teams.forEachTeam(team -> {
-            manager.getPlayManager().getCommunication().sendAndUpdateModel(team.getProfileId(), this.prepareModel(team, teams.opponent(team)));
-        });
+        manager.getPlayManager().getCommunication().prepareModel(this);
+        manager.getPlayManager().getCommunication().sendPreparedModel();
     }
 
     @Override

@@ -12,7 +12,6 @@ public class PlaySkillOpponentState extends PlaySkillState {
     @Getter
     private WarWisie opponentWisie;
     protected WarTeam opponentWarTeam;
-    protected long interval;
 
     public PlaySkillOpponentState(PlaySkillFlowOpponent flow) {
         super(flow);

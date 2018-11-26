@@ -3,6 +3,7 @@ package com.ww.game.play.state.skill.changetask;
 import com.ww.game.member.command.MemberWisieAddDisguiseCommand;
 import com.ww.game.member.command.MemberWisieAddStatusCommand;
 import com.ww.game.member.command.MemberWisieRunInnerFlowCommand;
+import com.ww.game.play.command.skill.PlaySkillBlockAllCommand;
 import com.ww.game.play.flow.skill.PlaySkillFlow;
 import com.ww.game.play.state.skill.PlaySkillState;
 import com.ww.model.constant.wisie.DisguiseType;
@@ -26,6 +27,7 @@ public class PlaySkillWantChangeTaskState extends PlaySkillState {
         commands.add(new MemberWisieRunInnerFlowCommand(flow, warTeam.getProfileId()));
         commands.add(new MemberWisieAddStatusCommand(manager, MemberWisieStatus.WANTS_TO_CHANGE_TASK));
         commands.add(new MemberWisieAddDisguiseCommand(manager, DisguiseType.BIRD_RED));
+        commands.add(new PlaySkillBlockAllCommand(warTeam));
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.ww.game.play.state.skill.ghost;
 
-import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.command.MemberWisieAddDisguiseCommand;
 import com.ww.game.member.command.MemberWisieAddStatusCommand;
 import com.ww.game.play.command.war.PlayWarDisableActiveTeamMemberCommand;
@@ -15,7 +14,6 @@ import com.ww.model.container.rival.war.WarTeam;
 import java.util.Map;
 
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelActiveMemberAddOns;
-import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelPresentIndexes;
 
 public class PlaySkillDisqualificationState extends PlaySkillState {
     private boolean scareSuccess;

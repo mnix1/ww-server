@@ -33,7 +33,6 @@ public class PlaySkillScaringState extends PlaySkillOpponentState {
         commands.add(new MemberWisieAddStatusCommand(manager, MemberWisieStatus.TRYING_TO_SCARE));
         commands.add(new MemberWisieRunInnerFlowCommand(flow, opponentWarTeam.getProfileId()));
         commands.add(new MemberWisieAddStatusCommand(opponentManager, MemberWisieStatus.SCARING_ON_IT));
-        commands.add(new PlaySkillBlockAllCommand(warTeam));
         commands.add(new PlaySkillBlockAllCommand(opponentWarTeam));
         commands.add(new MemberWisieAddDisguiseCommand(manager, DisguiseType.GHOST));
     }

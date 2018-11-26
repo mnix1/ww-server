@@ -1,7 +1,8 @@
 package com.ww.game.play.state.skill.ghost;
 
-import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.command.MemberWisieAddStatusCommand;
+import com.ww.game.member.command.MemberWisieRunInnerFlowCommand;
+import com.ww.game.play.command.skill.PlaySkillBlockAllCommand;
 import com.ww.game.play.flow.skill.PlaySkillFlow;
 import com.ww.game.play.state.skill.PlaySkillState;
 import com.ww.model.constant.wisie.MemberWisieStatus;
@@ -10,7 +11,6 @@ import com.ww.model.container.rival.war.WarTeam;
 
 import java.util.Map;
 
-import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelActiveMemberAddOns;
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelSkills;
 
 public class PlaySkillPreparingGhostState extends PlaySkillState {
@@ -22,6 +22,8 @@ public class PlaySkillPreparingGhostState extends PlaySkillState {
     @Override
     public void initCommands() {
         commands.add(new MemberWisieAddStatusCommand(manager, MemberWisieStatus.PREPARING_GHOST));
+        commands.add(new MemberWisieRunInnerFlowCommand(flow, warTeam.getProfileId()));
+        commands.add(new PlaySkillBlockAllCommand(warTeam));
     }
 
     @Override

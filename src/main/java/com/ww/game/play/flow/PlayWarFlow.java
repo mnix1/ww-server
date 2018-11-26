@@ -101,7 +101,7 @@ public class PlayWarFlow extends PlayFlow {
     @Async
     public void wisiesWontAnswer() {
         synchronized (this) {
-            PlayState state = (PlayState) currentState();
+            PlayState state = (PlayState) currentState().get();
             if (state.getStatus() == RivalStatus.ANSWERING) {
                 stopAfter();
 //            logger.trace("wisiesWontAnswer state after " + toString() +", " + state.toString());

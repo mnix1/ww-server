@@ -1,7 +1,8 @@
 package com.ww.game.play.state.skill.hint;
 
-import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.command.MemberWisieAddStatusCommand;
+import com.ww.game.member.command.MemberWisieRunInnerFlowCommand;
+import com.ww.game.play.command.skill.PlaySkillBlockAllCommand;
 import com.ww.game.play.flow.skill.PlaySkillFlow;
 import com.ww.game.play.state.skill.PlaySkillState;
 import com.ww.model.constant.wisie.MemberWisieStatus;
@@ -21,6 +22,8 @@ public class PlaySkillHintReceivedState extends PlaySkillState {
     @Override
     public void initCommands() {
         commands.add(new MemberWisieAddStatusCommand(manager, MemberWisieStatus.HINT_RECEIVED));
+        commands.add(new MemberWisieRunInnerFlowCommand(flow, warTeam.getProfileId()));
+        commands.add(new PlaySkillBlockAllCommand(warTeam));
     }
 
     @Override

@@ -22,6 +22,7 @@ public abstract class PlayContainer {
 
     protected Map<Long, Map<String, Object>> actualModelMap = new ConcurrentHashMap<>();
     protected Map<Long, List<String>> allModelMap = new ConcurrentHashMap<>();
+    protected Map<Long, Map<String, Object>> newModelMap = new ConcurrentHashMap<>();
 
     public PlayContainer(RivalTwoInit init, RivalTeams teams, RivalTasks tasks, RivalTimeouts timeouts, RivalDecisions decisions, RivalResult result) {
         this.init = init;
@@ -61,20 +62,31 @@ public abstract class PlayContainer {
         for (RivalTeam team : getTeams().getTeams()) {
             Long profileId = team.getProfileId();
             actualModelMap.put(profileId, new HashMap<>());
+            newModelMap.put(profileId, new HashMap<>());
             allModelMap.put(profileId, new ArrayList<>());
         }
     }
 
     public void updateModels(Long profileId, Map<String, Object> model) {
         Map<String, Object> actualProfileModel = actualModelMap.get(profileId);
+        Map<String, Object> newProfileModel = newModelMap.get(profileId);
         for (String key : model.keySet()) {
             actualProfileModel.put(key, model.get(key));
+            newProfileModel.put(key, model.get(key));
         }
         try {
             allModelMap.get(profileId).add(new ObjectMapper().writeValueAsString(model));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+    }
+
+    public Map<String, Object> modelToSend(Long profileId) {
+        return newModelMap.get(profileId);
+    }
+
+    public void cleanModelToSend(Long profileId) {
+        newModelMap.put(profileId, new HashMap<>());
     }
 
     public String modelsToJSON() {
