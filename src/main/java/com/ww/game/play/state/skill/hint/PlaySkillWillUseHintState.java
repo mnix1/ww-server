@@ -8,8 +8,8 @@ import com.ww.model.constant.wisie.MemberWisieStatus;
 
 public class PlaySkillWillUseHintState extends PlaySkillState {
 
-    public PlaySkillWillUseHintState(PlaySkillFlow flow, MemberWisieManager manager) {
-        super(flow, manager);
+    public PlaySkillWillUseHintState(PlaySkillFlow flow) {
+        super(flow);
     }
 
     @Override

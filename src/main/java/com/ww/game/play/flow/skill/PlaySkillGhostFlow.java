@@ -1,27 +1,24 @@
 package com.ww.game.play.flow.skill;
 
-import com.ww.game.member.MemberWisieManager;
+import com.ww.game.play.container.skill.PlayWarAnsweringFlowContainer;
 import com.ww.game.play.state.skill.ghost.*;
 
-public class PlaySkillGhostFlow extends PlaySkillFlow {
-    protected MemberWisieManager opponentManager;
+public class PlaySkillGhostFlow extends PlaySkillFlowOpponent {
 
-    public PlaySkillGhostFlow(MemberWisieManager manager, MemberWisieManager opponentManager) {
-        super(manager);
-        this.opponentManager = opponentManager;
-        initStateMap();
+    public PlaySkillGhostFlow(PlayWarAnsweringFlowContainer flowContainer, Long creatorProfileId, Long opponentProfileId) {
+        super(flowContainer, creatorProfileId, opponentProfileId);
     }
 
     @Override
     protected void initStateMap() {
-        stateMap.put("PREPARING_GHOST", () -> new PlaySkillPreparingGhostState(this, manager));
-        stateMap.put("SCARING", () -> new PlaySkillScaringState(this, manager, opponentManager));
-        stateMap.put("SCARE_SUCCEEDED", () -> new PlaySkillScareSucceededState(this, manager, opponentManager));
-        stateMap.put("SCARE_FAILED", () -> new PlaySkillScareFailedState(this, manager, opponentManager));
-        stateMap.put("WAS_NOT_SCARED", () -> new PlaySkillWasNotScaredState(this, opponentManager));
-        stateMap.put("REMOVING_GHOST", () -> new PlaySkillRemovingGhostState(this, manager));
-        stateMap.put("DISQUALIFICATION", () -> new PlaySkillDisqualificationState(this, manager));
-        stateMap.put("NO_DISQUALIFICATION", () -> new PlaySkillNoDisqualificationState(this, manager));
+        stateMap.put("PREPARING_GHOST", () -> new PlaySkillPreparingGhostState(this));
+        stateMap.put("SCARING", () -> new PlaySkillScaringState(this));
+        stateMap.put("SCARE_SUCCEEDED", () -> new PlaySkillScareSucceededState(this));
+        stateMap.put("SCARE_FAILED", () -> new PlaySkillScareFailedState(this));
+        stateMap.put("WAS_NOT_SCARED", () -> new PlaySkillWasNotScaredState(this));
+        stateMap.put("REMOVING_GHOST", () -> new PlaySkillRemovingGhostState(this));
+        stateMap.put("DISQUALIFICATION", () -> new PlaySkillDisqualificationState(this));
+        stateMap.put("NO_DISQUALIFICATION", () -> new PlaySkillNoDisqualificationState(this));
     }
 
     @Override

@@ -20,6 +20,6 @@ public class PlaySkillNinjaActionState extends PlaySkillActionState {
     @Override
     public void initCommands() {
         commands.add(new PlaySkillUseCommand(manager.getContainer(), warTeam, Skill.NINJA));
-        commands.add(new PlaySkillStartNinjaFlowCommand(manager, warTeam, warOpponentTeam));
+        commands.add(new PlaySkillStartNinjaFlowCommand(flowContainer, warTeam.getProfileId(), warOpponentTeam.getProfileId()));
     }
 }

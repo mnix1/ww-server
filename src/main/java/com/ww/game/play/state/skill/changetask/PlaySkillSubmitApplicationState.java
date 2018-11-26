@@ -1,6 +1,5 @@
 package com.ww.game.play.state.skill.changetask;
 
-import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.command.MemberWisieAddStatusCommand;
 import com.ww.game.play.flow.PlayWarFlow;
 import com.ww.game.play.flow.skill.PlaySkillFlow;
@@ -9,8 +8,8 @@ import com.ww.model.constant.wisie.MemberWisieStatus;
 
 public class PlaySkillSubmitApplicationState extends PlaySkillState {
 
-    public PlaySkillSubmitApplicationState(PlaySkillFlow flow, MemberWisieManager manager) {
-        super(flow, manager);
+    public PlaySkillSubmitApplicationState(PlaySkillFlow flow) {
+        super(flow);
     }
 
     @Override
@@ -35,6 +34,6 @@ public class PlaySkillSubmitApplicationState extends PlaySkillState {
 
     @Override
     public void after() {
-        ((PlayWarFlow)manager.getPlayManager().getFlow()).changeTask();
+        ((PlayWarFlow) manager.getPlayManager().getFlow()).changeTask();
     }
 }

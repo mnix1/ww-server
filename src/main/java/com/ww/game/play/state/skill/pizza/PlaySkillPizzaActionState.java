@@ -2,7 +2,6 @@ package com.ww.game.play.state.skill.pizza;
 
 import com.ww.game.play.PlayManager;
 import com.ww.game.play.command.skill.PlaySkillUseCommand;
-import com.ww.game.play.command.skill.flow.PlaySkillStartGhostFlowCommand;
 import com.ww.game.play.command.skill.flow.PlaySkillStartPizzaFlowCommand;
 import com.ww.game.play.state.skill.PlaySkillActionState;
 import com.ww.model.constant.Skill;
@@ -21,6 +20,6 @@ public class PlaySkillPizzaActionState extends PlaySkillActionState {
     @Override
     public void initCommands() {
         commands.add(new PlaySkillUseCommand(manager.getContainer(), warTeam, Skill.PIZZA));
-        commands.add(new PlaySkillStartPizzaFlowCommand(manager, warTeam, warOpponentTeam));
+        commands.add(new PlaySkillStartPizzaFlowCommand(flowContainer, warTeam.getProfileId(), warOpponentTeam.getProfileId()));
     }
 }

@@ -1,23 +1,23 @@
 package com.ww.game.member.command;
 
 import com.ww.game.GameCommand;
-import com.ww.game.GameFlow;
-import com.ww.game.member.MemberWisieManager;
-import com.ww.model.constant.wisie.MemberWisieStatus;
+import com.ww.game.play.container.skill.PlayWarAnsweringFlowContainer;
+import com.ww.game.play.flow.skill.PlaySkillFlow;
 import lombok.ToString;
 
 @ToString
 public class MemberWisieRunInnerFlowCommand extends GameCommand {
-    private MemberWisieManager manager;
-    private GameFlow flow;
+    private PlaySkillFlow flow;
+    private Long profileId;
 
-    public MemberWisieRunInnerFlowCommand(MemberWisieManager manager, GameFlow flow) {
-        this.manager = manager;
+    public MemberWisieRunInnerFlowCommand(PlaySkillFlow flow, Long profileId) {
         this.flow = flow;
+        this.profileId = profileId;
     }
 
     @Override
     public void execute() {
-        manager.getFlow().innerFlow(flow);
+        PlayWarAnsweringFlowContainer flowContainer = flow.getFlowContainer();
+        flowContainer.addAndRunInner( flow, profileId);
     }
 }

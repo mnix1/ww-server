@@ -21,6 +21,6 @@ public class PlaySkillCoverallActionState extends PlaySkillActionState {
     @Override
     public void initCommands() {
         commands.add(new PlaySkillUseCommand(manager.getContainer(), warTeam, Skill.COVERALL));
-        commands.add(new PlaySkillStartCoverallFlowCommand(manager, warTeam, warOpponentTeam));
+        commands.add(new PlaySkillStartCoverallFlowCommand(flowContainer, warTeam.getProfileId(), warOpponentTeam.getProfileId()));
     }
 }

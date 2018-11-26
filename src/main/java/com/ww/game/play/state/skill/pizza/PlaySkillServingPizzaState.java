@@ -6,6 +6,7 @@ import com.ww.game.member.command.MemberWisieAddStatusCommand;
 import com.ww.game.member.command.MemberWisieRunInnerFlowCommand;
 import com.ww.game.play.command.skill.PlaySkillBlockAllCommand;
 import com.ww.game.play.flow.skill.PlaySkillFlow;
+import com.ww.game.play.flow.skill.PlaySkillFlowOpponent;
 import com.ww.game.play.state.skill.PlaySkillOpponentState;
 import com.ww.model.constant.wisie.DisguiseType;
 import com.ww.model.constant.wisie.MemberWisieStatus;
@@ -18,8 +19,8 @@ import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelActiveMem
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelSkills;
 
 public class PlaySkillServingPizzaState extends PlaySkillOpponentState {
-    public PlaySkillServingPizzaState(PlaySkillFlow flow, MemberWisieManager manager, MemberWisieManager opponentManager) {
-        super(flow, manager, opponentManager);
+    public PlaySkillServingPizzaState(PlaySkillFlowOpponent flow) {
+        super(flow);
     }
 
     @Override

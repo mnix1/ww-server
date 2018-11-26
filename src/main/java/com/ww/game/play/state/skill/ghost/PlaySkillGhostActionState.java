@@ -20,6 +20,6 @@ public class PlaySkillGhostActionState extends PlaySkillActionState {
     @Override
     public void initCommands() {
         commands.add(new PlaySkillUseCommand(manager.getContainer(), warTeam, Skill.GHOST));
-        commands.add(new PlaySkillStartGhostFlowCommand(manager, warTeam, warOpponentTeam));
+        commands.add(new PlaySkillStartGhostFlowCommand(flowContainer, warTeam.getProfileId(), warOpponentTeam.getProfileId()));
     }
 }

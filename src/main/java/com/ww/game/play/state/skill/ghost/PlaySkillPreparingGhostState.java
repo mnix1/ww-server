@@ -15,8 +15,8 @@ import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelSkills;
 
 public class PlaySkillPreparingGhostState extends PlaySkillState {
 
-    public PlaySkillPreparingGhostState(PlaySkillFlow flow, MemberWisieManager manager) {
-        super(flow, manager);
+    public PlaySkillPreparingGhostState(PlaySkillFlow flow) {
+        super(flow);
     }
 
     @Override

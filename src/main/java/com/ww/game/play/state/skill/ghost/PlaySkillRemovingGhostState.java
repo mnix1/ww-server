@@ -17,8 +17,8 @@ public class PlaySkillRemovingGhostState extends PlaySkillState {
     private boolean disqualification;
     private double noDisqualificationChance;
 
-    public PlaySkillRemovingGhostState(PlaySkillFlow flow, MemberWisieManager manager) {
-        super(flow, manager);
+    public PlaySkillRemovingGhostState(PlaySkillFlow flow) {
+        super(flow);
     }
 
     @Override

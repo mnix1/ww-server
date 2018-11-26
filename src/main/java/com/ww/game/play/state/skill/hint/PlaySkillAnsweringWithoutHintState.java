@@ -1,6 +1,5 @@
 package com.ww.game.play.state.skill.hint;
 
-import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.command.MemberWisieAddStatusCommand;
 import com.ww.game.member.command.MemberWisieAnswerCommand;
 import com.ww.game.play.flow.skill.PlaySkillFlow;
@@ -21,8 +20,8 @@ public class PlaySkillAnsweringWithoutHintState extends PlaySkillState {
     private boolean correctAnswer;
     private Long answerId;
 
-    public PlaySkillAnsweringWithoutHintState(PlaySkillFlow flow, MemberWisieManager manager, Long hintAnswerId) {
-        super(flow, manager);
+    public PlaySkillAnsweringWithoutHintState(PlaySkillFlow flow, Long hintAnswerId) {
+        super(flow);
         this.hintAnswerId = hintAnswerId;
     }
 

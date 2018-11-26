@@ -10,8 +10,8 @@ import com.ww.model.constant.wisie.MemberWisieStatus;
 public class PlaySkillAnsweringWithHintState extends PlaySkillState {
     private Long answerId;
 
-    public PlaySkillAnsweringWithHintState(PlaySkillFlow flow, MemberWisieManager manager, Long answerId) {
-        super(flow, manager);
+    public PlaySkillAnsweringWithHintState(PlaySkillFlow flow, Long answerId) {
+        super(flow);
         this.answerId = answerId;
     }
 

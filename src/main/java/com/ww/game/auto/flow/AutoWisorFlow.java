@@ -8,9 +8,9 @@ import com.ww.game.auto.state.wisor.AutoWisorThinkingState;
 public class AutoWisorFlow extends GameFlow {
     private AutoManager manager;
 
-    public AutoWisorFlow(AutoManager manager){
+    public AutoWisorFlow(AutoManager manager) {
+        super();
         this.manager = manager;
-        initStateMap();
     }
 
     @Override

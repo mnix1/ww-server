@@ -1,9 +1,8 @@
 package com.ww.game.play.state.skill.pizza;
 
-import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.command.MemberWisieAddStatusCommand;
 import com.ww.game.member.command.MemberWisieRemoveDisguiseCommand;
-import com.ww.game.member.command.MemberWisieNotifyOuterFlowCommand;
+import com.ww.game.member.command.MemberWisieRemoveMostOuterFlowCommand;
 import com.ww.game.play.command.skill.PlaySkillUnblockAllCommand;
 import com.ww.game.play.flow.skill.PlaySkillFlow;
 import com.ww.game.play.state.skill.PlaySkillState;
@@ -17,8 +16,8 @@ import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelActiveMem
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelSkills;
 
 public class PlaySkillCleanedPizzaState extends PlaySkillState {
-    public PlaySkillCleanedPizzaState(PlaySkillFlow flow, MemberWisieManager manager) {
-        super(flow, manager);
+    public PlaySkillCleanedPizzaState(PlaySkillFlow flow) {
+        super(flow);
     }
 
     @Override
@@ -26,7 +25,7 @@ public class PlaySkillCleanedPizzaState extends PlaySkillState {
         commands.add(new MemberWisieRemoveDisguiseCommand(manager));
         commands.add(new MemberWisieAddStatusCommand(manager, MemberWisieStatus.CLEANED_AFTER_PIZZA));
         commands.add(new PlaySkillUnblockAllCommand(warTeam));
-        commands.add(new MemberWisieNotifyOuterFlowCommand(flow, manager));
+        commands.add(new MemberWisieRemoveMostOuterFlowCommand(flow, warTeam.getProfileId()));
     }
 
     @Override
@@ -44,8 +43,6 @@ public class PlaySkillCleanedPizzaState extends PlaySkillState {
 
     @Override
     public void after() {
-        if (!manager.getFlow().hasNext()) {
-            manager.getFlow().get().currentState().after();
-        }
+        flow.getFlowContainer().runMostOuter(warTeam.getProfileId());
     }
 }

@@ -5,13 +5,15 @@ import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.state.wisie.answer.MemberWisieAnsweredState;
 import com.ww.game.member.state.wisie.interval.*;
 import com.ww.game.member.state.wisie.interval.simpleinterval.*;
+import lombok.Getter;
 
 public class MemberWisieFlow extends GameFlow {
+    @Getter
     protected MemberWisieManager manager;
 
     public MemberWisieFlow(MemberWisieManager manager) {
+        super();
         this.manager = manager;
-        initStateMap();
     }
 
     @Override

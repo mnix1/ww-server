@@ -15,8 +15,8 @@ public class PlayFlow extends GameFlow {
     protected PlayManager manager;
 
     public PlayFlow(PlayManager manager) {
+        super();
         this.manager = manager;
-        initStateMap();
     }
 
     @Override

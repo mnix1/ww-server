@@ -16,8 +16,8 @@ import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelActiveMem
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelSkills;
 
 public class PlaySkillRemovingNinjaState extends PlaySkillState {
-    public PlaySkillRemovingNinjaState(PlaySkillFlow flow, MemberWisieManager manager) {
-        super(flow, manager);
+    public PlaySkillRemovingNinjaState(PlaySkillFlow flow) {
+        super(flow);
     }
 
     @Override

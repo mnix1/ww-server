@@ -3,6 +3,7 @@ package com.ww.game.play.state.skill;
 import com.ww.game.GameState;
 import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.container.MemberWisieContainer;
+import com.ww.game.play.container.skill.PlayWarAnsweringFlowContainer;
 import com.ww.game.play.flow.skill.PlaySkillFlow;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.RivalTeams;
@@ -24,9 +25,9 @@ public class PlaySkillState extends GameState {
     protected WarTeam warTeam;
     protected long interval;
 
-    public PlaySkillState(PlaySkillFlow flow, MemberWisieManager manager) {
+    public PlaySkillState(PlaySkillFlow flow) {
         this.flow = flow;
-        this.manager = manager;
+        this.manager = flow.getManager();
         this.wisie = manager.getContainer().getMember().getContent();
         this.warTeam = manager.getContainer().getTeam();
     }

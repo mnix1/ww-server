@@ -1,8 +1,7 @@
 package com.ww.game.play.state.skill.ninja;
 
-import com.ww.game.member.MemberWisieManager;
-import com.ww.game.member.command.MemberWisieNotifyOuterFlowCommand;
 import com.ww.game.member.command.MemberWisieRemoveDisguiseCommand;
+import com.ww.game.member.command.MemberWisieRemoveMostOuterFlowCommand;
 import com.ww.game.play.command.skill.PlaySkillUnblockAllCommand;
 import com.ww.game.play.flow.skill.PlaySkillFlow;
 import com.ww.game.play.state.skill.PlaySkillState;
@@ -16,15 +15,15 @@ import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelActiveMem
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelSkills;
 
 public class PlaySkillRemovedNinjaState extends PlaySkillState {
-    public PlaySkillRemovedNinjaState(PlaySkillFlow flow, MemberWisieManager manager) {
-        super(flow, manager);
+    public PlaySkillRemovedNinjaState(PlaySkillFlow flow) {
+        super(flow);
     }
 
     @Override
     public void initCommands() {
         commands.add(new MemberWisieRemoveDisguiseCommand(manager));
         commands.add(new PlaySkillUnblockAllCommand(warTeam));
-        commands.add(new MemberWisieNotifyOuterFlowCommand(flow, manager));
+        commands.add(new MemberWisieRemoveMostOuterFlowCommand(flow, warTeam.getProfileId()));
     }
 
     @Override
@@ -37,8 +36,6 @@ public class PlaySkillRemovedNinjaState extends PlaySkillState {
 
     @Override
     public void after() {
-        if (!manager.getFlow().hasNext()) {
-            manager.getFlow().get().currentState().after();
-        }
+        flow.getFlowContainer().runMostOuter(warTeam.getProfileId());
     }
 }

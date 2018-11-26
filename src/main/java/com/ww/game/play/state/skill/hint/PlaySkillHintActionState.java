@@ -20,6 +20,6 @@ public class PlaySkillHintActionState extends PlaySkillActionState {
     @Override
     public void initCommands() {
         commands.add(new PlaySkillUseCommand(manager.getContainer(), warTeam, Skill.HINT));
-        commands.add(new PlaySkillStartHintFlowCommand(manager, warTeam, answerId));
+        commands.add(new PlaySkillStartHintFlowCommand(flowContainer, warTeam.getProfileId(), answerId));
     }
 }

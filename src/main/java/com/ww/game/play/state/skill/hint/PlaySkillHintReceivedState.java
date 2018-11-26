@@ -14,8 +14,8 @@ import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelSkills;
 
 public class PlaySkillHintReceivedState extends PlaySkillState {
 
-    public PlaySkillHintReceivedState(PlaySkillFlow flow, MemberWisieManager manager) {
-        super(flow, manager);
+    public PlaySkillHintReceivedState(PlaySkillFlow flow) {
+        super(flow);
     }
 
     @Override

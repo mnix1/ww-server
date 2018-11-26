@@ -12,8 +12,8 @@ public class AutoFlow extends GameFlow {
     private AutoManager manager;
 
     public AutoFlow(AutoManager manager) {
+        super();
         this.manager = manager;
-        initStateMap();
     }
 
     @Override

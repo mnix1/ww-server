@@ -1,8 +1,8 @@
 package com.ww.game.play.state.skill.changetask;
 
-import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.command.MemberWisieAddDisguiseCommand;
 import com.ww.game.member.command.MemberWisieAddStatusCommand;
+import com.ww.game.member.command.MemberWisieRunInnerFlowCommand;
 import com.ww.game.play.flow.skill.PlaySkillFlow;
 import com.ww.game.play.state.skill.PlaySkillState;
 import com.ww.model.constant.wisie.DisguiseType;
@@ -17,12 +17,13 @@ import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelSkills;
 
 public class PlaySkillWantChangeTaskState extends PlaySkillState {
 
-    public PlaySkillWantChangeTaskState(PlaySkillFlow flow, MemberWisieManager manager) {
-        super(flow, manager);
+    public PlaySkillWantChangeTaskState(PlaySkillFlow flow) {
+        super(flow);
     }
 
     @Override
     public void initCommands() {
+        commands.add(new MemberWisieRunInnerFlowCommand(flow, warTeam.getProfileId()));
         commands.add(new MemberWisieAddStatusCommand(manager, MemberWisieStatus.WANTS_TO_CHANGE_TASK));
         commands.add(new MemberWisieAddDisguiseCommand(manager, DisguiseType.BIRD_RED));
     }

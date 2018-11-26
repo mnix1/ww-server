@@ -1,30 +1,33 @@
 package com.ww.game.play.state.war;
 
 import com.ww.game.play.PlayManager;
-import com.ww.game.play.PlayWarManager;
 import com.ww.game.play.command.war.PlayWarInitMemberManagerCommand;
 import com.ww.game.play.command.war.PlayWarStartMemberManagerCommand;
+import com.ww.game.play.container.skill.PlayWarAnsweringFlowContainer;
 import com.ww.game.play.state.PlayAnsweringState;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.war.WarTeam;
-import com.ww.model.container.rival.war.WisieTeamMember;
+import lombok.Getter;
 
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelWisieActions;
 
 public class PlayWarAnsweringState extends PlayAnsweringState {
+    @Getter
+    private PlayWarAnsweringFlowContainer flowContainer;
+
     public PlayWarAnsweringState(PlayManager manager) {
         super(manager);
+        this.flowContainer = new PlayWarAnsweringFlowContainer();
     }
+
 
     @Override
     public void initCommands() {
         super.initCommands();
-        commands.add(new PlayWarInitMemberManagerCommand(manager));
-        commands.add(new PlayWarStartMemberManagerCommand(getContainer()));
+        commands.add(new PlayWarInitMemberManagerCommand(flowContainer, manager));
+        commands.add(new PlayWarStartMemberManagerCommand(getContainer(), flowContainer.getWisieFlows()));
     }
 
     @Override
@@ -39,5 +42,12 @@ public class PlayWarAnsweringState extends PlayAnsweringState {
         Map<String, Object> model = super.prepareChildModel(team, opponentTeam);
         fillModelWisieActions(model, (WarTeam) team, (WarTeam) opponentTeam);
         return model;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                " flowContainer=" + flowContainer +
+                '}';
     }
 }

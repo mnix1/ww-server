@@ -15,8 +15,8 @@ public class PlaySkillThinkingIfUseHintState extends PlaySkillState {
     private double attributePart;
     private boolean useHint;
 
-    public PlaySkillThinkingIfUseHintState(PlaySkillFlow flow, MemberWisieManager manager, Long hintAnswerId) {
-        super(flow, manager);
+    public PlaySkillThinkingIfUseHintState(PlaySkillFlow flow, Long hintAnswerId) {
+        super(flow);
         this.hintAnswerId = hintAnswerId;
     }
 

@@ -1,21 +1,13 @@
 package com.ww.game.play.state.skill.pizza;
 
-import com.ww.game.member.MemberWisieManager;
 import com.ww.game.member.command.MemberWisieAddStatusCommand;
-import com.ww.game.member.command.MemberWisieRemoveDisguiseCommand;
-import com.ww.game.play.flow.skill.PlaySkillFlow;
+import com.ww.game.play.flow.skill.PlaySkillFlowOpponent;
 import com.ww.game.play.state.skill.PlaySkillOpponentState;
 import com.ww.model.constant.wisie.MemberWisieStatus;
-import com.ww.model.container.rival.RivalTeam;
-import com.ww.model.container.rival.war.WarTeam;
-
-import java.util.Map;
-
-import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelActiveMemberAddOns;
 
 public class PlaySkillCleaningPizzaState extends PlaySkillOpponentState {
-    public PlaySkillCleaningPizzaState(PlaySkillFlow flow, MemberWisieManager manager, MemberWisieManager opponentManager) {
-        super(flow, manager, opponentManager);
+    public PlaySkillCleaningPizzaState(PlaySkillFlowOpponent flow) {
+        super(flow);
     }
 
     @Override

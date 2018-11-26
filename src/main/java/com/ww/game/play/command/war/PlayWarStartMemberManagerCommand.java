@@ -1,5 +1,7 @@
 package com.ww.game.play.command.war;
 
+import com.ww.game.GameFlow;
+import com.ww.game.member.flow.MemberWisieFlow;
 import com.ww.game.play.command.PlayCommand;
 import com.ww.game.play.container.PlayContainer;
 import com.ww.model.container.rival.RivalTeam;
@@ -7,21 +9,20 @@ import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.model.container.rival.war.WisieTeamMember;
 
-public class PlayWarStartMemberManagerCommand extends PlayCommand {
+import java.util.List;
 
-    public PlayWarStartMemberManagerCommand(PlayContainer container) {
+public class PlayWarStartMemberManagerCommand extends PlayCommand {
+    private List<MemberWisieFlow> flows;
+
+    public PlayWarStartMemberManagerCommand(PlayContainer container, List<MemberWisieFlow> flows) {
         super(container);
+        this.flows = flows;
     }
 
     @Override
     public void execute() {
-        for (RivalTeam team : container.getTeams().getTeams()) {
-            WarTeam warTeam = (WarTeam) team;
-            TeamMember member = warTeam.getActiveTeamMember();
-            if (member.isWisie()) {
-                WisieTeamMember wisieMember = (WisieTeamMember) member;
-                wisieMember.currentManager().get().getFlow().start();
-            }
+        for (GameFlow flow : flows) {
+            flow.start();
         }
     }
 }

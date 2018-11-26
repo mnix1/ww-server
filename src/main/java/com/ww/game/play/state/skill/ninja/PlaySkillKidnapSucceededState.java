@@ -6,6 +6,7 @@ import com.ww.game.member.command.MemberWisieAddStatusCommand;
 import com.ww.game.play.command.war.PlayWarDisableActiveTeamMemberCommand;
 import com.ww.game.play.flow.PlayWarFlow;
 import com.ww.game.play.flow.skill.PlaySkillFlow;
+import com.ww.game.play.flow.skill.PlaySkillFlowOpponent;
 import com.ww.game.play.state.skill.PlaySkillOpponentState;
 import com.ww.model.constant.wisie.DisguiseType;
 import com.ww.model.constant.wisie.MemberWisieStatus;
@@ -18,8 +19,8 @@ import java.util.Map;
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelActiveMemberAddOns;
 
 public class PlaySkillKidnapSucceededState extends PlaySkillOpponentState {
-    public PlaySkillKidnapSucceededState(PlaySkillFlow flow, MemberWisieManager manager, MemberWisieManager opponentManager) {
-        super(flow, manager, opponentManager);
+    public PlaySkillKidnapSucceededState(PlaySkillFlowOpponent flow) {
+        super(flow);
     }
 
     @Override

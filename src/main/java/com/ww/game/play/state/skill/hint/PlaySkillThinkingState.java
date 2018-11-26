@@ -8,8 +8,8 @@ import com.ww.model.constant.wisie.MemberWisieStatus;
 
 public class PlaySkillThinkingState extends PlaySkillState {
 
-    public PlaySkillThinkingState(PlaySkillFlow flow, MemberWisieManager manager) {
-        super(flow, manager);
+    public PlaySkillThinkingState(PlaySkillFlow flow) {
+        super(flow);
     }
 
     @Override

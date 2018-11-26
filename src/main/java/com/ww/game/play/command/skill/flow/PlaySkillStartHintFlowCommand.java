@@ -1,27 +1,19 @@
 package com.ww.game.play.command.skill.flow;
 
-import com.ww.game.member.MemberWisieManager;
-import com.ww.game.play.PlayManager;
+import com.ww.game.play.container.skill.PlayWarAnsweringFlowContainer;
 import com.ww.game.play.flow.skill.PlaySkillHintFlow;
-import com.ww.model.container.rival.war.WarTeam;
-import com.ww.model.container.rival.war.WisieTeamMember;
 
 public class PlaySkillStartHintFlowCommand extends PlaySkillFlowCommand {
-    private WarTeam warTeam;
     private Long answerId;
 
-    public PlaySkillStartHintFlowCommand(PlayManager manager, WarTeam warTeam, Long answerId) {
-        super(manager);
-        this.warTeam = warTeam;
+    public PlaySkillStartHintFlowCommand(PlayWarAnsweringFlowContainer flowContainer, Long creatorProfileId, Long answerId) {
+        super(flowContainer, creatorProfileId);
         this.answerId = answerId;
     }
 
     @Override
     public void execute() {
-        WisieTeamMember member = (WisieTeamMember) warTeam.getActiveTeamMember();
-        MemberWisieManager memberManager = member.currentManager().get();
-        PlaySkillHintFlow flow = new PlaySkillHintFlow(memberManager, answerId);
-        memberManager.getFlow().innerFlow(flow);
+        PlaySkillHintFlow flow = new PlaySkillHintFlow(flowContainer, creatorProfileId, answerId);
         flow.start();
     }
 }

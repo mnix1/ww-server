@@ -20,8 +20,8 @@ import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelPresentIn
 public class PlaySkillDisqualificationState extends PlaySkillState {
     private boolean scareSuccess;
 
-    public PlaySkillDisqualificationState(PlaySkillFlow flow, MemberWisieManager manager) {
-        super(flow, manager);
+    public PlaySkillDisqualificationState(PlaySkillFlow flow) {
+        super(flow);
     }
 
     @Override

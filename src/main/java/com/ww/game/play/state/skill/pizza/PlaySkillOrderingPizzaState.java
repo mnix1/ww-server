@@ -14,8 +14,8 @@ import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelSkills;
 
 public class PlaySkillOrderingPizzaState extends PlaySkillState {
 
-    public PlaySkillOrderingPizzaState(PlaySkillFlow flow, MemberWisieManager manager) {
-        super(flow, manager);
+    public PlaySkillOrderingPizzaState(PlaySkillFlow flow) {
+        super(flow);
     }
 
     @Override

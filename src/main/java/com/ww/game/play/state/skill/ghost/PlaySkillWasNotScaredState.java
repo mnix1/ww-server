@@ -1,29 +1,30 @@
 package com.ww.game.play.state.skill.ghost;
 
-import com.ww.game.member.MemberWisieManager;
-import com.ww.game.member.command.MemberWisieNotifyOuterFlowCommand;
+import com.ww.game.member.command.MemberWisieRemoveMostOuterFlowCommand;
 import com.ww.game.play.flow.skill.PlaySkillFlow;
+import com.ww.game.play.flow.skill.PlaySkillFlowOpponent;
+import com.ww.game.play.state.skill.PlaySkillOpponentState;
 import com.ww.game.play.state.skill.PlaySkillState;
 
-public class PlaySkillWasNotScaredState extends PlaySkillState {
+public class PlaySkillWasNotScaredState extends PlaySkillOpponentState {
 
-    public PlaySkillWasNotScaredState(PlaySkillFlow flow, MemberWisieManager manager) {
-        super(flow, manager);
+    public PlaySkillWasNotScaredState(PlaySkillFlowOpponent flow) {
+        super(flow);
     }
 
     @Override
     public void initCommands() {
-        commands.add(new MemberWisieNotifyOuterFlowCommand(flow, manager));
+        commands.add(new MemberWisieRemoveMostOuterFlowCommand(flow, opponentWarTeam.getProfileId()));
     }
 
     @Override
     protected double minInterval() {
-        return 2 - getWisie().getReflexF1() - getWisie().getConcentrationF1();
+        return 2 - getOpponentWisie().getReflexF1() - getOpponentWisie().getConcentrationF1();
     }
 
     @Override
     protected double maxInterval() {
-        return 3 - getWisie().getReflexF1() - 2 * getWisie().getConcentrationF1();
+        return 3 - getOpponentWisie().getReflexF1() - 2 * getOpponentWisie().getConcentrationF1();
     }
 
     @Override
@@ -32,8 +33,6 @@ public class PlaySkillWasNotScaredState extends PlaySkillState {
 
     @Override
     public void after() {
-        if (!manager.getFlow().hasNext()) {
-            manager.getFlow().get().currentState().after();
-        }
+        flow.getFlowContainer().runMostOuter(opponentWarTeam.getProfileId());
     }
 }
