@@ -36,7 +36,7 @@ import static com.ww.helper.EnvHelper.sslForce;
 @Profile(EnvHelper.SIGN_PROD)
 @Order(2)
 public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
-    public static final String[] ALL = new String[]{"/", "/*.js", "/*.html", "/*.json", "/*.ico", "/*.png",
+    public static final String[] ALL = new String[]{"/", "/*.js", "/*.html", "/*.json", "/*.ico", "/*.png", "/*.txt",
             "/profile", "/classification/war", "/classification/battle", "/play",
             "/war", "/warRanking", "/warFast", "/challenge", "/battle", "/battleRanking", "/battleFast", "/training", "/campaign", "/campaignWar",
             "/shop", "/friend", "/wisies", "/settings", "/_login/**", "/login", "/static/**", "/health/**", "/health"};
