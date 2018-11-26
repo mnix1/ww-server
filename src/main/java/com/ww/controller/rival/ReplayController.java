@@ -34,6 +34,11 @@ public class ReplayController {
         return replayService.replay(rivalId, speed, perspectiveProfileId, targetProfileId);
     }
 
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public Map<String, Object> list() {
+        return replayService.list();
+    }
+
     @RequestMapping(value = "/cancel", method = RequestMethod.GET)
     public Map<String, Object> cancel(@RequestParam(required = false) Long targetProfileId) {
         if (targetProfileId == null) {

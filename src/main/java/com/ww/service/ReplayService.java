@@ -9,6 +9,7 @@ import com.ww.repository.outside.rival.RivalRepository;
 import com.ww.service.social.ConnectionService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -24,6 +25,10 @@ public class ReplayService {
 
     private final ConnectionService connectionService;
     private final RivalRepository rivalRepository;
+
+    public Map<String, Object> list() {
+        return new MapModel("rivals", StringUtils.join(rivalRepository.findAllByModelsJSONCompressedIsNotNull(), ",^_^")).get();
+    }
 
     public Map<String, Object> replay(Long rivalId, Double speed, Long perspectiveProfileId, Long targetProfileId) {
         Optional<Rival> optionalRival = rivalRepository.findById(rivalId);
