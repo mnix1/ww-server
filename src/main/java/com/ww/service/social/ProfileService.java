@@ -57,7 +57,9 @@ public class ProfileService {
     }
 
     public Map<String, Object> delete() {
-        profileRepository.delete(getProfile());
+        Profile profile = getProfile();
+        profile.setAuthId("DELETED_" + profile.getAuthId());
+        save(profile);
         return putSuccessCode(new HashMap<>());
     }
 

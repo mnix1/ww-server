@@ -44,7 +44,7 @@ public class ProfileController {
         return profileService.changeName(name);
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public Map<String, Object> delete() {
         return profileService.delete();
     }

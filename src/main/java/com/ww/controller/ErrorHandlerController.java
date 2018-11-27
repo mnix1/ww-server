@@ -33,7 +33,7 @@ public class ErrorHandlerController implements ErrorController {
         final String clientBrowser = getClientBrowser(request);
         final String userAgent = getUserAgent(request);
 
-        logger.error("\n" +
+        logger.debug("\n" +
                 "User Agent \t" + userAgent + "\n" +
                 "Operating System\t" + clientOS + "\n" +
                 "Browser Name\t" + clientBrowser + "\n" +
@@ -82,7 +82,9 @@ public class ErrorHandlerController implements ErrorController {
     //http://stackoverflow.com/a/18030465/1845894
     public String getClientOS(HttpServletRequest request) {
         final String browserDetails = request.getHeader("User-Agent");
-
+        if (browserDetails == null) {
+            return "Null browserDetails";
+        }
         //=================OS=======================
         final String lowerCaseBrowser = browserDetails.toLowerCase();
         if (lowerCaseBrowser.contains("windows")) {
