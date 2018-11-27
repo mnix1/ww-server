@@ -34,9 +34,9 @@ public class DevSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().fullyAuthenticated()
                 .and()
                 .httpBasic()
-//                .and()
-//                .csrf()
-//                .disable()
+                .and()
+                .csrf()
+                .disable()
         ;
     }
 
