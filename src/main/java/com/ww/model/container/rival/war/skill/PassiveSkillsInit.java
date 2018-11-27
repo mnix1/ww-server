@@ -41,7 +41,7 @@ public class PassiveSkillsInit {
     private void initTeacher(PassiveAvailableSkill skill) {
         for (WarWisie sourceWarWisie : skill.listSourceWarWisies()) {
             for (WisieTeamMember teamMember : wisieTeamMembers) {
-                teamMember.increaseWisdomAttributes(sourceWarWisie, 0.1);
+                teamMember.increaseWisdomAttributes(sourceWarWisie, 0.25);
             }
         }
     }
@@ -49,7 +49,7 @@ public class PassiveSkillsInit {
     private void initMotivator(PassiveAvailableSkill skill) {
         for (WarWisie sourceWarWisie : skill.listSourceWarWisies()) {
             for (WisieTeamMember teamMember : wisieTeamMembers) {
-                teamMember.increaseMentalAttributes(sourceWarWisie, 0.1);
+                teamMember.increaseMentalAttributes(sourceWarWisie, 0.25);
             }
         }
     }
