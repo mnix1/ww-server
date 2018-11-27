@@ -59,7 +59,9 @@ public class ProfileSeason {
         previousElo = elo;
         elo = Math.max(MIN_ELO, elo + change);
         highestElo = Math.max(elo, previousElo);
-        grade = findGrade(elo, seasonGrades);
+        SeasonGrade seasonGrade = findSeasonGrade(highestElo, seasonGrades);
+        elo = Math.max(elo, seasonGrade.getRangeFrom());
+        grade = seasonGrade.getGrade();
     }
 
     public Map<String, Object> toMap() {

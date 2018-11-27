@@ -34,5 +34,4 @@ public class PlayWarManager extends PlayManager {
         List<TeamMember> teamMembers = TeamHelper.prepareTeamMembers(profile, wisies);
         return new WarTeam(profile, teamMembers, new WarTeamSkills(1, teamMembers));
     }
-
 }

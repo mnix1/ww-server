@@ -76,7 +76,7 @@ public class AutoManageBooksService {
         while (profile.hasEnoughResources(crystalBook.getCostResources())) {
             Map<String, Object> result = shopService.buyBook(crystalBook.getId(), profile.getId());
             if (!success(result)) {
-                logger.error("maybeBuyAndSpeedUp error profile={}, profileResources={}, bookCost={}", profile, profile.getResources(), crystalBook.getCostResources());
+//                logger.error("maybeBuyAndSpeedUp error profile={}, profileResources={}, bookCost={}", profile, profile.getResources(), crystalBook.getCostResources());
                 return;
             }
             profile.subtractResources(crystalBook.getCostResources());
@@ -91,7 +91,7 @@ public class AutoManageBooksService {
         }
         Map<String, Object> result = shopService.buyBook(elixirBook.getId(), profile.getId());
         if (!success(result)) {
-            logger.error("maybeBuyAndSpeedUp error profile={}, profileResources={}, bookCost={}", profile, profile.getResources(), elixirBook.getCostResources());
+//            logger.error("maybeBuyAndSpeedUp error profile={}, profileResources={}, bookCost={}", profile, profile.getResources(), elixirBook.getCostResources());
             return;
         }
         profile.subtractResources(elixirBook.getCostResources());

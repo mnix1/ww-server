@@ -5,6 +5,7 @@ import com.ww.game.play.container.PlayContainer;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.DifficultyLevel;
+import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.task.Question;
@@ -47,7 +48,7 @@ public class RivalService {
         }
         PlayContainer container = manager.getContainer();
         if (container.getResult().getDraw() != null) {
-            if (!container.getResult().getDraw()) {
+            if (!container.getResult().getDraw() && container.getInit().getImportance() != RivalImportance.FRIEND) {
                 addRewardFromWin(container.getResult().getWinner());
             }
             updateSeason(manager);

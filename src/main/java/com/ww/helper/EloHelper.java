@@ -31,11 +31,15 @@ public class EloHelper {
     }
 
     public static Grade findGrade(Long elo, List<SeasonGrade> seasonGrades) {
+        return findSeasonGrade(elo, seasonGrades).getGrade();
+    }
+
+    public static SeasonGrade findSeasonGrade(Long elo, List<SeasonGrade> seasonGrades) {
         for (SeasonGrade seasonGrade : seasonGrades) {
             if (elo >= seasonGrade.getRangeFrom() && seasonGrade.getRangeTo() != null && elo <= seasonGrade.getRangeTo()) {
-                return seasonGrade.getGrade();
+                return seasonGrade;
             } else if (elo >= seasonGrade.getRangeFrom() && seasonGrade.getRangeTo() == null) {
-                return seasonGrade.getGrade();
+                return seasonGrade;
             }
         }
         return null;
