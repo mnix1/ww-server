@@ -56,6 +56,11 @@ public class ProfileService {
         return sessionService.getProfileId();
     }
 
+    public Map<String, Object> delete() {
+        profileRepository.delete(getProfile());
+        return putSuccessCode(new HashMap<>());
+    }
+
     public Map<String, Object> changeWisor(WisorType wisor) {
         Map<String, Object> model = new HashMap<>();
         Profile profile = getProfile();

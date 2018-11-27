@@ -44,6 +44,11 @@ public class ProfileController {
         return profileService.changeName(name);
     }
 
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    public Map<String, Object> delete() {
+        return profileService.delete();
+    }
+
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public ExtendedProfileResourcesDTO profile(Principal user) {
         return authProfileService.authProfile(user);

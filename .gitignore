@@ -2,6 +2,7 @@
 /build/
 /classes/
 /src/main/resources/static/
+/src/main/resources/templates/
 !gradle/wrapper/gradle-wrapper.jar
 /out/
 ### STS ###
