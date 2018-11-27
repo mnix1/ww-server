@@ -56,7 +56,7 @@ public class RivalInitRandomOpponentService {
     }
 
     public Optional<RivalOneInit> maybeGetRivalInitWaitingLong() {
-        if (waitingForRivalProfiles.size() != 1) {
+        if (waitingForRivalProfiles.size() == 0) {
             return Optional.empty();
         }
         RivalOneInit onlyRivalOneInit = waitingForRivalProfiles.values().iterator().next();

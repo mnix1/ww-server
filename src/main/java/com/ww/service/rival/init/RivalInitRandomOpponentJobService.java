@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class RivalInitRandomOpponentJobService {
     private static final Logger logger = LoggerFactory.getLogger(RivalInitRandomOpponentJobService.class);
-    public static final int RIVAL_INIT_JOB_RATE = 2000;
+    public static final int RIVAL_INIT_JOB_RATE = 1000;
 
     private final ConnectionService connectionService;
     private final RivalRunService rivalRunService;
