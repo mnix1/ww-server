@@ -11,6 +11,7 @@ import lombok.Getter;
 
 import java.util.Map;
 
+import static com.ww.game.play.modelfiller.PlayModelFiller.fillModelMeChoosingTaskProps;
 import static com.ww.game.play.modelfiller.PlayModelFiller.fillModelTaskMeta;
 
 @Getter
@@ -40,6 +41,7 @@ public class PlayRandomTaskPropsState extends PlayState {
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = super.prepareModel(team, opponentTeam);
         fillModelTaskMeta(model, getContainer());
+        fillModelMeChoosingTaskProps(model, false);
         return model;
     }
 
