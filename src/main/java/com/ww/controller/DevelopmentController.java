@@ -37,6 +37,13 @@ public class DevelopmentController {
         return null;
     }
 
+    @RequestMapping(value = "/changeMaxAutoManagers", method = RequestMethod.GET)
+    public Map<String, Object> changeMaxAutoManagers(@RequestParam int max) {
+        int current = AutoService.MAX_ACTIVE_AUTO_MANAGERS;
+        AutoService.MAX_ACTIVE_AUTO_MANAGERS = max;
+        return new MapModel("was", current).put("now", max).get();
+    }
+
     @RequestMapping(value = "/cleanProfile", method = RequestMethod.GET)
     public Map cleanProfile(@RequestParam Long profileId) {
         Profile profile = profileService.getProfile(profileId);
@@ -48,13 +55,16 @@ public class DevelopmentController {
     }
 
     @RequestMapping(value = "/storeRivalInfo", method = RequestMethod.GET)
-    public Map storeRivalInfo(@RequestParam(required = false) Boolean store) {
-        boolean was = Rival.storeInfo;
-        if (store == null) {
-            store = true;
+    public Map storeRivalInfo(@RequestParam(required = false) Boolean human, @RequestParam(required = false) Boolean auto) {
+        boolean wasHuman = Rival.storeHumanInfo;
+        boolean wasAuto = Rival.storeAutoInfo;
+        if (human != null) {
+            Rival.storeHumanInfo = human;
         }
-        Rival.storeInfo = store;
-        return new MapModel("was", was).put("now", store).get();
+        if (auto != null) {
+            Rival.storeAutoInfo = auto;
+        }
+        return new MapModel("wasHuman", wasHuman).put("wasAuto", wasAuto).put("nowHuman", Rival.storeHumanInfo).put("nowAuto", Rival.storeAutoInfo).get();
     }
 
     @RequestMapping(value = "/stopRival", method = RequestMethod.GET)

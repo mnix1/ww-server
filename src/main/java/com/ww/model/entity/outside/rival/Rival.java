@@ -13,6 +13,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.Instant;
 
+import static com.ww.config.security.AuthIdProvider.isAutoProfile;
+import static com.ww.config.security.AuthIdProvider.isHumanProfile;
 import static com.ww.helper.TeamHelper.BOT_PROFILE_ID;
 
 @Setter
@@ -20,7 +22,8 @@ import static com.ww.helper.TeamHelper.BOT_PROFILE_ID;
 @NoArgsConstructor
 @Entity
 public class Rival {
-    public static boolean storeInfo = true;
+    public static boolean storeHumanInfo = true;
+    public static boolean storeAutoInfo = false;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -61,10 +64,20 @@ public class Rival {
         if (winner != null && !winner.getId().equals(BOT_PROFILE_ID)) {
             this.winner = winner;
         }
-        if (storeInfo) {
+        if (storeInfo()) {
             this.modelsJSONCompressed = CompressHelper.compress(container.modelsToJSON());
             this.managerStringCompressed = CompressHelper.compress(manager.toString());
         }
+    }
+
+    private boolean storeInfo() {
+        if (storeAutoInfo && (isAutoProfile(creator) || isAutoProfile(opponent))) {
+            return true;
+        }
+        if (storeHumanInfo && (isHumanProfile(creator) || isHumanProfile(opponent))) {
+            return true;
+        }
+        return false;
     }
 
     @Override
