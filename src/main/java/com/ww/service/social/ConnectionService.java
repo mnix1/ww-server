@@ -100,7 +100,7 @@ public class ConnectionService {
         try {
             sendMessage(profileId, new MessageDTO(message, objectMapper.writeValueAsString(model)).toString());
         } catch (JsonProcessingException e) {
-            logger.error("Error when sending message");
+            logger.error("Error when sending message: " + e.toString());
         }
     }
 
