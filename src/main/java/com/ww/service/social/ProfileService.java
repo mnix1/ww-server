@@ -20,8 +20,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.ww.helper.ModelHelper.putCode;
-import static com.ww.helper.ModelHelper.putSuccessCode;
+import static com.ww.helper.ModelHelper.*;
 
 @Service
 @AllArgsConstructor
@@ -164,5 +163,20 @@ public class ProfileService {
 
     public void save(List<Profile> profiles) {
         profileRepository.saveAll(profiles);
+    }
+
+    public Map<String, Object> changeLanguage(Language lang) {
+        Map<String, Object> model = new HashMap<>();
+        if (!Language.available(lang)) {
+            return putErrorCode(model);
+        }
+        Profile profile = getProfile();
+        if (profile.getLanguage() == lang) {
+            return putErrorCode(model);
+        }
+        profile.setLanguage(lang);
+        save(profile);
+        model.put("lang", profile.getLanguage());
+        return putSuccessCode(model);
     }
 }

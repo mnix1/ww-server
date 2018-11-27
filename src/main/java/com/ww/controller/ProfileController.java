@@ -1,5 +1,6 @@
 package com.ww.controller;
 
+import com.ww.model.constant.Language;
 import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.dto.book.ProfileBookDTO;
 import com.ww.model.dto.social.ExtendedProfileResourcesDTO;
@@ -7,7 +8,6 @@ import com.ww.service.book.ProfileBookService;
 import com.ww.service.social.AuthProfileService;
 import com.ww.service.social.ProfileService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,6 +42,15 @@ public class ProfileController {
         }
         String name = (String) payload.get("name");
         return profileService.changeName(name);
+    }
+
+    @RequestMapping(value = "/changeLanguage", method = RequestMethod.POST)
+    public Map changeLanguage(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("lang")) {
+            throw new IllegalArgumentException();
+        }
+        Language lang = Language.valueOf((String) payload.get("lang"));
+        return profileService.changeLanguage(lang);
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)

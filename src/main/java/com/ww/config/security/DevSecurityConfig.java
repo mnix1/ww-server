@@ -33,7 +33,11 @@ public class DevSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(ONLY_ADMIN).hasAnyRole(ADMIN)
                 .anyRequest().fullyAuthenticated()
                 .and()
-                .httpBasic();
+                .httpBasic()
+//                .and()
+//                .csrf()
+//                .disable()
+        ;
     }
 
     @Override

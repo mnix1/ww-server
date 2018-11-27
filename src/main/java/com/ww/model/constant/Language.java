@@ -13,6 +13,10 @@ public enum Language {
         return ENGLISH;
     }
 
+    public static boolean available(Language language) {
+        return language == POLISH || language == ENGLISH;
+    }
+
     public static boolean addPolish(Language lang) {
         return lang == POLISH;
     }
