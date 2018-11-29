@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
 import java.util.Map;
 
 @RestController
@@ -20,6 +21,7 @@ public class ReplayController {
     private final ReplayService replayService;
     private final ProfileService profileService;
 
+    @Transactional
     @RequestMapping(value = "/play", method = RequestMethod.GET)
     public Map<String, Object> play(@RequestParam Long rivalId,
                                     @RequestParam(required = false) Double speed,
@@ -34,6 +36,7 @@ public class ReplayController {
         return replayService.replay(rivalId, speed, perspectiveProfileId, targetProfileId);
     }
 
+    @Transactional
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Map<String, Object> list() {
         return replayService.list();

@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.ww.service.social.IntroService.END_INTRODUCTION_STEP_INDEX;
 import static com.ww.service.social.IntroService.PICK_WISIES_COUNT;
 import static com.ww.service.social.IntroService.PICK_WISIES_INTRODUCTION_STEP_INDEX;
 
@@ -84,7 +85,7 @@ public class AuthProfileService {
                 .limit(PICK_WISIES_COUNT)
                 .forEach(profileWisie -> profileWisie.setInTeam(true));
         profileWisieService.save(profileWisies);
-        profile.setIntroductionCompleted(true);
+        profile.setIntroductionStepIndex(END_INTRODUCTION_STEP_INDEX);
         profileService.save(profile);
     }
 

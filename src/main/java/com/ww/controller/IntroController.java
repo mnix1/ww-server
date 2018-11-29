@@ -27,11 +27,6 @@ public class IntroController {
         return introService.changeIntroStepIndex(stepIndex);
     }
 
-    @RequestMapping(value = "/complete", method = RequestMethod.POST)
-    public Map complete() {
-        return introService.complete();
-    }
-
     @RequestMapping(value = "/pickWisies", method = RequestMethod.POST)
     public Map pickWisies(@RequestBody Map<String, Object> payload) {
         if (!payload.containsKey("wisieTypes")) {

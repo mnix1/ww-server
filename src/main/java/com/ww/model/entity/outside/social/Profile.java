@@ -39,7 +39,6 @@ public class Profile {
     private Long crystal;
     private Long wisdom;
     private Long elixir;
-    private Boolean introductionCompleted;
     private Integer introductionStepIndex;
 
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
@@ -57,14 +56,13 @@ public class Profile {
         this.authId = authId;
         this.email = email;
         this.language = language;
-        this.level = 0L;
+        this.level = 1L;
         this.experience = 0L;
         this.gold = 10L;
         this.crystal = 40L;
         this.wisdom = 30L;
         this.elixir = 20L;
         this.wisorType = WisorType.random();
-        this.introductionCompleted = false;
         this.introductionStepIndex = 0;
     }
 

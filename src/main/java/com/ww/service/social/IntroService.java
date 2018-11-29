@@ -26,6 +26,7 @@ public class IntroService {
     public static final Integer PICK_WISIES_COUNT = 4;
     public static final Integer PROFILE_WISIES_COUNT = 1;
     public static final Integer PICK_WISIES_INTRODUCTION_STEP_INDEX = 11;
+    public static final Integer END_INTRODUCTION_STEP_INDEX = 15;
 
     private final ProfileService profileService;
     private final ProfileWisieService profileWisieService;
@@ -38,16 +39,6 @@ public class IntroService {
             return putErrorCode(model);
         }
         profile.setIntroductionStepIndex(stepIndex);
-        profileService.save(profile);
-        model.put("profile", new ExtendedProfileResourcesDTO(profile));
-        return putSuccessCode(model);
-    }
-
-    @Transactional
-    public Map<String, Object> complete() {
-        Map<String, Object> model = new HashMap<>();
-        Profile profile = profileService.getProfile();
-        profile.setIntroductionCompleted(true);
         profileService.save(profile);
         model.put("profile", new ExtendedProfileResourcesDTO(profile));
         return putSuccessCode(model);
