@@ -29,14 +29,6 @@ public class DevelopmentController {
     private final ProfileWisieRepository profileWisieRepository;
     private final AutoService autoService;
 
-    @RequestMapping(value = "/zeroStepIndex", method = RequestMethod.GET)
-    public Map zeroStepIndex(@RequestParam Long profileId) {
-        Profile profile = profileService.getProfile(profileId);
-        profile.setIntroductionStepIndex(0);
-        profileService.save(profile);
-        return null;
-    }
-
     @RequestMapping(value = "/changeMaxAutoManagers", method = RequestMethod.GET)
     public Map<String, Object> changeMaxAutoManagers(@RequestParam int max) {
         int current = AutoService.MAX_ACTIVE_AUTO_MANAGERS;

@@ -3,9 +3,11 @@ package com.ww.service.social;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.Skill;
 import com.ww.model.constant.wisie.WisieType;
-import com.ww.model.dto.social.ExtendedProfileResourcesDTO;
+import com.ww.model.dto.social.ProfileIntroDTO;
 import com.ww.model.entity.outside.social.Profile;
+import com.ww.model.entity.outside.social.ProfileIntro;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
+import com.ww.repository.outside.social.ProfileIntroRepository;
 import com.ww.service.wisie.ProfileWisieService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -28,19 +30,20 @@ public class IntroService {
     public static final Integer PICK_WISIES_INTRODUCTION_STEP_INDEX = 11;
     public static final Integer END_INTRODUCTION_STEP_INDEX = 15;
 
+    private final ProfileIntroRepository profileIntroRepository;
     private final ProfileService profileService;
     private final ProfileWisieService profileWisieService;
 
     @Transactional
-    public Map<String, Object> changeIntroStepIndex(Integer stepIndex) {
+    public Map<String, Object> changeIntroStepIndex(Integer introductionStepIndex) {
         Map<String, Object> model = new HashMap<>();
-        Profile profile = profileService.getProfile();
-        if (stepIndex <= profile.getIntroductionStepIndex()) {
+        ProfileIntro intro = profileIntroRepository.findByProfile_Id(profileService.getProfileId()).orElseThrow(IllegalAccessError::new);
+        if (introductionStepIndex <= intro.getIntroductionStepIndex()) {
             return putErrorCode(model);
         }
-        profile.setIntroductionStepIndex(stepIndex);
-        profileService.save(profile);
-        model.put("profile", new ExtendedProfileResourcesDTO(profile));
+        intro.setIntroductionStepIndex(introductionStepIndex);
+        profileIntroRepository.save(intro);
+        model.put("intro", new ProfileIntroDTO(intro));
         return putSuccessCode(model);
     }
 
@@ -57,7 +60,8 @@ public class IntroService {
         if (profile == null) {
             profile = profileService.getProfile();
         }
-        if (!profile.getIntroductionStepIndex().equals(PICK_WISIES_INTRODUCTION_STEP_INDEX)
+        ProfileIntro intro = profileIntroRepository.findByProfile_Id(profile.getId()).orElseThrow(IllegalAccessError::new);
+        if (!intro.getIntroductionStepIndex().equals(PICK_WISIES_INTRODUCTION_STEP_INDEX)
                 || profile.getWisies().size() != PROFILE_WISIES_COUNT) {
             logger.error("Hacker trying to get extra wisies, profileId: {}", profile.getId());
             return putErrorCode(model);
@@ -79,9 +83,9 @@ public class IntroService {
             profileWisieService.initWisieSkills(profileWisie, Arrays.asList(skills.get(i)));
             profileWisies.add(profileWisie);
         }
-        profile.setIntroductionStepIndex(profile.getIntroductionStepIndex() + 1);
+        intro.setIntroductionStepIndex(intro.getIntroductionStepIndex() + 1);
         profileWisieService.save(profileWisies);
-        profileService.save(profile);
+        profileIntroRepository.save(intro);
         return putSuccessCode(model);
     }
 

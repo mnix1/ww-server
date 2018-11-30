@@ -18,13 +18,13 @@ public class IntroController {
 
     private final IntroService introService;
 
-    @RequestMapping(value = "/changeStepIndex", method = RequestMethod.POST)
+    @RequestMapping(value = "/changeIntroductionStepIndex", method = RequestMethod.POST)
     public Map changeStepIndex(@RequestBody Map<String, Object> payload) {
-        if (!payload.containsKey("stepIndex")) {
+        if (!payload.containsKey("introductionStepIndex")) {
             throw new IllegalArgumentException();
         }
-        Integer stepIndex = (Integer) payload.get("stepIndex");
-        return introService.changeIntroStepIndex(stepIndex);
+        Integer introductionStepIndex = (Integer) payload.get("introductionStepIndex");
+        return introService.changeIntroStepIndex(introductionStepIndex);
     }
 
     @RequestMapping(value = "/pickWisies", method = RequestMethod.POST)

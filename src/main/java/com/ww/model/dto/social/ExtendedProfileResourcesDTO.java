@@ -14,7 +14,7 @@ public class ExtendedProfileResourcesDTO extends ExtendedProfileDTO {
     private Long gold;
     private Long elixir;
     private Language language;
-    private Integer introductionStepIndex;
+    private ProfileIntroDTO intro;
 
     public ExtendedProfileResourcesDTO(Profile profile) {
         super(profile);
@@ -25,6 +25,6 @@ public class ExtendedProfileResourcesDTO extends ExtendedProfileDTO {
         this.crystal = profile.getCrystal();
         this.gold = profile.getGold();
         this.elixir = profile.getElixir();
-        this.introductionStepIndex = profile.getIntroductionStepIndex();
+        this.intro = new ProfileIntroDTO(profile.getIntro());
     }
 }

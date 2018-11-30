@@ -5,6 +5,8 @@ import com.ww.config.security.Roles;
 import com.ww.model.constant.Language;
 import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.entity.outside.social.Profile;
+import com.ww.model.entity.outside.social.ProfileIntro;
+import com.ww.repository.outside.social.ProfileIntroRepository;
 import com.ww.repository.outside.social.ProfileRepository;
 import com.ww.service.SessionService;
 import lombok.AllArgsConstructor;
@@ -28,6 +30,7 @@ public class ProfileService {
     public static final int NAME_MIN_LENGTH = 2;
     public static final int NAME_MAX_LENGTH = 20;
 
+    private final ProfileIntroRepository profileIntroRepository;
     private final ProfileRepository profileRepository;
     private final SessionService sessionService;
 
@@ -142,6 +145,8 @@ public class ProfileService {
             profile = new Profile(authId, authId, null, Language.POLISH);
         }
         profileRepository.save(profile);
+        profile.setIntro(new ProfileIntro(profile));
+        profileIntroRepository.save(profile.getIntro());
         return profile;
     }
 

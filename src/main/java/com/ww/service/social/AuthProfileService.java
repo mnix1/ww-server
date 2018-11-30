@@ -70,7 +70,7 @@ public class AuthProfileService {
 
     @Transactional
     public void completeIntroductionForAuto(Profile profile) {
-        profile.setIntroductionStepIndex(PICK_WISIES_INTRODUCTION_STEP_INDEX);
+        profile.getIntro().setIntroductionStepIndex(PICK_WISIES_INTRODUCTION_STEP_INDEX);
         profileWisieService.experiment(profile);
         List<WisieType> wisieTypes = WisieType.list();
         Collections.shuffle(wisieTypes);
@@ -85,7 +85,7 @@ public class AuthProfileService {
                 .limit(PICK_WISIES_COUNT)
                 .forEach(profileWisie -> profileWisie.setInTeam(true));
         profileWisieService.save(profileWisies);
-        profile.setIntroductionStepIndex(END_INTRODUCTION_STEP_INDEX);
+        profile.getIntro().setIntroductionStepIndex(END_INTRODUCTION_STEP_INDEX);
         profileService.save(profile);
     }
 

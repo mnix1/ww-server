@@ -39,7 +39,9 @@ public class Profile {
     private Long crystal;
     private Long wisdom;
     private Long elixir;
-    private Integer introductionStepIndex;
+
+    @OneToOne(mappedBy = "profile", fetch = FetchType.LAZY)
+    private ProfileIntro intro;
 
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
     private Set<ProfileFriend> friends = new HashSet<>();
@@ -63,7 +65,6 @@ public class Profile {
         this.wisdom = 30L;
         this.elixir = 20L;
         this.wisorType = WisorType.random();
-        this.introductionStepIndex = 0;
     }
 
     public Profile(Long id) {
