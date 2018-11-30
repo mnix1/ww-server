@@ -27,21 +27,15 @@ public class RewardService {
         Profile profile = profileService.getProfile(winner.getId());
         profile.addResources(resources);
         profileService.save(profile);
-        if (!profileBookService.isProfileBookShelfFull(profile.getId())) {
-            Book book = giveBook(profile);
-            reward.setBookType(book.getType());
-        }
+//        if (profileBookService.isProfileBookShelfEmpty(profile.getId())) {
+//            Book book = giveBook(profile);
+//            reward.setBookType(book.getType());
+//        }
         Map<String, Object> model = new HashMap<>();
         reward.writeToMap(model);
+        model.put("resources", profile.getResources());
         connectionService.send(profile.getId(), model, Message.REWARD);
     }
-
-//    public void addRewardFromSeason(Profile profile, Grade grade) {
-//        if (grade.getResources() == null) {
-//            return;
-//        }
-//        profile.addResources(grade.getResources());
-//    }
 
     public Book giveBook(Profile profile) {
         Book book = bookService.findRandomBook();

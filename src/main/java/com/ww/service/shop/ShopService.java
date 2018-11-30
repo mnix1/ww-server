@@ -57,6 +57,7 @@ public class ShopService {
         ProfileBook profileBook = profileBookService.giveBook(profile, book);
         model.put("bookType", book.getType());
         model.put("id", profileBook.getId());
+        model.put("resources", profile.getResources());
         return putSuccessCode(model);
     }
 

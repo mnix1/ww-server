@@ -1,6 +1,7 @@
 package com.ww.model.dto.social;
 
 import com.ww.model.constant.Language;
+import com.ww.model.container.Resources;
 import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 
@@ -9,10 +10,7 @@ public class ExtendedProfileResourcesDTO extends ExtendedProfileDTO {
 
     private Long level;
     private Long experience;
-    private Long wisdom;
-    private Long crystal;
-    private Long gold;
-    private Long elixir;
+    private Resources resources;
     private Language language;
     private ProfileIntroDTO intro;
 
@@ -21,10 +19,7 @@ public class ExtendedProfileResourcesDTO extends ExtendedProfileDTO {
         this.language = profile.getLanguage();
         this.level = profile.getLevel();
         this.experience = profile.getExperience();
-        this.wisdom = profile.getWisdom();
-        this.crystal = profile.getCrystal();
-        this.gold = profile.getGold();
-        this.elixir = profile.getElixir();
+        this.resources = profile.getResources();
         this.intro = new ProfileIntroDTO(profile.getIntro());
     }
 }

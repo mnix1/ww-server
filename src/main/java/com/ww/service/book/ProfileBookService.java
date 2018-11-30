@@ -30,7 +30,7 @@ public class ProfileBookService {
     private final ProfileBookRepository profileBookRepository;
     private final BookService bookService;
 
-    public List<ProfileBook> list(Long profileId){
+    public List<ProfileBook> list(Long profileId) {
         return profileBookRepository.findByProfile_Id(profileId);
     }
 
@@ -100,9 +100,9 @@ public class ProfileBookService {
         if (!profileBook.canClaimReward()) {
             return putErrorCode(model);
         }
-        profileBook.setCloseDate(Instant.now());
-        addRewardFromBook(profileBook);
-        remove(profileBook);
+        Profile profile = profileService.getProfile(profileId);
+        addRewardFromBook(profile, profileBook);
+        model.put("resources", profile.getResources());
         return putSuccessCode(model);
     }
 
@@ -123,17 +123,15 @@ public class ProfileBookService {
             return putCode(model, -2);
         }
         profile.subtractResources(costResources);
-        profileService.save(profile);
-        profileBook.setCloseDate(Instant.now());
-        addRewardFromBook(profileBook);
-        remove(profileBook);
+        addRewardFromBook(profile, profileBook);
+        model.put("resources", profile.getResources());
         return putSuccessCode(model);
     }
 
-    public void addRewardFromBook(ProfileBook profileBook) {
-        Profile profile = profileBook.getProfile();
+    public void addRewardFromBook(Profile profile, ProfileBook profileBook) {
         profile.addResources(profileBook.getBook().getGainResources());
         profileService.save(profile);
+        remove(profileBook);
     }
 
     public void remove(ProfileBook profileBook) {
@@ -152,6 +150,10 @@ public class ProfileBookService {
 
     public boolean isProfileBookShelfFull(Long profileId) {
         return profileBookRepository.countByProfile_Id(profileId) >= BOOK_SHELF_COUNT;
+    }
+
+    public boolean isProfileBookShelfEmpty(Long profileId) {
+        return profileBookRepository.countByProfile_Id(profileId) == 0;
     }
 
 }

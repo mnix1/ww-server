@@ -4,6 +4,7 @@ import com.ww.model.constant.Category;
 import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.practise.PractiseResult;
+import com.ww.model.constant.social.ExperienceSource;
 import com.ww.model.dto.rival.task.PractiseDTO;
 import com.ww.model.dto.rival.task.TaskDTO;
 import com.ww.model.entity.outside.rival.practise.Practise;
@@ -12,6 +13,8 @@ import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.repository.outside.rival.practise.PractiseRepository;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.rival.task.TaskService;
+import com.ww.service.social.ConnectionService;
+import com.ww.service.social.ExperienceService;
 import com.ww.service.social.ProfileService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,6 +32,7 @@ public class PractiseService {
     private final TaskService taskService;
     private final TaskRendererService taskRendererService;
     private final ProfileService profileService;
+    private final ExperienceService experienceService;
 
     public PractiseDTO start(Category category, DifficultyLevel difficultyLevel) {
         Language language = profileService.getProfileLanguage();
@@ -52,8 +56,7 @@ public class PractiseService {
         }
         Date closeDate = new Date();
         Practise practise = practiseRepository.findById(practiseId).orElseThrow(() -> new IllegalArgumentException("Not found practise with id " + practiseId));
-        Boolean isPractiseForActualSessionProfile = profileService.getProfileId().equals(practise.getProfileId());
-        if (!isPractiseForActualSessionProfile || !practise.isOpen()) {
+        if (!practise.isOpen() || !profileService.getProfileId().equals(practise.getProfileId())) {
             return null;
         }
         Question question = practise.getQuestion();
@@ -68,6 +71,7 @@ public class PractiseService {
         Map<String, Object> model = new HashMap<>();
         model.put("correctAnswerId", correctAnswer.getId());
         model.put("answerInterval", practise.inProgressInterval());
+        experienceService.add(profileService.getProfileId(), result ? ExperienceSource.PRACTISE_WIN : ExperienceSource.PRACTISE_LOST);
         return model;
     }
 

@@ -34,8 +34,12 @@ public class IntroService {
     private final ProfileService profileService;
     private final ProfileWisieService profileWisieService;
 
+    public void save(ProfileIntro intro){
+        profileIntroRepository.save(intro);
+    }
+
     @Transactional
-    public Map<String, Object> changeIntroStepIndex(Integer introductionStepIndex) {
+    public Map<String, Object> changeIntroductionStepIndex(Integer introductionStepIndex) {
         Map<String, Object> model = new HashMap<>();
         ProfileIntro intro = profileIntroRepository.findByProfile_Id(profileService.getProfileId()).orElseThrow(IllegalAccessError::new);
         if (introductionStepIndex <= intro.getIntroductionStepIndex()) {

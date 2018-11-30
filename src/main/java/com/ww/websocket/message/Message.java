@@ -12,4 +12,5 @@ public enum Message {
     RIVAL_CONTENT,
     REWARD,
     NEW_MAIL,
+    EXPERIENCE,
 }

@@ -25,9 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.ww.service.social.IntroService.END_INTRODUCTION_STEP_INDEX;
-import static com.ww.service.social.IntroService.PICK_WISIES_COUNT;
-import static com.ww.service.social.IntroService.PICK_WISIES_INTRODUCTION_STEP_INDEX;
+import static com.ww.service.social.IntroService.*;
 
 @Service
 @AllArgsConstructor
@@ -71,6 +69,7 @@ public class AuthProfileService {
     @Transactional
     public void completeIntroductionForAuto(Profile profile) {
         profile.getIntro().setIntroductionStepIndex(PICK_WISIES_INTRODUCTION_STEP_INDEX);
+        introService.save(profile.getIntro());
         profileWisieService.experiment(profile);
         List<WisieType> wisieTypes = WisieType.list();
         Collections.shuffle(wisieTypes);
@@ -87,6 +86,7 @@ public class AuthProfileService {
         profileWisieService.save(profileWisies);
         profile.getIntro().setIntroductionStepIndex(END_INTRODUCTION_STEP_INDEX);
         profileService.save(profile);
+        introService.save(profile.getIntro());
     }
 
 }
