@@ -130,6 +130,35 @@ public class InitAutoService {
         autos.add(new Auto("Barak", encoder));
         autos.add(new Auto("Urgot", encoder));
         autos.add(new Auto("Rekin", encoder));
+        autos.add(new Auto("Padzi", encoder));
+        autos.add(new Auto("Gliniak", encoder));
+        autos.add(new Auto("Hjundek", encoder));
+        autos.add(new Auto("Termcia", encoder));
+        autos.add(new Auto("Kitek", encoder));
+        autos.add(new Auto("Rumcia", encoder));
+        autos.add(new Auto("Brat Hjundka", encoder));
+        autos.add(new Auto("Kręcioł", encoder));
+        autos.add(new Auto("Monster", encoder));
+        autos.add(new Auto("Rafciu", encoder));
+        autos.add(new Auto("Szczeniaczek", encoder));
+        autos.add(new Auto("Weronika", encoder));
+        autos.add(new Auto("Groot", encoder));
+        autos.add(new Auto("Prince", encoder));
+        autos.add(new Auto("Księciunio", encoder));
+        autos.add(new Auto("Logan", encoder));
+        autos.add(new Auto("Szaka", encoder));
+        autos.add(new Auto("Laka", encoder));
+        autos.add(new Auto("Dunia", encoder));
+        autos.add(new Auto("Borys", encoder));
+        autos.add(new Auto("Ripsa", encoder));
+        autos.add(new Auto("Pipsa", encoder));
+        autos.add(new Auto("Riki", encoder));
+        autos.add(new Auto("Tiki", encoder));
+        autos.add(new Auto("Liki", encoder));
+        autos.add(new Auto("Piki", encoder));
+        autos.add(new Auto("Maryla", encoder));
+        autos.add(new Auto("Kaszotto", encoder));
+        autos.add(new Auto("Paralizator", encoder));
         autoRepository.saveAll(autos);
     }
 

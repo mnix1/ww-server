@@ -35,7 +35,7 @@ public class PlayCommunication {
         actionMap.put(CHOOSE_TASK_DIFFICULTY, new PlayChooseTaskDifficultyAction(manager));
     }
 
-    public void prepareModel(PlayModelPreparer modelPreparer) {
+    public synchronized void prepareModel(PlayModelPreparer modelPreparer) {
         RivalTeams teams = getContainer().getTeams();
         for (RivalTeam team : teams.getTeams()) {
             Map<String, Object> model = modelPreparer.prepareModel(team, teams.opponent(team));
@@ -47,7 +47,7 @@ public class PlayCommunication {
         }
     }
 
-    public void sendPreparedModel() {
+    public synchronized void sendPreparedModel() {
         RivalTeams teams = getContainer().getTeams();
         teams.forEachTeam(team -> {
             Map<String, Object> model = getContainer().modelToSend(team.getProfileId());

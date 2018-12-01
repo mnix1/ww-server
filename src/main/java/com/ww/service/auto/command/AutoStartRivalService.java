@@ -51,16 +51,14 @@ public class AutoStartRivalService {
             } else {
                 return joinGlobalChallenge(manager);
             }
-        } else {
-            rivalInitRandomOpponentService.start(init.getType(), init.getImportance(), manager.getProfile().getId());
         }
-        return true;
+        return ModelHelper.success(rivalInitRandomOpponentService.start(init.getType(), init.getImportance(), manager.getProfile().getId()));
     }
 
     private boolean joinGlobalChallenge(AutoManager manager) {
         ChallengeGlobalDTO globalChallenge = challengeService.global(manager.getProfile().getId());
         if (!globalChallenge.getCanJoin()) {
-            joinPrivateChallenge(manager);
+            return joinPrivateChallenge(manager);
         }
         challengeService.join(globalChallenge.getId(), null, manager.getProfile().getId());
         return ModelHelper.success(challengeService.response(globalChallenge.getId(), manager.getProfile().getId()));
@@ -73,6 +71,7 @@ public class AutoStartRivalService {
         if (challenges.isEmpty()) {
             return createPrivateChallenge(manager);
         }
+        Collections.shuffle(challenges);
         for (ChallengePrivateDTO challenge : challenges) {
             if (manager.getProfile().hasEnoughResources(challenge.getCost())) {
                 challengeService.join(challenge.getId(), null, manager.getProfile().getId());

@@ -25,7 +25,7 @@ public class RivalInitRandomOpponentService {
     private final ProfileService profileService;
     private final RivalGlobalService rivalGlobalService;
 
-    public Map start(RivalType type, RivalImportance importance, Long profileId) {
+    public Map<String, Object> start(RivalType type, RivalImportance importance, Long profileId) {
         Map<String, Object> model = new HashMap<>();
         if (rivalGlobalService.contains(profileId)) {
             return putErrorCode(model);
@@ -41,7 +41,7 @@ public class RivalInitRandomOpponentService {
         return waitingForRivalProfiles.containsKey(profileId);
     }
 
-    public Map cancel() {
+    public Map<String, Object> cancel() {
         Map<String, Object> model = new HashMap<>();
         remove(profileService.getProfileId());
         return model;
