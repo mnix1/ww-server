@@ -21,6 +21,7 @@ import com.ww.game.play.communication.PlayWarCommunication;
 import com.ww.game.play.container.PlayChallengeContainer;
 import com.ww.game.play.flow.PlayChallengeFlow;
 import com.ww.game.play.flow.PlayWarFlow;
+import com.ww.service.rival.RivalWisieService;
 import com.ww.service.rival.challenge.RivalChallengeService;
 import com.ww.service.rival.war.RivalWarService;
 import com.ww.websocket.message.Message;
@@ -47,7 +48,7 @@ public class PlayChallengeManager extends PlayWarManager {
     }
 
     protected ChallengeTeam prepareTeam(Profile profile) {
-        List<ProfileWisie> wisies = ((RivalWarService) service).getProfileWisies(profile);
+        List<ProfileWisie> wisies = ((RivalWisieService) service).getProfileWisies(profile);
         List<TeamMember> teamMembers = TeamHelper.prepareTeamMembers(profile, wisies);
         return new ChallengeTeam(profile, teamMembers, new WarTeamSkills(1, teamMembers));
     }

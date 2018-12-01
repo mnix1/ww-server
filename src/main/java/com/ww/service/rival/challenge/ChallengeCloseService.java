@@ -38,6 +38,7 @@ public class ChallengeCloseService {
     public synchronized void closeChallenges() {
         Instant closeDate = Instant.now();
         List<Challenge> challenges = challengeRepository.findAllByStatusAndTimeoutDateLessThanEqual(ChallengeStatus.IN_PROGRESS, closeDate);
+//        List<Challenge> challenges = challengeRepository.findAllByStatus(ChallengeStatus.IN_PROGRESS);
         if (challenges.isEmpty()) {
             return;
         }
@@ -64,24 +65,30 @@ public class ChallengeCloseService {
         List<ChallengeProfile> rewardedChallengeProfiles = new ArrayList<>();
         Set<Long> rewardedChallengeProfilesIds = new HashSet<>();
         Resources challengeSummaryGain = challenge.getGainResources();
-        int profilesWithReward = Math.min(10, (challengePositions.size() - 1) / 5 + 1);
+        int profilesWithReward = Math.min(3, challengePositions.size());
         for (int i = profilesWithReward - 1; i >= 0; i--) {
             ChallengeProfile challengeProfile = challengePositions.get(i).getChallengeProfile();
             Resources resources = null;
-            if (i == 2) {
-                resources = challenge.getGainResources().multiply(.1);
-            } else if (i == 1) {
-                resources = challenge.getGainResources().multiply(.25);
-            } else if (i == 0) {
+            if (profilesWithReward == 3) {
+                if (i == 2) {
+                    resources = challenge.getGainResources().multiply(1d / 7d);
+                } else if (i == 1) {
+                    resources = challenge.getGainResources().multiply(2d / 7d);
+                } else if (i == 0) {
+                    resources = challenge.getGainResources().multiply(4d / 7d);
+                }
+            } else if (profilesWithReward == 2) {
+                if (i == 1) {
+                    resources = challenge.getGainResources().multiply(1d / 4d);
+                } else if (i == 0) {
+                    resources = challenge.getGainResources().multiply(3d / 4d);
+                }
+            } else {
                 resources = challenge.getGainResources();
-            }
-            if (resources == null || resources.getEmpty() || resources.sum() < challenge.getCostResources().sum()) {
-                resources = challenge.getCostResources();
             }
             rewardedChallengeProfiles.add(challengeProfile);
             rewardedChallengeProfilesIds.add(challengeProfile.getProfile().getId());
             challengeProfile.setGainResources(resources);
-            challenge.setGainResources(challenge.getGainResources().subtract(resources));
         }
         List<ProfileMail> mails = new ArrayList<>();
         for (ChallengeProfile challengeProfile : rewardedChallengeProfiles) {

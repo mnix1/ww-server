@@ -2,19 +2,21 @@ package com.ww.service.rival.challenge;
 
 import com.ww.helper.TagHelper;
 import com.ww.model.constant.rival.challenge.*;
-import com.ww.model.dto.rival.challenge.*;
+import com.ww.model.container.Resources;
+import com.ww.model.dto.rival.challenge.ChallengeActiveDTO;
+import com.ww.model.dto.rival.challenge.ChallengeGlobalDTO;
+import com.ww.model.dto.rival.challenge.ChallengePrivateDTO;
+import com.ww.model.dto.rival.challenge.ChallengeSummaryDTO;
 import com.ww.model.entity.outside.rival.challenge.Challenge;
 import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.repository.outside.rival.challenge.ChallengeProfileRepository;
 import com.ww.repository.outside.rival.challenge.ChallengeRepository;
-import com.ww.service.auto.AutoService;
 import com.ww.service.rival.init.RivalRunService;
 import com.ww.service.social.ProfileService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -22,9 +24,7 @@ import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.ww.helper.ModelHelper.putCode;
-import static com.ww.helper.ModelHelper.putErrorCode;
-import static com.ww.helper.ModelHelper.putSuccessCode;
+import static com.ww.helper.ModelHelper.*;
 
 @Service
 @AllArgsConstructor
@@ -186,13 +186,27 @@ public class ChallengeService {
         challengeProfile.join();
         challengeProfileRepository.save(challengeProfile);
         challenge.joined();
+        updatePoolResources(challenge);
         challengeRepository.save(challenge);
         profile.subtractResources(challenge.getCostResources());
         profileService.save(profile);
         return putSuccessCode(model);
     }
 
-    public ChallengeSummaryDTO summary(Long challengeId,Long profileId) {
+    private void updatePoolResources(Challenge challenge) {
+        if (challenge.getType() == ChallengeType.GLOBAL) {
+            return;
+        }
+        Resources added = new Resources(0L);
+        if (challenge.getAccess() == ChallengeAccess.UNLOCK && challenge.getCostResources().multiply(10).highest() < challenge.getGainResources().highest()) {
+            added = challenge.getCostResources();
+        } else if (challenge.getCostResources().multiply(5).highest() < challenge.getGainResources().highest()) {
+            added = challenge.getCostResources();
+        }
+        challenge.setGainResources(challenge.getGainResources().add(added));
+    }
+
+    public ChallengeSummaryDTO summary(Long challengeId, Long profileId) {
         Optional<ChallengeProfile> optionalChallengeProfile = challengeProfileRepository.findByProfile_IdAndChallenge_Id(profileId, challengeId);
         return optionalChallengeProfile.map(this::summary).orElse(null);
     }

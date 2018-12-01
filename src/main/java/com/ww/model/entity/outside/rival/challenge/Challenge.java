@@ -93,25 +93,7 @@ public class Challenge {
         return timeoutDate.toEpochMilli() - Instant.now().toEpochMilli();
     }
 
-    private Resources addToPoolResources() {
-        if (getGainResources().getEmpty()) {
-            return getCostResources();
-        }
-        double gainHighest = getGainResources().highest();
-        double costHighest = getCostResources().highest();
-        if (type == ChallengeType.GLOBAL) {
-            return getCostResources().multiply(Math.min(1, costHighest * 20 / gainHighest));
-        }
-        if (type == ChallengeType.PRIVATE) {
-            if (access == ChallengeAccess.UNLOCK) {
-                return getCostResources().multiply(Math.min(1, costHighest * 10 / gainHighest));
-            }
-        }
-        return getCostResources().multiply(Math.min(1, costHighest * 5 / gainHighest));
-    }
-
     public void joined() {
         participants++;
-        setGainResources(getGainResources().add(addToPoolResources()));
     }
 }

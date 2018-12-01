@@ -116,7 +116,7 @@ public class Resources {
     public Resources multiply(double multiplier) {
         for (ResourceType type : ResourceType.values()) {
             if (check(type)) {
-                write(type, (long) (read(type) * multiplier));
+                write(type, (long) Math.ceil(read(type) * multiplier));
             }
         }
         return this;

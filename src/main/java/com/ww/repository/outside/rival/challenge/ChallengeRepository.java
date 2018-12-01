@@ -15,5 +15,6 @@ import java.util.Optional;
 public interface ChallengeRepository extends CrudRepository<Challenge, Long> {
     Optional<Challenge> findFirstByTypeAndStatus(ChallengeType type, ChallengeStatus status);
     List<Challenge> findAllByStatusAndTimeoutDateLessThanEqual(ChallengeStatus status, Instant timeoutDate);
+    List<Challenge> findAllByStatus(ChallengeStatus status);
     List<Challenge> findAllByTypeAndStatusAndAccessIn(ChallengeType type, ChallengeStatus status, List<ChallengeAccess> accesses);
 }

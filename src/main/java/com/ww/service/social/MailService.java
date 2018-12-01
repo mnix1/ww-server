@@ -14,11 +14,9 @@ import com.ww.model.entity.outside.social.ProfileMail;
 import com.ww.repository.outside.social.ProfileMailRepository;
 import com.ww.websocket.message.MessageDTO;
 import lombok.AllArgsConstructor;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 

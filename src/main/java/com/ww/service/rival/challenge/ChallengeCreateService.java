@@ -62,12 +62,24 @@ public class ChallengeCreateService {
     public Challenge createGlobal() {
         LocalDateTime date = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(0, 0));
         Long joinCost = randomElement(RESOURCE_COSTS);
-        Long reward = (joinCost + 5) * 3;
         Challenge challenge = new Challenge(ChallengeType.GLOBAL, ChallengeAccess.UNLOCK, ChallengeApproach.MANY, new Resources(ResourceType.CRYSTAL, joinCost), date.toInstant(ZoneOffset.UTC));
-        challenge.setGainResources(challenge.getGainResources().add(new Resources(reward, reward, reward, reward)));
+        challenge.setGainResources(globalGainResources(joinCost));
         challengeRepository.save(challenge);
         rivalChallengeService.preparePhase(challenge, 0, Category.random(), DifficultyLevel.random());
         return challenge;
+    }
+
+    private Resources globalGainResources(long joinCost) {
+        if (joinCost == RESOURCE_COSTS.get(1)) {
+            return new Resources(28L, 28L, 28L, 14L);
+        }
+        if (joinCost == RESOURCE_COSTS.get(2)) {
+            return new Resources(34L, 34L, 34L, 17L);
+        }
+        if (joinCost == RESOURCE_COSTS.get(3)) {
+            return new Resources(40L, 40L, 40L, 20L);
+        }
+        return new Resources(20L, 20L, 20L, 10L);
     }
 
     private void createPrivateChampionProfiles(Profile profile, Challenge challenge, Set<String> tags) {
