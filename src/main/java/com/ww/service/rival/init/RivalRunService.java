@@ -10,7 +10,6 @@ import com.ww.model.container.rival.init.RivalTwoInit;
 import com.ww.model.entity.outside.rival.Rival;
 import com.ww.service.rival.battle.RivalBattleService;
 import com.ww.service.rival.campaign.RivalCampaignWarService;
-import com.ww.service.rival.challenge.ChallengeService;
 import com.ww.service.rival.challenge.RivalChallengeService;
 import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.rival.season.RivalProfileSeasonService;
@@ -61,13 +60,20 @@ public class RivalRunService {
 
     private PlayManager createManager(RivalInit initContainer) {
         RivalType type = initContainer.getType();
+        RivalImportance importance = initContainer.getImportance();
         if (type == RivalType.WAR) {
+            if (importance.isTraining()) {
+                return new PlayWarTrainingManager((RivalTwoInit) initContainer, rivalWarService);
+            }
             return new PlayWarManager((RivalTwoInit) initContainer, rivalWarService);
         }
         if (type == RivalType.CAMPAIGN_WAR) {
             return new PlayCampaignManager((RivalCampaignWarInit) initContainer, rivalCampaignWarService);
         }
         if (type == RivalType.BATTLE) {
+            if (importance.isTraining()) {
+                return new PlayBattleTrainingManager((RivalTwoInit) initContainer, rivalBattleService);
+            }
             return new PlayBattleManager((RivalTwoInit) initContainer, rivalBattleService);
         }
         if (type == RivalType.CHALLENGE) {

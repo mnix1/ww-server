@@ -3,6 +3,7 @@ package com.ww.service.rival.challenge;
 import com.ww.game.play.PlayChallengeManager;
 import com.ww.game.play.PlayManager;
 import com.ww.helper.RandomHelper;
+import com.ww.helper.TeamHelper;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.RivalImportance;
@@ -19,7 +20,7 @@ import com.ww.model.entity.outside.wisie.ChallengePhaseWisie;
 import com.ww.repository.outside.rival.challenge.ChallengePhaseRepository;
 import com.ww.repository.outside.rival.challenge.ChallengePhaseWisieRepository;
 import com.ww.repository.outside.rival.challenge.ChallengeProfileRepository;
-import com.ww.service.rival.RivalWisieComputerService;
+import com.ww.service.rival.RivalWisieService;
 import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.rival.season.RivalProfileSeasonService;
 import com.ww.service.rival.task.TaskGenerateService;
@@ -39,7 +40,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import static com.ww.model.constant.rival.RivalType.CHALLENGE;
 
 @Service
-public class RivalChallengeService extends RivalWisieComputerService {
+public class RivalChallengeService extends RivalWisieService {
     private final ChallengeProfileRepository challengeProfileRepository;
     private final ChallengePhaseRepository challengePhaseRepository;
     private final ChallengeCloseService challengeCloseService;
@@ -56,7 +57,7 @@ public class RivalChallengeService extends RivalWisieComputerService {
     public RivalChallengeInit init(ChallengeProfile challengeProfile) {
         List<ChallengePhase> challengePhases = new CopyOnWriteArrayList<>(challengeProfile.getChallenge().getPhases());
         sortChallengePhases(challengePhases);
-        return new RivalChallengeInit(CHALLENGE, RivalImportance.FAST, challengeProfile.getProfile(), prepareComputerProfile(), challengeProfile, challengePhases);
+        return new RivalChallengeInit(CHALLENGE, RivalImportance.FAST, challengeProfile.getProfile(), TeamHelper.prepareComputerProfile(), challengeProfile, challengePhases);
     }
 
     public synchronized ChallengePhase preparePhase(Challenge challenge, int taskIndex, Category category, DifficultyLevel difficultyLevel) {

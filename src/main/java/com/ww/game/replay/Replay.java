@@ -1,6 +1,8 @@
 package com.ww.game.replay;
 
+import com.ww.helper.JSONHelper;
 import com.ww.service.ReplayService;
+import com.ww.websocket.message.MessageDTO;
 import io.reactivex.Flowable;
 import lombok.Getter;
 
@@ -38,7 +40,7 @@ public class Replay {
         if (!inProgress) {
             return;
         }
-        replayService.getConnectionService().send(profileId, model, RIVAL_CONTENT);
+        replayService.getConnectionService().sendMessage(profileId, new MessageDTO(RIVAL_CONTENT, JSONHelper.toJSON(model)).toString());
         if (nextModel == null) {
             replayService.disposeReplay(this);
             return;

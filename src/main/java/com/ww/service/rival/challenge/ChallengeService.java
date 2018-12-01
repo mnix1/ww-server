@@ -12,6 +12,7 @@ import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.repository.outside.rival.challenge.ChallengeProfileRepository;
 import com.ww.repository.outside.rival.challenge.ChallengeRepository;
+import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.rival.init.RivalRunService;
 import com.ww.service.social.ProfileService;
 import lombok.AllArgsConstructor;
@@ -37,6 +38,7 @@ public class ChallengeService {
     private final RivalChallengeService rivalChallengeService;
     private final ProfileService profileService;
     private final RivalRunService rivalRunService;
+    private final RivalGlobalService rivalGlobalService;
 
     @Transactional
     public ChallengeGlobalDTO global(Long profileId) {
@@ -50,6 +52,9 @@ public class ChallengeService {
     @Transactional
     public Map<String, Object> response(Long challengeId, Long profileId) {
         Map<String, Object> model = new HashMap<>();
+        if (rivalGlobalService.contains(profileId)) {
+            return putErrorCode(model);
+        }
         Optional<ChallengeProfile> optionalChallengeProfile = challengeProfileRepository.findByProfile_IdAndChallenge_Id(profileId, challengeId);
         ChallengeProfile challengeProfile;
         if (optionalChallengeProfile.isPresent()) {
@@ -116,6 +121,9 @@ public class ChallengeService {
     @Transactional
     public Map<String, Object> tryAgain(Long challengeId, Long profileId) {
         Map<String, Object> model = new HashMap<>();
+        if (rivalGlobalService.contains(profileId)) {
+            return putErrorCode(model);
+        }
         Optional<Challenge> optionalChallenge = challengeRepository.findById(challengeId);
         if (!optionalChallenge.isPresent()) {
             return putErrorCode(model);

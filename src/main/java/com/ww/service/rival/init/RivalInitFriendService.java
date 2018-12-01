@@ -106,9 +106,9 @@ public class RivalInitFriendService {
             logger.error("Not connected profile with tag: {}, sessionProfileId: {}", opponentProfile.getTag(), profileService.getProfileId());
             return null;
         }
-        RivalTwoInit battle = new RivalTwoInit(type, RivalImportance.FRIEND, creatorProfile, opponentProfile);
-        sendInvite(battle);
-        return battle;
+        RivalTwoInit init = new RivalTwoInit(type, RivalImportance.FRIEND, creatorProfile, opponentProfile);
+        sendInvite(init);
+        return init;
     }
 
     private void sendInvite(RivalTwoInit rivalInitContainer) {

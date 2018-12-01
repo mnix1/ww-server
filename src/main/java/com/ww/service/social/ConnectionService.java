@@ -94,10 +94,6 @@ public class ConnectionService {
         });
     }
 
-    public void send(Long profileId, Map<String, Object> model, Message message) {
-        sendMessage(profileId, new MessageDTO(message, JSONHelper.toJSON(model)).toString());
-    }
-
     public void sendFriendConnectionChanged(String profileTag, Message message) {
         profileFriendRepository.findByProfile_TagAndStatus(profileTag, FriendStatus.ACCEPTED)
                 .forEach(profileFriend ->

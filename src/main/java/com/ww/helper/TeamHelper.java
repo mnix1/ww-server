@@ -1,6 +1,7 @@
 package com.ww.helper;
 
 import com.ww.model.constant.Category;
+import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.container.rival.battle.BattleTeam;
 import com.ww.model.container.rival.war.*;
@@ -27,6 +28,15 @@ public class TeamHelper {
 
     public static boolean isBotProfile(Profile profile) {
         return isBotProfile(profile.getId());
+    }
+
+    public static Profile prepareComputerProfile() {
+        Profile computerProfile = new Profile();
+        computerProfile.setId(BOT_PROFILE_ID);
+        computerProfile.setName("");
+        computerProfile.setWisorType(WisorType.random());
+        computerProfile.setTag("0");
+        return computerProfile;
     }
 
     public static List<TeamMember> prepareTeamMembers(Profile profile, List<? extends OwnedWisie> wisies) {

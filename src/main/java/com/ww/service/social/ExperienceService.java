@@ -12,6 +12,8 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ww.helper.TeamHelper.isBotProfile;
+
 @Service
 @AllArgsConstructor
 public class ExperienceService {
@@ -21,6 +23,9 @@ public class ExperienceService {
 
     @Transactional
     public void add(Long profileId, long experienceGain) {
+        if (isBotProfile(profileId)) {
+            return;
+        }
         Profile profile = profileService.getProfile(profileId);
         long newProfileExperience = profile.getExperience() + experienceGain;
         long levelGain = 0;

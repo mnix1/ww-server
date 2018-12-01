@@ -7,8 +7,10 @@ import com.ww.model.dto.rival.campaign.CampaignDTO;
 import com.ww.model.dto.rival.campaign.ProfileCampaignDTO;
 import com.ww.service.rival.campaign.CampaignService;
 import com.ww.service.rival.campaign.RivalCampaignWarService;
+import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.rival.init.RivalRunService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ww.service.social.ProfileService;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,21 +27,22 @@ import static com.ww.helper.ModelHelper.putSuccessCode;
 
 @RestController
 @RequestMapping(value = "/campaign")
+@AllArgsConstructor
 public class CampaignController {
-    @Autowired
-    private RivalCampaignWarService rivalCampaignWarService;
-
-    @Autowired
-    private CampaignService campaignService;
-
-    @Autowired
-    private RivalRunService rivalRunService;
+    private final RivalCampaignWarService rivalCampaignWarService;
+    private final CampaignService campaignService;
+    private final RivalRunService rivalRunService;
+    private final RivalGlobalService rivalGlobalService;
+    private final ProfileService profileService;
 
     @RequestMapping(value = "/start", method = RequestMethod.POST)
     public Map start() {
         Map<String, Object> model = new HashMap<>();
+        if (rivalGlobalService.contains(profileService.getProfileId())) {
+            return putErrorCode(model);
+        }
         Optional<RivalCampaignWarInit> init = rivalCampaignWarService.init();
-        init.ifPresent(rivalCampaignWarInit -> rivalRunService.run(rivalCampaignWarInit));
+        init.ifPresent(rivalRunService::run);
         if (!init.isPresent()) {
             return putErrorCode(model);
         }

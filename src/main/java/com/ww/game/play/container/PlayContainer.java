@@ -59,6 +59,9 @@ public abstract class PlayContainer {
     public boolean isFriend() {
         return init.getImportance().isFriend();
     }
+    public boolean isTraining() {
+        return init.getImportance().isTraining();
+    }
 
     public boolean isDraw() {
         return result.getDraw();

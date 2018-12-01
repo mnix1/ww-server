@@ -1,5 +1,6 @@
 package com.ww.service.social;
 
+import com.ww.helper.JSONHelper;
 import com.ww.model.container.Resources;
 import com.ww.model.container.Reward;
 import com.ww.model.entity.outside.book.Book;
@@ -8,6 +9,7 @@ import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.book.BookService;
 import com.ww.service.book.ProfileBookService;
 import com.ww.websocket.message.Message;
+import com.ww.websocket.message.MessageDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +37,7 @@ public class RewardService {
         Map<String, Object> model = new HashMap<>();
         reward.writeToMap(model);
         model.put("resources", profile.getResources());
-        connectionService.send(profile.getId(), model, Message.REWARD);
+        connectionService.sendMessage(profile.getId(), new MessageDTO(Message.REWARD, JSONHelper.toJSON(model)).toString());
     }
 
     public Book giveBook(Profile profile) {

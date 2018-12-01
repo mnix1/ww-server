@@ -2,6 +2,7 @@ package com.ww.service.rival.campaign;
 
 import com.ww.game.play.PlayCampaignManager;
 import com.ww.game.play.PlayManager;
+import com.ww.helper.TeamHelper;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.campaign.ProfileCampaignStatus;
@@ -16,7 +17,7 @@ import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileCampaignWisie;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
-import com.ww.service.rival.RivalWisieComputerService;
+import com.ww.service.rival.RivalWisieService;
 import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.rival.season.RivalProfileSeasonService;
 import com.ww.service.rival.task.TaskGenerateService;
@@ -35,7 +36,7 @@ import java.util.Set;
 import static com.ww.model.constant.rival.RivalType.CAMPAIGN_WAR;
 
 @Service
-public class RivalCampaignWarService extends RivalWisieComputerService {
+public class RivalCampaignWarService extends RivalWisieService {
 
     private final CampaignService campaignService;
 
@@ -88,7 +89,7 @@ public class RivalCampaignWarService extends RivalWisieComputerService {
 
     public Profile prepareComputerProfile(ProfileCampaign profileCampaign) {
         boolean isLastPhase = profileCampaign.getPhase() == profileCampaign.getCampaign().getPhases() - 1;
-        Profile computerProfile = prepareComputerProfile();
+        Profile computerProfile = TeamHelper.prepareComputerProfile();
         Set<WisieType> wisieTypes = new HashSet<>();
         while (wisieTypes.size() < (Math.max(5 - profileCampaign.getPhase(), isLastPhase ? 5 : 1))) {
             wisieTypes.add(WisieType.random());

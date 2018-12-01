@@ -54,19 +54,14 @@ public class PlayCommunication {
             if (model.isEmpty()) {
                 return;
             }
-            send(team.getProfileId(), model);
+            manager.send(team.getProfileId(), model);
             getContainer().cleanModelToSend(team.getProfileId());
         });
     }
 
     public void sendWithCurrentTime(Long profileId, Map<String, Object> model) {
         fillModelNow(model);
-        send(profileId, model);
-    }
-
-    public void send(Long profileId, Map<String, Object> model) {
-        ConnectionService connectionService = manager.getProfileConnectionService();
-        connectionService.send(profileId, model, Message.RIVAL_CONTENT);
+        manager.send(profileId, model);
     }
 
     public void sendModelFromBeginning(Long profileId) {

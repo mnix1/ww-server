@@ -3,20 +3,21 @@ package com.ww.controller.rival;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.dto.social.ClassificationDTO;
-import com.ww.model.dto.social.ClassificationPositionDTO;
 import com.ww.service.rival.global.RivalClassificationService;
 import com.ww.service.rival.init.RivalInitFriendService;
 import com.ww.service.rival.init.RivalInitRandomOpponentService;
+import com.ww.service.rival.init.RivalInitTrainingService;
 import com.ww.service.social.ProfileService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
+
+import static com.ww.helper.ModelHelper.putErrorCode;
 
 @RestController
 @RequestMapping(value = "/rival")
@@ -25,6 +26,7 @@ public class RivalController {
 
     private final RivalInitFriendService rivalInitFriendService;
     private final RivalInitRandomOpponentService rivalInitRandomOpponentService;
+    private final RivalInitTrainingService rivalInitTrainingService;
     private final RivalClassificationService rivalClassificationService;
     private final ProfileService profileService;
 
@@ -42,9 +44,16 @@ public class RivalController {
         if (!payload.containsKey("type") || !payload.containsKey("importance")) {
             throw new IllegalArgumentException();
         }
-        RivalType type = RivalType.valueOf((String) payload.get("type"));
-        RivalImportance importance = RivalImportance.valueOf((String) payload.get("importance"));
-        return rivalInitRandomOpponentService.start(type, importance, profileService.getProfileId());
+        try {
+            RivalType type = RivalType.valueOf((String) payload.get("type"));
+            RivalImportance importance = RivalImportance.valueOf((String) payload.get("importance"));
+            if (importance.isTraining()) {
+                return rivalInitTrainingService.start(type, profileService.getProfileId());
+            }
+            return rivalInitRandomOpponentService.start(type, importance, profileService.getProfileId());
+        } catch (Exception e) {
+            return putErrorCode(new HashMap<>());
+        }
     }
 
     @RequestMapping(value = "/cancelRandomOpponent", method = RequestMethod.POST)

@@ -51,7 +51,7 @@ public class RivalService {
     }
 
     public void addReward(PlayContainer container) {
-        if (container.isDraw() || container.isFriend()) {
+        if (container.isDraw() || container.isFriend() || container.isTraining()) {
             return;
         }
         Profile winner = container.getResult().getWinner();

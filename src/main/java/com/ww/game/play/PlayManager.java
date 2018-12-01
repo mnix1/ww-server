@@ -3,10 +3,12 @@ package com.ww.game.play;
 import com.ww.game.play.communication.PlayCommunication;
 import com.ww.game.play.container.PlayContainer;
 import com.ww.game.play.flow.PlayFlow;
+import com.ww.helper.JSONHelper;
 import com.ww.model.container.rival.*;
 import com.ww.model.entity.outside.rival.Rival;
 import com.ww.service.RivalService;
-import com.ww.service.social.ConnectionService;
+import com.ww.websocket.message.Message;
+import com.ww.websocket.message.MessageDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.scheduling.annotation.Async;
@@ -43,10 +45,6 @@ public abstract class PlayManager {
         return new RivalResult();
     }
 
-    public ConnectionService getProfileConnectionService() {
-        return service.getConnectionService();
-    }
-
     public void sendModelFromBeginning(Long profileId) {
         communication.sendModelFromBeginning(profileId);
     }
@@ -56,6 +54,10 @@ public abstract class PlayManager {
         synchronized (flow) {
             communication.processMessage(profileId, content);
         }
+    }
+
+    public void send(Long profileId, Map<String, Object> model) {
+        service.getConnectionService().sendMessage(profileId, new MessageDTO(Message.RIVAL_CONTENT, JSONHelper.toJSON(model)).toString());
     }
 
     public void dispose() {
@@ -70,4 +72,5 @@ public abstract class PlayManager {
                 ", rival=" + rival +
                 '}';
     }
+
 }

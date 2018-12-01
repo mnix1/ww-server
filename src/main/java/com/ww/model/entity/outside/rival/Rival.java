@@ -51,7 +51,7 @@ public class Rival {
         this.type = container.getInit().getType();
         this.importance = container.getInit().getImportance();
         this.creator = container.getInit().getCreatorProfile();
-        if (type != RivalType.CAMPAIGN_WAR && type != RivalType.CHALLENGE) {
+        if (type != RivalType.CAMPAIGN_WAR && type != RivalType.CHALLENGE && importance != RivalImportance.TRAINING) {
             this.opponent = container.getInit().getOpponentProfile();
         }
     }
