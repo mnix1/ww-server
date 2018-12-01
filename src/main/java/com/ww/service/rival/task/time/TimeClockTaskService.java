@@ -81,11 +81,11 @@ public class TimeClockTaskService {
         question.setDateContent(date);
         if (typeValue == TimeTaskType.ANALOG_CLOCK_ADD || typeValue == TimeTaskType.DIGITAL_CLOCK_ADD) {
             question.setTextContentPolish("Która godzina będzie na zegarze po dodaniu " + correctInterval + "?");
-            question.setTextContentEnglish("What is missing in the picture?");
+            question.setTextContentEnglish("What time it will be after adding " + correctInterval + "?");
         }
         if (typeValue == TimeTaskType.ANALOG_CLOCK_SUBTRACT || typeValue == TimeTaskType.DIGITAL_CLOCK_SUBTRACT) {
             question.setTextContentPolish("Która godzina będzie na zegarze po odjęciu " + correctInterval + "?");
-            question.setTextContentEnglish("What is missing in the picture?");
+            question.setTextContentEnglish("What time it will be after subtract " + correctInterval + "?");
         }
         return question;
     }
