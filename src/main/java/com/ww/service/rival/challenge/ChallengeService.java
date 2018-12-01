@@ -194,11 +194,12 @@ public class ChallengeService {
     }
 
     private void updatePoolResources(Challenge challenge) {
-        if (challenge.getType() == ChallengeType.GLOBAL) {
+        Resources costResources = challenge.getCostResources();
+        if (costResources.getEmpty() || challenge.getType() == ChallengeType.GLOBAL) {
             return;
         }
         Resources added = new Resources(0L);
-        if (challenge.getAccess() == ChallengeAccess.UNLOCK && challenge.getCostResources().multiply(10).highest() < challenge.getGainResources().highest()) {
+        if (challenge.getAccess() == ChallengeAccess.UNLOCK && challenge.getCostResources().multiply(10).highest() < challenge.getGainResources().highest()){
             added = challenge.getCostResources();
         } else if (challenge.getCostResources().multiply(5).highest() < challenge.getGainResources().highest()) {
             added = challenge.getCostResources();

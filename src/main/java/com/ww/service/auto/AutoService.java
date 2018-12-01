@@ -10,6 +10,7 @@ import com.ww.service.auto.command.AutoUpgradeWisiesService;
 import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.rival.init.RivalInitRandomOpponentService;
 import com.ww.service.social.ConnectionService;
+import com.ww.service.social.ProfileService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +24,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @AllArgsConstructor
 public class AutoService {
     private static Logger logger = LoggerFactory.getLogger(AutoService.class);
-    public static int MAX_ACTIVE_AUTO_MANAGERS = 0;
+    public static int MAX_ACTIVE_AUTO_MANAGERS = 100;
     public static final List<AutoManager> activeAutoManagers = new CopyOnWriteArrayList<>();
 
+    private final ProfileService profileService;
     private final AutoProfileService autoProfileService;
     private final AutoManageBooksService autoManageBooksService;
     private final AutoManageMailService autoManageMailService;
@@ -95,9 +97,11 @@ public class AutoService {
     }
 
     public void startRival(AutoManager manager) {
-        autoStartRivalService.start(manager);
+        manager.setProfile(profileService.getProfile(manager.getProfile().getId()));
+        boolean result = autoStartRivalService.start(manager);
+        if (!result) {
+            disposeManager(manager);
+        }
+
     }
-
-
-
 }

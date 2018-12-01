@@ -122,6 +122,14 @@ public class InitAutoService {
         autos.add(new Auto("Irys", encoder));
         autos.add(new Auto("edek sprzedawca", encoder));
         autos.add(new Auto("lelum polerum", encoder));
+        autos.add(new Auto("Tyson", encoder));
+        autos.add(new Auto("Klawisz", encoder));
+        autos.add(new Auto("Trudne Sprawy", encoder));
+        autos.add(new Auto("Czołowy", encoder));
+        autos.add(new Auto("Afera", encoder));
+        autos.add(new Auto("Barak", encoder));
+        autos.add(new Auto("Urgot", encoder));
+        autos.add(new Auto("Rekin", encoder));
         autoRepository.saveAll(autos);
     }
 

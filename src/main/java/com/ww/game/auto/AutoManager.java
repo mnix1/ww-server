@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 public class AutoManager {
     public static Logger logger = LoggerFactory.getLogger(AutoManager.class);
     private AutoService autoService;
+    @Setter
     private Profile profile;
     @Setter
     private AutoProfileConnection connection;

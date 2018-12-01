@@ -33,8 +33,8 @@ import static com.ww.helper.RandomHelper.randomElement;
 @Service
 @AllArgsConstructor
 public class ChallengeCreateService {
-    private static final List<Integer> DURATIONS = Arrays.asList(4, 8, 24, 48);
-    private static final List<Long> RESOURCE_COSTS = Arrays.asList(0L, 2L, 4L, 6L);
+    public static final List<Integer> DURATIONS = Arrays.asList(4, 8, 24, 48);
+    public static final List<Long> RESOURCE_COSTS = Arrays.asList(0L, 2L, 4L, 6L);
 
     private final ChallengeRepository challengeRepository;
     private final ChallengeProfileRepository challengeProfileRepository;
@@ -42,7 +42,7 @@ public class ChallengeCreateService {
     private final ProfileService profileService;
 
     @Transactional
-    public Map<String, Object> createPrivate(List<String> tags, ChallengeAccess access, ChallengeApproach approach, ResourceType resourceType, Long resourceCost, Integer duration) {
+    public Map<String, Object> createPrivate(List<String> tags, ChallengeAccess access, ChallengeApproach approach, ResourceType resourceType, Long resourceCost, Integer duration, Long profileId) {
         Map<String, Object> model = new HashMap<>();
         if (!DURATIONS.contains(duration) || !RESOURCE_COSTS.contains(resourceCost)) {
             return putErrorCode(model);
@@ -50,7 +50,7 @@ public class ChallengeCreateService {
         if (tags.isEmpty() && access == ChallengeAccess.INVITE) {
             return putCode(model, -2);
         }
-        Profile profile = profileService.getProfile();
+        Profile profile = profileService.getProfile(profileId);
         Challenge challenge = new Challenge(profile, ChallengeType.PRIVATE, access, approach, new Resources(resourceType, resourceCost), duration);
         challengeRepository.save(challenge);
         rivalChallengeService.preparePhase(challenge, 0, Category.random(), DifficultyLevel.random());

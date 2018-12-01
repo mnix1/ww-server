@@ -40,7 +40,7 @@ public class ChallengeController {
         ResourceType resourceType = ResourceType.valueOf((String) payload.get("resourceType"));
         Long resourceCost = ((Integer) payload.get("resourceCost")).longValue();
         Integer duration = (Integer) payload.get("duration");
-        return challengeCreateService.createPrivate(tags, access, approach, resourceType, resourceCost, duration);
+        return challengeCreateService.createPrivate(tags, access, approach, resourceType, resourceCost, duration, profileService.getProfileId());
     }
 
     @RequestMapping(value = "/response", method = RequestMethod.POST)
