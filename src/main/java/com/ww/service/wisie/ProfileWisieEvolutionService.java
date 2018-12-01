@@ -91,7 +91,7 @@ public class ProfileWisieEvolutionService {
         return putSuccessCode(model);
     }
 
-    public synchronized Map<String, Object> changeSkill(Long profileWisieId, String skill) {
+    public synchronized Map<String, Object> changeSkill(Long profileWisieId, Skill skill) {
         Map<String, Object> model = new HashMap<>();
         Profile profile = profileService.getProfile();
         Optional<ProfileWisie> optionalProfileWisie = profileWisieService.findByIdAndProfileId(profileWisieId, profile.getId());
@@ -103,7 +103,7 @@ public class ProfileWisieEvolutionService {
         if (!profile.hasEnoughResources(changeSkillCostResources)) {
             return putErrorCode(model);
         }
-        changeSkill(profileWisie, skill == null ? null : Skill.fromString(skill));
+        changeSkill(profileWisie, skill);
         profile.subtractResources(changeSkillCostResources);
         profileService.save(profile);
         profileWisieService.save(profileWisie);
@@ -130,29 +130,24 @@ public class ProfileWisieEvolutionService {
                 hobbies.remove(hobbyList.get(0));
             }
         }
+        Category newHobby = Category.next(hobby);
         boolean added = false;
         while (!added) {
-            Category newHobby = Category.random();
-            if (newHobby == hobby) {
+            if (hobby == newHobby) {
+                newHobby = Category.random();
                 continue;
             }
             added = hobbies.add(newHobby);
+            newHobby = Category.next(newHobby);
         }
     }
 
     private void changeSkill(ProfileWisie profileWisie, Skill skill) {
         Set<Skill> skills = profileWisie.getSkills();
-        List<Skill> skillList = new ArrayList<>(skills);
-        skills.remove(skillList.get(0));
-        boolean added = false;
-        while (!added) {
-            Skill newSkill = Skill.random();
-            if (newSkill == skill) {
-                continue;
-            }
-            added = skills.add(newSkill);
+        if (!skills.contains(skill)) {
+            return;
         }
+        skills.remove(skill);
+        skills.add(Skill.next(skill));
     }
-
-
 }

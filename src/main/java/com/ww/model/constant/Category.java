@@ -25,6 +25,19 @@ public enum Category {
                 .collect(Collectors.toList());
     }
 
+    public static Category next(Category category) {
+        if (category == null) {
+            return random();
+        }
+        List<Category> categories = list();
+        for (int i = 0; i < categories.size(); i++) {
+            if (category == categories.get(i)) {
+                return categories.get((i + 1) % categories.size());
+            }
+        }
+        return category;
+    }
+
     public static Category random() {
         return randomElement(list());
     }

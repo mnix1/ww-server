@@ -1,5 +1,6 @@
 package com.ww.controller;
 
+import com.ww.model.constant.Skill;
 import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.dto.wisie.ProfileWisieDTO;
@@ -12,9 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.ww.helper.ModelHelper.putErrorCode;
 
 @RestController
 @RequestMapping(value = "/wisie")
@@ -71,9 +75,14 @@ public class WisieController {
         if (!payload.containsKey("id") || !payload.containsKey("skill")) {
             throw new IllegalArgumentException();
         }
-        String skill = (String) payload.get("skill");
-        Long profileWisieId = ((Integer) payload.get("id")).longValue();
-        return profileWisieEvolutionService.changeSkill(profileWisieId, skill);
+        try {
+            Skill skill = Skill.valueOf((String) payload.get("skill"));
+            Long profileWisieId = ((Integer) payload.get("id")).longValue();
+            return profileWisieEvolutionService.changeSkill(profileWisieId, skill);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return putErrorCode(new HashMap<String, Object>());
     }
 
 }

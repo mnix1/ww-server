@@ -17,6 +17,16 @@ public enum Skill {
     CHANGE_TASK,
     PIZZA;
 
+    public static Skill next(Skill skill) {
+        Skill[] skills = values();
+        for (int i = 0; i < skills.length; i++) {
+            if (skill == skills[i]) {
+                return skills[(i + 1) % skills.length];
+            }
+        }
+        return skill;
+    }
+
     public static List<Skill> alwaysAvailableSkills() {
         return Arrays.asList(HINT, WATER_PISTOL, LIFEBUOY);
     }
