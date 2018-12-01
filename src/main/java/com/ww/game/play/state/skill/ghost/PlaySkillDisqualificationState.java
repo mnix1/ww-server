@@ -16,7 +16,6 @@ import java.util.Map;
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelActiveMemberAddOns;
 
 public class PlaySkillDisqualificationState extends PlaySkillState {
-    private boolean scareSuccess;
 
     public PlaySkillDisqualificationState(PlaySkillFlow flow) {
         super(flow);
@@ -34,31 +33,5 @@ public class PlaySkillDisqualificationState extends PlaySkillState {
         Map<String, Object> model = super.prepareModel(warTeam, team, opponentTeam);
         fillModelActiveMemberAddOns(model, warTeam, (WarTeam) team, (WarTeam) opponentTeam);
         return model;
-    }
-
-    @Override
-    public void execute() {
-        init();
-        super.execute();
-    }
-
-    private void init() {
-        scareSuccess = (boolean) params.get("scareSuccess");
-    }
-
-
-    @Override
-    protected double prepareInterval() {
-        if (scareSuccess) {
-            return 3;
-        }
-        return 0;
-    }
-
-    @Override
-    public void after() {
-        if (scareSuccess) {
-            ((PlayWarFlow) manager.getPlayManager().getFlow()).wisiesWontAnswer();
-        }
     }
 }

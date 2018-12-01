@@ -14,12 +14,12 @@ public class PlaySkillWasNotScaredState extends PlaySkillOpponentState {
 
     @Override
     protected double minInterval() {
-        return 2 - getOpponentWisie().getReflexF1() - getOpponentWisie().getConcentrationF1();
+        return 4 - 2 * getOpponentWisie().getConfidenceF1() - 2 * getOpponentWisie().getConcentrationF1();
     }
 
     @Override
     protected double maxInterval() {
-        return 3 - getOpponentWisie().getReflexF1() - 2 * getOpponentWisie().getConcentrationF1();
+        return 6 - 3 * getOpponentWisie().getConfidenceF1() - 3 * getOpponentWisie().getConcentrationF1();
     }
 
     @Override

@@ -12,9 +12,6 @@ import static com.ww.helper.RandomHelper.randomDouble;
 
 public class PlaySkillRemovingGhostState extends PlaySkillState {
     private boolean scareSuccess;
-    private double value;
-    private boolean disqualification;
-    private double noDisqualificationChance;
 
     public PlaySkillRemovingGhostState(PlaySkillFlow flow) {
         super(flow);
@@ -33,13 +30,6 @@ public class PlaySkillRemovingGhostState extends PlaySkillState {
 
     private void init() {
         scareSuccess = (boolean) params.get("scareSuccess");
-        value = (getWisie().getConfidenceF1() + getWisie().getCunningF1() + getWisie().getSpeedF1()) / 3;
-        if (scareSuccess) {
-            noDisqualificationChance = value + 0.25;
-        } else {
-            noDisqualificationChance = value - 0.25;
-        }
-        disqualification = noDisqualificationChance <= randomDouble();
     }
 
     @Override
@@ -54,12 +44,10 @@ public class PlaySkillRemovingGhostState extends PlaySkillState {
 
     @Override
     public void after() {
-        if (disqualification) {
-            Map<String, Object> params = new HashMap<>();
-            params.put("scareSuccess", scareSuccess);
-            flow.run("DISQUALIFICATION", params);
-        } else {
+        if (scareSuccess) {
             flow.run("NO_DISQUALIFICATION");
+        } else {
+            flow.run("DISQUALIFICATION");
         }
     }
 }

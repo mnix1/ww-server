@@ -18,9 +18,7 @@ import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelSkills;
 import static com.ww.helper.RandomHelper.randomDouble;
 
 public class PlaySkillScaringState extends PlaySkillOpponentState {
-    private double skillValue;
     private double value;
-    private double skillOpponentValue;
     private double opponentValue;
     private boolean success;
 
@@ -56,10 +54,8 @@ public class PlaySkillScaringState extends PlaySkillOpponentState {
     }
 
     private void init() {
-        skillValue = getWisie().getIntuitionF1() + getWisie().getConfidenceF1() + getWisie().getCunningF1();
-        skillOpponentValue = getOpponentWisie().getIntuitionF1() + getOpponentWisie().getConfidenceF1() + getOpponentWisie().getCunningF1();
-        value = randomDouble(skillValue, 2 * skillValue) + 0.5 * skillValue;
-        opponentValue = randomDouble(skillOpponentValue, 2 * skillOpponentValue);
+        value = getWisie().getValue();
+        opponentValue = getOpponentWisie().getValue();
         success = value >= opponentValue;
     }
 
