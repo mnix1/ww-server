@@ -13,6 +13,7 @@ import com.ww.model.container.rival.init.RivalChallengeInit;
 import com.ww.model.entity.outside.rival.challenge.Challenge;
 import com.ww.model.entity.outside.rival.challenge.ChallengePhase;
 import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
+import com.ww.model.entity.outside.rival.season.ProfileSeason;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ChallengePhaseWisie;
 import com.ww.game.play.PlayChallengeManager;
@@ -63,7 +64,7 @@ public class RivalChallengeService extends RivalWarService {
     }
 
     @Override
-    public void addRewardFromWin(Profile profile) {
+    public void addRewardFromWin(Profile winner, ProfileSeason winnerSeason) {
     }
 
     public synchronized ChallengePhase preparePhase(Challenge challenge, int taskIndex, Category category, DifficultyLevel difficultyLevel) {

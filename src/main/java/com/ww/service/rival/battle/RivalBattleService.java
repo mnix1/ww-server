@@ -1,6 +1,7 @@
 package com.ww.service.rival.battle;
 
 import com.ww.model.container.Resources;
+import com.ww.model.entity.outside.rival.season.ProfileSeason;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.RivalService;
 import com.ww.service.rival.global.RivalGlobalService;
@@ -21,7 +22,7 @@ public class RivalBattleService extends RivalService {
     }
 
     @Override
-    public void addRewardFromWin(Profile profile) {
-        getRewardService().addSendRewardFromRivalWin(profile, new Resources(1L));
+    public void addRewardFromWin(Profile winner, ProfileSeason winnerSeason) {
+        getRewardService().addSendRewardFromRivalWin(winner, winnerSeason, new Resources(1L));
     }
 }

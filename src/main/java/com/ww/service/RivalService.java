@@ -8,6 +8,7 @@ import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.container.rival.RivalTeam;
 import com.ww.model.dto.rival.task.TaskDTO;
+import com.ww.model.entity.outside.rival.season.ProfileSeason;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.rival.global.RivalGlobalService;
@@ -39,7 +40,7 @@ public class RivalService {
     private final RivalGlobalService rivalGlobalService;
     private final RivalProfileSeasonService rivalProfileSeasonService;
 
-    public void addRewardFromWin(Profile winner) {
+    public void addRewardFromWin(Profile winner, ProfileSeason winnerSeason) {
     }
 
     public void disposeManager(PlayManager manager) {
@@ -47,9 +48,12 @@ public class RivalService {
             rivalGlobalService.remove(profileContainer.getProfileId());
         }
         PlayContainer container = manager.getContainer();
-        if (container.getResult().getDraw() != null) {
-            if (!container.getResult().getDraw() && container.getInit().getImportance() != RivalImportance.FRIEND) {
-                addRewardFromWin(container.getResult().getWinner());
+        Boolean draw = container.getResult().getDraw();
+        if (draw != null) {
+            RivalImportance importance = container.getInit().getImportance();
+            if (!draw && importance != RivalImportance.FRIEND) {
+                Profile winner = container.getResult().getWinner();
+                addRewardFromWin(winner, container.isRanking() ? container.getInit().getProfileSeason(winner.getId()) : null);
             }
             updateSeason(manager);
         }

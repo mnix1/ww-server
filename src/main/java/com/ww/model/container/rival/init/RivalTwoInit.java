@@ -46,7 +46,7 @@ public class RivalTwoInit implements RivalInit {
                 '}';
     }
 
-    public ProfileSeason getProfileSeasons(Long profileId) {
+    public ProfileSeason getProfileSeason(Long profileId) {
         if (creatorProfile.getId().equals(profileId)) {
             return creatorProfileSeason;
         }

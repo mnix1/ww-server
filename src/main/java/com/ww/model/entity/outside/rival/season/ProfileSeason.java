@@ -26,6 +26,7 @@ public class ProfileSeason {
     protected Long previousElo;
     protected Long highestElo;
     protected Grade grade;
+    protected Grade previousGrade;
     protected Instant updateDate;
     protected Boolean rewarded = false;
     @ManyToOne
@@ -53,6 +54,7 @@ public class ProfileSeason {
         this.profile = previousProfileSeason.getProfile();
         this.season = season;
         this.grade = findGrade(elo, seasonGrades);
+        this.previousGrade = this.grade;
     }
 
     public void updateElo(Long change, List<SeasonGrade> seasonGrades) {
@@ -61,6 +63,7 @@ public class ProfileSeason {
         highestElo = Math.max(elo, previousElo);
         SeasonGrade seasonGrade = findSeasonGrade(highestElo, seasonGrades);
         elo = Math.max(elo, seasonGrade.getRangeFrom());
+        previousGrade = grade;
         grade = seasonGrade.getGrade();
     }
 

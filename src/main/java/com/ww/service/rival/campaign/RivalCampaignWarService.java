@@ -11,6 +11,7 @@ import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.model.container.rival.war.WarWisie;
 import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
+import com.ww.model.entity.outside.rival.season.ProfileSeason;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileCampaignWisie;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
@@ -85,7 +86,7 @@ public class RivalCampaignWarService extends RivalWarService {
     }
 
     @Override
-    public void addRewardFromWin(Profile winner) {
+    public void addRewardFromWin(Profile winner, ProfileSeason winnerSeason) {
     }
 
     public Optional<RivalCampaignWarInit> init() {

@@ -32,8 +32,8 @@ public class PlayModelFiller {
     public static void fillModelSeasons(Map<String, Object> model, PlayContainer container, RivalTeam team, RivalTeam opponentTeam) {
         if (container.isRanking()) {
             RivalTwoInit init = container.getInit();
-            model.put("profileSeason", new RivalProfileSeasonDTO(init.getProfileSeasons(team.getProfileId())));
-            model.put("opponentSeason", new RivalProfileSeasonDTO(init.getProfileSeasons(opponentTeam.getProfileId())));
+            model.put("profileSeason", new RivalProfileSeasonDTO(init.getProfileSeason(team.getProfileId())));
+            model.put("opponentSeason", new RivalProfileSeasonDTO(init.getProfileSeason(opponentTeam.getProfileId())));
         }
     }
 

@@ -5,6 +5,7 @@ import com.ww.model.constant.Language;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.container.Resources;
+import com.ww.model.entity.outside.rival.season.ProfileSeason;
 import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
@@ -40,8 +41,8 @@ public class RivalWarService extends RivalService {
     }
 
     @Override
-    public void addRewardFromWin(Profile profile) {
-        getRewardService().addSendRewardFromRivalWin(profile, new Resources(2L));
+    public void addRewardFromWin(Profile winner, ProfileSeason winnerSeason) {
+        getRewardService().addSendRewardFromRivalWin(winner, winnerSeason, new Resources(2L));
     }
 
     public List<ProfileWisie> getProfileWisies(Profile profile) {

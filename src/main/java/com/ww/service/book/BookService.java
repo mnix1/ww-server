@@ -4,10 +4,10 @@ import com.ww.model.constant.book.BookType;
 import com.ww.model.entity.outside.book.Book;
 import com.ww.repository.outside.book.BookRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.ww.helper.RandomHelper.randomElement;
 
@@ -19,8 +19,8 @@ public class BookService {
 
     private final BookRepository bookRepository;
 
-    public Book findRandomBook() {
-        return randomElement(bookRepository.findAll());
+    public Book findBook(int minLevel) {
+        return randomElement(bookRepository.findAll().stream().filter(book -> book.getLevel() >= minLevel).collect(Collectors.toList()));
     }
 
     public List<Book> findAll() {

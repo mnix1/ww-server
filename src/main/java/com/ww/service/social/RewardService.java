@@ -3,6 +3,7 @@ package com.ww.service.social;
 import com.ww.model.container.Resources;
 import com.ww.model.container.Reward;
 import com.ww.model.entity.outside.book.Book;
+import com.ww.model.entity.outside.rival.season.ProfileSeason;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.book.BookService;
 import com.ww.service.book.ProfileBookService;
@@ -21,16 +22,16 @@ public class RewardService {
     private final BookService bookService;
     private final ProfileBookService profileBookService;
 
-    public void addSendRewardFromRivalWin(Profile winner, Resources resources) {
+    public void addSendRewardFromRivalWin(Profile winner, ProfileSeason winnerSeason, Resources resources) {
         Reward reward = new Reward();
         reward.setResources(resources);
         Profile profile = profileService.getProfile(winner.getId());
         profile.addResources(resources);
         profileService.save(profile);
-//        if (profileBookService.isProfileBookShelfEmpty(profile.getId())) {
-//            Book book = giveBook(profile);
-//            reward.setBookType(book.getType());
-//        }
+        if (winnerSeason != null && winnerSeason.getPreviousGrade() != winnerSeason.getGrade()) {
+            Book book = giveBook(profile);
+            reward.setBookType(book.getType());
+        }
         Map<String, Object> model = new HashMap<>();
         reward.writeToMap(model);
         model.put("resources", profile.getResources());
@@ -38,7 +39,7 @@ public class RewardService {
     }
 
     public Book giveBook(Profile profile) {
-        Book book = bookService.findRandomBook();
+        Book book = bookService.findBook(4);
         profileBookService.giveBook(profile, book);
         return book;
     }
