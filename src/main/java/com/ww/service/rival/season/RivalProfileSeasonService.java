@@ -122,7 +122,7 @@ public class RivalProfileSeasonService {
         }
         mailService.save(mails);
         save(profileSeasons);
-        mailService.sendNewMailMessage(mails);
+        mailService.sendNewMailMessages(mails);
     }
 
     @Transactional

@@ -1,14 +1,12 @@
 package com.ww.game.auto.communication;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.game.auto.AutoManager;
 import com.ww.model.constant.rival.RivalStatus;
+import com.ww.model.container.MapModel;
 import com.ww.websocket.message.Message;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Async;
 
 import java.util.Map;
 
@@ -25,12 +23,7 @@ public class AutoCommunication {
 
     public void send(String id, Map<String, Object> params) {
         params.put("id", id);
-        try {
-            String msg = new ObjectMapper().writeValueAsString(params);
-            manager.getConnection().handleMessage(msg);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        manager.getConnection().handleMessage(new MapModel(params).toString());
     }
 
     public void handleMessage(Map<String, Object> model) {

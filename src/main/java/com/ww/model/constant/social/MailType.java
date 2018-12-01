@@ -4,5 +4,6 @@ public enum MailType {
     CUSTOM,
     CHALLENGE_ENDED,
     SEASON_ENDED,
+    NEW_LEVEL,
     ;
 }

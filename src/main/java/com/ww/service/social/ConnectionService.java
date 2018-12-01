@@ -1,8 +1,7 @@
 package com.ww.service.social;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.game.auto.AutoManager;
+import com.ww.helper.JSONHelper;
 import com.ww.model.constant.social.FriendStatus;
 import com.ww.model.container.AutoProfileConnection;
 import com.ww.model.container.Connection;
@@ -96,12 +95,7 @@ public class ConnectionService {
     }
 
     public void send(Long profileId, Map<String, Object> model, Message message) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            sendMessage(profileId, new MessageDTO(message, objectMapper.writeValueAsString(model)).toString());
-        } catch (JsonProcessingException e) {
-            logger.error("Error when sending message: " + e.toString());
-        }
+        sendMessage(profileId, new MessageDTO(message, JSONHelper.toJSON(model)).toString());
     }
 
     public void sendFriendConnectionChanged(String profileTag, Message message) {

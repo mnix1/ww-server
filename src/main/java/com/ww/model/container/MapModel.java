@@ -1,5 +1,7 @@
 package com.ww.model.container;
 
+import com.ww.helper.JSONHelper;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +17,10 @@ public class MapModel {
         put(key, value);
     }
 
+    public MapModel(Map<String, Object> model) {
+        this.model = model;
+    }
+
     public MapModel put(String key, Object value) {
         model.put(key, value);
         return this;
@@ -24,4 +30,8 @@ public class MapModel {
         return model;
     }
 
+    @Override
+    public String toString() {
+        return JSONHelper.toJSON(model);
+    }
 }

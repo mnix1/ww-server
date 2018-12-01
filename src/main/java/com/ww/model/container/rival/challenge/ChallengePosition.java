@@ -1,17 +1,11 @@
 package com.ww.model.container.rival.challenge;
 
-import com.ww.helper.JsonHelper;
 import com.ww.model.constant.rival.challenge.ChallengeProfileResponse;
-import com.ww.model.dto.social.BaseProfileDTO;
+import com.ww.model.container.MapModel;
 import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
 import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 import lombok.Setter;
-import org.codehaus.jackson.map.ObjectMapper;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Getter
 @Setter
@@ -32,16 +26,12 @@ public class ChallengePosition {
         this.interval = challengeProfile.responseInterval();
     }
 
-    public String toJson() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("id", challengeProfile.getChallenge().getId());
-        map.put("position", position);
-        map.put("score", score);
-        map.put("interval", interval);
-        try {
-            return new ObjectMapper().writeValueAsString(map);
-        } catch (IOException e) {
-            return "";
-        }
+    @Override
+    public String toString() {
+        return new MapModel("id", challengeProfile.getChallenge().getId())
+                .put("position", position)
+                .put("score", score)
+                .put("interval", interval)
+                .toString();
     }
 }

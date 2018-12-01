@@ -1,8 +1,6 @@
 package com.ww.game.play.container;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ww.model.constant.rival.RivalImportance;
+import com.ww.helper.JSONHelper;
 import com.ww.model.container.rival.*;
 import com.ww.model.container.rival.init.RivalTwoInit;
 import com.ww.model.entity.outside.social.Profile;
@@ -82,11 +80,7 @@ public abstract class PlayContainer {
             actualProfileModel.put(key, model.get(key));
             newProfileModel.put(key, model.get(key));
         }
-        try {
-            allModelMap.get(profileId).add(new ObjectMapper().writeValueAsString(model));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        allModelMap.get(profileId).add(JSONHelper.toJSON(model));
     }
 
     public Map<String, Object> modelToSend(Long profileId) {
@@ -98,11 +92,6 @@ public abstract class PlayContainer {
     }
 
     public String modelsToJSON() {
-        try {
-            return new ObjectMapper().writeValueAsString(allModelMap);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return JSONHelper.toJSON(allModelMap);
     }
 }

@@ -1,12 +1,10 @@
 package com.ww.service.rival.init;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.RivalType;
 import com.ww.model.constant.social.FriendStatus;
 import com.ww.model.container.Connection;
-import com.ww.model.container.ProfileConnection;
+import com.ww.model.container.MapModel;
 import com.ww.model.container.rival.init.RivalTwoInit;
 import com.ww.model.dto.social.FriendDTOExtended;
 import com.ww.model.entity.outside.social.Profile;
@@ -116,15 +114,7 @@ public class RivalInitFriendService {
     private void sendInvite(RivalTwoInit rivalInitContainer) {
         connectionService.findByProfileId(rivalInitContainer.getOpponentProfile().getId()).ifPresent(profileConnection -> {
             FriendDTOExtended friendDTO = new FriendDTOExtended(rivalInitContainer.getCreatorProfile(), FriendStatus.ACCEPTED, true);
-            Map<String, Object> model = new HashMap<>();
-            model.put("friend", friendDTO);
-            model.put("type", rivalInitContainer.getType().name());
-            String content = null;
-            try {
-                content = new ObjectMapper().writeValueAsString(model);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
+            String content = new MapModel("friend", friendDTO).put("type", rivalInitContainer.getType().name()).toString();
             profileConnection.sendMessage(new MessageDTO(Message.RIVAL_INVITE, content).toString());
         });
     }

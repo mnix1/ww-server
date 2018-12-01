@@ -1,8 +1,8 @@
 package com.ww.service.rival.task.memory;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.ww.helper.JSONHelper;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.task.type.MemoryTaskType;
 import com.ww.model.container.rival.task.Memory;
@@ -13,8 +13,6 @@ import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.rival.task.TaskType;
 import com.ww.repository.inside.category.ColorRepository;
 import com.ww.repository.inside.category.MemoryShapeRepository;
-import com.ww.service.rival.task.TaskRendererService;
-import com.ww.service.rival.task.TaskService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -58,17 +56,11 @@ public class MemoryTaskService {
     }
 
     private String prepareAnimation(List<Memory> objects) {
-        ObjectMapper mapper = new ObjectMapper();
-        ArrayNode objectsNode = mapper.createArrayNode();
+        ArrayNode objectsNode = new ObjectMapper().createArrayNode();
         objects.forEach(object -> {
             object.writeToObjectNode(objectsNode.addObject());
         });
-        try {
-            return mapper.writeValueAsString(objectsNode);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return JSONHelper.toJSON(objectsNode);
     }
 
     private Question prepareQuestion(TaskType type, DifficultyLevel difficultyLevel, MemoryTaskType typeValue, Memory correctObject) {

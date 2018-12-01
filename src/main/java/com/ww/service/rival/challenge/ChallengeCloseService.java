@@ -93,7 +93,7 @@ public class ChallengeCloseService {
         challenge.setGainResources(challengeSummaryGain);
         mailService.save(mails);
         challengeProfileRepository.saveAll(rewardedChallengeProfiles);
-        mailService.sendNewMailMessage(mails);
+        mailService.sendNewMailMessages(mails);
     }
 
     public List<ChallengePosition> preparePositions(Challenge challenge) {

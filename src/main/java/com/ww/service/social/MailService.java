@@ -1,6 +1,9 @@
 package com.ww.service.social;
 
+import com.ww.helper.JSONHelper;
 import com.ww.model.constant.social.MailType;
+import com.ww.model.container.MapModel;
+import com.ww.model.container.Resources;
 import com.ww.model.container.rival.challenge.ChallengePosition;
 import com.ww.model.dto.social.ProfileMailDTO;
 import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
@@ -42,10 +45,14 @@ public class MailService {
         profileMailRepository.saveAll(mails);
     }
 
-    public void sendNewMailMessage(List<ProfileMail> mails) {
+    public void sendNewMailMessages(List<ProfileMail> mails) {
         for (ProfileMail mail : mails) {
-            connectionService.sendMessage(mail.getProfile().getId(), new MessageDTO(NEW_MAIL, "").toString());
+            sendNewMailMessage(mail);
         }
+    }
+
+    public void sendNewMailMessage(ProfileMail mail) {
+        connectionService.sendMessage(mail.getProfile().getId(), new MessageDTO(NEW_MAIL, "").toString());
     }
 
     @Transactional
@@ -97,22 +104,23 @@ public class MailService {
         return putSuccessCode(model);
     }
 
+    public ProfileMail prepareNewLevelMail(Profile profile, Long level) {
+        Resources resources = new Resources(level * 2, level, level);
+        return new ProfileMail(profile, MailType.NEW_LEVEL, resources, new MapModel("level", level).toString());
+    }
+
     public ProfileMail prepareChallengeResultsMail(ChallengePosition challengePosition) {
         ChallengeProfile challengeProfile = challengePosition.getChallengeProfile();
         if (challengeProfile.getGainResources().getEmpty()) {
-            return new ProfileMail(challengeProfile.getProfile(), MailType.CHALLENGE_ENDED, challengePosition.toJson());
+            return new ProfileMail(challengeProfile.getProfile(), MailType.CHALLENGE_ENDED, challengePosition.toString());
         }
-        return new ProfileMail(challengeProfile.getProfile(), MailType.CHALLENGE_ENDED, challengeProfile.getGainResources(), challengePosition.toJson());
+        return new ProfileMail(challengeProfile.getProfile(), MailType.CHALLENGE_ENDED, challengeProfile.getGainResources(), challengePosition.toString());
     }
 
     public ProfileMail prepareSeasonResultsMail(ProfileSeason profileSeason, SeasonGrade seasonGrade) {
         Map<String, Object> model = seasonGrade.toMap();
         model.putAll(profileSeason.toMap());
-        String content = "";
-        try {
-            content = new ObjectMapper().writeValueAsString(model);
-        } catch (IOException e) {
-        }
+        String content = JSONHelper.toJSON(model);
         if (seasonGrade.getGainResources().getEmpty()) {
             return new ProfileMail(profileSeason.getProfile(), MailType.SEASON_ENDED, content);
         }

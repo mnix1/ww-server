@@ -2,18 +2,22 @@ package com.ww.service.social;
 
 import com.ww.model.dto.social.ExperienceDTO;
 import com.ww.model.entity.outside.social.Profile;
+import com.ww.model.entity.outside.social.ProfileMail;
 import com.ww.websocket.message.Message;
 import com.ww.websocket.message.MessageDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class ExperienceService {
     private final ConnectionService connectionService;
     private final ProfileService profileService;
+    private final MailService mailService;
 
     @Transactional
     public void add(Long profileId, long experienceGain) {
@@ -30,6 +34,16 @@ public class ExperienceService {
         profile.setExperience(newProfileExperience);
         profileService.save(profile);
         connectionService.sendMessage(profileId, new MessageDTO(Message.EXPERIENCE, new ExperienceDTO(profile, experienceGain, levelGain).toString()).toString());
+        sendNewLevelMail(profile, levelGain);
+    }
+
+    public void sendNewLevelMail(Profile profile, long levelGain) {
+        List<ProfileMail> mails = new ArrayList<>();
+        for (long i = levelGain; i > 0; i--) {
+            mails.add(mailService.prepareNewLevelMail(profile, profile.getLevel() - i + 1));
+        }
+        mailService.save(mails);
+        mailService.sendNewMailMessages(mails);
     }
 
     private long nextLevelExperience(Long level) {
