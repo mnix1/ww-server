@@ -71,7 +71,7 @@ public class PractiseService {
         Map<String, Object> model = new HashMap<>();
         model.put("correctAnswerId", correctAnswer.getId());
         model.put("answerInterval", practise.inProgressInterval());
-        experienceService.add(profileService.getProfileId(), result ? ExperienceSource.PRACTISE_WIN : ExperienceSource.PRACTISE_LOST);
+        experienceService.add(profileService.getProfileId(), result ? ExperienceSource.PRACTISE_WIN.getGain() : ExperienceSource.PRACTISE_LOST.getGain());
         return model;
     }
 

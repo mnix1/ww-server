@@ -12,6 +12,6 @@ public class PlayUpdateEloCommand extends PlayCommand {
 
     @Override
     public void execute() {
-        manager.updateProfilesElo();
+        manager.getService().updateProfilesElo(manager.getContainer());
     }
 }

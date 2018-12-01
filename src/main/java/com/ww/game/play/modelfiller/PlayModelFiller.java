@@ -15,7 +15,7 @@ public class PlayModelFiller {
         model.put("status", status);
     }
 
-    public static void fillModelNow(Map<String, Object> model){
+    public static void fillModelNow(Map<String, Object> model) {
         model.put("now", Instant.now().toEpochMilli());
     }
 
@@ -30,11 +30,9 @@ public class PlayModelFiller {
     }
 
     public static void fillModelSeasons(Map<String, Object> model, PlayContainer container, RivalTeam team, RivalTeam opponentTeam) {
-        if (container.isRanking()) {
-            RivalTwoInit init = container.getInit();
-            model.put("profileSeason", new RivalProfileSeasonDTO(init.getProfileSeason(team.getProfileId())));
-            model.put("opponentSeason", new RivalProfileSeasonDTO(init.getProfileSeason(opponentTeam.getProfileId())));
-        }
+        RivalTwoInit init = container.getInit();
+        model.put("profileSeason", new RivalProfileSeasonDTO(init.getProfileSeason(team.getProfileId())));
+        model.put("opponentSeason", new RivalProfileSeasonDTO(init.getProfileSeason(opponentTeam.getProfileId())));
     }
 
     public static void fillModelNextTimeout(Map<String, Object> model, PlayContainer container) {

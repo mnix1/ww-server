@@ -1,71 +1,50 @@
 package com.ww.service.rival.war;
 
-import com.ww.model.constant.Category;
-import com.ww.model.constant.Language;
-import com.ww.model.constant.rival.DifficultyLevel;
-import com.ww.model.constant.wisie.WisorType;
+import com.ww.game.play.container.PlayContainer;
+import com.ww.model.constant.social.ExperienceSource;
 import com.ww.model.container.Resources;
+import com.ww.model.container.rival.RivalResult;
 import com.ww.model.entity.outside.rival.season.ProfileSeason;
-import com.ww.model.entity.outside.rival.task.Question;
 import com.ww.model.entity.outside.social.Profile;
-import com.ww.model.entity.outside.wisie.ProfileWisie;
-import com.ww.service.RivalService;
+import com.ww.service.rival.RivalWisieService;
 import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.rival.season.RivalProfileSeasonService;
-import com.ww.service.rival.season.RivalSeasonService;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.rival.task.TaskService;
 import com.ww.service.social.ConnectionService;
-import com.ww.service.social.ProfileService;
+import com.ww.service.social.ExperienceService;
 import com.ww.service.social.RewardService;
 import com.ww.service.wisie.ProfileWisieService;
-import lombok.Getter;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
-import static com.ww.helper.TeamHelper.BOT_PROFILE_ID;
-
 @Service
-@Getter
-public class RivalWarService extends RivalService {
+public class RivalWarService extends RivalWisieService {
 
-    private final ProfileWisieService profileWisieService;
-    private final TaskService taskService;
+    private final RewardService rewardService;
+    private final ExperienceService experienceService;
 
-    public RivalWarService(ConnectionService connectionService, TaskGenerateService taskGenerateService, TaskRendererService taskRendererService, RewardService rewardService, RivalSeasonService rivalSeasonService, ProfileService profileService, RivalGlobalService rivalGlobalService, RivalProfileSeasonService rivalProfileSeasonService, ProfileWisieService profileWisieService, TaskService taskService) {
-        super(connectionService, taskGenerateService, taskRendererService, rewardService, rivalSeasonService, profileService, rivalGlobalService, rivalProfileSeasonService);
-        this.profileWisieService = profileWisieService;
-        this.taskService = taskService;
+    public RivalWarService(ConnectionService connectionService, TaskGenerateService taskGenerateService, TaskRendererService taskRendererService, RivalGlobalService rivalGlobalService, RivalProfileSeasonService rivalProfileSeasonService, ProfileWisieService profileWisieService, TaskService taskService, RewardService rewardService, ExperienceService experienceService) {
+        super(connectionService, taskGenerateService, taskRendererService, rivalGlobalService, rivalProfileSeasonService, profileWisieService, taskService);
+        this.rewardService = rewardService;
+        this.experienceService = experienceService;
     }
 
     @Override
-    public void addRewardFromWin(Profile winner, ProfileSeason winnerSeason) {
-        getRewardService().addSendRewardFromRivalWin(winner, winnerSeason, new Resources(2L));
-    }
-
-    public List<ProfileWisie> getProfileWisies(Profile profile) {
-        return profileWisieService.findAllInTeam(profile.getId());
+    public void addReward(Profile winner, ProfileSeason winnerSeason) {
+        rewardService.addSendRewardFromRivalWin(winner, winnerSeason, new Resources(2L));
     }
 
     @Override
-    public Question prepareQuestion(Category category, DifficultyLevel difficultyLevel, Language language) {
-        Question question = super.prepareQuestion(category, difficultyLevel, language);
-        initTaskWisdomAttributes(question);
-        return question;
-    }
-
-    public void initTaskWisdomAttributes(Question question) {
-        taskService.initTaskWisdomAttributes(question);
-    }
-
-    public Profile prepareComputerProfile() {
-        Profile computerProfile = new Profile();
-        computerProfile.setId(BOT_PROFILE_ID);
-        computerProfile.setName("");
-        computerProfile.setWisorType(WisorType.random());
-        computerProfile.setTag("0");
-        return computerProfile;
+    public void addExperience(PlayContainer container) {
+        RivalResult result = container.getResult();
+        if (result.getDraw()) {
+            experienceService.add(container.getInit().getCreatorProfile().getId(), ExperienceSource.WAR_LOST.getGain());
+            experienceService.add(container.getInit().getCreatorProfile().getId(), ExperienceSource.WAR_LOST.getGain());
+        } else {
+            Long winnerId = result.getWinner().getId();
+            experienceService.add(winnerId, ExperienceSource.WAR_WIN.getGain());
+            experienceService.add(container.getTeams().opponent(winnerId).getProfileId(), ExperienceSource.WAR_LOST.getGain());
+        }
     }
 }

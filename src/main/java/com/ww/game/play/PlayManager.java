@@ -51,10 +51,6 @@ public abstract class PlayManager {
         communication.sendModelFromBeginning(profileId);
     }
 
-    public void updateProfilesElo() {
-        service.updateProfilesElo(container);
-    }
-
     @Async
     public void processMessage(Long profileId, Map<String, Object> content) {
         synchronized (flow) {

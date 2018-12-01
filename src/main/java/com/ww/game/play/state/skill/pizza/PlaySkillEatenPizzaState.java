@@ -23,7 +23,6 @@ public class PlaySkillEatenPizzaState extends PlaySkillOpponentState {
     @Override
     public void initCommands() {
         commands.add(new MemberWisieRemoveDisguiseCommand(opponentManager));
-        commands.add(new MemberWisieDecreaseAttributesCommand(opponentManager));
         commands.add(new MemberWisieAddStatusCommand(opponentManager, MemberWisieStatus.EATEN_PIZZA));
     }
 
@@ -31,7 +30,6 @@ public class PlaySkillEatenPizzaState extends PlaySkillOpponentState {
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = super.prepareModel(opponentWarTeam, team, opponentTeam);
         fillModelActiveMemberAddOns(model, opponentWarTeam, (WarTeam) team, (WarTeam) opponentTeam);
-        fillModelTeams(model, opponentWarTeam, (WarTeam) team, (WarTeam) opponentTeam);
         return model;
     }
 

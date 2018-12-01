@@ -1,10 +1,7 @@
 package com.ww.game.play.state.skill.pizza;
 
-import com.ww.game.member.MemberWisieManager;
-import com.ww.game.play.flow.skill.PlaySkillFlow;
 import com.ww.game.play.flow.skill.PlaySkillFlowOpponent;
 import com.ww.game.play.state.skill.PlaySkillOpponentState;
-import com.ww.game.play.state.skill.PlaySkillState;
 
 public class PlaySkillEatingPizzaState extends PlaySkillOpponentState {
 

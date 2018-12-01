@@ -55,7 +55,15 @@ public abstract class PlayContainer {
     public abstract Optional<Profile> findWinner();
 
     public boolean isRanking() {
-        return init.getImportance() == RivalImportance.RANKING;
+        return init.getImportance().isRanking();
+    }
+
+    public boolean isFriend() {
+        return init.getImportance().isFriend();
+    }
+
+    public boolean isDraw() {
+        return result.getDraw();
     }
 
     private void initModelMaps() {

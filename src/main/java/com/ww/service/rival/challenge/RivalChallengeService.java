@@ -1,5 +1,7 @@
 package com.ww.service.rival.challenge;
 
+import com.ww.game.play.PlayChallengeManager;
+import com.ww.game.play.PlayManager;
 import com.ww.helper.RandomHelper;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
@@ -13,27 +15,21 @@ import com.ww.model.container.rival.init.RivalChallengeInit;
 import com.ww.model.entity.outside.rival.challenge.Challenge;
 import com.ww.model.entity.outside.rival.challenge.ChallengePhase;
 import com.ww.model.entity.outside.rival.challenge.ChallengeProfile;
-import com.ww.model.entity.outside.rival.season.ProfileSeason;
-import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ChallengePhaseWisie;
-import com.ww.game.play.PlayChallengeManager;
-import com.ww.game.play.PlayManager;
 import com.ww.repository.outside.rival.challenge.ChallengePhaseRepository;
 import com.ww.repository.outside.rival.challenge.ChallengePhaseWisieRepository;
 import com.ww.repository.outside.rival.challenge.ChallengeProfileRepository;
+import com.ww.service.rival.RivalWisieComputerService;
 import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.rival.season.RivalProfileSeasonService;
-import com.ww.service.rival.season.RivalSeasonService;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.rival.task.TaskService;
-import com.ww.service.rival.war.RivalWarService;
 import com.ww.service.social.ConnectionService;
-import com.ww.service.social.ProfileService;
-import com.ww.service.social.RewardService;
 import com.ww.service.wisie.ProfileWisieService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -43,14 +39,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import static com.ww.model.constant.rival.RivalType.CHALLENGE;
 
 @Service
-public class RivalChallengeService extends RivalWarService {
+public class RivalChallengeService extends RivalWisieComputerService {
     private final ChallengeProfileRepository challengeProfileRepository;
     private final ChallengePhaseRepository challengePhaseRepository;
     private final ChallengeCloseService challengeCloseService;
     private final ChallengePhaseWisieRepository challengePhaseWisieRepository;
 
-    public RivalChallengeService(ConnectionService connectionService, TaskGenerateService taskGenerateService, TaskRendererService taskRendererService, RewardService rewardService, RivalSeasonService rivalSeasonService, ProfileService profileService, RivalGlobalService rivalGlobalService, RivalProfileSeasonService rivalProfileSeasonService, ProfileWisieService profileWisieService, TaskService taskService, ChallengeProfileRepository challengeProfileRepository, ChallengePhaseRepository challengePhaseRepository, ChallengeCloseService challengeCloseService, ChallengePhaseWisieRepository challengePhaseWisieRepository) {
-        super(connectionService, taskGenerateService, taskRendererService, rewardService, rivalSeasonService, profileService, rivalGlobalService, rivalProfileSeasonService, profileWisieService, taskService);
+    public RivalChallengeService(ConnectionService connectionService, TaskGenerateService taskGenerateService, TaskRendererService taskRendererService, RivalGlobalService rivalGlobalService, RivalProfileSeasonService rivalProfileSeasonService, ProfileWisieService profileWisieService, TaskService taskService, ChallengeProfileRepository challengeProfileRepository, ChallengePhaseRepository challengePhaseRepository, ChallengeCloseService challengeCloseService, ChallengePhaseWisieRepository challengePhaseWisieRepository) {
+        super(connectionService, taskGenerateService, taskRendererService, rivalGlobalService, rivalProfileSeasonService, profileWisieService, taskService);
         this.challengeProfileRepository = challengeProfileRepository;
         this.challengePhaseRepository = challengePhaseRepository;
         this.challengeCloseService = challengeCloseService;
@@ -61,10 +57,6 @@ public class RivalChallengeService extends RivalWarService {
         List<ChallengePhase> challengePhases = new CopyOnWriteArrayList<>(challengeProfile.getChallenge().getPhases());
         sortChallengePhases(challengePhases);
         return new RivalChallengeInit(CHALLENGE, RivalImportance.FAST, challengeProfile.getProfile(), prepareComputerProfile(), challengeProfile, challengePhases);
-    }
-
-    @Override
-    public void addRewardFromWin(Profile winner, ProfileSeason winnerSeason) {
     }
 
     public synchronized ChallengePhase preparePhase(Challenge challenge, int taskIndex, Category category, DifficultyLevel difficultyLevel) {
@@ -80,7 +72,7 @@ public class RivalChallengeService extends RivalWarService {
 
     public ChallengePhaseWisie preparePhaseWisie(int taskIndex) {
         ChallengePhaseWisie phaseWisie = new ChallengePhaseWisie(true, new HashSet<>(Category.random(Math.max(1, Math.min(3, taskIndex / 4)))), new HashSet<>(), WisieType.random());
-        getProfileWisieService().initWisieAttributes(phaseWisie);
+        profileWisieService.initWisieAttributes(phaseWisie);
         double promo = RandomHelper.randomDouble(0.8, 1) * taskIndex * 20 + taskIndex * 10;
         for (MentalAttribute attribute : MentalAttribute.values()) {
             phaseWisie.setMentalAttributeValue(attribute, Math.pow(phaseWisie.getMentalAttributeValue(attribute), 1.1) + promo);
@@ -97,6 +89,7 @@ public class RivalChallengeService extends RivalWarService {
     }
 
     @Override
+    @Transactional
     public void disposeManager(PlayManager manager) {
         super.disposeManager(manager);
         PlayChallengeManager challengeManager = (PlayChallengeManager) manager;

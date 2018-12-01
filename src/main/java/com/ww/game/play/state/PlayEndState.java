@@ -22,14 +22,18 @@ public class PlayEndState extends PlayState {
     @Override
     public void initCommands() {
         commands.add(new PlaySetResultCommand(getContainer()));
-        commands.add(new PlayUpdateEloCommand(manager));
+        if (getContainer().isRanking()) {
+            commands.add(new PlayUpdateEloCommand(manager));
+        }
     }
 
     @Override
     public Map<String, Object> prepareModel(RivalTeam team, RivalTeam opponentTeam) {
         Map<String, Object> model = super.prepareModel(team, opponentTeam);
         fillModelEnd(model, getContainer());
-        fillModelSeasons(model, getContainer(), team, opponentTeam);
+        if (getContainer().isRanking()) {
+            fillModelSeasons(model, getContainer(), team, opponentTeam);
+        }
         return model;
     }
 

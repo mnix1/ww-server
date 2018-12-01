@@ -1,5 +1,7 @@
 package com.ww.service.rival.campaign;
 
+import com.ww.game.play.PlayCampaignManager;
+import com.ww.game.play.PlayManager;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.campaign.ProfileCampaignStatus;
@@ -11,22 +13,16 @@ import com.ww.model.container.rival.war.TeamMember;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.model.container.rival.war.WarWisie;
 import com.ww.model.entity.outside.rival.campaign.ProfileCampaign;
-import com.ww.model.entity.outside.rival.season.ProfileSeason;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileCampaignWisie;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
-import com.ww.game.play.PlayCampaignManager;
-import com.ww.game.play.PlayManager;
+import com.ww.service.rival.RivalWisieComputerService;
 import com.ww.service.rival.global.RivalGlobalService;
 import com.ww.service.rival.season.RivalProfileSeasonService;
-import com.ww.service.rival.season.RivalSeasonService;
 import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.rival.task.TaskService;
-import com.ww.service.rival.war.RivalWarService;
 import com.ww.service.social.ConnectionService;
-import com.ww.service.social.ProfileService;
-import com.ww.service.social.RewardService;
 import com.ww.service.wisie.ProfileWisieService;
 import org.springframework.stereotype.Service;
 
@@ -39,12 +35,12 @@ import java.util.Set;
 import static com.ww.model.constant.rival.RivalType.CAMPAIGN_WAR;
 
 @Service
-public class RivalCampaignWarService extends RivalWarService {
+public class RivalCampaignWarService extends RivalWisieComputerService {
 
     private final CampaignService campaignService;
 
-    public RivalCampaignWarService(ConnectionService connectionService, TaskGenerateService taskGenerateService, TaskRendererService taskRendererService, RewardService rewardService, RivalSeasonService rivalSeasonService, ProfileService profileService, RivalGlobalService rivalGlobalService, RivalProfileSeasonService rivalProfileSeasonService, ProfileWisieService profileWisieService, TaskService taskService, CampaignService campaignService) {
-        super(connectionService, taskGenerateService, taskRendererService, rewardService, rivalSeasonService, profileService, rivalGlobalService, rivalProfileSeasonService, profileWisieService, taskService);
+    public RivalCampaignWarService(ConnectionService connectionService, TaskGenerateService taskGenerateService, TaskRendererService taskRendererService, RivalGlobalService rivalGlobalService, RivalProfileSeasonService rivalProfileSeasonService, ProfileWisieService profileWisieService, TaskService taskService, CampaignService campaignService) {
+        super(connectionService, taskGenerateService, taskRendererService, rivalGlobalService, rivalProfileSeasonService, profileWisieService, taskService);
         this.campaignService = campaignService;
     }
 
@@ -85,10 +81,6 @@ public class RivalCampaignWarService extends RivalWarService {
         campaignService.save(profileCampaign);
     }
 
-    @Override
-    public void addRewardFromWin(Profile winner, ProfileSeason winnerSeason) {
-    }
-
     public Optional<RivalCampaignWarInit> init() {
         Optional<ProfileCampaign> optionalProfileCampaign = campaignService.active();
         return optionalProfileCampaign.map(profileCampaign -> new RivalCampaignWarInit(CAMPAIGN_WAR, RivalImportance.FAST, profileCampaign.getProfile(), prepareComputerProfile(profileCampaign), profileCampaign));
@@ -114,9 +106,9 @@ public class RivalCampaignWarService extends RivalWarService {
         for (WisieType wisieType : wisieTypes) {
             ProfileWisie profileWisie = new ProfileWisie(computerProfile, wisieType);
             profileWisie.setId(profileWisieId--);
-            getProfileWisieService().initWisieAttributes(profileWisie);
-            getProfileWisieService().initWisieHobbies(profileWisie, Category.random(((rating - 1) / 2) + 1));
-            getProfileWisieService().initWisieSkills(profileWisie);
+            profileWisieService.initWisieAttributes(profileWisie);
+            profileWisieService.initWisieHobbies(profileWisie, Category.random(((rating - 1) / 2) + 1));
+            profileWisieService.initWisieSkills(profileWisie);
             int phaseDifficultyPromo = (isLastPhase ? 20 : 10) * profileCampaign.getPhase() * rating;
             double promo = Math.max(0, summaryValue / wisieTypes.size() + phaseDifficultyPromo - 5);
             for (MentalAttribute attribute : MentalAttribute.values()) {

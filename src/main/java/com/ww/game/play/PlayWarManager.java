@@ -12,12 +12,13 @@ import com.ww.model.container.rival.war.WarTeam;
 import com.ww.model.container.rival.war.skill.WarTeamSkills;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
+import com.ww.service.rival.RivalWisieService;
 import com.ww.service.rival.war.RivalWarService;
 
 import java.util.List;
 
 public class PlayWarManager extends PlayManager {
-    public PlayWarManager(RivalTwoInit init, RivalWarService rivalService) {
+    public PlayWarManager(RivalTwoInit init, RivalWisieService rivalService) {
         super(rivalService);
         this.interval = new WarInterval();
         this.container = new PlayWarContainer(init, prepareTeams(init), prepareTasks(), prepareTimeouts(), prepareDecisions(), prepareResult());
@@ -30,7 +31,7 @@ public class PlayWarManager extends PlayManager {
     }
 
     protected WarTeam prepareTeam(Profile profile) {
-        List<ProfileWisie> wisies = ((RivalWarService) service).getProfileWisies(profile);
+        List<ProfileWisie> wisies = ((RivalWisieService) service).getProfileWisies(profile);
         List<TeamMember> teamMembers = TeamHelper.prepareTeamMembers(profile, wisies);
         return new WarTeam(profile, teamMembers, new WarTeamSkills(1, teamMembers));
     }

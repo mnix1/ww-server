@@ -3,7 +3,6 @@ package com.ww.game.play.state;
 import com.ww.game.play.PlayManager;
 import com.ww.model.constant.rival.RivalStatus;
 import com.ww.model.container.rival.RivalTeam;
-import com.ww.model.container.rival.RivalTeams;
 
 import java.util.Map;
 
@@ -19,7 +18,9 @@ public class PlayIntroState extends PlayState {
         Map<String, Object> model = super.prepareModel(team, opponentTeam);
         fillModelImportanceType(model, getContainer());
         fillModelProfiles(model, team, opponentTeam);
-        fillModelSeasons(model, getContainer(), team, opponentTeam);
+        if (getContainer().isRanking()) {
+            fillModelSeasons(model, getContainer(), team, opponentTeam);
+        }
         return model;
     }
 
