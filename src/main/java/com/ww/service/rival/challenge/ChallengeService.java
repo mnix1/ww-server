@@ -198,10 +198,11 @@ public class ChallengeService {
         if (costResources.getEmpty() || challenge.getType() == ChallengeType.GLOBAL) {
             return;
         }
+        Resources gainResources = challenge.getGainResources();
         Resources added = new Resources(0L);
-        if (challenge.getAccess() == ChallengeAccess.UNLOCK && challenge.getCostResources().multiply(10).highest() < challenge.getGainResources().highest()){
-            added = challenge.getCostResources();
-        } else if (challenge.getCostResources().multiply(5).highest() < challenge.getGainResources().highest()) {
+        if (gainResources.getEmpty()
+                || (challenge.getAccess() == ChallengeAccess.UNLOCK && challenge.getCostResources().multiply(10).highest() > challenge.getGainResources().highest())
+                || (challenge.getCostResources().multiply(5).highest() > challenge.getGainResources().highest())) {
             added = challenge.getCostResources();
         }
         challenge.setGainResources(challenge.getGainResources().add(added));
