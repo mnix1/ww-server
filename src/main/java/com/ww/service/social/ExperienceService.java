@@ -23,7 +23,7 @@ public class ExperienceService {
 
     @Transactional
     public void add(Long profileId, long experienceGain) {
-        if (isBotProfile(profileId)) {
+        if (isBotProfile(profileId) || experienceGain == 0) {
             return;
         }
         Profile profile = profileService.getProfile(profileId);

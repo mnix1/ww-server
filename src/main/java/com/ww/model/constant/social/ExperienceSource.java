@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum ExperienceSource {
-    PRACTISE_LOST(1),
-    PRACTISE_WIN(4),
+    PRACTISE_LOST(0),
+    PRACTISE_WIN(2),
     BATTLE_LOST(2),
     BATTLE_WIN(10),
     WAR_LOST(4),
