@@ -3,7 +3,7 @@ package com.ww.game.auto;
 import com.ww.game.auto.communication.AutoCommunication;
 import com.ww.game.auto.container.AutoPlayContainer;
 import com.ww.game.auto.flow.AutoFlow;
-import com.ww.model.container.AutoProfileConnection;
+import com.ww.model.container.InsideConnection;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.auto.AutoService;
 import lombok.Getter;
@@ -16,17 +16,21 @@ public class AutoManager {
     public static Logger logger = LoggerFactory.getLogger(AutoManager.class);
     private AutoService autoService;
     @Setter
-    private Profile profile;
+    protected Profile profile;
     @Setter
-    private AutoProfileConnection connection;
-    private AutoFlow flow;
-    private AutoCommunication communication;
+    protected InsideConnection connection;
+    protected AutoFlow flow;
+    protected AutoCommunication communication;
     @Setter
-    private AutoPlayContainer autoPlayContainer;
+    protected AutoPlayContainer autoPlayContainer;
+
+    protected AutoManager(Profile profile) {
+        this.profile = profile;
+    }
 
     public AutoManager(AutoService autoService, Profile profile) {
+        this(profile);
         this.autoService = autoService;
-        this.profile = profile;
         this.flow = new AutoFlow(this);
         this.communication = new AutoCommunication(this);
     }
@@ -43,5 +47,29 @@ public class AutoManager {
         return super.toString() + "{" +
                 "profile=" + profile +
                 '}';
+    }
+
+    public void manageBooks() {
+        autoService.manageBooks(profile);
+    }
+
+    public void manageMails() {
+        autoService.manageMails(profile);
+    }
+
+    public void startRival() {
+        autoService.startRival(this);
+    }
+
+    public void upgradeWisies() {
+        autoService.upgradeWisies(profile);
+    }
+
+    public void dispose() {
+        autoService.disposeManager(this);
+    }
+
+    public void initAutoPlayContainer() {
+        autoPlayContainer = new AutoPlayContainer(autoService.getPlayManager(profile), profile);
     }
 }

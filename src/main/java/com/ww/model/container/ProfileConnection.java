@@ -10,7 +10,7 @@ import org.springframework.web.socket.WebSocketSession;
 import java.io.IOException;
 
 @Getter
-public class ProfileConnection implements Connection{
+public class ProfileConnection implements Connection {
     private static final Logger logger = LoggerFactory.getLogger(ProfileConnection.class);
 
     private Long profileId;

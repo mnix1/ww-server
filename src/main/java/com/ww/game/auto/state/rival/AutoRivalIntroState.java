@@ -13,7 +13,6 @@ public class AutoRivalIntroState extends AutoState {
     @Override
     public void execute() {
         super.execute();
-        AutoPlayContainer container = new AutoPlayContainer(manager.getAutoService().getPlayManager(manager.getProfile()), manager.getProfile());
-        manager.setAutoPlayContainer(container);
+        manager.initAutoPlayContainer();
     }
 }

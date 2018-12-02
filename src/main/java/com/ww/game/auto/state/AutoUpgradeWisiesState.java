@@ -11,7 +11,7 @@ public class AutoUpgradeWisiesState extends AutoState {
     @Override
     public void execute() {
         super.execute();
-        manager.getAutoService().upgradeWisies(manager.getProfile());
+        manager.upgradeWisies();
     }
 
     @Override

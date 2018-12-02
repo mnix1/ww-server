@@ -113,11 +113,6 @@ public abstract class GameFlow {
         }
     }
 
-    public synchronized boolean hasNext() {
-        // logger.trace("hasNext " + toString() + " result=" + !disposableMap.isEmpty());
-        return !disposableMap.isEmpty();
-    }
-
     public synchronized void stopAfter() {
         //   logger.trace("stopAfter " + toString());
         for (Disposable disposable : disposableMap.values()) {
@@ -141,7 +136,7 @@ public abstract class GameFlow {
         }
         active = true;
         //  logger.trace("stop " + toString());
-        currentState().get().after();
+        currentState().ifPresent(GameState::after);
     }
 
     @Override

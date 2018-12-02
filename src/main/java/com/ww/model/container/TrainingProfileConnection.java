@@ -1,8 +1,7 @@
 package com.ww.model.container;
 
-import com.ww.game.auto.AutoManager;
+import com.ww.game.training.TrainingManager;
 import com.ww.helper.TagHelper;
-import com.ww.service.rival.global.RivalMessageService;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,15 +11,13 @@ import static com.ww.helper.ModelHelper.parseMessage;
 import static com.ww.helper.RandomHelper.randomLong;
 
 @Getter
-public class AutoProfileConnection implements InsideConnection {
-    private static final Logger logger = LoggerFactory.getLogger(AutoProfileConnection.class);
+public class TrainingProfileConnection implements InsideConnection {
+    private static final Logger logger = LoggerFactory.getLogger(TrainingProfileConnection.class);
 
-    private final RivalMessageService messageService;
-    private final AutoManager manager;
+    private final TrainingManager manager;
     private final String sessionId;
 
-    public AutoProfileConnection(RivalMessageService messageService, AutoManager manager) {
-        this.messageService = messageService;
+    public TrainingProfileConnection(TrainingManager manager) {
         this.manager = manager;
         this.sessionId = TagHelper.randomUUID();
     }
@@ -46,7 +43,7 @@ public class AutoProfileConnection implements InsideConnection {
     }
 
     public void handleMessage(String msg) {
-        messageService.handleMessage(sessionId, msg);
+        manager.getPlayManager().processMessage(getProfileId(), parseMessage(msg));
     }
 
     @Override
@@ -56,7 +53,7 @@ public class AutoProfileConnection implements InsideConnection {
 
     @Override
     public String toString() {
-        return "AutoProfileConnection{" +
+        return "TrainingProfileConnection{" +
                 "profileId='" + getProfileId() + '\'' +
                 "sessionId='" + sessionId + '\'' +
                 super.toString() +

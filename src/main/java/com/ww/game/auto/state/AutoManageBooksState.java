@@ -11,7 +11,7 @@ public class AutoManageBooksState extends AutoState {
     @Override
     public void execute() {
         super.execute();
-        manager.getAutoService().manageBooks(manager.getProfile());
+        manager.manageBooks();
     }
 
     @Override

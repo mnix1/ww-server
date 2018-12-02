@@ -15,6 +15,8 @@ import org.springframework.scheduling.annotation.Async;
 
 import java.util.Map;
 
+import static com.ww.websocket.message.MessageDTO.rivalContentMessage;
+
 @Getter
 public abstract class PlayManager {
     protected RivalService service;
@@ -57,7 +59,7 @@ public abstract class PlayManager {
     }
 
     public void send(Long profileId, Map<String, Object> model) {
-        service.getConnectionService().sendMessage(profileId, new MessageDTO(Message.RIVAL_CONTENT, JSONHelper.toJSON(model)).toString());
+        service.getConnectionService().sendMessage(profileId, rivalContentMessage(model));
     }
 
     public void dispose() {

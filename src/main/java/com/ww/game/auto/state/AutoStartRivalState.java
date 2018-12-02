@@ -11,6 +11,6 @@ public class AutoStartRivalState extends AutoState {
     @Override
     public void execute() {
         super.execute();
-        manager.getAutoService().startRival(manager);
+        manager.startRival();
     }
 }

@@ -11,7 +11,7 @@ public class AutoManageMailsState extends AutoState {
     @Override
     public void execute() {
         super.execute();
-        manager.getAutoService().manageMails(manager.getProfile());
+        manager.manageMails();
     }
 
     @Override

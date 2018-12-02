@@ -11,6 +11,6 @@ public class AutoRivalClosedState extends AutoRivalState {
     @Override
     public void execute() {
         super.execute();
-        manager.getAutoService().disposeManager(manager);
+        manager.dispose();
     }
 }
