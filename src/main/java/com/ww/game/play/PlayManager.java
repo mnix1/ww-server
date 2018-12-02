@@ -51,11 +51,12 @@ public abstract class PlayManager {
         communication.sendModelFromBeginning(profileId);
     }
 
-    @Async
     public void processMessage(Long profileId, Map<String, Object> content) {
-        synchronized (flow) {
-            communication.processMessage(profileId, content);
-        }
+        new Thread(() -> {
+            synchronized (flow) {
+                communication.processMessage(profileId, content);
+            }
+        }).run();
     }
 
     public void send(Long profileId, Map<String, Object> model) {

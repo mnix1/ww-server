@@ -13,6 +13,7 @@ import com.ww.model.container.rival.war.WarTeam;
 
 import java.util.Map;
 
+import static com.ww.game.GameFlow.prepareFlowable;
 import static com.ww.game.play.modelfiller.PlayWarModelFiller.fillModelActiveMemberAddOns;
 
 public class PlaySkillKidnapSucceededState extends PlaySkillOpponentState {
@@ -44,6 +45,6 @@ public class PlaySkillKidnapSucceededState extends PlaySkillOpponentState {
 
     @Override
     public void after() {
-        ((PlayWarFlow) manager.getPlayManager().getFlow()).wisiesWontAnswer();
+        new Thread(() -> ((PlayWarFlow) manager.getPlayManager().getFlow()).wisiesWontAnswer());
     }
 }

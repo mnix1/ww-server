@@ -98,7 +98,6 @@ public class PlayWarFlow extends PlayFlow {
         state.updateNotify();
     }
 
-    @Async
     public void wisiesWontAnswer() {
         synchronized (this) {
             PlayState state = (PlayState) currentState().get();
@@ -110,7 +109,6 @@ public class PlayWarFlow extends PlayFlow {
         }
     }
 
-    @Async
     public void wisieAnswered(Long profileId, Long answerId) {
         synchronized (this) {
             if (isStatusEquals(RivalStatus.ANSWERING)) {
@@ -119,8 +117,11 @@ public class PlayWarFlow extends PlayFlow {
         }
     }
 
-    @Async
     public void changeTask() {
-        run("CHANGING_TASK");
+        synchronized (this) {
+            if (isStatusEquals(RivalStatus.ANSWERING)) {
+                run("CHANGING_TASK");
+            }
+        }
     }
 }

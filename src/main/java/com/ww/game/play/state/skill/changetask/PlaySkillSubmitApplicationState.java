@@ -34,6 +34,6 @@ public class PlaySkillSubmitApplicationState extends PlaySkillState {
 
     @Override
     public void after() {
-        ((PlayWarFlow) manager.getPlayManager().getFlow()).changeTask();
+        new Thread(() -> ((PlayWarFlow) manager.getPlayManager().getFlow()).changeTask()).run();
     }
 }

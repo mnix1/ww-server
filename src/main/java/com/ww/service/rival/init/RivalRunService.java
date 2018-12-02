@@ -17,7 +17,6 @@ import com.ww.service.rival.war.RivalWarService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import static com.ww.helper.TeamHelper.BOT_PROFILE_ID;
@@ -35,20 +34,21 @@ public class RivalRunService {
     private final RivalChallengeService rivalChallengeService;
     private final RivalProfileSeasonService rivalProfileSeasonService;
 
-    @Async
     public void run(RivalInit initContainer) {
-        addProfileSeasons(initContainer);
-        PlayManager manager = createManager(initContainer);
-        initContainer.getProfiles().forEach(profile -> {
-            if (!profile.getId().equals(BOT_PROFILE_ID)) {
-                rivalGlobalService.put(profile.getId(), manager);
-            }
-        });
-        Rival rival = new Rival(manager.getContainer());
-        rivalGlobalService.save(rival);
-        logger.debug("rival run {}", rival.toString());
-        manager.setRival(rival);
-        manager.getFlow().start();
+        new Thread(() -> {
+            addProfileSeasons(initContainer);
+            PlayManager manager = createManager(initContainer);
+            initContainer.getProfiles().forEach(profile -> {
+                if (!profile.getId().equals(BOT_PROFILE_ID)) {
+                    rivalGlobalService.put(profile.getId(), manager);
+                }
+            });
+            Rival rival = new Rival(manager.getContainer());
+            rivalGlobalService.save(rival);
+            logger.debug("rival run {}", rival.toString());
+            manager.setRival(rival);
+            manager.getFlow().start();
+        }).run();
     }
 
     public void addProfileSeasons(RivalInit initContainer) {

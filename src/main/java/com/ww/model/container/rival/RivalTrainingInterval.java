@@ -10,7 +10,7 @@ public class RivalTrainingInterval extends RivalInterval {
     }
 
     public long getRandomTaskPropsInterval() {
-        return (long) ( super.getRandomTaskPropsInterval() * 1.5);
+        return (long) (super.getRandomTaskPropsInterval() * 1.5);
     }
 
     public long getIntroInterval() {
