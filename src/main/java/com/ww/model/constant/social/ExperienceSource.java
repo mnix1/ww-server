@@ -10,6 +10,7 @@ public enum ExperienceSource {
     BATTLE_WIN(10),
     WAR_LOST(4),
     WAR_WIN(20),
+    CHALLENGE(10),
     CAMPAIGN_LOST(10),
     CAMPAIGN_WIN(50),
     ;

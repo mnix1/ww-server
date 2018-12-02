@@ -6,6 +6,7 @@ import com.ww.helper.TeamHelper;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.campaign.ProfileCampaignStatus;
+import com.ww.model.constant.social.ExperienceSource;
 import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.constant.wisie.WisieType;
@@ -24,6 +25,7 @@ import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.rival.task.TaskService;
 import com.ww.service.social.ConnectionService;
+import com.ww.service.social.ExperienceService;
 import com.ww.service.wisie.ProfileWisieService;
 import org.springframework.stereotype.Service;
 
@@ -39,10 +41,20 @@ import static com.ww.model.constant.rival.RivalType.CAMPAIGN_WAR;
 public class RivalCampaignWarService extends RivalWisieService {
 
     private final CampaignService campaignService;
+    private final ExperienceService experienceService;
 
-    public RivalCampaignWarService(ConnectionService connectionService, TaskGenerateService taskGenerateService, TaskRendererService taskRendererService, RivalGlobalService rivalGlobalService, RivalProfileSeasonService rivalProfileSeasonService, ProfileWisieService profileWisieService, TaskService taskService, CampaignService campaignService) {
+    public RivalCampaignWarService(ConnectionService connectionService, TaskGenerateService taskGenerateService, TaskRendererService taskRendererService, RivalGlobalService rivalGlobalService, RivalProfileSeasonService rivalProfileSeasonService, ProfileWisieService profileWisieService, TaskService taskService, CampaignService campaignService, ExperienceService experienceService) {
         super(connectionService, taskGenerateService, taskRendererService, rivalGlobalService, rivalProfileSeasonService, profileWisieService, taskService);
         this.campaignService = campaignService;
+        this.experienceService = experienceService;
+    }
+
+    public void addExperienceAfterCampaign(Long profileId, boolean win) {
+        if (win) {
+            experienceService.add(profileId, ExperienceSource.CAMPAIGN_WIN.getGain());
+        } else {
+            experienceService.add(profileId, ExperienceSource.CAMPAIGN_LOST.getGain());
+        }
     }
 
     @Override
@@ -58,6 +70,7 @@ public class RivalCampaignWarService extends RivalWisieService {
             profileCampaign.updateResourceGains();
             if (profileCampaign.getPhase() >= profileCampaign.getCampaign().getPhases()) {
                 profileCampaign.setStatus(ProfileCampaignStatus.FINISHED);
+                addExperienceAfterCampaign(profileId, true);
                 profileCampaign.setBookGain(campaignService.getBookGainForCampaign(profileCampaign.getCampaign()));
             }
             List<TeamMember> teamMembers = ((WarTeam) campaignManager.getContainer().getTeams().team(profileId)).getTeamMembers();
@@ -74,6 +87,7 @@ public class RivalCampaignWarService extends RivalWisieService {
             }
         } else {
             profileCampaign.setStatus(ProfileCampaignStatus.FINISHED);
+            addExperienceAfterCampaign(profileId, false);
             for (ProfileCampaignWisie wisie : profileCampaign.getWisies()) {
                 wisie.setDisabled(true);
             }

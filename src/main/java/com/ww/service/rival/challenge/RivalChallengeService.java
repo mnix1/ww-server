@@ -2,12 +2,14 @@ package com.ww.service.rival.challenge;
 
 import com.ww.game.play.PlayChallengeManager;
 import com.ww.game.play.PlayManager;
+import com.ww.game.play.container.PlayContainer;
 import com.ww.helper.RandomHelper;
 import com.ww.helper.TeamHelper;
 import com.ww.model.constant.Category;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.constant.rival.RivalImportance;
 import com.ww.model.constant.rival.challenge.ChallengeProfileResponse;
+import com.ww.model.constant.social.ExperienceSource;
 import com.ww.model.constant.wisie.MentalAttribute;
 import com.ww.model.constant.wisie.WisdomAttribute;
 import com.ww.model.constant.wisie.WisieType;
@@ -27,6 +29,7 @@ import com.ww.service.rival.task.TaskGenerateService;
 import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.rival.task.TaskService;
 import com.ww.service.social.ConnectionService;
+import com.ww.service.social.ExperienceService;
 import com.ww.service.wisie.ProfileWisieService;
 import org.springframework.stereotype.Service;
 
@@ -45,13 +48,15 @@ public class RivalChallengeService extends RivalWisieService {
     private final ChallengePhaseRepository challengePhaseRepository;
     private final ChallengeCloseService challengeCloseService;
     private final ChallengePhaseWisieRepository challengePhaseWisieRepository;
+    private final ExperienceService experienceService;
 
-    public RivalChallengeService(ConnectionService connectionService, TaskGenerateService taskGenerateService, TaskRendererService taskRendererService, RivalGlobalService rivalGlobalService, RivalProfileSeasonService rivalProfileSeasonService, ProfileWisieService profileWisieService, TaskService taskService, ChallengeProfileRepository challengeProfileRepository, ChallengePhaseRepository challengePhaseRepository, ChallengeCloseService challengeCloseService, ChallengePhaseWisieRepository challengePhaseWisieRepository) {
+    public RivalChallengeService(ConnectionService connectionService, TaskGenerateService taskGenerateService, TaskRendererService taskRendererService, RivalGlobalService rivalGlobalService, RivalProfileSeasonService rivalProfileSeasonService, ProfileWisieService profileWisieService, TaskService taskService, ChallengeProfileRepository challengeProfileRepository, ChallengePhaseRepository challengePhaseRepository, ChallengeCloseService challengeCloseService, ChallengePhaseWisieRepository challengePhaseWisieRepository, ExperienceService experienceService) {
         super(connectionService, taskGenerateService, taskRendererService, rivalGlobalService, rivalProfileSeasonService, profileWisieService, taskService);
         this.challengeProfileRepository = challengeProfileRepository;
         this.challengePhaseRepository = challengePhaseRepository;
         this.challengeCloseService = challengeCloseService;
         this.challengePhaseWisieRepository = challengePhaseWisieRepository;
+        this.experienceService = experienceService;
     }
 
     public RivalChallengeInit init(ChallengeProfile challengeProfile) {
@@ -87,6 +92,11 @@ public class RivalChallengeService extends RivalWisieService {
 
     private void sortChallengePhases(List<ChallengePhase> challengePhases) {
         challengePhases.sort(Comparator.comparing(ChallengePhase::getId));
+    }
+
+    @Override
+    public void addExperience(PlayContainer container) {
+        experienceService.add(container.getInit().getCreatorProfile().getId(), ExperienceSource.CHALLENGE.getGain());
     }
 
     @Override
