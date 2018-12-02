@@ -1,10 +1,6 @@
 package com.ww.model.container.rival;
 
 public class RivalTrainingInterval extends RivalInterval {
-    public long getAnsweringInterval() {
-        return super.getAnsweringInterval() * 2;
-    }
-
     public long getChoosingTaskCategoryInterval() {
         return super.getChoosingTaskCategoryInterval() * 2;
     }
@@ -14,14 +10,14 @@ public class RivalTrainingInterval extends RivalInterval {
     }
 
     public long getRandomTaskPropsInterval() {
-        return super.getRandomTaskPropsInterval() * 2;
+        return (long) ( super.getRandomTaskPropsInterval() * 1.5);
     }
 
     public long getIntroInterval() {
-        return super.getIntroInterval() * 2;
+        return (long) (super.getIntroInterval() * 1.5);
     }
 
     public long getPreparingNextTaskInterval() {
-        return super.getPreparingNextTaskInterval() * 2;
+        return (long) (super.getPreparingNextTaskInterval() * 1.5);
     }
 }

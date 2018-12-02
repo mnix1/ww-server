@@ -5,6 +5,7 @@ import com.ww.helper.RandomHelper;
 import com.ww.model.constant.rival.DifficultyLevel;
 import com.ww.model.container.MapModel;
 
+import static com.ww.helper.RandomHelper.randomDouble;
 import static com.ww.service.rival.global.RivalMessageService.CHOOSE_TASK_DIFFICULTY;
 
 public class AutoRivalChoosingTaskDifficultyState extends AutoRivalState {
@@ -19,7 +20,7 @@ public class AutoRivalChoosingTaskDifficultyState extends AutoRivalState {
         if (!container.isMeChoosingTaskProps()) {
             return;
         }
-        long interval = RandomHelper.randomLong(1, (long) (container.interval().getChoosingTaskDifficultyInterval() * 0.75));
+        long interval =(long) (container.interval().getChoosingTaskDifficultyInterval() * randomDouble(.1, 0.35));
         sendAfter(interval, CHOOSE_TASK_DIFFICULTY, new MapModel("difficultyLevel", DifficultyLevel.random()).get());
     }
 }

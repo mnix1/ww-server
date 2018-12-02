@@ -21,7 +21,7 @@ public class TrainingManager extends AutoManager {
     private PlayManager playManager;
 
     public TrainingManager(Profile profile, PlayManager playManager) {
-        super(profile, new InsideProfile().initStats(.4, .5, .6, .4, .5, new HashSet<>()));
+        super(profile, new InsideProfile().initStats(.2, .2, .6, .5, .5, new HashSet<>()));
         this.playManager = playManager;
         this.connection = new TrainingProfileConnection(this);
         this.flow = new AutoFlow(this);
