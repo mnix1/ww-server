@@ -45,6 +45,6 @@ public class PlaySkillKidnapSucceededState extends PlaySkillOpponentState {
 
     @Override
     public void after() {
-        new Thread(() -> ((PlayWarFlow) manager.getPlayManager().getFlow()).wisiesWontAnswer());
+        new Thread(() -> ((PlayWarFlow) manager.getPlayManager().getFlow()).wisiesWontAnswer()).run();
     }
 }

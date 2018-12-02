@@ -27,7 +27,7 @@ public class AutoRivalChoosingWhoAnswerState extends AutoRivalState {
     @Override
     public void execute() {
         super.execute();
-        long maxInterval = (long) (container.interval().getChoosingWhoAnswerInterval() * 0.75);
+        long maxInterval = (long) (container.interval().getChoosingWhoAnswerInterval() * 0.35);
         long minInterval = maxInterval / 4;
         long interval = RandomHelper.randomLong(minInterval, maxInterval);
         WarTeam team = (WarTeam) container.team();

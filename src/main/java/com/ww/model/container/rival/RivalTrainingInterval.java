@@ -20,7 +20,7 @@ public class RivalTrainingInterval extends WarInterval {
 
     @Override
     public long wisieIntervalMultiply() {
-        return super.wisieIntervalMultiply() * 2;
+        return (long) (super.wisieIntervalMultiply() * 1.5);
     }
 
     @Override
