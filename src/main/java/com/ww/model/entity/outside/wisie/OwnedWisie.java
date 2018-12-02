@@ -36,13 +36,6 @@ public abstract class OwnedWisie extends AbstractWisieAttributes {
     protected HashSet<Skill> skills;
     protected WisieType type;
 
-    protected OwnedWisie(Boolean inTeam, HashSet<Category> hobbies, HashSet<Skill> skills, WisieType type) {
-        this.inTeam = inTeam;
-        this.hobbies = hobbies;
-        this.skills = skills;
-        this.type = type;
-    }
-
     protected OwnedWisie(OwnedWisie ownedWisie) {
         super(ownedWisie);
         this.hobbies = ownedWisie.hobbies;

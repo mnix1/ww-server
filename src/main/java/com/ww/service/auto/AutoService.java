@@ -2,7 +2,9 @@ package com.ww.service.auto;
 
 import com.ww.game.auto.AutoManager;
 import com.ww.game.play.PlayManager;
+import com.ww.model.entity.inside.social.InsideProfile;
 import com.ww.model.entity.outside.social.Profile;
+import com.ww.repository.inside.social.InsideProfileRepository;
 import com.ww.service.auto.command.AutoManageBooksService;
 import com.ww.service.auto.command.AutoManageMailService;
 import com.ww.service.auto.command.AutoStartRivalService;
@@ -24,7 +26,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @AllArgsConstructor
 public class AutoService {
     private static Logger logger = LoggerFactory.getLogger(AutoService.class);
-    public static int MAX_ACTIVE_AUTO_MANAGERS = 0;
+    public static int MAX_ACTIVE_AUTO_MANAGERS = 100;
     public static final List<AutoManager> activeAutoManagers = new CopyOnWriteArrayList<>();
 
     private final ProfileService profileService;
@@ -36,6 +38,7 @@ public class AutoService {
     private final RivalGlobalService rivalGlobalService;
     private final ConnectionService connectionService;
     private final RivalInitRandomOpponentService rivalInitRandomOpponentService;
+    private final InsideProfileRepository insideProfileRepository;
 
     public Optional<AutoManager> createAutoManager() {
         Optional<Profile> optionalProfile = autoProfileService.getNotLoggedAutoProfile();
@@ -43,7 +46,8 @@ public class AutoService {
             return Optional.empty();
         }
         Profile profile = optionalProfile.get();
-        AutoManager manager = new AutoManager(this, profile);
+        InsideProfile insideProfile = insideProfileRepository.findFirstByUsername(profile.getName()).orElse(new InsideProfile().initStats());
+        AutoManager manager = new AutoManager(profile, insideProfile, this);
         return Optional.of(manager);
     }
 
@@ -102,6 +106,5 @@ public class AutoService {
         if (!result) {
             disposeManager(manager);
         }
-
     }
 }

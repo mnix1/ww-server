@@ -53,6 +53,9 @@ public class Profile {
     private Set<ProfileBook> books = new HashSet<>();
 
     public Profile(String authId, String name, String email, Language language) {
+        this(authId, name, email, language, WisorType.random());
+    }
+    public Profile(String authId, String name, String email, Language language, WisorType wisorType) {
         this.tag = TagHelper.randomTag();
         this.name = name;
         this.authId = authId;
@@ -64,7 +67,7 @@ public class Profile {
         this.crystal = 40L;
         this.wisdom = 30L;
         this.elixir = 20L;
-        this.wisorType = WisorType.random();
+        this.wisorType = wisorType;
     }
 
     public Profile(Long id) {

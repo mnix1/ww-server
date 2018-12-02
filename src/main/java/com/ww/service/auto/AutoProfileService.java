@@ -3,14 +3,13 @@ package com.ww.service.auto;
 import com.ww.config.security.AuthIdProvider;
 import com.ww.model.constant.Language;
 import com.ww.model.container.Connection;
-import com.ww.model.entity.inside.social.Auto;
+import com.ww.model.entity.inside.social.InsideProfile;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.social.ProfileIntro;
-import com.ww.repository.inside.social.AutoRepository;
+import com.ww.repository.inside.social.InsideProfileRepository;
 import com.ww.repository.outside.social.ProfileRepository;
 import com.ww.service.social.AuthProfileService;
 import com.ww.service.social.ConnectionService;
-import com.ww.service.social.IntroService;
 import com.ww.service.social.ProfileService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -28,12 +27,11 @@ import java.util.stream.Collectors;
 public class AutoProfileService {
     private static Logger logger = LoggerFactory.getLogger(AutoProfileService.class);
 
-    private final AutoRepository autoRepository;
+    private final InsideProfileRepository insideProfileRepository;
     private final AuthProfileService authProfileService;
     private final ProfileService profileService;
     private final ProfileRepository profileRepository;
     private final ConnectionService connectionService;
-    private final IntroService introService;
 
     public Optional<Profile> getNotLoggedAutoProfile() {
         List<Profile> profiles = profileRepository.findAllByAuthIdContains(AuthIdProvider.AUTO.name());
@@ -52,14 +50,14 @@ public class AutoProfileService {
 
     private Optional<Profile> createAutoProfile(List<Profile> profiles) {
         Set<String> usedAutoAuthIds = profiles.stream().map(Profile::getAuthId).collect(Collectors.toSet());
-        List<Auto> autos = autoRepository.findAllByAuto(true);
-        Collections.shuffle(autos);
-        for (Auto auto : autos) {
-            String authId = AuthIdProvider.AUTO + AuthIdProvider.sepparator + auto.getUsername();
+        List<InsideProfile> insideProfiles = insideProfileRepository.findAllByAuto(true);
+        Collections.shuffle(insideProfiles);
+        for (InsideProfile insideProfile : insideProfiles) {
+            String authId = AuthIdProvider.AUTO + AuthIdProvider.sepparator + insideProfile.getUsername();
             if (usedAutoAuthIds.contains(authId)) {
                 continue;
             }
-            Profile profile = new Profile(authId, auto.getUsername(), null, Language.POLISH);
+            Profile profile = new Profile(authId, insideProfile.getUsername(), null, Language.POLISH, insideProfile.getWisorType());
             profileService.save(profile);
             profile.setIntro(new ProfileIntro(profile));
             authProfileService.completeIntroductionForAuto(profile);

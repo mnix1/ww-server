@@ -3,6 +3,7 @@ package com.ww.game.auto.state.wisor;
 import com.ww.game.auto.AutoManager;
 import com.ww.game.auto.command.AutoWisorAnswerCommand;
 import com.ww.game.auto.flow.AutoWisorFlow;
+import com.ww.model.entity.inside.social.InsideProfile;
 
 import java.util.ArrayList;
 
@@ -36,9 +37,13 @@ public class AutoWisorAnswerState extends AutoWisorState {
 
     private boolean isCorrect() {
         int difficulty = manager.getAutoPlayContainer().question().getDifficultyLevel().getPoints();
-        chanceCorrect = 0.5 - (difficulty - 4) * 0.1;
+        InsideProfile insideProfile = manager.getInsideProfile();
+        chanceCorrect = 0.5 - (difficulty - 1) * 0.15 + insideProfile.getWisdom() * .5 + insideProfile.getCunning() * .25;
+        if (insideProfile.getLuck() > randomDouble()) {
+            chanceCorrect += 0.1;
+        }
         if (isHobby) {
-            chanceCorrect += 0.25;
+            chanceCorrect += 0.3;
         }
         return chanceCorrect >= random;
     }

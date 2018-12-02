@@ -3,6 +3,7 @@ package com.ww.game.auto.state.wisor;
 import com.ww.game.auto.AutoManager;
 import com.ww.game.auto.flow.AutoWisorFlow;
 import com.ww.model.constant.Category;
+import com.ww.model.entity.inside.social.InsideProfile;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -40,21 +41,24 @@ public class AutoWisorThinkingState extends AutoWisorState {
     }
 
     private long prepareInterval() {
+        long answeringInterval = manager.getAutoPlayContainer().interval().getAnsweringInterval();
         int difficulty = manager.getAutoPlayContainer().question().getDifficultyLevel().getPoints();
-        double betweenInterval = randomDouble(randomDouble(2.5, 4.0), randomDouble(4.5, 6.0)) * difficulty;
+        InsideProfile insideProfile = manager.getInsideProfile();
+        double constPart = .1;
+        double randomPart = randomDouble(.0, 1 - insideProfile.getLuck());
+        double difficultyPart = difficulty * .1 * (1 - insideProfile.getWisdom()) + difficulty * 0.5 * (1 - insideProfile.getLuck()) * (1 - insideProfile.getWisdom());
+        double part = constPart + randomPart + difficultyPart + (0.5 - insideProfile.getSpeed()) - insideProfile.getReflex();
         if (isHobby) {
-            betweenInterval /= 2;
+            part /= 3;
         }
-        betweenInterval = Math.max(betweenInterval, 2);
-        return (long) (betweenInterval * manager.getAutoPlayContainer().interval().intervalMultiply());
+        part = Math.max(part, 0.05);
+        part = Math.min(part, 0.9);
+        return (long) (answeringInterval * part);
     }
 
     private boolean isHobby() {
-        List<Category> categories = Category.list();
-        int hobbyCount = randomInteger(1, categories.size());
-        Collections.shuffle(categories);
-        categories = categories.subList(0, hobbyCount);
-        return categories.contains(manager.getAutoPlayContainer().question().getType().getCategory());
+        Category category = manager.getAutoPlayContainer().question().getType().getCategory();
+        return manager.getInsideProfile().getHobbies().contains(category);
     }
 
     @Override

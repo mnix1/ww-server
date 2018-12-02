@@ -1,6 +1,7 @@
 package com.ww;
 
 import com.ww.database.InitService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -25,10 +26,10 @@ import java.util.concurrent.Executors;
 @EnableScheduling
 @EnableOAuth2Client
 @EnableAsync
+@AllArgsConstructor
 public class Application {
 
-    @Autowired
-    private InitService initService;
+    private final InitService initService;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

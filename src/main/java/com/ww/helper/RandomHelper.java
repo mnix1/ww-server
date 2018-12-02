@@ -34,6 +34,17 @@ public class RandomHelper {
         return random.nextDouble();
     }
 
+    public static double randomDouble(int count) {
+        if (count <= 1) {
+            return randomDouble();
+        }
+        double result = 0;
+        for (int i = 0; i < count; i++) {
+            result += randomDouble();
+        }
+        return result / count;
+    }
+
     public static int[] randomDistinctIntegers(int count, int from, int to) {
         Set<Integer> numbers = new HashSet<>();
         while (numbers.size() < count) {

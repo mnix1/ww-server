@@ -6,10 +6,13 @@ import com.ww.game.auto.container.AutoPlayContainer;
 import com.ww.game.auto.flow.AutoFlow;
 import com.ww.game.play.PlayManager;
 import com.ww.model.container.TrainingProfileConnection;
+import com.ww.model.entity.inside.social.InsideProfile;
 import com.ww.model.entity.outside.social.Profile;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashSet;
 
 @Getter
 public class TrainingManager extends AutoManager {
@@ -18,7 +21,7 @@ public class TrainingManager extends AutoManager {
     private PlayManager playManager;
 
     public TrainingManager(Profile profile, PlayManager playManager) {
-        super(profile);
+        super(profile, new InsideProfile().initStats(.4, .5, .6, .4, .5, new HashSet<>()));
         this.playManager = playManager;
         this.connection = new TrainingProfileConnection(this);
         this.flow = new AutoFlow(this);

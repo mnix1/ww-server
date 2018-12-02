@@ -4,6 +4,7 @@ import com.ww.game.auto.communication.AutoCommunication;
 import com.ww.game.auto.container.AutoPlayContainer;
 import com.ww.game.auto.flow.AutoFlow;
 import com.ww.model.container.InsideConnection;
+import com.ww.model.entity.inside.social.InsideProfile;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.service.auto.AutoService;
 import lombok.Getter;
@@ -17,6 +18,7 @@ public class AutoManager {
     private AutoService autoService;
     @Setter
     protected Profile profile;
+    protected InsideProfile insideProfile;
     @Setter
     protected InsideConnection connection;
     protected AutoFlow flow;
@@ -24,12 +26,13 @@ public class AutoManager {
     @Setter
     protected AutoPlayContainer autoPlayContainer;
 
-    protected AutoManager(Profile profile) {
+    protected AutoManager(Profile profile, InsideProfile insideProfile) {
         this.profile = profile;
+        this.insideProfile = insideProfile;
     }
 
-    public AutoManager(AutoService autoService, Profile profile) {
-        this(profile);
+    public AutoManager(Profile profile, InsideProfile insideProfile, AutoService autoService) {
+        this(profile, insideProfile);
         this.autoService = autoService;
         this.flow = new AutoFlow(this);
         this.communication = new AutoCommunication(this);

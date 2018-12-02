@@ -6,6 +6,7 @@ import com.ww.service.rival.task.element.ElementService;
 import com.ww.service.rival.task.lyrics.TrackService;
 import com.ww.service.rival.task.memory.MemoryTaskHelperService;
 import com.ww.service.rival.task.olympicgames.OlympicMedalService;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,46 +17,23 @@ import org.springframework.stereotype.Service;
 import static com.ww.helper.EnvHelper.initOutsideDb;
 
 
-@NoArgsConstructor
+@AllArgsConstructor
 @Service
 public class InitService {
     private static final Logger logger = LoggerFactory.getLogger(InitService.class);
 
-    @Autowired
-    private TrackService trackService;
-
-    @Autowired
-    private CountryService countryService;
-
-    @Autowired
-    private ElementService elementService;
-
-    @Autowired
-    private OlympicMedalService olympicMedalService;
-
-    @Autowired
-    private MemoryTaskHelperService memoryTaskHelperService;
-
-    @Autowired
-    private InitTaskTypesService initTaskTypesService;
-
-    @Autowired
-    private InitBooksService initBooksService;
-
-    @Autowired
-    private InitClipartsService initClipartsService;
-
-    @Autowired
-    private InitCampaignsService initCampaignsService;
-
-    @Autowired
-    private InitGradeService initGradeService;
-
-    @Autowired
-    private InitAutoService initAutoService;
-
-    @Autowired
-    private Environment environment;
+    private final TrackService trackService;
+    private final CountryService countryService;
+    private final ElementService elementService;
+    private final OlympicMedalService olympicMedalService;
+    private final MemoryTaskHelperService memoryTaskHelperService;
+    private final InitTaskTypesService initTaskTypesService;
+    private final InitBooksService initBooksService;
+    private final InitClipartsService initClipartsService;
+    private final InitCampaignsService initCampaignsService;
+    private final InitGradeService initGradeService;
+    private final InitAutoService initAutoService;
+    private final Environment environment;
 
     public void initOutside() {
         if (initOutsideDb(environment)) {

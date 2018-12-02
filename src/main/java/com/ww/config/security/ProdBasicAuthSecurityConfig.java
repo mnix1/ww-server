@@ -1,8 +1,8 @@
 package com.ww.config.security;
 
 import com.ww.helper.EnvHelper;
-import com.ww.model.entity.inside.social.Auto;
-import com.ww.repository.inside.social.AutoRepository;
+import com.ww.model.entity.inside.social.InsideProfile;
+import com.ww.repository.inside.social.InsideProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +32,7 @@ import static com.ww.config.security.Roles.*;
 public class ProdBasicAuthSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private AutoRepository autoRepository;
+    private InsideProfileRepository insideProfileRepository;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -52,19 +52,19 @@ public class ProdBasicAuthSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(username -> {
-            Optional<Auto> optionalAuto = autoRepository.findFirstByUsername(username);
+            Optional<InsideProfile> optionalAuto = insideProfileRepository.findFirstByUsername(username);
             if (!optionalAuto.isPresent()) {
                 throw new UsernameNotFoundException("not found");
             }
-            Auto auto = optionalAuto.get();
+            InsideProfile insideProfile = optionalAuto.get();
             String roles = "ROLE_" + USER;
-            if (auto.getAdmin()) {
+            if (insideProfile.getAdmin()) {
                 roles += ",ROLE_" + ADMIN;
             }
-            if (auto.getAuto()) {
+            if (insideProfile.getAuto()) {
                 roles += ",ROLE_" + AUTO;
             }
-            return new User(username, auto.getPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList(roles));
+            return new User(username, insideProfile.getPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList(roles));
         });
     }
 
