@@ -24,6 +24,7 @@ import static com.ww.helper.ModelHelper.putErrorCode;
 import static com.ww.helper.ModelHelper.putSuccessCode;
 import static com.ww.helper.RandomHelper.randomDouble;
 import static com.ww.helper.RandomHelper.randomElement;
+import static com.ww.service.social.IntroService.PICK_WISIES_COUNT;
 
 @Service
 public class ProfileWisieService {
@@ -163,11 +164,15 @@ public class ProfileWisieService {
     }
 
     public void initWisieAttributes(OwnedWisie wisie) {
-        for(WisdomAttribute wisdomAttribute : WisdomAttribute.values()){
-            wisie.setWisdomAttributeValue(wisdomAttribute, randomDouble(1, 10));
+        initWisieAttributes(wisie, 1, 9);
+    }
+
+    public void initWisieAttributes(OwnedWisie wisie, int min, int max) {
+        for (WisdomAttribute wisdomAttribute : WisdomAttribute.values()) {
+            wisie.setWisdomAttributeValue(wisdomAttribute, randomDouble(min, max));
         }
-        for(MentalAttribute mentalAttribute : MentalAttribute.values()){
-            wisie.setMentalAttributeValue(mentalAttribute, randomDouble(1, 10));
+        for (MentalAttribute mentalAttribute : MentalAttribute.values()) {
+            wisie.setMentalAttributeValue(mentalAttribute, randomDouble(min, max));
         }
     }
 
@@ -182,7 +187,23 @@ public class ProfileWisieService {
     public void initWisieSkills(OwnedWisie wisie) {
         initWisieSkills(wisie, Arrays.asList(Skill.random()));
     }
+
     public void initWisieSkills(OwnedWisie wisie, List<Skill> skills) {
         wisie.setSkills(new HashSet<>(skills));
+    }
+
+    public List<ProfileWisie> createWisies(Profile profile, List<WisieType> wisieTypes) {
+        List<Category> categories = Category.list();
+        Collections.shuffle(categories);
+        List<Skill> skills = Skill.list();
+        Collections.shuffle(skills);
+        List<ProfileWisie> profileWisies = new ArrayList<>(PICK_WISIES_COUNT);
+        for (int i = 0; i < PICK_WISIES_COUNT; i++) {
+            ProfileWisie profileWisie = createWisie(profile, wisieTypes.get(i));
+            initWisieHobbies(profileWisie, Arrays.asList(categories.get(i)));
+            initWisieSkills(profileWisie, Arrays.asList(skills.get(i)));
+            profileWisies.add(profileWisie);
+        }
+        return profileWisies;
     }
 }

@@ -7,8 +7,4 @@ public class WarInterval extends RivalInterval {
     public long getIntroInterval() {
         return calculateInterval(5);
     }
-
-    public long getChoosingWhoAnswerInterval() {
-        return calculateInterval(10);
-    }
 }

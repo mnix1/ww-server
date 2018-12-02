@@ -24,7 +24,7 @@ public class PlayWarChoosingWhoAnswerState extends PlayState {
 
     @Override
     public void initCommands() {
-        commands.add(new PlaySetNextTimeoutCommand(getContainer(), ((WarInterval) manager.getInterval()).getChoosingWhoAnswerInterval()));
+        commands.add(new PlaySetNextTimeoutCommand(getContainer(), manager.getInterval().getChoosingWhoAnswerInterval()));
         initSetDefaultActiveIndexCommand();
     }
 
@@ -44,7 +44,7 @@ public class PlayWarChoosingWhoAnswerState extends PlayState {
 
     @Override
     public long afterInterval() {
-        return ((WarInterval) manager.getInterval()).getChoosingWhoAnswerInterval();
+        return manager.getInterval().getChoosingWhoAnswerInterval();
     }
 
     @Override

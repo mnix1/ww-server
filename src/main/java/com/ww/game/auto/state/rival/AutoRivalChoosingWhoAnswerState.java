@@ -5,7 +5,6 @@ import com.ww.helper.RandomHelper;
 import com.ww.model.constant.Skill;
 import com.ww.model.container.MapModel;
 import com.ww.model.container.rival.war.TeamMember;
-import com.ww.model.container.rival.war.WarInterval;
 import com.ww.model.container.rival.war.WarTeam;
 import com.ww.model.container.rival.war.WisieTeamMember;
 
@@ -28,7 +27,7 @@ public class AutoRivalChoosingWhoAnswerState extends AutoRivalState {
     @Override
     public void execute() {
         super.execute();
-        long maxInterval = (long) (((WarInterval) container.interval()).getChoosingWhoAnswerInterval() * 0.75);
+        long maxInterval = (long) (container.interval().getChoosingWhoAnswerInterval() * 0.75);
         long minInterval = maxInterval / 4;
         long interval = RandomHelper.randomLong(minInterval, maxInterval);
         WarTeam team = (WarTeam) container.team();
@@ -38,7 +37,7 @@ public class AutoRivalChoosingWhoAnswerState extends AutoRivalState {
     }
 
     protected void maybeUseLifebuoy(long interval, WarTeam team) {
-        if (team.getPresentIndexes().size() > 2 || !team.getTeamSkills().canUse(Skill.LIFEBUOY)) {
+        if (team.getPresentIndexes().size() > 1 || !team.getTeamSkills().canUse(Skill.LIFEBUOY) || team.getTeamMembers().stream().noneMatch(TeamMember::isWisie)) {
             return;
         }
         List<TeamMember> notPresentWisieTeamMembers = team.getTeamMembers().stream().filter(teamMember -> teamMember.isWisie() && !teamMember.isPresent()).collect(Collectors.toList());

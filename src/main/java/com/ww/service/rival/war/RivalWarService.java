@@ -40,7 +40,7 @@ public class RivalWarService extends RivalWisieService {
         RivalResult result = container.getResult();
         if (result.getDraw()) {
             experienceService.add(container.getInit().getCreatorProfile().getId(), ExperienceSource.WAR_LOST.getGain());
-            experienceService.add(container.getInit().getCreatorProfile().getId(), ExperienceSource.WAR_LOST.getGain());
+            experienceService.add(container.getInit().getOpponentProfile().getId(), ExperienceSource.WAR_LOST.getGain());
         } else {
             Long winnerId = result.getWinner().getId();
             experienceService.add(winnerId, ExperienceSource.WAR_WIN.getGain());

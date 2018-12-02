@@ -34,7 +34,7 @@ public class IntroService {
     private final ProfileService profileService;
     private final ProfileWisieService profileWisieService;
 
-    public void save(ProfileIntro intro){
+    public void save(ProfileIntro intro) {
         profileIntroRepository.save(intro);
     }
 
@@ -76,19 +76,8 @@ public class IntroService {
                 return putErrorCode(model);
             }
         }
-        List<Category> categories = Category.list();
-        Collections.shuffle(categories);
-        List<Skill> skills = Skill.list();
-        Collections.shuffle(skills);
-        List<ProfileWisie> profileWisies = new ArrayList<>(PICK_WISIES_COUNT);
-        for (int i = 0; i < PICK_WISIES_COUNT; i++) {
-            ProfileWisie profileWisie = profileWisieService.createWisie(profile, wisieTypes.get(i));
-            profileWisieService.initWisieHobbies(profileWisie, Arrays.asList(categories.get(i)));
-            profileWisieService.initWisieSkills(profileWisie, Arrays.asList(skills.get(i)));
-            profileWisies.add(profileWisie);
-        }
         intro.setIntroductionStepIndex(intro.getIntroductionStepIndex() + 1);
-        profileWisieService.save(profileWisies);
+        profileWisieService.save(profileWisieService.createWisies(profile, wisieTypes));
         profileIntroRepository.save(intro);
         return putSuccessCode(model);
     }

@@ -103,7 +103,6 @@ public class RivalCampaignWarService extends RivalWisieService {
             }
         }
         int rating = profileCampaign.getCampaign().getDifficultyLevel().getRating();
-
         for (WisieType wisieType : wisieTypes) {
             ProfileWisie profileWisie = new ProfileWisie(computerProfile, wisieType);
             profileWisie.setId(profileWisieId--);

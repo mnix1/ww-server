@@ -31,16 +31,16 @@ public class RivalInitTrainingService {
             return putErrorCode(model);
         }
         Profile profile = profileService.getProfile(profileId);
-        RivalTwoInit init = new RivalTwoInit(type, RivalImportance.TRAINING, profile, prepareTrainer(profile.getLanguage()));
+        RivalTwoInit init = new RivalTwoInit(type, RivalImportance.TRAINING, profile, prepareTrainer(profile.getWisorType(), profile.getLanguage()));
         rivalRunService.run(init);
         return putSuccessCode(model);
     }
 
-    private Profile prepareTrainer(Language language) {
+    private Profile prepareTrainer(WisorType usedWisorType, Language language) {
         Profile profile = TeamHelper.prepareComputerProfile();
         String name = language == Language.POLISH ? "Pan Trener Zdzisiek" : "Trainer John";
         profile.setName(name);
-        profile.setWisorType(profile.getWisorType() == WisorType.WISOR_17 ? WisorType.WISOR_8 : WisorType.WISOR_17);
+        profile.setWisorType(usedWisorType == WisorType.WISOR_17 ? WisorType.WISOR_8 : WisorType.WISOR_17);
         return profile;
     }
 }

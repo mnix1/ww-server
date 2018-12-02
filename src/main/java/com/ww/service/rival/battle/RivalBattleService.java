@@ -38,7 +38,7 @@ public class RivalBattleService extends RivalService {
         RivalResult result = container.getResult();
         if (result.getDraw()) {
             experienceService.add(container.getInit().getCreatorProfile().getId(), ExperienceSource.BATTLE_LOST.getGain());
-            experienceService.add(container.getInit().getCreatorProfile().getId(), ExperienceSource.BATTLE_LOST.getGain());
+            experienceService.add(container.getInit().getOpponentProfile().getId(), ExperienceSource.BATTLE_LOST.getGain());
         } else {
             Long winnerId = result.getWinner().getId();
             experienceService.add(winnerId, ExperienceSource.BATTLE_WIN.getGain());

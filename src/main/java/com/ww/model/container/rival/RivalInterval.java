@@ -9,6 +9,10 @@ public class RivalInterval {
         return 1000;
     }
 
+    public long wisieIntervalMultiply() {
+        return intervalMultiply();
+    }
+
     public long getIntroInterval() {
         return calculateInterval(3.5);
     }
@@ -31,6 +35,10 @@ public class RivalInterval {
 
     public long getAnsweredInterval() {
         return calculateInterval(8);
+    }
+
+    public long getChoosingWhoAnswerInterval() {
+        return calculateInterval(10);
     }
 
     public long getChoosingTaskCategoryInterval() {

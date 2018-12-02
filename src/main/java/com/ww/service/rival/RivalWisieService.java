@@ -14,11 +14,13 @@ import com.ww.service.rival.task.TaskRendererService;
 import com.ww.service.rival.task.TaskService;
 import com.ww.service.social.ConnectionService;
 import com.ww.service.wisie.ProfileWisieService;
+import lombok.Getter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Getter
 public class RivalWisieService extends RivalService {
 
     protected final ProfileWisieService profileWisieService;

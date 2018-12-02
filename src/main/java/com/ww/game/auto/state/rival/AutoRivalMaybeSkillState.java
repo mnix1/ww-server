@@ -52,7 +52,7 @@ public class AutoRivalMaybeSkillState extends AutoRivalState {
             return;
         }
         skillContainer.getUsed().add(skill);
-        long interval = (long) (randomDouble(1, 3) * container.getManager().getInterval().intervalMultiply());
+        long interval = (long) (randomDouble(1, 3) * container.getManager().getInterval().wisieIntervalMultiply());
         if (!opponentWisieHeroType) {
             interval /= 3;
         }
