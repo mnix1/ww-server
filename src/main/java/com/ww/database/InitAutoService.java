@@ -136,14 +136,14 @@ public class InitAutoService {
         insideProfiles.add(new InsideProfile("Padzi", encoder).initStats());
         insideProfiles.add(new InsideProfile("Gliniak", encoder).initStats());
         insideProfiles.add(new InsideProfile("Hjundek", encoder).initStats(.6, .7, .63, .7, .8, 6).setWisorType(WisorType.WISOR_12));
-        insideProfiles.add(new InsideProfile("Termcia", encoder).initStats(.5, .7, .58, .2, .3, 4).setWisorType(WisorType.WISOR_13));
-        insideProfiles.add(new InsideProfile("Kitek", encoder).initStats(.4, .8, .65, .9, .9, 5).setWisorType(WisorType.WISOR_30));
+        insideProfiles.add(new InsideProfile("Termcia", encoder).initStats(.67, .7, .58, .25, .2, 5).setWisorType(WisorType.WISOR_13));
+        insideProfiles.add(new InsideProfile("Kitek", encoder).initStats(.36, .8, .65, .9, .9, 5).setWisorType(WisorType.WISOR_30));
         insideProfiles.add(new InsideProfile("Rumcia", encoder).initStats(.55, .65, .6, .3, .6, 6).setWisorType(WisorType.WISOR_47));
         insideProfiles.add(new InsideProfile("Brat Hjundka", encoder).initStats());
-        insideProfiles.add(new InsideProfile("Kręcioł", encoder).initStats(.7, .7, .4, .2, .6, 3).setWisorType(WisorType.WISOR_40));
+        insideProfiles.add(new InsideProfile("Kręcioł", encoder).initStats(.7, .72, .4, .2, .6, 4).setWisorType(WisorType.WISOR_40));
         insideProfiles.add(new InsideProfile("Monster", encoder).initStats());
         insideProfiles.add(new InsideProfile("Rafciu", encoder).initStats());
-        insideProfiles.add(new InsideProfile("Szczeniaczek", encoder).initStats(.6, .7, .85, .64, .1, 6).setWisorType(WisorType.WISOR_4));
+        insideProfiles.add(new InsideProfile("Szczeniaczek", encoder).initStats(.68, .72, .85, .64, .1, 6).setWisorType(WisorType.WISOR_4));
         insideProfiles.add(new InsideProfile("Weronika", encoder).initStats());
         insideProfiles.add(new InsideProfile("Groot", encoder).initStats());
         insideProfiles.add(new InsideProfile("Prince", encoder).initStats());
@@ -151,7 +151,7 @@ public class InitAutoService {
         insideProfiles.add(new InsideProfile("Logan", encoder).initStats(.5, .6, .6, .3, .2, 5));
         insideProfiles.add(new InsideProfile("Szaka", encoder).initStats(.6, .52, .6, .5, .5, 4).setWisorType(WisorType.WISOR_9));
         insideProfiles.add(new InsideProfile("Laka", encoder).initStats());
-        insideProfiles.add(new InsideProfile("Dunia", encoder).initStats(.8, .8, .4, .8, .8, 4).setWisorType(WisorType.WISOR_1));
+        insideProfiles.add(new InsideProfile("Dunia", encoder).initStats(.35, .68, .59, .8, .8, 4).setWisorType(WisorType.WISOR_1));
         insideProfiles.add(new InsideProfile("Borys", encoder).initStats());
         insideProfiles.add(new InsideProfile("Ripsa", encoder).initStats(.54, .6, .55, .8, .7, 5).setWisorType(WisorType.WISOR_3));
         insideProfiles.add(new InsideProfile("Pipsa", encoder).initStats());
