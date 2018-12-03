@@ -18,16 +18,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @AllArgsConstructor
 public class AutoService {
     private static Logger logger = LoggerFactory.getLogger(AutoService.class);
-    public static int MAX_ACTIVE_AUTO_MANAGERS = 10;
-    public static final List<AutoManager> activeAutoManagers = new CopyOnWriteArrayList<>();
+    public static int MAX_ACTIVE_AUTO_MANAGERS = 0;
+    public static final Map<Long, AutoManager> activeAutoManagersMap = new ConcurrentHashMap<>();
 
     private final ProfileService profileService;
     private final AutoProfileService autoProfileService;
@@ -41,11 +41,7 @@ public class AutoService {
     private final InsideProfileRepository insideProfileRepository;
 
     public Optional<AutoManager> createAutoManager() {
-        Optional<Profile> optionalProfile = autoProfileService.getNotLoggedAutoProfile();
-        if (!optionalProfile.isPresent()) {
-            return Optional.empty();
-        }
-        Profile profile = optionalProfile.get();
+        Profile profile = autoProfileService.getNotLoggedAutoProfile();
         InsideProfile insideProfile = insideProfileRepository.findFirstByUsername(profile.getName()).orElse(new InsideProfile().initStats());
         AutoManager manager = new AutoManager(profile, insideProfile, this);
         return Optional.of(manager);
@@ -56,8 +52,8 @@ public class AutoService {
             startManager();
             return;
         }
-        if (activeAutoManagers.size() >= MAX_ACTIVE_AUTO_MANAGERS) {
-//            logger.debug("Already have max active auto managers: {}", activeAutoManagers.size());
+        if (activeAutoManagersMap.size() >= MAX_ACTIVE_AUTO_MANAGERS) {
+//            logger.debug("Already have max active auto managers: {}", activeAutoManagersMap.size());
             return;
         }
         startManager();
@@ -73,7 +69,7 @@ public class AutoService {
             return;
         }
         AutoManager manager = optionalManager.get();
-        activeAutoManagers.add(manager);
+        activeAutoManagersMap.put(manager.getProfile().getId(), manager);
         manager.getFlow().start();
     }
 
@@ -85,7 +81,7 @@ public class AutoService {
         logger.debug("Disposed auto profile=" + manager.getProfile().toString());
         manager.disposeContainer();
         connectionService.deleteConnection(manager.getConnection());
-        activeAutoManagers.remove(manager);
+        activeAutoManagersMap.remove(manager.getProfile().getId());
     }
 
     public void manageBooks(Profile profile) {

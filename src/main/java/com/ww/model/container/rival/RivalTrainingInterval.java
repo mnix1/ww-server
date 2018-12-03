@@ -25,7 +25,7 @@ public class RivalTrainingInterval extends WarInterval {
 
     @Override
     public long getAnsweringInterval() {
-        return (long) (super.getAnsweringInterval() * 1.5);
+        return super.getAnsweringInterval();
     }
 
     @Override

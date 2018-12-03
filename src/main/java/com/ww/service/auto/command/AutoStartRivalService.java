@@ -86,9 +86,6 @@ public class AutoStartRivalService {
 
     private boolean createPrivateChallenge(AutoManager manager) {
         challengeCreateService.createPrivate(Collections.emptyList(), ChallengeAccess.UNLOCK, ChallengeApproach.ONE, ResourceType.random(), randomElement(RESOURCE_COSTS), randomElement(DURATIONS), manager.getProfile().getId());
-        if (randomDouble() > 0.6) {
-            return joinPrivateChallenge(manager);
-        }
         return false;
     }
 

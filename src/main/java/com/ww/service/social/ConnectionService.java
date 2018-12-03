@@ -34,7 +34,7 @@ public class ConnectionService {
     private final RivalInitRandomOpponentService rivalInitRandomOpponentService;
 
     public synchronized ProfileConnection newProfileConnection(WebSocketSession session) {
-        Profile profile = profileService.retrieveProfile(profileService.getAuthId(session.getPrincipal()));
+        Profile profile = profileService.retrieveProfile(profileService.getAuthId(session.getPrincipal())).get();
         deleteConnection(profile.getId());
         ProfileConnection connection = new ProfileConnection(profile.getId(), profile.getTag(), session);
         profileIdToConnectionMap.put(profile.getId(), connection);

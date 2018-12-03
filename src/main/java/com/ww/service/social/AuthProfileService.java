@@ -22,6 +22,7 @@ import java.security.Principal;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.ww.service.social.IntroService.*;
@@ -41,9 +42,10 @@ public class AuthProfileService {
         String authId = profileService.getAuthId(user);
         logger.trace("authProfile authId=" + authId + ", string=" + user.toString() + ", json=" + JSONHelper.toJSON(user));
         if (authId != null) {
-            Profile profile = profileService.retrieveProfile(authId);
+            Optional<Profile> optionalProfile = profileService.retrieveProfile(authId);
+            Profile profile;
             ProfileAction profileAction;
-            if (profile == null) {
+            if (!optionalProfile.isPresent()) {
                 profile = profileService.createProfile(user, authId);
                 profileService.storeInSession(profile);
                 if (user instanceof UsernamePasswordAuthenticationToken
@@ -52,6 +54,7 @@ public class AuthProfileService {
                 }
                 profileAction = new ProfileAction(ProfileActionType.SIGN_UP, profile);
             } else {
+                profile = optionalProfile.get();
                 profileService.storeInSession(profile);
                 profileAction = new ProfileAction(ProfileActionType.SIGN_IN, profile);
             }

@@ -4,6 +4,7 @@ import com.ww.model.constant.Category;
 import com.ww.model.constant.wisie.WisorType;
 import com.ww.model.entity.inside.social.InsideProfile;
 import com.ww.repository.inside.social.InsideProfileRepository;
+import com.ww.service.auto.AutoJobService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -162,6 +163,7 @@ public class InitAutoService {
         insideProfiles.add(new InsideProfile("Kaszotto", encoder).initStats(.7, .6, .55, .8, .8, 4).setWisorType(WisorType.WISOR_9));
         insideProfiles.add(new InsideProfile("Paralizator", encoder).initStats());
         insideProfileRepository.saveAll(insideProfiles);
+        AutoJobService.AUTOS_INITIALIZED = true;
     }
 
 }

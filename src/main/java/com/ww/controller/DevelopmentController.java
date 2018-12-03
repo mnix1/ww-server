@@ -67,7 +67,7 @@ public class DevelopmentController {
 
     @RequestMapping(value = "/cleanAutos", method = RequestMethod.GET)
     public Map cleanAutos() {
-        for (AutoManager manager : AutoService.activeAutoManagers) {
+        for (AutoManager manager : AutoService.activeAutoManagersMap.values()) {
             autoService.disposeManager(manager);
         }
         return new MapModel("cleaned", true).get();
@@ -78,8 +78,8 @@ public class DevelopmentController {
         Set<PlayManager> managers = new HashSet<>(RivalGlobalService.managerMap.values());
         return new MapModel("rivals", StringUtils.join(managers, ",^_^"))
                 .put("rivalCount", managers.size())
-                .put("autos", StringUtils.join(AutoService.activeAutoManagers, ",^_^"))
-                .put("autoCount", AutoService.activeAutoManagers.size())
+                .put("autos", StringUtils.join(AutoService.activeAutoManagersMap, ",^_^"))
+                .put("autoCount", AutoService.activeAutoManagersMap.size())
                 .get();
     }
 
@@ -87,7 +87,7 @@ public class DevelopmentController {
     public Map simpleRivalStatus() {
         Set<PlayManager> managers = new HashSet<>(RivalGlobalService.managerMap.values());
         return new MapModel("rivalCount", managers.size())
-                .put("autoCount", AutoService.activeAutoManagers.size())
+                .put("autoCount", AutoService.activeAutoManagersMap.size())
                 .get();
     }
 }

@@ -19,6 +19,7 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -127,7 +128,7 @@ public class ProfileService {
         sessionService.storeProfile(profile);
     }
 
-    public Profile retrieveProfile(String authId) {
+    public Optional<Profile> retrieveProfile(String authId) {
         return profileRepository.findByAuthId(authId);
     }
 

@@ -7,7 +7,6 @@ import com.ww.model.entity.inside.social.InsideProfile;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.social.ProfileIntro;
 import com.ww.repository.inside.social.InsideProfileRepository;
-import com.ww.repository.outside.social.ProfileRepository;
 import com.ww.service.social.AuthProfileService;
 import com.ww.service.social.ConnectionService;
 import com.ww.service.social.ProfileService;
@@ -16,11 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
+
+import static com.ww.helper.RandomHelper.randomElement;
 
 @Service
 @AllArgsConstructor
@@ -30,42 +27,30 @@ public class AutoProfileService {
     private final InsideProfileRepository insideProfileRepository;
     private final AuthProfileService authProfileService;
     private final ProfileService profileService;
-    private final ProfileRepository profileRepository;
     private final ConnectionService connectionService;
 
-    public Optional<Profile> getNotLoggedAutoProfile() {
-        List<Profile> profiles = profileRepository.findAllByAuthIdContains(AuthIdProvider.AUTO.name());
-        if (profiles.isEmpty()) {
-            return createAutoProfile(profiles);
+    public Profile getNotLoggedAutoProfile() {
+        InsideProfile insideProfile = randomElement(insideProfileRepository.findAllByAuto(true));
+        String authId = AuthIdProvider.AUTO + AuthIdProvider.sepparator + insideProfile.getUsername();
+        Optional<Profile> optionalProfile = profileService.retrieveProfile(authId);
+        if (!optionalProfile.isPresent()) {
+            return createAutoProfile(insideProfile, authId);
         }
-        Collections.shuffle(profiles);
-        for (Profile profile : profiles) {
-            Optional<Connection> optionalConnection = connectionService.findByProfileId(profile.getId());
-            if (!optionalConnection.isPresent()) {
-                return Optional.of(profile);
-            }
+        Profile profile = optionalProfile.get();
+        Optional<Connection> optionalConnection = connectionService.findByProfileId(profile.getId());
+        if (optionalConnection.isPresent()) {
+            return getNotLoggedAutoProfile();
         }
-        return createAutoProfile(profiles);
+        return profile;
     }
 
-    private Optional<Profile> createAutoProfile(List<Profile> profiles) {
-        Set<String> usedAutoAuthIds = profiles.stream().map(Profile::getAuthId).collect(Collectors.toSet());
-        List<InsideProfile> insideProfiles = insideProfileRepository.findAllByAuto(true);
-        Collections.shuffle(insideProfiles);
-        for (InsideProfile insideProfile : insideProfiles) {
-            String authId = AuthIdProvider.AUTO + AuthIdProvider.sepparator + insideProfile.getUsername();
-            if (usedAutoAuthIds.contains(authId)) {
-                continue;
-            }
-            Profile profile = new Profile(authId, insideProfile.getUsername(), null, Language.POLISH, insideProfile.getWisorType());
-            profileService.save(profile);
-            profile.setIntro(new ProfileIntro(profile));
-            authProfileService.completeIntroductionForAuto(profile);
-            logger.debug("Created new auto profile=" + profile.toString());
-            return Optional.of(profile);
-        }
-        logger.debug("Can't create new auto profile, all are used");
-        return Optional.empty();
+    private Profile createAutoProfile(InsideProfile insideProfile, String authId) {
+        Profile profile = new Profile(authId, insideProfile.getUsername(), null, Language.POLISH, insideProfile.getWisorType());
+        profileService.save(profile);
+        profile.setIntro(new ProfileIntro(profile));
+        authProfileService.completeIntroductionForAuto(profile);
+        logger.debug("Created new auto profile=" + profile.toString());
+        return profile;
     }
 
 
