@@ -46,7 +46,7 @@ public class AutoStartRivalService {
         Optional<RivalOneInit> optionalRivalOneInit = rivalInitRandomOpponentService.maybeGetRivalInitWaitingLong();
         RivalOneInit init = optionalRivalOneInit.orElse(prepareRandomRivalInit(manager));
         if (init.getType() == RivalType.CHALLENGE) {
-            if (randomDouble() > 0.7) {
+            if (randomDouble() > 0.74) {
                 return joinPrivateChallenge(manager);
             } else {
                 return joinGlobalChallenge(manager);
@@ -69,7 +69,13 @@ public class AutoStartRivalService {
                 .filter(e -> e.getAccess() == ChallengeAccess.UNLOCK)
                 .collect(Collectors.toList());
         if (challenges.isEmpty()) {
-            return createPrivateChallenge(manager);
+            challenges = challengeService.list(ChallengeStatus.IN_PROGRESS, true, manager.getProfile().getId()).stream()
+                    .filter(e -> e.getAccess() == ChallengeAccess.UNLOCK && e.getName().equals(manager.getProfile().getName()))
+                    .collect(Collectors.toList());
+            if (challenges.isEmpty()) {
+                return createPrivateChallenge(manager);
+            }
+            return false;
         }
         Collections.shuffle(challenges);
         for (ChallengePrivateDTO challenge : challenges) {
@@ -91,14 +97,14 @@ public class AutoStartRivalService {
 
     private RivalOneInit prepareRandomRivalInit(AutoManager manager) {
         RivalType type = RivalType.WAR;
-        if (randomDouble() > 0.7) {
+        if (randomDouble() > 0.6) {
             type = RivalType.BATTLE;
-            if (randomDouble() > 0.5) {
+            if (randomDouble() > 0.6) {
                 type = RivalType.CHALLENGE;
             }
         }
         RivalImportance importance = RivalImportance.RANKING;
-        if (randomDouble() > 0.7 || type == RivalType.CHALLENGE) {
+        if (randomDouble() > 0.95 || type == RivalType.CHALLENGE) {
             importance = RivalImportance.FAST;
         }
         return new RivalOneInit(type, importance, manager.getProfile());
