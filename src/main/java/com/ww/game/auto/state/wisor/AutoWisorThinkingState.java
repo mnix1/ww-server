@@ -5,13 +5,10 @@ import com.ww.game.auto.flow.AutoWisorFlow;
 import com.ww.model.constant.Category;
 import com.ww.model.entity.inside.social.InsideProfile;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static com.ww.helper.RandomHelper.randomDouble;
-import static com.ww.helper.RandomHelper.randomInteger;
 
 public class AutoWisorThinkingState extends AutoWisorState {
 
@@ -44,15 +41,17 @@ public class AutoWisorThinkingState extends AutoWisorState {
         long answeringInterval = manager.getAutoPlayContainer().interval().getAnsweringInterval();
         int difficulty = manager.getAutoPlayContainer().question().getDifficultyLevel().getPoints();
         InsideProfile insideProfile = manager.getInsideProfile();
-        double constPart = .1;
+        double constPart = randomDouble(0, 0.15);
         double randomPart = randomDouble(.0, 1 - insideProfile.getLuck());
-        double difficultyPart = difficulty * .1 * (1 - insideProfile.getWisdom()) + difficulty * 0.5 * (1 - insideProfile.getLuck()) * (1 - insideProfile.getWisdom());
-        double part = constPart + randomPart + difficultyPart + (0.5 - insideProfile.getSpeed()) - insideProfile.getReflex();
+        double difficultyPart = difficulty * .05 + difficulty * randomDouble(0.05,0.1) * (1 - insideProfile.getWisdom()) + difficulty * 0.4 * (1 - insideProfile.getLuck()) * (1 - insideProfile.getWisdom());
+        double part = constPart + randomPart + difficultyPart + (0.5 - insideProfile.getSpeed()) + (0.5 - insideProfile.getReflex());
+        logger.error("part=" + part + " randomPart=" + randomPart + " difficultyPart=" + difficultyPart + " isHobby=" + isHobby);
         if (isHobby) {
-            part /= 3;
+            part /= 2;
         }
-        part = Math.max(part, 0.05);
-        part = Math.min(part, 0.9);
+        part = Math.max(part, randomDouble(0.7, 0.15));
+        part = Math.min(part, randomDouble(Math.max(0.4, Math.min(0.6, 1 - insideProfile.getLuck())), 0.6));
+        logger.error("realPart=" + part);
         return (long) (answeringInterval * part);
     }
 
