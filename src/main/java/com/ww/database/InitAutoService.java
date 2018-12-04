@@ -136,14 +136,14 @@ public class InitAutoService {
         insideProfiles.add(new InsideProfile("Padzi", encoder).initStats());
         insideProfiles.add(new InsideProfile("Gliniak", encoder).initStats());
         insideProfiles.add(new InsideProfile("Hjundek", encoder).initStats(.6, .7, .63, .7, .8, 6).setWisorType(WisorType.WISOR_12));
-        insideProfiles.add(new InsideProfile("Termcia", encoder).initStats(.67, .7, .58, .25, .2, 5).setWisorType(WisorType.WISOR_13));
+        insideProfiles.add(new InsideProfile("Termcia", encoder).initStats(.67, .7, .59, .55, .3, 5).setWisorType(WisorType.WISOR_13));
         insideProfiles.add(new InsideProfile("Kitek", encoder).initStats(.36, .8, .65, .9, .9, 5).setWisorType(WisorType.WISOR_30));
         insideProfiles.add(new InsideProfile("Rumcia", encoder).initStats(.55, .65, .6, .3, .6, 6).setWisorType(WisorType.WISOR_47));
         insideProfiles.add(new InsideProfile("Brat Hjundka", encoder).initStats());
         insideProfiles.add(new InsideProfile("Kręcioł", encoder).initStats(.7, .72, .4, .2, .6, 4).setWisorType(WisorType.WISOR_40));
         insideProfiles.add(new InsideProfile("Monster", encoder).initStats());
         insideProfiles.add(new InsideProfile("Rafciu", encoder).initStats());
-        insideProfiles.add(new InsideProfile("Szczeniaczek", encoder).initStats(.68, .72, .85, .64, .1, 6).setWisorType(WisorType.WISOR_4));
+        insideProfiles.add(new InsideProfile("Szczeniaczek", encoder).initStats(.68, .72, .92, .64, .2, 6).setWisorType(WisorType.WISOR_4));
         insideProfiles.add(new InsideProfile("Weronika", encoder).initStats());
         insideProfiles.add(new InsideProfile("Groot", encoder).initStats());
         insideProfiles.add(new InsideProfile("Prince", encoder).initStats());
