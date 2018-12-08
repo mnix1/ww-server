@@ -1,6 +1,10 @@
 package com.ww.config.security;
 
 import com.ww.helper.EnvHelper;
+import com.ww.model.entity.inside.social.InsideProfile;
+import com.ww.model.entity.outside.social.OutsideProfile;
+import com.ww.repository.inside.social.InsideProfileRepository;
+import com.ww.repository.inside.social.OutsideProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
@@ -9,41 +13,52 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.filter.CompositeFilter;
 
 import javax.servlet.Filter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import static com.ww.config.security.Roles.ADMIN;
+import static com.ww.config.security.Roles.*;
 import static com.ww.helper.EnvHelper.sslForce;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(jsr250Enabled = true)
 @Profile(EnvHelper.SIGN_PROD)
-@Order(2)
-public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
+public class ProdSecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String[] ALL = new String[]{"/", "/*.js", "/*.html", "/*.json", "/*.ico", "/*.png", "/*.txt",
             "/profile", "/classification/war", "/classification/battle", "/play",
             "/war", "/warRanking", "/warFast", "/challenge", "/battle", "/battleRanking", "/battleFast", "/training", "/campaign", "/campaignWar",
             "/shop", "/friend", "/wisies", "/settings", "/_login/**", "/login", "/static/**", "/health/**", "/health"};
-    public static final String[] ONLY_ADMIN = new String[]{"/**/*.map", "/_h2/**","/_replay/**", "/_manage/**", "/_cache/**", "/_log/**", "/_dev/**"};
+    public static final String[] ONLY_ADMIN = new String[]{"/**/*.map", "/_h2/**", "/_replay/**", "/_manage/**", "/_cache/**", "/_log/**", "/_dev/**"};
 
     @Autowired
     private Environment env;
+
+    @Autowired
+    private OutsideProfileRepository outsideProfileRepository;
+    @Autowired
+    private InsideProfileRepository insideProfileRepository;
 
     private OAuth2ClientContext oauth2ClientContext;
 
@@ -79,6 +94,29 @@ public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
         }
     }
 
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(username -> {
+            Optional<OutsideProfile> optionalOutsideProfile = outsideProfileRepository.findFirstByEmail(username);
+            if (optionalOutsideProfile.isPresent()) {
+                return new User(username, optionalOutsideProfile.get().getPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_" + USER));
+            }
+            Optional<InsideProfile> optionalInsideProfile = insideProfileRepository.findFirstByUsername(username);
+            if (!optionalInsideProfile.isPresent()) {
+                throw new UsernameNotFoundException("not found");
+            }
+            InsideProfile insideProfile = optionalInsideProfile.get();
+            String roles = "ROLE_" + USER;
+            if (insideProfile.getAdmin()) {
+                roles += ",ROLE_" + ADMIN;
+            }
+            if (insideProfile.getAuto()) {
+                roles += ",ROLE_" + AUTO;
+            }
+            return new User(username, insideProfile.getPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList(roles));
+        });
+    }
+
     private Filter filter() {
         CompositeFilter filter = new CompositeFilter();
         List<Filter> filters = new ArrayList<>();
@@ -98,6 +136,15 @@ public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
         tokenServices.setRestTemplate(githubTemplate);
         githubFilter.setTokenServices(tokenServices);
         filters.add(githubFilter);
+
+        UsernamePasswordAuthenticationFilter wisiemaniaFilter = new UsernamePasswordAuthenticationFilter();
+        wisiemaniaFilter.setFilterProcessesUrl("/_login/wisiemania");
+        try {
+            wisiemaniaFilter.setAuthenticationManager(authenticationManagerBean());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        filters.add(wisiemaniaFilter);
 
         filter.setFilters(filters);
         return filter;
@@ -125,5 +172,10 @@ public class ProdOAuthSecurityConfig extends WebSecurityConfigurerAdapter {
     @ConfigurationProperties("facebook.resource")
     public ResourceServerProperties facebookResource() {
         return new ResourceServerProperties();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(12);
     }
 }

@@ -2,6 +2,8 @@ package com.ww.service.auto;
 
 import com.ww.game.auto.AutoManager;
 import com.ww.game.play.PlayManager;
+import com.ww.model.constant.rival.RivalImportance;
+import com.ww.model.container.rival.init.RivalOneInit;
 import com.ww.model.entity.inside.social.InsideProfile;
 import com.ww.model.entity.outside.social.Profile;
 import com.ww.repository.inside.social.InsideProfileRepository;
@@ -40,31 +42,29 @@ public class AutoService {
     private final RivalInitRandomOpponentService rivalInitRandomOpponentService;
     private final InsideProfileRepository insideProfileRepository;
 
-    public Optional<AutoManager> createAutoManager() {
-        Profile profile = autoProfileService.getNotLoggedAutoProfile();
+    public Optional<AutoManager> createAutoManager(RivalOneInit init) {
+        Profile profile = init == null || init.getImportance() != RivalImportance.RANKING ?
+                autoProfileService.getNotLoggedAutoProfile() : autoProfileService.getNotLoggedAutoProfile(init);
         InsideProfile insideProfile = insideProfileRepository.findFirstByUsername(profile.getName()).orElse(new InsideProfile().initStats());
         AutoManager manager = new AutoManager(profile, insideProfile, this);
         return Optional.of(manager);
     }
 
     public void perform() {
-        if (needAutoRival()) {
-            startManager();
+        Optional<RivalOneInit> optionalRivalOneInit = rivalInitRandomOpponentService.maybeGetRivalInitWaitingLong();
+        if (optionalRivalOneInit.isPresent()) {
+            startManager(optionalRivalOneInit.get());
             return;
         }
         if (activeAutoManagersMap.size() >= MAX_ACTIVE_AUTO_MANAGERS) {
 //            logger.debug("Already have max active auto managers: {}", activeAutoManagersMap.size());
             return;
         }
-        startManager();
+        startManager(null);
     }
 
-    private boolean needAutoRival() {
-        return rivalInitRandomOpponentService.maybeGetRivalInitWaitingLong().isPresent();
-    }
-
-    private void startManager() {
-        Optional<AutoManager> optionalManager = createAutoManager();
+    private void startManager(RivalOneInit init) {
+        Optional<AutoManager> optionalManager = createAutoManager(init);
         if (!optionalManager.isPresent()) {
             return;
         }

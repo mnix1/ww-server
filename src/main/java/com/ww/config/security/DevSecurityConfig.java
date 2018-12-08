@@ -11,8 +11,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-import static com.ww.config.security.ProdOAuthSecurityConfig.ALL;
-import static com.ww.config.security.ProdOAuthSecurityConfig.ONLY_ADMIN;
+import static com.ww.config.security.ProdSecurityConfig.ALL;
+import static com.ww.config.security.ProdSecurityConfig.ONLY_ADMIN;
 import static com.ww.config.security.Roles.ADMIN;
 import static com.ww.config.security.Roles.AUTO;
 import static com.ww.config.security.Roles.USER;

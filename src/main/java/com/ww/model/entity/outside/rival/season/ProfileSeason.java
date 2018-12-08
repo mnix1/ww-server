@@ -22,7 +22,7 @@ public class ProfileSeason {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    protected Long elo;
+    protected Long elo = 0L;
     protected Long previousElo;
     protected Long highestElo;
     protected Grade grade;
@@ -37,7 +37,6 @@ public class ProfileSeason {
     protected Season season;
 
     public ProfileSeason(Profile profile, Season season, List<SeasonGrade> seasonGrades) {
-        this.elo = 0L;
         this.previousElo = this.elo;
         this.highestElo = this.elo;
         this.updateDate = Instant.now();
