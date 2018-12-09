@@ -48,7 +48,6 @@ import static com.ww.helper.EnvHelper.sslForce;
 @Profile(EnvHelper.SIGN_PROD)
 @Order(2)
 public class ProdSecurityConfig extends WebSecurityConfigurerAdapter {
-    public static int PASSWORD_ENCODER_STRENGTH = 12;
     public static final String[] ALL = new String[]{"/", "/*.js", "/*.html", "/*.json", "/*.ico", "/*.png", "/*.txt",
             "/profile", "/classification/war", "/classification/battle", "/play",
             "/war", "/warRanking", "/warFast", "/challenge", "/battle", "/battleRanking", "/register", "/battleFast", "/training", "/campaign", "/campaignWar",
@@ -176,10 +175,5 @@ public class ProdSecurityConfig extends WebSecurityConfigurerAdapter {
     @ConfigurationProperties("facebook.resource")
     public ResourceServerProperties facebookResource() {
         return new ResourceServerProperties();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(PASSWORD_ENCODER_STRENGTH);
     }
 }

@@ -7,6 +7,7 @@ import com.ww.repository.inside.social.InsideProfileRepository;
 import com.ww.service.auto.AutoJobService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
