@@ -14,6 +14,8 @@ import com.ww.model.entity.outside.social.ProfileMail;
 import com.ww.repository.outside.social.ProfileMailRepository;
 import com.ww.websocket.message.MessageDTO;
 import lombok.AllArgsConstructor;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -30,6 +32,15 @@ public class MailService {
     private final ProfileService profileService;
     private final ConnectionService connectionService;
     private final ProfileMailRepository profileMailRepository;
+    private final JavaMailSender javaMailSender;
+
+    public void sendWelcomeEmail(String email, String username, String password) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Welcome in Wisiemania");
+        message.setText("Hello " + username + "!\n\n" + "Your new password is: " + password + "\n\n" + "You can now sign in using it\n\nBest regards,\nWisiemania Team");
+        javaMailSender.send(message);
+    }
 
     public List<ProfileMailDTO> list() {
         return list(profileService.getProfileId()).stream().map(ProfileMailDTO::new).collect(Collectors.toList());

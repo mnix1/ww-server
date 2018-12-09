@@ -11,15 +11,14 @@ import com.ww.repository.outside.social.ProfileRepository;
 import com.ww.service.SessionService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -108,8 +107,13 @@ public class ProfileService {
         } else if (user instanceof UsernamePasswordAuthenticationToken) {
             String username = ((User) ((UsernamePasswordAuthenticationToken) user).getPrincipal()).getUsername();
             String authId = username;
-            if (((UsernamePasswordAuthenticationToken) user).getAuthorities().contains(Roles.AUTO)) {
+            Collection<GrantedAuthority> authorities = ((UsernamePasswordAuthenticationToken) user).getAuthorities();
+            if (authorities.contains(new SimpleGrantedAuthority("ROLE_" + Roles.AUTO))) {
                 authId = AuthIdProvider.AUTO + AuthIdProvider.sepparator + username;
+            } else if (authorities.contains(new SimpleGrantedAuthority("ROLE_" + Roles.ADMIN))) {
+                authId = AuthIdProvider.ADMIN + AuthIdProvider.sepparator + username;
+            } else if (authorities.contains(new SimpleGrantedAuthority("ROLE_" + Roles.USER))) {
+                authId = AuthIdProvider.WISIEMANIA + AuthIdProvider.sepparator + username;
             }
             return authId;
         }
@@ -143,12 +147,16 @@ public class ProfileService {
                 profile = createProfileFacebook(details, authId);
             }
         } else if (user instanceof UsernamePasswordAuthenticationToken) {
-            profile = new Profile(authId, authId, null, Language.POLISH);
+            profile = new Profile(authId, user.getName(), null, Language.POLISH);
         }
-        profileRepository.save(profile);
+        saveProfileAndIntro(profile);
+        return profile;
+    }
+
+    public void saveProfileAndIntro(Profile profile) {
+        save(profile);
         profile.setIntro(new ProfileIntro(profile));
         profileIntroRepository.save(profile.getIntro());
-        return profile;
     }
 
     public Profile createProfileGoogle(Map<String, Object> details, String authId) {

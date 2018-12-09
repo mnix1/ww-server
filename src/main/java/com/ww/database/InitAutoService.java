@@ -23,7 +23,7 @@ public class InitAutoService {
 
     public void initAutos() {
         List<InsideProfile> insideProfiles = new ArrayList<>();
-        insideProfiles.add(new InsideProfile("admin1992", "$2a$12$IZ.dAL3M92Q6XEk9K1YpY.878FBFZZb7qw.oFmXkre7aq8435Oa7u", true));
+        insideProfiles.add(new InsideProfile("adam", "$2a$12$IZ.dAL3M92Q6XEk9K1YpY.878FBFZZb7qw.oFmXkre7aq8435Oa7u", true));
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(8);
         insideProfiles.add(new InsideProfile("Murro", encoder).initStats());
         insideProfiles.add(new InsideProfile("Rambo", encoder).initStats().setWisorType(WisorType.WISOR_17));

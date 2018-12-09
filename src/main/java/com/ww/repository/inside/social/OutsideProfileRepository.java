@@ -8,5 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface OutsideProfileRepository extends CrudRepository<OutsideProfile, Long> {
-    Optional<OutsideProfile> findFirstByEmail(String email);
+    Optional<OutsideProfile> findFirstByUsernameOrEmail(String username, String email);
+    Optional<OutsideProfile> findFirstByUsername(String username);
 }

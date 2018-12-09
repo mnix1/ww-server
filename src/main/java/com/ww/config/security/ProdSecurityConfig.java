@@ -13,6 +13,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -45,12 +46,14 @@ import static com.ww.helper.EnvHelper.sslForce;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(jsr250Enabled = true)
 @Profile(EnvHelper.SIGN_PROD)
+@Order(2)
 public class ProdSecurityConfig extends WebSecurityConfigurerAdapter {
+    public static int PASSWORD_ENCODER_STRENGTH = 12;
     public static final String[] ALL = new String[]{"/", "/*.js", "/*.html", "/*.json", "/*.ico", "/*.png", "/*.txt",
             "/profile", "/classification/war", "/classification/battle", "/play",
-            "/war", "/warRanking", "/warFast", "/challenge", "/battle", "/battleRanking", "/battleFast", "/training", "/campaign", "/campaignWar",
-            "/shop", "/friend", "/wisies", "/settings", "/_login/**", "/login", "/static/**", "/health/**", "/health"};
-    public static final String[] ONLY_ADMIN = new String[]{"/**/*.map", "/_h2/**", "/_replay/**", "/_manage/**", "/_cache/**", "/_log/**", "/_dev/**"};
+            "/war", "/warRanking", "/warFast", "/challenge", "/battle", "/battleRanking", "/register", "/battleFast", "/training", "/campaign", "/campaignWar",
+            "/shop", "/friend", "/wisies", "/settings", "/_login/**", "/login/**", "/profile/register", "/static/**", "/health/**", "/health"};
+    public static final String[] ONLY_ADMIN = new String[]{"/**/*.map", "/_replay/**", "/_manage/**", "/_cache/**", "/_log/**", "/_dev/**"};
 
     @Autowired
     private Environment env;
@@ -86,7 +89,8 @@ public class ProdSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutUrl("/_logout")
-                .logoutSuccessUrl("/").permitAll()
+                .logoutSuccessUrl("/")
+                .deleteCookies("JSESSIONID").invalidateHttpSession(true)
                 .and()
                 .addFilterAt(filter(), BasicAuthenticationFilter.class);
         if (sslForce(env)) {
@@ -97,7 +101,7 @@ public class ProdSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(username -> {
-            Optional<OutsideProfile> optionalOutsideProfile = outsideProfileRepository.findFirstByEmail(username);
+            Optional<OutsideProfile> optionalOutsideProfile = outsideProfileRepository.findFirstByUsername(username);
             if (optionalOutsideProfile.isPresent()) {
                 return new User(username, optionalOutsideProfile.get().getPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_" + USER));
             }
@@ -176,6 +180,6 @@ public class ProdSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(12);
+        return new BCryptPasswordEncoder(PASSWORD_ENCODER_STRENGTH);
     }
 }

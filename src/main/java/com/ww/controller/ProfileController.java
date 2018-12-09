@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.ww.helper.ModelHelper.putErrorCode;
 
 @RestController
 @RequestMapping(value = "/profile")
@@ -26,8 +29,23 @@ public class ProfileController {
     private final ProfileService profileService;
     private final ProfileBookService profileBookService;
 
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public Map<String, Object> register(@RequestBody Map<String, Object> payload) {
+        if (!payload.containsKey("username") || !payload.containsKey("email")) {
+            throw new IllegalArgumentException();
+        }
+        try {
+            String username = (String) payload.get("username");
+            String email = (String) payload.get("email");
+            Language lang = Language.valueOf((String) payload.get("lang"));
+            return authProfileService.createOutsideProfile(username.trim(), email.trim(), lang);
+        } catch (Exception e) {
+        }
+        return putErrorCode(new HashMap<>());
+    }
+
     @RequestMapping(value = "/changeWisor", method = RequestMethod.POST)
-    public Map changeWisor(@RequestBody Map<String, Object> payload) {
+    public Map<String, Object> changeWisor(@RequestBody Map<String, Object> payload) {
         if (!payload.containsKey("wisor")) {
             throw new IllegalArgumentException();
         }
@@ -36,7 +54,7 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "/changeName", method = RequestMethod.POST)
-    public Map changeName(@RequestBody Map<String, Object> payload) {
+    public Map<String, Object> changeName(@RequestBody Map<String, Object> payload) {
         if (!payload.containsKey("name")) {
             throw new IllegalArgumentException();
         }
@@ -45,7 +63,7 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "/changeLanguage", method = RequestMethod.POST)
-    public Map changeLanguage(@RequestBody Map<String, Object> payload) {
+    public Map<String, Object> changeLanguage(@RequestBody Map<String, Object> payload) {
         if (!payload.containsKey("lang")) {
             throw new IllegalArgumentException();
         }
@@ -74,7 +92,7 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "/startReadBook", method = RequestMethod.POST)
-    public Map startReadBook(@RequestBody Map<String, Object> payload) {
+    public Map<String, Object> startReadBook(@RequestBody Map<String, Object> payload) {
         if (!payload.containsKey("id")) {
             throw new IllegalArgumentException();
         }
@@ -83,7 +101,7 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "/stopReadBook", method = RequestMethod.POST)
-    public Map stopReadBook(@RequestBody Map<String, Object> payload) {
+    public Map<String, Object> stopReadBook(@RequestBody Map<String, Object> payload) {
         if (!payload.containsKey("id")) {
             throw new IllegalArgumentException();
         }
@@ -92,7 +110,7 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "/discardBook", method = RequestMethod.POST)
-    public Map discardBook(@RequestBody Map<String, Object> payload) {
+    public Map<String, Object> discardBook(@RequestBody Map<String, Object> payload) {
         if (!payload.containsKey("id")) {
             throw new IllegalArgumentException();
         }
@@ -101,7 +119,7 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "/claimRewardBook", method = RequestMethod.POST)
-    public Map claimRewardBook(@RequestBody Map<String, Object> payload) {
+    public Map<String, Object> claimRewardBook(@RequestBody Map<String, Object> payload) {
         if (!payload.containsKey("id")) {
             throw new IllegalArgumentException();
         }
@@ -110,7 +128,7 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "/speedUpBook", method = RequestMethod.POST)
-    public Map speedUpBook(@RequestBody Map<String, Object> payload) {
+    public Map<String, Object> speedUpBook(@RequestBody Map<String, Object> payload) {
         if (!payload.containsKey("id")) {
             throw new IllegalArgumentException();
         }

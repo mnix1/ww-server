@@ -18,7 +18,14 @@ public class OutsideProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String username;
     private String email;
     private String password;
+    private Boolean verified;
 
+    public OutsideProfile(String username, String email) {
+        this.username = username;
+        this.email = email;
+        this.verified = false;
+    }
 }

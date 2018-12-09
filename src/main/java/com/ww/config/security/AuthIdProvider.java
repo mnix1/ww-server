@@ -4,7 +4,8 @@ import com.ww.model.entity.outside.social.Profile;
 
 public enum AuthIdProvider {
     AUTO,
-
+    ADMIN,
+    WISIEMANIA,
     FACEBOOK,
     GOOGLE;
 
