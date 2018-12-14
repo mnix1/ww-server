@@ -13,7 +13,7 @@ import com.ww.model.entity.outside.social.Profile;
 import com.ww.model.entity.outside.social.ProfileAction;
 import com.ww.model.entity.outside.wisie.ProfileWisie;
 import com.ww.repository.inside.social.InsideProfileRepository;
-import com.ww.repository.inside.social.OutsideProfileRepository;
+import com.ww.repository.outside.social.OutsideProfileRepository;
 import com.ww.repository.outside.social.ProfileActionRepository;
 import com.ww.service.wisie.ProfileWisieService;
 import lombok.AllArgsConstructor;

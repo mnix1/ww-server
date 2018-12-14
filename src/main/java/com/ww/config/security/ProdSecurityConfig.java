@@ -4,7 +4,7 @@ import com.ww.helper.EnvHelper;
 import com.ww.model.entity.inside.social.InsideProfile;
 import com.ww.model.entity.outside.social.OutsideProfile;
 import com.ww.repository.inside.social.InsideProfileRepository;
-import com.ww.repository.inside.social.OutsideProfileRepository;
+import com.ww.repository.outside.social.OutsideProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
@@ -23,8 +23,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;

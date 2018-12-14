@@ -1,4 +1,4 @@
-package com.ww.repository.inside.social;
+package com.ww.repository.outside.social;
 
 import com.ww.model.entity.outside.social.OutsideProfile;
 import org.springframework.data.repository.CrudRepository;
