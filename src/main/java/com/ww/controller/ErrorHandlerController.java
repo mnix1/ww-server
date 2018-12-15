@@ -43,19 +43,16 @@ public class ErrorHandlerController implements ErrorController {
     }
 
     public String getReferer(HttpServletRequest request) {
-        final String referer = request.getHeader("referer");
-        return referer;
+        return request.getHeader("referer");
     }
 
     public String getFullURL(HttpServletRequest request) {
         final StringBuffer requestURL = request.getRequestURL();
         final String queryString = request.getQueryString();
 
-        final String result = queryString == null ? requestURL.toString() : requestURL.append('?')
+        return queryString == null ? requestURL.toString() : requestURL.append('?')
                 .append(queryString)
                 .toString();
-
-        return result;
     }
 
     //http://stackoverflow.com/a/18030465/1845894
@@ -104,12 +101,12 @@ public class ErrorHandlerController implements ErrorController {
 
     //http://stackoverflow.com/a/18030465/1845894
     public String getClientBrowser(HttpServletRequest request) {
-        final String browserDetails = request.getHeader("User-Agent");
+        final String browserDetails = getUserAgent(request);
+        if (browserDetails == null) {
+            return "User-Agent null";
+        }
         final String user = browserDetails.toLowerCase();
-
         String browser = "";
-
-        //===============Browser===========================
         if (user.contains("msie")) {
             String substring = browserDetails.substring(browserDetails.indexOf("MSIE")).split(";")[0];
             browser = substring.split(" ")[0].replace("MSIE", "IE") + "-" + substring.split(" ")[1];
@@ -133,7 +130,6 @@ public class ErrorHandlerController implements ErrorController {
                 "mozilla/4.08") != -1) || (user.indexOf("mozilla/3") != -1)) {
             //browser=(userAgent.substring(userAgent.indexOf("MSIE")).split(" ")[0]).replace("/", "-");
             browser = "Netscape-?";
-
         } else if (user.contains("firefox")) {
             browser = (browserDetails.substring(browserDetails.indexOf("Firefox")).split(" ")[0]).replace("/", "-");
         } else if (user.contains("rv")) {
@@ -141,7 +137,6 @@ public class ErrorHandlerController implements ErrorController {
         } else {
             browser = "UnKnown, More-Info: " + browserDetails;
         }
-
         return browser;
     }
 
